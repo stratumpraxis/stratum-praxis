@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#111827">
+  <meta name="description" content="Estimate AI automation savings, payback period, and first-year ROI. Save scenarios locally, compare decisions, and export CSV.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <title>AI Automation ROI Planner</title>
+  <style>
+    :root{color-scheme:dark;--bg:#090d14;--panel:#111827;--panel2:#0f172a;--line:#2b3445;--text:#f3f4f6;--muted:#9ca3af;--accent:#d1d5db;--good:#86efac;--warn:#fde68a;--bad:#fca5a5}
+    *{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#080b12,#111827);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;min-height:100vh}button,input{font:inherit}a{color:#e5e7eb}.shell{max-width:1180px;margin:auto;padding:28px 20px 52px}.top{display:flex;gap:18px;justify-content:space-between;align-items:flex-start;margin-bottom:24px}.brand{display:flex;gap:14px;align-items:center}.mark{width:44px;height:44px;border:1px solid #4b5563;border-radius:12px;display:grid;place-items:center;background:#151c28}.mark b{font-size:18px;letter-spacing:.04em}h1{font-size:clamp(24px,4vw,36px);margin:0}.sub{color:var(--muted);margin:5px 0 0;max-width:760px}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#cbd5e1;background:#0b1220;white-space:nowrap}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(340px,.82fr);gap:18px}.card{background:rgba(17,24,39,.92);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 16px 45px rgba(0,0,0,.18)}.card h2{margin:0 0 14px;font-size:18px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px}label{display:block;color:#cbd5e1;font-size:13px;margin-bottom:6px}.field.wide{grid-column:1/-1}input{width:100%;border:1px solid #374151;border-radius:10px;background:#0b1220;color:white;padding:11px 12px;outline:none}input:focus{border-color:#9ca3af;box-shadow:0 0 0 3px rgba(156,163,175,.12)}.actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:17px}.btn{border:1px solid #4b5563;border-radius:10px;padding:10px 13px;background:#e5e7eb;color:#111827;font-weight:700;cursor:pointer}.btn.secondary{background:#151c28;color:#e5e7eb}.btn:focus-visible,a:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid var(--line);background:#0b1220;border-radius:12px;padding:14px}.metric span{display:block;color:var(--muted);font-size:12px}.metric strong{display:block;font-size:22px;margin-top:4px}.decision{margin-top:12px;padding:14px;border:1px solid var(--line);border-radius:12px;background:#0b1220}.decision strong{font-size:17px}.decision p{margin:5px 0 0;color:#cbd5e1}.good{color:var(--good)}.warn{color:var(--warn)}.bad{color:var(--bad)}.note{color:var(--muted);font-size:12px;margin-top:12px}.cta{margin-top:14px;border-top:1px solid var(--line);padding-top:15px}.cta a{display:inline-flex;text-decoration:none;background:#f3f4f6;color:#111827;font-weight:800;border-radius:10px;padding:10px 13px}.full{margin-top:18px}.table-wrap{overflow:auto;border:1px solid var(--line);border-radius:12px}table{width:100%;border-collapse:collapse;min-width:760px}th,td{text-align:left;padding:11px 12px;border-bottom:1px solid #273244}th{font-size:12px;color:#9ca3af;background:#0b1220}td{font-size:13px}.empty{padding:22px;color:var(--muted);text-align:center}.footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-top:20px;color:var(--muted);font-size:12px}.footer nav{display:flex;gap:13px}.footer a{color:#cbd5e1}.install{display:none}@media(max-width:820px){.grid{grid-template-columns:1fr}.top{flex-direction:column}.pill{white-space:normal}.form-grid{grid-template-columns:1fr}.field.wide{grid-column:auto}}@media(max-width:460px){.shell{padding:18px 12px 36px}.card{padding:15px}.metrics{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="top">
+    <div class="brand"><div class="mark" aria-hidden="true"><b>ROI</b></div><div><h1>AI Automation ROI Planner</h1><p class="sub">Turn an automation idea into a financial decision: estimate savings, payback, and first-year ROI, then save and compare scenarios on this device.</p></div></div>
+    <div class="pill">Private by design · Inputs stay on device</div>
+  </header>
+
+  <section class="grid" aria-label="ROI planner">
+    <form class="card" id="roiForm">
+      <h2>Scenario assumptions</h2>
+      <div class="form-grid">
+        <div class="field wide"><label for="name">Workflow name</label><input id="name" value="Client reporting workflow" maxlength="80"></div>
+        <div class="field"><label for="runs">Runs per week</label><input id="runs" type="number" min="0" step="1" value="20" required></div>
+        <div class="field"><label for="minutes">Minutes per run</label><input id="minutes" type="number" min="0" step="1" value="18" required></div>
+        <div class="field"><label for="hourly">Loaded labor cost ($/hour)</label><input id="hourly" type="number" min="0" step="1" value="45" required></div>
+        <div class="field"><label for="automation">Work automated (%)</label><input id="automation" type="number" min="0" max="100" step="1" value="70" required></div>
+        <div class="field"><label for="monthly">Monthly software/API cost ($)</label><input id="monthly" type="number" min="0" step="1" value="180" required></div>
+        <div class="field"><label for="setup">One-time setup cost ($)</label><input id="setup" type="number" min="0" step="1" value="2500" required></div>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit">Calculate ROI</button>
+        <button class="btn secondary" type="button" id="save">Save scenario</button>
+        <button class="btn secondary install" type="button" id="install">Install app</button>
+      </div>
+      <p class="note">Model assumption: 4.33 weeks/month. Savings represent labor capacity value, not guaranteed cash savings. Validate with actual workflow data before committing spend.</p>
+    </form>
+
+    <section class="card" aria-live="polite">
+      <h2>Decision snapshot</h2>
+      <div class="metrics">
+        <div class="metric"><span>Hours saved / month</span><strong id="hoursSaved">0</strong></div>
+        <div class="metric"><span>Net savings / month</span><strong id="netMonthly">$0</strong></div>
+        <div class="metric"><span>Payback period</span><strong id="payback">—</strong></div>
+        <div class="metric"><span>First-year ROI</span><strong id="roi">—</strong></div>
+      </div>
+      <div class="decision"><strong id="decisionLabel">Enter assumptions</strong><p id="decisionText">The planner will classify the scenario after calculation.</p></div>
+      <div class="cta"><p><strong>Need a defendable business case?</strong><br><span class="sub">Use the full AI Agent Business Case Studio to pressure-test assumptions and turn the estimate into an approval-ready case.</span></p><a id="proLink" href="https://payhip.com/b/o8mUv?utm_source=microsoft_store&utm_medium=app&utm_campaign=ai_roi_planner" target="_blank" rel="noopener noreferrer">Open Business Case Studio · $49</a></div>
+    </section>
+  </section>
+
+  <section class="card full">
+    <div class="top" style="margin-bottom:12px"><div><h2>Saved scenarios</h2><p class="sub">Stored locally in this app. Compare options without creating an account.</p></div><div class="actions" style="margin-top:0"><button class="btn secondary" type="button" id="export">Export CSV</button><button class="btn secondary" type="button" id="clear">Clear history</button></div></div>
+    <div class="table-wrap"><table><thead><tr><th>Workflow</th><th>Monthly net</th><th>Payback</th><th>1-year ROI</th><th>Hours saved</th><th>Saved</th></tr></thead><tbody id="history"></tbody></table><div class="empty" id="empty">No saved scenarios yet.</div></div>
+  </section>
+
+  <footer class="footer"><span>Stratum Praxis · Decision support, not financial advice.</span><nav><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a><a href="https://stratumpraxis.com/" target="_blank" rel="noopener noreferrer">Support</a></nav></footer>
+</main>
+<script>
+const $=id=>document.getElementById(id); const KEY='stratum.aiRoiPlanner.v1'; let current=null; let deferredPrompt=null;
+const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number.isFinite(n)?n:0);
+const pct=n=>Number.isFinite(n)?`${Math.round(n)}%`:'—';
+function inputs(){return{name:$('name').value.trim()||'Untitled workflow',runs:+$('runs').value||0,minutes:+$('minutes').value||0,hourly:+$('hourly').value||0,automation:Math.min(100,Math.max(0,+$('automation').value||0)),monthly:+$('monthly').value||0,setup:+$('setup').value||0}}
+function calculate(){const x=inputs();const hours=x.runs*4.33*x.minutes/60*x.automation/100;const gross=hours*x.hourly;const net=gross-x.monthly;const annualNet=net*12;const payback=net>0?x.setup/net:Infinity;const roi=x.setup>0?((annualNet-x.setup)/x.setup)*100:(annualNet>0?Infinity:0);current={...x,hours,gross,net,annualNet,payback,roi};$('hoursSaved').textContent=hours.toFixed(1);$('netMonthly').textContent=money(net);$('payback').textContent=Number.isFinite(payback)?`${payback.toFixed(1)} mo`:'No payback';$('roi').textContent=roi===Infinity?'∞':pct(roi);const label=$('decisionLabel'),text=$('decisionText');label.className='';if(net<=0){label.textContent='HOLD · negative monthly economics';label.className='bad';text.textContent='Software/API cost exceeds modeled labor value. Reduce recurring cost or target a higher-value workflow.'}else if(payback<=6&&roi>=50){label.textContent='GO · strong modeled economics';label.className='good';text.textContent='The model clears a 6-month payback and 50% first-year ROI. Validate the time-saved assumption with a small pilot.'}else if(payback<=12&&roi>=0){label.textContent='TEST · viable but assumption-sensitive';label.className='warn';text.textContent='The case is positive but not decisive. Pilot first and replace assumptions with measured cycle-time data.'}else{label.textContent='HOLD · weak first-year case';label.className='bad';text.textContent='The modeled payback is long or first-year ROI is negative. Re-scope before committing implementation spend.'}return current}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch{return[]}}
+function render(){const rows=load();const body=$('history');body.innerHTML='';$('empty').style.display=rows.length?'none':'block';rows.slice().reverse().forEach(r=>{const tr=document.createElement('tr');[r.name,money(r.net),Number.isFinite(r.payback)?`${r.payback.toFixed(1)} mo`:'No payback',r.roi===null?'∞':pct(r.roi),`${r.hours.toFixed(1)} h`,new Date(r.savedAt).toLocaleDateString()].forEach(v=>{const td=document.createElement('td');td.textContent=v;tr.appendChild(td)});body.appendChild(tr)})}
+$('roiForm').addEventListener('submit',e=>{e.preventDefault();calculate()});$('save').addEventListener('click',()=>{const r=current||calculate();const rows=load();rows.push({...r,roi:Number.isFinite(r.roi)?r.roi:null,savedAt:new Date().toISOString()});localStorage.setItem(KEY,JSON.stringify(rows.slice(-50)));render()});$('clear').addEventListener('click',()=>{if(confirm('Clear all saved scenarios on this device?')){localStorage.removeItem(KEY);render()}});$('export').addEventListener('click',()=>{const rows=load();if(!rows.length)return alert('Save at least one scenario first.');const head=['Workflow','Monthly net savings','Payback months','First-year ROI %','Hours saved monthly','Saved at'];const csv=[head,...rows.map(r=>[r.name,r.net,Number.isFinite(r.payback)?r.payback:'',r.roi??'',r.hours,r.savedAt])].map(row=>row.map(v=>`"${String(v).replaceAll('"','""')}"`).join(',')).join('\n');const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='ai-automation-roi-scenarios.csv';a.click();URL.revokeObjectURL(a.href)});
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('install').style.display='inline-block'});$('install').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('install').style.display='none'});
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}));calculate();render();
+</script>
+</body>
+</html>
