@@ -18,6 +18,7 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 ## For accounting and bookkeeping firms
 
+- [Client Document Collection Automation Guide](https://stratumpraxis.com/accounting-client-document-collection-automation.html) — practical workflow for request tracking, reminders, human approval, exception routing, ROI checks, and a bounded pilot.
 - [AI Workflow Audit for Accounting & Bookkeeping Firms](https://stratumpraxis.com/accounting-ai-workflow-audit.html) — focused on document chasing, month-end coordination, inbox routing, onboarding, recurring reporting prep, and approval/exception design.
 - [View a shortened sample audit](https://stratumpraxis.com/sample-workflow-audit.html) — illustrative deliverable showing workflow mapping, opportunity ranking, ROI assumptions, human checkpoints, and a 30-day pilot. It is not a client result or testimonial.
 
