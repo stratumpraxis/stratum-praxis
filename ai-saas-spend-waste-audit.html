@@ -13,26 +13,50 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Service",
-  "name": "AI & SaaS Spend Waste Audit",
-  "serviceType": "AI workflow and SaaS spend decision audit",
-  "url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
-  "description": "A fixed-scope audit that reviews software and AI spend against actual workflow value, identifies likely cost leaks and duplicate capability, and provides a prioritized action plan.",
-  "provider": {
-    "@type": "Organization",
-    "name": "Stratum Praxis",
-    "url": "https://stratumpraxis.com/"
-  },
-  "audience": {
-    "@type": "BusinessAudience",
-    "audienceType": "Small businesses, agencies and service teams"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "499",
-    "priceCurrency": "USD",
-    "url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02"
-  }
+  "@graph": [
+    {
+      "@type": "Service",
+      "name": "AI & SaaS Spend Waste Audit",
+      "serviceType": "AI workflow and SaaS spend decision audit",
+      "url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
+      "description": "A fixed-scope audit that reviews software and AI spend against actual workflow value, identifies likely cost leaks and duplicate capability, and provides a prioritized action plan.",
+      "provider": {
+        "@type": "Organization",
+        "name": "Stratum Praxis",
+        "url": "https://stratumpraxis.com/"
+      },
+      "audience": {
+        "@type": "BusinessAudience",
+        "audienceType": "Small businesses, agencies and service teams"
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "499",
+        "priceCurrency": "USD",
+        "url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Do I need to share contracts or sensitive billing data?",
+          "acceptedAnswer": {"@type": "Answer","text": "No. A redacted list of tools, approximate cost, rough usage, renewal timing and the workflow each tool supports is enough to begin."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is this only about cancelling software?",
+          "acceptedAnswer": {"@type": "Answer","text": "No. The audit can support KEEP, REDUCE, CONSOLIDATE, REVIEW or CANCEL decisions and links cost to workflow value rather than assuming every subscription should be cut."}
+        },
+        {
+          "@type": "Question",
+          "name": "Is software implementation included?",
+          "acceptedAnswer": {"@type": "Answer","text": "No. This is a fixed-scope decision audit. Implementation, contract negotiation, legal advice and cybersecurity certification are outside scope."}
+        }
+      ]
+    }
+  ]
 }
 </script>
 <style>
@@ -44,6 +68,9 @@ h1{font-size:clamp(38px,7vw,66px);line-height:1.03;max-width:920px;margin:12px 0
 .cta.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.meta,.fine{color:var(--muted);font-size:14px}.fine{font-size:13px}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin-top:20px}.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:20px}.card b{display:block;margin-bottom:5px}
 ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px 18px;background:#101722;color:var(--silver)}.source{color:var(--silver)}.source a{color:var(--silver)}hr{border:0;border-top:1px solid var(--line);margin:50px 0}.price{font-size:30px;font-weight:800;margin:14px 0 0}
+.calc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:22px;margin-top:20px}.calc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+label{display:block;font-size:14px;color:var(--silver);margin-bottom:6px}input{width:100%;background:#0e1420;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit}
+.result{font-size:28px;font-weight:800;margin:18px 0 4px}.faq{border-top:1px solid var(--line);padding:18px 0}.faq b{display:block;margin-bottom:4px}
 </style>
 </head>
 <body><main>
@@ -52,7 +79,7 @@ ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px
 <p class="lead">A fixed-scope version of the Stratum Praxis AI Workflow Opportunity Audit for small teams that want to connect software cost to actual workflow value. We identify likely spend leaks, duplicate capability, renewal risks and the first workflow or tool decision worth acting on.</p>
 <div class="price">$499 <span class="meta">one-time launch price</span></div>
 <a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Buy the audit - $499</a>
-<a class="cta secondary" href="https://roi.stratumpraxis.com/">Estimate workflow ROI first</a>
+<a class="cta secondary" href="#exposure">Estimate spend exposure first</a>
 <p class="meta">Written delivery target: within 3 business days after complete intake. Secure checkout via Stripe. No call required.</p>
 
 <h2>The cost leaks we look for first</h2>
@@ -63,6 +90,19 @@ ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px
 <div class="card"><b>Over-sized plans</b>Seats, tiers, credits or usage commitments that exceed what the team actually needs.</div>
 <div class="card"><b>Renewal inertia</b>Subscriptions approaching renewal without a documented keep, reduce, replace or cancel decision.</div>
 <div class="card"><b>Bad automation economics</b>AI workflows that cost more to run or maintain than the time, capacity or revenue value they create.</div>
+</div>
+
+<h2 id="exposure">Estimate your annual software spend exposure</h2>
+<p>This is a planning estimate, not a claim about your actual waste. Enter your own software spend and the share you want to pressure-test.</p>
+<div class="calc">
+  <div class="calc-grid">
+    <div><label for="monthlySpend">Monthly AI + SaaS spend (USD)</label><input id="monthlySpend" type="number" min="0" step="50" value="2500"></div>
+    <div><label for="riskShare">Share to review (%)</label><input id="riskShare" type="number" min="0" max="100" step="1" value="15"></div>
+  </div>
+  <div class="result" id="annualExposure">$4,500 / year</div>
+  <p class="fine">Formula: monthly software spend × 12 × review share. This is only a scenario to size the decision, not guaranteed savings.</p>
+  <a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Review the stack - $499</a>
+  <a class="cta secondary" href="ai-saas-spend-audit-checklist.html">Use the free audit checklist</a>
 </div>
 
 <h2>What you receive</h2>
@@ -76,12 +116,18 @@ ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px
 </ul>
 
 <h2>Why review this now</h2>
-<p>FinOps Foundation's 2026 State of FinOps data shows AI and SaaS are rapidly expanding areas of technology-spend management, while IBM recommends focused assessment of high-value software rather than treating renewal as the default. The practical implication for a small team is simple: software should earn its place in the workflow.</p>
-<p class="fine source">Industry context: <a href="https://data.finops.org/" target="_blank" rel="noopener noreferrer">FinOps Foundation — State of FinOps 2026</a> · <a href="https://www.ibm.com/think/perspectives/framework-enterprise-saas-cots-optimization" target="_blank" rel="noopener noreferrer">IBM — enterprise SaaS/COTS optimization framework</a>.</p>
+<p>FinOps Foundation's 2026 State of FinOps data shows AI and SaaS are rapidly expanding areas of technology-spend management. The report says 98% of surveyed FinOps practitioners now manage AI spend and 90% manage SaaS or plan to in the coming year. The practical implication is not that every team has the same waste rate; it is that technology value management has become a mainstream operating problem.</p>
+<p class="fine source">Industry context: <a href="https://data.finops.org/" target="_blank" rel="noopener noreferrer">FinOps Foundation — State of FinOps 2026</a>.</p>
 
 <h2>What a useful result looks like</h2>
 <div class="sample"><b>Illustrative example:</b> A small agency may pay for several AI writing tools, meeting assistants and automation products. Instead of cutting everything, the audit maps which workflows each tool actually supports, identifies overlap, estimates the value of the workflows worth keeping, and produces a reversible sequence: consolidate one category, downgrade one plan, preserve one high-value workflow and re-measure after 30 days.</div>
 <p class="fine">Illustrative example only. It is not a client result and does not imply guaranteed savings.</p>
+
+<h2>Common questions</h2>
+<div class="faq"><b>Do I need to share contracts or sensitive billing data?</b>No. A redacted list of tools, approximate cost, rough usage, renewal timing and the workflow each tool supports is enough to begin.</div>
+<div class="faq"><b>Is this only about cancelling software?</b>No. The decision can be KEEP, REDUCE, CONSOLIDATE, REVIEW or CANCEL. The point is to connect cost to value.</div>
+<div class="faq"><b>What if our software spend is small?</b>Use the estimator above first. If the decision value is not large enough to justify a $499 audit, do not buy it. The free checklist may be enough.</div>
+<div class="faq"><b>Is implementation included?</b>No. This is a fixed-scope decision audit. Software implementation, procurement representation, legal advice and cybersecurity certification are outside scope.</div>
 
 <h2>What this is not</h2>
 <ul>
@@ -99,4 +145,20 @@ ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px
 <a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Start the AI & SaaS spend audit - $499</a>
 <a class="cta secondary" href="sample-workflow-audit.html">Review the sample deliverable</a>
 <p class="fine">This page routes to the existing Stratum Praxis AI Workflow Opportunity Audit. Scope is fixed and adapted to the AI/SaaS spend decision described above. Tool suitability, privacy/security controls and production performance must be independently validated before implementation. Refund requests are handled in accordance with applicable law and Stripe rules, with personalized-work status taken into account.</p>
+<script>
+(function(){
+  const spend=document.getElementById('monthlySpend');
+  const share=document.getElementById('riskShare');
+  const output=document.getElementById('annualExposure');
+  function update(){
+    const monthly=Math.max(0,Number(spend.value)||0);
+    const pct=Math.min(100,Math.max(0,Number(share.value)||0));
+    const annual=monthly*12*(pct/100);
+    output.textContent=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(annual)+' / year';
+  }
+  spend.addEventListener('input',update);
+  share.addEventListener('input',update);
+  update();
+})();
+</script>
 </main></body></html>
