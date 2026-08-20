@@ -78,9 +78,16 @@ After merge/deploy, use:
 - Support: https://stratumpraxis.com/
 - Terms: https://stratumpraxis.com/microsoft-ai-roi-planner/terms.html
 
-## Store asset plan
+## Store assets
 
-Required / recommended desktop screenshots:
+Included in this branch:
+
+- `icon-192.png` — Chromium/PWA install icon
+- `icon-512.png` — Chromium/PWA install + maskable icon
+- `store-icon-300.png` — recommended 300×300 Microsoft Store tile icon
+- `icon.svg` — scalable source artwork
+
+Desktop screenshot requirement:
 
 1. 1366×768+ — Main planner with realistic assumptions and calculated ROI
    Caption: Estimate savings, payback, and first-year ROI from practical workflow assumptions.
@@ -91,8 +98,7 @@ Required / recommended desktop screenshots:
 4. 1366×768+ — CSV export / offline-ready app view
    Caption: Export scenarios for review and keep the core planner available offline.
 
-Recommended Store tile icon: 300×300 PNG generated from icon.svg.
-PWA package icons: provide at minimum 192×192 and 512×512 PNG versions of icon.svg before final PWABuilder packaging.
+Microsoft requires at least one screenshot; four or more are recommended. Do not target Xbox in v1, so do not upload Xbox-only assets.
 
 ## Age rating answers
 
@@ -114,6 +120,13 @@ Do not blindly accept this section if Partner Center asks a differently worded q
 ## Capabilities / permissions
 
 Declare no restricted capabilities. The app does not need camera, microphone, location, contacts, email, broad file-system access, or device hardware access. CSV download uses the standard browser/PWA download flow initiated by the user.
+
+## Product declarations
+
+- External purchases without Microsoft Store commerce: YES
+- Generative AI features: NO
+- Accessibility-tested declaration: only check after the final packaged app has been tested against the applicable accessibility guidance; do not claim certification prematurely.
+- Pen/ink, game recording/broadcast, and similar device-specific declarations: NO unless the final package behavior changes.
 
 ## Certification notes
 
@@ -139,5 +152,6 @@ AI Automation ROI Planner is a static PWA. Core calculations run client-side. Sc
 - https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/pwa/add-and-edit-store-listing-info
 - https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/pwa/screenshots-and-images
 - https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/pwa/categories-and-subcategories
+- https://learn.microsoft.com/en-us/windows/apps/publish/publish-your-app/pwa/product-declarations
 - https://learn.microsoft.com/en-us/windows/apps/publish/store-policies
 - https://learn.microsoft.com/en-us/windows/apps/publish/partner-center/open-a-developer-account
