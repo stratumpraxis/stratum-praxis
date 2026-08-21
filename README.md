@@ -14,6 +14,14 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 - [SaaS Spend Optimization & AI Renewal Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review unused seats, duplicate tools, ownership, renewal risk, AI add-ons, workflow value and rough break-even before renewing software.
 - [AI Operations Standard](https://stratumpraxis.com/ai-operations-standard.html) — free self-assessment for ownership, business value, controls, evidence, and recovery in one AI-enabled workflow.
 
+## Before you buy or renew software
+
+- [Workflow Automation Software Comparison 2026](https://stratumpraxis.com/workflow-automation-comparison.html) — compare automation platforms by run cost, maintenance, portability and duplicate-platform risk before renewing or migrating.
+- [AI Coding Assistant Comparison 2026](https://stratumpraxis.com/ai-coding-assistant-comparison.html) — compare coding assistants by workflow fit, overlap and actual value before adding another AI development subscription.
+- [AI Meeting Assistant Comparison 2026](https://stratumpraxis.com/ai-meeting-assistant-comparison.html) — compare meeting assistants by existing-suite coverage, adoption, duplicate capture and workflow completion before checkout.
+
+Each comparison routes back into the existing SaaS Renewal Decision Calculator and managed Free → $39 self-service → $499 fixed-scope decision path.
+
 ## Paid decision support
 
 - [$39 AI Value Realization Kit](https://stratumpraxis.com/ai-value-realization-kit.html) — turn workflow assumptions into an ROI-backed automation decision before additional implementation spend. Existing Stripe checkout remains the purchase path from the landing page.
