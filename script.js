@@ -27,3 +27,20 @@ if (menuButton && nav) {
     }
   });
 }
+
+// Keep a stable, owned purchase path for the $39 kit while offering
+// Gumroad alongside the existing Stripe and Payhip checkout options.
+const kitSection = document.querySelector("#kit");
+const kitButtonRow = kitSection?.querySelector(".button-row");
+
+if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
+  const gumroadLink = document.createElement("a");
+  gumroadLink.className = "button button-secondary";
+  gumroadLink.href = "buy-ai-value-kit.html";
+  gumroadLink.target = "_blank";
+  gumroadLink.rel = "noopener noreferrer";
+  gumroadLink.dataset.store = "gumroad";
+  gumroadLink.textContent = "Buy the $39 Kit on Gumroad";
+
+  kitButtonRow.appendChild(gumroadLink);
+}
