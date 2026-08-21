@@ -44,3 +44,46 @@ if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
 
   kitButtonRow.appendChild(gumroadLink);
 }
+
+// Surface the AI/SaaS spend funnel from the homepage without duplicating
+// static cards or changing the existing layout structure.
+const toolsGrid = document.querySelector("#tools .resource-grid");
+if (toolsGrid && !toolsGrid.querySelector('[data-funnel="saas-renewal"]')) {
+  const renewalCard = document.createElement("a");
+  renewalCard.className = "resource-card";
+  renewalCard.href = "saas-renewal-decision.html";
+  renewalCard.dataset.funnel = "saas-renewal";
+  renewalCard.innerHTML = '<span>Cost control · Free decision gate</span><h3>SaaS Renewal Decision Calculator</h3><p>Pressure-test a renewal, upgrade, seat increase, or AI contract before money auto-progresses.</p><strong>Check the renewal decision →</strong>';
+  toolsGrid.appendChild(renewalCard);
+}
+
+const spendSection = document.querySelector("#spend-control");
+const spendButtons = spendSection?.querySelector(".button-row");
+if (spendButtons && !spendButtons.querySelector('[data-funnel="saas-waste"]')) {
+  const renewalLink = document.createElement("a");
+  renewalLink.className = "button button-primary";
+  renewalLink.href = "saas-renewal-decision.html";
+  renewalLink.dataset.funnel = "saas-waste";
+  renewalLink.textContent = "Check a renewal decision free";
+
+  const wasteLink = document.createElement("a");
+  wasteLink.className = "button button-secondary";
+  wasteLink.href = "ai-saas-waste-calculator.html";
+  wasteLink.textContent = "Estimate spend exposure";
+
+  const monitoringLink = document.createElement("a");
+  monitoringLink.className = "button button-secondary";
+  monitoringLink.href = "ai-saas-spend-monitoring.html";
+  monitoringLink.textContent = "See Recovery & Monthly Monitoring";
+
+  spendButtons.prepend(renewalLink);
+  spendButtons.append(wasteLink, monitoringLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="saas-decision"]')) {
+  const navLink = document.createElement("a");
+  navLink.href = "saas-renewal-decision.html";
+  navLink.dataset.nav = "saas-decision";
+  navLink.textContent = "SaaS Decision";
+  nav.appendChild(navLink);
+}
