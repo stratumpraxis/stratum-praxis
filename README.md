@@ -9,18 +9,18 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify the business task most ready for useful AI automation.
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate the time and labor value a repetitive workflow could save.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a focused 7-day pilot.
-- [SaaS Renewal Decision Calculator](https://stratumpraxis.com/saas-renewal-decision.html) — pressure-test a real software renewal, AI add-on, seat increase, or new contract using annual spend, active-use / license-utilization signals, overlap, renewal timing and review economics; routes to free, $39 self-service, or $499 fixed-scope review based on decision complexity.
+- [SaaS Renewal Decision Calculator](https://stratumpraxis.com/saas-renewal-decision.html) — pressure-test a real software renewal, AI add-on, seat increase, new contract, or build-vs-buy decision using annual spend, active-use / license-utilization signals, overlap, renewal timing and review economics; compare continued vendor spend with the operational burden of replacing software internally, then route to free, $39 self-service, or $499 fixed-scope review based on decision complexity.
 - [Free AI & SaaS Waste Calculator](https://stratumpraxis.com/ai-saas-waste-calculator.html) — size annual AI/SaaS spend selected for review using your own assumptions before renewal or another tool purchase.
 - [SaaS Spend Optimization & AI Renewal Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review unused seats, duplicate tools, ownership, renewal risk, AI add-ons, workflow value, license utilization and SaaS optimization ROI before renewing software.
 - [AI Operations Standard](https://stratumpraxis.com/ai-operations-standard.html) — free self-assessment for ownership, business value, controls, evidence, and recovery in one AI-enabled workflow.
 
-## Before you buy or renew software
+## Before you buy, renew, or replace software
 
-- [Workflow Automation Software Comparison 2026](https://stratumpraxis.com/workflow-automation-comparison.html) — compare automation platforms by run cost, maintenance, portability and duplicate-platform risk before renewing or migrating.
+- [Workflow Automation Software Comparison 2026](https://stratumpraxis.com/workflow-automation-comparison.html) — compare automation platforms by run cost, maintenance, portability and duplicate-platform risk before renewing, migrating, or replacing a vendor with an internal workflow.
 - [AI Coding Assistant Comparison 2026](https://stratumpraxis.com/ai-coding-assistant-comparison.html) — compare coding assistants by workflow fit, overlap and actual value before adding another AI development subscription.
 - [AI Meeting Assistant Comparison 2026](https://stratumpraxis.com/ai-meeting-assistant-comparison.html) — compare meeting assistants by existing-suite coverage, adoption, duplicate capture and workflow completion before checkout.
 
-Each comparison routes back into the existing SaaS Renewal Decision Calculator and managed Free → $39 self-service → $499 fixed-scope decision path.
+Each comparison routes back into the existing SaaS Renewal Decision Calculator and managed Free → $39 self-service → $499 fixed-scope decision path. For build-vs-buy decisions, include maintenance ownership, break/fix burden, security/reliability requirements and the cost of keeping an internal replacement working—not just the initial build effort.
 
 ## Paid decision support
 
