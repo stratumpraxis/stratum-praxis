@@ -10,7 +10,7 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate the time and labor value a repetitive workflow could save.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a focused 7-day pilot.
 - [Free AI & SaaS Waste Calculator](https://stratumpraxis.com/ai-saas-waste-calculator.html) — size annual AI/SaaS spend selected for review using your own assumptions before renewal or another tool purchase.
-- [AI & SaaS Spend Audit Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review ownership, overlap, AI add-ons, renewal risk, seat sizing, and rough break-even before renewing another tool.
+- [SaaS Spend Optimization & AI Renewal Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review unused seats, duplicate tools, ownership, renewal risk, AI add-ons, workflow value and rough break-even before renewing software.
 - [AI Operations Standard](https://stratumpraxis.com/ai-operations-standard.html) — free self-assessment for ownership, business value, controls, evidence, and recovery in one AI-enabled workflow.
 
 ## Paid decision support
