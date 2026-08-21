@@ -14,7 +14,7 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 ## Paid decision support
 
-- [$39 AI Value Realization Kit](https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00) — turn workflow assumptions into an ROI-backed automation decision. [Payhip alternative](https://payhip.com/b/shGkX).
+- [$39 AI Value Realization Kit](https://stratumpraxis.com/ai-value-realization-kit.html) — turn workflow assumptions into an ROI-backed automation decision before additional implementation spend. Existing Stripe checkout remains the purchase path from the landing page.
 - [$49 AI Workflow SOP & Governance Kit](https://stratumpraxis.com/ai-workflow-sop-governance-kit.html) — fixed-scope self-service operating resource for teams closing AI workflow governance gaps internally.
 - [$499 AI Workflow Opportunity Audit](https://stratumpraxis.com/workflow-audit.html) — fixed-scope workflow mapping, ranked automation opportunities, ROI scenarios, human checkpoints, and a 30-day pilot plan.
 - [AI & SaaS Spend Waste Audit](https://stratumpraxis.com/ai-saas-spend-waste-audit.html) — the existing $499 audit adapted to connect software and AI spend with actual workflow value; no guaranteed savings.
