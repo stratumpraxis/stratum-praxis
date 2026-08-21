@@ -1,18 +1,18 @@
 # Devpost Submission Draft
 
 ## Project title
-SpendLens — Gemini Financial Digital Twin for SaaS Spend Recovery
+LeakTwin — Gemini Financial Digital Twin for SaaS Spend Recovery
 
 ## Category
 The Taskmaster
 
 ## Elevator pitch
-SpendLens is an autonomous SaaS and AI spend-recovery agent. Instead of merely reporting expenses, it reasons across subscription cost, seat utilization, tool overlap and renewal timing, then produces a quantified recovery plan and what-if scenarios.
+LeakTwin is an autonomous SaaS and AI spend-recovery agent. Instead of merely reporting expenses, it reasons across subscription cost, seat utilization, tool overlap and renewal timing, then produces a quantified recovery plan and what-if scenarios.
 
 ## Problem
 Modern teams accumulate SaaS and AI subscriptions quickly. Finance dashboards can show historical spend, but they rarely answer the operational question: **what should we cancel, downgrade, consolidate or renegotiate next — and how much will it save without breaking workflows?**
 
-## What SpendLens does
+## What LeakTwin does
 - Ingests normalized SaaS, AI, usage and renewal records.
 - Uses Gemini 3.5 Flash to detect duplicate categories, inactive seats, oversized plans and near-term renewal risks.
 - Produces structured, quantified findings instead of open-ended chat.
@@ -43,11 +43,11 @@ The backend is containerized for Cloud Run. The API exposes a health endpoint id
 
 ## Demo video outline (~4 min)
 0:00–0:25 — Problem: teams pay for overlapping SaaS/AI tools and dashboards stop at reporting.
-0:25–0:50 — Value proposition: SpendLens finds recoverable money and tells you what to do next.
+0:25–0:50 — Value proposition: LeakTwin finds recoverable money and tells you what to do next.
 0:50–1:20 — Show sample stack and one-click analysis.
 1:20–2:05 — Show savings KPIs, duplicate tools, oversized plans and renewal risk.
 2:05–2:40 — Show Do Today / This Week / Before Renewal action plan.
 2:40–3:10 — Show What-if scenarios and projected savings.
 3:10–3:35 — Show Cloud Run dashboard/service URL and call /health or /analyze.
 3:35–3:55 — Show architecture diagram and GitHub repo.
-3:55–4:00 — Close: SpendLens turns software spend from passive reporting into autonomous recovery.
+3:55–4:00 — Close: LeakTwin turns software spend from passive reporting into autonomous recovery.
