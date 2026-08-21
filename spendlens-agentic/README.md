@@ -1,10 +1,10 @@
-# SpendLens — Gemini Financial Digital Twin
+# LeakTwin — Gemini Financial Digital Twin
 
-SpendLens is an autonomous SaaS and AI spend-recovery agent built for the **All Things Agentic Hackathon**. It turns a messy software stack into a quantified recovery plan: detect overlap, right-size seats, flag renewal risk, simulate alternatives, and produce an execution-ready action queue.
+LeakTwin is an autonomous SaaS and AI spend-recovery agent built for the **All Things Agentic Hackathon**. It turns a messy software stack into a quantified recovery plan: detect overlap, right-size seats, flag renewal risk, simulate alternatives, and produce an execution-ready action queue.
 
 ## Why it exists
 
-Teams accumulate SaaS and AI subscriptions faster than they can govern them. The result is duplicated tools, inactive seats, oversized plans, and missed renewals. Traditional expense dashboards show what was spent. SpendLens decides what to do next.
+Teams accumulate SaaS and AI subscriptions faster than they can govern them. The result is duplicated tools, inactive seats, oversized plans, and missed renewals. Traditional expense dashboards show what was spent. LeakTwin decides what to do next.
 
 ## Agent workflow
 
@@ -23,9 +23,11 @@ Teams accumulate SaaS and AI subscriptions faster than they can govern them. The
 
 ## Architecture
 
+![LeakTwin architecture](./architecture.svg)
+
 ```mermaid
 flowchart LR
-  A[Invoices / usage / renewal data] --> B[SpendLens Web UI]
+  A[Invoices / usage / renewal data] --> B[LeakTwin Web UI]
   B --> C[Cloud Run FastAPI Agent]
   C --> D[Google GenAI SDK]
   D --> E[Gemini 3.5 Flash]
@@ -65,7 +67,7 @@ Prerequisites: a Google Cloud project with billing enabled and the `gcloud` CLI 
 gcloud config set project YOUR_PROJECT_ID
 gcloud services enable run.googleapis.com cloudbuild.googleapis.com
 
-gcloud run deploy spendlens-agent \
+gcloud run deploy leaktwin-agent \
   --source . \
   --region asia-northeast1 \
   --allow-unauthenticated \
@@ -91,11 +93,11 @@ The hackathon demo video should visibly show the Cloud Run service and then call
 
 ## Demo story
 
-A sample company spends **$11,320/year** across overlapping AI, automation, design and collaboration tools. SpendLens analyzes the stack, identifies recoverable spend, models alternatives, and generates a prioritized recovery plan in one flow.
+A sample company spends **$11,320/year** across overlapping AI, automation, design and collaboration tools. LeakTwin analyzes the stack, identifies recoverable spend, models alternatives, and generates a prioritized recovery plan in one flow.
 
 ## Safety and production design
 
-SpendLens separates **decisioning** from **mutation**. Gemini can propose and rank actions, but irreversible vendor changes should require explicit approval and scoped credentials. This prevents an autonomous optimization agent from cancelling critical services based on uncertain evidence.
+LeakTwin separates **decisioning** from **mutation**. Gemini can propose and rank actions, but irreversible vendor changes should require explicit approval and scoped credentials. This prevents an autonomous optimization agent from cancelling critical services based on uncertain evidence.
 
 ## Hackathon category
 
