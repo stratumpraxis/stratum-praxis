@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>SpendLens — Gemini Financial Digital Twin</title>
+<style>
+:root{--bg:#090b10;--panel:#11151d;--line:#222936;--text:#f4f7fb;--muted:#94a0b3;--accent:#d8e2f0;--good:#8ee3b0;--warn:#ffd27a;--bad:#ff8f8f}
+*{box-sizing:border-box}body{margin:0;font:15px/1.5 Inter,ui-sans-serif,system-ui;background:radial-gradient(circle at 30% 0,#151b27 0,#090b10 38%);color:var(--text)}
+.wrap{max-width:1180px;margin:auto;padding:34px 22px 70px}header{display:flex;justify-content:space-between;align-items:center;margin-bottom:60px}.brand{font-weight:800;letter-spacing:.2px}.pill{border:1px solid var(--line);padding:7px 10px;border-radius:999px;color:var(--muted);font-size:12px}
+h1{font-size:clamp(40px,7vw,76px);line-height:.98;letter-spacing:-3px;max-width:900px;margin:0 0 20px}.sub{max-width:720px;color:var(--muted);font-size:18px}.actions{display:flex;gap:12px;margin:28px 0 50px;flex-wrap:wrap}button{border:0;border-radius:10px;padding:13px 18px;font-weight:700;cursor:pointer}.primary{background:var(--text);color:#0a0d12}.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}.card{background:linear-gradient(180deg,#121720,#0e1219);border:1px solid var(--line);border-radius:16px;padding:18px}.label{color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.09em}.value{font-size:28px;font-weight:800;margin-top:8px}.green{color:var(--good)}
+.section{margin-top:22px}.section h2{font-size:22px;margin:0 0 14px}.two{display:grid;grid-template-columns:1.15fr .85fr;gap:16px}.row{display:flex;justify-content:space-between;gap:14px;padding:14px 0;border-bottom:1px solid var(--line)}.row:last-child{border-bottom:0}.badge{font-size:11px;border:1px solid var(--line);border-radius:999px;padding:4px 7px;color:var(--muted);white-space:nowrap}.money{font-weight:800;color:var(--good)}
+.whatif{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.whatif .card{cursor:pointer}.delta{font-size:22px;font-weight:800;color:var(--good);margin-top:10px}.small{font-size:12px;color:var(--muted)}
+.flow{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.flow span{padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:12px}.status{display:none;margin:18px 0;padding:14px;border:1px solid var(--line);border-radius:12px;color:var(--muted)}
+footer{margin-top:50px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:18px}
+@media(max-width:850px){.grid{grid-template-columns:1fr 1fr}.two,.whatif{grid-template-columns:1fr}h1{letter-spacing:-2px}.grid .card:first-child{grid-column:1/-1}}
+</style>
+</head>
+<body><div class="wrap">
+<header><div class="brand">SpendLens</div><div class="pill">Powered by Gemini 3.5 Flash</div></header>
+<main>
+<h1>Find the money leaking out of your software stack.</h1>
+<p class="sub">A Gemini-powered Financial Digital Twin that turns messy SaaS invoices, usage data and renewals into an autonomous recovery plan.</p>
+<div class="flow"><span>Input</span><span>→</span><span>Gemini analysis</span><span>→</span><span>Waste detection</span><span>→</span><span>What-if simulation</span><span>→</span><span>Action plan</span></div>
+<div class="actions"><button class="primary" onclick="runDemo()">Try Sample Data</button><button class="secondary" onclick="document.getElementById('results').scrollIntoView({behavior:'smooth'})">View Recovery Plan</button></div>
+<div id="status" class="status">Analyzing your software stack… detecting duplicate tools… estimating recoverable savings… building optimized scenarios…</div>
+<section id="results">
+<div class="grid">
+<div class="card"><div class="label">Current annual spend</div><div class="value">$11,320</div></div>
+<div class="card"><div class="label">Recoverable savings</div><div class="value green">$3,840</div></div>
+<div class="card"><div class="label">Duplicate tools</div><div class="value">4</div></div>
+<div class="card"><div class="label">Oversized plans</div><div class="value">3</div></div>
+<div class="card"><div class="label">Renewal risks</div><div class="value">2</div></div>
+</div>
+<div class="two section">
+<div class="card"><h2>Recommended Recovery Plan</h2>
+<div class="row"><div><span class="badge">DO TODAY</span><br><strong>Jasper</strong><div class="small">No active usage detected. Remove before renewal.</div></div><div class="money">+$708/yr</div></div>
+<div class="row"><div><span class="badge">THIS WEEK</span><br><strong>ChatGPT Team</strong><div class="small">5 paid seats, 3 active. Right-size seats.</div></div><div class="money">+$720/yr</div></div>
+<div class="row"><div><span class="badge">THIS WEEK</span><br><strong>Zapier + Make</strong><div class="small">Overlapping automation layer. Consolidate workflows.</div></div><div class="money">+$480/yr</div></div>
+<div class="row"><div><span class="badge">BEFORE RENEWAL</span><br><strong>AI writing stack</strong><div class="small">Jasper + Grammarly + assistant overlap.</div></div><div class="money">+$1,116/yr</div></div>
+</div>
+<div class="card"><h2>Agent decision trace</h2>
+<div class="row"><div><strong>1. Normalize spend</strong><div class="small">Convert subscriptions into annual comparable costs.</div></div></div>
+<div class="row"><div><strong>2. Detect overlap</strong><div class="small">Reason across category, usage and seat utilization.</div></div></div>
+<div class="row"><div><strong>3. Rank actions</strong><div class="small">Savings × confidence × workflow risk.</div></div></div>
+<div class="row"><div><strong>4. Produce execution plan</strong><div class="small">Today / this week / before renewal.</div></div></div>
+</div></div>
+<div class="section"><h2>Ask “What if?”</h2><div class="whatif">
+<div class="card"><div class="label">Replace Zapier with Make</div><div class="delta">Save $480/year</div><div class="small">Migration effort: Medium · Workflow risk: Low</div></div>
+<div class="card"><div class="label">Reduce unused AI seats</div><div class="delta">Save $720/year</div><div class="small">Migration effort: Low · Workflow risk: Low</div></div>
+<div class="card"><div class="label">Consolidate AI writing tools</div><div class="delta">Save $1,116/year</div><div class="small">Migration effort: Medium · Workflow risk: Medium</div></div>
+</div></div>
+</section>
+</main>
+<footer>Competition demo UI. The reproducible backend uses Gemini 3.5 Flash through Google GenAI SDK and is packaged for Google Cloud Run.</footer>
+</div><script>
+function runDemo(){const s=document.getElementById('status');s.style.display='block';document.getElementById('results').style.opacity='.35';setTimeout(()=>{s.style.display='none';document.getElementById('results').style.opacity='1';document.getElementById('results').scrollIntoView({behavior:'smooth'})},1600)}
+</script></body></html>
