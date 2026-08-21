@@ -10,11 +10,12 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate the time and labor value a repetitive workflow could save.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a focused 7-day pilot.
 - [AI & SaaS Spend Audit Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review ownership, overlap, AI add-ons, renewal risk, seat sizing, and rough break-even before renewing another tool.
+- [AI Operations Standard](https://stratumpraxis.com/ai-operations-standard.html) — free self-assessment for ownership, business value, controls, evidence, and recovery in one AI-enabled workflow.
 
 ## Paid decision support
 
 - [$39 AI Value Realization Kit](https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00) — turn workflow assumptions into an ROI-backed automation decision. [Payhip alternative](https://payhip.com/b/shGkX).
-- [$99 AI Automation Opportunity Report](https://payhip.com/b/u6V4E) — personalized opportunity ranking, ROI view, tools, risks, and 7-day implementation plan.
+- [$49 AI Workflow SOP & Governance Kit](https://stratumpraxis.com/ai-workflow-sop-governance-kit.html) — fixed-scope self-service operating resource for teams closing AI workflow governance gaps internally.
 - [$499 AI Workflow Opportunity Audit](https://stratumpraxis.com/workflow-audit.html) — fixed-scope workflow mapping, ranked automation opportunities, ROI scenarios, human checkpoints, and a 30-day pilot plan.
 - [AI & SaaS Spend Waste Audit](https://stratumpraxis.com/ai-saas-spend-waste-audit.html) — the existing $499 audit adapted to connect software and AI spend with actual workflow value; no guaranteed savings.
 
