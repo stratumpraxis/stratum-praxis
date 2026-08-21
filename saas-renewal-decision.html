@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SaaS Renewal Decision Calculator | Stratum Praxis</title>
+<meta name="description" content="Free SaaS renewal decision calculator for small teams. Pressure-test software and AI spend before a renewal, upgrade, or new contract, then choose the cheapest review path that fits the decision.">
+<link rel="canonical" href="https://stratumpraxis.com/saas-renewal-decision.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="SaaS Renewal Decision Calculator">
+<meta property="og:description" content="Before a software renewal or AI upgrade, size the annual decision and decide whether to keep, reduce, consolidate, review, or cancel.">
+<meta property="og:url" content="https://stratumpraxis.com/saas-renewal-decision.html">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {
+      "@type":"WebApplication",
+      "name":"SaaS Renewal Decision Calculator",
+      "applicationCategory":"BusinessApplication",
+      "operatingSystem":"Any",
+      "url":"https://stratumpraxis.com/saas-renewal-decision.html",
+      "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
+      "provider":{"@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/"}
+    },
+    {
+      "@type":"Service",
+      "name":"AI & SaaS Spend Waste Audit",
+      "provider":{"@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/"},
+      "offers":{"@type":"Offer","price":"499","priceCurrency":"USD","url":"https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02"}
+    }
+  ]
+}
+</script>
+<style>
+:root{--bg:#0b0f16;--panel:#121926;--panel2:#0e1420;--text:#f4f4f5;--muted:#a1a1aa;--line:#303744;--silver:#d4d4d8;--accent:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1040px;margin:auto;padding:62px 22px 90px}.eyebrow{color:var(--silver);letter-spacing:.12em;text-transform:uppercase;font-size:12px}h1{font-size:clamp(40px,7vw,70px);line-height:1.02;max-width:980px;margin:12px 0 18px}h2{font-size:30px;margin-top:58px}.lead{font-size:21px;color:var(--silver);max-width:870px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;margin-top:26px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px}.field label{display:block;font-size:13px;color:var(--silver);margin-bottom:7px}.field input,.field select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line);border-radius:9px;padding:13px;font:inherit}.metric{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:18px}.metric span{display:block;color:var(--muted);font-size:13px}.metric b{display:block;font-size:28px;margin-top:5px}.decision{margin-top:18px;border-left:3px solid var(--silver);background:#101722;padding:18px 20px}.decision strong{font-size:20px}.cta{display:inline-block;margin:16px 12px 8px 0;background:var(--accent);color:#0b0f16;padding:14px 20px;border-radius:8px;font-weight:780;text-decoration:none}.cta.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.path{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}.card b{display:block;margin-bottom:6px}.fine{font-size:13px;color:var(--muted)}.source a{color:var(--silver)}ul{padding-left:22px}.bar{height:8px;background:var(--panel2);border:1px solid var(--line);border-radius:999px;overflow:hidden;margin-top:8px}.bar>span{display:block;height:100%;background:var(--silver);width:0}.toplink{display:inline-block;color:var(--silver);text-decoration:none;margin-bottom:16px}
+</style>
+</head>
+<body><main>
+<a class="toplink" href="index.html">← Stratum Praxis</a>
+<div class="eyebrow">// Free decision gate · No signup</div>
+<h1>Before a SaaS renewal, upgrade, or AI contract: make the money decision first.</h1>
+<p class="lead">Software buying is easy to start and expensive to reverse. Use this gate when a renewal notice, upgrade request, new AI add-on, seat increase, or vendor shortlist reaches a real budget decision.</p>
+
+<div class="panel" id="calculator">
+  <div class="grid">
+    <div class="field"><label for="monthly">Monthly cost of the tool or category (USD)</label><input id="monthly" type="number" min="0" step="50" value="2500"></div>
+    <div class="field"><label for="days">Days until renewal / decision</label><input id="days" type="number" min="0" max="365" step="1" value="45"></div>
+    <div class="field"><label for="usage">Estimated active usage (%)</label><input id="usage" type="number" min="0" max="100" step="1" value="70"></div>
+    <div class="field"><label for="overlap">Known overlapping tools</label><input id="overlap" type="number" min="0" max="20" step="1" value="1"></div>
+  </div>
+  <div class="grid" style="margin-top:18px">
+    <div class="field"><label for="change">Change being considered</label><select id="change"><option value="renew">Renew existing contract</option><option value="upgrade">Upgrade / add seats</option><option value="buy">Buy a new tool</option><option value="ai">Add variable AI / token spend</option></select></div>
+    <div class="field"><label for="reviewShare">Share of annual cost worth pressure-testing (%)</label><input id="reviewShare" type="number" min="0" max="100" step="1" value="20"></div>
+  </div>
+
+  <div class="grid" style="margin-top:18px">
+    <div class="metric"><span>Annual spend at current run rate</span><b id="annual">$30,000</b></div>
+    <div class="metric"><span>Spend selected for review</span><b id="reviewed">$6,000</b></div>
+    <div class="metric"><span>Decision urgency</span><b id="urgency">High</b></div>
+  </div>
+
+  <div class="decision">
+    <strong id="decisionTitle">Review before the renewal is allowed to auto-progress.</strong>
+    <p id="decisionText">The contract is close enough and material enough to justify a structured keep / reduce / consolidate / review / cancel decision.</p>
+    <div class="bar"><span id="barFill"></span></div>
+  </div>
+
+  <div id="actions">
+    <a class="cta" id="primaryCta" href="ai-saas-spend-audit-checklist.html">Run the free 12-question renewal check</a>
+    <a class="cta secondary" href="ai-value-realization-kit.html">Use the $39 self-service decision kit</a>
+    <a class="cta secondary" href="ai-saas-spend-waste-audit.html">See the $499 fixed-scope audit</a>
+  </div>
+  <p class="fine">This calculator uses only the inputs you provide. It does not estimate a universal waste rate and does not guarantee savings.</p>
+</div>
+
+<h2>Where this fits in the money flow</h2>
+<div class="path">
+  <div class="card"><b>1. A real spend event appears</b><p>Renewal notice, vendor shortlist, seat increase, AI add-on, usage overage, or CFO approval request.</p></div>
+  <div class="card"><b>2. Stop passive continuation</b><p>Turn the spend event into an explicit decision instead of letting inertia become the purchasing process.</p></div>
+  <div class="card"><b>3. Use the cheapest adequate review</b><p>Free check for small decisions, $39 self-service for internal teams, or $499 when the decision value justifies a custom audit.</p></div>
+  <div class="card"><b>4. Keep the savings from leaking back</b><p>After a completed audit, optional verified-savings support and $199–$499/month monitoring can be used only when recurring oversight is economically justified.</p></div>
+</div>
+
+<h2>What to inspect before signing or renewing</h2>
+<ul>
+<li>Actual active use versus paid seats, credits, tiers, and commitments.</li>
+<li>Duplicate capability across AI assistants, meeting tools, automation, analytics, storage, security, or collaboration products.</li>
+<li>Whether the workflow supported by the tool has measurable operational or revenue value.</li>
+<li>Whether a shorter contract, smaller plan, or phased purchase would preserve flexibility.</li>
+<li>Whether variable AI/token spend has an owner, budget, anomaly threshold, and stop condition.</li>
+<li>Whether the renewal date has a named decision owner and a date before auto-renewal becomes irreversible.</li>
+</ul>
+
+<h2>Why this gate matters in 2026</h2>
+<p>FinOps Foundation's 2026 survey reports that 98% of respondents manage AI spend and 90% manage SaaS or plan to, while G2's 2026 buyer research says evaluation is now the longest stage for 40% of buyers and nearly half reported a CFO reversing an already approved software purchase. The implication is simple: software discovery is easier, but proving value before money commits has become the bottleneck.</p>
+<p class="fine source">Industry context: <a href="https://data.finops.org/" target="_blank" rel="noopener noreferrer">FinOps Foundation — State of FinOps 2026</a> · <a href="https://sell.g2.com/2026-buyer-behavior-report" target="_blank" rel="noopener noreferrer">G2 — 2026 Buyer Behavior Report</a>.</p>
+
+<h2>Escalate only when the economics justify it</h2>
+<div class="path">
+  <div class="card"><b>Small or obvious decision</b><p>Use the free checklist. If the answer is clearly keep or cancel, stop.</p><a class="cta secondary" href="ai-saas-spend-audit-checklist.html">Free checklist</a></div>
+  <div class="card"><b>Team can decide internally</b><p>Use the $39 kit to structure ROI, break-even, ownership, and prioritization without buying custom work.</p><a class="cta secondary" href="https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00" target="_blank" rel="noopener noreferrer">$39 kit checkout</a></div>
+  <div class="card"><b>Material or messy stack decision</b><p>Use the fixed-scope $499 audit when overlap, usage, AI cost, renewal timing, or workflow value needs a written decision map.</p><a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02" target="_blank" rel="noopener noreferrer">Start $499 audit</a></div>
+</div>
+
+<h2>After the decision</h2>
+<p>If a completed audit identifies actions worth executing, Stratum Praxis also has an optional Verified Savings Recovery path at 15% of mutually verified first-year savings and monthly monitoring at $199 or $499 per month. These are separate services, not required upsells.</p>
+<a class="cta secondary" href="ai-saas-spend-monitoring.html">See savings recovery & monitoring</a>
+<p class="fine">General operational decision support only. Not legal, accounting, tax, procurement-representation, regulatory, investment, or cybersecurity advice. Do not send passwords, API keys, payment-card data, raw customer PII, or regulated data.</p>
+
+<script>
+(function(){
+  const monthly=document.getElementById('monthly');
+  const days=document.getElementById('days');
+  const usage=document.getElementById('usage');
+  const overlap=document.getElementById('overlap');
+  const change=document.getElementById('change');
+  const reviewShare=document.getElementById('reviewShare');
+  const annual=document.getElementById('annual');
+  const reviewed=document.getElementById('reviewed');
+  const urgency=document.getElementById('urgency');
+  const title=document.getElementById('decisionTitle');
+  const text=document.getElementById('decisionText');
+  const bar=document.getElementById('barFill');
+  const primary=document.getElementById('primaryCta');
+  const fmt=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
+  function clamp(v,min,max){return Math.min(max,Math.max(min,v));}
+  function update(){
+    const m=Math.max(0,Number(monthly.value)||0);
+    const d=clamp(Number(days.value)||0,0,365);
+    const u=clamp(Number(usage.value)||0,0,100);
+    const o=clamp(Number(overlap.value)||0,0,20);
+    const r=clamp(Number(reviewShare.value)||0,0,100)/100;
+    const a=m*12;
+    const rv=a*r;
+    let score=0;
+    if(d<=30) score+=35; else if(d<=60) score+=25; else if(d<=90) score+=15;
+    if(a>=50000) score+=30; else if(a>=12000) score+=20; else if(a>=3000) score+=10;
+    if(u<50) score+=20; else if(u<75) score+=10;
+    if(o>=2) score+=15; else if(o===1) score+=8;
+    if(change.value==='ai') score+=10;
+    score=clamp(score,0,100);
+    annual.textContent=fmt.format(a);
+    reviewed.textContent=fmt.format(rv);
+    bar.style.width=score+'%';
+    if(score>=70){
+      urgency.textContent='Very high';
+      title.textContent='Do not let this spend event auto-progress.';
+      text.textContent='The timing, spend size, usage or overlap signals justify a structured decision before renewal or approval. Start with the free check; use the $499 audit only if the decision remains material and unclear.';
+      primary.textContent='Run the free renewal check now';
+    }else if(score>=45){
+      urgency.textContent='High';
+      title.textContent='Review before the renewal or purchase is approved.';
+      text.textContent='There is enough exposure to justify an explicit keep / reduce / consolidate / review / cancel decision. Start free and escalate only if needed.';
+      primary.textContent='Run the free 12-question check';
+    }else if(score>=25){
+      urgency.textContent='Moderate';
+      title.textContent='Schedule a review before the decision date.';
+      text.textContent='The spend may not justify custom work yet, but a lightweight check can prevent passive renewal or unnecessary plan growth.';
+      primary.textContent='Use the free checklist';
+    }else{
+      urgency.textContent='Low';
+      title.textContent='Keep the review lightweight.';
+      text.textContent='Based on your inputs, this does not look like a strong candidate for paid review. Use the free checklist and stop if the decision is obvious.';
+      primary.textContent='Use the free checklist';
+    }
+  }
+  [monthly,days,usage,overlap,change,reviewShare].forEach(el=>el.addEventListener('input',update));
+  update();
+})();
+</script>
+</main></body></html>
