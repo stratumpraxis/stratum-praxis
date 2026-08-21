@@ -12,7 +12,7 @@ from google.genai import types
 MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash")
 client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
 
-app = FastAPI(title="SpendLens Agent", version="1.0.0")
+app = FastAPI(title="LeakTwin Agent", version="1.0.0")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -42,7 +42,7 @@ class ExecuteRequest(BaseModel):
     action_ids: list[str]
     analysis: dict[str, Any]
 
-SYSTEM_INSTRUCTION = """You are SpendLens, an autonomous SaaS-spend recovery agent.
+SYSTEM_INSTRUCTION = """You are LeakTwin, an autonomous SaaS-spend recovery agent.
 Your job is not to chat. Inspect a software stack, detect waste, decide what to do,
 quantify the impact, and output an execution-ready recovery plan.
 Be conservative: do not recommend cancellation when evidence is weak.
@@ -65,7 +65,7 @@ def extract_json(text: str) -> dict[str, Any]:
 
 @app.get("/health")
 def health():
-    return {"ok": True, "model": MODEL}
+    return {"ok": True, "project": "LeakTwin", "model": MODEL}
 
 @app.get("/sample")
 def sample():
