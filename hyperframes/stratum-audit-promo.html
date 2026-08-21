@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stratum Praxis — AI Audit Promo</title>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+</head>
+<body>
+  <div id="stratum-audit-promo" data-composition-id="stratum-audit-promo" data-start="0" data-duration="20" data-track-index="0" data-width="1080" data-height="1920">
+    <div class="grid"></div>
+    <div class="glow"></div>
+
+    <section class="scene scene-1">
+      <div class="scene-content">
+        <div class="eyebrow">STRATUM PRAXIS</div>
+        <h1>AI should reduce work.<br>Not add more tools.</h1>
+        <p>Find the business task that is actually worth automating next.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-2">
+      <div class="scene-content">
+        <div class="eyebrow">FREE · 15 QUESTIONS · NO SIGNUP</div>
+        <h2>Small Business<br>AI Automation Audit</h2>
+        <div class="cards">
+          <div class="card">What can be automated?</div>
+          <div class="card">What should stay human?</div>
+          <div class="card">Where is tool overlap?</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="scene scene-3">
+      <div class="scene-content">
+        <div class="eyebrow">FROM SIGNAL → DECISION</div>
+        <h2>Audit first.<br>Then size the value.</h2>
+        <p>Use the free audit, ROI calculator and pilot planner before spending more time or money.</p>
+      </div>
+    </section>
+
+    <section class="scene scene-4">
+      <div class="scene-content cta-content">
+        <div class="brand-mark">SP</div>
+        <div class="eyebrow">PRACTICAL AI SYSTEMS</div>
+        <h2>Start free.</h2>
+        <div class="cta">Take the Free AI Audit →</div>
+        <p class="url">small-business-ai-audit.pages.dev</p>
+        <p class="fine">Need a decision framework after the audit? The $39 AI Value Realization Kit is available from Stratum Praxis.</p>
+      </div>
+    </section>
+
+    <style>
+      [data-composition-id="stratum-audit-promo"] {
+        position: relative;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: #090b0e;
+        color: #f3f5f7;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+      * { box-sizing: border-box; }
+      .scene {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      .scene-content {
+        width: 100%;
+        height: 100%;
+        padding: 180px 90px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 36px;
+        box-sizing: border-box;
+      }
+      .eyebrow {
+        color: #66e3c4;
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+      }
+      h1, h2, p { margin: 0; }
+      h1 {
+        max-width: 900px;
+        color: #d6dbe1;
+        font-size: 104px;
+        line-height: 0.98;
+        letter-spacing: -0.055em;
+      }
+      h2 {
+        color: #d6dbe1;
+        font-size: 96px;
+        line-height: 1;
+        letter-spacing: -0.05em;
+      }
+      p {
+        max-width: 860px;
+        color: #a7b0bc;
+        font-size: 42px;
+        line-height: 1.35;
+      }
+      .cards {
+        display: flex;
+        flex-direction: column;
+        gap: 22px;
+        width: 100%;
+        margin-top: 24px;
+      }
+      .card {
+        border: 1px solid #2a313b;
+        background: #131820;
+        border-radius: 24px;
+        padding: 34px 38px;
+        font-size: 38px;
+        font-weight: 700;
+        color: #f3f5f7;
+      }
+      .cta-content { align-items: flex-start; }
+      .brand-mark {
+        width: 110px;
+        height: 110px;
+        border: 2px solid #2a313b;
+        border-radius: 999px;
+        display: grid;
+        place-items: center;
+        color: #66e3c4;
+        font-size: 34px;
+        font-weight: 800;
+      }
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        min-height: 96px;
+        padding: 0 42px;
+        border-radius: 18px;
+        background: #66e3c4;
+        color: #07100e;
+        font-size: 38px;
+        font-weight: 800;
+      }
+      .url { color: #d6dbe1; font-size: 34px; }
+      .fine { margin-top: 28px; font-size: 26px; line-height: 1.45; max-width: 840px; }
+      .grid {
+        position: absolute;
+        inset: 0;
+        opacity: 0.18;
+        background-image:
+          linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px);
+        background-size: 72px 72px;
+      }
+      .glow {
+        position: absolute;
+        width: 900px;
+        height: 900px;
+        top: -260px;
+        right: -320px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(102,227,196,0.16), rgba(102,227,196,0) 70%);
+      }
+    </style>
+
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.set('.scene-1', { opacity: 1 }, 0)
+        .from('.scene-1 .eyebrow', { y: 36, opacity: 0, duration: 0.45, ease: 'power3.out' }, 0.15)
+        .from('.scene-1 h1', { y: 70, opacity: 0, duration: 0.75, ease: 'power3.out' }, 0.35)
+        .from('.scene-1 p', { y: 42, opacity: 0, duration: 0.55, ease: 'power2.out' }, 0.8)
+        .to('.scene-1', { opacity: 0, duration: 0.45, ease: 'power2.in' }, 4.35)
+
+        .set('.scene-2', { opacity: 1 }, 4.8)
+        .from('.scene-2 .eyebrow', { y: 30, opacity: 0, duration: 0.4, ease: 'power3.out' }, 4.95)
+        .from('.scene-2 h2', { y: 58, opacity: 0, duration: 0.6, ease: 'power3.out' }, 5.15)
+        .from('.scene-2 .card', { y: 42, opacity: 0, duration: 0.42, stagger: 0.18, ease: 'power2.out' }, 5.7)
+        .to('.scene-2', { opacity: 0, duration: 0.45, ease: 'power2.in' }, 9.35)
+
+        .set('.scene-3', { opacity: 1 }, 9.8)
+        .from('.scene-3 .eyebrow', { y: 30, opacity: 0, duration: 0.4, ease: 'power3.out' }, 9.95)
+        .from('.scene-3 h2', { y: 58, opacity: 0, duration: 0.6, ease: 'power3.out' }, 10.15)
+        .from('.scene-3 p', { y: 44, opacity: 0, duration: 0.55, ease: 'power2.out' }, 10.75)
+        .to('.scene-3', { opacity: 0, duration: 0.45, ease: 'power2.in' }, 14.35)
+
+        .set('.scene-4', { opacity: 1 }, 14.8)
+        .from('.scene-4 .brand-mark', { scale: 0.86, opacity: 0, duration: 0.42, ease: 'power2.out' }, 14.95)
+        .from('.scene-4 .eyebrow', { y: 28, opacity: 0, duration: 0.38, ease: 'power3.out' }, 15.1)
+        .from('.scene-4 h2', { y: 48, opacity: 0, duration: 0.55, ease: 'power3.out' }, 15.3)
+        .from('.scene-4 .cta', { y: 36, opacity: 0, scale: 0.98, duration: 0.48, ease: 'power2.out' }, 15.8)
+        .from('.scene-4 .url', { y: 24, opacity: 0, duration: 0.35, ease: 'power2.out' }, 16.15)
+        .from('.scene-4 .fine', { y: 20, opacity: 0, duration: 0.35, ease: 'power2.out' }, 16.45);
+
+      window.__timelines['stratum-audit-promo'] = tl;
+    </script>
+  </div>
+</body>
+</html>
