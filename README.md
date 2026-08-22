@@ -24,6 +24,7 @@ Each comparison routes back into the existing SaaS Renewal Decision Calculator a
 
 ## Paid decision support
 
+- [$29 Revenue Router](https://stratumpraxis.com/revenue-router.html) — verify, score, prioritize, and route AI research signals into the closest existing content, affiliate, product, lead-generation, or B2B revenue paths. Browser-based, offline-ready, no API key required.
 - [$39 AI Value Realization Kit](https://stratumpraxis.com/ai-value-realization-kit.html) — turn workflow assumptions into an ROI-backed automation decision before additional implementation spend. Existing Stripe checkout remains the purchase path from the landing page.
 - [$49 AI Workflow SOP & Governance Kit](https://stratumpraxis.com/ai-workflow-sop-governance-kit.html) — fixed-scope self-service operating resource for teams closing AI workflow governance gaps internally.
 - [$499 AI Workflow Opportunity Audit](https://stratumpraxis.com/workflow-audit.html) — fixed-scope workflow mapping, ranked automation opportunities, ROI scenarios, human checkpoints, and a 30-day pilot plan.
