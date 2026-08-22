@@ -87,3 +87,11 @@ if (nav && !nav.querySelector('[data-nav="saas-decision"]')) {
   navLink.textContent = "SaaS Decision";
   nav.appendChild(navLink);
 }
+
+if (nav && !nav.querySelector('[data-nav="global-product-kit"]')) {
+  const productLink = document.createElement("a");
+  productLink.href = "global-digital-product-ai-starter-kit.html";
+  productLink.dataset.nav = "global-product-kit";
+  productLink.textContent = "Global Product Kit · $19";
+  nav.appendChild(productLink);
+}
