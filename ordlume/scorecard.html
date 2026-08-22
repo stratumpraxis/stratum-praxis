@@ -1,84 +1,32 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Free Signal-to-Product Score — Ordlume</title>
-  <meta name="description" content="Score a market signal across demand, money flow, pain, productization, and distribution. Get a build / test / ignore recommendation in under 2 minutes.">
-  <meta name="theme-color" content="#050607">
-  <style>
-    :root{--bg:#050607;--panel:#0d1013;--line:#252a30;--text:#f5f7f8;--muted:#aeb6bf;--accent:#fff;--max:880px}
-    *{box-sizing:border-box} body{margin:0;background:radial-gradient(circle at 50% 0,#15191e 0,#080a0c 34%,var(--bg) 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}.wrap{width:min(calc(100% - 32px),var(--max));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.nav a{text-decoration:none;color:#cbd2d8}.brand{font-weight:850;letter-spacing:.08em}.hero{padding:50px 0 20px;text-align:center}.hero h1{font-size:clamp(38px,7vw,66px);line-height:1;letter-spacing:-.045em;margin:14px 0}.hero p{max-width:690px;margin:auto;color:var(--muted);font-size:18px}.box{background:linear-gradient(180deg,#101418,#090c0f);border:1px solid var(--line);border-radius:22px;padding:24px;margin:26px 0}.q{padding:18px 0;border-bottom:1px solid #1b2025}.q:last-child{border:0}.q h2{font-size:18px;margin:0 0 6px}.q p{color:var(--muted);margin:0 0 12px;font-size:14px}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.scale label{display:flex;align-items:center;justify-content:center;min-height:45px;border:1px solid #2a3036;border-radius:11px;cursor:pointer;background:#0a0d10}.scale input{position:absolute;opacity:0}.scale label:has(input:checked){background:#fff;color:#050607;border-color:#fff;font-weight:800}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:1px solid var(--line);border-radius:12px;min-height:48px;padding:0 18px;font-weight:800;background:#fff;color:#050607;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.btn.secondary{background:#0a0d10;color:#e8edf1}.result{display:none}.score{font-size:64px;font-weight:900;letter-spacing:-.05em;line-height:1}.verdict{font-size:26px;font-weight:850;margin:8px 0}.why{color:var(--muted)}.next{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#090c0f}.card h3{margin:0 0 6px}.card p{color:var(--muted);font-size:14px}.card .btn{width:100%;margin-top:8px}.foot{padding:30px 0 55px;color:#7f8993;font-size:12px;text-align:center}@media(max-width:650px){.scale{grid-template-columns:repeat(5,minmax(0,1fr))}.scale label{padding:0}.next{grid-template-columns:1fr}.box{padding:18px}.hero{padding-top:34px}}
-  </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Free Signal-to-Product Score — Ordlume</title>
+<meta name="description" content="Score a market signal across demand, money flow, pain, productization, and distribution in under two minutes.">
+<meta name="theme-color" content="#050607">
+<style>
+:root{--bg:#050607;--panel:#0d1013;--line:#252a30;--text:#f5f7f8;--muted:#aeb6bf;--max:880px}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 0,#15191e 0,#080a0c 34%,var(--bg) 70%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55}.wrap{width:min(calc(100% - 32px),var(--max));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}.nav a{text-decoration:none;color:#cbd2d8}.brand{font-weight:850;letter-spacing:.08em}.hero{padding:46px 0 20px;text-align:center}.hero h1{font-size:clamp(38px,7vw,66px);line-height:1;letter-spacing:-.045em;margin:14px 0}.hero p{max-width:690px;margin:auto;color:var(--muted);font-size:18px}.box{background:linear-gradient(180deg,#101418,#090c0f);border:1px solid var(--line);border-radius:22px;padding:24px;margin:26px 0}.q{padding:18px 0;border-bottom:1px solid #1b2025}.q:last-child{border:0}.q h2{font-size:18px;margin:0 0 6px}.q p{color:var(--muted);margin:0 0 12px;font-size:14px}.scale{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.scale label{display:flex;align-items:center;justify-content:center;min-height:45px;border:1px solid #2a3036;border-radius:11px;cursor:pointer;background:#0a0d10}.scale input{position:absolute;opacity:0}.scale label:has(input:checked){background:#fff;color:#050607;border-color:#fff;font-weight:800}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}.btn{border:1px solid var(--line);border-radius:12px;min-height:48px;padding:0 18px;font-weight:800;background:#fff;color:#050607;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.secondary{background:#0a0d10;color:#e8edf1}.result{display:none}.score{font-size:64px;font-weight:900;letter-spacing:-.05em;line-height:1}.verdict{font-size:26px;font-weight:850;margin:8px 0}.why{color:var(--muted)}.next{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:18px}.card{border:1px solid var(--line);border-radius:16px;padding:18px;background:#090c0f}.card h3{margin:0 0 6px}.card p{color:var(--muted);font-size:14px}.card .btn{width:100%;margin-top:8px}.foot{padding:30px 0 55px;color:#7f8993;font-size:12px;text-align:center}@media(max-width:650px){.next{grid-template-columns:1fr}.box{padding:18px}.hero{padding-top:32px}}
+</style>
 </head>
 <body>
-  <header class="wrap nav"><div class="brand">ORDLUME</div><a id="back" href="./">Products →</a></header>
-  <main class="wrap">
-    <section class="hero">
-      <div style="color:#9ba5ae;font-size:12px;letter-spacing:.1em;text-transform:uppercase">Free 2-minute tool</div>
-      <h1>Signal-to-Product Score</h1>
-      <p>Score one market signal before you spend hours building. Rate the evidence, money flow, pain, productization, and distribution access.</p>
-    </section>
-
-    <form class="box" id="scoreForm">
-      <div class="q">
-        <h2>1. Demand evidence</h2><p>How strong is the evidence that real people actively want this solved?</p>
-        <div class="scale">
-          <label><input type="radio" name="demand" value="0">0</label><label><input type="radio" name="demand" value="1">1</label><label><input type="radio" name="demand" value="2">2</label><label><input type="radio" name="demand" value="3">3</label><label><input type="radio" name="demand" value="4">4</label>
-        </div>
-      </div>
-      <div class="q">
-        <h2>2. Existing money flow</h2><p>Are buyers already paying for adjacent products, tools, services, or workarounds?</p>
-        <div class="scale">
-          <label><input type="radio" name="money" value="0">0</label><label><input type="radio" name="money" value="1">1</label><label><input type="radio" name="money" value="2">2</label><label><input type="radio" name="money" value="3">3</label><label><input type="radio" name="money" value="4">4</label>
-        </div>
-      </div>
-      <div class="q">
-        <h2>3. Pain / urgency</h2><p>How costly, repetitive, risky, slow, or frustrating is the problem?</p>
-        <div class="scale">
-          <label><input type="radio" name="pain" value="0">0</label><label><input type="radio" name="pain" value="1">1</label><label><input type="radio" name="pain" value="2">2</label><label><input type="radio" name="pain" value="3">3</label><label><input type="radio" name="pain" value="4">4</label>
-        </div>
-      </div>
-      <div class="q">
-        <h2>4. Productization</h2><p>Can the value be delivered repeatedly as a small tool, skill, template, checklist, report, or workflow?</p>
-        <div class="scale">
-          <label><input type="radio" name="product" value="0">0</label><label><input type="radio" name="product" value="1">1</label><label><input type="radio" name="product" value="2">2</label><label><input type="radio" name="product" value="3">3</label><label><input type="radio" name="product" value="4">4</label>
-        </div>
-      </div>
-      <div class="q">
-        <h2>5. Distribution access</h2><p>Can you reach the buyer through search, marketplaces, X, YouTube, note/blogs, communities, or existing traffic?</p>
-        <div class="scale">
-          <label><input type="radio" name="distribution" value="0">0</label><label><input type="radio" name="distribution" value="1">1</label><label><input type="radio" name="distribution" value="2">2</label><label><input type="radio" name="distribution" value="3">3</label><label><input type="radio" name="distribution" value="4">4</label>
-        </div>
-      </div>
-      <div class="actions"><button class="btn" type="submit">Calculate score</button><button class="btn secondary" type="reset">Reset</button></div>
-    </form>
-
-    <section class="box result" id="result">
-      <div class="score"><span id="score">0</span>/100</div>
-      <div class="verdict" id="verdict"></div>
-      <p class="why" id="why"></p>
-      <div class="next">
-        <div class="card"><h3>Need only remote control structure?</h3><p>Use the focused Mobile Remote Ops workflow, risk gates, handoff, and verification templates.</p><a class="btn" id="miniCta" href="https://buy.stripe.com/8x27sM0gsgTF1K8goj6Zy0h" target="_blank" rel="noopener">Mobile Remote Ops — $9</a></div>
-        <div class="card"><h3>Ready to build the whole loop?</h3><p>Use eight reusable workflows from signal capture through product creation, distribution, and revenue audit.</p><a class="btn" id="fullCta" href="https://buy.stripe.com/7sYeVefbm32PfAYfkf6Zy0g" target="_blank" rel="noopener">AI Revenue Skills Pack — $19</a></div>
-      </div>
-    </section>
-  </main>
-  <footer class="wrap foot">Ordlume · This score is a prioritization aid, not a guarantee of sales or market demand.</footer>
-
+<header class="wrap nav"><div class="brand">ORDLUME</div><a href="./">Products →</a></header>
+<main class="wrap">
+<section class="hero"><div style="color:#9ba5ae;font-size:12px;letter-spacing:.1em;text-transform:uppercase">Free 2-minute tool</div><h1>Signal-to-Product Score</h1><p>Score one market signal before you spend hours building. Rate the evidence, money flow, pain, productization, and distribution access.</p></section>
+<form class="box" id="scoreForm">
+<div class="q"><h2>1. Demand evidence</h2><p>How strong is the evidence that real people actively want this solved?</p><div class="scale"><label><input type="radio" name="demand" value="0">0</label><label><input type="radio" name="demand" value="1">1</label><label><input type="radio" name="demand" value="2">2</label><label><input type="radio" name="demand" value="3">3</label><label><input type="radio" name="demand" value="4">4</label></div></div>
+<div class="q"><h2>2. Existing money flow</h2><p>Are buyers already paying for adjacent products, tools, services, or workarounds?</p><div class="scale"><label><input type="radio" name="money" value="0">0</label><label><input type="radio" name="money" value="1">1</label><label><input type="radio" name="money" value="2">2</label><label><input type="radio" name="money" value="3">3</label><label><input type="radio" name="money" value="4">4</label></div></div>
+<div class="q"><h2>3. Pain / urgency</h2><p>How costly, repetitive, risky, slow, or frustrating is the problem?</p><div class="scale"><label><input type="radio" name="pain" value="0">0</label><label><input type="radio" name="pain" value="1">1</label><label><input type="radio" name="pain" value="2">2</label><label><input type="radio" name="pain" value="3">3</label><label><input type="radio" name="pain" value="4">4</label></div></div>
+<div class="q"><h2>4. Productization</h2><p>Can the value be delivered repeatedly as a small tool, skill, template, checklist, report, or workflow?</p><div class="scale"><label><input type="radio" name="product" value="0">0</label><label><input type="radio" name="product" value="1">1</label><label><input type="radio" name="product" value="2">2</label><label><input type="radio" name="product" value="3">3</label><label><input type="radio" name="product" value="4">4</label></div></div>
+<div class="q"><h2>5. Distribution access</h2><p>Can you reach the buyer through search, marketplaces, X, YouTube, note/blogs, communities, or existing traffic?</p><div class="scale"><label><input type="radio" name="distribution" value="0">0</label><label><input type="radio" name="distribution" value="1">1</label><label><input type="radio" name="distribution" value="2">2</label><label><input type="radio" name="distribution" value="3">3</label><label><input type="radio" name="distribution" value="4">4</label></div></div>
+<div class="actions"><button class="btn" type="submit">Calculate score</button><button class="btn secondary" type="reset">Reset</button></div>
+</form>
+<section class="box result" id="result"><div class="score"><span id="score">0</span>/100</div><div class="verdict" id="verdict"></div><p class="why" id="why"></p><div class="next"><div class="card"><h3>Need only Mobile Remote Ops?</h3><p>Use the focused risk-gated mobile-to-agent workflow.</p><a class="btn" href="https://buy.stripe.com/28EaEYaV646T88wfkf6Zy09" target="_blank" rel="noopener">Mobile Remote Ops — $9</a></div><div class="card"><h3>Ready for the whole loop?</h3><p>Use eight reusable workflows from signal capture through product creation, distribution, and revenue audit.</p><a class="btn" href="https://payhip.com/b/Di0Cz" target="_blank" rel="noopener">AI Revenue Skills Pack — $19</a></div></div></section>
+</main>
+<footer class="wrap foot">Ordlume · This score is a prioritization aid, not a guarantee of sales or market demand.</footer>
 <script>
-const params=new URLSearchParams(location.search);const src=params.get('src')||'free_tool';
-const siteLinks={x:'?src=x',youtube:'?src=youtube',note:'?src=note',free_tool:'?src=free_tool'};
-document.getElementById('back').href='./'+(siteLinks[src]||'?src=free_tool');
-const links={
-  x:{full:'https://buy.stripe.com/4gM3cwd3eeLx74s3Bx6Zy0a',mini:'https://buy.stripe.com/bJe00k4wIgTF2Oc2xt6Zy0b'},
-  youtube:{full:'https://buy.stripe.com/9B67sM2oA9rd1K8c836Zy0c',mini:'https://buy.stripe.com/6oU6oI0gs6f160oc836Zy0d'},
-  note:{full:'https://buy.stripe.com/4gM7sM2oA8n9agE5JF6Zy0e',mini:'https://buy.stripe.com/00w8wQ9R232P1K81tp6Zy0f'},
-  free_tool:{full:'https://buy.stripe.com/7sYeVefbm32PfAYfkf6Zy0g',mini:'https://buy.stripe.com/8x27sM0gsgTF1K8goj6Zy0h'}
-};
-const use=links[src]||links.free_tool;document.getElementById('fullCta').href=use.full;document.getElementById('miniCta').href=use.mini;
-const form=document.getElementById('scoreForm');
-form.addEventListener('submit',e=>{e.preventDefault();const names=['demand','money','pain','product','distribution'];let total=0;for(const n of names){const v=form.querySelector('input[name="'+n+'"]:checked');if(!v){alert('Please score all five factors.');return;}total+=Number(v.value);}const score=Math.round(total/20*100);document.getElementById('score').textContent=score;let verdict,why;if(score>=80){verdict='Strong build candidate';why='The signal has evidence, money flow, pain, repeatable delivery, and reachable buyers. Build the smallest useful version and test a paid offer quickly.';}else if(score>=60){verdict='Test before expanding';why='There is enough signal to run a small paid or free probe, but one or two parts of the chain are still weak. Do not overbuild yet.';}else if(score>=40){verdict='Watch or run a tiny probe';why='Some ingredients are present, but the path to repeatable value or distribution is not strong enough for a full product build.';}else{verdict='Do not build yet';why='The current signal is interesting but commercially weak. Collect stronger demand, money-flow, or pain evidence before spending build time.';}document.getElementById('verdict').textContent=verdict;document.getElementById('why').textContent=why;const result=document.getElementById('result');result.style.display='block';result.scrollIntoView({behavior:'smooth',block:'start'});});
+const form=document.getElementById('scoreForm');form.addEventListener('submit',e=>{e.preventDefault();const names=['demand','money','pain','product','distribution'];let total=0;for(const n of names){const v=form.querySelector('input[name="'+n+'"]:checked');if(!v){alert('Please score all five factors.');return;}total+=Number(v.value)}const score=Math.round(total/20*100);document.getElementById('score').textContent=score;let verdict,why;if(score>=80){verdict='Strong build candidate';why='The signal has evidence, money flow, pain, repeatable delivery, and reachable buyers. Build the smallest useful version and test a paid offer quickly.'}else if(score>=60){verdict='Test before expanding';why='There is enough signal for a small probe, but one or two parts of the chain are still weak. Do not overbuild yet.'}else if(score>=40){verdict='Watch or run a tiny probe';why='Some ingredients are present, but the path to repeatable value or distribution is not strong enough for a full product build.'}else{verdict='Do not build yet';why='The current signal is commercially weak. Collect stronger demand, money-flow, or pain evidence first.'}document.getElementById('verdict').textContent=verdict;document.getElementById('why').textContent=why;const r=document.getElementById('result');r.style.display='block';r.scrollIntoView({behavior:'smooth'})});
 </script>
 </body>
 </html>
