@@ -9,6 +9,7 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify the business task most ready for useful AI automation.
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate the time and labor value a repetitive workflow could save.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a focused 7-day pilot.
+- [AI Income Claim Checklist](https://stratumpraxis.com/ai-income-claim-checklist.html) — a free 7-point check for revenue-vs-profit clarity, traffic, conversion, costs, repeatability and hidden dependencies behind AI income claims.
 - [SaaS Renewal Decision Calculator](https://stratumpraxis.com/saas-renewal-decision.html) — pressure-test a real software renewal, AI add-on, seat increase, new contract, CFO/finance approval, or build-vs-buy decision using annual spend, active-use / license-utilization signals, overlap, renewal timing and review economics; compare continued vendor spend with the operational burden of replacing software internally, then route to free, $39 self-service, or $499 fixed-scope review based on decision complexity.
 - [Free AI & SaaS Waste Calculator](https://stratumpraxis.com/ai-saas-waste-calculator.html) — size annual AI/SaaS spend selected for review using your own assumptions before renewal or another tool purchase.
 - [SaaS Spend Optimization & AI Renewal Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html) — review unused seats, duplicate tools, ownership, renewal risk, AI add-ons, workflow value, license utilization and SaaS optimization ROI before renewing software or asking finance to approve more spend.
@@ -24,6 +25,7 @@ Each comparison routes back into the existing SaaS Renewal Decision Calculator a
 
 ## Paid decision support
 
+- [$19 AI Monetization Reality Check](https://stratumpraxis.com/ai-monetization-reality-check.html) — score the evidence, reproducibility, hidden dependencies and risk behind AI income and side-hustle claims before copying the tactic; includes explicit verdicts, bounded-test plans, local history and exports.
 - [$29 Revenue Router](https://stratumpraxis.com/revenue-router.html) — verify, score, prioritize, and route AI research signals into the closest existing content, affiliate, product, lead-generation, or B2B revenue paths. Browser-based, offline-ready, no API key required.
 - [$39 AI Value Realization Kit](https://stratumpraxis.com/ai-value-realization-kit.html) — turn workflow assumptions into an ROI-backed automation decision before additional implementation spend. Existing Stripe checkout remains the purchase path from the landing page.
 - [$49 AI Workflow SOP & Governance Kit](https://stratumpraxis.com/ai-workflow-sop-governance-kit.html) — fixed-scope self-service operating resource for teams closing AI workflow governance gaps internally.
