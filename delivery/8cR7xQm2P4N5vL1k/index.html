@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>AI Monetization Reality Check</title>
+  <style>
+    :root{--bg:#090b0e;--panel:#12171e;--line:#2b333e;--text:#f2f4f7;--muted:#a7b0bc;--accent:#66e3c4;--warn:#f0cf75;--bad:#ef8d8d;--good:#8be0ac}
+    *{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% 0,rgba(102,227,196,.12),transparent 28rem),var(--bg);color:var(--text);font:15px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}.wrap{width:min(1120px,calc(100% - 28px));margin:auto;padding:24px 0 48px}.top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.eyebrow{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}h1{font-size:clamp(30px,6vw,58px);line-height:1;margin:8px 0 12px;letter-spacing:-.045em}.lead{color:var(--muted);max-width:760px;margin:0}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:#cbd3dc;font-size:11px}.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:20px 0}.tab,.btn{border:1px solid #3a4450;background:#171e27;color:#fff;border-radius:9px;padding:9px 12px;cursor:pointer;font:inherit}.tab.active,.btn.primary{background:var(--accent);border-color:var(--accent);color:#07110f;font-weight:800}.btn.ghost{background:transparent}.grid{display:grid;grid-template-columns:1.05fr .95fr;gap:15px}@media(max-width:850px){.grid{grid-template-columns:1fr}}.card{background:linear-gradient(180deg,#121820,#0d1218);border:1px solid var(--line);border-radius:16px;padding:17px;box-shadow:0 14px 36px rgba(0,0,0,.18)}h2{font-size:17px;margin:0 0 8px}h3{font-size:14px;margin:14px 0 6px}.hint,.fine{font-size:12px;color:var(--muted)}label{display:block;font-size:11px;color:#c0c8d2;margin:10px 0 4px}input,textarea,select{width:100%;border:1px solid #343d49;background:#080c11;color:#f5f7f9;border-radius:8px;padding:10px;font:inherit}textarea{min-height:105px;resize:vertical}.row{display:grid;grid-template-columns:1fr 1fr;gap:9px}@media(max-width:560px){.row{grid-template-columns:1fr}}.checks{display:grid;gap:8px;margin-top:8px}.check{display:flex;gap:9px;align-items:flex-start;padding:9px;border:1px solid #2b3440;border-radius:9px;background:#0a0f15}.check input{width:auto;margin-top:3px}.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.hidden{display:none!important}.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-bottom:12px}@media(max-width:600px){.kpis{grid-template-columns:repeat(2,1fr)}}.kpi{background:#080d12;border:1px solid var(--line);border-radius:10px;padding:10px}.kpi b{display:block;font-size:21px}.kpi span{font-size:10px;color:var(--muted)}.verdict{border:1px solid var(--line);border-radius:12px;padding:13px;background:#090e14;margin:10px 0}.verdict strong{font-size:19px}.bar{height:8px;background:#1c232d;border-radius:999px;overflow:hidden;margin:5px 0 10px}.bar i{display:block;height:100%;background:var(--accent)}.report{white-space:pre-wrap;background:#080c11;border:1px solid var(--line);border-radius:10px;padding:12px;font-size:12px}.flag{display:inline-block;padding:4px 7px;border:1px solid #4c5664;border-radius:999px;font-size:10px;margin:3px 3px 3px 0}.hist{border-bottom:1px solid #27303a;padding:11px 0}.hist:last-child{border-bottom:0}.meta{font-size:11px;color:var(--muted)}.note{border-left:3px solid var(--accent);background:#0b1216;padding:10px 12px;border-radius:7px;color:#c7d0da;font-size:12px}.license{margin-top:18px;color:#737d89;font-size:10px}.footer{text-align:center;color:#68727e;font-size:10px;margin-top:22px}a{color:#cce2ff}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div><div class="eyebrow">Evidence before imitation</div><h1>AI Monetization Reality Check</h1><p class="lead">Paste an AI-income or side-hustle claim, score the evidence behind it, expose hidden requirements, and decide whether to test, watch, ignore, or avoid it.</p></div>
+    <div class="pill">v1.0 · Offline-ready · No API key</div>
+  </div>
+  <div class="tabs"><button class="tab active" data-tab="check">Run Check</button><button class="tab" data-tab="history">History</button><button class="tab" data-tab="guide">How to use</button></div>
+
+  <section id="check" class="page">
+    <div class="grid">
+      <div class="card">
+        <h2>1. Capture the claim</h2>
+        <p class="hint">This tool does not browse the web or prove a claim true. It gives you a repeatable evidence and reproducibility rubric before you copy a monetization tactic.</p>
+        <label>Claim</label><input id="claim" placeholder="e.g. ‘ChatGPT affiliate marketing makes $10k/month’">
+        <label>Source / context</label><textarea id="context" placeholder="Paste the useful part of the post, page, or video notes"></textarea>
+        <div class="row">
+          <div><label>Source type</label><select id="source"><option value="anonymous">Anonymous / unclear</option><option value="creator">Creator / individual post</option><option value="marketing">Sales or marketing page</option><option value="news">Independent news / reporting</option><option value="official">Official company / platform source</option></select></div>
+          <div><label>Revenue mechanism</label><select id="mechanism"><option>Affiliate marketing</option><option>Digital products</option><option>Advertising / creator revenue</option><option>Freelance / service</option><option>SaaS / software</option><option>E-commerce</option><option>Trading / investing</option><option>Other</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>Evidence shown</label><select id="evidence"><option value="0">No evidence</option><option value="1">Screenshot only</option><option value="2">Dashboard / platform screenshot</option><option value="3">Payment / payout evidence</option><option value="4">Multiple verifiable records</option><option value="5">Independent / audited verification</option></select></div>
+          <div><label>Audience dependency</label><select id="audience"><option value="0">Low / none</option><option value="1">Some existing audience helps</option><option value="2">Medium</option><option value="3">High / creator audience central</option></select></div>
+        </div>
+        <div class="row">
+          <div><label>Upfront spend</label><select id="spend"><option value="0">None / very low</option><option value="1">Under $100</option><option value="2">$100–$1,000</option><option value="3">Over $1,000 / unclear</option></select></div>
+          <div><label>Recurring work</label><select id="work"><option value="0">Low</option><option value="1">Moderate</option><option value="2">High</option><option value="3">Very high / daily output</option></select></div>
+        </div>
+        <h3>Evidence & disclosure checks</h3>
+        <div class="checks">
+          <label class="check"><input type="checkbox" id="profit"><span>It clearly distinguishes <b>revenue from profit</b>.</span></label>
+          <label class="check"><input type="checkbox" id="time"><span>It gives a clear <b>time period</b> for the result.</span></label>
+          <label class="check"><input type="checkbox" id="costs"><span>It discloses meaningful <b>costs, ad spend, tools, contractors, or refunds</b>.</span></label>
+          <label class="check"><input type="checkbox" id="funnel"><span>It explains the <b>traffic / funnel / conversion mechanism</b>, not only the final income number.</span></label>
+          <label class="check"><input type="checkbox" id="repeat"><span>There is evidence the result happened <b>more than once</b> or over multiple periods.</span></label>
+          <label class="check"><input type="checkbox" id="fail"><span>It discusses <b>failure cases, limits, or who this does not work for</b>.</span></label>
+          <label class="check"><input type="checkbox" id="platform"><span>The method is not critically dependent on one fragile platform loophole or policy assumption.</span></label>
+        </div>
+        <div class="btns"><button class="btn primary" id="run">Run reality check</button><button class="btn ghost" id="sample">Load sample</button><button class="btn ghost" id="clear">Clear</button></div>
+      </div>
+
+      <div class="card">
+        <h2>2. Decision</h2>
+        <div id="empty" class="hint">Run the check to get Evidence, Reproducibility, Hidden Dependency, Risk, a verdict, and a small-test plan.</div>
+        <div id="result" class="hidden">
+          <div class="kpis"><div class="kpi"><b id="evScore">0</b><span>Evidence /100</span></div><div class="kpi"><b id="repScore">0</b><span>Reproducibility /100</span></div><div class="kpi"><b id="depScore">0</b><span>Hidden dependency</span></div><div class="kpi"><b id="riskScore">0</b><span>Risk /100</span></div></div>
+          <div class="verdict"><div class="eyebrow">Verdict</div><strong id="verdict">—</strong><div id="why" class="fine" style="margin-top:6px"></div></div>
+          <h3>Evidence</h3><div class="bar"><i id="evBar" style="width:0%"></i></div>
+          <h3>Reproducibility</h3><div class="bar"><i id="repBar" style="width:0%"></i></div>
+          <h3>Flags</h3><div id="flags"></div>
+          <h3>Execution report</h3><div id="report" class="report"></div>
+          <div class="btns"><button class="btn" id="copy">Copy report</button><button class="btn" id="save">Save</button><button class="btn ghost" id="csv">Export CSV</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="history" class="page hidden"><div class="card"><h2>Saved checks</h2><p class="hint">Stored only in this browser.</p><div id="historyList"></div><div class="btns"><button class="btn ghost" id="json">Export JSON</button><button class="btn ghost" id="wipe">Clear history</button></div></div></section>
+
+  <section id="guide" class="page hidden"><div class="grid"><div class="card"><h2>Use it in 3 minutes</h2><ol><li>Capture the exact income claim, not your interpretation.</li><li>Score what evidence is actually shown.</li><li>Mark the hidden requirements the creator disclosed.</li><li>Use the verdict to decide whether to ignore, research, or run a bounded test.</li><li>If you test, define a stop condition before spending more money or time.</li></ol><div class="note">The goal is not to prove every creator wrong. The goal is to stop copying a headline before you understand the mechanism and dependencies behind it.</div></div><div class="card"><h2>Verdicts</h2><p><b>TEST SMALL</b> — enough evidence and reproducibility to justify a bounded experiment.</p><p><b>VERIFY FIRST</b> — interesting signal, but missing evidence or key economics.</p><p><b>WATCH</b> — plausible idea, weak proof or heavy hidden dependencies.</p><p><b>IGNORE</b> — little decision value right now.</p><p><b>AVOID</b> — high-risk / misleading structure or trading-style claim with weak evidence.</p><p class="fine">This is a decision-support tool, not financial, investment, legal, tax, or business advice. It does not independently verify claims or guarantee outcomes.</p></div></div></section>
+
+  <div class="license">Single-user license. You may use and customize this tool for your own work. Redistribution, resale, sublicensing, public reposting, or sharing the delivery URL is not permitted.</div>
+  <div class="footer">AI Monetization Reality Check v1.0 · Data stays in this browser via LocalStorage.</div>
+</div>
+<script>
+const $=id=>document.getElementById(id), clamp=(n,a=0,b=100)=>Math.max(a,Math.min(b,n));
+let current=null, history=JSON.parse(localStorage.getItem('amrc_history')||'[]');
+const checks=['profit','time','costs','funnel','repeat','fail','platform'];
+function srcScore(v){return({anonymous:5,creator:12,marketing:8,news:20,official:18})[v]||5}
+function evidenceScore(v){return [4,14,28,48,68,88][+v]||4}
+function val(id){return $(id).checked?1:0}
+function run(){
+ const claim=$('claim').value.trim(); if(!claim){alert('Add the claim first.');return}
+ const context=$('context').value.trim(), source=$('source').value, mechanism=$('mechanism').value, evidence=+$('evidence').value, audience=+$('audience').value, spend=+$('spend').value, work=+$('work').value;
+ const disclosure=checks.reduce((a,id)=>a+val(id),0);
+ let ev=clamp(evidenceScore(evidence)+srcScore(source)+disclosure*4);
+ let rep=58 + val('funnel')*10 + val('costs')*8 + val('repeat')*9 + val('fail')*6 + val('profit')*5 + val('time')*4 + val('platform')*6 - audience*10 - spend*5 - work*6;
+ if(evidence<=1) rep-=10; if(source==='marketing')rep-=7; rep=clamp(Math.round(rep));
+ let dep=clamp(Math.round(audience*22+spend*10+work*12+(val('funnel')?0:12)+(val('costs')?0:10)+(val('platform')?0:14)));
+ let risk=15 + (evidence<=1?22:0)+(source==='marketing'?12:0)+(source==='anonymous'?12:0)+(val('profit')?0:8)+(val('costs')?0:8)+(val('funnel')?0:8)+(val('repeat')?0:7);
+ if(mechanism==='Trading / investing')risk+=28; if(/guarantee|guaranteed|必ず|絶対|100%|risk[- ]?free/i.test(claim+' '+context))risk+=22; risk=clamp(Math.round(risk));
+ let verdict='WATCH', why='Potentially useful signal, but the proof or mechanics are incomplete.';
+ if(risk>=70){verdict='AVOID';why='Risk is high relative to the evidence shown. Do not copy or spend based on this claim.'}
+ else if(ev>=70&&rep>=68&&risk<45){verdict='TEST SMALL';why='The claim is documented well enough to justify a bounded, measurable test — not blind replication.'}
+ else if(ev>=45&&rep>=50){verdict='VERIFY FIRST';why='There is some decision value, but key evidence or economics should be verified before acting.'}
+ else if(ev<28&&rep<40){verdict='IGNORE';why='The headline is stronger than the evidence and reproducibility currently shown.'}
+ const flags=[];
+ if(evidence<=1)flags.push('Weak evidence'); if(!val('profit'))flags.push('Revenue vs profit unclear'); if(!val('costs'))flags.push('Costs hidden'); if(!val('funnel'))flags.push('Traffic / conversion missing'); if(!val('repeat'))flags.push('One-off result'); if(audience>=2)flags.push('Audience-dependent'); if(work>=2)flags.push('High recurring work'); if(spend>=2)flags.push('Meaningful capital required'); if(!val('platform'))flags.push('Platform dependency'); if(mechanism==='Trading / investing')flags.push('Financial-risk mechanism');
+ const test=mechanism==='Affiliate marketing'?'Choose one product with existing purchase intent, publish one comparison/decision asset, cap the test at 7 days, and track clicks → merchant visits → conversions.':mechanism==='Digital products'?'Pre-sell or expose one small paid offer to an existing demand source before building a large catalog. Track qualified visits → checkout starts → purchases.':mechanism==='Advertising / creator revenue'?'Test one repeatable content format for 7–14 days and measure reach, retention, click-through, and monetizable actions before assuming scale.':mechanism==='Freelance / service'?'Offer one fixed-scope outcome to a narrowly defined buyer segment and track replies, calls, and paid conversions before building more assets.':mechanism==='SaaS / software'?'Validate the problem with a lightweight demo or paid pilot before expanding features. Measure activation and willingness to pay.':mechanism==='E-commerce'?'Test a small set of high-intent products with explicit margin and traffic assumptions before expanding inventory or ad spend.':mechanism==='Trading / investing'?'Do not treat social income claims as a trading signal. Independently verify methodology, risk, drawdown, and regulatory considerations before any financial action.':'Define one small measurable experiment with a hard time/cost cap and an explicit stop condition.';
+ const hidden=[]; if(audience>=2)hidden.push('existing audience / distribution'); if(spend>=2)hidden.push('capital or paid traffic'); if(work>=2)hidden.push('high recurring output'); if(!val('funnel'))hidden.push('unknown traffic and conversion funnel'); if(!val('costs'))hidden.push('undisclosed operating costs'); if(!val('platform'))hidden.push('platform-policy dependency');
+ const report=`AI MONETIZATION REALITY CHECK\n\nCLAIM\n${claim}\n\nMECHANISM\n${mechanism}\n\nSCORES\nEvidence: ${ev}/100\nReproducibility: ${rep}/100\nHidden dependency: ${dep}/100\nRisk: ${risk}/100\n\nVERDICT\n${verdict}\n${why}\n\nHIDDEN REQUIREMENTS\n${hidden.length?hidden.map(x=>'• '+x).join('\n'):'• No major hidden dependency flagged from the inputs.'}\n\nFLAGS\n${flags.length?flags.map(x=>'• '+x).join('\n'):'• No major flag from the inputs.'}\n\nSMALL-TEST PLAN\n${test}\n\nSTOP CONDITION\nStop or redesign if the test produces no qualified demand signal before the preset time/cost cap. Do not raise spend simply because the original post showed a large income number.\n\nNOTE\nThis tool structures evidence; it does not independently verify the claim or guarantee results.`;
+ current={id:crypto.randomUUID(),date:new Date().toISOString(),claim,context,source,mechanism,ev,rep,dep,risk,verdict,flags,report};
+ $('evScore').textContent=ev;$('repScore').textContent=rep;$('depScore').textContent=dep;$('riskScore').textContent=risk;$('verdict').textContent=verdict;$('why').textContent=why;$('evBar').style.width=ev+'%';$('repBar').style.width=rep+'%';$('flags').innerHTML=(flags.length?flags:['No major flag from the inputs']).map(x=>`<span class="flag">${x}</span>`).join('');$('report').textContent=report;$('empty').classList.add('hidden');$('result').classList.remove('hidden');
+}
+function save(){if(!current)return;history.unshift(current);history=history.slice(0,100);localStorage.setItem('amrc_history',JSON.stringify(history));renderHistory();alert('Saved in this browser.');}
+function renderHistory(){const el=$('historyList');el.innerHTML=history.length?history.map(x=>`<div class="hist"><b>${escapeHtml(x.claim)}</b><div class="meta">${new Date(x.date).toLocaleString()} · ${x.verdict} · Evidence ${x.ev}/100 · Reproducibility ${x.rep}/100</div></div>`).join(''):'<p class="hint">No saved checks yet.</p>'}
+function escapeHtml(s=''){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function dl(name,text,type='text/plain'){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([text],{type}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500)}
+$('run').onclick=run;$('save').onclick=save;$('copy').onclick=()=>current&&navigator.clipboard.writeText(current.report);$('csv').onclick=()=>{if(!current)return;const row=['claim','mechanism','evidence','reproducibility','dependency','risk','verdict'].map(k=>'"'+String(k==='claim'?current.claim:k==='mechanism'?current.mechanism:k==='evidence'?current.ev:k==='reproducibility'?current.rep:k==='dependency'?current.dep:k==='risk'?current.risk:current.verdict).replace(/"/g,'""')+'"').join(',');dl('reality-check.csv','claim,mechanism,evidence,reproducibility,dependency,risk,verdict\n'+row,'text/csv')};$('json').onclick=()=>dl('reality-check-history.json',JSON.stringify(history,null,2),'application/json');$('wipe').onclick=()=>{if(confirm('Clear saved checks from this browser?')){history=[];localStorage.removeItem('amrc_history');renderHistory()}};
+$('sample').onclick=()=>{$('claim').value='ChatGPT affiliate marketing can make $10,000 per month';$('context').value='Creator post shows a revenue screenshot but does not show traffic, conversion rate, ad spend, refunds, or profit.';$('source').value='creator';$('mechanism').value='Affiliate marketing';$('evidence').value='1';$('audience').value='3';$('spend').value='0';$('work').value='2';checks.forEach(id=>$(id).checked=false);$('time').checked=true;run()};$('clear').onclick=()=>{['claim','context'].forEach(id=>$(id).value='');checks.forEach(id=>$(id).checked=false);$('result').classList.add('hidden');$('empty').classList.remove('hidden');current=null};
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');document.querySelectorAll('.page').forEach(p=>p.classList.add('hidden'));$(b.dataset.tab).classList.remove('hidden');if(b.dataset.tab==='history')renderHistory()});renderHistory();
+</script>
+</body></html>
