@@ -1,1 +1,1 @@
-{"workflow":"ai-consultant-worker","outcome":"failure","exit_code":"1","source_commit":"3b23e4691d688e8a35b07f40e9d14daf7c467e9d","run_id":"32641243396","checked_at":"2026-08-23T13:04:41Z"}
+{"workflow":"ai-consultant-worker","outcome":"success","exit_code":"0","source_commit":"62ed4f5f953caee345506c15bb62d8d0eb2abe94","run_id":"32642165009","checked_at":"2026-08-23T13:23:06Z"}
