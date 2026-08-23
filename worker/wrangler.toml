@@ -3,5 +3,7 @@ main = "ai-consultant-worker.js"
 compatibility_date = "2026-08-23"
 
 [vars]
-REPORT_PRICE_ID = "price_1U7QlwJMK7zFs997et6h3stX"
-KIT_PRICE_ID = "price_1U7QmEJMK7zFs997F7xr4lDG"
+REPORT_PRICE_ID = "price_1U7FcRJMK7zFs997kmkok1Dz"
+KIT_PRICE_ID = "price_1U7FciJMK7zFs997VNIz0aGy"
+REPORT_PAYMENT_LINK_ID = "plink_1U7XDkJMK7zFs997tsnql6MN"
+KIT_PAYMENT_LINK_ID = "plink_1U7XF5JMK7zFs997RVoxDxx0"
