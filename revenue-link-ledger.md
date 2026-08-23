@@ -9,6 +9,8 @@ Use this file as the source of truth when preparing X posts, note articles, comp
 - Hub: https://stratumpraxis.com/ai-saas-spend.html
 - Current status: ACTIVE / PRIMARY
 - Core demand: small teams buying and renewing AI/SaaS while struggling to justify value, control overlap, predict usage cost and make renewal decisions
+- High-intent organic entry: https://stratumpraxis.com/saas-spend-management-small-business.html
+- Organic intent: SaaS spend management for small business / AI spend management / renewal and cost-control buyers comparing whether they need dedicated software
 - Free entry: https://stratumpraxis.com/ai-saas-spend-audit-checklist.html
 - Exposure calculator: https://stratumpraxis.com/ai-saas-waste-calculator.html
 - $39 self-service Decision Kit: https://stratumpraxis.com/ai-saas-spend-decision-kit.html
@@ -19,9 +21,9 @@ Use this file as the source of truth when preparing X posts, note articles, comp
 - Core $199/month Stripe: https://buy.stripe.com/aFaaEY9R25aXdsQb3Z6Zy04
 - Pro $499/month Stripe: https://buy.stripe.com/cNi6oI7IU6f1gF2c836Zy05
 - Post-audit Verified Savings Recovery: 15% of mutually verified first-year savings under written baseline/verification method
-- Pipe order: free proof/diagnostic → $39 self-service → $499 audit → optional 15% verified savings recovery → optional $199/$499 monthly monitoring
-- Routing rule: send cold/low-intent traffic to the hub or free checklist; send high-intent renewal/cost-control traffic to the Decision Kit or Audit
-- Success metrics: hub visits, checklist starts, checkout clicks, $39 conversions, $499 conversions, monitoring subscriptions, verified recovery engagements
+- Pipe order: search/comparison intent → organic guide → free proof/diagnostic → $39 self-service → $499 audit → optional 15% verified savings recovery → optional $199/$499 monthly monitoring
+- Routing rule: send cold/low-intent traffic to the organic guide, hub or free checklist; send high-intent renewal/cost-control traffic to the Decision Kit or Audit
+- Success metrics: organic impressions, guide clicks, hub visits, checklist starts, checkout clicks, $39 conversions, $499 conversions, monitoring subscriptions, verified recovery engagements
 - Stop rule: do not expand product scope until traffic and conversion data show which layer is pulling demand
 
 ## Stratum Praxis hub
@@ -80,6 +82,7 @@ Selection rule: prefer programs with direct fit to current AI/workflow audience,
 
 ## Routing rule
 
+- SaaS spend management / AI spend management search intent → high-intent organic entry → AI & SaaS Spend Decision Hub
 - AI/SaaS spend, renewal, overlap or cost-control intent → AI & SaaS Spend Decision Hub
 - Product-specific X post → direct product LP
 - Educational Japanese post → note hub (once live)
