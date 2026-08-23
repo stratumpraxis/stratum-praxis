@@ -10,4 +10,4 @@ Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more
   To continue without logging in, rerun this command with `--temporary`. Wrangler will use a temporary account and print a claim URL.
 
 
-🪵  Logs were written to "/home/runner/.config/.wrangler/logs/wrangler-2026-08-23_12-51-40_001.log"
+🪵  Logs were written to "/home/runner/.config/.wrangler/logs/wrangler-2026-08-23_12-53-01_757.log"
