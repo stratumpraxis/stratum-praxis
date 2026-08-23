@@ -2,6 +2,7 @@
   "last_updated": "2026-08-24",
   "currency_priority": ["USD", "foreign_currency", "JPY"],
   "verified_revenue": null,
+  "stripe_live_payment_intents": 0,
   "offers": {
     "39_ai_value_realization_kit": {
       "status": "live",
@@ -9,7 +10,7 @@
       "checkout_starts": null,
       "purchases": null,
       "conversion_rate": null,
-      "notes": "Payhip and Gumroad destinations exist; Gumroad payout readiness remains unverified pending owner-side verification correction."
+      "notes": "Payhip and Gumroad destinations exist. Owner reports the prior Gumroad identity / payout verification issue is resolved; do not treat it as an active blocker unless new evidence appears."
     },
     "99_ai_automation_opportunity_report": {
       "status": "live",
@@ -26,6 +27,6 @@
       "conversion_rate": null
     }
   },
-  "current_primary_bottleneck": "Insufficient verified funnel metrics; payment/delivery integrity and trust-path validation take precedence over new product creation.",
+  "current_primary_bottleneck": "No verified Stripe Live purchase yet, combined with insufficient funnel measurement. Priority: generate the first verified purchase and instrument qualified traffic, CTA clicks, checkout starts, purchases and conversion rate before expanding the product catalog.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states."
 }
