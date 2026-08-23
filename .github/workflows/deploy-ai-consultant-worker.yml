@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -56,7 +58,8 @@ jobs:
           git add .deployment-status/ai-consultant-worker.json .deployment-status/ai-consultant-worker.log
           if ! git diff --cached --quiet; then
             git commit -m "Record AI consultant Worker deployment diagnostics"
-            git push
+            git pull --rebase origin main
+            git push origin main
           fi
 
       - name: Fail workflow if deploy failed
