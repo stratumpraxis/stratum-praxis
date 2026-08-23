@@ -45,9 +45,19 @@ if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
   kitButtonRow.appendChild(gumroadLink);
 }
 
+// Surface the free AI Practical Skills Check as a first-party acquisition path.
+const toolsGrid = document.querySelector("#tools .resource-grid");
+if (toolsGrid && !toolsGrid.querySelector('[data-funnel="practical-skills"]')) {
+  const practicalCard = document.createElement("a");
+  practicalCard.className = "resource-card";
+  practicalCard.href = "ai-practical-check.html";
+  practicalCard.dataset.funnel = "practical-skills";
+  practicalCard.innerHTML = '<span>Free · 20 questions · Japanese</span><h3>AI Practical Skills Check v2</h3><p>Score instruction design, verification, execution, automation and monetization, then route to the matching optional ¥980 report.</p><strong>Take the free skills check →</strong>';
+  toolsGrid.prepend(practicalCard);
+}
+
 // Surface the AI/SaaS spend funnel from the homepage without duplicating
 // static cards or changing the existing layout structure.
-const toolsGrid = document.querySelector("#tools .resource-grid");
 if (toolsGrid && !toolsGrid.querySelector('[data-funnel="saas-renewal"]')) {
   const renewalCard = document.createElement("a");
   renewalCard.className = "resource-card";
@@ -71,13 +81,24 @@ if (spendButtons && !spendButtons.querySelector('[data-funnel="saas-waste"]')) {
   wasteLink.href = "ai-saas-waste-calculator.html";
   wasteLink.textContent = "Estimate spend exposure";
 
-  const monitoringLink = document.createElement("a");
-  monitoringLink.className = "button button-secondary";
-  monitoringLink.href = "ai-saas-spend-monitoring.html";
-  monitoringLink.textContent = "See Recovery & Monthly Monitoring";
-
   spendButtons.prepend(renewalLink);
-  spendButtons.append(wasteLink, monitoringLink);
+  spendButtons.append(wasteLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="practical-skills"]')) {
+  const practicalLink = document.createElement("a");
+  practicalLink.href = "ai-practical-check.html";
+  practicalLink.dataset.nav = "practical-skills";
+  practicalLink.textContent = "Free AI Skills Check";
+  nav.appendChild(practicalLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="revenue-toolkit"]')) {
+  const toolkitLink = document.createElement("a");
+  toolkitLink.href = "ai-revenue-toolkit.html";
+  toolkitLink.dataset.nav = "revenue-toolkit";
+  toolkitLink.textContent = "AI Revenue Toolkit";
+  nav.appendChild(toolkitLink);
 }
 
 if (nav && !nav.querySelector('[data-nav="saas-decision"]')) {
