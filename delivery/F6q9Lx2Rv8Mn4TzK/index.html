@@ -1,0 +1,41 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Overdue Invoice Recovery Kit | Stratum Praxis</title><style>:root{--bg:#090b0e;--panel:#131820;--line:#2a313b;--text:#f3f5f7;--muted:#a7b0bc;--accent:#66e3c4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,sans-serif;line-height:1.6}.wrap{max-width:980px;margin:auto;padding:28px}.hero,.card{border:1px solid var(--line);background:var(--panel);border-radius:16px;padding:24px;margin-bottom:16px}h1{font-size:clamp(36px,6vw,64px);line-height:1;margin:0 0 14px}h2{margin:0 0 10px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media(max-width:720px){.grid{grid-template-columns:1fr}}textarea{width:100%;min-height:175px;background:#090d12;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:13px;font:inherit}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 15px;border:1px solid var(--line);border-radius:9px;background:transparent;color:var(--text);cursor:pointer;font-weight:700}.btn.primary{background:var(--accent);color:#07100e;border-color:var(--accent)}.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;font-size:12px;color:var(--muted)}ol,ul{padding-left:20px}.legal{font-size:12px;color:var(--muted)}</style></head><body><main class="wrap"><section class="hero"><span class="pill">Buyer delivery · v1.0</span><h1>Overdue Invoice Recovery Kit</h1><p class="muted">A practical follow-up system for freelancers and small service businesses. Use it to move from polite reminder → firm follow-up → final internal escalation without rewriting every message from scratch.</p><p class="legal">Operational communication templates only. Not legal, debt-collection, tax or accounting advice. Do not threaten remedies you are not entitled to use; check your contract and local law before applying fees or taking formal action.</p></section><section class="card"><h2>1. Recovery sequence</h2><ol><li><strong>Before due date:</strong> confirm invoice receipt and payment date.</li><li><strong>1–3 days overdue:</strong> short, neutral reminder; attach/relink invoice.</li><li><strong>7 days overdue:</strong> request a specific payment date and identify any invoice dispute.</li><li><strong>14 days overdue:</strong> firm follow-up, restate amount, due date, and requested resolution date.</li><li><strong>21+ days overdue:</strong> pause new discretionary work where contractually appropriate and decide whether to escalate internally, renegotiate, or seek professional advice.</li></ol></section><section class="grid"><article class="card"><h2>2. Friendly reminder</h2><textarea id="t1">Subject: Quick check on invoice [INVOICE #]
+
+Hi [NAME],
+
+Just checking that invoice [INVOICE #] for [AMOUNT], due [DUE DATE], reached you correctly. If payment is already in progress, no action needed.
+
+If anything is missing from the invoice, please let me know and I’ll fix it promptly.
+
+Thanks,
+[YOUR NAME]</textarea><div class="row"><button class="btn" onclick="copy('t1')">Copy</button></div></article><article class="card"><h2>3. Specific-date follow-up</h2><textarea id="t2">Subject: Payment date for invoice [INVOICE #]
+
+Hi [NAME],
+
+Invoice [INVOICE #] for [AMOUNT] was due on [DUE DATE] and is still showing as unpaid on my side.
+
+Could you confirm the expected payment date? If there is a billing issue or dispute, please tell me what needs to be corrected so we can resolve it.
+
+Thank you,
+[YOUR NAME]</textarea><div class="row"><button class="btn" onclick="copy('t2')">Copy</button></div></article><article class="card"><h2>4. Firm follow-up</h2><textarea id="t3">Subject: Action requested — invoice [INVOICE #]
+
+Hi [NAME],
+
+I’m following up again on invoice [INVOICE #] for [AMOUNT], originally due [DUE DATE]. Please confirm either:
+
+1) the payment date, or
+2) the specific issue preventing payment.
+
+Please reply by [RESPONSE DATE] so I can update my records and next steps.
+
+Regards,
+[YOUR NAME]</textarea><div class="row"><button class="btn" onclick="copy('t3')">Copy</button></div></article><article class="card"><h2>5. Work-pause notice</h2><textarea id="t4">Subject: Account status — invoice [INVOICE #]
+
+Hi [NAME],
+
+Invoice [INVOICE #] for [AMOUNT] remains unpaid after previous follow-ups. Under our current working arrangement, I need to pause new non-committed work until the outstanding balance is resolved.
+
+Please confirm the payment date or let me know immediately if the invoice is disputed.
+
+Regards,
+[YOUR NAME]</textarea><div class="row"><button class="btn" onclick="copy('t4')">Copy</button></div></article></section><section class="card"><h2>6. Recovery tracker</h2><p class="muted">Keep one line per overdue invoice. Copy this header into Sheets/Excel/Notion.</p><textarea id="csv">invoice_id,client,amount,currency,due_date,days_overdue,last_contact,next_action_date,client_response,status,notes
+INV-001,Example Client,1200,USD,2026-08-01,23,2026-08-20,2026-08-27,No reply,FOLLOW_UP,</textarea><div class="row"><button class="btn" onclick="copy('csv')">Copy CSV</button></div></section><section class="card"><h2>7. Decision rules</h2><ul><li><strong>Do not keep sending the same message.</strong> Every follow-up should ask for either a date, a dispute reason, or a resolution.</li><li><strong>Separate collection from emotion.</strong> Keep a written timeline and invoice facts.</li><li><strong>Do not invent late fees.</strong> Only reference fees or interest when valid under your agreement and applicable law.</li><li><strong>Stop scope creep.</strong> Do not add new unpaid work while an old invoice remains unresolved unless you deliberately choose to.</li><li><strong>Escalate when economics justify it.</strong> For material balances, consider an accountant, lawyer, licensed collection professional, or other appropriate local professional.</li></ul></section><section class="card"><h2>8. 10-minute routine</h2><ol><li>Sort overdue invoices by amount × days overdue.</li><li>Send the next appropriate message, not a generic duplicate.</li><li>Record the contact date and promised payment date.</li><li>Schedule one next action.</li><li>Close the loop when paid or formally disputed.</li></ol><p class="legal">Single-user license. You may customize these templates for your own business. Redistribution, resale, public reposting, or sharing this buyer delivery URL is not permitted.</p></section></main><script>function copy(id){navigator.clipboard.writeText(document.getElementById(id).value).then(()=>{event.target.textContent='Copied';setTimeout(()=>event.target.textContent=id==='csv'?'Copy CSV':'Copy',1200)})}</script></body></html>
