@@ -32,12 +32,9 @@ const p=new URLSearchParams(location.search);const session=p.get('session_id');c
 async function run(){
  if(!session){status.innerHTML='<span class="bad">決済セッションIDがありません。Stripe Checkout完了後のURLから開いてください。</span>';return}
  try{
-  const r=await fetch(API+'/verify?session_id='+encodeURIComponent(session));const j=await r.json();
-  if(!r.ok||!j.paid)throw new Error(j.error||'支払いを確認できませんでした');
-  const amount=Number(j.amount_total||j.amount||0);const currency=String(j.currency||'').toLowerCase();
-  if(amount&&amount<4980)throw new Error('この決済ではAI Implementation Kitを確認できませんでした。');
-  if(currency&&currency!=='jpy')throw new Error('この決済通貨ではAI Implementation Kitを確認できませんでした。');
-  status.innerHTML='<span class="good">支払いを確認しました。AI Implementation Kitを解放しました。</span>';
+  const r=await fetch(API+'/verify?offer=kit&session_id='+encodeURIComponent(session));const j=await r.json();
+  if(!r.ok||!j.paid||j.offer!=='kit'||Number(j.amount_total)!==4980||String(j.currency).toLowerCase()!=='jpy')throw new Error(j.error||'AI Implementation Kitの支払いを確認できませんでした');
+  status.innerHTML='<span class="good">AI Implementation Kitの支払いを確認しました。購入内容を解放しました。</span>';
   document.getElementById('content').hidden=false;
  }catch(e){status.innerHTML='<span class="bad">'+e.message+'</span><p class="muted">決済が完了している場合は少し待って再読み込みしてください。</p>'}
 }
