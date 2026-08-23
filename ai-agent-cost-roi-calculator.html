@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>AI Agent Cost & ROI Calculator 2026 | Payback, Human Review & Run Cost</title>
+<meta name="description" content="Free AI agent cost and ROI calculator for 2026. Estimate monthly savings, human-review overhead, run cost, payback period and first-year ROI before approving an AI agent project.">
+<link rel="canonical" href="https://stratumpraxis.com/ai-agent-cost-roi-calculator.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Agent Cost & ROI Calculator 2026">
+<meta property="og:description" content="Model benefit, run cost, human-review overhead and payback before approving an AI agent project.">
+<meta property="og:url" content="https://stratumpraxis.com/ai-agent-cost-roi-calculator.html">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{
+  "@context":"https://schema.org",
+  "@graph":[
+    {"@type":"WebApplication","name":"AI Agent Cost & ROI Calculator 2026","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://stratumpraxis.com/ai-agent-cost-roi-calculator.html","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"Free calculator for estimating AI-agent savings, operating cost, human-review overhead, payback and first-year ROI."},
+    {"@type":"FAQPage","mainEntity":[
+      {"@type":"Question","name":"What costs should I include for an AI agent?","acceptedAnswer":{"@type":"Answer","text":"Include implementation cost, recurring AI and software cost, retry or exception overhead, and the human-review time that remains after automation."}},
+      {"@type":"Question","name":"What is a good AI agent payback period?","acceptedAnswer":{"@type":"Answer","text":"There is no universal threshold. Compare payback with project risk, contract length, workflow stability and how confident you are in the benefit assumptions."}},
+      {"@type":"Question","name":"Does this calculator guarantee savings?","acceptedAnswer":{"@type":"Answer","text":"No. It is a planning model based only on the assumptions entered. Validate with real workflow data before committing spend."}}
+    ]}
+  ]
+}
+</script>
+<style>
+.calc-wrap{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(300px,.95fr);gap:22px;align-items:start}.panel{border:1px solid rgba(255,255,255,.16);border-radius:16px;padding:22px;background:rgba(255,255,255,.025)}.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{display:flex;flex-direction:column;gap:7px}.field label{font-size:13px;opacity:.82}.field input{width:100%;box-sizing:border-box;padding:12px 13px;border-radius:10px;border:1px solid rgba(255,255,255,.22);background:rgba(0,0,0,.18);color:inherit;font:inherit}.results{display:grid;grid-template-columns:1fr 1fr;gap:12px}.metric{padding:16px;border:1px solid rgba(255,255,255,.14);border-radius:12px}.metric span{display:block;font-size:12px;opacity:.7;text-transform:uppercase;letter-spacing:.08em}.metric strong{display:block;font-size:27px;margin-top:5px}.verdict{margin-top:14px;padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,.24)}.verdict strong{font-size:24px;display:block;margin-bottom:5px}.assumption{font-size:13px;opacity:.72;line-height:1.6}.formula{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;padding:12px;border-radius:10px;background:rgba(0,0,0,.18);overflow:auto}.source-note{font-size:13px;opacity:.76}.source-note a{text-decoration:underline}.cta-box{margin-top:20px}.decision-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px}.decision-grid .card{height:100%}@media(max-width:820px){.calc-wrap{grid-template-columns:1fr}.field-grid,.results{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<section class="hero"><div class="container">
+<p class="eyebrow">// Stratum Praxis · Free decision tool · 2026</p>
+<h1>AI Agent Cost & ROI Calculator</h1>
+<p class="hero-text">Before approving another agent, model the part most ROI calculators miss: the work the agent does not handle, human-review overhead, recurring run cost and the implementation bill.</p>
+<div class="button-row"><a class="button button-primary" href="#calculator">Run the free calculation</a><a class="button button-secondary" href="ai-saas-spend.html">Open the spend decision hub</a></div>
+<p class="fine">Planning model only. No guaranteed savings or financial, accounting, legal, procurement or security advice.</p>
+</div></section>
+
+<section class="section" id="calculator"><div class="container">
+<div class="section-heading"><p class="eyebrow">Model one workflow</p><h2>Use your real operating assumptions, not generic AI promises.</h2></div>
+<div class="calc-wrap">
+<div class="panel">
+<div class="field-grid">
+<div class="field"><label for="volume">Tasks per month</label><input id="volume" type="number" min="0" step="1" value="1000"></div>
+<div class="field"><label for="minutes">Human minutes per task today</label><input id="minutes" type="number" min="0" step="0.1" value="8"></div>
+<div class="field"><label for="rate">Loaded human hourly cost ($)</label><input id="rate" type="number" min="0" step="1" value="45"></div>
+<div class="field"><label for="automation">Agent handles end-to-end (%)</label><input id="automation" type="number" min="0" max="100" step="1" value="70"></div>
+<div class="field"><label for="review">Human review on handled tasks (%)</label><input id="review" type="number" min="0" max="100" step="1" value="20"></div>
+<div class="field"><label for="reviewMinutes">Review minutes when required</label><input id="reviewMinutes" type="number" min="0" step="0.1" value="2"></div>
+<div class="field"><label for="runCost">AI + software run cost / month ($)</label><input id="runCost" type="number" min="0" step="1" value="600"></div>
+<div class="field"><label for="buildCost">One-time implementation cost ($)</label><input id="buildCost" type="number" min="0" step="1" value="7500"></div>
+<div class="field"><label for="retry">Retry / exception cost buffer (%)</label><input id="retry" type="number" min="0" max="200" step="1" value="15"></div>
+<div class="field"><label for="benefitHaircut">Benefit confidence haircut (%)</label><input id="benefitHaircut" type="number" min="0" max="100" step="1" value="20"></div>
+</div>
+<p class="assumption">The confidence haircut deliberately reduces modeled labor savings. Use it when automation rate, adoption, workflow volume or quality is uncertain.</p>
+<div class="button-row"><button class="button button-primary" id="copyBtn" type="button">Copy decision summary</button><button class="button button-secondary" id="resetBtn" type="button">Reset example</button></div>
+</div>
+
+<div class="panel">
+<div class="results">
+<div class="metric"><span>Gross labor value / mo</span><strong id="gross">—</strong></div>
+<div class="metric"><span>Human review cost / mo</span><strong id="reviewCost">—</strong></div>
+<div class="metric"><span>Risk-adjusted benefit / mo</span><strong id="benefit">—</strong></div>
+<div class="metric"><span>Effective run cost / mo</span><strong id="effectiveRun">—</strong></div>
+<div class="metric"><span>Net value / mo</span><strong id="net">—</strong></div>
+<div class="metric"><span>Payback</span><strong id="payback">—</strong></div>
+<div class="metric"><span>First-year ROI</span><strong id="roi">—</strong></div>
+<div class="metric"><span>3-year net value</span><strong id="net36">—</strong></div>
+</div>
+<div class="verdict"><span class="eyebrow">Decision signal</span><strong id="verdict">—</strong><p id="verdictText">—</p></div>
+<div class="cta-box">
+<p id="nextStep">—</p>
+<div class="button-row"><a class="button button-primary" href="https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06" target="_blank" rel="noopener noreferrer" data-revenue="decision-kit">Build the full decision case — $39</a><a class="button button-secondary" href="ai-saas-spend-waste-audit.html" data-revenue="audit">Need independent review? $499</a></div>
+</div>
+</div>
+</div>
+</div></section>
+
+<section class="section section-accent"><div class="container">
+<div class="section-heading"><p class="eyebrow">Why model this now</p><h2>Cheaper tokens do not automatically mean cheaper agentic workflows.</h2></div>
+<p>Gartner said in August 2026 that inference cost per agentic workflow could rise more than fivefold through 2028 as multistep reasoning consumes more compute, even while unit token economics improve. The practical consequence is simple: model recurring operating cost and human oversight before using an agent as a cost-saving story.</p>
+<p class="source-note">Industry context: <a href="https://gcom.pdo.aws.gartner.com/en/newsroom/press-releases/2026-08-17-gartner-predicts-ai-inference-costs-per-agentic-workflow-will-increase-more-than-fivefold-through-2028" target="_blank" rel="noopener noreferrer">Gartner, Aug. 17, 2026</a>. This calculator is independent and is not affiliated with Gartner.</p>
+<div class="formula">Risk-adjusted monthly benefit = gross labor value − human review cost, then reduced by your confidence haircut.<br>Effective monthly run cost = stated run cost × (1 + retry/exception buffer).<br>First-year ROI = (12-month net operating value − implementation cost) ÷ (implementation cost + 12-month effective run cost).</div>
+</div></section>
+
+<section class="section"><div class="container">
+<div class="section-heading"><p class="eyebrow">Translate the math into a buying decision</p><h2>The calculator is the filter. The decision system is what prevents renewal drift.</h2></div>
+<div class="decision-grid">
+<article class="card"><h3>GO</h3><p>Payback is short, first-year ROI stays positive after a confidence haircut, and the workflow is stable enough to measure.</p></article>
+<article class="card"><h3>PILOT</h3><p>The economics may work, but uncertainty is still too high. Validate volume, automation rate, quality and review burden on a bounded workflow.</p></article>
+<article class="card"><h3>REVIEW</h3><p>Value is close to cost. Challenge plan size, tooling overlap, implementation scope and whether a simpler workflow change beats an agent.</p></article>
+<article class="card"><h3>STOP / REDESIGN</h3><p>Net monthly value is negative or payback is too long for the risk. Do not automate merely because the capability exists.</p></article>
+</div>
+<div class="button-row"><a class="button button-primary" href="ai-saas-spend-decision-kit.html">See the $39 decision system</a><a class="button button-secondary" href="ai-saas-spend-audit-checklist.html">Start with the free spend checklist</a></div>
+</div></section>
+
+<section class="section section-accent"><div class="container">
+<div class="section-heading"><p class="eyebrow">FAQ</p><h2>Keep the assumptions auditable.</h2></div>
+<div class="card-grid">
+<article class="card"><h3>What should count as run cost?</h3><p>Model/API usage, orchestration, automation software, hosting, monitoring and other recurring tooling directly required by the workflow.</p></article>
+<article class="card"><h3>Why include human review?</h3><p>An agent can handle part of a task while still creating a review queue. Ignoring that queue overstates the value returned to the business.</p></article>
+<article class="card"><h3>Why apply a confidence haircut?</h3><p>Early pilots often use optimistic assumptions. A haircut creates a conservative scenario before money is committed.</p></article>
+<article class="card"><h3>Does positive ROI mean “buy”?</h3><p>No. Security, reliability, data handling, workflow stability and strategic fit can still make a positive-looking project a bad decision.</p></article>
+</div>
+</div></section>
+</main>
+<footer class="site-footer"><div class="container footer-inner"><p>© 2026 Stratum Praxis</p><div><a href="/">Home</a> · <a href="ai-saas-spend.html">AI & SaaS Spend Hub</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a></div></div></footer>
+<script>
+(function(){
+const defaults={volume:1000,minutes:8,rate:45,automation:70,review:20,reviewMinutes:2,runCost:600,buildCost:7500,retry:15,benefitHaircut:20};
+const ids=Object.keys(defaults); const $=id=>document.getElementById(id); const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(Number.isFinite(n)?n:0);
+function val(id){return Math.max(0,parseFloat($(id).value)||0)}
+function calculate(){
+ const volume=val('volume'),minutes=val('minutes'),rate=val('rate'),automation=Math.min(100,val('automation'))/100,review=Math.min(100,val('review'))/100,reviewMinutes=val('reviewMinutes'),runCost=val('runCost'),buildCost=val('buildCost'),retry=val('retry')/100,haircut=Math.min(100,val('benefitHaircut'))/100;
+ const handled=volume*automation;
+ const gross=handled*(minutes/60)*rate;
+ const reviewCost=handled*review*(reviewMinutes/60)*rate;
+ const preHaircut=Math.max(0,gross-reviewCost);
+ const benefit=preHaircut*(1-haircut);
+ const effectiveRun=runCost*(1+retry);
+ const net=benefit-effectiveRun;
+ const payback=net>0?buildCost/net:Infinity;
+ const cost12=buildCost+(effectiveRun*12);
+ const benefit12=benefit*12;
+ const roi=cost12>0?((benefit12-cost12)/cost12)*100:(benefit12>0?Infinity:0);
+ const net36=(net*36)-buildCost;
+ $('gross').textContent=money(gross); $('reviewCost').textContent=money(reviewCost); $('benefit').textContent=money(benefit); $('effectiveRun').textContent=money(effectiveRun); $('net').textContent=money(net); $('payback').textContent=Number.isFinite(payback)?payback.toFixed(1)+' mo':'No payback'; $('roi').textContent=Number.isFinite(roi)?roi.toFixed(0)+'%':'∞'; $('net36').textContent=money(net36);
+ let verdict,text,next;
+ if(net<=0){verdict='STOP / REDESIGN';text='Recurring cost is greater than the risk-adjusted monthly value. Reduce scope, cost or review burden before approving the project.';next='Do not buy more tooling yet. First identify whether the workflow, plan size or implementation scope can be simplified.'}
+ else if(payback<=6 && roi>=50){verdict='GO — WITH MEASUREMENT';text='The model survives the current cost and uncertainty assumptions. Approve only with a baseline and post-launch measurement plan.';next='The $39 Decision Kit is the next logical layer if you want to turn this estimate into a repeatable approval and renewal record.'}
+ else if(payback<=12 && roi>=0){verdict='PILOT';text='The economics can work, but the margin for error is not wide. Run a bounded pilot and replace assumptions with measured data.';next='Use the Decision Kit to document the pilot, renewal exposure and KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL decision.'}
+ else {verdict='REVIEW';text='The project is not clearly uneconomic, but payback or first-year ROI is weak under these assumptions. Challenge costs and scope before approval.';next='If the spend is material, use the $499 independent audit instead of relying on optimistic internal estimates.'}
+ $('verdict').textContent=verdict; $('verdictText').textContent=text; $('nextStep').textContent=next;
+ return {gross,reviewCost,benefit,effectiveRun,net,payback,roi,net36,verdict};
+}
+ids.forEach(id=>$(id).addEventListener('input',calculate));
+$('resetBtn').addEventListener('click',()=>{ids.forEach(id=>$(id).value=defaults[id]);calculate()});
+$('copyBtn').addEventListener('click',async()=>{const r=calculate(); const summary=`AI Agent Cost & ROI Decision\nDecision: ${r.verdict}\nRisk-adjusted monthly benefit: ${money(r.benefit)}\nEffective monthly run cost: ${money(r.effectiveRun)}\nNet monthly value: ${money(r.net)}\nPayback: ${Number.isFinite(r.payback)?r.payback.toFixed(1)+' months':'No payback'}\nFirst-year ROI: ${Number.isFinite(r.roi)?r.roi.toFixed(0)+'%':'∞'}\n3-year net value: ${money(r.net36)}\nPlanning estimate only — validate assumptions with real workflow data.`; try{await navigator.clipboard.writeText(summary);$('copyBtn').textContent='Copied';setTimeout(()=>$('copyBtn').textContent='Copy decision summary',1400)}catch(e){window.prompt('Copy this summary:',summary)}});
+document.querySelectorAll('[data-revenue]').forEach(a=>a.addEventListener('click',()=>{try{const key='sp_revenue_click_'+a.dataset.revenue;localStorage.setItem(key,String((parseInt(localStorage.getItem(key)||'0',10))+1));localStorage.setItem('sp_last_revenue_click',new Date().toISOString())}catch(e){}}));
+calculate();
+})();
+</script>
+</body>
+</html>
