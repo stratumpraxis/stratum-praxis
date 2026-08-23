@@ -67,6 +67,16 @@ if (toolsGrid && !toolsGrid.querySelector('[data-funnel="saas-renewal"]')) {
   toolsGrid.appendChild(renewalCard);
 }
 
+// Surface one refreshed legacy product only after its checkout and delivery are live.
+if (toolsGrid && !toolsGrid.querySelector('[data-funnel="slide-factory"]')) {
+  const slideFactoryCard = document.createElement("a");
+  slideFactoryCard.className = "resource-card";
+  slideFactoryCard.href = "smartphone-ai-slide-factory.html";
+  slideFactoryCard.dataset.funnel = "slide-factory";
+  slideFactoryCard.innerHTML = '<span>Phone-first production kit · $19</span><h3>Smartphone AI Slide Factory</h3><p>Build decision-oriented decks with a brief, evidence ledger, 12 prompts, visual rules, QA and a sample 7-slide structure.</p><strong>View the $19 kit →</strong>';
+  toolsGrid.appendChild(slideFactoryCard);
+}
+
 const spendSection = document.querySelector("#spend-control");
 const spendButtons = spendSection?.querySelector(".button-row");
 if (spendButtons && !spendButtons.querySelector('[data-funnel="saas-waste"]')) {
@@ -99,6 +109,14 @@ if (nav && !nav.querySelector('[data-nav="revenue-toolkit"]')) {
   toolkitLink.dataset.nav = "revenue-toolkit";
   toolkitLink.textContent = "AI Revenue Toolkit";
   nav.appendChild(toolkitLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="slide-factory"]')) {
+  const slideLink = document.createElement("a");
+  slideLink.href = "smartphone-ai-slide-factory.html";
+  slideLink.dataset.nav = "slide-factory";
+  slideLink.textContent = "Slide Factory · $19";
+  nav.appendChild(slideLink);
 }
 
 if (nav && !nav.querySelector('[data-nav="saas-decision"]')) {
