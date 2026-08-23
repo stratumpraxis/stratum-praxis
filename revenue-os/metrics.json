@@ -1,0 +1,31 @@
+{
+  "last_updated": "2026-08-24",
+  "currency_priority": ["USD", "foreign_currency", "JPY"],
+  "verified_revenue": null,
+  "offers": {
+    "39_ai_value_realization_kit": {
+      "status": "live",
+      "traffic": null,
+      "checkout_starts": null,
+      "purchases": null,
+      "conversion_rate": null,
+      "notes": "Payhip and Gumroad destinations exist; Gumroad payout readiness remains unverified pending owner-side verification correction."
+    },
+    "99_ai_automation_opportunity_report": {
+      "status": "live",
+      "traffic": null,
+      "checkout_starts": null,
+      "purchases": null,
+      "conversion_rate": null
+    },
+    "499_ai_workflow_opportunity_audit": {
+      "status": "live",
+      "traffic": null,
+      "checkout_starts": null,
+      "purchases": null,
+      "conversion_rate": null
+    }
+  },
+  "current_primary_bottleneck": "Insufficient verified funnel metrics; payment/delivery integrity and trust-path validation take precedence over new product creation.",
+  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states."
+}
