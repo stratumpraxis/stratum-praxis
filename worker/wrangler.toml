@@ -1,0 +1,7 @@
+name = "ai-consultant-verify"
+main = "ai-consultant-worker.js"
+compatibility_date = "2026-08-23"
+
+[vars]
+REPORT_PRICE_ID = "price_1U7QlwJMK7zFs997et6h3stX"
+KIT_PRICE_ID = "price_1U7QmEJMK7zFs997F7xr4lDG"
