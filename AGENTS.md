@@ -24,8 +24,9 @@
 - Do not recreate $99+ offers merely because older context says they are future work; $99 and $499 offers are already live.
 - A shortened illustrative audit sample exists to reduce purchase uncertainty without fake testimonials or fabricated client results.
 - The accounting/bookkeeping landing page and sample audit are included in the sitemap.
-- Gumroad sent a payout-verification notice on 2026-08-19 stating that account information did not match the uploaded document. This requires owner-side identity/document correction in Gumroad payout settings; do not treat Gumroad payout readiness as verified until that is resolved.
+- Gumroad payout / identity verification issue reported on 2026-08-19 has been resolved by the owner. Do not treat Gumroad verification as an active blocker unless new evidence shows otherwise.
 - Recent outbound bookkeeping/accounting emails and follow-ups had no detected recipient replies as of 2026-08-21. Avoid duplicate or rapid repeat outreach; improve proof, targeting, and offer quality before increasing send volume.
+- As of 2026-08-24, Stripe Live returned zero PaymentIntents. The current revenue priority is therefore to produce the first verified purchase while improving measurement of qualified traffic, CTA clicks, checkout starts, purchases and conversion rate.
 
 ## Revenue Company OS
 
