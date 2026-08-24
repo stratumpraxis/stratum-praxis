@@ -134,4 +134,3 @@ if (nav && !nav.querySelector('[data-nav="global-product-kit"]')) {
   productLink.textContent = "Global Product Kit · $19";
   nav.appendChild(productLink);
 }
-
