@@ -32,6 +32,34 @@ async function verifyToken(secret, token) {
     return p;
   } catch { return null; }
 }
+async function anonymousPurchaseId(sid) {
+  const digest = await crypto.subtle.digest('SHA-256', te.encode('scos-purchase-v1|' + sid));
+  return b64u(new Uint8Array(digest)).slice(0, 32);
+}
+async function capturePostHog(env, sid, event, properties = {}) {
+  if (!env.POSTHOG_PROJECT_TOKEN || !sid) return false;
+  try {
+    const purchaseId = await anonymousPurchaseId(sid);
+    const payload = {
+      api_key: env.POSTHOG_PROJECT_TOKEN,
+      distinct_id: 'scos_' + purchaseId,
+      event,
+      properties: {
+        product: 'solo_company_os',
+        source: 'verified_worker',
+        '$process_person_profile': false,
+        '$insert_id': `scos-${event}-${purchaseId}`,
+        ...properties
+      }
+    };
+    const r = await fetch('https://us.i.posthog.com/i/v0/e/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    return r.ok;
+  } catch { return false; }
+}
 function offers(env) {
   return {
     report:{ priceId:env.REPORT_PRICE_ID,paymentLinkId:env.REPORT_PAYMENT_LINK_ID,amount:1980,currency:'jpy' },
@@ -99,6 +127,7 @@ export default {
         if (!paidFor(s,exp)) return json({error:'Solo Company OS payment was not confirmed'},402,cors);
         const paidEmail = String(s.customer_details?.email || s.customer_email || '').trim().toLowerCase();
         if (!paidEmail || paidEmail !== email) return json({error:'Purchase email does not match'},403,cors);
+        await capturePostHog(env, s.id, 'revenue_verified', { amount_total: s.amount_total, currency: s.currency });
         const token = await signToken(env.STRIPE_SECRET_KEY,s.id);
         return json({authorized:true,workspace_url:`${url.origin}/scos/workspace?token=${encodeURIComponent(token)}`},200,cors);
       }
@@ -109,6 +138,7 @@ export default {
         const s = await getSession(env,p.sid); const exp = offers(env).scos;
         if (!paidFor(s,exp)) return new Response('Purchase could not be verified.',{status:402,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
         const tracked = await markActivated(env,s);
+        if (tracked) await capturePostHog(env, s.id, 'activation', { activation_source: 'secure_workspace_v1' });
         return new Response(workspaceHtml(),{status:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, private','X-Robots-Tag':'noindex, nofollow, noarchive','Referrer-Policy':'no-referrer','X-SCOS-Activation-Tracked':tracked?'1':'0'}});
       }
 
