@@ -53,7 +53,6 @@
           throw new Error(result.error || 'Verification failed');
         }
         window.scosCapture && window.scosCapture('access_granted', { product: 'solo_company_os' });
-        window.scosCapture && window.scosCapture('activation', { product: 'solo_company_os' });
         status.innerHTML = '<span class="good">Verified. Opening your workspace…</span>';
         setTimeout(() => location.assign(result.workspace_url), 180);
       } catch (error) {
