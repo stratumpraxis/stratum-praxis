@@ -47,14 +47,14 @@ if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
 
 const toolsGrid = document.querySelector("#tools .resource-grid");
 
-// Capture the short-lived Aug. 2026 pricing-information gap with a timestamped
+// Capture the short-lived Aug. 2026 price-change decision window with a timestamped
 // calculator that routes into an already-live $39 decision product.
 if (toolsGrid && !toolsGrid.querySelector('[data-funnel="gpt56-price-window"]')) {
   const priceCard = document.createElement("a");
   priceCard.className = "resource-card";
   priceCard.href = "gpt-5-6-sol-api-cost-calculator.html";
   priceCard.dataset.funnel = "gpt56-price-window";
-  priceCard.innerHTML = '<span>Updated Aug 24 · Free calculator</span><h3>GPT-5.6 Sol API Cost Calculator</h3><p>Compare the announced temporary $4/$20 developer pricing with the $5/$30 standard list reference using your own workload.</p><strong>Calculate the price-cut impact →</strong>';
+  priceCard.innerHTML = '<span>Updated Aug 24 · Free calculator</span><h3>GPT-5.6 Sol API Cost Calculator</h3><p>Compare the current promotional $4/$20 pricing with the pre-cut $5/$30 baseline using your own workload.</p><strong>Calculate the price-cut impact →</strong>';
   toolsGrid.prepend(priceCard);
 }
 
