@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Solo Company Score — Stratum Praxis</title>
+<meta name="description" content="Score the six operating functions of your one-person company: Research, Decision, Build, Sell, Measure, Improve.">
+<style>
+:root{--bg:#0b0d10;--panel:#13171c;--text:#f3f5f7;--muted:#a8b0bb;--line:#29313a;--accent:#d9dde2;--soft:#1b2128}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;line-height:1.55}.wrap{max-width:920px;margin:auto;padding:28px 18px 72px}.brand{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(36px,7vw,68px);line-height:1.02;margin:28px 0 16px;letter-spacing:-.04em}.lead{font-size:20px;color:#c9d0d8;max-width:760px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin:34px 0}@media(max-width:700px){.grid{grid-template-columns:1fr}}.card{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:20px}.card h3{margin:0 0 8px;font-size:18px}.card p{margin:0;color:var(--muted);font-size:14px}.q{margin:18px 0;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:16px}.q strong{display:block;margin-bottom:12px}.opts{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.opts label{display:flex;align-items:center;justify-content:center;padding:10px 4px;border:1px solid var(--line);border-radius:10px;cursor:pointer;color:var(--muted)}.opts input{display:none}.opts label:has(input:checked){background:var(--text);color:#111;border-color:var(--text)}button,.cta{display:inline-block;background:var(--text);color:#0b0d10;border:0;border-radius:12px;padding:14px 18px;font-weight:800;text-decoration:none;cursor:pointer}.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}#result{display:none;margin-top:28px}.score{font-size:64px;font-weight:900;letter-spacing:-.05em}.bars{display:grid;gap:10px;margin:18px 0}.bar{background:var(--soft);border-radius:999px;overflow:hidden;height:12px}.bar span{display:block;height:100%;background:var(--accent)}.row{display:grid;grid-template-columns:105px 1fr 44px;gap:10px;align-items:center;font-size:13px}.tag{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;color:var(--muted);font-size:12px;margin:3px}.note{font-size:13px;color:var(--muted)}.footer{margin-top:48px;padding-top:22px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+</style>
+</head><body><main class="wrap">
+<div class="brand">STRATUM PRAXIS / SOLO COMPANY OS</div>
+<h1>Can one person operate like a company?</h1>
+<p class="lead">Find the weakest operating function in your business in under 5 minutes. You’ll get a concrete next action before any paywall.</p>
+<div class="grid">
+<div class="card"><h3>Research</h3><p>Do you reliably find real demand instead of guessing?</p></div>
+<div class="card"><h3>Decision</h3><p>Can you rank opportunities and kill weak ideas quickly?</p></div>
+<div class="card"><h3>Build</h3><p>Can you turn a validated idea into a usable asset fast?</p></div>
+<div class="card"><h3>Sell</h3><p>Can prospects understand, trust, and buy the offer?</p></div>
+<div class="card"><h3>Measure</h3><p>Do you know where the funnel is leaking?</p></div>
+<div class="card"><h3>Improve</h3><p>Does performance data change what you do next?</p></div>
+</div>
+<form id="quiz"></form>
+<button id="calc" type="button">Calculate my Solo Company Score</button>
+<section id="result" class="card">
+<div class="brand">YOUR SCORE</div><div class="score"><span id="total">0</span>/100</div>
+<p id="summary" class="lead"></p><div id="bars" class="bars"></div>
+<h3>Your first move</h3><p id="move"></p>
+<p><span class="tag">Free result</span><span class="tag">No login</span><span class="tag">Immediate action</span></p>
+<hr style="border:0;border-top:1px solid var(--line);margin:24px 0">
+<h2>Turn the score into an operating system.</h2>
+<p>Solo Company OS gives you a reusable workflow for Research → Decision → Build → Sell → Measure → Improve, with human approval at critical boundaries.</p>
+<a class="cta" href="https://buy.stripe.com/3cI3cwgfq1YLgF21tp6Zy0z" data-event="checkout_click">Get Solo Company OS — $49</a>
+<p class="note">One-time purchase. Built for solopreneurs, freelancers, creators, side-hustlers and small business owners.</p>
+</section>
+<div class="footer">Stratum Praxis — systems for practical AI operations. This diagnostic is educational and does not promise income or business outcomes.</div>
+</main>
+<script>
+const dims={Research:["I collect evidence from real buyers, searches, communities or marketplaces before building.","I can explain why a problem is urgent now."],Decision:["I score opportunities using consistent criteria instead of excitement alone.","I can stop or defer a weak idea without sunk-cost bias."],Build:["I can turn a selected opportunity into a usable MVP within a short cycle.","My AI workflow produces concrete assets, not just suggestions."],Sell:["My offer has a clear buyer, problem, outcome and price.","A buyer can reach checkout without needing a manual explanation from me."],Measure:["I track at least traffic, clicks, conversion and revenue by offer.","I can identify the weakest funnel stage from data."],Improve:["I run a recurring review that changes priorities based on results.","Successful workflows are documented and reusable while failed ones are stopped safely."]};
+const form=document.getElementById('quiz');let idx=0;for(const [d,qs] of Object.entries(dims)){qs.forEach((t,j)=>{idx++;const div=document.createElement('div');div.className='q';div.innerHTML=`<strong>${idx}. ${t}</strong><div class="opts">${[1,2,3,4,5].map(v=>`<label><input required type="radio" name="${d}${j}" value="${v}">${v}</label>`).join('')}</div><div class="note">1 = not true yet · 5 = consistently true</div>`;form.appendChild(div)})}
+document.getElementById('calc').onclick=()=>{const data=new FormData(form);if([...form.querySelectorAll('input[type=radio]')].filter(x=>x.checked).length<12){alert('Please answer all 12 questions.');return}const scores={};for(const d of Object.keys(dims)){let s=0;dims[d].forEach((_,j)=>s+=Number(data.get(d+j)));scores[d]=Math.round(s/10*100)}const total=Math.round(Object.values(scores).reduce((a,b)=>a+b,0)/6);document.getElementById('total').textContent=total;const weak=Object.entries(scores).sort((a,b)=>a[1]-b[1])[0];const copy={Research:'For the next offer, gather 10 concrete demand signals before building anything.',Decision:'Create one scoring sheet and require every new idea to beat your current best opportunity.',Build:'Shrink the next deliverable until a buyer can experience value within one work session.',Sell:'Rewrite the offer around one buyer, one painful problem, one outcome and one next step.',Measure:'Add a minimal funnel dashboard: visits → CTA clicks → checkout → purchases.',Improve:'Schedule one weekly bottleneck review. Improve only the weakest stage before adding more.'};document.getElementById('move').textContent=copy[weak[0]];document.getElementById('summary').textContent=total>=80?'Strong operating base. Your next gains will come from tightening the weakest function, not adding more tools.':total>=60?'You already have useful pieces, but one weak function is limiting the whole system.':'You do not need more AI tools yet. You need a smaller, connected operating loop.';const bars=document.getElementById('bars');bars.innerHTML='';for(const [d,s] of Object.entries(scores)){bars.innerHTML+=`<div class="row"><b>${d}</b><div class="bar"><span style="width:${s}%"></span></div><span>${s}</span></div>`}document.getElementById('result').style.display='block';document.getElementById('result').scrollIntoView({behavior:'smooth'});try{window.gtag&&gtag('event','solo_score_complete',{score:total,weakest:weak[0]})}catch(e){}};
+document.addEventListener('click',e=>{const a=e.target.closest('[data-event]');if(a){try{window.gtag&&gtag('event',a.dataset.event)}catch(_){}}});
+</script></body></html>
