@@ -1,0 +1,37 @@
+name: Verify Stratum Praxis Pages
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-stratumpraxis-pages.yml'
+      - 'agentic-ai-governance-permission-kit.html'
+      - 'ai-agent-vendor-due-diligence-pack.html'
+      - 'ai-agent-procurement-governance-guide.html'
+      - 'sitemap.xml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify-http:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Verify HTTPS pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          urls=(
+            'https://stratumpraxis.com/'
+            'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html'
+            'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
+            'https://stratumpraxis.com/ai-agent-procurement-governance-guide.html'
+            'https://stratumpraxis.com/sitemap.xml'
+          )
+          for url in "${urls[@]}"; do
+            echo "Checking $url"
+            curl --fail --silent --show-error --location --max-time 20 --retry 1 --retry-delay 2 "$url" >/dev/null
+          done
+          echo 'All Stratum Praxis HTTPS checks passed.'
