@@ -1,20 +1,21 @@
 
  ⛅️ wrangler 4.125.0
 ────────────────────
-Total Upload: 12.39 KiB / gzip: 4.87 KiB
-Worker Startup Time: 6 ms
+Total Upload: 13.64 KiB / gzip: 5.22 KiB
+Worker Startup Time: 4 ms
 Your Worker has access to the following bindings:
-Binding                                                            Resource                  
-env.REPORT_PRICE_ID ("price_1U7FcRJMK7zFs997kmkok1Dz")             Environment Variable      
-env.KIT_PRICE_ID ("price_1U7FciJMK7zFs997VNIz0aGy")                Environment Variable      
-env.REPORT_PAYMENT_LINK_ID ("plink_1U7XDkJMK7zFs997tsnql6MN")      Environment Variable      
-env.KIT_PAYMENT_LINK_ID ("plink_1U7XF5JMK7zFs997RVoxDxx0")         Environment Variable      
-env.SCOS_PRICE_ID ("price_1U7mYrJMK7zFs9977Shn883L")               Environment Variable      
-env.SCOS_PAYMENT_LINK_ID ("plink_1U7mZ4JMK7zFs997dOtXYOvc")        Environment Variable      
+Binding                                                                      Resource                  
+env.REPORT_PRICE_ID ("price_1U7FcRJMK7zFs997kmkok1Dz")                       Environment Variable      
+env.KIT_PRICE_ID ("price_1U7FciJMK7zFs997VNIz0aGy")                          Environment Variable      
+env.REPORT_PAYMENT_LINK_ID ("plink_1U7XDkJMK7zFs997tsnql6MN")                Environment Variable      
+env.KIT_PAYMENT_LINK_ID ("plink_1U7XF5JMK7zFs997RVoxDxx0")                   Environment Variable      
+env.SCOS_PRICE_ID ("price_1U7mYrJMK7zFs9977Shn883L")                         Environment Variable      
+env.SCOS_PAYMENT_LINK_ID ("plink_1U7mZ4JMK7zFs997dOtXYOvc")                  Environment Variable      
+env.POSTHOG_PROJECT_TOKEN ("phc_oTYapRSNXDtn8aY7wMNHfCDexRTkfb2H4...")       Environment Variable      
 
-Uploaded ai-consultant-verify (2.54 sec)
-Deployed ai-consultant-verify triggers (0.75 sec)
+Uploaded ai-consultant-verify (1.26 sec)
+Deployed ai-consultant-verify triggers (0.60 sec)
   https://ai-consultant-verify.practicalaireport.workers.dev
-Current Version ID: aaf6f14c-d152-42c7-a422-923309624aea
+Current Version ID: 2fe605cc-3cd4-411b-b69f-b5ae877fa65f
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
