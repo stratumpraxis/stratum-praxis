@@ -2,17 +2,19 @@
  ⛅️ wrangler 4.125.0
 ────────────────────
 Total Upload: 3.72 KiB / gzip: 1.27 KiB
-Worker Startup Time: 5 ms
+Worker Startup Time: 4 ms
 Your Worker has access to the following bindings:
 Binding                                                            Resource                  
 env.REPORT_PRICE_ID ("price_1U7FcRJMK7zFs997kmkok1Dz")             Environment Variable      
 env.KIT_PRICE_ID ("price_1U7FciJMK7zFs997VNIz0aGy")                Environment Variable      
 env.REPORT_PAYMENT_LINK_ID ("plink_1U7XDkJMK7zFs997tsnql6MN")      Environment Variable      
 env.KIT_PAYMENT_LINK_ID ("plink_1U7XF5JMK7zFs997RVoxDxx0")         Environment Variable      
+env.SCOS_PRICE_ID ("price_1U7mYrJMK7zFs9977Shn883L")               Environment Variable      
+env.SCOS_PAYMENT_LINK_ID ("plink_1U7mZ4JMK7zFs997dOtXYOvc")        Environment Variable      
 
-Uploaded ai-consultant-verify (2.72 sec)
-Deployed ai-consultant-verify triggers (0.53 sec)
+Uploaded ai-consultant-verify (2.08 sec)
+Deployed ai-consultant-verify triggers (4.00 sec)
   https://ai-consultant-verify.practicalaireport.workers.dev
-Current Version ID: 206dc60e-b45f-488a-8d93-583307fa86e5
+Current Version ID: ddb89ff0-8a86-4df9-8eae-4c4349e93334
 
 Cloudflare collects anonymous telemetry about your usage of Wrangler. Learn more at https://github.com/cloudflare/workers-sdk/tree/main/packages/wrangler/telemetry.md
