@@ -45,8 +45,20 @@ if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
   kitButtonRow.appendChild(gumroadLink);
 }
 
-// Surface the free AI Practical Skills Check as a first-party acquisition path.
 const toolsGrid = document.querySelector("#tools .resource-grid");
+
+// Capture the short-lived Aug. 2026 pricing-information gap with a timestamped
+// calculator that routes into an already-live $39 decision product.
+if (toolsGrid && !toolsGrid.querySelector('[data-funnel="gpt56-price-window"]')) {
+  const priceCard = document.createElement("a");
+  priceCard.className = "resource-card";
+  priceCard.href = "gpt-5-6-sol-api-cost-calculator.html";
+  priceCard.dataset.funnel = "gpt56-price-window";
+  priceCard.innerHTML = '<span>Updated Aug 24 · Free calculator</span><h3>GPT-5.6 Sol API Cost Calculator</h3><p>Compare the announced temporary $4/$20 developer pricing with the $5/$30 standard list reference using your own workload.</p><strong>Calculate the price-cut impact →</strong>';
+  toolsGrid.prepend(priceCard);
+}
+
+// Surface the free AI Practical Skills Check as a first-party acquisition path.
 if (toolsGrid && !toolsGrid.querySelector('[data-funnel="practical-skills"]')) {
   const practicalCard = document.createElement("a");
   practicalCard.className = "resource-card";
@@ -93,6 +105,14 @@ if (spendButtons && !spendButtons.querySelector('[data-funnel="saas-waste"]')) {
 
   spendButtons.prepend(renewalLink);
   spendButtons.append(wasteLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="gpt56-cost"]')) {
+  const priceLink = document.createElement("a");
+  priceLink.href = "gpt-5-6-sol-api-cost-calculator.html";
+  priceLink.dataset.nav = "gpt56-cost";
+  priceLink.textContent = "GPT-5.6 Cost";
+  nav.appendChild(priceLink);
 }
 
 if (nav && !nav.querySelector('[data-nav="practical-skills"]')) {
