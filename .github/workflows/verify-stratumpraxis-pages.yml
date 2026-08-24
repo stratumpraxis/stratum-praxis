@@ -8,6 +8,7 @@ on:
       - 'agentic-ai-governance-permission-kit.html'
       - 'ai-agent-vendor-due-diligence-pack.html'
       - 'ai-agent-procurement-governance-guide.html'
+      - 'ai-implementation-kit.html'
       - 'sitemap.xml'
   workflow_dispatch:
 
@@ -28,6 +29,7 @@ jobs:
             'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html'
             'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
             'https://stratumpraxis.com/ai-agent-procurement-governance-guide.html'
+            'https://stratumpraxis.com/ai-implementation-kit.html'
             'https://stratumpraxis.com/sitemap.xml'
           )
           for url in "${urls[@]}"; do
