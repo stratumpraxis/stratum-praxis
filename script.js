@@ -1,3 +1,99 @@
+// PostHog analytics: baseline pageviews and outbound checkout clicks.
+// The project token is a public client-side key by design; no secret credentials are embedded here.
+(function initPostHog() {
+  const apiKey = "phc_oTYapRSNXDtn8aY7wMNHfCDexRTkfb2H44MDVXwoUMSN";
+  const apiHost = "https://us.i.posthog.com";
+
+  if (window.posthog) return;
+
+  const posthog = (window.posthog = window.posthog || []);
+  posthog._i = posthog._i || [];
+  posthog.init = function (key, options, name) {
+    const targetName = name || "posthog";
+    const target = (window[targetName] = window[targetName] || []);
+    target.people = target.people || [];
+    target.toString = function (includeName) {
+      const label = "posthog";
+      return includeName !== 1 ? label : `${label} (stub)`;
+    };
+    target.people.toString = function () {
+      return `${target.toString(1)}.people (stub)`;
+    };
+
+    const methods = [
+      "capture",
+      "identify",
+      "alias",
+      "people.set",
+      "people.set_once",
+      "set_config",
+      "register",
+      "register_once",
+      "unregister",
+      "reset",
+      "get_distinct_id",
+      "opt_out_capturing",
+      "opt_in_capturing",
+      "has_opted_out_capturing",
+      "has_opted_in_capturing",
+    ];
+
+    const addStub = (method) => {
+      const parts = method.split(".");
+      const owner = parts.length === 2 ? target[parts[0]] : target;
+      const fnName = parts.length === 2 ? parts[1] : parts[0];
+      owner[fnName] = function () {
+        owner.push([fnName, ...arguments]);
+      };
+    };
+
+    methods.forEach(addStub);
+    posthog._i.push([key, options, targetName]);
+  };
+
+  const script = document.createElement("script");
+  script.async = true;
+  script.src = `${apiHost}/static/array.js`;
+  document.head.appendChild(script);
+
+  posthog.init(apiKey, {
+    api_host: apiHost,
+    capture_pageview: true,
+    capture_pageleave: true,
+    autocapture: true,
+    person_profiles: "identified_only",
+  });
+})();
+
+// Capture revenue-intent clicks before visitors leave for a payment provider.
+document.addEventListener("click", (event) => {
+  const link = event.target.closest("a[href]");
+  if (!link || !window.posthog?.capture) return;
+
+  let url;
+  try {
+    url = new URL(link.href, window.location.href);
+  } catch {
+    return;
+  }
+
+  const checkoutHosts = new Set([
+    "buy.stripe.com",
+    "payhip.com",
+    "gumroad.com",
+    "stratumpraxis.gumroad.com",
+  ]);
+
+  if (checkoutHosts.has(url.hostname)) {
+    window.posthog.capture("checkout_click", {
+      destination_host: url.hostname,
+      destination_url: url.href,
+      link_text: (link.textContent || "").trim().slice(0, 160),
+      source_path: window.location.pathname,
+    });
+  }
+});
+
 const menuButton = document.querySelector(".menu-button");
 const nav = document.querySelector(".site-nav");
 const year = document.querySelector("#year");
