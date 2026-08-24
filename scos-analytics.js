@@ -113,4 +113,3 @@
     if (CHECKOUT_HOSTS.has(destination.hostname)) captureBeforeNavigation('checkout_click', properties);
   });
 })();
-
