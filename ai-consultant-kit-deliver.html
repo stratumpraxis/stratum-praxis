@@ -4,7 +4,7 @@
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>AI Implementation Kit | Stratum Praxis</title>
 <style>
-:root{--bg:#090b0e;--panel:#11151b;--line:#29303a;--text:#f4f6f8;--muted:#a8b0bb;--good:#c7f9d4;--bad:#ffb4b4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.7}.wrap{max-width:860px;margin:auto;padding:42px 22px}.card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;margin:16px 0}.muted{color:var(--muted)}.good{color:var(--good)}.bad{color:var(--bad)}h1{font-size:clamp(32px,7vw,58px);line-height:1.1}.button{display:inline-block;background:var(--text);color:var(--bg);padding:14px 20px;border-radius:999px;text-decoration:none;font-weight:800;margin:8px 8px 0 0}code{background:#171c23;padding:2px 6px;border-radius:6px}ul,ol{padding-left:22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+:root{--bg:#090b0e;--panel:#11151b;--line:#29303a;--text:#f4f6f8;--muted:#a8b0bb;--good:#c7f9d4;--bad:#ffb4b4}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.7}.wrap{max-width:860px;margin:auto;padding:42px 22px}.card{border:1px solid var(--line);background:var(--panel);border-radius:18px;padding:22px;margin:16px 0}.muted{color:var(--muted)}.good{color:var(--good)}.bad{color:var(--bad)}h1{font-size:clamp(32px,7vw,58px);line-height:1.1}.button{display:inline-block;background:var(--text);color:var(--bg);padding:14px 20px;border-radius:999px;text-decoration:none;font-weight:800;margin:8px 8px 0 0}code{background:#171c23;padding:2px 6px;border-radius:6px}ul,ol{padding-left:22px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.template{white-space:pre-wrap;background:#171c23;border:1px solid var(--line);border-radius:12px;padding:16px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.65}@media(max-width:700px){.grid{grid-template-columns:1fr}}
 </style>
 <script defer src="scos-analytics.js"></script>
 </head>
@@ -13,17 +13,35 @@
 <h1>AI Implementation Kit</h1>
 <div id="status" class="card">Stripeの支払い情報を確認しています…</div>
 <section id="content" hidden>
-<div class="card"><h2>使い方</h2><p>診断結果のボトルネックに合うセクションから1つだけ実行してください。全部を同時に始める必要はありません。</p></div>
+<div class="card"><h2>最初にやること</h2><p>全部を始めないでください。今いちばん時間を使っている反復作業を<strong>1件だけ</strong>選び、その作業を「AI担当・人間承認・例外処理・成功指標」まで分解します。</p></div>
+
+<div class="card"><h2>1. AI Workflow Control Map</h2><p>AIを追加するだけではなく、仕事の責任分界を決めます。下の5項目を埋めてください。</p><div class="template">対象作業：
+AIが担当する範囲：
+人間が承認する地点：
+例外が起きた時の処理：
+成功と判定する数字：</div><p class="muted">目安：判断ミスの影響が大きい作業ほど、人間承認を前に置きます。低リスクで反復性が高い作業ほどAI担当範囲を広げます。</p></div>
+
 <div class="grid">
-<div class="card"><h2>反復作業棚卸し</h2><p>5営業日、作業名・回数・1回時間・判断必要度・例外率を記録。<strong>頻度 × 時間が大きく、判断必要度が低い作業</strong>から1件選びます。</p></div>
-<div class="card"><h2>市場機会スコアリング</h2><p>需要・既存金流・実装難易度・既存資産適合・販売までの距離を1〜10で評価し、上位1件だけ実行します。</p></div>
-<div class="card"><h2>既存資産→商品化</h2><ol><li>既存資産</li><li>解く問題</li><li>対象者</li><li>得られる結果</li><li>納品形式</li><li>価格</li><li>次の商品</li></ol></div>
-<div class="card"><h2>無料→有料導線チェック</h2><p><code>Landing → Start → Complete → Result → CTA → Checkout → Purchase → Upsell</code></p><p>最も弱い1地点だけ改善します。</p></div>
-<div class="card"><h2>30日AI Pilot Planner</h2><p>対象業務、現状時間、品質基準、人間承認点、AI担当範囲、例外処理、成功指標を固定して30日で検証します。</p></div>
-<div class="card"><h2>再診断プロトコル</h2><p>30日後に同じ診断を実施し、スコア差・削減時間・販売導線の変化を比較して次の弱点へ進みます。</p></div>
+<div class="card"><h2>2. 反復作業棚卸し</h2><p>5営業日、作業名・回数・1回時間・判断必要度・例外率を記録。<strong>頻度 × 時間が大きく、判断必要度が低い作業</strong>から1件選びます。</p></div>
+<div class="card"><h2>3. 市場機会スコアリング</h2><p>需要・既存金流・実装難易度・既存資産適合・販売までの距離を1〜10で評価し、上位1件だけ実行します。</p></div>
+<div class="card"><h2>4. 既存資産→商品化</h2><ol><li>既存資産</li><li>解く問題</li><li>対象者</li><li>得られる結果</li><li>納品形式</li><li>価格</li><li>次の商品</li></ol></div>
+<div class="card"><h2>5. 無料→有料導線チェック</h2><p><code>Landing → Start → Complete → Result → CTA → Checkout → Purchase → Upsell</code></p><p>最も弱い1地点だけ改善します。</p></div>
+<div class="card"><h2>6. 30日AI Pilot Planner</h2><p>対象業務、現状時間、品質基準、人間承認点、AI担当範囲、例外処理、成功指標を固定して30日で検証します。</p></div>
+<div class="card"><h2>7. 再診断プロトコル</h2><p>30日後に同じ診断を実施し、スコア差・削減時間・販売導線の変化を比較して次の弱点へ進みます。</p></div>
 </div>
+
+<div class="card"><h2>7日実装スプリント</h2><div class="template">Day 1：対象作業を1件決める
+Day 2：現状時間・回数・失敗例を記録
+Day 3：AI担当 / 人間承認 / 例外処理を決める
+Day 4：1回だけ実行して品質を確認
+Day 5：3〜5回繰り返して例外を記録
+Day 6：成功指標を比較
+Day 7：続行 / 修正 / 中止を決める</div><p>成功判定は「便利だった」ではなく、<strong>時間・回数・エラー・売上・コスト</strong>のうち少なくとも1つで比較してください。</p></div>
+
+<div class="card"><h2>成功判定チェック</h2><ul><li>作業時間は何分減ったか</li><li>人間の確認回数は増えたか減ったか</li><li>例外・やり直しは何件出たか</li><li>品質基準を満たした割合は何％か</li><li>売上・コスト・処理量に変化はあったか</li></ul><p><strong>改善が数字で確認できた作業だけ横展開します。</strong></p></div>
+
 <div class="card"><h2>既存ツールを使う</h2><a class="button" href="https://audit.stratumpraxis.com">AI Automation Audit</a><a class="button" href="https://icy-scene-001e.practicalaireport.workers.dev">ROI Calculator</a><a class="button" href="https://stratum-offer-optimizer.pages.dev/">Offer Optimizer</a></div>
-<div class="card"><h2>次の行動</h2><p>1つ実装したら30日後に再診断し、次のボトルネックへ進んでください。</p><a class="button" href="ai-consultant.html">再診断する</a></div>
+<div class="card"><h2>次の行動</h2><p>まずControl Mapを1件完成させ、7日スプリントを回してください。30日後に再診断し、数字で改善した作業だけ残します。</p><a class="button" href="ai-consultant.html">再診断する</a></div>
 <p class="muted">この商品は実行支援用デジタル教材です。収益・削減額・成果を保証するものではありません。</p>
 </section>
 </main>
