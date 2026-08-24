@@ -6,6 +6,7 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 ## Start with a free tool
 
+- [GPT-5.6 Sol API Cost Calculator — Aug. 2026 price-cut window](https://stratumpraxis.com/gpt-5-6-sol-api-cost-calculator.html) — compare the temporary $4 input / $20 output promotional pricing announced Aug. 21 with the $5 / $30 standard list reference using your own request volume and token assumptions; verify the price actually billed to your account or provider.
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify the business task most ready for useful AI automation.
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate the time and labor value a repetitive workflow could save.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a focused 7-day pilot.
