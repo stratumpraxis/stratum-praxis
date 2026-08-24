@@ -1,1 +1,68 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>Solo Company OS — Verify Purchase</title><style>:root{--b:#0b0d10;--p:#14181d;--t:#f3f5f7;--m:#aab2bc;--l:#2a3139}*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--t);font-family:Inter,system-ui,sans-serif;line-height:1.55}.w{max-width:720px;margin:auto;padding:60px 18px}.brand{font-size:12px;letter-spacing:.14em;color:var(--m)}h1{font-size:clamp(38px,7vw,64px);line-height:1.02;margin:22px 0}.card{background:var(--p);border:1px solid var(--l);border-radius:18px;padding:22px}.m{color:var(--m)}label{display:block;margin:18px 0 8px;font-weight:700}input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--l);background:#0d1014;color:var(--t);font-size:16px}button{width:100%;margin-top:14px;padding:14px;border:0;border-radius:12px;font-weight:800;cursor:pointer}.bad{color:#ffb4b4}.good{color:#c7f9d4}</style><script defer src="scos-analytics.js"></script></head><body><main class="w"><div class="brand">STRATUM PRAXIS · SECURE DELIVERY</div><h1>Verify your purchase.</h1><p class="m">Your Stripe Checkout session is checked server-side. Enter the same email address used at checkout to open Solo Company OS.</p><div class="card"><div id="status" class="m">Waiting for verification.</div><label for="email">Purchase email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"><button id="open">Open Solo Company OS</button></div><p class="m">This page does not contain the paid workspace itself. The workspace is served only after payment and email verification.</p></main><script>const API='https://ai-consultant-verify.stratumpraxis.workers.dev';const p=new URLSearchParams(location.search);const sid=p.get('session_id');const st=document.getElementById('status');const btn=document.getElementById('open');window.addEventListener('load',()=>{window.scosCapture&&scosCapture('scos_access_view',{funnel:'solo_company_os',has_session:!!sid})});if(!sid||!sid.startsWith('cs_')){st.innerHTML='<span class="bad">Checkout session is missing. Open this page from the Stripe payment completion redirect.</span>';btn.disabled=true;window.scosCapture&&scosCapture('scos_access_missing_session',{funnel:'solo_company_os'})}btn.onclick=async()=>{const email=document.getElementById('email').value.trim();if(!email){st.innerHTML='<span class="bad">Enter the email used at checkout.</span>';return}btn.disabled=true;st.textContent='Verifying payment and purchaser email…';window.scosCapture&&scosCapture('scos_verify_submit',{funnel:'solo_company_os'});try{const r=await fetch(API+'/scos/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid,email})});const j=await r.json();if(!r.ok||!j.authorized||!j.workspace_url)throw new Error(j.error||'Verification failed');window.scosIdentify&&scosIdentify('scos_'+sid,{product:'solo_company_os',paid:true});window.scosCapture&&scosCapture('scos_access_granted',{funnel:'solo_company_os'});st.innerHTML='<span class="good">Verified. Opening your workspace…</span>';setTimeout(()=>location.assign(j.workspace_url),180)}catch(e){window.scosCapture&&scosCapture('scos_access_denied',{funnel:'solo_company_os',reason:String(e.message||'verification_failed').slice(0,120)});st.innerHTML='<span class="bad">'+e.message+'</span>';btn.disabled=false}}</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Solo Company OS — Verify Purchase</title>
+  <style>:root{--b:#0b0d10;--p:#14181d;--t:#f3f5f7;--m:#aab2bc;--l:#2a3139}*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--t);font-family:Inter,system-ui,sans-serif;line-height:1.55}.w{max-width:720px;margin:auto;padding:60px 18px}.brand{font-size:12px;letter-spacing:.14em;color:var(--m)}h1{font-size:clamp(38px,7vw,64px);line-height:1.02;margin:22px 0}.card{background:var(--p);border:1px solid var(--l);border-radius:18px;padding:22px}.m{color:var(--m)}label{display:block;margin:18px 0 8px;font-weight:700}input{width:100%;padding:14px;border-radius:12px;border:1px solid var(--l);background:#0d1014;color:var(--t);font-size:16px}button{width:100%;margin-top:14px;padding:14px;border:0;border-radius:12px;font-weight:800;cursor:pointer}.bad{color:#ffb4b4}.good{color:#c7f9d4}</style>
+  <script defer src="scos-analytics.js"></script>
+</head>
+<body data-funnel="solo_company_os" data-product="solo_company_os">
+  <main class="w">
+    <div class="brand">STRATUM PRAXIS · SECURE DELIVERY</div>
+    <h1>Verify your purchase.</h1>
+    <p class="m">Your Stripe Checkout session is checked server-side. Enter the same email address used at checkout to open Solo Company OS.</p>
+    <div class="card">
+      <div id="status" class="m" aria-live="polite">Waiting for verification.</div>
+      <label for="email">Purchase email</label>
+      <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+      <button id="open">Open Solo Company OS</button>
+    </div>
+    <p class="m">This page does not contain the paid workspace itself. The workspace is served only after payment and email verification.</p>
+  </main>
+  <script>
+    const API = 'https://ai-consultant-verify.stratumpraxis.workers.dev';
+    const sid = new URLSearchParams(location.search).get('session_id');
+    const status = document.getElementById('status');
+    const button = document.getElementById('open');
+
+    if (!sid || !sid.startsWith('cs_')) {
+      status.innerHTML = '<span class="bad">Checkout session is missing. Open this page from the Stripe payment completion redirect.</span>';
+      button.disabled = true;
+      window.addEventListener('load', () => window.scosCapture && window.scosCapture('access_denied', { reason: 'missing_session' }), { once: true });
+    }
+
+    button.addEventListener('click', async () => {
+      const email = document.getElementById('email').value.trim();
+      if (!email) {
+        status.innerHTML = '<span class="bad">Enter the email used at checkout.</span>';
+        return;
+      }
+      button.disabled = true;
+      status.textContent = 'Verifying payment and purchaser email…';
+      window.scosCapture && window.scosCapture('verification_submit', { product: 'solo_company_os' });
+      try {
+        const response = await fetch(API + '/scos/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ session_id: sid, email })
+        });
+        const result = await response.json();
+        if (!response.ok || !result.authorized || !result.workspace_url) {
+          throw new Error(result.error || 'Verification failed');
+        }
+        window.scosCapture && window.scosCapture('access_granted', { product: 'solo_company_os' });
+        window.scosCapture && window.scosCapture('activation', { product: 'solo_company_os' });
+        status.innerHTML = '<span class="good">Verified. Opening your workspace…</span>';
+        setTimeout(() => location.assign(result.workspace_url), 180);
+      } catch (error) {
+        const reason = String(error.message || 'verification_failed').slice(0, 120);
+        window.scosCapture && window.scosCapture('access_denied', { product: 'solo_company_os', reason });
+        status.innerHTML = '<span class="bad">' + reason.replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char])) + '</span>';
+        button.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>
