@@ -1,9 +1,11 @@
 name = "ai-consultant-verify"
 main = "ai-consultant-worker.js"
-compatibility_date = "2026-08-23"
+compatibility_date = "2026-08-24"
 
 [vars]
 REPORT_PRICE_ID = "price_1U7FcRJMK7zFs997kmkok1Dz"
 KIT_PRICE_ID = "price_1U7FciJMK7zFs997VNIz0aGy"
 REPORT_PAYMENT_LINK_ID = "plink_1U7XDkJMK7zFs997tsnql6MN"
 KIT_PAYMENT_LINK_ID = "plink_1U7XF5JMK7zFs997RVoxDxx0"
+SCOS_PRICE_ID = "price_1U7mYrJMK7zFs9977Shn883L"
+SCOS_PAYMENT_LINK_ID = "plink_1U7mZ4JMK7zFs997dOtXYOvc"
