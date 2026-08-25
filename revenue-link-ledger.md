@@ -1,8 +1,48 @@
 # Revenue Link Ledger
 
-Last updated: 2026-08-25
+Last updated: 2026-08-26
 
 Use this file as the source of truth when preparing X posts, note articles, comparison pages, affiliate content, and internal cross-links.
+
+## Current product validation cycle — 2026-08-26
+
+### External distribution actually placed
+
+- Public GitHub placement: https://github.com/stratumpraxis/stratum-praxis#current-digital-products
+- Placement commit: `f1c2782d760c3313419b6b4ca10bd1d10cd9d96e`
+- AI App Builder Router 2026: https://payhip.com/b/LBtbr
+- AI Council Builder GitHub-attributed LP: https://stratumpraxis.com/ai-council-builder.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=ai_council_builder
+- Smartphone Income Blueprint GitHub-attributed LP: https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_income_blueprint
+- Smartphone AI Slide Factory GitHub-attributed LP: https://stratumpraxis.com/smartphone-ai-slide-factory.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_ai_slide_factory
+- Search distribution: IndexNow expanded to AI Council EN/JA, Smartphone Income Blueprint, and Smartphone AI Slide Factory; execution confirmed successful on 2026-08-26.
+
+### Distribution blockers that must not be misreported as completed posts
+
+- Buffer API authentication succeeds, but the connected organization currently returns zero channels. Therefore Buffer cannot create a real social post yet.
+- The previous Smartphone Income one-shot distribution run was a safe no-op while the API key was missing. Do not count it as a post.
+- Medium / DEV / note / X / YouTube remain outside the currently connected publishing surface. Only add a posting URL to the ledger after a real publish succeeds.
+
+### Measured baseline
+
+- Smartphone Income Blueprint, latest 30-day non-test PostHog funnel at verification time: `funnel_view = 2`, `primary_cta_click = 0`, `checkout_click = 0`.
+- Current interpretation: the measured leak is after landing-page arrival and before the tracked primary CTA.
+- AI Council Builder EN/JA: no matching product journey events returned for the same validation query at verification time.
+- Smartphone AI Slide Factory: product-specific funnel/CTA/checkout instrumentation added and deployed on 2026-08-26; real-user traffic must accumulate before a conversion rate can be claimed.
+
+### Checkout / buyer delivery
+
+- AI Council Builder EN — $29: Stripe Live active; paid Checkout Session + exact offer + purchase email are verified server-side before the private Worker workspace opens; Activation writes Stripe metadata and a PostHog activation event.
+- AI Council Builder JA — ¥3,980: same verified-buyer pattern as EN with its own exact Payment Link and JPY offer checks.
+- Smartphone Income Blueprint — $19: Stripe Live active; exact paid offer + purchase email → signed token → protected Buyer Kit → Stripe/PostHog Activation.
+- Smartphone AI Slide Factory — $19: live Stripe offer confirmed at `price_1U7ezoJMK7zFs9972EKHorVW` / `plink_1U7ezzJMK7zFs997bCPxNloj`; product funnel instrumentation is live. A Stripe-session verification Worker and access page were added on 2026-08-26; switch the Payment Link completion redirect only after Worker deployment is verified.
+
+### Genuine-purchase gate
+
+- Latest checked Stripe Checkout Sessions contained no `payment_status=paid` result for this validation pass.
+- Smartphone Income has at least one real open/unpaid Checkout Session, which proves checkout initiation but not purchase.
+- Therefore the first genuine Stripe purchase remains `WAITING FOR REAL BUYER`.
+- A genuine-purchase completion requires: `paid purchase → buyer verification → buyer-only delivery → activation → revenue record`.
+- Never convert 0 to 1 through test traffic, internal QA, or assumed delivery.
 
 ## Priority Revenue Pipe — AI & SaaS Spend Decisions
 
