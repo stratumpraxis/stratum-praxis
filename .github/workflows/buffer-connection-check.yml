@@ -1,0 +1,22 @@
+name: Buffer Connection Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/buffer-connection-check.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify Buffer API connection without posting
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: node distribution/buffer-connection-check.mjs
