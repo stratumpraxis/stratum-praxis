@@ -1,43 +1,52 @@
-# Daily Edge / Atlas Lounge handoff
+# Repeat-Visit / Premium Asset handoff
 
-## Purpose
-Build repeat-visit information assets that can be operated at near-zero marginal cost, monetize naturally, and avoid unnecessary copyright, financial-advice, gambling, security, or platform-policy risk.
+## Objective
+Build information assets people naturally revisit, monetize them without incentivized ad clicks, and keep responsibility/copyright/operating burden low. Do not treat user-suggested categories as the answer; start from successful market structures and recombine them.
 
-## Operating structure
-- Daily Edge = free routine-information traffic hub.
-- Atlas Lounge = premium/high-value membership layer, separate tone and audience.
-- Note Writer = periodically turns verified insights from the hub into standalone note-ready articles; do not auto-publish without a supported publishing connection.
-- Counterpart rule = when a lane stalls, add only the specialist needed for that bottleneck (rights/licensing, distribution, measurement, monetization, editorial QA, premium offer).
+## Current ranking
+1. **StackPulse** — AI/SaaS/cloud reliability + material-change monitoring. Best risk-adjusted B2B lane: repeat pain, official-source facts, free SEO pages, paid multi-service boards/alerts/history.
+2. **Premium Fare Radar** — premium-economy/business/first-class deal alerts. Proven freemium membership pattern; high affiliate intent. Needs approved fare/affiliate data before full launch.
+3. **Atlas Privilege** — quiet self-service premium membership: premium travel, golf/resort windows, event access radar, partner benefits. No noisy community or concierge dependency as the base product.
+4. **Routine utility network** — time/date/weather/currency/transport only where near-zero-cost data rights are clear. Good traffic layer, weaker monetization unless scale is large.
+5. **Public-program/deadline radar** — useful supporting lane, not the primary business unless repeat usage and conversion outperform stronger lanes.
 
-## Priority information lanes
-1. Public benefits, grants, deadlines and official programs.
-2. Travel comparison and high-intent booking research.
-3. Time/date/business-day utilities with browser-side calculation.
-4. Official policy, pricing and platform changes that alter user costs or decisions.
-5. FX for practical money translation, not trading advice.
-6. Gold/market data only after commercial redistribution rights are explicitly verified.
+## Patterns taken from successful models
+- Timeanddate: free universal utility + responsible advertising.
+- StatusGator: free monitoring → paid boards, alerts, history, integrations and enterprise tiers.
+- Flightradar24: compelling free live utility → premium depth + business/API layer.
+- Going: free sample → paid Premium → higher-priced Elite for premium-cabin opportunities.
+- Travelzoo: closed paid travel club + negotiated offers.
+- FoundersCard: self-service member benefits, travel/lifestyle privileges and partner economics.
+- LXV / premium golf-travel clubs: narrow identity + curated access beats generic “rich people community.”
 
 ## Monetization rules
-- Never encourage ad clicks for the purpose of generating revenue.
-- Use compliant CPM/CPC publisher inventory, contextual affiliate links, paid membership, sponsorship and premium research only where platform/program terms permit.
-- Never fabricate affiliate IDs, audience size, sponsor demand, exclusivity, awards, returns or savings.
-- Travel affiliate candidates: Skyscanner affiliate / Travelpayouts after project approval and real partner IDs exist.
-- Display ads: AdSense or another approved publisher network only after site eligibility and account approval.
+- Never ask/incentivize users to click ads for revenue. Use compliant CPM/CPC inventory only through approved publisher programs.
+- Affiliate links must answer an existing user intent (book, compare, redeem, buy); no fake partner IDs.
+- Paid membership must unlock recurring utility, earlier alerts, better filtering, saved watchlists or verified benefits—not prestige alone.
+- Sponsors/partners cannot buy editorial rankings or fabricated access.
+
+## Premium audience rule
+Target calm, self-directed, time-sensitive affluent users rather than high-touch clients. Base membership must work without manual concierge, private chat moderation or personalized financial advice. Concierge/events can be separately priced later if economics justify them.
 
 ## Hold / kill rules
-- Hold any live market-data module when redistribution/commercial rights are unclear.
-- Kill crypto-first community positioning unless a later evidence review shows exceptional risk-adjusted value; security/fraud/moderation burden is currently too high for the desired operating model.
-- Avoid gambling/horse-racing as a primary acquisition lane unless licensing, data rights and responsibility are separately reviewed.
-- Do not create new domains until one lane shows repeat visits, search impressions, affiliate clicks, membership interest or sponsor demand worth separating.
+- Hold live market/gold data unless commercial redistribution rights are explicit.
+- Hold premium-flight automation until approved data/affiliate access exists.
+- Hold claims of private golf/event/hotel access until real partner rights exist.
+- Kill crypto/gambling-first acquisition unless later evidence shows unusually strong risk-adjusted economics.
+- Do not spin up a new domain until one lane shows repeat visitors, search impressions, outbound intent, membership interest or sponsor/partner demand.
 
-## Current build
-- `daily-edge/index.html` — staging traffic hub, noindex until domain/brand is chosen.
-- `atlas-lounge/index.html` — staging premium membership concept, noindex until product fit is clearer.
-- `content/note-drafts/2026-08-26-routine-information-assets.md` — first Note Writer output.
+## Writer Cell rule
+Do **not** create a separate Note memo system. When research produces a publishable insight, convert it directly into a ready-to-publish Note draft plus optional X copy. Keep drafts as outputs, not planning notes. Human-only step remains final publishing where no supported connector exists.
 
-## Next bottlenecks
-1. Verify deployment and analytics events.
-2. Decide brand/domain only after observing which lane earns repeat usage.
-3. Connect approved affiliate/publisher IDs; do not redesign pages just to add them.
-4. Add update automation only for sources with clear terms and stable official feeds/APIs.
-5. Track returning visitors, outbound affiliate intent, membership-interest clicks, and sponsor inquiries.
+## Current assets
+- `stack-pulse/index.html` — noindex staging concept for AI/SaaS reliability monitoring.
+- `daily-edge/index.html` — noindex incubator/traffic experiment, no longer treated as the main product.
+- `atlas-lounge/index.html` — refocused self-service premium membership staging page.
+- `content/note-drafts/` — publish-ready Writer Cell outputs.
+
+## Next evidence gates
+1. Verify deployment + analytics.
+2. Validate official-source ingestion/terms for StackPulse and measure interest.
+3. Apply/verify approved travel affiliate or fare-data access before launching fare alerts.
+4. Measure returning visitors, outbound intent and membership-interest clicks before choosing standalone domains.
+5. Expand only the lane that earns evidence; weak lanes stay incubated or die.
