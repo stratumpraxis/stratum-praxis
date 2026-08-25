@@ -1,0 +1,31 @@
+[
+  {
+    "id":"lr-01",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Most people think household resilience means buying more stuff. It usually means removing single points of failure: one payment method, one charger, one food plan, one backup. I made a free 30-point check across six everyday systems.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=life_resilience"
+  },
+  {
+    "id":"lr-02",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"A useful preparedness question is not “Do I own emergency gear?” It is “Could normal life keep working for 72 hours if one system stopped?” Food, water, power, money, home routines and backups all matter.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=72h_resilience"
+  },
+  {
+    "id":"lr-03",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Small recurring leaks are easy to ignore because none of them feels serious alone: unused subscriptions, food waste, replacement purchases, fees. Annualize them and the picture changes. Check the Money section in this free diagnostic.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=money_leaks"
+  },
+  {
+    "id":"lr-pin-01",
+    "active":true,
+    "services":["pinterest"],
+    "text":"30-Point Household Resilience Checklist — score food, water & power, money, home systems, free time and backups in about 3 minutes.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=pinterest&utm_medium=pin&utm_campaign=household_resilience",
+    "imageUrl":""
+  }
+]
