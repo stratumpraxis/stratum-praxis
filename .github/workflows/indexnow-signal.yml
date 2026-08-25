@@ -1,0 +1,39 @@
+name: Signal Praxis IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'signal/**'
+      - 'sitemap.xml'
+      - '54b81c12e07af0e37b6ab0ac24469586.txt'
+  workflow_dispatch:
+
+concurrency:
+  group: signal-indexnow
+  cancel-in-progress: true
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for GitHub Pages deployment edge
+        run: sleep 45
+      - name: Notify IndexNow once
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --retry 1 --retry-delay 10 \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            -d '{
+              "host":"stratumpraxis.com",
+              "key":"54b81c12e07af0e37b6ab0ac24469586",
+              "keyLocation":"https://stratumpraxis.com/54b81c12e07af0e37b6ab0ac24469586.txt",
+              "urlList":[
+                "https://stratumpraxis.com/signal/",
+                "https://stratumpraxis.com/signal/bing-indexnow-2026.html",
+                "https://stratumpraxis.com/signal/google-discover-preferred-sources-2026.html",
+                "https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html"
+              ]
+            }' \
+            https://api.indexnow.org/indexnow
