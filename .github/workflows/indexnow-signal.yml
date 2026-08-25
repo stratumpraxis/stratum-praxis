@@ -5,7 +5,10 @@ on:
     branches: [main]
     paths:
       - 'signal/**'
+      - 'ai-council-builder.html'
+      - 'ai-council-builder-ja.html'
       - 'smartphone-income-blueprint.html'
+      - 'smartphone-ai-slide-factory.html'
       - 'sitemap.xml'
       - '54b81c12e07af0e37b6ab0ac24469586.txt'
   workflow_dispatch:
@@ -31,11 +34,14 @@ jobs:
               "key":"54b81c12e07af0e37b6ab0ac24469586",
               "keyLocation":"https://stratumpraxis.com/54b81c12e07af0e37b6ab0ac24469586.txt",
               "urlList":[
+                "https://stratumpraxis.com/ai-council-builder.html",
+                "https://stratumpraxis.com/ai-council-builder-ja.html",
+                "https://stratumpraxis.com/smartphone-income-blueprint.html",
+                "https://stratumpraxis.com/smartphone-ai-slide-factory.html",
                 "https://stratumpraxis.com/signal/",
                 "https://stratumpraxis.com/signal/bing-indexnow-2026.html",
                 "https://stratumpraxis.com/signal/google-discover-preferred-sources-2026.html",
                 "https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html",
-                "https://stratumpraxis.com/smartphone-income-blueprint.html",
                 "https://stratumpraxis.com/signal/validate-digital-product-from-phone-2026.html"
               ]
             }' \
