@@ -1,5 +1,33 @@
 [
   {
+    "id":"sib-01",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"A digital product is not validated because it exists. A better loop is: real problem → evidence → smallest useful product → qualified traffic → funnel data → fix the largest leak. Smartphone Income Blueprint turns that loop into a phone-first Buyer Kit.",
+    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=buffer&utm_medium=social&utm_campaign=smartphone_income_blueprint&utm_content=sib01"
+  },
+  {
+    "id":"sib-02",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"The mistake is building a catalog before one product earns the right to expand. Smartphone Income Blueprint uses a 0–12 validation scorecard, a 30-day test plan and a simple funnel tracker to keep one small product measurable. $19 one-time.",
+    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=buffer&utm_medium=social&utm_campaign=smartphone_income_blueprint&utm_content=sib02"
+  },
+  {
+    "id":"sib-03",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Low visits? Distribution problem. Visits but no checkout? Offer, preview or trust problem. Checkout starts but no purchase? Price or friction problem. A small funnel is easier to fix when every stage is visible.",
+    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=buffer&utm_medium=social&utm_campaign=smartphone_income_blueprint&utm_content=sib03"
+  },
+  {
+    "id":"sib-04",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Phone-first does not mean low-quality. It means designing the operating loop around the device you actually have: research, product brief, validation, storefront QA, distribution and measurement in one compact system.",
+    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=buffer&utm_medium=social&utm_campaign=smartphone_income_blueprint&utm_content=sib04"
+  },
+  {
     "id":"b2b-01",
     "active":true,
     "services":["bluesky","threads","linkedin"],
