@@ -13,6 +13,32 @@
   <meta property="og:title" content="Revenue Router — Turn Research Into Revenue Actions">
   <meta property="og:description" content="Verify, score, prioritize, and route AI research into the revenue paths you already have.">
   <meta property="og:url" content="https://stratumpraxis.com/revenue-router.html">
+  <style>
+    .router-hero{position:relative;overflow:hidden;background:radial-gradient(circle at 78% 18%,rgba(108,130,255,.18),transparent 30%),radial-gradient(circle at 18% 72%,rgba(60,207,172,.12),transparent 28%)}
+    .router-hero:before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(115deg,transparent 0 44%,rgba(255,255,255,.025) 45% 46%,transparent 47% 100%);background-size:44px 44px}
+    .hero-copy,.router-preview{position:relative;z-index:1}
+    .router-preview{border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:18px;background:rgba(11,14,20,.8);box-shadow:0 30px 90px rgba(0,0,0,.3);backdrop-filter:blur(12px)}
+    .preview-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+    .preview-title{font-size:.84rem;letter-spacing:.11em;text-transform:uppercase;opacity:.7;margin:0}
+    .preview-status{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;padding:7px 10px;border:1px solid rgba(86,232,193,.24);border-radius:999px;background:rgba(86,232,193,.08)}
+    .preview-status:before{content:"";width:7px;height:7px;border-radius:50%;background:#56e8c1;box-shadow:0 0 0 6px rgba(86,232,193,.08)}
+    .signal-box{padding:14px;border-radius:16px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.035);margin-bottom:14px}
+    .signal-box small{display:block;opacity:.55;margin-bottom:6px}.signal-box strong{display:block;font-size:1rem;line-height:1.45}
+    .route-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;align-items:stretch}
+    .route-node{position:relative;padding:13px 10px;border-radius:14px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08);min-height:88px;transition:transform .25s ease,border-color .25s ease,background .25s ease}
+    .route-node span{display:block;font-size:.69rem;letter-spacing:.08em;text-transform:uppercase;opacity:.5;margin-bottom:8px}.route-node strong{font-size:.9rem;line-height:1.25}
+    .route-node.is-active{transform:translateY(-4px);border-color:rgba(116,142,255,.5);background:rgba(116,142,255,.09)}
+    .route-node.is-active:after{content:"";position:absolute;left:14px;right:14px;bottom:-1px;height:2px;background:linear-gradient(90deg,transparent,#8ea2ff,transparent)}
+    .preview-result{margin-top:14px;padding:14px 15px;border-radius:15px;background:linear-gradient(135deg,rgba(116,142,255,.12),rgba(86,232,193,.07));border:1px solid rgba(116,142,255,.16)}
+    .preview-result small{opacity:.58}.preview-result strong{display:block;margin-top:5px}
+    .proof-strip{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.proof-chip{font-size:.8rem;padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.045);border:1px solid rgba(255,255,255,.08)}
+    .workflow-rail{position:relative}.workflow-rail:before{content:"";position:absolute;left:8%;right:8%;top:32px;height:1px;background:linear-gradient(90deg,transparent,rgba(142,162,255,.45),rgba(86,232,193,.35),transparent);pointer-events:none}
+    .workflow-rail .card{position:relative;transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}.workflow-rail .card:hover{transform:translateY(-6px);border-color:rgba(142,162,255,.32);box-shadow:0 18px 55px rgba(0,0,0,.18)}
+    .route-selector{display:flex;flex-wrap:wrap;gap:9px;margin-top:16px}.route-selector button{appearance:none;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:inherit;border-radius:999px;padding:9px 12px;font:inherit;cursor:pointer;transition:.2s ease}.route-selector button:hover,.route-selector button[aria-pressed="true"]{border-color:rgba(142,162,255,.5);background:rgba(142,162,255,.12);transform:translateY(-2px)}
+    .route-demo-note{margin-top:12px;font-size:.88rem;opacity:.72;min-height:2.8em}
+    @media(max-width:820px){.route-flow{grid-template-columns:repeat(2,1fr)}.workflow-rail:before{display:none}}
+    @media(prefers-reduced-motion:reduce){.route-node,.workflow-rail .card,.route-selector button{transition:none!important}.route-node.is-active,.workflow-rail .card:hover,.route-selector button:hover{transform:none!important}}
+  </style>
   <script type="application/ld+json">
   {
     "@context":"https://schema.org",
@@ -40,7 +66,7 @@
   </header>
 
   <main id="main">
-    <section class="hero">
+    <section class="hero router-hero">
       <div class="container hero-grid">
         <div class="hero-copy">
           <p class="eyebrow">Research routing tool · $29 one-time</p>
@@ -48,18 +74,29 @@
           <p class="hero-text">Revenue Router helps you stop collecting signals without a next step. Paste a post, headline, URL, or research note; verify the signal, score its value, and route it into only the closest existing revenue paths.</p>
           <div class="button-row">
             <a class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Get Revenue Router — $29</a>
-            <a class="button button-secondary" href="/#tools">Start with a free Stratum Praxis tool</a>
+            <a class="button button-secondary" href="#preview">See how routing works</a>
           </div>
-          <p class="fine">One-time purchase. Browser-based, offline-ready, no API key required. Single-user license. Redistribution or resale of the delivered file is not permitted.</p>
+          <div class="proof-strip" aria-label="Product characteristics">
+            <span class="proof-chip">No API key</span><span class="proof-chip">Local browser storage</span><span class="proof-chip">Offline-ready</span><span class="proof-chip">One-time purchase</span>
+          </div>
+          <p class="fine">Single-user license. Redistribution or resale of the delivered file is not permitted. Decision support only; no revenue outcome is guaranteed.</p>
         </div>
-        <aside class="hero-panel" aria-label="Best fit">
-          <p class="panel-label">Best fit</p>
-          <ul>
-            <li>Operators researching AI tools, pricing, launches, and market signals</li>
-            <li>Creators who already have products, content, or affiliate routes</li>
-            <li>Solo businesses that need fewer ideas and clearer next actions</li>
-            <li>Teams that want to separate verified signals from unsupported claims</li>
-          </ul>
+        <aside class="router-preview" id="preview" aria-label="Interactive product preview">
+          <div class="preview-top"><p class="preview-title">Signal routing preview</p><span class="preview-status">ready to route</span></div>
+          <div class="signal-box"><small>Incoming signal</small><strong id="demoSignal">“A major AI tool changed its pricing.”</strong></div>
+          <div class="route-flow" aria-label="Routing stages">
+            <div class="route-node is-active" data-stage="0"><span>01</span><strong>Verify</strong></div>
+            <div class="route-node" data-stage="1"><span>02</span><strong>Score</strong></div>
+            <div class="route-node" data-stage="2"><span>03</span><strong>Prioritize</strong></div>
+            <div class="route-node" data-stage="3"><span>04</span><strong>Route</strong></div>
+          </div>
+          <div class="preview-result"><small>Example strongest route</small><strong id="demoResult">Pricing comparison → cost calculator → relevant paid decision support</strong></div>
+          <div class="route-selector" aria-label="Try another example">
+            <button type="button" aria-pressed="true" data-demo="pricing">Pricing change</button>
+            <button type="button" aria-pressed="false" data-demo="launch">New launch</button>
+            <button type="button" aria-pressed="false" data-demo="workflow">Workflow pain</button>
+          </div>
+          <p class="route-demo-note" id="demoNote">The tool does not force every signal into content. It chooses the closest useful revenue path.</p>
         </aside>
       </div>
     </section>
@@ -71,7 +108,7 @@
           <h2>Research → verify → score → route.</h2>
           <p>The tool is designed to reduce execution noise. It does not turn every signal into more content. It ranks the signal first, then returns only the strongest one to three routes.</p>
         </div>
-        <div class="card-grid">
+        <div class="card-grid workflow-rail">
           <article class="card"><span class="card-number">01</span><h3>Add a signal</h3><p>Paste an X post, URL, headline, product update, or research note.</p></article>
           <article class="card"><span class="card-number">02</span><h3>Verify it</h3><p>Mark the evidence as official, credible, unverified, an individual claim, or false / unsafe.</p></article>
           <article class="card"><span class="card-number">03</span><h3>Score it</h3><p>Combine freshness, demand, money impact, evidence confidence, and risk into a priority decision.</p></article>
@@ -138,5 +175,20 @@
   <footer class="site-footer">
     <div class="container footer-inner"><p>© 2026 Stratum Praxis</p><div><a href="/">Home</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a></div></div>
   </footer>
+  <script>
+    (()=>{
+      const demos={
+        pricing:{signal:'“A major AI tool changed its pricing.”',result:'Pricing comparison → cost calculator → relevant paid decision support',note:'Use the signal where money impact is immediate; do not create generic content if a decision utility is closer.'},
+        launch:{signal:'“A new AI product launched with a specific workflow claim.”',result:'Verify claim → workflow-fit comparison → watch / try / product route',note:'A launch is not automatically an ACT signal. Evidence confidence and workflow fit decide whether it deserves a route.'},
+        workflow:{signal:'“Teams are repeatedly losing time to the same manual workflow.”',result:'Problem brief → ROI calculator → fixed-scope workflow audit',note:'Operational pain can route toward higher-value decision support when the workflow is measurable and safe to redesign.'}
+      };
+      const buttons=[...document.querySelectorAll('[data-demo]')];
+      const nodes=[...document.querySelectorAll('.route-node')];
+      let timer;
+      function animateStages(){clearInterval(timer);let i=0;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===0));timer=setInterval(()=>{i=(i+1)%nodes.length;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===i));},900)}
+      buttons.forEach(btn=>btn.addEventListener('click',()=>{const d=demos[btn.dataset.demo];document.getElementById('demoSignal').textContent=d.signal;document.getElementById('demoResult').textContent=d.result;document.getElementById('demoNote').textContent=d.note;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));animateStages();}));
+      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) animateStages();
+    })();
+  </script>
 </body>
 </html>
