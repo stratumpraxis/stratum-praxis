@@ -4,6 +4,15 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 **Website:** https://stratumpraxis.com/
 
+## Current digital products
+
+These are public, measurable entry points for the current product-validation cycle. Links to Stratum Praxis pages include source tags so GitHub referral traffic can be separated from other distribution.
+
+- [AI App Builder Router 2026 — $24](https://payhip.com/b/LBtbr) — choose an AI app-building path by goal, constraints, and implementation fit; the current storefront also connects to the existing upgrade ladder.
+- [AI Council Builder — $29](https://stratumpraxis.com/ai-council-builder.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=ai_council_builder) — design a practical AI team, assign roles, and run structured multi-agent decision workflows without requiring the buyer to hand over account access.
+- [Smartphone Income Blueprint — $19](https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_income_blueprint) — a phone-first loop for validating one real problem, publishing one useful digital product, and measuring the largest funnel leak.
+- [Smartphone AI Slide Factory — $19](https://stratumpraxis.com/smartphone-ai-slide-factory.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_ai_slide_factory) — a phone-first presentation workflow covering brief, evidence, storyline, reusable prompts, visual rules, QA, and export.
+
 ## Start with a free tool
 
 - [GPT-5.6 Sol API Cost Calculator — Aug. 2026 price-cut window](https://stratumpraxis.com/gpt-5-6-sol-api-cost-calculator.html) — compare the current $4 input / $20 output promotional pricing with the pre-cut $5 / $30 baseline using your own request volume and token assumptions; verify current official pricing before budgeting.
