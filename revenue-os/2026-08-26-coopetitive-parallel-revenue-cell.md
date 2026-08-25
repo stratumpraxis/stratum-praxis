@@ -248,6 +248,28 @@ Do not celebrate output count alone. Track where evidence exists:
 10. Keep Japanese and English first-class; Spanish can expand when the content and QA capacity justify it.
 11. Preserve safety and bounded responsibility as the price of scale.
 
+## Implemented checkpoint — 2026-08-26
+
+The first full split → critique → fusion → implementation batch is complete at source level:
+
+- Revenue Router: upgraded from a mostly static offer page to a visual, interactive research → verify → score → route preview while retaining its existing $29 Stripe route and reduced-motion support. The corresponding GitHub Pages build completed successfully.
+- Passage Network: launched `passage-network.html` as the first actual corridor hub. It connects six existing decision surfaces — coding-assistant comparison, meeting-assistant comparison, workflow-automation comparison, SaaS renewal decision, AI/SaaS waste calculator, and Revenue Router — instead of creating six new products.
+- Workflow Opportunity Audit: upgraded the $499 sales surface with an illustrative workflow map, ranked-opportunity preview, pilot timeline, clearer boundaries, lower-support alternatives, mobile layout, analytics hooks, and reduced-motion support. The example is explicitly illustrative rather than client proof.
+- Sitemap: added Passage Network and refreshed the Revenue Router / Workflow Audit modification dates so search discovery can see the new structure.
+
+This batch adds one new public hub and reuses existing assets; it does not add a new repository, workflow, scheduled job, branch, or automation burden.
+
+### Measurement gate before corridor expansion
+
+Do not add another generic corridor hub merely because the concept is interesting. First observe where possible:
+- Passage Network entry → onward-route CTR,
+- Revenue Router product-page → Stripe CTA CTR,
+- Workflow Audit page → checkout / sample CTR,
+- returning visits to decision utilities,
+- verified checkout / purchase outcomes.
+
+If a corridor earns qualified traffic or onward intent, deepen that corridor. If it does not, revise or prune it rather than multiplying pages.
+
 ## Definition of success
 
 The system is successful when multiple lanes reinforce useful journeys and measurable revenue paths while the user does not need to manually coordinate every lane.
