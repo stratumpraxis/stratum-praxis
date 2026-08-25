@@ -78,3 +78,16 @@ Write handoffs and decisions into `revenue-os/` so parallel agents can consume d
 - Validate revenue-path links after changes when the available tools can reach them.
 - Check current repository context before outreach or new-product work to reduce duplication across parallel agents.
 - After a context reset, treat live, verified files and URLs as the source of truth.
+
+## Data integrity and change-control guard
+
+- Do not casually rewrite, replace, repurpose, merge, or delete an existing operating system, revenue cell, product definition, route map, ledger, workflow, or strategy document merely because a new idea overlaps with it.
+- Existing mechanisms are durable state. Read the current source first and preserve its purpose unless there is explicit evidence that it is obsolete or the owner explicitly asks to replace it.
+- When a new concept has a different objective, audience, risk profile, cadence, or operating logic, create it on a separate axis instead of forcing it into an existing mechanism.
+- If two mechanisms overlap, prefer a lightweight reference between them over merging their underlying data or responsibilities.
+- Prefer append-only checkpoints, dated additions, or a new companion file when preserving history matters.
+- Never overwrite verified facts, URLs, prices, account states, revenue evidence, completed milestones, or historical measurements with assumptions or newer plans. Update them only when new verified evidence exists, and retain enough context to understand what changed.
+- Before editing a durable file, identify whether the change is: correction, verified status update, extension, or replacement. Replacement requires explicit justification.
+- Keep Git history useful: small reversible commits, no destructive cleanup for convenience, no broad rewrites when a narrow append or new file is sufficient.
+- Parallel agents must not independently redefine the same durable mechanism. If a distinct mechanism is needed, give it a distinct name and file rather than silently changing the old one.
+- The default rule is: preserve what already works; extend beside it; replace only deliberately.
