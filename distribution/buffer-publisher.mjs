@@ -1,6 +1,8 @@
 const API = 'https://api.buffer.com';
 const key = process.env.BUFFER_API_KEY;
 const dryRun = process.env.DRY_RUN === '1';
+const queueFile = process.env.BUFFER_QUEUE_FILE || 'content-queue.json';
+const selectMode = process.env.BUFFER_SELECT_MODE || 'daily';
 const targetServices = (process.env.BUFFER_TARGET_SERVICES || 'bluesky,threads,linkedin').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
 
 if (!key) {
@@ -28,9 +30,10 @@ if (!org) throw new Error('No Buffer organization found');
 
 const data = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
 const channels = (data.channels || []).filter(c => targetServices.includes(String(c.service).toLowerCase()) && !c.isQueuePaused);
-const queue = JSON.parse(await (await import('node:fs/promises')).readFile(new URL('./content-queue.json', import.meta.url), 'utf8'));
+const queue = JSON.parse(await (await import('node:fs/promises')).readFile(new URL(`./${queueFile}`, import.meta.url), 'utf8'));
 const active = queue.filter(x => x.active !== false && Array.isArray(x.services));
 
+console.log('Queue file:', queueFile, 'select mode:', selectMode);
 console.log('Eligible channels:', channels.map(c=>`${c.service}:${c.displayName||c.name}`).join(', ') || 'none');
 if (!channels.length || !active.length) process.exit(0);
 
@@ -39,8 +42,8 @@ for (const channel of channels) {
   const candidates = active.filter(x => x.services.includes(service));
   if (!candidates.length) continue;
 
-  // One post per channel per day. This avoids filling free-plan queues and reduces spam/repetition risk.
-  const item = candidates[dayNumberUTC() % candidates.length];
+  // Daily mode rotates one post per channel per day. One-shot mode always uses the first approved launch item.
+  const item = selectMode === 'first' ? candidates[0] : candidates[dayNumberUTC() % candidates.length];
   const text = `${item.text}\n\n${item.url}`.trim();
 
   if (dryRun) {
