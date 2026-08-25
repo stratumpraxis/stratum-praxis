@@ -25,20 +25,86 @@ Primary model: Trend discovery -> source verification -> original explanation / 
 9. Optimizer — choose the highest expected-value, lowest-maintenance next move.
 10. Handoff Writer — produce the smallest exact instruction for a new work page when implementation should move elsewhere.
 
-## Early findings
-- X is useful as a demand/intention signal, but should not be the sole data source. X itself positions public conversation as a source of trend and intent signals. Prefer official embeds / approved access over scraping.
-- Recent public discussion also points to falling SEO referrals for some indie SaaS sites and more zero-click/AI-overview behavior. Therefore do not build an SEO-only business. Diversify Search, Discover, Bing, direct, newsletter, affiliate, and own products.
-- Google/Bing/Discover should be acquisition layers, not the business model itself.
-- Google Maps should be treated primarily as local-demand discovery / lead opportunity unless a verified payout mechanism exists. Do not assume normal Maps contributions pay cash.
-- Bing Rewards is a minor personal-side benefit, not a scalable business model; never automate searches.
+## Evidence returned from X — 2026-08-25
+Observed screenshots supplied by owner show repeated public interest around:
+- AI affiliate earnings claims and beginner workflows.
+- AI x YouTube and AI x TikTok automation.
+- AI agent / Claude Code workflows for content, SEO, note research and social analysis.
+- Bing Webmaster Tools and IndexNow as underused traffic channels.
+- Significant Bing organic traffic shown in at least one public analytics screenshot alongside Google organic traffic.
+- Public SEO posts claiming large impressions from programmatic / AI-assisted site optimization.
+- AI recommendation / answer-engine visibility as a new discovery concern.
 
-## Monetization stack to test
-Priority order:
-1. Affiliate programs with real purchase intent and recurring commissions where legitimate.
-2. Own digital products / tools / paid reports.
-3. Lead generation where qualification and disclosure are clear.
-4. Paid newsletter / sponsorship later, after audience exists.
-5. Display ads only after content quality and traffic justify them.
+Important correction: these screenshots prove attention and repeated market narratives, not verified profitability. Earnings claims must remain unverified until independently supported by checkout, affiliate dashboard, analytics, or other evidence.
+
+## Stronger signals after evidence review
+1. Bing is not a side-note: Bing Webmaster Tools + IndexNow should be built into the media distribution stack from day one.
+2. AI affiliate is a real demand theme, but the safer opportunity is not “teach easy money”; it is comparison / evaluation / workflow content linked to legitimate recurring-affiliate products and own tools.
+3. AI x content automation is saturated with hype. Avoid competing on “fully automatic easy income.” Compete on verified utility, comparison, cost, failure modes, and implementation.
+4. Search visibility should include Google Search, Discover, Bing, and answer-engine / AI-citation readiness; no single channel should be treated as sufficient.
+5. X remains a high-value signal source, but not an automated scraping dependency.
+
+## Ad-independent revenue map imported from parallel research
+High-fit mechanisms:
+- Digital products
+- Micro SaaS
+- Usage-based SaaS
+- API sales / API marketplace
+- AI agent / AI tool usage fees
+- Dataset / data licensing
+- Marketplace sales
+- Recurring affiliate
+- B2B lead generation
+- White-label AI / API
+- Paid diagnostics / audits / reports
+- Developer tools / plugins / extensions
+- Enterprise licensing
+
+Longer-horizon / experimental:
+- AI Agent marketplaces where software discovers and buys API/data/tools.
+- Dataset marketplaces.
+- White-label marketplaces.
+- Bounty marketplaces.
+
+Do not treat Microsoft Rewards, Google Local Guides points, grants, contests or bounties as core predictable business revenue. They are supplemental / opportunistic.
+
+## Monetization architecture for the media property
+The media site should not depend on display ads. Revenue priority:
+1. High-intent affiliate / recurring affiliate.
+2. Own tool / digital product / paid diagnostic.
+3. Marketplace-distributed product or developer utility.
+4. Lead generation where disclosure and consent are clear.
+5. API / data / white-label extension if a repeated information need can be productized.
+6. Display ads only as incremental revenue after traffic and content quality are proven.
+
+Target structure:
+Search / Discover / Bing / direct / newsletter -> editorial page / comparison / directory / utility -> affiliate OR own product OR API / tool -> checkout -> automated delivery -> recurring / upsell.
+
+## Current leading media wedge
+Best first wedge remains:
+**AI + useful web tools + overseas tech intelligence**
+
+Why it survives pruning:
+- repeated demand signals in X screenshots;
+- naturally supports comparison and “best alternative” queries;
+- good fit for recurring SaaS affiliate;
+- supports own AI products and diagnostics;
+- safer than outrage/news aggregation;
+- low need for personal identity;
+- can be multilingual later;
+- can become a directory/database/API if traffic proves demand.
+
+## Content types to favor
+- What changed / why it matters
+- X / community signal + primary-source verification
+- Tool comparisons
+- Alternatives
+- Pricing / plan changes
+- New feature explainers
+- Best tool for a specific job
+- “Useful websites” lists with genuine testing / editorial selection
+- Overseas trend -> Japanese practical interpretation
+- Failure modes / limitations / safety notes
 
 ## Reject / avoid by default
 - 2ch-style outrage / harassment aggregation.
@@ -47,73 +113,33 @@ Priority order:
 - Auto-generated pages at scale before traffic evidence.
 - Automated X scraping or engagement that risks account restrictions.
 - Bing search automation / reward farming.
+- “AIで月100万” style unverified income claims as editorial core.
 - Health, legal, finance or public-benefit advice as an automated core niche unless reviewed for accuracy and responsibility.
-- Creating four separate sites before one model proves traffic and revenue.
+- Creating multiple separate sites before one model proves traffic and revenue.
+- Building a YouTube/TikTok automation business merely because earnings screenshots exist; treat these as research topics until verified.
 
-## X manual research queries for owner
-Run these manually and capture screenshots / links / visible engagement. Search Recent and Top separately when possible.
+## Distribution stack — minimum
+- Google Search Console
+- Bing Webmaster Tools
+- XML sitemap
+- IndexNow for create/update/delete where appropriate
+- Discover-ready large images / metadata
+- analytics events for pageview -> affiliate click -> own CTA -> checkout start -> purchase
+- internal linking by topic cluster
+- newsletter / direct-return path only after enough repeat value exists
 
-### Business-model proof
-- `AI アフィリエイト 実績`
-- `AI ブログ 収益 実績`
-- `AI ツール アフィリエイト`
-- `SaaS アフィリエイト 継続報酬`
-- `海外 アフィリエイト AI ツール`
-- `AI ニュースレター 収益`
-- `ディレクトリサイト 収益`
-- `便利サイト 収益化`
+## Scenario simulation
+### Best case
+A small set of high-intent comparison / tool pages ranks in Google and Bing, some timely pieces enter Discover, affiliate + own-product clicks create revenue before large traffic scale, and winning topics become a database/tool/API.
 
-### Traffic / search proof
-- `Google Discover 流入 実績`
-- `Google Discover 収益`
-- `Discover クリック 急増`
-- `Bing 流入 SEO`
-- `IndexNow 流入`
-- `AI Overview 流入 減少`
-- `SEO 流入 半減 AI`
+### Base case
+Traffic grows slowly. Bing and long-tail search provide measurable visits. Affiliate clicks occur before sales. Data from queries reveals which categories deserve more articles and which should be killed.
 
-### Low-advertiser-dependence models
-- `広告なし サイト 収益`
-- `広告主なし 収益化 サイト`
-- `無料ツール アフィリエイト 収益`
-- `比較サイト アフィリエイト 実績`
-- `リードジェネレーション サイト 収益`
-- `データベースサイト 収益`
-- `directory site revenue affiliate`
-- `newsletter affiliate revenue AI`
-
-### Google Maps / local intent verification
-- `Googleマップ 稼ぐ 収益`
-- `Google Maps 収益化`
-- `Googleマップ 集客 収益 実績`
-- `MEO 成果報酬`
-- `ローカルリードジェネレーション 収益`
-
-### Demand discovery terms
-Combine service names with:
-- `使えない`
-- `高すぎる`
-- `解約`
-- `代替`
-- `比較`
-- `おすすめ`
-- `改悪`
-- `終了`
-- `無料`
-- `評判`
-
-## What to record for every X hit
-- Query used
-- Post date
-- Approx. views / likes / reposts / replies
-- What pain or desire is visible
-- Whether there is purchase intent
-- Whether the claim has external evidence
-- Possible article / tool / affiliate / own-product angle
-- Safety / policy concern
+### Worst case
+AI-generated pages fail to rank, Discover never appears, affiliate programs reject or convert poorly, and maintenance becomes content busywork. Countermeasure: publish few pages, measure qualified actions, kill categories without evidence, keep no more than one active wedge until conversion proof.
 
 ## Decision rule
-Do not greenlight a new site or automation merely because posts promise large income. Greenlight only when at least three of these are supported:
+Do not greenlight a new site or automation merely because posts promise large income. Greenlight only when at least three are supported:
 1. Repeated demand signal
 2. Clear monetization path
 3. Low policy/copyright risk
@@ -121,5 +147,17 @@ Do not greenlight a new site or automation merely because posts promise large in
 5. Search/discovery distribution path
 6. Reusable with existing products/assets
 
+## Current decision
+Proceed toward an MVP, but not as a generic “AI blog.”
+Build one editorial utility media property designed around AI / web-tool discovery, comparisons, alternatives and overseas trend interpretation. Bing Webmaster + IndexNow are required from launch. AdSense is optional later, not the business model. First monetization should be one legitimate affiliate route and one existing own-product route. No multi-site expansion before measurable traffic and qualified clicks.
+
 ## Next handoff
-After owner returns X evidence, score each opportunity on Demand, Money, Competition, Automation, Safety, Distribution, and Maintenance. Pick ONE highest-scoring media wedge for MVP. The next page should implement only that wedge through publishable site + measurement + one revenue path; do not multiply brands before evidence.
+New implementation page should:
+1. choose a neutral independent brand / path;
+2. build a lightweight publishable site;
+3. create 3–5 high-intent seed pages, not dozens;
+4. connect Google Search Console / Bing Webmaster / sitemap / IndexNow where possible;
+5. connect one affiliate route + one existing own-product CTA;
+6. add measurement for source, article, CTA click, outbound affiliate click, checkout start and purchase;
+7. run QA for copyright, source attribution, affiliate disclosure, platform rules and auto-generation quality;
+8. stop and report any human-only login / approval boundary rather than retrying.
