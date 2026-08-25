@@ -23,7 +23,7 @@ async function gql(query) {
   return body.data;
 }
 
-const account = await gql(`query { account { organizations { id } } }`);
+const account = await gql(`query { account { organizations { id channelCount } } }`);
 const orgs = account.account?.organizations || [];
 if (!orgs.length) {
   console.error('Authenticated, but no Buffer organization was returned');
@@ -31,16 +31,23 @@ if (!orgs.length) {
 }
 
 let channelCount = 0;
+let lockedCount = 0;
+let disconnectedCount = 0;
 const services = new Set();
 for (const org of orgs) {
-  const data = await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)},filter:{isLocked:false}}){service isQueuePaused} }`);
+  const data = await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){service isLocked isDisconnected isQueuePaused} }`);
   for (const channel of data.channels || []) {
     channelCount += 1;
+    if (channel.isLocked) lockedCount += 1;
+    if (channel.isDisconnected) disconnectedCount += 1;
     if (channel.service) services.add(String(channel.service).toLowerCase());
   }
 }
 
 console.log('BUFFER_CONNECTION_OK');
 console.log('organizations:', orgs.length);
-console.log('channels:', channelCount);
+console.log('organization_channelCount:', orgs.reduce((n,o)=>n+(o.channelCount||0),0));
+console.log('channels_returned:', channelCount);
+console.log('locked:', lockedCount);
+console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
