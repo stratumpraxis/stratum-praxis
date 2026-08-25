@@ -2,7 +2,7 @@
 
 Date: 2026-08-25
 Owner/brand: Stratum Praxis
-Status: implementation branch prepared; live Stripe product and Payment Link created
+Status: **LAUNCHED / MAIN MERGED / WORKER DEPLOY VERIFIED**
 
 ## Offer
 
@@ -15,8 +15,8 @@ Stripe Product: `prod_V8ZA4x9rwoN7VZ`
 Stripe Price: `price_1U8I2UJMK7zFs9975vOb3wPD`
 Stripe Payment Link ID: `plink_1U8I2cJMK7zFs997FUnqeZ3Z`
 Checkout: https://buy.stripe.com/dRm00k2oAdHt0G49ZV6Zy0E
-Public page target: https://stratumpraxis.com/ai-council-builder.html
-Purchase access target: https://stratumpraxis.com/ai-council-builder-access.html?session_id={CHECKOUT_SESSION_ID}
+Public page: https://stratumpraxis.com/ai-council-builder.html
+Purchase access: https://stratumpraxis.com/ai-council-builder-access.html?session_id={CHECKOUT_SESSION_ID}
 
 ## Revenue path
 
@@ -52,15 +52,26 @@ The subscription optimizer is included as a **bonus/value-add**, not a separate 
 
 ## Implementation
 
-Branch: `ai-council-builder`
+Merged PR: `#22 Launch AI Council Builder`
+Merge commit: `f96f2246f551df3a5b37006ce1347beefe2f135a`
 Public sales/diagnostic page: `ai-council-builder.html`
 Access verification page: `ai-council-builder-access.html`
-New Worker wrapper: `worker/council-worker.js`
-Worker config changes entry point from `ai-consultant-worker.js` to `council-worker.js`. The wrapper handles `/council/*` and delegates every other request to the existing Worker, preserving prior products.
+Worker wrapper: `worker/council-worker.js`
+Worker entry point: `worker/council-worker.js`
+The wrapper handles `/council/*` and delegates every other request to the existing Worker, preserving prior products.
+
+## Deployment / QA
+
+- GitHub PR #22 merged successfully to `main`.
+- Cloudflare Worker deployment workflow run `32840373294`: deploy job completed **success**; deployment step, status recording, and job completion all passed.
+- Stratum Praxis HTTPS verification workflow run `32840373259`: `verify-http` job completed **success**.
+- Stripe Product and one-time $29 Payment Link are live.
+- Paid content remains behind server-side purchase verification; public access page contains no paid workspace content.
+- A real paid purchase has not been fabricated for QA. Purchase/activation remains truthfully unverified until the first genuine paid Checkout completes.
 
 ## Initial metrics / truth state
 
-At creation time:
+At launch:
 - Qualified product-page traffic: 0 measured after launch
 - CTA: 0 measured after launch
 - Checkout starts: 0 measured after launch
@@ -74,10 +85,8 @@ Do not treat QA page loads or invalid verification tests as customer demand.
 
 Primary first milestone: **first verified paid purchase and activation**.
 
-After deployment, priority order:
-1. Verify public page, Stripe redirect, denial behavior and Worker deployment.
-2. Create qualified distribution to the free diagnostic rather than new products.
-3. Evaluate `diagnostic_complete → checkout_click → revenue_verified` with real traffic.
-4. Improve the single weakest step from measured data.
-
-Do not add live multi-model API orchestration until real customer evidence proves it is worth taking on API cost, security, provider and support burden.
+Priority after launch:
+1. Qualified distribution to the free diagnostic.
+2. Measure `diagnostic_complete → checkout_click → revenue_verified → activation`.
+3. Improve the single weakest measured step.
+4. Do not add hosted live multi-model API orchestration unless real buyers demonstrate demand that justifies API/security/support burden.
