@@ -10,6 +10,10 @@ on:
       - 'ai-agent-vendor-due-diligence-pack.html'
       - 'ai-agent-procurement-governance-guide.html'
       - 'ai-implementation-kit.html'
+      - 'ai-council-builder.html'
+      - 'ai-council-builder-access.html'
+      - 'ai-council-builder-ja.html'
+      - 'ai-council-builder-ja-access.html'
       - 'sitemap.xml'
   workflow_dispatch:
 
@@ -32,6 +36,10 @@ jobs:
             'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
             'https://stratumpraxis.com/ai-agent-procurement-governance-guide.html'
             'https://stratumpraxis.com/ai-implementation-kit.html'
+            'https://stratumpraxis.com/ai-council-builder.html'
+            'https://stratumpraxis.com/ai-council-builder-access.html'
+            'https://stratumpraxis.com/ai-council-builder-ja.html'
+            'https://stratumpraxis.com/ai-council-builder-ja-access.html'
             'https://stratumpraxis.com/sitemap.xml'
           )
           for url in "${urls[@]}"; do
