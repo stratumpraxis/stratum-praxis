@@ -1,0 +1,11 @@
+{
+  "updated_at": "2026-08-26T02:00:00+09:00",
+  "policy": "Official public status sources only. No independent uptime guarantee.",
+  "services": [
+    {"id":"openai","name":"OpenAI","category":"AI","status_page":"https://status.openai.com/","provider":"official","mode":"official-page"},
+    {"id":"anthropic","name":"Anthropic","category":"AI","status_page":"https://status.anthropic.com/","provider":"official","mode":"official-page"},
+    {"id":"github","name":"GitHub","category":"Developer","status_page":"https://www.githubstatus.com/","provider":"official","mode":"official-page"},
+    {"id":"cloudflare","name":"Cloudflare","category":"Infrastructure","status_page":"https://www.cloudflarestatus.com/","provider":"official","mode":"official-page"},
+    {"id":"stripe","name":"Stripe","category":"Payments","status_page":"https://status.stripe.com/","provider":"official","mode":"official-page"}
+  ]
+}
