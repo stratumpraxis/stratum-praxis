@@ -51,3 +51,4 @@ console.log('channels_returned:', channelCount);
 console.log('locked:', lockedCount);
 console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
+// 2026-08-25: safe connection recheck after short-video pipeline setup.
