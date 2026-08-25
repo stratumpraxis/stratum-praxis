@@ -3,29 +3,49 @@
     "id":"lr-01",
     "active":true,
     "services":["bluesky","threads","linkedin"],
-    "text":"Most people think household resilience means buying more stuff. It usually means removing single points of failure: one payment method, one charger, one food plan, one backup. I made a free 30-point check across six everyday systems.",
-    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=life_resilience"
+    "text":"Household resilience is usually less about buying more and more about removing single points of failure: one payment method, one charger, one food plan, one backup. This free 30-point check shows which everyday system is weakest.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=life_resilience&utm_content=lr01"
   },
   {
     "id":"lr-02",
     "active":true,
     "services":["bluesky","threads","linkedin"],
-    "text":"A useful preparedness question is not “Do I own emergency gear?” It is “Could normal life keep working for 72 hours if one system stopped?” Food, water, power, money, home routines and backups all matter.",
-    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=72h_resilience"
+    "text":"A better preparedness question: could normal life keep working for 72 hours if one system stopped? Food, water, power, money, communication and backups all matter.",
+    "url":"https://stratumpraxis.com/72-hour-household-readiness/?utm_source=buffer&utm_medium=social&utm_campaign=72h_resilience&utm_content=lr02"
   },
   {
     "id":"lr-03",
     "active":true,
     "services":["bluesky","threads","linkedin"],
-    "text":"Small recurring leaks are easy to ignore because none of them feels serious alone: unused subscriptions, food waste, replacement purchases, fees. Annualize them and the picture changes. Check the Money section in this free diagnostic.",
-    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=money_leaks"
+    "text":"Small recurring costs are easy to ignore because none feels serious alone. Annualize unused subscriptions, avoidable fees, food waste and replacement purchases and the picture changes quickly.",
+    "url":"https://stratumpraxis.com/monthly-money-leak-audit/?utm_source=buffer&utm_medium=social&utm_campaign=money_leaks&utm_content=lr03"
   },
   {
-    "id":"lr-pin-01",
+    "id":"lr-04",
     "active":true,
-    "services":["pinterest"],
-    "text":"30-Point Household Resilience Checklist — score food, water & power, money, home systems, free time and backups in about 3 minutes.",
-    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=pinterest&utm_medium=pin&utm_campaign=household_resilience",
-    "imageUrl":""
+    "services":["bluesky","threads","linkedin"],
+    "text":"A resilient home does not need to be perfectly organized. It needs fewer things that can break the whole routine. Fixed homes for keys and chargers, backup payments, useful food buffers and recoverable data go a long way.",
+    "url":"https://stratumpraxis.com/household-resilience-checklist/?utm_source=buffer&utm_medium=social&utm_campaign=household_resilience&utm_content=lr04"
+  },
+  {
+    "id":"lr-05",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Preparedness works better when it overlaps with ordinary life. Store food you already eat, rotate it normally, keep backup power charged and review the system briefly each month instead of building a forgotten stockpile.",
+    "url":"https://stratumpraxis.com/72-hour-household-readiness/?utm_source=buffer&utm_medium=social&utm_campaign=preparedness_system&utm_content=lr05"
+  },
+  {
+    "id":"lr-06",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"One useful money rule: do not ask only what something costs today. Ask what it costs over a year when subscriptions, fees, waste, storage and rebuying are included.",
+    "url":"https://stratumpraxis.com/monthly-money-leak-audit/?utm_source=buffer&utm_medium=social&utm_campaign=annual_cost&utm_content=lr06"
+  },
+  {
+    "id":"lr-07",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"The weakest household system is not always the one with the lowest score. Fix what would stop daily life first, then expensive failures, recurring time friction and quality-of-life gaps.",
+    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=weakest_link&utm_content=lr07"
   }
 ]
