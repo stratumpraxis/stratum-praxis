@@ -1,0 +1,27 @@
+name: Safe Buffer Distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run only'
+        required: false
+        default: '1'
+  schedule:
+    - cron: '17 1 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish through Buffer
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
+        run: node distribution/buffer-publisher.mjs
