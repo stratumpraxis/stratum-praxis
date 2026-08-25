@@ -1,0 +1,32 @@
+name: One-shot Product Launch Distribution
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/launch-now.json'
+      - 'distribution/buffer-publisher.mjs'
+      - '.github/workflows/distribution-launch-once.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: one-shot-product-launch
+  cancel-in-progress: false
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish approved launch payload through Buffer
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
+          BUFFER_QUEUE_FILE: launch-now.json
+          BUFFER_SELECT_MODE: first
+          DRY_RUN: '0'
+        run: node distribution/buffer-publisher.mjs
