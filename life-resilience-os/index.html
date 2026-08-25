@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>生活力OS｜暮らしの漏れと弱点を3分診断</title>
+<meta name="description" content="固定費・食品ロス・備蓄・家の摩擦・余暇・バックアップを3分で診断。あなたの生活力スコアと最優先の改善ポイントを表示します。" />
+<style>
+:root{--bg:#0c0c0f;--panel:#17171d;--line:#2a2a32;--text:#f5f5f7;--muted:#aaaab6;--accent:#f3db3f;--purple:#7b55e7;--good:#8ee7b5;--warn:#ffd777}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:linear-gradient(180deg,#0b0b0e,#15151b);color:var(--text);line-height:1.7}
+.wrap{max-width:940px;margin:auto;padding:28px 18px 80px}.hero{padding:28px 0 14px}.kicker{display:inline-block;background:var(--accent);color:#17120a;font-weight:800;padding:6px 12px;border-radius:999px;font-size:13px}.hero h1{font-size:clamp(32px,6vw,58px);line-height:1.1;margin:14px 0}.hero p{color:var(--muted);max-width:760px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}@media(max-width:720px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(23,23,29,.92);border:1px solid var(--line);border-radius:18px;padding:18px}.card h2{margin:0 0 8px;font-size:20px}.card small{color:var(--muted)}
+label.q{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid #24242b;cursor:pointer}label.q:last-child{border-bottom:0}input[type=checkbox]{margin-top:6px;transform:scale(1.2);accent-color:var(--purple)}
+.money{display:grid;grid-template-columns:1fr 150px;gap:10px;align-items:center;margin:10px 0}.money input{width:100%;background:#0e0e13;border:1px solid #34343e;border-radius:10px;padding:10px;color:white;font-size:16px}.money span{color:var(--muted)}
+button{width:100%;border:0;border-radius:14px;padding:15px 18px;font-weight:900;font-size:18px;background:linear-gradient(90deg,var(--accent),#ffe96a);color:#16120b;cursor:pointer;margin:20px 0}.result{display:none}.score{font-size:54px;font-weight:900;line-height:1}.bar{height:12px;background:#292932;border-radius:999px;overflow:hidden;margin:10px 0 16px}.bar>div{height:100%;background:linear-gradient(90deg,var(--purple),var(--accent));width:0}.tag{display:inline-block;border:1px solid #3a3a46;border-radius:999px;padding:4px 9px;margin:4px 6px 4px 0;font-size:13px;color:#d8d8df}.priority{border-left:4px solid var(--accent);padding-left:14px;margin:16px 0}.cta{background:linear-gradient(135deg,#261d4b,#17171d);border:1px solid #57449c}.cta a{display:inline-block;background:var(--accent);color:#16120b;text-decoration:none;font-weight:900;padding:12px 16px;border-radius:12px;margin-top:8px}.foot{font-size:12px;color:#858592;margin-top:26px}
+</style>
+</head>
+<body><main class="wrap">
+<section class="hero"><span class="kicker">3分・無料診断</span><h1>生活力OS</h1><p>節約だけでは見えない「暮らしの漏れ」と「止まりやすい場所」を可視化します。30点診断＋毎月の見えない損失を入力すると、最優先で直す場所と7日アクションを返します。</p></section>
+<section class="grid" id="checks"></section>
+<section class="card" style="margin-top:14px"><h2>毎月の「見えない漏れ」をざっくり入力</h2><small>分からない項目は0円でOK。正確さより、気づくことが目的です。</small>
+<div class="money"><span>使っていないサブスク</span><input id="subs" type="number" min="0" value="0" inputmode="numeric"></div>
+<div class="money"><span>食品ロス・買いすぎ</span><input id="foodloss" type="number" min="0" value="0" inputmode="numeric"></div>
+<div class="money"><span>手数料・衝動買い・買い直し</span><input id="friction" type="number" min="0" value="0" inputmode="numeric"></div>
+</section>
+<button onclick="diagnose()">生活力を診断する</button>
+<section class="result" id="result">
+<div class="card"><div class="score"><span id="score">0</span><span style="font-size:20px;color:var(--muted)"> / 30</span></div><div class="bar"><div id="bar"></div></div><h2 id="rank"></h2><p id="summary"></p><div id="tags"></div></div>
+<div class="card" style="margin-top:14px"><h2>年間の見えない損失</h2><p style="font-size:34px;font-weight:900;margin:6px 0" id="annual">0円</p><small>入力した3項目のみの概算です。家賃・通信費など通常の必要支出は含みません。</small></div>
+<div class="card" style="margin-top:14px"><h2>最優先で直す3つ</h2><div id="priorities"></div></div>
+<div class="card" style="margin-top:14px"><h2>あなたの7日アクション</h2><ol id="plan"></ol></div>
+<div class="card cta" style="margin-top:14px"><h2>診断だけで終わらせない</h2><p>6か国の生活知恵から、備蓄・固定費・食品ロス・余暇・バックアップを「頑張らなくても回る仕組み」に落とした有料記事です。30点診断の考え方、72時間ミニセット、月1生活リセット、買う前の5問までまとめています。</p><a href="https://note.com/crisp_badger8871/n/ndad8e33254ab?app_launch=false" target="_blank" rel="noopener">各国から学ぶ「生活力」を読む →</a></div>
+</section>
+<p class="foot">※この診断は生活改善のための簡易セルフチェックです。防災・金融・医療等について個別の専門判断を行うものではありません。</p>
+</main>
+<script>
+const groups=[
+{key:'food',title:'FOOD｜食',qs:['買い物へ行けなくても3日程度は食べられる','普段食べる保存食品を少し多めに持っている','冷蔵庫に「早く食べるもの」が分かる場所がある','食べた保存食品を補充する習慣がある','食品を腐らせて捨てることがほとんどない']},
+{key:'power',title:'WATER / POWER｜水・電源',qs:['数日分の飲料水がある','モバイルバッテリーを持っている','懐中電灯または代替照明がすぐ使える','充電ケーブルの予備がある','少額の現金を持っている']},
+{key:'money',title:'MONEY｜お金',qs:['毎月の固定費を把握している','使っていないサブスクがほぼない','ATM・振込・決済手数料を無駄に払っていない','物をなくして同じものを買い直すことが少ない','食品や日用品の買いすぎが少ない']},
+{key:'home',title:'HOME｜家',qs:['鍵の定位置がある','財布の定位置がある','充電器の定位置がある','重要書類の場所が決まっている','日常的な探し物が少ない']},
+{key:'free',title:'FREE TIME｜余暇',qs:['お金をほぼ使わず楽しめる場所を3つ知っている','家でも楽しめるものがある','買い物をしなくても休日を過ごせる','散歩・運動など低コストの気分転換がある','暇になるたびに課金・通販・外食へ流れない']},
+{key:'backup',title:'BACKUP｜予備',qs:['スマホやPCの重要データをバックアップしている','決済手段が1種類だけではない','日用品を切らしたときの代替を知っている','スマホが使えない場合の連絡先を確認できる','一つ壊れても生活全体が止まらない']}
+];
+const root=document.getElementById('checks'); groups.forEach(g=>{const c=document.createElement('section');c.className='card';c.innerHTML=`<h2>${g.title}</h2>`+g.qs.map((q,i)=>`<label class="q"><input type="checkbox" data-group="${g.key}" id="${g.key}${i}"><span>${q}</span></label>`).join('');root.appendChild(c)});
+function diagnose(){
+let total=0,scores={};groups.forEach(g=>{scores[g.key]=[...document.querySelectorAll(`[data-group="${g.key}"]`)].filter(x=>x.checked).length;total+=scores[g.key]});
+const leak=(+subs.value||0)+(+foodloss.value||0)+(+friction.value||0); const annual=leak*12;
+document.getElementById('result').style.display='block';score.textContent=total;bar.style.width=(total/30*100)+'%';
+let r,s;if(total<=10){r='かなり脆い';s='生活の多くを、その場の判断や外部サービスで補っている状態。まず「止まる場所」から直すのが効果的です。'}else if(total<=20){r='普通。ただし漏れあり';s='日常は回っていますが、忙しさ・値上げ・故障などの小さな変化でコストが上がりやすい状態です。'}else if(total<=26){r='かなり強い';s='基本的な生活OSはできています。新しい節約術より、自動化・定位置・バックアップを強くする段階です。'}else{r='かなり壊れにくい';s='気合いではなく仕組みで暮らしが回っています。ここからは時間・余暇・収入など生活の質へ資源を回せます。'}rank.textContent=r;summary.textContent=s;annual.textContent=annual.toLocaleString('ja-JP')+'円 / 年';
+const names={food:'食',power:'水・電源',money:'お金',home:'家',free:'余暇',backup:'予備'};tags.innerHTML=Object.entries(scores).map(([k,v])=>`<span class="tag">${names[k]} ${v}/5</span>`).join('');
+const severity={power:0,backup:1,food:2,money:3,home:4,free:5};let weak=Object.keys(scores).sort((a,b)=>(scores[a]-scores[b])||(severity[a]-severity[b])).slice(0,3);
+const fix={power:'水・電源：水、充電、照明、現金のうち欠けているものを1つ今日用意する。',backup:'予備：データ・決済・連絡手段のどれか1つに代替ルートを作る。',food:'食：普段食べる保存食品を1つ多めに持ち、古いものから使う。',money:'お金：使っていないサブスクと手数料を1件だけ止める。',home:'家：鍵・財布・充電器のうち1つだけ定位置を決める。',free:'余暇：0〜500円で楽しめる場所・行動を3つメモする。'};
+priorities.innerHTML=weak.map(k=>`<div class="priority"><b>${names[k]} ${scores[k]}/5</b><br>${fix[k]}</div>`).join('');
+const actions=['財布・鍵・充電器の定位置を1つ作る','冷蔵庫と食品棚から期限切れ候補を確認する','水・食品・日用品を「1個余分」にする','不要サブスク・手数料を1件止める','無料〜低コストで楽しめる場所を3つ登録する','スマホ・PCの重要データのバックアップを確認する','「これがなくなると生活が止まる」ものを3つ書き、予備ルートを1つ作る'];
+plan.innerHTML=actions.map(x=>`<li>${x}</li>`).join('');result.scrollIntoView({behavior:'smooth'});
+}
+</script></body></html>
