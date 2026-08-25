@@ -1,6 +1,6 @@
 # Revenue Link Ledger
 
-Last updated: 2026-08-24
+Last updated: 2026-08-25
 
 Use this file as the source of truth when preparing X posts, note articles, comparison pages, affiliate content, and internal cross-links.
 
@@ -57,6 +57,19 @@ Use this file as the source of truth when preparing X posts, note articles, comp
 - Free entry: https://stratumpraxis.com/ai-workspace-safety-checklist.html
 - Role: set practical data boundaries, AI roles, connector permissions, context portability and incident readiness
 
+## Product 4 — AI Council Builder
+
+- Price: $29 one-time
+- LP / free diagnostic: https://stratumpraxis.com/ai-council-builder.html
+- Stripe: https://buy.stripe.com/dRm00k2oAdHt0G49ZV6Zy0E
+- Paid delivery: verified purchase → private Worker workspace
+- Role: diagnose whether the buyer needs one AI, a specialist pair, or a role-separated multi-AI council; provide reusable council prompts, meeting protocols and decision memo
+- Included bonus: local-only AI subscription overlap/spend optimizer; it does not access or cancel third-party subscriptions
+- Safety structure: no API keys, no account sharing, no third-party AI resale, no automatic external actions, no ongoing support
+- Acquisition intent: which AI should I use / ChatGPT vs Claude vs Gemini / AI team / multi-AI workflow / AI subscription overlap / use multiple AI models
+- Success metrics: diagnostic views, diagnostic completions, checkout clicks, verified purchases, activations
+- Stop rule: do not build hosted multi-model orchestration unless real buyers demonstrate demand that justifies API/security/support burden
+
 ## A8.net — confirmed link
 
 - Program: Value AI Writer byGMO
@@ -84,6 +97,7 @@ Selection rule: prefer programs with direct fit to current AI/workflow audience,
 
 ## Routing rule
 
+- Which AI / multi-AI / AI council / AI subscription overlap intent → AI Council Builder free diagnostic → $29 verified workspace
 - AI agent cost / ROI / payback intent → AI Agent Cost & ROI Calculator → $39 Decision Kit / $499 Audit
 - SaaS spend management / AI spend management search intent → high-intent organic entry → AI & SaaS Spend Decision Hub
 - AI/SaaS spend, renewal, overlap or cost-control intent → AI & SaaS Spend Decision Hub
@@ -91,6 +105,6 @@ Selection rule: prefer programs with direct fit to current AI/workflow audience,
 - Educational Japanese post → note hub (once live)
 - Low-intent visitor → free checklist/tool first
 - AI income claim → Reality Check
-- AI work safety / multi-AI workflow → Workspace Safety & Workflow Kit
+- AI work safety / multi-AI workflow → Workspace Safety & Workflow Kit or AI Council Builder depending on intent
 - Verified research with monetization intent → Revenue Router
 - Relevant Japanese SaaS/tool comparison → A8 affiliate where disclosure and fit are appropriate
