@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths:
+      - '.github/workflows/indexnow-signal.yml'
       - 'signal/**'
       - 'ai-council-builder.html'
       - 'ai-council-builder-ja.html'
