@@ -1,10 +1,24 @@
 [
   {
+    "id":"b2b-01",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"AI adoption is easy to start and surprisingly hard to turn into measurable business value. A useful first question is not ‘which model should we use?’ but ‘which workflow is expensive, repetitive, measurable and safe enough to redesign?’",
+    "url":"https://stratumpraxis.com/?utm_source=buffer&utm_medium=social&utm_campaign=b2b_workflow&utm_content=b2b01"
+  },
+  {
     "id":"lr-01",
     "active":true,
     "services":["bluesky","threads","linkedin"],
     "text":"Household resilience is usually less about buying more and more about removing single points of failure: one payment method, one charger, one food plan, one backup. This free 30-point check shows which everyday system is weakest.",
     "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=life_resilience&utm_content=lr01"
+  },
+  {
+    "id":"b2b-02",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"The expensive part of AI is often not the subscription. It is duplicated tools, unclear ownership, repeated manual work and pilots that never reach a measurable outcome. Audit the workflow before adding another tool.",
+    "url":"https://stratumpraxis.com/?utm_source=buffer&utm_medium=social&utm_campaign=b2b_ai_cost&utm_content=b2b02"
   },
   {
     "id":"lr-02",
@@ -14,6 +28,13 @@
     "url":"https://stratumpraxis.com/72-hour-household-readiness/?utm_source=buffer&utm_medium=social&utm_campaign=72h_resilience&utm_content=lr02"
   },
   {
+    "id":"b2b-03",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"A good AI use case has an observable before and after: hours removed, errors reduced, faster cycle time, lower software spend or more qualified revenue. If the KPI is vague, scaling the automation usually scales the ambiguity too.",
+    "url":"https://stratumpraxis.com/?utm_source=buffer&utm_medium=social&utm_campaign=b2b_value&utm_content=b2b03"
+  },
+  {
     "id":"lr-03",
     "active":true,
     "services":["bluesky","threads","linkedin"],
@@ -21,31 +42,10 @@
     "url":"https://stratumpraxis.com/monthly-money-leak-audit/?utm_source=buffer&utm_medium=social&utm_campaign=money_leaks&utm_content=lr03"
   },
   {
-    "id":"lr-04",
+    "id":"b2b-04",
     "active":true,
     "services":["bluesky","threads","linkedin"],
-    "text":"A resilient home does not need to be perfectly organized. It needs fewer things that can break the whole routine. Fixed homes for keys and chargers, backup payments, useful food buffers and recoverable data go a long way.",
-    "url":"https://stratumpraxis.com/household-resilience-checklist/?utm_source=buffer&utm_medium=social&utm_campaign=household_resilience&utm_content=lr04"
-  },
-  {
-    "id":"lr-05",
-    "active":true,
-    "services":["bluesky","threads","linkedin"],
-    "text":"Preparedness works better when it overlaps with ordinary life. Store food you already eat, rotate it normally, keep backup power charged and review the system briefly each month instead of building a forgotten stockpile.",
-    "url":"https://stratumpraxis.com/72-hour-household-readiness/?utm_source=buffer&utm_medium=social&utm_campaign=preparedness_system&utm_content=lr05"
-  },
-  {
-    "id":"lr-06",
-    "active":true,
-    "services":["bluesky","threads","linkedin"],
-    "text":"One useful money rule: do not ask only what something costs today. Ask what it costs over a year when subscriptions, fees, waste, storage and rebuying are included.",
-    "url":"https://stratumpraxis.com/monthly-money-leak-audit/?utm_source=buffer&utm_medium=social&utm_campaign=annual_cost&utm_content=lr06"
-  },
-  {
-    "id":"lr-07",
-    "active":true,
-    "services":["bluesky","threads","linkedin"],
-    "text":"The weakest household system is not always the one with the lowest score. Fix what would stop daily life first, then expensive failures, recurring time friction and quality-of-life gaps.",
-    "url":"https://stratumpraxis.com/life-resilience-check/?utm_source=buffer&utm_medium=social&utm_campaign=weakest_link&utm_content=lr07"
+    "text":"Most teams do not need more AI ideas. They need a shorter path from problem → quantified value → safe workflow → measurement. Stratum Praxis is built around that decision path rather than another generic prompt library.",
+    "url":"https://stratumpraxis.com/?utm_source=buffer&utm_medium=social&utm_campaign=b2b_decision&utm_content=b2b04"
   }
 ]
