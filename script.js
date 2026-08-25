@@ -47,6 +47,17 @@ if (kitButtonRow && !kitButtonRow.querySelector('[data-store="gumroad"]')) {
 
 const toolsGrid = document.querySelector("#tools .resource-grid");
 
+// Surface Passage Network as the owned decision hub that reuses existing
+// comparisons, calculators, and revenue routes instead of creating more products.
+if (toolsGrid && !toolsGrid.querySelector('[data-funnel="passage-network"]')) {
+  const passageCard = document.createElement("a");
+  passageCard.className = "resource-card";
+  passageCard.href = "passage-network.html";
+  passageCard.dataset.funnel = "passage-network";
+  passageCard.innerHTML = '<span>Decision hub · Compare → route</span><h3>Passage Network</h3><p>Use the awkward middle between AI tools, renewals, workflow platforms, and implementation decisions to find the next useful path.</p><strong>Explore decision passages →</strong>';
+  toolsGrid.prepend(passageCard);
+}
+
 // Capture the short-lived Aug. 2026 price-change decision window with a timestamped
 // calculator that routes into an already-live $39 decision product.
 if (toolsGrid && !toolsGrid.querySelector('[data-funnel="gpt56-price-window"]')) {
@@ -105,6 +116,14 @@ if (spendButtons && !spendButtons.querySelector('[data-funnel="saas-waste"]')) {
 
   spendButtons.prepend(renewalLink);
   spendButtons.append(wasteLink);
+}
+
+if (nav && !nav.querySelector('[data-nav="passage-network"]')) {
+  const passageLink = document.createElement("a");
+  passageLink.href = "passage-network.html";
+  passageLink.dataset.nav = "passage-network";
+  passageLink.textContent = "Decision Passages";
+  nav.appendChild(passageLink);
 }
 
 if (nav && !nav.querySelector('[data-nav="gpt56-cost"]')) {
