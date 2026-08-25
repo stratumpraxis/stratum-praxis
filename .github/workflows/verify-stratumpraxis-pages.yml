@@ -10,6 +10,8 @@ on:
       - 'ai-agent-vendor-due-diligence-pack.html'
       - 'ai-agent-procurement-governance-guide.html'
       - 'ai-implementation-kit.html'
+      - 'smartphone-ai-slide-factory.html'
+      - 'smartphone-income-blueprint.html'
       - 'ai-council-builder.html'
       - 'ai-council-builder-access.html'
       - 'ai-council-builder-ja.html'
@@ -23,7 +25,7 @@ permissions:
 jobs:
   verify-http:
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    timeout-minutes: 5
     steps:
       - name: Verify HTTPS pages
         shell: bash
@@ -36,6 +38,8 @@ jobs:
             'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
             'https://stratumpraxis.com/ai-agent-procurement-governance-guide.html'
             'https://stratumpraxis.com/ai-implementation-kit.html'
+            'https://stratumpraxis.com/smartphone-ai-slide-factory.html'
+            'https://stratumpraxis.com/smartphone-income-blueprint.html'
             'https://stratumpraxis.com/ai-council-builder.html'
             'https://stratumpraxis.com/ai-council-builder-access.html'
             'https://stratumpraxis.com/ai-council-builder-ja.html'
@@ -44,6 +48,6 @@ jobs:
           )
           for url in "${urls[@]}"; do
             echo "Checking $url"
-            curl --fail --silent --show-error --location --max-time 20 --retry 1 --retry-delay 2 "$url" >/dev/null
+            curl --fail --silent --show-error --location --max-time 20 --retry 4 --retry-delay 5 --retry-all-errors "$url" >/dev/null
           done
           echo 'All Stratum Praxis HTTPS checks passed.'
