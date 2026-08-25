@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Find the smallest AI team that fits your work. Take the free AI Council Builder diagnostic, then unlock a role-based council blueprint and reusable meeting system.">
+  <meta name="robots" content="index,follow">
+  <link rel="canonical" href="https://stratumpraxis.com/ai-council-builder.html">
+  <title>AI Council Builder — Find your AI team</title>
+  <style>
+    :root{--b:#090b0e;--p:#12161c;--p2:#171c23;--t:#f3f5f7;--m:#aab2bc;--l:#2a3139;--a:#e8edf2;--ok:#bde8c8;--warn:#ffd7a3}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--b);color:var(--t);font:16px/1.6 Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.w{max-width:1040px;margin:auto;padding:28px 18px 90px}.brand{font-size:12px;letter-spacing:.15em;color:var(--m)}.hero{padding:60px 0 28px}.eyebrow{display:inline-block;border:1px solid var(--l);border-radius:999px;padding:7px 11px;color:var(--m);font-size:13px}h1{font-size:clamp(43px,8vw,78px);line-height:.98;letter-spacing:-.04em;margin:20px 0}.lead{font-size:clamp(19px,2.6vw,25px);max-width:780px;color:var(--m)}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:28px 0}.btn{display:inline-block;text-decoration:none;padding:13px 17px;border-radius:12px;font-weight:800;border:1px solid var(--l)}.primary{background:var(--a);color:#090b0e;border-color:var(--a)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:var(--p);border:1px solid var(--l);border-radius:18px;padding:20px;margin:14px 0}.card h2,.card h3{margin-top:0}.muted{color:var(--m)}.diag{padding:24px}.q{border-top:1px solid var(--l);padding:18px 0}.q:first-child{border-top:0}.q strong{display:block;margin-bottom:8px}.choices{display:flex;gap:8px;flex-wrap:wrap}.choices label{border:1px solid var(--l);border-radius:999px;padding:8px 11px;cursor:pointer;background:#0d1014}.choices label:has(input:checked){background:var(--a);color:#080a0d}.choices input{position:absolute;opacity:0;pointer-events:none}.result{display:none;background:var(--p2);border:1px solid var(--l);border-radius:16px;padding:20px;margin-top:18px}.result.show{display:block}.scoreline{font-size:13px;letter-spacing:.08em;color:var(--m)}.price{font-size:45px;font-weight:900;letter-spacing:-.04em}.safe{border-left:3px solid var(--ok)}.small{font-size:13px}.two{display:grid;grid-template-columns:1fr 1fr;gap:14px}.included li{margin:8px 0}.notice{color:var(--warn)}footer{margin-top:50px;padding-top:24px;border-top:1px solid var(--l);color:var(--m);font-size:13px}@media(max-width:760px){.grid,.two{grid-template-columns:1fr}.hero{padding-top:34px}}
+  </style>
+  <script defer src="scos-analytics.js"></script>
+</head>
+<body data-funnel="ai_council_builder" data-product="ai_council_builder">
+<main class="w">
+  <div class="brand">STRATUM PRAXIS · SELF-SERVE DECISION TOOL</div>
+  <section class="hero">
+    <span class="eyebrow">Free diagnostic · no account required</span>
+    <h1>Find your AI team.<br>Assign the roles.<br>Run better decisions.</h1>
+    <p class="lead">AI Council Builder helps you decide when one AI is enough, when a second opinion is useful, and how to give different AI tools different jobs instead of paying for overlapping subscriptions.</p>
+    <div class="actions"><a class="btn primary" data-primary-cta data-analytics-id="start_free_diagnostic" href="#diagnostic">Start the free diagnostic</a><a class="btn" href="#paid">See what the full toolkit includes</a></div>
+    <p class="muted small">No API keys. No account sharing. No automated actions on your behalf. Your diagnostic answers stay in this browser page.</p>
+  </section>
+
+  <section class="grid">
+    <div class="card"><h3>1 · Choose</h3><p class="muted">Work out whether your task needs one general AI, a specialist second opinion, or a small council.</p></div>
+    <div class="card"><h3>2 · Assign</h3><p class="muted">Separate scouting, building, criticism, verification and final judgment so one model does not grade its own work.</p></div>
+    <div class="card"><h3>3 · Cut overlap</h3><p class="muted">Map what you already pay for and flag subscriptions that appear to duplicate the same job.</p></div>
+  </section>
+
+  <section id="diagnostic" class="card diag">
+    <div class="brand">FREE · 60–90 SECOND DIAGNOSTIC</div>
+    <h2>What kind of AI setup fits your work?</h2>
+    <p class="muted">This is a lightweight fit diagnostic, not a benchmark or guarantee. Answer for the work you do most often.</p>
+    <form id="quiz">
+      <div class="q"><strong>1. What do you use AI for most?</strong><div class="choices">
+        <label><input type="radio" name="goal" value="create" required>Writing / creating</label><label><input type="radio" name="goal" value="research">Research</label><label><input type="radio" name="goal" value="decide">Decisions / strategy</label><label><input type="radio" name="goal" value="build">Coding / building</label>
+      </div></div>
+      <div class="q"><strong>2. How costly would a confident-but-wrong answer be?</strong><div class="choices">
+        <label><input type="radio" name="risk" value="low" required>Low</label><label><input type="radio" name="risk" value="medium">Annoying / time-consuming</label><label><input type="radio" name="risk" value="high">Material to the work</label>
+      </div></div>
+      <div class="q"><strong>3. Do you often want competing viewpoints?</strong><div class="choices">
+        <label><input type="radio" name="views" value="rare" required>Rarely</label><label><input type="radio" name="views" value="sometimes">Sometimes</label><label><input type="radio" name="views" value="often">Often</label>
+      </div></div>
+      <div class="q"><strong>4. How much process can you tolerate?</strong><div class="choices">
+        <label><input type="radio" name="process" value="simple" required>Keep it simple</label><label><input type="radio" name="process" value="balanced">A few deliberate steps</label><label><input type="radio" name="process" value="rigorous">I want a repeatable review process</label>
+      </div></div>
+      <div class="q"><strong>5. What is your AI subscription preference?</strong><div class="choices">
+        <label><input type="radio" name="budget" value="one" required>Pay for one if possible</label><label><input type="radio" name="budget" value="two">Two is fine if roles differ</label><label><input type="radio" name="budget" value="best">Optimize for workflow fit</label>
+      </div></div>
+      <div class="q"><strong>6. Do you need AI to take real-world actions automatically?</strong><div class="choices">
+        <label><input type="radio" name="actions" value="no" required>No — advice/output is enough</label><label><input type="radio" name="actions" value="maybe">Maybe later</label><label><input type="radio" name="actions" value="yes">Yes</label>
+      </div></div>
+      <button class="btn primary" style="border:0;cursor:pointer" type="submit">Show my free result</button>
+    </form>
+    <div id="result" class="result" aria-live="polite"></div>
+  </section>
+
+  <section id="paid" class="two">
+    <div class="card"><div class="brand">FULL TOOLKIT</div><h2>AI Council Builder v1.0</h2><div class="price">$29</div><p class="muted">One-time purchase. Self-serve access.</p>
+      <ul class="included"><li>Personal AI-stack planner</li><li>Role-based council blueprint</li><li>Scout / Builder / Skeptic / Verifier / Judge prompts</li><li>Four repeatable council meeting modes</li><li>Decision memo generator template</li><li><strong>Bonus:</strong> AI subscription overlap & spend optimizer</li><li>Safety boundary checklist</li></ul>
+      <a id="buy" class="btn primary" data-primary-cta data-analytics-id="buy_ai_council_builder" data-product="ai_council_builder" href="https://buy.stripe.com/dRm00k2oAdHt0G49ZV6Zy0E">Get AI Council Builder — $29</a>
+      <p class="muted small">Third-party AI subscriptions and usage are not included.</p>
+    </div>
+    <div class="card safe"><div class="brand">DESIGNED TO STAY LOW-RISK</div><h2>The product gives you a method, not delegated authority.</h2><p>AI Council Builder does not connect to your accounts, hold API keys, send messages, publish content, make purchases, cancel subscriptions, or execute decisions for you.</p><p class="muted">It is general productivity and decision-support material. It is not designed for medical, legal, financial, eligibility, employment, credit, safety-critical or other high-stakes decisions.</p><p class="muted">AI outputs can be wrong. You review and decide what to use. Third-party AI services can change their features, pricing and availability.</p></div>
+  </section>
+
+  <section class="card"><h2>Why the spend optimizer is included</h2><p>It is useful as a <strong>value-add, not a separate promise</strong>. The paid workspace lets the buyer manually list AI subscriptions, monthly cost and assigned jobs, then flags apparent role overlap. It never logs into billing accounts or cancels anything. That keeps the feature useful while avoiding account-access and automated-financial-action risk.</p></section>
+
+  <section class="card"><h2>What this is not</h2><p class="muted">This is not a hosted multi-model chat service and it does not resell access to ChatGPT, Claude, Gemini, Grok or other providers. It is a self-serve planning toolkit for organizing the AI services a buyer independently chooses to use. No result, savings, accuracy, income or business outcome is guaranteed.</p><p class="muted small">Digital access is provided after verified payment. Any refund limitation is subject to applicable law and does not remove statutory consumer rights.</p></section>
+
+  <footer>© Stratum Praxis · AI Council Builder v1.0 · General productivity decision support only.</footer>
+</main>
+<script>
+(function(){
+  const form=document.getElementById('quiz'), out=document.getElementById('result');
+  function v(fd,k){return fd.get(k)}
+  form.addEventListener('submit',function(e){e.preventDefault();const fd=new FormData(form);
+    let score=0;if(v(fd,'risk')==='high')score+=2;else if(v(fd,'risk')==='medium')score+=1;
+    if(v(fd,'views')==='often')score+=2;else if(v(fd,'views')==='sometimes')score+=1;
+    if(v(fd,'process')==='rigorous')score+=2;else if(v(fd,'process')==='balanced')score+=1;
+    if(v(fd,'budget')==='one')score-=1;if(v(fd,'goal')==='decide'||v(fd,'goal')==='research')score+=1;
+    let type,title,copy,roles;
+    if(score<=1){type='solo';title='Lean Solo';copy='One strong general AI is probably enough for most of this workflow. Add a second opinion only for material claims or unusually important decisions.';roles='Primary AI → occasional verifier';}
+    else if(score<=4){type='pair';title='Specialist Pair';copy='You are likely to get more value from two clearly separated roles than from collecting many overlapping subscriptions.';roles='Builder → independent critic / verifier';}
+    else{type='council';title='Council Workflow';copy='Your work benefits from deliberate disagreement. Independent first passes and a separate final judge are more useful than asking one AI to critique itself.';roles='Scout → Builder → Skeptic → Verifier → Judge';}
+    if(v(fd,'actions')==='yes')copy+=' Because you want automated external actions, keep execution outside this toolkit and add explicit human approval, permission limits and rollback controls.';
+    out.className='result show';out.innerHTML='<div class="scoreline">YOUR FREE PROFILE</div><h3>'+title+'</h3><p>'+copy+'</p><p><strong>Starter structure:</strong> '+roles+'</p><p class="muted">The paid toolkit turns this profile into a reusable role map, meeting protocol, prompts and subscription-overlap review.</p><a class="btn primary" data-primary-cta data-analytics-id="diagnostic_result_buy" href="https://buy.stripe.com/dRm00k2oAdHt0G49ZV6Zy0E">Unlock the full toolkit — $29</a>';
+    window.scosCapture&&window.scosCapture('diagnostic_complete',{product:'ai_council_builder',profile:type,goal:v(fd,'goal'),external_actions:v(fd,'actions')});out.scrollIntoView({behavior:'smooth',block:'nearest'});
+  });
+})();
+</script>
+</body>
+</html>
