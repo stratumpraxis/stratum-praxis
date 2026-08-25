@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'signal/**'
+      - 'smartphone-income-blueprint.html'
       - 'sitemap.xml'
       - '54b81c12e07af0e37b6ab0ac24469586.txt'
   workflow_dispatch:
@@ -33,7 +34,9 @@ jobs:
                 "https://stratumpraxis.com/signal/",
                 "https://stratumpraxis.com/signal/bing-indexnow-2026.html",
                 "https://stratumpraxis.com/signal/google-discover-preferred-sources-2026.html",
-                "https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html"
+                "https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html",
+                "https://stratumpraxis.com/smartphone-income-blueprint.html",
+                "https://stratumpraxis.com/signal/validate-digital-product-from-phone-2026.html"
               ]
             }' \
             https://api.indexnow.org/indexnow
