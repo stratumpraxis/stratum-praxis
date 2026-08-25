@@ -1,0 +1,19 @@
+{
+  "name": "Signal Praxis",
+  "short_name": "Signal",
+  "description": "AI・Web・検索・海外テックの変化を3分で掴む実務ダッシュボード",
+  "start_url": "/signal/",
+  "scope": "/signal/",
+  "display": "standalone",
+  "background_color": "#07090d",
+  "theme_color": "#0b0f16",
+  "lang": "ja",
+  "categories": ["news", "productivity", "business"],
+  "icons": [
+    {"src":"/signal/icon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ],
+  "shortcuts": [
+    {"name":"今日のシグナル","url":"/signal/#latest"},
+    {"name":"無料ツール","url":"/signal/#tools"}
+  ]
+}
