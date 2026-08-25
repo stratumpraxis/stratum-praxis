@@ -1,5 +1,5 @@
 name = "ai-consultant-verify"
-main = "council-ja-worker.js"
+main = "smartphone-income-worker.js"
 compatibility_date = "2026-08-24"
 
 [vars]
