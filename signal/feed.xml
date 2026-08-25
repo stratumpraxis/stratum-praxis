@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Signal Praxis</title>
+    <link>https://stratumpraxis.com/signal/</link>
+    <description>AI・Web・検索・海外テックの変化を、一次情報ベースで実務向けに整理。</description>
+    <language>ja</language>
+    <lastBuildDate>Tue, 25 Aug 2026 13:05:00 GMT</lastBuildDate>
+    <item>
+      <title>Bingは「おまけ」ではない。IndexNowを最初から入れる理由</title>
+      <link>https://stratumpraxis.com/signal/bing-indexnow-2026.html</link>
+      <guid>https://stratumpraxis.com/signal/bing-indexnow-2026.html</guid>
+      <pubDate>Tue, 25 Aug 2026 12:40:00 GMT</pubDate>
+      <description>Google一本足を避けるためのBing Webmaster Tools / IndexNow運用を整理。</description>
+    </item>
+    <item>
+      <title>Google Discover / Preferred Sourcesで独立サイトが取るべき設計</title>
+      <link>https://stratumpraxis.com/signal/google-discover-preferred-sources-2026.html</link>
+      <guid>https://stratumpraxis.com/signal/google-discover-preferred-sources-2026.html</guid>
+      <pubDate>Tue, 25 Aug 2026 12:41:00 GMT</pubDate>
+      <description>Discover候補になるための基本とPreferred Sources周辺の変化を整理。</description>
+    </item>
+    <item>
+      <title>AIツールを増やす前に見る5項目</title>
+      <link>https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html</link>
+      <guid>https://stratumpraxis.com/signal/ai-tool-buying-rule-2026.html</guid>
+      <pubDate>Tue, 25 Aug 2026 12:42:00 GMT</pubDate>
+      <description>用途・頻度・代替可能性・失敗コスト・年間費用でAIツールを判断する実務ルール。</description>
+    </item>
+  </channel>
+</rss>
