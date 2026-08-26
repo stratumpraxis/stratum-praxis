@@ -1,28 +1,28 @@
 {
-  "id": "2026-08-26-ai-slop-youtube-v3",
-  "createdAt": "2026-08-26T20:30:00+09:00",
+  "id": "2026-08-26-asking-to-doing-youtube-v4",
+  "createdAt": "2026-08-26T20:43:00+09:00",
   "brandLane": "stratum-forwelle-en",
   "platformVariant": "youtube-shorts-discovery",
-  "title": "AI Video Isn't the Problem. AI Slop Is.",
-  "topic": "Why platforms are drawing a line between AI-assisted creation and repetitive AI spam",
+  "title": "AI Is Moving From Chat to Work",
+  "topic": "AI is shifting from asking questions toward executing real work",
   "language": "en",
-  "summary": "A concise original explainer on why AI-assisted video can remain monetizable while repetitive spam, weak disclosure and copycat production create platform and audience risk.",
-  "outputFile": "media/trend-videos/2026-08-26-ai-slop-youtube-v3.mp4",
-  "scores": {"freshness":9,"businessDemand":9,"crossPlatformPotential":10,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
+  "summary": "A 36-second YouTube Short explaining the ask -> assist -> execute shift and why workflow design matters more as AI becomes action-oriented.",
+  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-youtube-v4.mp4",
+  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":9,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
   "sources": [
-    {"name":"TikTok Newsroom - Helping people spot and understand AI generated content","url":"https://newsroom.tiktok.com/helping-people-spot-and-understand-aigc-on-tiktok?lang=en-150","factSource":true,"verified":true,"published":"2026-07-10"},
-    {"name":"TikTok Creative Center - Trends","url":"https://ads.tiktok.com/creative/creativeCenter/trends?period=7","factSource":false,"verified":true,"published":"2026-08-26"}
+    {"name":"OpenAI — From asking to doing: How the world is putting ChatGPT to work","url":"https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/","factSource":true,"verified":true,"published":"2026-08-06"},
+    {"name":"OpenAI — From assistance to execution: How enterprises put AI to work","url":"https://openai.com/index/how-enterprises-put-ai-to-work/","factSource":true,"verified":true,"published":"2026-08-12"}
   ],
   "thirdPartyAssets": [],
-  "originality": {"creatorSignals":["original distinction between AI as a tool and AI slop as an operating model","original monetization-oriented framework: authorship + transformation + disclosure","original kinetic near-future motion sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
-  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","creator-economy","platform-safety"],"notes":"No creator clips, screenshots, logos, likenesses, copyrighted music, allegations or copied scripts. Claims are limited to official TikTok transparency/spam-detection policy and original analysis."},
+  "originality": {"creatorSignals":["original ask-assist-execute framework","original thesis that workflow architecture matters more as AI becomes action-oriented","original kinetic near-future visual sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
+  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","agents","productivity","future-of-work"],"notes":"No third-party footage, logos, screenshots, likenesses or copyrighted music. Claims are limited to official OpenAI reports and original analysis."},
   "scenes": [
-    {"duration":5.5,"eyebrow":"CREATOR ECONOMY / 2026","motionTag":"AI ≠ SLOP","headline":"AI video isn't\nthe problem.","body":"The problem is content that looks mass-produced, copied, and disposable.","sourceLabel":"Original analysis / platform trend","background":"#050711","accent":"#7CFFDA"},
-    {"duration":5.5,"eyebrow":"WHAT CHANGED","motionTag":"SPAM DETECTION","headline":"Platforms are\nwatching quality","body":"TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam.","sourceLabel":"TikTok Newsroom / Jul 10, 2026","background":"#071421","accent":"#5BE7FF"},
-    {"duration":5.5,"eyebrow":"THE WRONG MODEL","motionTag":"COPY → POST → REPEAT","headline":"Automation alone\nis not a moat","body":"If every upload is interchangeable, the channel itself starts to look interchangeable.","sourceLabel":"Original creator-economy thesis","background":"#10102A","accent":"#B39CFF"},
-    {"duration":5.5,"eyebrow":"THE BETTER MODEL","motionTag":"AUTHORSHIP","headline":"Use AI.\nAdd a point of view.","body":"Original thesis. Real transformation. Clear disclosure. Distinct visual language.","sourceLabel":"Original monetization framework","background":"#07151A","accent":"#65FF9D"},
-    {"duration":5.5,"eyebrow":"MONETIZATION TEST","motionTag":"5-VIDEO AUDIT","headline":"Watch your last\nfive uploads","body":"Would a human reviewer instantly see five different works—not one template five times?","sourceLabel":"Forwelle originality gate","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":5.5,"eyebrow":"THE TAKEAWAY","motionTag":"AI + AUTHORSHIP","headline":"Scale the system.\nNot the sameness.","body":"The winning automation is the one that keeps creative authorship visible.","sourceLabel":"Stratum Praxis / original thesis","background":"#050811","accent":"#FFD166"}
+    {"duration":6.0,"eyebrow":"AI / 2026","motionTag":"ASK → DO","headline":"AI is moving\nfrom chat to work.","body":"The key shift isn't only smarter answers. It's execution.","sourceLabel":"OpenAI Signals / Aug 2026","background":"#050711","accent":"#7CFFDA"},
+    {"duration":6.0,"eyebrow":"1 / ASK","motionTag":"PROMPT → RESPONSE","headline":"First:\nask.","body":"AI answered. You still carried the workflow.","sourceLabel":"Original workflow framing","background":"#071421","accent":"#5BE7FF"},
+    {"duration":6.0,"eyebrow":"2 / ASSIST","motionTag":"WORK WITH AI","headline":"Then:\nassist.","body":"Draft, analyze, compare, code—the tool moved inside the task.","sourceLabel":"OpenAI usage report / original synthesis","background":"#10102A","accent":"#B39CFF"},
+    {"duration":6.0,"eyebrow":"3 / EXECUTE","motionTag":"TOOLS + AGENTS","headline":"Now:\nexecute.","body":"Agents and workflows can move from advice toward real action.","sourceLabel":"OpenAI enterprise report / Aug 2026","background":"#07151A","accent":"#65FF9D"},
+    {"duration":6.0,"eyebrow":"THE MOAT","motionTag":"WORKFLOW > PROMPT","headline":"Prompting isn't\nthe whole skill.","body":"Permissions, verification and workflow design become the advantage.","sourceLabel":"Original operating-model thesis","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":6.0,"eyebrow":"BETTER QUESTION","motionTag":"WHAT CAN IT FINISH?","headline":"What can AI\nsafely finish?","body":"That's the question that matters as chat becomes work.","sourceLabel":"Forwelle / original takeaway","background":"#050811","accent":"#FFD166"}
   ],
-  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"AI Video Isn't the Problem. AI Slop Is. #Shorts","caption":"AI-assisted creation can be powerful. The risk starts when automation turns into repetitive, interchangeable spam. TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam. The durable model is AI + authorship: original thesis, real transformation, clear disclosure, and a visual identity that changes with the idea.\n\n#AI #CreatorEconomy #YouTubeShorts #ContentStrategy #AIVideo"}
+  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"AI Is Moving From Chat to Work #Shorts","caption":"OpenAI's recent usage and enterprise reports point to a broader shift: AI is moving from answering questions toward doing work inside real workflows. The next skill isn't only prompting. It's designing what AI can safely finish end-to-end.\n\n#AI #AIAgents #YouTubeShorts #FutureOfWork #Productivity"}
 }
