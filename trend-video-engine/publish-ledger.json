@@ -87,6 +87,19 @@
         "sharedNow": true,
         "externalLink": "https://www.youtube.com/watch?v=LwiXGL5guhk"
       }
+    },
+    "2026-08-26-asking-to-doing-youtube-v4": {
+      "youtube": {
+        "status": "sent",
+        "at": "2026-08-26T11:43:37.197Z",
+        "channelId": "6a8e5c44ccaf649a671a1092",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-asking-to-doing-youtube-v4.mp4",
+        "postId": "6a8ed16587bcbbf586f57434",
+        "dueAt": "2026-08-26T11:43:34.046Z",
+        "sentAt": "2026-08-26T11:43:37.052Z",
+        "sharedNow": true,
+        "externalLink": "https://www.youtube.com/watch?v=bP-sikh25oI"
+      }
     }
   }
 }
