@@ -51,4 +51,4 @@ console.log('channels_returned:', channelCount);
 console.log('locked:', lockedCount);
 console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
-// 2026-08-26: safe connection recheck after API key confirmation.
+// 2026-08-27: Revenue Distribution Run safe connection recheck; no posting.
