@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#07090d"/>
+      <stop offset="0.55" stop-color="#0d131b"/>
+      <stop offset="1" stop-color="#111b27"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.12" r="0.62">
+      <stop offset="0" stop-color="#7bc9ff" stop-opacity="0.23"/>
+      <stop offset="1" stop-color="#7bc9ff" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#acdfff"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1350" fill="url(#bg)"/>
+  <rect width="1080" height="1350" fill="url(#glow)"/>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="82" y="104" fill="#9cb0c4" font-size="24" font-weight="700" letter-spacing="4">STRATUM PRAXIS · 2026</text>
+    <circle cx="84" cy="153" r="7" fill="#b9f0ca"/>
+    <text x="108" y="162" fill="#b9c7d5" font-size="22" font-weight="700">EVIDENCE-FIRST PRODUCT TEST</text>
+
+    <text x="82" y="295" fill="#ffffff" font-size="84" font-weight="800" letter-spacing="-3">Stop guessing.</text>
+    <text x="82" y="390" fill="url(#accent)" font-size="74" font-weight="800" letter-spacing="-3">Build one small test</text>
+    <text x="82" y="475" fill="url(#accent)" font-size="74" font-weight="800" letter-spacing="-3">that teaches you</text>
+    <text x="82" y="560" fill="url(#accent)" font-size="74" font-weight="800" letter-spacing="-3">what to do next.</text>
+
+    <rect x="82" y="660" width="916" height="1" fill="#ffffff" opacity="0.14"/>
+    <g transform="translate(82 724)">
+      <rect x="0" y="0" width="170" height="118" rx="20" fill="#ffffff" opacity="0.055" stroke="#ffffff" stroke-opacity="0.13"/>
+      <text x="28" y="43" fill="#8ca2b8" font-size="18" font-weight="700">01</text>
+      <text x="28" y="81" fill="#f5f8fb" font-size="24" font-weight="800">Problem</text>
+
+      <rect x="190" y="0" width="170" height="118" rx="20" fill="#ffffff" opacity="0.055" stroke="#ffffff" stroke-opacity="0.13"/>
+      <text x="218" y="43" fill="#8ca2b8" font-size="18" font-weight="700">02</text>
+      <text x="218" y="81" fill="#f5f8fb" font-size="24" font-weight="800">Evidence</text>
+
+      <rect x="380" y="0" width="170" height="118" rx="20" fill="#ffffff" opacity="0.055" stroke="#ffffff" stroke-opacity="0.13"/>
+      <text x="408" y="43" fill="#8ca2b8" font-size="18" font-weight="700">03</text>
+      <text x="408" y="81" fill="#f5f8fb" font-size="24" font-weight="800">Build</text>
+
+      <rect x="570" y="0" width="170" height="118" rx="20" fill="#ffffff" opacity="0.055" stroke="#ffffff" stroke-opacity="0.13"/>
+      <text x="598" y="43" fill="#8ca2b8" font-size="18" font-weight="700">04</text>
+      <text x="598" y="81" fill="#f5f8fb" font-size="24" font-weight="800">Traffic</text>
+
+      <rect x="760" y="0" width="156" height="118" rx="20" fill="#9fd7ff" opacity="0.10" stroke="#9fd7ff" stroke-opacity="0.28"/>
+      <text x="788" y="43" fill="#9fd7ff" font-size="18" font-weight="700">05</text>
+      <text x="788" y="81" fill="#ffffff" font-size="24" font-weight="800">Fix</text>
+    </g>
+
+    <text x="82" y="950" fill="#9eabb9" font-size="31">Smartphone Income Blueprint</text>
+    <text x="82" y="1000" fill="#eef5fb" font-size="34" font-weight="800">One problem · One product · One measurable loop</text>
+
+    <rect x="82" y="1080" width="916" height="150" rx="28" fill="#ffffff" opacity="0.045" stroke="#9fd7ff" stroke-opacity="0.22"/>
+    <text x="118" y="1135" fill="#b6c5d3" font-size="23">Phone-first Buyer Kit · one-time purchase</text>
+    <text x="118" y="1197" fill="#ffffff" font-size="48" font-weight="800">$19</text>
+    <text x="242" y="1197" fill="#91a0af" font-size="24">Validate → publish → measure → diagnose</text>
+
+    <text x="82" y="1290" fill="#738393" font-size="19">No guaranteed-income claim. Built for practical validation.</text>
+  </g>
+</svg>
