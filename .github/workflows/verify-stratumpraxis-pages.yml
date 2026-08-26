@@ -17,6 +17,8 @@ on:
       - 'workflow-operator.html'
       - 'trend-to-video-revenue-suite.html'
       - 'execution-without-drift.html'
+      - 'safe-api-automation-kit.html'
+      - 'revenue-distribution-engine.html'
       - 'gpt-5-6-sol-api-cost-calculator.html'
       - 'agentic-ai-governance-permission-kit.html'
       - 'ai-agent-vendor-due-diligence-pack.html'
@@ -53,6 +55,8 @@ jobs:
             'https://stratumpraxis.com/workflow-operator.html'
             'https://stratumpraxis.com/trend-to-video-revenue-suite.html'
             'https://stratumpraxis.com/execution-without-drift.html'
+            'https://stratumpraxis.com/safe-api-automation-kit.html'
+            'https://stratumpraxis.com/revenue-distribution-engine.html'
             'https://stratumpraxis.com/signal/'
             'https://stratumpraxis.com/stack-pulse/'
             'https://stratumpraxis.com/ai-council-builder-ja.html'
@@ -84,7 +88,9 @@ jobs:
             'https://stratumpraxis.com/prompt-systems.html' \
             'https://stratumpraxis.com/workflow-operator.html' \
             'https://stratumpraxis.com/trend-to-video-revenue-suite.html' \
-            'https://stratumpraxis.com/execution-without-drift.html'; do
+            'https://stratumpraxis.com/execution-without-drift.html' \
+            'https://stratumpraxis.com/safe-api-automation-kit.html' \
+            'https://stratumpraxis.com/revenue-distribution-engine.html'; do
             grep -F "$url" <<<"$sitemap_html" >/dev/null
           done
 
@@ -92,6 +98,12 @@ jobs:
           passage_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/passage-hub/')"
           for path in '/prompt-systems.html' '/execution-without-drift.html'; do
             grep -F "href=\"$path\"" <<<"$passage_html" >/dev/null
+          done
+
+          echo 'Checking Prompt Hub owned sales routes'
+          prompt_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/prompt-systems.html')"
+          for path in '/workflow-operator.html' '/trend-to-video-revenue-suite.html' '/execution-without-drift.html' '/safe-api-automation-kit.html' '/revenue-distribution-engine.html'; do
+            grep -F "href=\"$path\"" <<<"$prompt_html" >/dev/null
           done
 
           echo 'Checking Return Gate outbound routes'
