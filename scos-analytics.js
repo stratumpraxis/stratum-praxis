@@ -92,26 +92,50 @@
     window.scosCapture(name, props);
   }
 
-  function injectReturnGateEntry() {
-    if (location.pathname.startsWith('/return-gate')) return;
+  function isEnglishPage() {
+    const lang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+    return lang.startsWith('en') || location.pathname.startsWith('/guides/') || location.pathname.startsWith('/return-gate/en/');
+  }
+
+  function injectNetworkEntry() {
     if (document.getElementById('return-gate-entry')) return;
+    const english = isEnglishPage();
+    const onReturnGate = location.pathname.startsWith('/return-gate');
+    const returnPath = english ? '/return-gate/en/' : '/return-gate/';
+    const contentPath = english ? '/guides/' : '/folio-junction/';
+    const contentLabel = english ? 'Field Guides' : 'Folio Junction';
+
     const wrap = document.createElement('div');
     wrap.id = 'return-gate-entry';
-    wrap.style.cssText = "max-width:1180px;margin:28px auto 18px;padding:0 16px;font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
-    const link = document.createElement('a');
-    link.href = '/return-gate/';
-    link.textContent = '↩ Return Gate｜再訪ハブへ戻る';
-    link.dataset.analyticsId = 'return_gate_entry';
-    link.style.cssText = 'display:inline-block;border:1px solid rgba(127,150,180,.45);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.55)';
-    link.addEventListener('pointerdown', function () {
-      captureBeforeNavigation('return_gate_entry_click', { source_funnel: funnelId(), destination_path: '/return-gate/' });
-    });
-    wrap.appendChild(link);
-    document.body.appendChild(wrap);
+    wrap.setAttribute('aria-label', english ? 'Return Gate network' : 'Return Gate交通網');
+    wrap.style.cssText = "max-width:1180px;margin:28px auto 18px;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap;font:13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+
+    function addLink(href, text, analyticsId, primary) {
+      if (location.pathname === href || (href.endsWith('/') && location.pathname === href + 'index.html')) return;
+      const link = document.createElement('a');
+      link.href = href;
+      link.textContent = text;
+      link.dataset.analyticsId = analyticsId;
+      link.style.cssText = primary
+        ? 'display:inline-block;border:1px solid rgba(190,205,225,.65);border-radius:999px;padding:9px 13px;color:#080b10;text-decoration:none;background:#f5f7fb;font-weight:850'
+        : 'display:inline-block;border:1px solid rgba(127,150,180,.4);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.5)';
+      link.addEventListener('pointerdown', function () {
+        captureBeforeNavigation('network_route_click', { source_funnel: funnelId(), destination_path: href, route_id: analyticsId });
+        if (analyticsId.indexOf('return_gate') >= 0) captureBeforeNavigation('return_gate_entry_click', { source_funnel: funnelId(), destination_path: href });
+      });
+      wrap.appendChild(link);
+    }
+
+    if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', true);
+    addLink('/passage-hub/', english ? 'Route map' : '路線図', 'passage_map_entry', false);
+    addLink(contentPath, contentLabel, 'content_hub_entry', false);
+    addLink('https://www.youtube.com/@forwelle', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
+
+    if (wrap.children.length) document.body.appendChild(wrap);
   }
 
   function captureView() { window.scosCapture('funnel_view'); }
-  function ready() { captureView(); injectReturnGateEntry(); }
+  function ready() { captureView(); injectNetworkEntry(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
