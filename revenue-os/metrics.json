@@ -23,6 +23,18 @@
     "status": "implemented on main; production HTTP reflection not independently verified in this run",
     "success_condition": "Observe a real Return Gate visit -> return_gate_growth_os primary_cta_click -> sales page -> Stripe checkout_click -> genuine purchase."
   },
+  "all_offer_external_acquisition_2026_08_27": {
+    "external_source": "public GitHub repository README",
+    "entry_url": "https://stratumpraxis.com/product-router.html?utm_source=github&utm_medium=referral&utm_campaign=all_active_offers&utm_content=repository_readme",
+    "router_commit": "64608b349c77035d02d16d927862795369d8e394",
+    "readme_commit": "df1fbe532b400005ded3ce563cc4f52dad32bb56",
+    "coverage": "currently active sellable offers listed in product-router.html, including direct Payhip offers, self-hosted Stripe funnels, Ordlume, AI Consultant, Return Gate Growth OS, AI Council Builder EN/JA, smartphone products, AI Workflow Operator, AI Practical Check and Offer Optimizer entry funnels",
+    "tracking": "GitHub UTM attribution is captured on the router; router buttons are data-primary-cta. Shared analytics records primary_cta_click and records checkout_click before navigation when destination host is Stripe, Payhip or Gumroad. Purchases are verified only from the payment/store record.",
+    "excluded": ["external-review listings such as Fab/AIToolsDir", "Microsoft Store owner-only submission", "intentionally paused recurring-service offer"],
+    "deployment_status": "GitHub Pages deployment run 33011766255 was still in_progress at the latest check; do not call Production verified until the run succeeds.",
+    "remaining_tracking_gaps": "Funnels that leave stratumpraxis.com for a separately hosted diagnostic/optimizer can measure the router exit but may require their own analytics or store records for downstream stage attribution. AI Workflow Operator marketplace individual listing URLs were not yet confirmed, so its tracked route currently lands on the self-hosted product-line page before storefront navigation.",
+    "success_condition": "For each active offer, observe external GitHub UTM landing or another verified external source, then product CTA/checkout activity, and verify any purchase in Stripe/Payhip/Gumroad/marketplace evidence."
+  },
   "first_distribution_run_2026_08_27": {
     "theme": "AI/SaaS cost review before renewal",
     "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
@@ -46,6 +58,6 @@
     "checkout_events_after_publish": null,
     "safety_note": "No blind publish, duplicate retry, or unverified-channel posting. After publication, verify the real Instagram post URL and PostHog UTM -> Calculator/Return Gate -> CTA -> Checkout events before declaring the run complete."
   },
-  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck. Existing Return Gate traffic now has a direct measured route to the $24 Growth OS offer; next prioritize safe verified SNS distribution and observe external source -> entry asset -> CTA -> checkout -> purchase before expanding the product catalog.",
-  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate scheduled, published, clicked, converted and purchased states."
+  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck. Every currently active sellable offer now has a shared external-acquisition entry from the public GitHub README through the tracked product router, but real external visits and purchases still need observation. Prioritize proving traffic and conversion on this route before expanding the catalog.",
+  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate route-created, deployed, visited, clicked, checkout-started, purchased, delivered and activated states."
 }
