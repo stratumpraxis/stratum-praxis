@@ -42,7 +42,6 @@ for (const channel of channels) {
   const candidates = active.filter(x => x.services.includes(service));
   if (!candidates.length) continue;
 
-  // Daily mode rotates one post per channel per day. One-shot mode always uses the first approved launch item.
   const item = selectMode === 'first' ? candidates[0] : candidates[dayNumberUTC() % candidates.length];
   const text = `${item.text}\n\n${item.url}`.trim();
 
@@ -58,8 +57,11 @@ for (const channel of channels) {
 
   let assets = '';
   if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
-  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},schedulingType:automatic,mode:addToQueue,${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
+  const serviceFields = service === 'instagram' ? 'type:post,' : '';
+  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${serviceFields}schedulingType:automatic,mode:addToQueue,${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
-  console.log(JSON.stringify({channel:service,item:item.id,result:out.createPost}, null, 2));
+  const result = out.createPost;
+  console.log(JSON.stringify({channel:service,item:item.id,result}, null, 2));
+  if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
   await new Promise(r=>setTimeout(r,1500));
 }
