@@ -10,6 +10,17 @@ on:
       - 'ai-council-builder-ja.html'
       - 'smartphone-income-blueprint.html'
       - 'smartphone-ai-slide-factory.html'
+      - 'return-gate/**'
+      - 'social-revenue-pathfinder.html'
+      - 'social-revenue-pathfinder-ja.html'
+      - 'guides/**'
+      - 'image-commerce/**'
+      - 'passage-hub/**'
+      - 'passage-network.html'
+      - 'prompt-systems.html'
+      - 'workflow-operator.html'
+      - 'daily-edge/**'
+      - 'stack-pulse/**'
       - 'sitemap.xml'
       - '54b81c12e07af0e37b6ab0ac24469586.txt'
   workflow_dispatch:
@@ -35,6 +46,20 @@ jobs:
               "key":"54b81c12e07af0e37b6ab0ac24469586",
               "keyLocation":"https://stratumpraxis.com/54b81c12e07af0e37b6ab0ac24469586.txt",
               "urlList":[
+                "https://stratumpraxis.com/",
+                "https://stratumpraxis.com/return-gate/",
+                "https://stratumpraxis.com/return-gate/en/",
+                "https://stratumpraxis.com/social-revenue-pathfinder.html",
+                "https://stratumpraxis.com/social-revenue-pathfinder-ja.html",
+                "https://stratumpraxis.com/guides/",
+                "https://stratumpraxis.com/guides/ai-saas-renewal-cost-check.html",
+                "https://stratumpraxis.com/image-commerce/",
+                "https://stratumpraxis.com/passage-hub/",
+                "https://stratumpraxis.com/passage-network.html",
+                "https://stratumpraxis.com/prompt-systems.html",
+                "https://stratumpraxis.com/workflow-operator.html",
+                "https://stratumpraxis.com/daily-edge/",
+                "https://stratumpraxis.com/stack-pulse/",
                 "https://stratumpraxis.com/ai-council-builder.html",
                 "https://stratumpraxis.com/ai-council-builder-ja.html",
                 "https://stratumpraxis.com/smartphone-income-blueprint.html",
