@@ -11,6 +11,9 @@ Human-readable companion to `publish-ledger.json`. Update only for verified publ
 - Forwelle YouTube — `『ドパガキ』が流行る理由、動画の設計を見るとわかる` — sent — https://www.youtube.com/watch?v=hqWuTmwkKnE
 - Stratum Praxis TikTok — `AI video isn't the problem. AI slop is.` — sent — https://tiktok.com/@stratumpraxis/video/7678300330785869072
 - Forwelle YouTube — `AI Video Isn't the Problem. AI Slop Is.` — sent — https://www.youtube.com/watch?v=LwiXGL5guhk
+- Forwelle YouTube — `AI Is Moving From Chat to Work #Shorts` — youtube-shorts-discovery — manifest `2026-08-26-asking-to-doing-youtube-v4` — sent — https://www.youtube.com/watch?v=bP-sikh25oI
+- Stratum Praxis TikTok — `The biggest AI shift isn't smarter models. It's this.` — tiktok-rewards-ready — manifest `2026-08-26-asking-to-doing-tiktok-v4` — sent — https://tiktok.com/@stratumpraxis/video/7678305262528171284
+- Stratum Praxis Instagram — `AI is moving from chat to work` — instagram-reel-explainer — manifest `2026-08-26-asking-to-doing-instagram-v4` — publication workflow started; completion not yet recorded because verified `sent` + public URL is still pending.
 
 ## Logging rule
 
