@@ -48,6 +48,19 @@
         "sharedNow": true,
         "externalLink": "https://tiktok.com/@stratumpraxis/video/7678291192882253064"
       }
+    },
+    "2026-08-26-dopagaki-youtube-v2": {
+      "youtube": {
+        "status": "sent",
+        "at": "2026-08-26T10:57:01.327Z",
+        "channelId": "6a8e5c44ccaf649a671a1092",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-dopagaki-youtube-v2.mp4",
+        "postId": "6a8ec67b8cd7131cf2749041",
+        "dueAt": "2026-08-26T10:56:59.199Z",
+        "sentAt": "2026-08-26T10:57:00.607Z",
+        "sharedNow": true,
+        "externalLink": "https://www.youtube.com/watch?v=hqWuTmwkKnE"
+      }
     }
   }
 }
