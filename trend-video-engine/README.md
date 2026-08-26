@@ -1,6 +1,6 @@
 # Trend Video Engine
 
-Safety-first autonomous short-video growth lane for Stratum Praxis / Forwelle.
+Safety-first autonomous short-video growth lane for Stratum Praxis / Forwelle, with a separate Japanese Vector Praxis TikTok lane.
 
 ## Objective
 
@@ -10,9 +10,35 @@ current public demand signals -> candidate scoring -> factual verification -> ri
 
 This lane extends the existing Buffer distribution system; it does not replace the existing image/content queue.
 
+## Brand and language routing
+
+### Stratum Praxis / Forwelle
+
+Default language: **English**.
+
+Primary market: global / English-speaking demand. Use English-first trend research, hooks, scripts, titles, captions and metadata unless there is a strong evidence-based reason not to.
+
+Connected destinations:
+
+- Stratum Praxis TikTok: English.
+- Forwelle YouTube: English.
+- Stratum Praxis Instagram: English when the topic fits.
+
+Do not publish Japanese-language growth videos to Stratum Praxis / Forwelle by default.
+
+### Vector Praxis
+
+Default language: **Japanese**.
+
+Vector Praxis has a separate TikTok identity. The dedicated login/email must remain outside this public repository. Do not record credentials or raw private account identifiers in source control.
+
+Do **not** create or operate a second YouTube channel for this video engine. Japanese YouTube is out of scope for now; Forwelle remains the single YouTube growth lane.
+
+Vector Praxis TikTok should eventually receive a dedicated Buffer connection/workspace/channel if that can be done through official authentication without bypassing login, CAPTCHA, 2FA or platform controls. Until that connection is verified, treat Vector TikTok auto-publication as `BLOCKED-NOT-CONNECTED`, not as a reason to route Japanese content through Stratum Praxis.
+
 ## North-star targets
 
-The objective is not upload count. The objective is to increase the probability of sustainable platform monetization while protecting account health and building a recognizable original channel.
+The objective is not upload count. The objective is to increase the probability of sustainable platform monetization while protecting account health and building recognizable original channels.
 
 ### YouTube / Forwelle
 
@@ -45,6 +71,8 @@ Use two separate TikTok modes:
 
 Do not pad weak topics just to cross one minute. Verify account/region eligibility before treating Creator Rewards as available.
 
+For Stratum Praxis TikTok, apply these modes in English. For Vector Praxis TikTok, apply the same monetization/safety gates but research and write natively for Japanese TikTok rather than translating the Stratum version mechanically.
+
 ## Team structure
 
 Current operating roles:
@@ -53,9 +81,13 @@ Market Radar -> Motion Design -> TikTok Team -> YouTube/Forwelle Team -> Rights/
 
 TikTok and YouTube are separate operating teams. Never assume one edit, hook, pacing model, title, CTA or duration is optimal for both platforms. A topic may publish on one platform and be rejected on the other.
 
+Within TikTok, treat **Stratum English TikTok** and **Vector Japanese TikTok** as separate audience/brand lanes. They may use the same underlying trend only when each team independently judges it native and useful for its audience. Do not mechanically translate/cross-post.
+
 ## Source policy
 
 Demand discovery may use Google Trends, public/search-indexed X signals, TikTok Creative Center/public trend surfaces, YouTube rankings/vidIQ when available, Reddit and public web search. Social signals are treated as demand signals, not factual authority.
+
+For Stratum/Forwelle, prioritize English/global demand signals. For Vector TikTok, prioritize Japanese search/social demand signals.
 
 Material factual claims must be supported by primary/official sources whenever possible. Internet slang/memes may be used as cultural demand signals but must not be presented as medical/scientific diagnoses.
 
@@ -95,6 +127,7 @@ Each video must add at least two meaningful creator signals such as a distinct t
 Required fields include:
 
 - `id`, `title`, `topic`, `language`, `outputFile`
+- `brandLane` (`stratum-en`, `forwelle-en`, or `vector-ja-tiktok` when connected)
 - `sources` with public URLs
 - `scores`
 - `safety`
@@ -111,8 +144,18 @@ Required fields include:
 
 `distribution/buffer-video-publisher.mjs` uses Buffer's official API. It only posts to connected, unlocked channels and records the returned Buffer post state in logs. Instagram Reels, TikTok and YouTube Shorts are supported when those Buffer channels are actually connected.
 
+Routing must match brand and language. Never publish a Vector/Japanese manifest to a Stratum channel simply because that channel is connected.
+
 A GitHub Actions success is not treated as publication evidence unless the Buffer response contains a post object. No eligible channel is a blocker, not a fake success.
+
+## Next implementation steps
+
+1. Keep the current Stratum Praxis TikTok / Forwelle YouTube / Stratum Instagram automation running **English-first**.
+2. Add brand-lane routing validation to QA/publisher so language/account mismatches fail closed.
+3. Connect Vector Praxis TikTok to Buffer through an official one-time login/auth flow when convenient. A separate free Buffer workspace/account is acceptable if needed; do not spend money or create unnecessary duplicate infrastructure without a clear need.
+4. After Vector TikTok is connected, enable a separate Japanese research/creative branch with its own trend scoring and analytics loop.
+5. Keep YouTube concentrated on Forwelle rather than fragmenting subscribers/watch time across multiple channels.
 
 ## Frequency
 
-The external scheduled research cell runs morning, midday and evening. Each run may ship at most one topic, with independent TikTok/YouTube creative decisions. It is valid to ship zero when the trend, rights, factual, originality or monetization gate does not pass.
+The external scheduled research cell runs morning, midday and evening. Each run may ship at most one topic per active brand lane, with independent TikTok/YouTube creative decisions. It is valid to ship zero when the trend, rights, factual, originality or monetization gate does not pass.
