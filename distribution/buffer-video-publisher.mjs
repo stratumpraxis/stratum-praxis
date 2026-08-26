@@ -84,7 +84,8 @@ if (!channels.length) {
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
   const prior = ledger.items[manifest.id][service];
-  if (prior && ['attempted', 'scheduled', 'sent', 'unknown'].includes(prior.status)) {
+  const nonRetryStates = ['attempted', 'accepted', 'buffer', 'scheduled', 'sending', 'sent', 'unknown'];
+  if (prior && nonRetryStates.includes(prior.status)) {
     console.log(`Skip ${service}: prior state=${prior.status} for ${manifest.id}`);
     continue;
   }
