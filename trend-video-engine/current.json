@@ -1,28 +1,30 @@
 {
-  "id": "2026-08-26-asking-to-doing-youtube-v4",
-  "createdAt": "2026-08-26T20:43:00+09:00",
-  "brandLane": "stratum-forwelle-en",
-  "platformVariant": "youtube-shorts-discovery",
-  "title": "AI Is Moving From Chat to Work",
+  "id": "2026-08-26-asking-to-doing-tiktok-v4",
+  "createdAt": "2026-08-26T20:42:00+09:00",
+  "brandLane": "stratum-tiktok-en",
+  "platformVariant": "tiktok-rewards-ready",
+  "title": "The biggest AI shift isn't smarter models. It's this.",
   "topic": "AI is shifting from asking questions toward executing real work",
   "language": "en",
-  "summary": "A 36-second YouTube Short explaining the ask -> assist -> execute shift and why workflow design matters more as AI becomes action-oriented.",
-  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-youtube-v4.mp4",
+  "summary": "A 60-second TikTok-native explainer on the shift from conversational AI toward execution, agents and work completion, based on recent OpenAI usage and enterprise reports.",
+  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-tiktok-v4.mp4",
   "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":9,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
   "sources": [
     {"name":"OpenAI — From asking to doing: How the world is putting ChatGPT to work","url":"https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/","factSource":true,"verified":true,"published":"2026-08-06"},
     {"name":"OpenAI — From assistance to execution: How enterprises put AI to work","url":"https://openai.com/index/how-enterprises-put-ai-to-work/","factSource":true,"verified":true,"published":"2026-08-12"}
   ],
   "thirdPartyAssets": [],
-  "originality": {"creatorSignals":["original ask-assist-execute framework","original thesis that workflow architecture matters more as AI becomes action-oriented","original kinetic near-future visual sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
-  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","agents","productivity","future-of-work"],"notes":"No third-party footage, logos, screenshots, likenesses or copyrighted music. Claims are limited to official OpenAI reports and original analysis."},
+  "originality": {"creatorSignals":["original framing: the key AI shift is interface-to-execution rather than model-score competition","original three-layer model: ask -> assist -> execute","original kinetic near-future motion sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
+  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","productivity","agents","future-of-work"],"notes":"No people, logos, screenshots, product UI captures, copyrighted music or third-party footage. Claims are limited to OpenAI's published usage/enterprise reports plus original analysis."},
   "scenes": [
-    {"duration":6.0,"eyebrow":"AI / 2026","motionTag":"ASK → DO","headline":"AI is moving\nfrom chat to work.","body":"The key shift isn't only smarter answers. It's execution.","sourceLabel":"OpenAI Signals / Aug 2026","background":"#050711","accent":"#7CFFDA"},
-    {"duration":6.0,"eyebrow":"1 / ASK","motionTag":"PROMPT → RESPONSE","headline":"First:\nask.","body":"AI answered. You still carried the workflow.","sourceLabel":"Original workflow framing","background":"#071421","accent":"#5BE7FF"},
-    {"duration":6.0,"eyebrow":"2 / ASSIST","motionTag":"WORK WITH AI","headline":"Then:\nassist.","body":"Draft, analyze, compare, code—the tool moved inside the task.","sourceLabel":"OpenAI usage report / original synthesis","background":"#10102A","accent":"#B39CFF"},
-    {"duration":6.0,"eyebrow":"3 / EXECUTE","motionTag":"TOOLS + AGENTS","headline":"Now:\nexecute.","body":"Agents and workflows can move from advice toward real action.","sourceLabel":"OpenAI enterprise report / Aug 2026","background":"#07151A","accent":"#65FF9D"},
-    {"duration":6.0,"eyebrow":"THE MOAT","motionTag":"WORKFLOW > PROMPT","headline":"Prompting isn't\nthe whole skill.","body":"Permissions, verification and workflow design become the advantage.","sourceLabel":"Original operating-model thesis","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":6.0,"eyebrow":"BETTER QUESTION","motionTag":"WHAT CAN IT FINISH?","headline":"What can AI\nsafely finish?","body":"That's the question that matters as chat becomes work.","sourceLabel":"Forwelle / original takeaway","background":"#050811","accent":"#FFD166"}
+    {"duration":7.5,"eyebrow":"AI SHIFT / 2026","motionTag":"ASK → DO","headline":"The biggest AI shift\nisn't a smarter model.","body":"It's the move from answering questions to completing work.","sourceLabel":"OpenAI Signals / Aug 2026","background":"#050711","accent":"#7CFFDA"},
+    {"duration":7.5,"eyebrow":"PHASE 1","motionTag":"ASK","headline":"First, AI\nanswered us.","body":"Prompt in. Response out. The human still carried the workflow.","sourceLabel":"Original workflow framing","background":"#071421","accent":"#5BE7FF"},
+    {"duration":7.5,"eyebrow":"PHASE 2","motionTag":"ASSIST","headline":"Then it helped\ninside the task.","body":"Draft. Analyze. Compare. Code. The tool became part of the work.","sourceLabel":"OpenAI usage pattern / original synthesis","background":"#10102A","accent":"#B39CFF"},
+    {"duration":7.5,"eyebrow":"PHASE 3","motionTag":"EXECUTE","headline":"Now the interface\nis becoming action.","body":"Agents, tools and workflows can move from recommendation toward execution.","sourceLabel":"OpenAI enterprise report / Aug 2026","background":"#07151A","accent":"#65FF9D"},
+    {"duration":7.5,"eyebrow":"THE REAL CHANGE","motionTag":"UI → WORKFLOW","headline":"The chatbot\nwas only the doorway.","body":"The valuable layer is what happens after the answer.","sourceLabel":"Original product thesis","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":7.5,"eyebrow":"WHY IT MATTERS","motionTag":"OUTPUT > PROMPT","headline":"Prompt skill alone\nwon't be the moat.","body":"Workflow design, permissions, verification and useful output matter more as AI acts.","sourceLabel":"Original operating-model analysis","background":"#071421","accent":"#FFD166"},
+    {"duration":7.5,"eyebrow":"NEW QUESTION","motionTag":"WHAT CAN IT FINISH?","headline":"Stop asking only:\nWhat can AI answer?","body":"Start asking: what can it safely finish end-to-end?","sourceLabel":"Stratum Praxis / original takeaway","background":"#050811","accent":"#7CFFDA"},
+    {"duration":7.5,"eyebrow":"NEXT WAVE","motionTag":"ASK → DO","headline":"AI is moving\nfrom chat to work.","body":"The next advantage is designing the system around that shift.","sourceLabel":"Original series direction","background":"#10102A","accent":"#5BE7FF"}
   ],
-  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"AI Is Moving From Chat to Work #Shorts","caption":"OpenAI's recent usage and enterprise reports point to a broader shift: AI is moving from answering questions toward doing work inside real workflows. The next skill isn't only prompting. It's designing what AI can safely finish end-to-end.\n\n#AI #AIAgents #YouTubeShorts #FutureOfWork #Productivity"}
+  "publish": {"services":["tiktok"],"mode":"shareNow","aiGeneratedLabel":true,"title":"The biggest AI shift isn't smarter models. It's this.","caption":"The biggest AI shift may not be another benchmark jump. OpenAI's recent usage and enterprise reports point to a broader move: from asking AI questions to putting AI into real work. The useful question changes from ‘what can it answer?’ to ‘what can it safely finish?’\n\n#AI #AIAgents #FutureOfWork #Productivity #TechTok"}
 }
