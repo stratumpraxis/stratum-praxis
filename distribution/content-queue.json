@@ -75,5 +75,19 @@
     "services":["bluesky","threads","linkedin"],
     "text":"Most teams do not need more AI ideas. They need a shorter path from problem → quantified value → safe workflow → measurement. Stratum Praxis is built around that decision path rather than another generic prompt library.",
     "url":"https://stratumpraxis.com/?utm_source=buffer&utm_medium=social&utm_campaign=b2b_decision&utm_content=b2b04"
+  },
+  {
+    "id":"tvr-01",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Most AI video prompts optimize a scene. The harder problem is the production system around it: signal → angle → script → visuals → audio → rights QA → platform routing → measurement. Trend-to-Video Revenue Suite turns that process into a reusable AI production team.",
+    "url":"https://stratumpraxis.com/trend-to-video-revenue-suite.html?utm_source=buffer&utm_medium=social&utm_campaign=trend_video_revenue&utm_content=tvr01"
+  },
+  {
+    "id":"tvr-02",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"If an AI video technically has motion but still feels like a slideshow, the problem is usually visual progression, not animation quantity. The new Short-Form Video Rescue Audit diagnoses paper-slide feel, fake intensity, silent music, rights risk and platform mismatch.",
+    "url":"https://stratumpraxis.com/trend-to-video-revenue-suite.html?utm_source=buffer&utm_medium=social&utm_campaign=trend_video_revenue&utm_content=tvr02"
   }
 ]
