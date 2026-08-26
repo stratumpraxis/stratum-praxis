@@ -5,6 +5,13 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/verify-stratumpraxis-pages.yml'
+      - 'return-gate/index.html'
+      - 'index.html'
+      - 'signal/index.html'
+      - 'stack-pulse/index.html'
+      - 'monthly-money-leak-audit/index.html'
+      - 'revenue-router.html'
+      - 'workflow-audit.html'
       - 'gpt-5-6-sol-api-cost-calculator.html'
       - 'agentic-ai-governance-permission-kit.html'
       - 'ai-agent-vendor-due-diligence-pack.html'
@@ -18,6 +25,7 @@ on:
       - 'ai-council-builder-ja.html'
       - 'ai-council-builder-ja-access.html'
       - 'sitemap.xml'
+      - 'scos-analytics.js'
   workflow_dispatch:
 
 permissions:
@@ -28,12 +36,19 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Verify HTTPS pages
+      - name: Verify HTTPS pages and Return Gate routes
         shell: bash
         run: |
           set -euo pipefail
           urls=(
             'https://stratumpraxis.com/'
+            'https://stratumpraxis.com/return-gate/'
+            'https://stratumpraxis.com/signal/'
+            'https://stratumpraxis.com/stack-pulse/'
+            'https://stratumpraxis.com/ai-council-builder-ja.html'
+            'https://stratumpraxis.com/monthly-money-leak-audit/'
+            'https://stratumpraxis.com/revenue-router.html'
+            'https://stratumpraxis.com/workflow-audit.html'
             'https://stratumpraxis.com/gpt-5-6-sol-api-cost-calculator.html'
             'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html'
             'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
@@ -44,7 +59,6 @@ jobs:
             'https://stratumpraxis.com/smartphone-income-blueprint-access.html'
             'https://stratumpraxis.com/ai-council-builder.html'
             'https://stratumpraxis.com/ai-council-builder-access.html'
-            'https://stratumpraxis.com/ai-council-builder-ja.html'
             'https://stratumpraxis.com/ai-council-builder-ja-access.html'
             'https://stratumpraxis.com/sitemap.xml'
           )
@@ -52,4 +66,14 @@ jobs:
             echo "Checking $url"
             curl --fail --silent --show-error --location --max-time 20 --retry 4 --retry-delay 5 --retry-all-errors "$url" >/dev/null
           done
-          echo 'All Stratum Praxis HTTPS checks passed.'
+
+          echo 'Checking published sitemap registration'
+          curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/sitemap.xml' | grep -F 'https://stratumpraxis.com/return-gate/' >/dev/null
+
+          echo 'Checking Return Gate outbound routes'
+          gate_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/return-gate/')"
+          for path in '/signal/' '/stack-pulse/' '/ai-council-builder-ja.html' '/monthly-money-leak-audit/' '/revenue-router.html' '/workflow-audit.html'; do
+            grep -F "href=\"$path\"" <<<"$gate_html" >/dev/null
+          done
+
+          echo 'All Stratum Praxis HTTPS and Return Gate checks passed.'
