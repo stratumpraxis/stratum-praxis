@@ -61,6 +61,19 @@
         "sharedNow": true,
         "externalLink": "https://www.youtube.com/watch?v=hqWuTmwkKnE"
       }
+    },
+    "2026-08-26-ai-slop-tiktok-v3": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-08-26T11:27:02.693Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-ai-slop-tiktok-v3.mp4",
+        "postId": "6a8ecd7c87bcbbf586f53714",
+        "dueAt": "2026-08-26T11:26:52.364Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
     }
   }
 }
