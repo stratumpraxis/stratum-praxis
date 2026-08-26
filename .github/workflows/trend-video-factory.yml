@@ -1,0 +1,70 @@
+name: Trend Video Factory
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trend-video-engine/current.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trend-video-factory
+  cancel-in-progress: false
+
+jobs:
+  render-qa-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install media runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+
+      - name: Render original vertical video
+        run: python3 trend-video-engine/render.py trend-video-engine/current.json
+
+      - name: Fail-closed safety and technical QA
+        run: python3 trend-video-engine/qa.py trend-video-engine/current.json
+
+      - name: Commit approved video before external publication
+        run: |
+          OUTPUT="$(python3 -c "import json;print(json.load(open('trend-video-engine/current.json'))['outputFile'])")"
+          git config user.name "stratum-trend-video-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          git add "$OUTPUT" trend-video-engine/last-qa.json
+          git diff --cached --quiet || git commit -m "Render approved trend video"
+          git push
+          echo "TREND_VIDEO_OUTPUT=$OUTPUT" >> "$GITHUB_ENV"
+          echo "TREND_VIDEO_URL=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/$OUTPUT" >> "$GITHUB_ENV"
+
+      - name: Verify public media URL
+        run: |
+          for n in 1 2 3; do
+            if curl --fail --silent --show-error --location --head "$TREND_VIDEO_URL" >/dev/null; then
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "Public media URL was not verifiable; stop before Buffer."
+          exit 1
+
+      - name: Publish through official Buffer API
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: trend-video-engine/current.json
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Persist publication evidence
+        if: always()
+        run: |
+          if [ -f trend-video-engine/publish-ledger.json ]; then
+            git add trend-video-engine/publish-ledger.json
+            git diff --cached --quiet || git commit -m "Record trend video publication state"
+            git push
+          fi
