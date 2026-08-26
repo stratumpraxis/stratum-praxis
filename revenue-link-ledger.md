@@ -34,7 +34,7 @@ Use this file as the source of truth when preparing X posts, note articles, comp
 - AI Council Builder EN — $29: Stripe Live active; paid Checkout Session + exact offer + purchase email are verified server-side before the private Worker workspace opens; Activation writes Stripe metadata and a PostHog activation event.
 - AI Council Builder JA — ¥3,980: same verified-buyer pattern as EN with its own exact Payment Link and JPY offer checks.
 - Smartphone Income Blueprint — $19: Stripe Live active; exact paid offer + purchase email → signed token → protected Buyer Kit → Stripe/PostHog Activation.
-- Smartphone AI Slide Factory — $19: live Stripe offer confirmed at `price_1U7ezoJMK7zFs9972EKHorVW` / `plink_1U7ezzJMK7zFs997bCPxNloj`; product funnel instrumentation is live. A Stripe-session verification Worker and access page were added on 2026-08-26; switch the Payment Link completion redirect only after Worker deployment is verified.
+- Smartphone AI Slide Factory — $19: Stripe Live active. Completion now redirects to `smartphone-ai-slide-factory-access.html?session_id={CHECKOUT_SESSION_ID}`; the Worker verifies the exact paid $19 offer and checkout email before issuing a signed buyer token. Unauthenticated protected routes for Slide Factory, Smartphone Income, Council EN and Council JA all passed the automated 401 smoke test. Activation writes Stripe metadata and a PostHog event.
 
 ### Genuine-purchase gate
 
