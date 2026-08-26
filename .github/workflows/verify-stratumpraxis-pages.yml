@@ -6,12 +6,17 @@ on:
     paths:
       - '.github/workflows/verify-stratumpraxis-pages.yml'
       - 'return-gate/index.html'
+      - 'passage-hub/index.html'
       - 'index.html'
       - 'signal/index.html'
       - 'stack-pulse/index.html'
       - 'monthly-money-leak-audit/index.html'
       - 'revenue-router.html'
       - 'workflow-audit.html'
+      - 'prompt-systems.html'
+      - 'workflow-operator.html'
+      - 'trend-to-video-revenue-suite.html'
+      - 'execution-without-drift.html'
       - 'gpt-5-6-sol-api-cost-calculator.html'
       - 'agentic-ai-governance-permission-kit.html'
       - 'ai-agent-vendor-due-diligence-pack.html'
@@ -43,6 +48,11 @@ jobs:
           urls=(
             'https://stratumpraxis.com/'
             'https://stratumpraxis.com/return-gate/'
+            'https://stratumpraxis.com/passage-hub/'
+            'https://stratumpraxis.com/prompt-systems.html'
+            'https://stratumpraxis.com/workflow-operator.html'
+            'https://stratumpraxis.com/trend-to-video-revenue-suite.html'
+            'https://stratumpraxis.com/execution-without-drift.html'
             'https://stratumpraxis.com/signal/'
             'https://stratumpraxis.com/stack-pulse/'
             'https://stratumpraxis.com/ai-council-builder-ja.html'
@@ -68,7 +78,21 @@ jobs:
           done
 
           echo 'Checking published sitemap registration'
-          curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/sitemap.xml' | grep -F 'https://stratumpraxis.com/return-gate/' >/dev/null
+          sitemap_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/sitemap.xml')"
+          for url in \
+            'https://stratumpraxis.com/return-gate/' \
+            'https://stratumpraxis.com/prompt-systems.html' \
+            'https://stratumpraxis.com/workflow-operator.html' \
+            'https://stratumpraxis.com/trend-to-video-revenue-suite.html' \
+            'https://stratumpraxis.com/execution-without-drift.html'; do
+            grep -F "$url" <<<"$sitemap_html" >/dev/null
+          done
+
+          echo 'Checking Passage Map Prompt routes'
+          passage_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/passage-hub/')"
+          for path in '/prompt-systems.html' '/execution-without-drift.html'; do
+            grep -F "href=\"$path\"" <<<"$passage_html" >/dev/null
+          done
 
           echo 'Checking Return Gate outbound routes'
           gate_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/return-gate/')"
@@ -76,4 +100,4 @@ jobs:
             grep -F "href=\"$path\"" <<<"$gate_html" >/dev/null
           done
 
-          echo 'All Stratum Praxis HTTPS and Return Gate checks passed.'
+          echo 'All Stratum Praxis HTTPS, Prompt Systems and Return Gate checks passed.'
