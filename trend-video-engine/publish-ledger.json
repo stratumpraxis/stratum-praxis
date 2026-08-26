@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "items": {
+    "2026-08-26-ai-agents-japan-v1": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-08-26T10:20:43.726Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-ai-agents-japan-v1.mp4",
+        "postId": "6a8ebdf17d22cc6a9737a3e5",
+        "dueAt": "2026-08-26T10:20:33.506Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      },
+      "youtube": {
+        "status": "sent",
+        "at": "2026-08-26T10:20:47.674Z",
+        "channelId": "6a8e5c44ccaf649a671a1092",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-ai-agents-japan-v1.mp4",
+        "postId": "6a8ebdfd07fc773e52c77a3c",
+        "dueAt": "2026-08-26T10:20:45.509Z",
+        "sentAt": "2026-08-26T10:20:47.157Z",
+        "sharedNow": true,
+        "externalLink": "https://www.youtube.com/watch?v=OgrDG1Z16rY"
+      },
+      "instagram": {
+        "status": "sending",
+        "at": "2026-08-26T10:20:59.806Z",
+        "channelId": "6a8e5b5accaf649a671a0cd9",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-ai-agents-japan-v1.mp4",
+        "postId": "6a8ebe017d22cc6a9737a572",
+        "dueAt": "2026-08-26T10:20:49.522Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
+    }
+  }
+}
