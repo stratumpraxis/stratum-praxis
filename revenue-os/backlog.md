@@ -1,28 +1,44 @@
 # Revenue OS Backlog
 
-This is a revenue-priority queue, not a general to-do list. Re-rank when new evidence appears.
+This is a revenue-priority recovery queue, not a general to-do list. Re-rank only when new verified evidence appears.
 
-## P0 — payment and revenue integrity
+## P0 — recover the live distribution run
 
-- Resolve Gumroad payout-verification mismatch on the owner side before treating Gumroad as payout-ready. Do not automate around the verification requirement.
-- Validate that every live paid offer has a working purchase destination and a clear delivery path.
+- The Instagram AI/SaaS cost-review run is already scheduled through Buffer and must not be duplicated. After the scheduled publication time, recover the real public post URL, then verify social UTM traffic and downstream calculator / CTA / checkout events.
+- Do not create another Instagram launch payload until the current run is classified as PUBLISHED and MEASURED or is shown to have failed.
 
-## P1 — conversion and trust
+## P0 — first genuine purchase proof
 
-- Audit the $499 Workflow Audit path for purchase certainty: target customer clarity, deliverables, sample/proof visibility, CTA clarity, contact fallback, and objection handling.
-- Audit the accounting/bookkeeping high-intent page against the $499 offer and remove any mismatch between search intent and the paid outcome.
-- Ensure the existing illustrative sample is positioned where it reduces buyer uncertainty without implying fabricated client results.
+- Current Stripe evidence still has no verified genuine purchase. Keep the focus on existing live paths rather than catalog growth.
+- When the first legitimate purchase appears, verify the full chain: completed payment → correct buyer-only delivery → activation / first use. Do not use a self-purchase or synthetic transaction as market validation.
 
-## P2 — qualified traffic
+## P1 — qualified traffic into existing assets
 
-- Prefer traffic to existing high-intent commercial pages over creating additional generic AI tools.
-- Expand only search pages that map directly to an existing paid offer and a specific buyer problem.
-- Use compliant, low-volume outreach only after proof and targeting are strong; do not repeat the recent bookkeeping/accounting outbound pattern at higher volume without response evidence.
+- Prioritize existing pages already connected to paid paths: AI/SaaS Spend funnel, AI Council Builder, Revenue Router, Workflow Audit, AI Operations Standard / SOP Kit, Return Gate, and other sitemap-listed assets.
+- Search discovery work should amplify these existing pages rather than create generic new tools.
+- Return Gate currently has no verified measured visits in the latest metrics; treat it as published but not yet validated as a traffic/revisit mechanism.
 
-## P3 — monetization depth
+## P1 — measurement closure
 
-- After a paid path shows evidence of conversion, test logical upsell/cross-sell routes between $39, $99, and $499 offers.
-- Record which entry asset produces qualified paid intent before investing in more free assets.
+- Separate pageview, qualified visit, CTA click, checkout click/start, purchase, delivery, activation, 24h revisit and 7d revisit. Do not collapse them into a generic completion state.
+- Update `revenue-os/metrics.json` only from observed analytics, platform, payment, or deployment evidence.
+
+## P2 — external waits; do not waste cycles
+
+- AIToolsDir submissions: wait for review / listing result; no resubmission or repeated follow-up.
+- Fab Game UI Pack: wait for approval; no new asset work while review is pending.
+- X / Stratumpraxis: suspension decision remains external-blocked; do not route distribution through risky replacement behavior.
+
+## HUMAN REQUIRED — owner-only, not agent retry work
+
+- Microsoft Store AI Automation ROI Planner still requires Partner Center account / identity steps, product identity / reservation, real app screenshots, package upload and final submission. Keep this as a bounded manual lane, not an automated retry loop.
+
+## Resolved blockers — do not reopen without new evidence
+
+- Gumroad payout / identity verification is resolved and is not an active blocker.
+- AI Practical Check v2 Production publish is complete.
+- AI Consultant Worker STRIPE_SECRET_KEY configuration blocker is resolved.
+- AI Council Builder JA Production / Stripe redirect setup is complete.
 
 ## New-product gate
 
@@ -30,5 +46,8 @@ Do not create a new product unless all are true:
 
 1. There is specific demand evidence.
 2. Existing offers cannot absorb the opportunity with a small change.
-3. A purchase path is defined before building.
-4. Success can be measured after launch.
+3. The current highest-proximity unfinished revenue paths have been reviewed by the Recovery Controller.
+4. A purchase path is defined before building.
+5. Success can be measured after launch.
+
+Default preference: advance an existing path from PUBLISHED → DISTRIBUTED → MEASURED → PURCHASED → ACTIVATED before adding another asset.
