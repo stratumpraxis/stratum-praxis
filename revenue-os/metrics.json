@@ -1,5 +1,5 @@
 {
-  "last_updated": "2026-08-24",
+  "last_updated": "2026-08-27",
   "currency_priority": ["USD", "foreign_currency", "JPY"],
   "verified_revenue": null,
   "stripe_live_payment_intents": 0,
@@ -27,6 +27,27 @@
       "conversion_rate": null
     }
   },
-  "current_primary_bottleneck": "No verified Stripe Live purchase yet, combined with insufficient funnel measurement. Priority: generate the first verified purchase and instrument qualified traffic, CTA clicks, checkout starts, purchases and conversion rate before expanding the product catalog.",
-  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states."
+  "distribution_baseline_2026_08_27": {
+    "source": "PostHog project 573335 observed analytics",
+    "pageviews_last_7d": {
+      "/signal/": 5,
+      "/signal/ai-tool-buying-rule-2026.html": 1,
+      "/signal/bing-indexnow-2026.html": 1
+    },
+    "utm_pageviews_last_30d": {
+      "chatgpt.com": 5,
+      "unset": 2
+    },
+    "downstream_events_last_30d": {
+      "funnel_view": 56,
+      "primary_cta_click": 15,
+      "checkout_click": 17,
+      "signal_search": 10
+    },
+    "return_gate_pageviews_last_7d": 0,
+    "verified_social_utm_pageviews_last_30d": 0,
+    "interpretation": "Measured external social distribution is effectively absent in the observed window. Existing downstream events show that the immediate bottleneck is qualified external traffic, not creation of additional products."
+  },
+  "current_primary_bottleneck": "Qualified external social traffic is the primary measured bottleneck. On 2026-08-27, PostHog showed no verified social UTM pageviews in the last 30 days and no Return Gate pageviews in the last 7 days, while downstream events already existed. Prioritize safe SNS distribution into verified live existing assets, then measure Return Gate entry, CTA, checkout, purchase and 24h/7d revisit before expanding the product catalog.",
+  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate verified public reachability from repository existence before publishing external traffic."
 }
