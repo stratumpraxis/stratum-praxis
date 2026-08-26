@@ -1,0 +1,81 @@
+{
+  "version": 1,
+  "reviewedAt": "2026-08-27",
+  "purpose": "Keep every external traffic lane measurable from source to route, free tool, CTA, checkout and Return Gate revisit without mixing brand identities.",
+  "rules": {
+    "utmRequiredForOwnedExternalLinks": true,
+    "noDuplicatePublisherPerService": true,
+    "preserveLanguageSpecificReturnGate": true,
+    "noFakeLocalBusinessListings": true,
+    "noCrossVerticalIdentityMixing": true,
+    "successSignal": "qualified traffic -> route -> free tool/content -> CTA -> checkout -> purchase -> 24h/7d return"
+  },
+  "targets": {
+    "ja": {
+      "hub": "https://stratumpraxis.com/folio-junction/",
+      "returnGate": "https://stratumpraxis.com/return-gate/"
+    },
+    "en": {
+      "hub": "https://stratumpraxis.com/guides/",
+      "returnGate": "https://stratumpraxis.com/return-gate/en/",
+      "primaryTool": "https://stratumpraxis.com/ai-saas-waste-calculator.html"
+    }
+  },
+  "sources": {
+    "instagram": {
+      "utm_source": "instagram",
+      "utm_medium": "social",
+      "status": "active-buffer",
+      "role": "visual-discovery"
+    },
+    "tiktok": {
+      "utm_source": "tiktok",
+      "utm_medium": "social_video",
+      "status": "active-buffer",
+      "role": "short-form-discovery"
+    },
+    "youtube": {
+      "utm_source": "youtube",
+      "utm_medium": "video",
+      "status": "active-buffer",
+      "role": "search-and-explanation"
+    },
+    "note": {
+      "utm_source": "note",
+      "utm_medium": "content",
+      "status": "active-manual-ja",
+      "role": "japanese-search-discovery-and-paid-content"
+    },
+    "devto": {
+      "utm_source": "devto",
+      "utm_medium": "community_content",
+      "status": "feed-ready-one-time-auth",
+      "role": "english-rss-canonical-distribution",
+      "feed": "https://stratumpraxis.com/feed.xml"
+    },
+    "pinterest": {
+      "utm_source": "pinterest",
+      "utm_medium": "visual_search",
+      "status": "candidate-auth-needed",
+      "role": "evergreen-search-save-return"
+    },
+    "bluesky": {
+      "utm_source": "bluesky",
+      "utm_medium": "social",
+      "status": "candidate-auth-needed",
+      "role": "timely-public-discovery-repost"
+    },
+    "threads": {
+      "utm_source": "threads",
+      "utm_medium": "social",
+      "status": "candidate-auth-needed",
+      "role": "conversation-discovery-link-click"
+    },
+    "line": {
+      "utm_source": "line",
+      "utm_medium": "owned",
+      "status": "retention-only-vertical-specific",
+      "role": "recontact-and-return"
+    }
+  }
+}
