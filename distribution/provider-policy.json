@@ -1,11 +1,12 @@
 {
-  "version": 2,
+  "version": 3,
   "reviewedAt": "2026-08-26",
   "global": {
     "singlePublisherPerService": true,
     "requireSafetyQa": true,
     "requireVerifiedRights": true,
-    "noAutomaticRetryAfterUnknownExternalState": true
+    "noAutomaticRetryAfterUnknownExternalState": true,
+    "revenueTeacherSignal": "verified-purchase-not-engagement"
   },
   "providers": {
     "buffer": {
@@ -14,16 +15,17 @@
       "publishingEnabled": true,
       "allowedServices": ["instagram", "tiktok", "youtube"],
       "credentialSource": "github-actions-secret",
-      "notes": "Only autonomous publisher for Instagram, TikTok, and YouTube. Use official Buffer API and existing publication ledger."
+      "notes": "Only autonomous publisher for Instagram, TikTok and YouTube. Use official Buffer API and publication ledger."
     },
     "metricool": {
       "status": "onboarding",
-      "role": "analytics-mcp-and-expansion-observer",
+      "role": "analytics-mcp-and-expansion-control-plane",
       "publishingEnabled": false,
       "analyticsConnections": ["instagram", "tiktok", "youtube"],
-      "expansionCandidates": ["facebook", "threads", "bluesky", "pinterest", "google-business"],
+      "adoptedExpansionServices": ["bluesky", "threads", "pinterest"],
+      "deferredExpansionServices": ["facebook-page"],
       "excludedOnFree": ["linkedin", "x"],
-      "notes": "Connect existing Buffer networks for analytics only. Prefer currently unused Free-plan networks as expansion/observation surfaces. Do not enable autonomous Metricool publishing until a service is explicitly reassigned from Buffer or approved as a non-overlapping publisher lane. Metricool MCP is permitted on Free for analysis and controlled operations within plan limits."
+      "notes": "Use Free-plan analytics/MCP as the social measurement layer. Existing Buffer services remain analytics-only in Metricool. Bluesky, Threads and Pinterest are adopted expansion surfaces, but automatic publishing remains disabled until each account is connected and the single-publisher safety gate explicitly assigns ownership."
     },
     "vista-social": {
       "status": "deferred",
