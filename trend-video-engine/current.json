@@ -1,0 +1,100 @@
+{
+  "id": "2026-08-26-ai-agents-japan-v1",
+  "createdAt": "2026-08-26T19:25:00+09:00",
+  "title": "日本のAIは『会話』から『実行』へ",
+  "topic": "Google Cloud Next Tokyo 26で示された日本企業のAIエージェント実用化",
+  "language": "ja",
+  "summary": "日本企業でAIエージェントの実用化が進み、論点がチャット利用から業務実行・承認設計へ移っていることを短く整理する。",
+  "outputFile": "media/trend-videos/2026-08-26-ai-agents-japan-v1.mp4",
+  "scores": {
+    "freshness": 10,
+    "businessDemand": 9,
+    "crossPlatformPotential": 8,
+    "originalityOpportunity": 9,
+    "commercialSafety": 10,
+    "revenueFit": 9,
+    "total": 55,
+    "max": 60
+  },
+  "sources": [
+    {
+      "name": "Google Cloud Next Tokyo 26 Day 1 keynote summary",
+      "url": "https://cloud.google.com/blog/ja/topics/next-tokyo/google-cloud-next-tokyo-26-day-1-keynote-summary?hl=ja",
+      "factSource": true,
+      "verified": true,
+      "published": "2026-08-25"
+    },
+    {
+      "name": "Google Cloud Next Tokyo 26 Day 2 keynote summary",
+      "url": "https://cloud.google.com/blog/ja/topics/next-tokyo/google-cloud-next-tokyo-26-day-2-keynote-summary?hl=ja",
+      "factSource": true,
+      "verified": true,
+      "published": "2026-08-25"
+    }
+  ],
+  "thirdPartyAssets": [],
+  "safety": {
+    "approved": true,
+    "factsVerified": true,
+    "originalityVerified": true,
+    "realPersonLikeness": false,
+    "copyrightedMedia": false,
+    "categories": ["technology", "business", "ai-agents"],
+    "notes": "Original procedural typography and audio only. No Google logos, event footage, people, screenshots or copied visual assets. Claims are narrow paraphrases of official Google Cloud event summaries."
+  },
+  "scenes": [
+    {
+      "duration": 4.5,
+      "eyebrow": "2026 / AI TREND",
+      "headline": "日本のAIが\n次の段階へ",
+      "body": "会話するAI → 仕事を進めるAI",
+      "sourceLabel": "Signal: Google Cloud Next Tokyo 26",
+      "background": "#080B12",
+      "accent": "#D7FF5B"
+    },
+    {
+      "duration": 5.0,
+      "eyebrow": "WHAT CHANGED",
+      "headline": "AIエージェントが\n実業務へ",
+      "body": "日本企業の実践例が基調講演で紹介された",
+      "sourceLabel": "Source: Google Cloud Japan / 2026-08-25",
+      "background": "#111827",
+      "accent": "#67E8F9"
+    },
+    {
+      "duration": 5.0,
+      "eyebrow": "THE REAL SHIFT",
+      "headline": "重要なのは\nAIの数ではない",
+      "body": "どの業務を任せ、どこを人が承認するか",
+      "sourceLabel": "Original analysis based on official event summaries",
+      "background": "#151925",
+      "accent": "#FDE68A"
+    },
+    {
+      "duration": 5.0,
+      "eyebrow": "OPERATING MODEL",
+      "headline": "生成 → 実行 → 承認",
+      "body": "AI活用の競争軸がワークフロー設計へ移る",
+      "sourceLabel": "Interpretation: Stratum Praxis",
+      "background": "#0B1320",
+      "accent": "#A7F3D0"
+    },
+    {
+      "duration": 4.5,
+      "eyebrow": "NEXT QUESTION",
+      "headline": "あなたの仕事で\n任せられる1工程は？",
+      "body": "流行を見るだけでなく、実行単位に分解する",
+      "sourceLabel": "stratumpraxis.com",
+      "background": "#17131F",
+      "accent": "#C4B5FD"
+    }
+  ],
+  "publish": {
+    "services": ["instagram", "tiktok", "youtube"],
+    "mode": "shareNow",
+    "aiGeneratedLabel": true,
+    "youtubePrivacy": "public",
+    "title": "日本のAIは『会話』から『実行』へ｜AIエージェント実用化の次の論点",
+    "caption": "日本企業のAI活用は、チャットから『業務を進めるAIエージェント』へ。Google Cloud Next Tokyo 26では実業務での活用例が紹介されました。次の論点は、AIを増やすことより『どの工程を任せ、どこを人が承認するか』。\n\nSource: Google Cloud Next Tokyo 26 (2026-08-25)\n#AIエージェント #生成AI #業務改善 #AI"
+  }
+}
