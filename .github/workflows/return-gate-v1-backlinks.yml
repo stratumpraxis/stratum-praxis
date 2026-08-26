@@ -1,0 +1,73 @@
+name: Return Gate v1 backlink wiring
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/return-gate-v1-backlinks.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  wire-return-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Add Return Gate entries and sitemap URL
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          targets = [
+              Path('index.html'),
+              Path('signal/index.html'),
+              Path('stack-pulse/index.html'),
+              Path('ai-council-builder-ja.html'),
+              Path('monthly-money-leak-audit/index.html'),
+              Path('revenue-router.html'),
+              Path('workflow-audit.html'),
+          ]
+          backlink = '''<div id="return-gate-entry" style="max-width:1180px;margin:28px auto 18px;padding:0 16px;font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif"><a href="/return-gate/" style="display:inline-block;border:1px solid rgba(127,150,180,.45);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.55)">↩ Return Gate｜再訪ハブへ戻る</a></div>'''
+
+          changed = []
+          for path in targets:
+              if not path.exists():
+                  print(f'skip missing: {path}')
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if 'id="return-gate-entry"' in text:
+                  print(f'already wired: {path}')
+                  continue
+              if re.search(r'</body\s*>', text, flags=re.I):
+                  text = re.sub(r'</body\s*>', backlink + '\n</body>', text, count=1, flags=re.I)
+              else:
+                  text += '\n' + backlink + '\n'
+              path.write_text(text, encoding='utf-8')
+              changed.append(str(path))
+
+          sitemap = Path('sitemap.xml')
+          if sitemap.exists():
+              text = sitemap.read_text(encoding='utf-8')
+              url = 'https://stratumpraxis.com/return-gate/'
+              if url not in text:
+                  entry = '  <url><loc>https://stratumpraxis.com/return-gate/</loc><lastmod>2026-08-27</lastmod><changefreq>daily</changefreq><priority>1.0</priority></url>\n'
+                  text = text.replace('</urlset>', entry + '</urlset>')
+                  sitemap.write_text(text, encoding='utf-8')
+                  changed.append('sitemap.xml')
+          print('changed:', ', '.join(changed) if changed else 'none')
+          PY
+      - name: Commit wiring
+        run: |
+          if git diff --quiet; then
+            echo "No changes required"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html signal/index.html stack-pulse/index.html ai-council-builder-ja.html monthly-money-leak-audit/index.html revenue-router.html workflow-audit.html sitemap.xml
+          git commit -m "Complete Return Gate v1 bidirectional routing"
+          git push
