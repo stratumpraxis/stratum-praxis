@@ -103,15 +103,15 @@
     },
     "2026-08-26-asking-to-doing-tiktok-v4": {
       "tiktok": {
-        "status": "sending",
-        "at": "2026-08-26T11:47:56.728Z",
+        "status": "sent",
+        "at": "2026-08-26T11:51:18.005Z",
         "channelId": "6a8e5d28ccaf649a671a13e7",
         "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-asking-to-doing-tiktok-v4.mp4",
         "postId": "6a8ed1ea87bcbbf586f57c36",
         "dueAt": "2026-08-26T11:45:46.836Z",
-        "sentAt": null,
+        "sentAt": "2026-08-26T11:48:02.150Z",
         "sharedNow": true,
-        "externalLink": null
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7678305262528171284"
       }
     }
   }
