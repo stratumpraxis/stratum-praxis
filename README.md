@@ -4,6 +4,12 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 **Website:** https://stratumpraxis.com/
 
+## Tracked external acquisition entry
+
+- [Browse all currently active offers](https://stratumpraxis.com/product-router.html?utm_source=github&utm_medium=referral&utm_campaign=all_active_offers&utm_content=repository_readme) — external GitHub → tracked Stratum Praxis product router → product landing page / checkout. The shared analytics layer preserves source attribution and captures CTA / checkout exits before purchase verification in Stripe, Payhip, Gumroad, or the relevant marketplace.
+
+This is the minimum external-traffic route for every currently active offer in the product router. Offers still in external review, owner-only submission, or intentionally paused recurring-service lines are excluded until they become safely sellable.
+
 ## Current digital products
 
 These are public, measurable entry points for the current product-validation cycle. Links to Stratum Praxis pages include source tags so GitHub referral traffic can be separated from other distribution.
