@@ -1,0 +1,125 @@
+{
+  "id": "2026-08-26-dopagaki-youtube-v2",
+  "createdAt": "2026-08-26T19:57:00+09:00",
+  "platformVariant": "youtube-shorts-discovery",
+  "title": "『ドパガキ』が流行る理由、動画の設計を見るとわかる",
+  "topic": "ネットスラング『ドパガキ』の流行から見るショート動画の高速化と注意文化",
+  "language": "ja",
+  "summary": "YouTube Shorts向けに、言葉の説明より『待たなくていい動画設計』という独自論点へ素早く到達する36秒版。医学的診断はしない。",
+  "outputFile": "media/trend-videos/2026-08-26-dopagaki-youtube-v2.mp4",
+  "scores": {
+    "freshness": 10,
+    "businessDemand": 8,
+    "crossPlatformPotential": 10,
+    "originalityOpportunity": 9,
+    "commercialSafety": 9,
+    "revenueFit": 8,
+    "total": 54,
+    "max": 60
+  },
+  "sources": [
+    {
+      "name": "Nikkansports coverage showing current public discussion of the slang",
+      "url": "https://www.nikkansports.com/m/entertainment/news/amp/202606260000049.html",
+      "factSource": true,
+      "verified": true,
+      "published": "2026-06-26"
+    },
+    {
+      "name": "Recent note article recording Dopagaki in note rising topics",
+      "url": "https://note.com/akaneko_p/n/ne497e217323c",
+      "factSource": false,
+      "verified": true,
+      "published": "2026-08-15"
+    }
+  ],
+  "thirdPartyAssets": [],
+  "originality": {
+    "creatorSignals": [
+      "original thesis: analyze interface pacing rather than labeling viewers",
+      "self-referential narrative reveal that the Short itself uses fast pacing",
+      "original kinetic motion-design sequence"
+    ],
+    "notReusedCompilation": true,
+    "notTemplateVariant": true
+  },
+  "safety": {
+    "approved": true,
+    "factsVerified": true,
+    "originalityVerified": true,
+    "realPersonLikeness": false,
+    "copyrightedMedia": false,
+    "categories": ["internet-culture", "media-literacy", "short-video"],
+    "notes": "Internet slang is not presented as a medical diagnosis. No real people/minors depicted or targeted. Fully original procedural visuals/audio; no third-party media."
+  },
+  "scenes": [
+    {
+      "duration": 6.0,
+      "eyebrow": "2026 TREND WORD",
+      "motionTag": "DOPAGAKI?",
+      "headline": "『ドパガキ』\nなぜ今流行る？",
+      "body": "答えは言葉より、動画の設計にある",
+      "sourceLabel": "Internet-culture signal / not a medical term",
+      "background": "#050711",
+      "accent": "#7CFFDA"
+    },
+    {
+      "duration": 6.0,
+      "eyebrow": "FIRST: IMPORTANT",
+      "motionTag": "NO DIAGNOSIS",
+      "headline": "医学用語ではない",
+      "body": "今の刺激文化を皮肉るネットスラング",
+      "sourceLabel": "Public discussion reported in 2026",
+      "background": "#071421",
+      "accent": "#5BE7FF"
+    },
+    {
+      "duration": 6.0,
+      "eyebrow": "WHAT CHANGED",
+      "motionTag": "HOOK NOW",
+      "headline": "動画が\n待たせなくなった",
+      "body": "イントロより結論。説明より最初の1秒。",
+      "sourceLabel": "Original media-culture analysis",
+      "background": "#10102A",
+      "accent": "#B39CFF"
+    },
+    {
+      "duration": 6.0,
+      "eyebrow": "THE LOOP",
+      "motionTag": "NEXT → NEXT",
+      "headline": "1本は終わる。\n視聴は終わらない。",
+      "body": "次の刺激が、指一本ですぐ始まる",
+      "sourceLabel": "Interface-level observation",
+      "background": "#07151A",
+      "accent": "#65FF9D"
+    },
+    {
+      "duration": 6.0,
+      "eyebrow": "THE REVERSAL",
+      "motionTag": "THIS SHORT TOO",
+      "headline": "このShortも\n高速で動いてる",
+      "body": "文化を説明する動画も、その文化の中にいる",
+      "sourceLabel": "Original self-aware commentary",
+      "background": "#130A1D",
+      "accent": "#FF78D8"
+    },
+    {
+      "duration": 6.0,
+      "eyebrow": "BETTER QUESTION",
+      "motionTag": "LOOK AT DESIGN",
+      "headline": "人より\n『設計』を見る",
+      "body": "次のトレンドも構造から分解する",
+      "sourceLabel": "Forwelle / original series thesis",
+      "background": "#050811",
+      "accent": "#FFD166"
+    }
+  ],
+  "publish": {
+    "services": ["youtube"],
+    "mode": "shareNow",
+    "aiGeneratedLabel": true,
+    "youtubePrivacy": "public",
+    "title": "『ドパガキ』が流行る理由、動画の設計を見るとわかる #Shorts",
+    "caption": "『ドパガキ』は医学用語ではなく、ネット文化から生まれたスラング。人を診断するより面白いのは、動画そのものが『待たなくていい設計』へ変わっていること。しかも、このShortもその構造の中にいる。\n\n#ドパガキ #Shorts #ネットスラング #SNS #メディア"
+  }
+}
