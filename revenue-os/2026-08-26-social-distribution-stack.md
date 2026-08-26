@@ -89,6 +89,18 @@ Hard rules:
 - AI-generated labeling stays enabled where supported/required.
 - Secondary tools begin read/analytics-first; publishing is a promoted privilege, not a default.
 
+## Cross-page context learning — 2026-08-27
+
+A page or agent failing to see prior execution evidence must not be treated as proof that the underlying connection, asset, or workflow is broken. Classify such states as **unverified in the current context**, not **missing** or **failed**, until the source of truth is checked.
+
+The safety behavior itself was correct and should be preserved: when publication state, channel state, or asset suitability cannot be verified, fail closed rather than improvising. The improvement is not to weaken the gate; it is to improve cross-page handoff and source-of-truth lookup so already-completed work is recognized earlier.
+
+Operational rule:
+- `unknown` / `not visible here` ≠ `not configured`.
+- Check existing docs, repository state, publication ledger, analytics, and prior verified execution before rebuilding or declaring a blocker.
+- Never replace a verified existing mechanism merely because another page lacks context.
+- Keep Safety Auditor authority intact; improve context retrieval around it.
+
 ## Human-only gate still required
 
 Metricool account creation/login and social OAuth authorization require the external Metricool / platform UI. No Metricool account-registration evidence was found in the connected Gmail search on 2026-08-26. This gate must not be represented as completed until OAuth succeeds.
