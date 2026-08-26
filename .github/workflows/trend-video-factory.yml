@@ -32,6 +32,13 @@ jobs:
       - name: Fail-closed safety and technical QA
         run: python3 trend-video-engine/qa.py trend-video-engine/current.json
 
+      - name: Distribution provider and duplicate-path safety audit
+        env:
+          TREND_VIDEO_MANIFEST: trend-video-engine/current.json
+          TREND_VIDEO_QA: trend-video-engine/last-qa.json
+          DISTRIBUTION_PROVIDER_POLICY: distribution/provider-policy.json
+        run: node distribution/distribution-safety-auditor.mjs
+
       - name: Commit approved video before external publication
         run: |
           OUTPUT="$(python3 -c "import json;print(json.load(open('trend-video-engine/current.json'))['outputFile'])")"
