@@ -1,12 +1,13 @@
 {
-  "version": 3,
-  "reviewedAt": "2026-08-26",
+  "version": 4,
+  "reviewedAt": "2026-08-27",
   "global": {
     "singlePublisherPerService": true,
     "requireSafetyQa": true,
     "requireVerifiedRights": true,
     "noAutomaticRetryAfterUnknownExternalState": true,
-    "revenueTeacherSignal": "verified-purchase-not-engagement"
+    "revenueTeacherSignal": "verified-purchase-not-engagement",
+    "utmRequiredForOwnedLinks": true
   },
   "providers": {
     "buffer": {
@@ -25,7 +26,58 @@
       "adoptedExpansionServices": ["bluesky", "threads", "pinterest"],
       "deferredExpansionServices": ["facebook-page"],
       "excludedOnFree": ["linkedin", "x"],
-      "notes": "Use Free-plan analytics/MCP as the social measurement layer. Existing Buffer services remain analytics-only in Metricool. Bluesky, Threads and Pinterest are adopted expansion surfaces, but automatic publishing remains disabled until each account is connected and the single-publisher safety gate explicitly assigns ownership."
+      "notes": "Use Free-plan analytics/MCP as the social measurement layer. Existing Buffer services remain analytics-only in Metricool. Bluesky, Threads and Pinterest are discovery candidates, but automatic publishing remains disabled until each account is connected and the single-publisher safety gate assigns ownership."
+    },
+    "dev-community": {
+      "status": "adopted-connection-candidate",
+      "role": "english-rss-distribution",
+      "publishingEnabled": false,
+      "sourceFeed": "https://stratumpraxis.com/feed.xml",
+      "canonicalSource": "stratumpraxis.com",
+      "manualRequirement": "one-time RSS import configuration and per-post quality review if DEV requires it",
+      "notes": "DEV officially supports RSS import and canonical URLs. Good fit for technical/searchable English guides. Avoid purely promotional posts."
+    },
+    "pinterest": {
+      "status": "priority-discovery-candidate",
+      "role": "search-save-evergreen-traffic",
+      "publishingEnabled": false,
+      "notes": "High fit for visual calculators, checklists and evergreen guides because Pins can be found through search and saved for later. Connect only if no recurring manual burden is introduced."
+    },
+    "bluesky": {
+      "status": "priority-social-candidate",
+      "role": "public-discovery-repost-feed",
+      "publishingEnabled": false,
+      "notes": "Open public network with reposts and custom feeds. Good for timely Signal/AI topics; avoid duplicate publishing ownership conflicts."
+    },
+    "threads": {
+      "status": "priority-social-candidate",
+      "role": "conversation-discovery-link-traffic",
+      "publishingEnabled": false,
+      "notes": "Supports external profile links and link performance insights. Candidate for discovery/conversation once account ownership and publishing lane are confirmed."
+    },
+    "note": {
+      "status": "active-manual-japanese-asset",
+      "role": "japanese-search-discovery-and-paid-content",
+      "publishingEnabled": false,
+      "notes": "Use note internal keyword/title/body/hashtag discovery and existing paid articles. Folio Junction routes to approved note assets after links are supplied."
+    },
+    "line-official": {
+      "status": "retention-only-candidate",
+      "role": "owned-audience-return",
+      "publishingEnabled": false,
+      "notes": "Treat LINE Official Account primarily as retention/re-contact, not top-of-funnel discovery. Search/recommendation visibility depends on account settings and verification. Use only for the matching vertical; never mix unrelated identities."
+    },
+    "google-business-profile": {
+      "status": "not-eligible-for-online-only-stratum",
+      "role": "none",
+      "publishingEnabled": false,
+      "notes": "Do not create a fake/virtual location. Google requires eligible businesses to interact with customers in person; online-only brands are not eligible. Reconsider only for a genuine service-area business that visits customers."
+    },
+    "reddit": {
+      "status": "community-only-deferred",
+      "role": "research-and-authentic-participation",
+      "publishingEnabled": false,
+      "notes": "Do not automate self-promotion. Use only when a specific community permits it and there is genuine non-promotional participation."
     },
     "vista-social": {
       "status": "deferred",
