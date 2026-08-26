@@ -3,8 +3,12 @@
 
   const TOKEN = 'phc_oTYapRSNXDtn8aY7wMNHfCDexRTkfb2H44MDVXwoUMSN';
   const HOST = 'https://us.i.posthog.com';
-  const ATTRIBUTION_KEY = 'sp_funnel_attribution_v1';
+  const SESSION_ATTRIBUTION_KEY = 'sp_funnel_attribution_v2';
+  const FIRST_TOUCH_KEY = 'sp_first_touch_v1';
+  const LAST_TOUCH_KEY = 'sp_last_touch_v1';
+  const ANON_KEY = 'sp_anonymous_id_v2';
   const CHECKOUT_HOSTS = new Set(['buy.stripe.com', 'payhip.com', 'gumroad.com', 'stratumpraxis.gumroad.com']);
+  const SOCIAL_HOSTS = ['x.com','twitter.com','instagram.com','tiktok.com','linkedin.com','facebook.com','threads.net','bsky.app'];
 
   function clean(value, limit) {
     return String(value || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, limit || 160);
@@ -20,22 +24,63 @@
     }
   }
 
-  function readAttribution() {
+  function referrerHost(value) {
+    if (!value) return '';
+    try { return new URL(value).hostname.replace(/^www\./,''); } catch (_) { return ''; }
+  }
+
+  function storageGet(key) {
+    try { return JSON.parse(localStorage.getItem(key) || 'null'); } catch (_) { return null; }
+  }
+
+  function storageSet(key, value) {
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch (_) {}
+  }
+
+  function currentTouch() {
     const params = new URLSearchParams(location.search);
-    const current = {
-      utm_source: clean(params.get('utm_source'), 100),
-      utm_medium: clean(params.get('utm_medium'), 100),
+    const ref = safeReferrer(document.referrer);
+    const sourceFromRef = referrerHost(document.referrer);
+    return {
+      utm_source: clean(params.get('utm_source') || sourceFromRef || 'direct', 100),
+      utm_medium: clean(params.get('utm_medium') || (sourceFromRef ? 'referral' : 'direct'), 100),
       utm_campaign: clean(params.get('utm_campaign'), 160),
       utm_content: clean(params.get('utm_content'), 160),
-      referrer: safeReferrer(document.referrer),
-      landing_path: location.pathname
+      utm_term: clean(params.get('utm_term'), 160),
+      referrer: ref,
+      landing_path: location.pathname,
+      touched_at: new Date().toISOString()
     };
+  }
+
+  function readAttribution() {
+    const current = currentTouch();
+    let session;
     try {
-      const saved = JSON.parse(sessionStorage.getItem(ATTRIBUTION_KEY) || 'null');
-      if (saved && typeof saved === 'object') return saved;
-      sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(current));
-    } catch (_) {}
-    return current;
+      session = JSON.parse(sessionStorage.getItem(SESSION_ATTRIBUTION_KEY) || 'null');
+      if (!session || typeof session !== 'object') {
+        session = current;
+        sessionStorage.setItem(SESSION_ATTRIBUTION_KEY, JSON.stringify(session));
+      }
+    } catch (_) { session = current; }
+
+    const first = storageGet(FIRST_TOUCH_KEY);
+    if (!first) storageSet(FIRST_TOUCH_KEY, current);
+    const hasFreshSignal = current.utm_source !== 'direct' || current.utm_campaign || current.referrer;
+    if (hasFreshSignal || !storageGet(LAST_TOUCH_KEY)) storageSet(LAST_TOUCH_KEY, current);
+
+    const firstTouch = storageGet(FIRST_TOUCH_KEY) || current;
+    const lastTouch = storageGet(LAST_TOUCH_KEY) || current;
+    return Object.assign({}, session, {
+      first_utm_source: clean(firstTouch.utm_source, 100),
+      first_utm_medium: clean(firstTouch.utm_medium, 100),
+      first_landing_path: clean(firstTouch.landing_path, 160),
+      first_touched_at: clean(firstTouch.touched_at, 40),
+      last_utm_source: clean(lastTouch.utm_source, 100),
+      last_utm_medium: clean(lastTouch.utm_medium, 100),
+      last_landing_path: clean(lastTouch.landing_path, 160),
+      last_touched_at: clean(lastTouch.touched_at, 40)
+    });
   }
 
   function funnelId() {
@@ -43,24 +88,24 @@
       location.pathname.replace(/^\/+/, '').replace(/(?:index)?\.html$/, '') || 'homepage';
   }
 
-  const attribution = readAttribution();
   function newAnonymousId() {
     if (crypto.randomUUID) return crypto.randomUUID();
     const bytes = crypto.getRandomValues(new Uint8Array(16));
     return Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
   }
+
   const anonymousId = (function () {
     try {
-      const key = 'sp_anonymous_id_v1';
-      const saved = sessionStorage.getItem(key);
+      const saved = localStorage.getItem(ANON_KEY);
       if (saved) return saved;
       const created = newAnonymousId();
-      sessionStorage.setItem(key, created);
+      localStorage.setItem(ANON_KEY, created);
       return created;
-    } catch (_) {
-      return newAnonymousId();
-    }
+    } catch (_) { return newAnonymousId(); }
   })();
+
+  const attribution = readAttribution();
+
   if (!(window.posthog && window.posthog.__SV)) {
     !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people (stub)'},o='init capture register register_once unregister set_config reset opt_out_capturing has_opted_out_capturing opt_in_capturing'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
   }
@@ -104,6 +149,16 @@
     });
   }
 
+  function externalCategory(host) {
+    host = host.replace(/^www\./,'');
+    if (CHECKOUT_HOSTS.has(host)) return 'checkout';
+    if (host === 'youtube.com' || host === 'youtu.be') return 'youtube';
+    if (host === 'note.com') return 'note';
+    if (host.indexOf('amazon.') >= 0 || host === 'amzn.to') return 'amazon';
+    if (SOCIAL_HOSTS.some(function (item) { return host === item || host.endsWith('.' + item); })) return 'social';
+    return 'external';
+  }
+
   function injectNetworkEntry() {
     if (document.getElementById('return-gate-entry')) return;
     const english = isEnglishPage();
@@ -136,12 +191,26 @@
     if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', true);
     addLink('/passage-hub/', english ? 'Route map' : '路線図', 'passage_map_entry', false);
     addLink(contentPath, contentLabel, 'content_hub_entry', false);
-    addLink('https://www.youtube.com/@forwelle', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
+    addLink('https://www.youtube.com/@forwelle?utm_source=stratumpraxis&utm_medium=network&utm_campaign=return_gate_network', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
 
     if (wrap.children.length) document.body.appendChild(wrap);
   }
 
-  function captureView() { window.scosCapture('funnel_view'); }
+  function captureView() {
+    window.scosCapture('funnel_view');
+    let sessionMarked = false;
+    try {
+      sessionMarked = sessionStorage.getItem('sp_traffic_session_marked_v1') === '1';
+      if (!sessionMarked) sessionStorage.setItem('sp_traffic_session_marked_v1', '1');
+    } catch (_) {}
+    if (!sessionMarked) window.scosCapture('traffic_session_start', { anonymous_returning_device: !!storageGet(FIRST_TOUCH_KEY) });
+    if (location.pathname.startsWith('/return-gate')) window.scosCapture('return_gate_arrival', {
+      first_source: attribution.first_utm_source,
+      last_source: attribution.last_utm_source,
+      language: isEnglishPage() ? 'en' : 'ja'
+    });
+  }
+
   function ready() { normalizeLanguageRoutes(); captureView(); injectNetworkEntry(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
@@ -157,9 +226,10 @@
       destination_path: destination.pathname,
       product: clean(link.dataset.product || document.body.dataset.product || funnelId(), 100)
     };
-    if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) {
-      captureBeforeNavigation('primary_cta_click', properties);
-    }
+    if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) captureBeforeNavigation('primary_cta_click', properties);
     if (CHECKOUT_HOSTS.has(destination.hostname)) captureBeforeNavigation('checkout_click', properties);
+    if (destination.origin !== location.origin && !CHECKOUT_HOSTS.has(destination.hostname)) {
+      captureBeforeNavigation('external_route_click', Object.assign({}, properties, { external_category: externalCategory(destination.hostname) }));
+    }
   });
 })();
