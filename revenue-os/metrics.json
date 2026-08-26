@@ -17,16 +17,23 @@
     "utm_campaign": "ai_saas_cost_review",
     "creative_status": "approved original static creative prepared and stored for Instagram",
     "payload_status": "distribution/launch-now.json prepared for Instagram only",
-    "buffer_connection_status": "not re-proven in this session because connector-originated GitHub writes did not trigger the ordinary Actions workflow; no blind publish or retry was performed",
-    "publication_status": "not verified",
+    "buffer_connection_status": "verified successful via Buffer Connection Check and One-shot Product Launch Distribution",
+    "buffer_channel": "instagram:praxisstratum",
+    "buffer_post_id": "6a8f23f6b2db23b19c501243",
+    "buffer_status": "scheduled",
+    "scheduled_at_utc": "2026-08-27T01:27:00Z",
+    "scheduled_at_jst": "2026-08-27T10:27:00+09:00",
+    "workflow_run_id": 32995070556,
+    "workflow_result": "success",
+    "publication_status": "scheduled; public post URL pending actual publication",
     "published_post_url": null,
-    "social_utm_pageviews_after_publish": null,
+    "social_utm_pageviews_after_publish": 0,
     "calculator_events_after_publish": null,
     "return_gate_events_after_publish": null,
     "cta_events_after_publish": null,
     "checkout_events_after_publish": null,
-    "safety_note": "Do not record publication, UTM lift, CTA lift, or checkout lift until an actual Buffer/API publication run and PostHog event evidence exist."
+    "safety_note": "No blind publish, duplicate retry, or unverified-channel posting. After publication, verify the real Instagram post URL and PostHog UTM -> Calculator/Return Gate -> CTA -> Checkout events before declaring the run complete."
   },
   "current_primary_bottleneck": "Qualified external social traffic remains the primary measured bottleneck. Prioritize safe verified SNS distribution into existing assets, then measure Return Gate entry, CTA, checkout, purchase and 24h/7d revisit before expanding the product catalog.",
-  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate verified public reachability from repository existence before publishing external traffic."
+  "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate scheduled, published, clicked, converted and purchased states."
 }
