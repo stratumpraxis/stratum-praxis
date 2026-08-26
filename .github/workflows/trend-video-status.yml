@@ -1,0 +1,45 @@
+name: Trend Video Delivery Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trend-video-engine/publish-ledger.json'
+      - 'distribution/buffer-video-status.mjs'
+      - '.github/workflows/trend-video-status.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: trend-video-delivery-check
+  cancel-in-progress: false
+
+jobs:
+  verify-delivery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Allow platform delivery to settle
+        run: sleep 20
+
+      - name: Verify Buffer destination state once
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: trend-video-engine/current.json
+        run: node distribution/buffer-video-status.mjs
+
+      - name: Persist only material state changes
+        run: |
+          git config user.name "stratum-trend-video-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          git add trend-video-engine/publish-ledger.json
+          if git diff --cached --quiet; then
+            echo "No material delivery-state change."
+            exit 0
+          fi
+          git commit -m "Verify trend video delivery state"
+          git push
