@@ -1,7 +1,5 @@
 #!/usr/bin/env python3
 import json
-import os
-import shutil
 import subprocess
 import sys
 import tempfile
@@ -71,41 +69,55 @@ def render_scene(scene, idx, tmpdir, font, palette):
     duration = float(scene.get('duration', 4.0))
     duration = max(2.0, min(duration, 12.0))
     bg = safe_color(scene.get('background'), palette[idx % len(palette)])
-    accent = safe_color(scene.get('accent'), '#D7FF5B')
+    accent = safe_color(scene.get('accent'), '#7CFFDA')
 
     headline_file = Path(tmpdir) / f'headline-{idx}.txt'
     body_file = Path(tmpdir) / f'body-{idx}.txt'
     source_file = Path(tmpdir) / f'source-{idx}.txt'
     eyebrow_file = Path(tmpdir) / f'eyebrow-{idx}.txt'
+    tag_file = Path(tmpdir) / f'tag-{idx}.txt'
 
     headline_file.write_text(wrap_text(scene.get('headline', ''), 15), encoding='utf-8')
     body_file.write_text(wrap_text(scene.get('body', ''), 25), encoding='utf-8')
     source_file.write_text(wrap_text(scene.get('sourceLabel', ''), 34), encoding='utf-8')
     eyebrow_file.write_text(wrap_text(scene.get('eyebrow', 'TREND SIGNAL'), 24), encoding='utf-8')
+    tag_file.write_text(wrap_text(scene.get('motionTag', f'SIGNAL {idx+1:02d}'), 20), encoding='utf-8')
 
     font_e = esc_filter_path(font)
     hf = esc_filter_path(headline_file)
     bf = esc_filter_path(body_file)
     sf = esc_filter_path(source_file)
     ef = esc_filter_path(eyebrow_file)
+    tf = esc_filter_path(tag_file)
 
+    # Motion is intentionally continuous but low-amplitude: kinetic without strobe/flicker.
     filters = [
-        f'drawbox=x=0:y=0:w={W}:h=18:color={accent}:t=fill',
-        f'drawbox=x=55:y=118:w=610:h=2:color={accent}@0.7:t=fill',
-        f"drawtext=fontfile='{font_e}':textfile='{ef}':expansion=none:fontsize=28:fontcolor={accent}:x=58:y=70",
-        f"drawtext=fontfile='{font_e}':textfile='{hf}':expansion=none:fontsize=66:fontcolor=white:line_spacing=16:x=(w-text_w)/2:y=235:box=1:boxcolor=black@0.16:boxborderw=18",
+        'noise=alls=3:allf=t+u',
+        'drawgrid=w=72:h=72:t=1:c=white@0.045',
+        'vignette=angle=PI/5',
+        f'drawbox=x=0:y=0:w={W}:h=14:color={accent}:t=fill',
+        f'drawbox=x=38:y=54:w=644:h=1160:color=white@0.025:t=fill',
+        f'drawbox=x=52:y=156:w=616:h=2:color={accent}@0.65:t=fill',
+        f'drawbox=x=52:y=1040:w=140:h=4:color={accent}@0.85:t=fill',
+        f"drawtext=fontfile='{font_e}':textfile='{ef}':expansion=none:fontsize=27:fontcolor={accent}:x='52+10*sin(t*1.8)':y='86+3*sin(t*1.2)'",
+        f"drawtext=fontfile='{font_e}':textfile='{tf}':expansion=none:fontsize=18:fontcolor=white@0.42:x='w-text_w-54-12*sin(t*1.35)':y='88+4*cos(t*1.1)'",
+        f"drawtext=fontfile='{font_e}':textfile='{hf}':expansion=none:fontsize=67:fontcolor=white:line_spacing=16:x='(w-text_w)/2+16*sin(t*0.92)':y='245+10*sin(t*0.72)':box=1:boxcolor=black@0.10:boxborderw=20",
     ]
     if body_file.read_text(encoding='utf-8').strip():
         filters.append(
-            f"drawtext=fontfile='{font_e}':textfile='{bf}':expansion=none:fontsize=38:fontcolor=white@0.88:line_spacing=12:x=(w-text_w)/2:y=700"
+            f"drawtext=fontfile='{font_e}':textfile='{bf}':expansion=none:fontsize=37:fontcolor=white@0.90:line_spacing=12:x='(w-text_w)/2-10*sin(t*0.84)':y='710+8*cos(t*0.73)'"
         )
+    # Moving micro-copy gives a UI / HUD feel without copying any platform visual language.
+    filters.append(
+        f"drawtext=fontfile='{font_e}':text='/// LIVE CULTURE SIGNAL':expansion=none:fontsize=17:fontcolor={accent}@0.55:x='54+mod(t*34,120)':y=1070"
+    )
     if source_file.read_text(encoding='utf-8').strip():
         filters.append(
-            f"drawtext=fontfile='{font_e}':textfile='{sf}':expansion=none:fontsize=21:fontcolor=white@0.58:line_spacing=8:x=55:y=h-text_h-75"
+            f"drawtext=fontfile='{font_e}':textfile='{sf}':expansion=none:fontsize=20:fontcolor=white@0.55:line_spacing=8:x='55+4*sin(t*0.5)':y=h-text_h-72"
         )
     filters.extend([
-        'fade=t=in:st=0:d=0.22',
-        f'fade=t=out:st={max(0.0, duration-0.22):.3f}:d=0.22',
+        'fade=t=in:st=0:d=0.18',
+        f'fade=t=out:st={max(0.0, duration-0.18):.3f}:d=0.18',
     ])
 
     out = Path(tmpdir) / f'scene-{idx:02d}.mp4'
@@ -113,7 +125,7 @@ def render_scene(scene, idx, tmpdir, font, palette):
         'ffmpeg', '-y', '-hide_banner', '-loglevel', 'warning',
         '-f', 'lavfi', '-i', f'color=c={bg}:s={W}x{H}:r={FPS}:d={duration}',
         '-vf', ','.join(filters),
-        '-c:v', 'libx264', '-preset', 'medium', '-crf', '19',
+        '-c:v', 'libx264', '-preset', 'medium', '-crf', '18',
         '-pix_fmt', 'yuv420p', '-an', str(out)
     ])
     return out, duration
@@ -131,7 +143,7 @@ def main():
     output = Path(manifest.get('outputFile', 'media/trend-videos/output.mp4'))
     output.parent.mkdir(parents=True, exist_ok=True)
     font = pick_font()
-    palette = ['#0A0D14', '#111827', '#151925', '#0B1320', '#17131F']
+    palette = ['#050811', '#071421', '#10102A', '#07151A', '#130A1D']
 
     with tempfile.TemporaryDirectory(prefix='trend-video-') as tmpdir:
         parts = []
@@ -150,18 +162,18 @@ def main():
             '-c', 'copy', str(video_only)
         ])
 
-        # Procedural, original, low-volume ambient bed. No third-party music asset.
-        audio_expr = '0.020*sin(2*PI*110*t)+0.010*sin(2*PI*165*t)+0.008*sin(2*PI*220*t)'
+        # Original procedural electronic bed. No sample packs or third-party music.
+        audio_expr = '0.018*sin(2*PI*82*t)+0.010*sin(2*PI*164*t)+0.006*sin(2*PI*328*t)'
         run([
             'ffmpeg', '-y', '-hide_banner', '-loglevel', 'warning',
             '-i', str(video_only),
             '-f', 'lavfi', '-i', f'aevalsrc={audio_expr}:s=48000:d={total:.3f}',
-            '-filter:a', f'afade=t=in:st=0:d=0.7,afade=t=out:st={max(0.0,total-0.9):.3f}:d=0.9',
+            '-filter:a', f'volume=0.72,afade=t=in:st=0:d=0.45,afade=t=out:st={max(0.0,total-0.65):.3f}:d=0.65',
             '-c:v', 'copy', '-c:a', 'aac', '-b:a', '128k',
             '-shortest', '-movflags', '+faststart', str(output)
         ])
 
-    print(json.dumps({'rendered': str(output), 'durationSeconds': round(total, 3)}, ensure_ascii=False))
+    print(json.dumps({'rendered': str(output), 'durationSeconds': round(total, 3), 'visualMode': 'kinetic-near-future-v2'}, ensure_ascii=False))
 
 
 if __name__ == '__main__':
