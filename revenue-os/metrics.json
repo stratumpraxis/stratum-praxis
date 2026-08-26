@@ -5,11 +5,23 @@
   "stripe_live_payment_intents": 0,
   "distribution_baseline_2026_08_27": {
     "source": "PostHog project 573335 observed analytics",
-    "pageviews_last_7d": {"/signal/": 5, "/signal/ai-tool-buying-rule-2026.html": 1, "/signal/bing-indexnow-2026.html": 1},
+    "pageviews_last_7d": {"/signal/": 5, "/return-gate/": 3, "/signal/ai-tool-buying-rule-2026.html": 1, "/signal/bing-indexnow-2026.html": 1},
+    "referring_domain_last_7d": {"$direct": 10},
     "utm_pageviews_last_30d": {"chatgpt.com": 5, "unset": 2},
     "downstream_events_last_30d": {"funnel_view": 56, "primary_cta_click": 15, "checkout_click": 17, "signal_search": 10},
-    "return_gate_pageviews_last_7d": 0,
-    "verified_social_utm_pageviews_last_30d": 0
+    "return_gate_pageviews_last_7d": 3,
+    "verified_social_utm_pageviews_last_30d": 0,
+    "measurement_note": "Observed 2026-08-27 via PostHog query: Return Gate has 3 pageviews in the current 7-day window. Recent pageviews in the same window were reported as direct referrer traffic, so this is not yet evidence of successful external distribution."
+  },
+  "return_gate_monetization_closure_2026_08_27": {
+    "existing_offer": "Return Gate Growth OS",
+    "sales_page": "https://stratumpraxis.com/return-gate-growth-os.html",
+    "price": "$24",
+    "implementation_commit": "a37ed07cd64eadc9689c0852044ea9eaa2e333c5",
+    "change": "Added a contextual Return Gate -> existing $24 Growth OS sales-page route to the shared network entry for both Japanese and English Return Gate visitors.",
+    "tracking": "The injected sales-page link is marked data-primary-cta and will emit primary_cta_click through the existing shared analytics handler when a real visitor clicks it.",
+    "status": "implemented on main; production HTTP reflection not independently verified in this run",
+    "success_condition": "Observe a real Return Gate visit -> return_gate_growth_os primary_cta_click -> sales page -> Stripe checkout_click -> genuine purchase."
   },
   "first_distribution_run_2026_08_27": {
     "theme": "AI/SaaS cost review before renewal",
@@ -34,6 +46,6 @@
     "checkout_events_after_publish": null,
     "safety_note": "No blind publish, duplicate retry, or unverified-channel posting. After publication, verify the real Instagram post URL and PostHog UTM -> Calculator/Return Gate -> CTA -> Checkout events before declaring the run complete."
   },
-  "current_primary_bottleneck": "Qualified external social traffic remains the primary measured bottleneck. Prioritize safe verified SNS distribution into existing assets, then measure Return Gate entry, CTA, checkout, purchase and 24h/7d revisit before expanding the product catalog.",
+  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck. Existing Return Gate traffic now has a direct measured route to the $24 Growth OS offer; next prioritize safe verified SNS distribution and observe external source -> entry asset -> CTA -> checkout -> purchase before expanding the product catalog.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate scheduled, published, clicked, converted and purchased states."
 }
