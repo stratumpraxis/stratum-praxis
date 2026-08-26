@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "reviewedAt": "2026-08-26",
   "global": {
     "singlePublisherPerService": true,
@@ -14,14 +14,16 @@
       "publishingEnabled": true,
       "allowedServices": ["instagram", "tiktok", "youtube"],
       "credentialSource": "github-actions-secret",
-      "notes": "Only autonomous publisher. Use official Buffer API and existing publication ledger."
+      "notes": "Only autonomous publisher for Instagram, TikTok, and YouTube. Use official Buffer API and existing publication ledger."
     },
     "metricool": {
       "status": "onboarding",
-      "role": "analytics-and-mcp",
+      "role": "analytics-mcp-and-expansion-observer",
       "publishingEnabled": false,
-      "allowedServices": ["instagram", "tiktok", "youtube"],
-      "notes": "Use Free-plan MCP/analytics as a measurement layer. Publishing stays disabled to prevent duplicate posts."
+      "analyticsConnections": ["instagram", "tiktok", "youtube"],
+      "expansionCandidates": ["facebook", "threads", "bluesky", "pinterest", "google-business"],
+      "excludedOnFree": ["linkedin", "x"],
+      "notes": "Connect existing Buffer networks for analytics only. Prefer currently unused Free-plan networks as expansion/observation surfaces. Do not enable autonomous Metricool publishing until a service is explicitly reassigned from Buffer or approved as a non-overlapping publisher lane. Metricool MCP is permitted on Free for analysis and controlled operations within plan limits."
     },
     "vista-social": {
       "status": "deferred",
