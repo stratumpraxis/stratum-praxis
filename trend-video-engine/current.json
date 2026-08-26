@@ -1,30 +1,28 @@
 {
-  "id": "2026-08-26-ai-slop-tiktok-v3",
-  "createdAt": "2026-08-26T20:29:00+09:00",
-  "brandLane": "stratum-tiktok-en",
-  "platformVariant": "tiktok-rewards-ready",
-  "title": "AI video isn't the problem. AI slop is.",
+  "id": "2026-08-26-ai-slop-youtube-v3",
+  "createdAt": "2026-08-26T20:30:00+09:00",
+  "brandLane": "stratum-forwelle-en",
+  "platformVariant": "youtube-shorts-discovery",
+  "title": "AI Video Isn't the Problem. AI Slop Is.",
   "topic": "Why platforms are drawing a line between AI-assisted creation and repetitive AI spam",
   "language": "en",
-  "summary": "A 60-second TikTok-native explainer on why AI-assisted video is different from repetitive AI spam, framed around authorship, transformation and disclosure.",
-  "outputFile": "media/trend-videos/2026-08-26-ai-slop-tiktok-v3.mp4",
+  "summary": "A concise original explainer on why AI-assisted video can remain monetizable while repetitive spam, weak disclosure and copycat production create platform and audience risk.",
+  "outputFile": "media/trend-videos/2026-08-26-ai-slop-youtube-v3.mp4",
   "scores": {"freshness":9,"businessDemand":9,"crossPlatformPotential":10,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
   "sources": [
     {"name":"TikTok Newsroom - Helping people spot and understand AI generated content","url":"https://newsroom.tiktok.com/helping-people-spot-and-understand-aigc-on-tiktok?lang=en-150","factSource":true,"verified":true,"published":"2026-07-10"},
     {"name":"TikTok Creative Center - Trends","url":"https://ads.tiktok.com/creative/creativeCenter/trends?period=7","factSource":false,"verified":true,"published":"2026-08-26"}
   ],
   "thirdPartyAssets": [],
-  "originality": {"creatorSignals":["original cultural distinction: AI tool vs AI slop operating model","original creator safety framework: authorship + transformation + disclosure","original kinetic near-future motion sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
-  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","creator-economy","platform-safety"],"notes":"No creator clips, screenshots, logos, likenesses, copyrighted music, allegations or copied scripts. Claims are limited to official TikTok policy and original analysis."},
+  "originality": {"creatorSignals":["original distinction between AI as a tool and AI slop as an operating model","original monetization-oriented framework: authorship + transformation + disclosure","original kinetic near-future motion sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
+  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","creator-economy","platform-safety"],"notes":"No creator clips, screenshots, logos, likenesses, copyrighted music, allegations or copied scripts. Claims are limited to official TikTok transparency/spam-detection policy and original analysis."},
   "scenes": [
-    {"duration":7.5,"eyebrow":"CREATOR ECONOMY / 2026","motionTag":"AI ≠ SLOP","headline":"AI video isn't\nthe problem.","body":"The problem is mass-produced content with no visible authorship.","sourceLabel":"Original analysis / current platform shift","background":"#050711","accent":"#7CFFDA"},
-    {"duration":7.5,"eyebrow":"PLATFORM SIGNAL","motionTag":"SPAM DETECTION","headline":"TikTok is\nwatching the pattern","body":"TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam.","sourceLabel":"TikTok Newsroom / Jul 10, 2026","background":"#071421","accent":"#5BE7FF"},
-    {"duration":7.5,"eyebrow":"THE TRAP","motionTag":"COPY → POST → REPEAT","headline":"Fast production can\nlook disposable","body":"Same pacing. Same template. New topic. Repeat. That is scale without identity.","sourceLabel":"Original creator-economy thesis","background":"#10102A","accent":"#B39CFF"},
-    {"duration":7.5,"eyebrow":"THE DIFFERENCE","motionTag":"AUTHORSHIP","headline":"AI can still be\na real tool","body":"Use it to build a distinct argument, sequence, comparison, or visual system.","sourceLabel":"Original transformation framework","background":"#07151A","accent":"#65FF9D"},
-    {"duration":7.5,"eyebrow":"THREE SIGNALS","motionTag":"1 / 2 / 3","headline":"Thesis.\nTransformation.\nDisclosure.","body":"Make the human editorial decision obvious—even when the production pipeline is automated.","sourceLabel":"Stratum Praxis originality framework","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":7.5,"eyebrow":"THE REVIEW TEST","motionTag":"LAST 5 VIDEOS","headline":"Would five uploads\nlook like five works?","body":"If a reviewer sees one template five times, the system needs redesign—not more volume.","sourceLabel":"Channel-level monetization audit","background":"#071421","accent":"#FFD166"},
-    {"duration":7.5,"eyebrow":"THE PARADOX","motionTag":"AUTOMATE BETTER","headline":"The safer system\nautomates originality","body":"Research, rights checks, motion systems and QA can scale while each idea stays distinct.","sourceLabel":"Original operating-model thesis","background":"#050811","accent":"#7CFFDA"},
-    {"duration":7.5,"eyebrow":"BOTTOM LINE","motionTag":"AI + AUTHORSHIP","headline":"Scale the system.\nNot the sameness.","body":"The future is not less AI. It is more obvious creative responsibility.","sourceLabel":"Stratum Praxis / original takeaway","background":"#10102A","accent":"#5BE7FF"}
+    {"duration":5.5,"eyebrow":"CREATOR ECONOMY / 2026","motionTag":"AI ≠ SLOP","headline":"AI video isn't\nthe problem.","body":"The problem is content that looks mass-produced, copied, and disposable.","sourceLabel":"Original analysis / platform trend","background":"#050711","accent":"#7CFFDA"},
+    {"duration":5.5,"eyebrow":"WHAT CHANGED","motionTag":"SPAM DETECTION","headline":"Platforms are\nwatching quality","body":"TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam.","sourceLabel":"TikTok Newsroom / Jul 10, 2026","background":"#071421","accent":"#5BE7FF"},
+    {"duration":5.5,"eyebrow":"THE WRONG MODEL","motionTag":"COPY → POST → REPEAT","headline":"Automation alone\nis not a moat","body":"If every upload is interchangeable, the channel itself starts to look interchangeable.","sourceLabel":"Original creator-economy thesis","background":"#10102A","accent":"#B39CFF"},
+    {"duration":5.5,"eyebrow":"THE BETTER MODEL","motionTag":"AUTHORSHIP","headline":"Use AI.\nAdd a point of view.","body":"Original thesis. Real transformation. Clear disclosure. Distinct visual language.","sourceLabel":"Original monetization framework","background":"#07151A","accent":"#65FF9D"},
+    {"duration":5.5,"eyebrow":"MONETIZATION TEST","motionTag":"5-VIDEO AUDIT","headline":"Watch your last\nfive uploads","body":"Would a human reviewer instantly see five different works—not one template five times?","sourceLabel":"Forwelle originality gate","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":5.5,"eyebrow":"THE TAKEAWAY","motionTag":"AI + AUTHORSHIP","headline":"Scale the system.\nNot the sameness.","body":"The winning automation is the one that keeps creative authorship visible.","sourceLabel":"Stratum Praxis / original thesis","background":"#050811","accent":"#FFD166"}
   ],
-  "publish": {"services":["tiktok"],"mode":"shareNow","aiGeneratedLabel":true,"title":"AI video isn't the problem. AI slop is.","caption":"AI-assisted creation can be powerful. The risk starts when automation becomes repetitive, interchangeable spam. TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam. The durable model is AI + authorship: original thesis, real transformation, clear disclosure, and a distinct visual identity.\n\n#AI #AIVideo #CreatorEconomy #ContentStrategy #TikTokTips"}
+  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"AI Video Isn't the Problem. AI Slop Is. #Shorts","caption":"AI-assisted creation can be powerful. The risk starts when automation turns into repetitive, interchangeable spam. TikTok says it is testing stronger detection for accounts dedicated to AI-generated spam. The durable model is AI + authorship: original thesis, real transformation, clear disclosure, and a visual identity that changes with the idea.\n\n#AI #CreatorEconomy #YouTubeShorts #ContentStrategy #AIVideo"}
 }
