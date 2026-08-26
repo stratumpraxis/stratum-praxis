@@ -1,9 +1,10 @@
 [
   {
-    "id":"sib-launch-20260826-v3",
+    "id":"sib-instagram-20260826-v1",
     "active":true,
-    "services":["bluesky","threads","linkedin"],
-    "text":"Most digital products fail before checkout because the learning loop is missing. Smartphone Income Blueprint is a $19 phone-first Buyer Kit to validate one real problem, ship one useful product, send qualified traffic, and diagnose the biggest funnel leak. No income promises—just a measurable loop.",
-    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=buffer&utm_medium=social&utm_campaign=sib_launch_20260826&utm_content=launch_v3"
+    "services":["instagram"],
+    "text":"Most digital products do not need more ideas. They need a tighter learning loop.\n\nSmartphone Income Blueprint is a $19 phone-first Buyer Kit for testing one real problem, publishing one useful product, sending qualified traffic, and diagnosing the biggest funnel leak.\n\nNo income promises. Just a measurable loop.",
+    "url":"https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=instagram&utm_medium=social&utm_campaign=sib_launch_20260826&utm_content=card_v1",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/sib-instagram-20260826.png"
   }
 ]
