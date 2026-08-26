@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1350" viewBox="0 0 1080 1350" role="img" aria-labelledby="title desc">
+<title id="title">AI and SaaS spend review social card</title>
+<desc id="desc">Original Stratum Praxis text-based social card about reviewing AI and SaaS spending before renewal.</desc>
+<rect width="1080" height="1350" fill="#090d13"/>
+<circle cx="900" cy="120" r="280" fill="#151d29"/>
+<circle cx="930" cy="100" r="160" fill="#202b3a" opacity="0.55"/>
+<rect x="72" y="72" width="936" height="1206" rx="34" fill="#0f1620" stroke="#334155" stroke-width="2"/>
+<text x="118" y="142" fill="#b8c2cf" font-family="Arial,Helvetica,sans-serif" font-size="28" font-weight="700" letter-spacing="4">STRATUM PRAXIS · FREE CALCULATOR</text>
+<text x="118" y="300" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="78" font-weight="800">Before the next</text>
+<text x="118" y="392" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="78" font-weight="800">AI / SaaS renewal,</text>
+<text x="118" y="484" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="78" font-weight="800">size the review.</text>
+<text x="118" y="585" fill="#aeb8c6" font-family="Arial,Helvetica,sans-serif" font-size="34">Monthly spend → annual spend → review amount</text>
+<g transform="translate(118,680)">
+  <rect width="844" height="164" rx="24" fill="#0a1018" stroke="#334155" stroke-width="2"/>
+  <text x="34" y="55" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="24">Example only</text>
+  <text x="34" y="116" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="50" font-weight="800">$2,500/mo → $30,000/yr</text>
+</g>
+<g transform="translate(118,878)">
+  <rect width="252" height="112" rx="20" fill="#121b27" stroke="#334155"/>
+  <text x="24" y="44" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="20">CHECK</text>
+  <text x="24" y="78" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">Unused seats</text>
+  <rect x="278" width="252" height="112" rx="20" fill="#121b27" stroke="#334155"/>
+  <text x="302" y="44" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="20">CHECK</text>
+  <text x="302" y="78" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">Duplicate tools</text>
+  <rect x="556" width="288" height="112" rx="20" fill="#121b27" stroke="#334155"/>
+  <text x="580" y="44" fill="#94a3b8" font-family="Arial,Helvetica,sans-serif" font-size="20">CHECK</text>
+  <text x="580" y="78" fill="#f8fafc" font-family="Arial,Helvetica,sans-serif" font-size="26" font-weight="700">Upcoming renewals</text>
+</g>
+<text x="118" y="1084" fill="#dbe4ee" font-family="Arial,Helvetica,sans-serif" font-size="33" font-weight="700">No signup. Your assumptions. No savings promise.</text>
+<rect x="118" y="1134" width="844" height="94" rx="18" fill="#f8fafc"/>
+<text x="540" y="1194" text-anchor="middle" fill="#090d13" font-family="Arial,Helvetica,sans-serif" font-size="30" font-weight="800">Free AI Spend ROI &amp; SaaS Waste Calculator</text>
+</svg>
