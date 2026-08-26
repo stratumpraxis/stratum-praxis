@@ -60,6 +60,36 @@ function metadataFor(service) {
   return '';
 }
 
+async function refreshPriorPost(orgId, channel, prior) {
+  if (!prior?.postId) return false;
+  const service = String(channel.service).toLowerCase();
+  try {
+    const data = await gql(`query { posts(first:25,input:{organizationId:${q(orgId)},filter:{channelIds:[${q(channel.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+    const nodes = (data.posts?.edges || []).map(e => e?.node).filter(Boolean);
+    const post = nodes.find(p => p.id === prior.postId);
+    if (!post) {
+      console.log(`Prior ${service} post ${prior.postId} not found in recent Buffer results; no retry.`);
+      return true;
+    }
+    ledger.items[manifest.id][service] = {
+      ...prior,
+      status: post.status || prior.status,
+      at: now(),
+      dueAt: post.dueAt || prior.dueAt || null,
+      sentAt: post.sentAt || prior.sentAt || null,
+      externalLink: post.externalLink || prior.externalLink || null
+    };
+    console.log(JSON.stringify({ channel: service, manifest: manifest.id, refreshedPost: post }, null, 2));
+    await saveLedger();
+    return true;
+  } catch (error) {
+    console.error(`Read-only Buffer verification failed for ${service}; no retry/create will occur:`, String(error));
+    ledger.items[manifest.id][service] = { ...prior, verifyErrorAt: now(), verifyError: String(error) };
+    await saveLedger();
+    return true;
+  }
+}
+
 const acct = await gql('query { account { organizations { id name } } }');
 const org = acct.account?.organizations?.[0];
 if (!org) {
@@ -84,9 +114,15 @@ if (!channels.length) {
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
   const prior = ledger.items[manifest.id][service];
+
+  // Once an external create was attempted, never create it again. Pending/sent states are verified read-only.
   const nonRetryStates = ['attempted', 'accepted', 'buffer', 'scheduled', 'sending', 'sent', 'unknown'];
   if (prior && nonRetryStates.includes(prior.status)) {
-    console.log(`Skip ${service}: prior state=${prior.status} for ${manifest.id}`);
+    if (['scheduled', 'sending', 'accepted', 'buffer', 'sent'].includes(prior.status) && prior.postId) {
+      await refreshPriorPost(org.id, channel, prior);
+    } else {
+      console.log(`Skip ${service}: prior state=${prior.status} for ${manifest.id}; no duplicate create.`);
+    }
     continue;
   }
 
