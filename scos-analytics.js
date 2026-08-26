@@ -97,6 +97,13 @@
     return lang.startsWith('en') || location.pathname.startsWith('/guides/') || location.pathname.startsWith('/return-gate/en/');
   }
 
+  function normalizeLanguageRoutes() {
+    if (!isEnglishPage()) return;
+    document.querySelectorAll('a[href="/return-gate/"]').forEach(function (link) {
+      link.setAttribute('href', '/return-gate/en/');
+    });
+  }
+
   function injectNetworkEntry() {
     if (document.getElementById('return-gate-entry')) return;
     const english = isEnglishPage();
@@ -135,7 +142,7 @@
   }
 
   function captureView() { window.scosCapture('funnel_view'); }
-  function ready() { captureView(); injectNetworkEntry(); }
+  function ready() { normalizeLanguageRoutes(); captureView(); injectNetworkEntry(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
