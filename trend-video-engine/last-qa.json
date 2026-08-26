@@ -1,8 +1,8 @@
 {
   "approved": true,
-  "outputFile": "media/trend-videos/2026-08-26-ai-slop-tiktok-v3.mp4",
-  "bytes": 12493709,
-  "durationSeconds": 60.0,
+  "outputFile": "media/trend-videos/2026-08-26-ai-slop-youtube-v3.mp4",
+  "bytes": 6612236,
+  "durationSeconds": 33.0,
   "videoCodec": "h264",
   "audioCodec": "aac",
   "dimensions": [
@@ -10,7 +10,7 @@
     1280
   ],
   "services": [
-    "tiktok"
+    "youtube"
   ],
   "rightsMode": "original-procedural"
 }
