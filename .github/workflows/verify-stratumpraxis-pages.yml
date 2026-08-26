@@ -19,6 +19,7 @@ on:
       - 'execution-without-drift.html'
       - 'safe-api-automation-kit.html'
       - 'revenue-distribution-engine.html'
+      - 'return-gate-growth-os.html'
       - 'gpt-5-6-sol-api-cost-calculator.html'
       - 'agentic-ai-governance-permission-kit.html'
       - 'ai-agent-vendor-due-diligence-pack.html'
@@ -43,10 +44,34 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - name: Verify HTTPS pages and Return Gate routes
+      - name: Verify HTTPS pages and routes
         shell: bash
         run: |
           set -euo pipefail
+
+          wait_for_contains() {
+            local url="$1"; shift
+            local body=""
+            for attempt in $(seq 1 12); do
+              body="$(curl --fail --silent --show-error --location --max-time 20 "$url" || true)"
+              local ok=1
+              for needle in "$@"; do
+                if ! grep -F "$needle" <<<"$body" >/dev/null; then
+                  ok=0
+                  break
+                fi
+              done
+              if [[ "$ok" == "1" ]]; then
+                echo "Content ready: $url"
+                return 0
+              fi
+              echo "Content not ready ($attempt/12): $url"
+              sleep 5
+            done
+            echo "Timed out waiting for expected content: $url" >&2
+            return 1
+          }
+
           urls=(
             'https://stratumpraxis.com/'
             'https://stratumpraxis.com/return-gate/'
@@ -57,6 +82,7 @@ jobs:
             'https://stratumpraxis.com/execution-without-drift.html'
             'https://stratumpraxis.com/safe-api-automation-kit.html'
             'https://stratumpraxis.com/revenue-distribution-engine.html'
+            'https://stratumpraxis.com/return-gate-growth-os.html'
             'https://stratumpraxis.com/signal/'
             'https://stratumpraxis.com/stack-pulse/'
             'https://stratumpraxis.com/ai-council-builder-ja.html'
@@ -81,32 +107,28 @@ jobs:
             curl --fail --silent --show-error --location --max-time 20 --retry 4 --retry-delay 5 --retry-all-errors "$url" >/dev/null
           done
 
-          echo 'Checking published sitemap registration'
-          sitemap_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/sitemap.xml')"
-          for url in \
+          wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/return-gate/' \
             'https://stratumpraxis.com/prompt-systems.html' \
             'https://stratumpraxis.com/workflow-operator.html' \
             'https://stratumpraxis.com/trend-to-video-revenue-suite.html' \
             'https://stratumpraxis.com/execution-without-drift.html' \
             'https://stratumpraxis.com/safe-api-automation-kit.html' \
-            'https://stratumpraxis.com/revenue-distribution-engine.html'; do
-            grep -F "$url" <<<"$sitemap_html" >/dev/null
-          done
+            'https://stratumpraxis.com/revenue-distribution-engine.html' \
+            'https://stratumpraxis.com/return-gate-growth-os.html'
 
-          echo 'Checking Passage Map Prompt routes'
-          passage_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/passage-hub/')"
-          for path in '/prompt-systems.html' '/execution-without-drift.html'; do
-            grep -F "href=\"$path\"" <<<"$passage_html" >/dev/null
-          done
+          wait_for_contains 'https://stratumpraxis.com/passage-hub/' \
+            'href="/prompt-systems.html"' \
+            'href="/execution-without-drift.html"'
 
-          echo 'Checking Prompt Hub owned sales routes'
-          prompt_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/prompt-systems.html')"
-          for path in '/workflow-operator.html' '/trend-to-video-revenue-suite.html' '/execution-without-drift.html' '/safe-api-automation-kit.html' '/revenue-distribution-engine.html'; do
-            grep -F "href=\"$path\"" <<<"$prompt_html" >/dev/null
-          done
+          wait_for_contains 'https://stratumpraxis.com/prompt-systems.html' \
+            'href="/workflow-operator.html"' \
+            'href="/trend-to-video-revenue-suite.html"' \
+            'href="/execution-without-drift.html"' \
+            'href="/safe-api-automation-kit.html"' \
+            'href="/revenue-distribution-engine.html"' \
+            'href="/return-gate-growth-os.html"'
 
-          echo 'Checking Return Gate outbound routes'
           gate_html="$(curl --fail --silent --show-error --location --max-time 20 'https://stratumpraxis.com/return-gate/')"
           for path in '/signal/' '/stack-pulse/' '/ai-council-builder-ja.html' '/monthly-money-leak-audit/' '/revenue-router.html' '/workflow-audit.html'; do
             grep -F "href=\"$path\"" <<<"$gate_html" >/dev/null
