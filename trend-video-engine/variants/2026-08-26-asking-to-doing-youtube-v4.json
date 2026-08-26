@@ -1,0 +1,28 @@
+{
+  "id": "2026-08-26-asking-to-doing-youtube-v4",
+  "createdAt": "2026-08-26T20:43:00+09:00",
+  "brandLane": "stratum-forwelle-en",
+  "platformVariant": "youtube-shorts-discovery",
+  "title": "AI Is Moving From Chat to Work",
+  "topic": "AI is shifting from asking questions toward executing real work",
+  "language": "en",
+  "summary": "A 36-second YouTube Short explaining the ask -> assist -> execute shift and why workflow design matters more as AI becomes action-oriented.",
+  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-youtube-v4.mp4",
+  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":9,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
+  "sources": [
+    {"name":"OpenAI — From asking to doing: How the world is putting ChatGPT to work","url":"https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/","factSource":true,"verified":true,"published":"2026-08-06"},
+    {"name":"OpenAI — From assistance to execution: How enterprises put AI to work","url":"https://openai.com/index/how-enterprises-put-ai-to-work/","factSource":true,"verified":true,"published":"2026-08-12"}
+  ],
+  "thirdPartyAssets": [],
+  "originality": {"creatorSignals":["original ask-assist-execute framework","original thesis that workflow architecture matters more as AI becomes action-oriented","original kinetic near-future visual sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
+  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","agents","productivity","future-of-work"],"notes":"No third-party footage, logos, screenshots, likenesses or copyrighted music. Claims are limited to official OpenAI reports and original analysis."},
+  "scenes": [
+    {"duration":6.0,"eyebrow":"AI / 2026","motionTag":"ASK → DO","headline":"AI is moving\nfrom chat to work.","body":"The key shift isn't only smarter answers. It's execution.","sourceLabel":"OpenAI Signals / Aug 2026","background":"#050711","accent":"#7CFFDA"},
+    {"duration":6.0,"eyebrow":"1 / ASK","motionTag":"PROMPT → RESPONSE","headline":"First:\nask.","body":"AI answered. You still carried the workflow.","sourceLabel":"Original workflow framing","background":"#071421","accent":"#5BE7FF"},
+    {"duration":6.0,"eyebrow":"2 / ASSIST","motionTag":"WORK WITH AI","headline":"Then:\nassist.","body":"Draft, analyze, compare, code—the tool moved inside the task.","sourceLabel":"OpenAI usage report / original synthesis","background":"#10102A","accent":"#B39CFF"},
+    {"duration":6.0,"eyebrow":"3 / EXECUTE","motionTag":"TOOLS + AGENTS","headline":"Now:\nexecute.","body":"Agents and workflows can move from advice toward real action.","sourceLabel":"OpenAI enterprise report / Aug 2026","background":"#07151A","accent":"#65FF9D"},
+    {"duration":6.0,"eyebrow":"THE MOAT","motionTag":"WORKFLOW > PROMPT","headline":"Prompting isn't\nthe whole skill.","body":"Permissions, verification and workflow design become the advantage.","sourceLabel":"Original operating-model thesis","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":6.0,"eyebrow":"BETTER QUESTION","motionTag":"WHAT CAN IT FINISH?","headline":"What can AI\nsafely finish?","body":"That's the question that matters as chat becomes work.","sourceLabel":"Forwelle / original takeaway","background":"#050811","accent":"#FFD166"}
+  ],
+  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"AI Is Moving From Chat to Work #Shorts","caption":"OpenAI's recent usage and enterprise reports point to a broader shift: AI is moving from answering questions toward doing work inside real workflows. The next skill isn't only prompting. It's designing what AI can safely finish end-to-end.\n\n#AI #AIAgents #YouTubeShorts #FutureOfWork #Productivity"}
+}
