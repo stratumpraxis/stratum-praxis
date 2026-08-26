@@ -16,11 +16,12 @@ Use this file as the source of truth when preparing X posts, note articles, comp
 - Smartphone AI Slide Factory GitHub-attributed LP: https://stratumpraxis.com/smartphone-ai-slide-factory.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_ai_slide_factory
 - Search distribution: IndexNow expanded to AI Council EN/JA, Smartphone Income Blueprint, and Smartphone AI Slide Factory; execution confirmed successful on 2026-08-26.
 
-### Distribution blockers that must not be misreported as completed posts
+### Distribution status
 
-- Buffer API authentication succeeds, but the connected organization currently returns zero channels. Therefore Buffer cannot create a real social post yet.
-- The previous Smartphone Income one-shot distribution run was a safe no-op while the API key was missing. Do not count it as a post.
-- Medium / DEV / note / X / YouTube remain outside the currently connected publishing surface. Only add a posting URL to the ledger after a real publish succeeds.
+- Buffer API authentication and publishing-channel connection are both complete. Buffer is no longer blocked by a zero-channel state.
+- The previous Smartphone Income one-shot distribution run was a safe no-op while the API key was missing. Do not count that historical run as a post.
+- Next verification gate: run real Buffer publishing, capture each public posting URL, map it to the product CTA, and add only verified URLs to the ledger.
+- Medium / DEV / note / X / YouTube outside Buffer-connected channels still require their own publish/connect verification before they are counted as placed.
 
 ### Measured baseline
 
