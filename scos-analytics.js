@@ -178,6 +178,7 @@
       link.href = href;
       link.textContent = text;
       link.dataset.analyticsId = analyticsId;
+      if (analyticsId === 'return_gate_growth_os') link.setAttribute('data-primary-cta', 'true');
       link.style.cssText = primary
         ? 'display:inline-block;border:1px solid rgba(190,205,225,.65);border-radius:999px;padding:9px 13px;color:#080b10;text-decoration:none;background:#f5f7fb;font-weight:850'
         : 'display:inline-block;border:1px solid rgba(127,150,180,.4);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.5)';
@@ -189,6 +190,7 @@
     }
 
     if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', true);
+    if (onReturnGate) addLink('/return-gate-growth-os.html', english ? 'Build your own Return Gate · $24' : '再訪導線を作る · Growth OS $24', 'return_gate_growth_os', true);
     addLink('/passage-hub/', english ? 'Route map' : '路線図', 'passage_map_entry', false);
     addLink(contentPath, contentLabel, 'content_hub_entry', false);
     addLink('https://www.youtube.com/@forwelle?utm_source=stratumpraxis&utm_medium=network&utm_campaign=return_gate_network', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
