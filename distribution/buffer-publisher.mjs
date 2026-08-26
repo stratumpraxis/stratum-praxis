@@ -57,8 +57,10 @@ for (const channel of channels) {
 
   let assets = '';
   if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
-  const serviceFields = service === 'instagram' ? 'type:post,' : '';
-  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${serviceFields}schedulingType:automatic,mode:addToQueue,${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
+  const metadata = service === 'instagram'
+    ? 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},'
+    : '';
+  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:addToQueue,${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
   console.log(JSON.stringify({channel:service,item:item.id,result}, null, 2));
