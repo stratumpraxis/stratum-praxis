@@ -89,5 +89,26 @@
     "services":["bluesky","threads","linkedin"],
     "text":"If an AI video technically has motion but still feels like a slideshow, the problem is usually visual progression, not animation quantity. The new Short-Form Video Rescue Audit diagnoses paper-slide feel, fake intensity, silent music, rights risk and platform mismatch.",
     "url":"https://stratumpraxis.com/trend-to-video-revenue-suite.html?utm_source=buffer&utm_medium=social&utm_campaign=trend_video_revenue&utm_content=tvr02"
+  },
+  {
+    "id":"saas-ladder-01",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"Before renewing another AI or SaaS tool, ask 12 boring questions: who owns it, what workflow it supports, whether another paid tool overlaps, whether seats match usage, what break-even looks like, and what the fallback is. Free checklist.",
+    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=buffer&utm_medium=social&utm_campaign=ai_saas_revenue_ladder&utm_content=checklist01"
+  },
+  {
+    "id":"saas-ladder-02",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"If you already know which workflow or AI purchase you are evaluating, you may not need a custom audit. The $39 AI Value Realization Kit is the self-service middle step: assumptions, costs, human review and go/hold thresholds in one decision system.",
+    "url":"https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=ai_saas_revenue_ladder&utm_content=valuekit02"
+  },
+  {
+    "id":"saas-ladder-03",
+    "active":true,
+    "services":["bluesky","threads","linkedin"],
+    "text":"When software overlap, renewals and workflow economics are too messy to sort internally, the $499 AI & SaaS Spend Waste Audit turns the stack into explicit KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL decisions with a 30-day action plan.",
+    "url":"https://stratumpraxis.com/ai-saas-spend-waste-audit.html?utm_source=buffer&utm_medium=social&utm_campaign=ai_saas_revenue_ladder&utm_content=audit03"
   }
 ]
