@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "reviewedAt": "2026-08-26",
+  "global": {
+    "singlePublisherPerService": true,
+    "requireSafetyQa": true,
+    "requireVerifiedRights": true,
+    "noAutomaticRetryAfterUnknownExternalState": true
+  },
+  "providers": {
+    "buffer": {
+      "status": "active",
+      "role": "primary-publisher",
+      "publishingEnabled": true,
+      "allowedServices": ["instagram", "tiktok", "youtube"],
+      "credentialSource": "github-actions-secret",
+      "notes": "Only autonomous publisher. Use official Buffer API and existing publication ledger."
+    },
+    "metricool": {
+      "status": "onboarding",
+      "role": "analytics-and-mcp",
+      "publishingEnabled": false,
+      "allowedServices": ["instagram", "tiktok", "youtube"],
+      "notes": "Use Free-plan MCP/analytics as a measurement layer. Publishing stays disabled to prevent duplicate posts."
+    },
+    "vista-social": {
+      "status": "deferred",
+      "role": "none",
+      "publishingEnabled": false,
+      "allowedServices": [],
+      "reconsiderWhen": [
+        "shared-inbox-or-dm-automation-becomes-a-material-bottleneck",
+        "team-approval-workflows-are-needed",
+        "incremental-value-clearly-exceeds-paid-plan-cost"
+      ]
+    },
+    "publer": {
+      "status": "deferred",
+      "role": "cold-standby-candidate",
+      "publishingEnabled": false,
+      "allowedServices": [],
+      "reconsiderWhen": [
+        "buffer-free-limits-block-required-distribution",
+        "publer-api-access-becomes-cost-effective-for-current-scale"
+      ]
+    }
+  }
+}
