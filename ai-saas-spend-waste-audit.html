@@ -20,40 +20,16 @@
       "serviceType": "AI workflow and SaaS spend decision audit",
       "url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
       "description": "A fixed-scope audit that reviews software and AI spend against actual workflow value, identifies likely cost leaks and duplicate capability, and provides a prioritized action plan.",
-      "provider": {
-        "@type": "Organization",
-        "name": "Stratum Praxis",
-        "url": "https://stratumpraxis.com/"
-      },
-      "audience": {
-        "@type": "BusinessAudience",
-        "audienceType": "Small businesses, agencies and service teams"
-      },
-      "offers": {
-        "@type": "Offer",
-        "price": "499",
-        "priceCurrency": "USD",
-        "url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02"
-      }
+      "provider": {"@type": "Organization","name": "Stratum Praxis","url": "https://stratumpraxis.com/"},
+      "audience": {"@type": "BusinessAudience","audienceType": "Small businesses, agencies and service teams"},
+      "offers": {"@type": "Offer","price": "499","priceCurrency": "USD","url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02"}
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
-        {
-          "@type": "Question",
-          "name": "Do I need to share contracts or sensitive billing data?",
-          "acceptedAnswer": {"@type": "Answer","text": "No. A redacted list of tools, approximate cost, rough usage, renewal timing and the workflow each tool supports is enough to begin."}
-        },
-        {
-          "@type": "Question",
-          "name": "Is this only about cancelling software?",
-          "acceptedAnswer": {"@type": "Answer","text": "No. The audit can support KEEP, REDUCE, CONSOLIDATE, REVIEW or CANCEL decisions and links cost to workflow value rather than assuming every subscription should be cut."}
-        },
-        {
-          "@type": "Question",
-          "name": "Is software implementation included?",
-          "acceptedAnswer": {"@type": "Answer","text": "No. This $499 audit is a fixed-scope decision audit. Optional post-audit Verified Savings Recovery and monthly monitoring are separate services with separate scope and pricing."}
-        }
+        {"@type": "Question","name": "Do I need to share contracts or sensitive billing data?","acceptedAnswer": {"@type": "Answer","text": "No. A redacted list of tools, approximate cost, rough usage, renewal timing and the workflow each tool supports is enough to begin."}},
+        {"@type": "Question","name": "Is this only about cancelling software?","acceptedAnswer": {"@type": "Answer","text": "No. The audit can support KEEP, REDUCE, CONSOLIDATE, REVIEW or CANCEL decisions and links cost to workflow value rather than assuming every subscription should be cut."}},
+        {"@type": "Question","name": "Is software implementation included?","acceptedAnswer": {"@type": "Answer","text": "No. This $499 audit is a fixed-scope decision audit. Optional post-audit Verified Savings Recovery and monthly monitoring are separate services with separate scope and pricing."}}
       ]
     }
   ]
@@ -72,14 +48,15 @@ ol,ul{padding-left:22px}.sample{border-left:3px solid var(--silver);padding:14px
 label{display:block;font-size:14px;color:var(--silver);margin-bottom:6px}input{width:100%;background:#0e1420;color:var(--text);border:1px solid var(--line);border-radius:8px;padding:12px;font:inherit}
 .result{font-size:28px;font-weight:800;margin:18px 0 4px}.faq{border-top:1px solid var(--line);padding:18px 0}.faq b{display:block;margin-bottom:4px}
 </style>
+<script defer src="scos-analytics.js"></script>
 </head>
-<body><main>
+<body data-funnel="ai_saas_spend_waste_audit" data-product="workflow_audit"><main>
 <div class="eyebrow">// Stratum Praxis · AI & SaaS Spend</div>
 <h1>Before you buy another AI tool, find what your current software stack is already wasting.</h1>
 <p class="lead">A fixed-scope version of the Stratum Praxis AI Workflow Opportunity Audit for small teams that want to connect software cost to actual workflow value. We identify likely spend leaks, duplicate capability, renewal risks and the first workflow or tool decision worth acting on.</p>
 <div class="price">$499 <span class="meta">one-time launch price</span></div>
-<a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Buy the audit - $499</a>
-<a class="cta secondary" href="#exposure">Estimate spend exposure first</a>
+<a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02" data-primary-cta data-analytics-id="spend_audit_checkout_hero" data-product="workflow_audit">Buy the audit - $499</a>
+<a class="cta secondary" href="#exposure" data-analytics-id="spend_audit_estimator_jump">Estimate spend exposure first</a>
 <p class="meta">Written delivery target: within 3 business days after complete intake. Secure checkout via Stripe. No call required.</p>
 
 <h2>The cost leaks we look for first</h2>
@@ -101,9 +78,9 @@ label{display:block;font-size:14px;color:var(--silver);margin-bottom:6px}input{w
   </div>
   <div class="result" id="annualExposure">$4,500 / year</div>
   <p class="fine">Formula: monthly software spend × 12 × review share. This is only a scenario to size the decision, not guaranteed savings.</p>
-  <a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Review the stack - $499</a>
-  <a class="cta secondary" href="ai-value-realization-kit.html">Use the $39 self-service kit</a>
-  <a class="cta secondary" href="ai-saas-spend-audit-checklist.html">Use the free audit checklist</a>
+  <a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02" data-primary-cta data-analytics-id="spend_audit_checkout_estimator" data-product="workflow_audit">Review the stack - $499</a>
+  <a class="cta secondary" href="ai-value-realization-kit.html" data-analytics-id="spend_audit_to_ai_value_kit">Use the $39 self-service kit</a>
+  <a class="cta secondary" href="ai-saas-spend-audit-checklist.html" data-analytics-id="spend_audit_to_free_checklist">Use the free audit checklist</a>
   <p class="fine">Not ready for a $499 audit? The $39 AI Value Realization Kit is the self-service middle option for teams that can make the decisions internally but want a structured ROI and prioritization system.</p>
 </div>
 
@@ -124,7 +101,7 @@ label{display:block;font-size:14px;color:var(--silver);margin-bottom:6px}input{w
 <div class="card"><b>Monthly Monitoring — Core</b>$199/month for a selected-stack review, renewal watchlist, overlap and plan-size flags, and prioritized KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL actions.</div>
 <div class="card"><b>Monthly Monitoring — Pro</b>$499/month for broader or faster-changing stacks that need expanded renewal/change monitoring and a monthly decision summary.</div>
 </div>
-<a class="cta secondary" href="ai-saas-spend-monitoring.html">See post-audit Savings Recovery &amp; Monitoring</a>
+<a class="cta secondary" href="ai-saas-spend-monitoring.html" data-analytics-id="spend_audit_to_monitoring">See post-audit Savings Recovery &amp; Monitoring</a>
 <p class="fine">No guaranteed savings. Savings Recovery and monitoring are separate services and are not included in the $499 audit price.</p>
 
 <h2>Why review this now</h2>
@@ -154,10 +131,10 @@ label{display:block;font-size:14px;color:var(--silver);margin-bottom:6px}input{w
 
 <hr>
 <h2>Make the next software decision from value, not inertia.</h2>
-<a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02">Start the AI & SaaS spend audit - $499</a>
-<a class="cta secondary" href="ai-value-realization-kit.html">Choose the $39 self-service kit</a>
-<a class="cta secondary" href="ai-saas-spend-monitoring.html">See Savings Recovery &amp; Monitoring</a>
-<a class="cta secondary" href="sample-workflow-audit.html">Review the sample deliverable</a>
+<a class="cta" href="https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02" data-primary-cta data-analytics-id="spend_audit_checkout_bottom" data-product="workflow_audit">Start the AI & SaaS spend audit - $499</a>
+<a class="cta secondary" href="ai-value-realization-kit.html" data-analytics-id="spend_audit_bottom_to_ai_value_kit">Choose the $39 self-service kit</a>
+<a class="cta secondary" href="ai-saas-spend-monitoring.html" data-analytics-id="spend_audit_bottom_to_monitoring">See Savings Recovery &amp; Monitoring</a>
+<a class="cta secondary" href="sample-workflow-audit.html" data-analytics-id="spend_audit_to_sample">Review the sample deliverable</a>
 <p class="fine">This page routes to the existing Stratum Praxis AI Workflow Opportunity Audit. Scope is fixed and adapted to the AI/SaaS spend decision described above. Tool suitability, privacy/security controls and production performance must be independently validated before implementation. Refund requests are handled in accordance with applicable law and Stripe rules, with personalized-work status taken into account.</p>
 <script>
 (function(){
