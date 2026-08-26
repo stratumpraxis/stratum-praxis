@@ -38,15 +38,15 @@
     },
     "2026-08-26-dopagaki-tiktok-v2-r2": {
       "tiktok": {
-        "status": "sending",
-        "at": "2026-08-26T10:51:30.040Z",
+        "status": "sent",
+        "at": "2026-08-26T10:55:03.618Z",
         "channelId": "6a8e5d28ccaf649a671a13e7",
         "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-26-dopagaki-tiktok-v2-r2.mp4",
         "postId": "6a8ec527ec6034169ee3310d",
         "dueAt": "2026-08-26T10:51:19.829Z",
-        "sentAt": null,
+        "sentAt": "2026-08-26T10:53:03.231Z",
         "sharedNow": true,
-        "externalLink": null
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7678291192882253064"
       }
     }
   }
