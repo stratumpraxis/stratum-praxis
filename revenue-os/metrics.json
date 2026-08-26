@@ -3,51 +3,30 @@
   "currency_priority": ["USD", "foreign_currency", "JPY"],
   "verified_revenue": null,
   "stripe_live_payment_intents": 0,
-  "offers": {
-    "39_ai_value_realization_kit": {
-      "status": "live",
-      "traffic": null,
-      "checkout_starts": null,
-      "purchases": null,
-      "conversion_rate": null,
-      "notes": "Payhip and Gumroad destinations exist. Owner reports the prior Gumroad identity / payout verification issue is resolved; do not treat it as an active blocker unless new evidence appears."
-    },
-    "99_ai_automation_opportunity_report": {
-      "status": "live",
-      "traffic": null,
-      "checkout_starts": null,
-      "purchases": null,
-      "conversion_rate": null
-    },
-    "499_ai_workflow_opportunity_audit": {
-      "status": "live",
-      "traffic": null,
-      "checkout_starts": null,
-      "purchases": null,
-      "conversion_rate": null
-    }
-  },
   "distribution_baseline_2026_08_27": {
     "source": "PostHog project 573335 observed analytics",
-    "pageviews_last_7d": {
-      "/signal/": 5,
-      "/signal/ai-tool-buying-rule-2026.html": 1,
-      "/signal/bing-indexnow-2026.html": 1
-    },
-    "utm_pageviews_last_30d": {
-      "chatgpt.com": 5,
-      "unset": 2
-    },
-    "downstream_events_last_30d": {
-      "funnel_view": 56,
-      "primary_cta_click": 15,
-      "checkout_click": 17,
-      "signal_search": 10
-    },
+    "pageviews_last_7d": {"/signal/": 5, "/signal/ai-tool-buying-rule-2026.html": 1, "/signal/bing-indexnow-2026.html": 1},
+    "utm_pageviews_last_30d": {"chatgpt.com": 5, "unset": 2},
+    "downstream_events_last_30d": {"funnel_view": 56, "primary_cta_click": 15, "checkout_click": 17, "signal_search": 10},
     "return_gate_pageviews_last_7d": 0,
-    "verified_social_utm_pageviews_last_30d": 0,
-    "interpretation": "Measured external social distribution is effectively absent in the observed window. Existing downstream events show that the immediate bottleneck is qualified external traffic, not creation of additional products."
+    "verified_social_utm_pageviews_last_30d": 0
   },
-  "current_primary_bottleneck": "Qualified external social traffic is the primary measured bottleneck. On 2026-08-27, PostHog showed no verified social UTM pageviews in the last 30 days and no Return Gate pageviews in the last 7 days, while downstream events already existed. Prioritize safe SNS distribution into verified live existing assets, then measure Return Gate entry, CTA, checkout, purchase and 24h/7d revisit before expanding the product catalog.",
+  "first_distribution_run_2026_08_27": {
+    "theme": "AI/SaaS cost review before renewal",
+    "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+    "utm_campaign": "ai_saas_cost_review",
+    "creative_status": "approved original static creative prepared and stored for Instagram",
+    "payload_status": "distribution/launch-now.json prepared for Instagram only",
+    "buffer_connection_status": "not re-proven in this session because connector-originated GitHub writes did not trigger the ordinary Actions workflow; no blind publish or retry was performed",
+    "publication_status": "not verified",
+    "published_post_url": null,
+    "social_utm_pageviews_after_publish": null,
+    "calculator_events_after_publish": null,
+    "return_gate_events_after_publish": null,
+    "cta_events_after_publish": null,
+    "checkout_events_after_publish": null,
+    "safety_note": "Do not record publication, UTM lift, CTA lift, or checkout lift until an actual Buffer/API publication run and PostHog event evidence exist."
+  },
+  "current_primary_bottleneck": "Qualified external social traffic remains the primary measured bottleneck. Prioritize safe verified SNS distribution into existing assets, then measure Return Gate entry, CTA, checkout, purchase and 24h/7d revisit before expanding the product catalog.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate verified public reachability from repository existence before publishing external traffic."
 }
