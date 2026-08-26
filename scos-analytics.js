@@ -92,9 +92,28 @@
     window.scosCapture(name, props);
   }
 
+  function injectReturnGateEntry() {
+    if (location.pathname.startsWith('/return-gate')) return;
+    if (document.getElementById('return-gate-entry')) return;
+    const wrap = document.createElement('div');
+    wrap.id = 'return-gate-entry';
+    wrap.style.cssText = "max-width:1180px;margin:28px auto 18px;padding:0 16px;font:14px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
+    const link = document.createElement('a');
+    link.href = '/return-gate/';
+    link.textContent = '↩ Return Gate｜再訪ハブへ戻る';
+    link.dataset.analyticsId = 'return_gate_entry';
+    link.style.cssText = 'display:inline-block;border:1px solid rgba(127,150,180,.45);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.55)';
+    link.addEventListener('pointerdown', function () {
+      captureBeforeNavigation('return_gate_entry_click', { source_funnel: funnelId(), destination_path: '/return-gate/' });
+    });
+    wrap.appendChild(link);
+    document.body.appendChild(wrap);
+  }
+
   function captureView() { window.scosCapture('funnel_view'); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', captureView, { once: true });
-  else captureView();
+  function ready() { captureView(); injectReturnGateEntry(); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
+  else ready();
 
   document.addEventListener('pointerdown', function (event) {
     const link = event.target.closest('a[href]');
