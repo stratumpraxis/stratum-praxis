@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Stratum Praxis — Field Guides &amp; Routes</title>
+    <link>https://stratumpraxis.com/</link>
+    <description>Practical AI systems, searchable field guides, free tools, and return routes.</description>
+    <language>en</language>
+    <lastBuildDate>Thu, 27 Aug 2026 00:00:00 GMT</lastBuildDate>
+    <item>
+      <title>Stratum Praxis Field Guides</title>
+      <link>https://stratumpraxis.com/guides/</link>
+      <guid>https://stratumpraxis.com/guides/</guid>
+      <description>Searchable problem-solving guides that route into free tools, calculators, and decision support.</description>
+    </item>
+    <item>
+      <title>AI &amp; SaaS Renewal Cost Check</title>
+      <link>https://stratumpraxis.com/guides/ai-saas-renewal-cost-check.html</link>
+      <guid>https://stratumpraxis.com/guides/ai-saas-renewal-cost-check.html</guid>
+      <description>Check AI and SaaS renewal cost before paying again, then move into the free calculator and decision path.</description>
+    </item>
+    <item>
+      <title>Return Gate — English</title>
+      <link>https://stratumpraxis.com/return-gate/en/</link>
+      <guid>https://stratumpraxis.com/return-gate/en/</guid>
+      <description>A reusable traffic hub for signals, tools, decisions, and return visits.</description>
+    </item>
+    <item>
+      <title>Folio Junction — 日本語情報資産ハブ</title>
+      <link>https://stratumpraxis.com/folio-junction/</link>
+      <guid>https://stratumpraxis.com/folio-junction/</guid>
+      <description>日本語の情報資産・note販売資産へつなぐ入口。</description>
+    </item>
+    <item>
+      <title>Return Gate — 日本語</title>
+      <link>https://stratumpraxis.com/return-gate/</link>
+      <guid>https://stratumpraxis.com/return-gate/</guid>
+      <description>毎日・毎週・毎月・困った時・気になった時に戻るための交通ハブ。</description>
+    </item>
+  </channel>
+</rss>
