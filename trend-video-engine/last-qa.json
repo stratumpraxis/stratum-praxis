@@ -1,0 +1,18 @@
+{
+  "approved": true,
+  "outputFile": "media/trend-videos/2026-08-26-ai-agents-japan-v1.mp4",
+  "bytes": 474803,
+  "durationSeconds": 24.0,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "dimensions": [
+    720,
+    1280
+  ],
+  "services": [
+    "instagram",
+    "tiktok",
+    "youtube"
+  ],
+  "rightsMode": "original-procedural"
+}
