@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://stratumpraxis.com/sitemap.xml
+Sitemap: https://stratumpraxis.com/signal/sitemap.xml

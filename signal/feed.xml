@@ -5,7 +5,14 @@
     <link>https://stratumpraxis.com/signal/</link>
     <description>AI・Web・検索・海外テックの変化を、一次情報ベースで実務向けに整理。</description>
     <language>ja</language>
-    <lastBuildDate>Tue, 25 Aug 2026 23:45:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2026 23:29:00 GMT</lastBuildDate>
+    <item>
+      <title>GitHub Copilot、9月1日に6モデル終了。移行先と管理者チェック</title>
+      <link>https://stratumpraxis.com/signal/github-copilot-model-deprecations-september-2026.html</link>
+      <guid>https://stratumpraxis.com/signal/github-copilot-model-deprecations-september-2026.html</guid>
+      <pubDate>Wed, 26 Aug 2026 23:29:00 GMT</pubDate>
+      <description>GitHub公式の終了予定と代替候補、Sonnet 4.6の例外、Enterprise管理者のmodel policy確認を整理。</description>
+    </item>
     <item>
       <title>OpenAI o3がChatGPTで8月26日終了。今やる確認</title>
       <link>https://stratumpraxis.com/signal/openai-o3-chatgpt-retirement-2026.html</link>
