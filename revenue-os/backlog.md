@@ -14,6 +14,12 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 - Current Stripe evidence still has no verified genuine purchase. Keep the focus on existing live paths rather than catalog growth.
 - When the first legitimate purchase appears, verify the full chain: completed payment → correct buyer-only delivery → activation / first use. Do not use a self-purchase or synthetic transaction as market validation.
 
+## P1 — market-signal LP strengthening (2026-08-27)
+
+- Ran a market-signal pass (public search only, no scraping/login-required sources): "shadow AI" spend + CFO quarterly-accountability pressure is a strong, current, multi-source-verified 2026 demand signal that matches the existing AI & SaaS Spend Decision Hub funnel exactly (free `ai-saas-waste-calculator.html` -> `ai-saas-spend-audit-checklist.html` -> $39 `ai-value-realization-kit.html` -> $499 `ai-saas-spend-waste-audit.html`), which is also this campaign's active Instagram distribution target. Scored 88/110 — see `revenue-os/metrics.json` `market_signal_loop_2026_08_27`.
+- New-product gate correctly fails here (existing offer already absorbs this demand), so the action was a copy-only strengthening of `ai-saas-waste-calculator.html` (PR #39, commit `fd189b19900291081b7dd3a655db7202312c7c44`, deployed and Pages-build-verified): added "Shadow AI tools" to the existing waste-pattern checklist and a 4-item objection-handling FAQ. No pricing, CTA, calculator logic, or analytics taxonomy changed.
+- Traffic/conversion impact of this change is PENDING/UNVERIFIED — no PostHog access in this session. Check `primary_cta_click` on this page pre/post 2026-08-27 once real traffic arrives before amplifying further.
+
 ## P1 — qualified traffic into existing assets
 
 - Prioritize existing pages already connected to paid paths: AI/SaaS Spend funnel, AI Council Builder, Revenue Router, Workflow Audit, AI Operations Standard / SOP Kit, Return Gate, and other sitemap-listed assets.
