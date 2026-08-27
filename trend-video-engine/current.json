@@ -1,29 +1,29 @@
 {
-  "id": "2026-08-26-asking-to-doing-instagram-v4",
-  "createdAt": "2026-08-26T20:44:00+09:00",
-  "verificationRequestedAt": "2026-08-26T20:55:00+09:00",
-  "brandLane": "stratum-instagram-en",
-  "platformVariant": "instagram-reel-explainer",
-  "title": "AI is moving from chat to work",
-  "topic": "AI is shifting from asking questions toward executing real work",
+  "id": "2026-08-27-agent-control-youtube-v5",
+  "createdAt": "2026-08-27T19:02:00+09:00",
+  "brandLane": "stratum-forwelle-en",
+  "platformVariant": "youtube-shorts-discovery",
+  "title": "The Next AI Bottleneck Isn't Intelligence. It's Control.",
+  "topic": "As AI agents move into production, permissions, visibility, evaluation and stop conditions become the operational bottleneck",
   "language": "en",
-  "summary": "A 30-second Instagram Reel focused on a simple visual progression from ask to assist to execute, optimized for saves/shares and profile discovery.",
-  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-instagram-v4.mp4",
-  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":9,"commercialSafety":10,"revenueFit":9,"total":57,"max":60},
+  "summary": "A concise original explainer on why production AI agents need explicit control systems, not just stronger models.",
+  "outputFile": "media/trend-videos/2026-08-27-agent-control-youtube-v5.mp4",
+  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":9,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
   "sources": [
-    {"name":"OpenAI — From asking to doing: How the world is putting ChatGPT to work","url":"https://openai.com/index/how-the-world-is-putting-chatgpt-to-work/","factSource":true,"verified":true,"published":"2026-08-06"},
-    {"name":"OpenAI — From assistance to execution: How enterprises put AI to work","url":"https://openai.com/index/how-enterprises-put-ai-to-work/","factSource":true,"verified":true,"published":"2026-08-12"}
+    {"name":"OpenAI — Introducing OpenAI Presence","url":"https://openai.com/index/introducing-openai-presence/","factSource":true,"verified":true,"published":"2026-07-22"},
+    {"name":"IBM — Agentic Control Plane","url":"https://www.ibm.com/new/announcements/introducing-the-agentic-control-plane","factSource":true,"verified":true,"published":"2026-07-02"},
+    {"name":"IBM — AgentOps Agent and faster workflows","url":"https://www.ibm.com/new/announcements/new-in-ibm-watsonx-orchestrate-self-improving-agents-personalized-chat-experiences-and-faster-workflows","factSource":true,"verified":true,"published":"2026-08-03"}
   ],
   "thirdPartyAssets": [],
-  "originality": {"creatorSignals":["original three-stage ask-assist-execute visual framework","original saveable takeaway: workflow design becomes the leverage point","original near-future motion sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
-  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","agents","productivity","future-of-work"],"notes":"No third-party footage, logos, screenshots, likenesses or copyrighted music. Claims limited to official OpenAI reports and original analysis."},
+  "originality": {"creatorSignals":["original production-control thesis: intelligence is no longer the only bottleneck","original five-part control stack: permissions + visibility + evals + stop + rollback","original kinetic control-room sequence"],"notReusedCompilation":true,"notTemplateVariant":true},
+  "safety": {"approved":true,"factsVerified":true,"originalityVerified":true,"realPersonLikeness":false,"copyrightedMedia":false,"categories":["ai","agents","operations","governance"],"notes":"No logos, screenshots, third-party footage, likenesses or copyrighted music. Operational framing only; not legal, cybersecurity, compliance or financial advice."},
   "scenes": [
-    {"duration":5.0,"eyebrow":"AI SHIFT","motionTag":"ASK → DO","headline":"AI is moving\nfrom chat to work.","body":"The biggest change is what happens after the answer.","sourceLabel":"OpenAI Signals / Aug 2026","background":"#050711","accent":"#7CFFDA"},
-    {"duration":5.0,"eyebrow":"01","motionTag":"ASK","headline":"Ask","body":"Prompt in. Response out.","sourceLabel":"Original workflow framing","background":"#071421","accent":"#5BE7FF"},
-    {"duration":5.0,"eyebrow":"02","motionTag":"ASSIST","headline":"Assist","body":"AI moves inside the task.","sourceLabel":"OpenAI usage report / original synthesis","background":"#10102A","accent":"#B39CFF"},
-    {"duration":5.0,"eyebrow":"03","motionTag":"EXECUTE","headline":"Execute","body":"Tools + agents move toward real action.","sourceLabel":"OpenAI enterprise report / Aug 2026","background":"#07151A","accent":"#65FF9D"},
-    {"duration":5.0,"eyebrow":"THE LEVERAGE","motionTag":"WORKFLOW > PROMPT","headline":"Design the workflow.","body":"Permissions. Verification. Useful output.","sourceLabel":"Original operating-model takeaway","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":5.0,"eyebrow":"SAVE THIS","motionTag":"ASK → ASSIST → EXECUTE","headline":"The AI skill stack\nis changing.","body":"The question is no longer only what AI can answer—but what it can safely finish.","sourceLabel":"Stratum Praxis / original takeaway","background":"#050811","accent":"#FFD166"}
+    {"duration":5.5,"eyebrow":"AGENT OPS / 2026","motionTag":"MODEL → SYSTEM","headline":"The next AI bottleneck\nisn't intelligence.","body":"It's control after the model starts taking action.","sourceLabel":"Original analysis / production AI shift","background":"#050711","accent":"#7CFFDA"},
+    {"duration":5.5,"eyebrow":"PRODUCTION REALITY","motionTag":"SEE THE WORK","headline":"Visibility comes first.","body":"You need to know what the agent is doing, where, and why.","sourceLabel":"IBM Agentic Control Plane / Jul 2026","background":"#071421","accent":"#5BE7FF"},
+    {"duration":5.5,"eyebrow":"PERMISSION LAYER","motionTag":"READ ≠ EXECUTE","headline":"Access should be explicit.","body":"Reading, drafting, executing, publishing and spending are different permissions.","sourceLabel":"Original permission-model framework","background":"#10102A","accent":"#B39CFF"},
+    {"duration":5.5,"eyebrow":"EVALUATION LAYER","motionTag":"TEST → IMPROVE","headline":"Production agents\nneed evaluation loops.","body":"Reliability has to improve as workflows, policies and user behavior change.","sourceLabel":"OpenAI Presence / Jul 2026","background":"#07151A","accent":"#65FF9D"},
+    {"duration":5.5,"eyebrow":"FAILURE LAYER","motionTag":"STOP / ROLLBACK","headline":"Autonomy needs\na stop condition.","body":"Retries, escalation and rollback should be designed before failure happens.","sourceLabel":"Original operational-control framework","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":5.5,"eyebrow":"BOTTOM LINE","motionTag":"CONTROL > HYPE","headline":"Scale autonomy\nwith boundaries.","body":"The useful question is not only what an agent can do—but what it is allowed to finish.","sourceLabel":"Stratum Praxis / original takeaway","background":"#050811","accent":"#FFD166"}
   ],
-  "publish": {"services":["instagram"],"mode":"shareNow","aiGeneratedLabel":true,"title":"AI is moving from chat to work","caption":"AI is moving through three stages: ask → assist → execute. OpenAI's recent usage and enterprise reports point in the same direction: the useful layer is shifting from answers toward work completed inside real workflows. Save this framework if you're designing AI systems.\n\n#AI #AIAgents #FutureOfWork #Automation #Productivity"}
+  "publish": {"services":["youtube"],"mode":"shareNow","aiGeneratedLabel":true,"youtubePrivacy":"public","title":"The Next AI Bottleneck Isn't Intelligence. It's Control. #Shorts","caption":"AI agents are moving into production. The operational bottleneck is increasingly control: visibility, explicit permissions, evaluation loops, stop conditions and rollback. OpenAI and IBM are both emphasizing the systems needed to run agents reliably—not just stronger models.\n\nPractical implementation kit: https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=social&utm_campaign=agent-control-20260827\n\n#AI #AIAgents #AgentOps #Automation #YouTubeShorts"}
 }
