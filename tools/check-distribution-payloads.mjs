@@ -42,8 +42,30 @@ function payloadFiles(dir, out = []) {
   return out;
 }
 
+/**
+ * distribution/provider-policy.json is the record of which services Buffer is
+ * actually authorized to publish to. A payload aimed somewhere else is not an
+ * error — the publisher simply skips channels that are not connected — but it
+ * is drift between what the queue intends and what policy permits, and it
+ * should be visible rather than silently inert.
+ */
+function policyAllowedServices() {
+  const path = join(DIST_DIR, 'provider-policy.json');
+  if (!existsSync(path)) return null;
+  try {
+    const policy = JSON.parse(readFileSync(path, 'utf8'));
+    const buffer = policy.providers?.buffer;
+    if (!buffer?.publishingEnabled || !Array.isArray(buffer.allowedServices)) return null;
+    return new Set(buffer.allowedServices.map((s) => String(s).toLowerCase()));
+  } catch {
+    return null;
+  }
+}
+
+const allowedServices = policyAllowedServices();
 const errors = [];
 const notes = [];
+const policyDrift = new Set();
 const mediaToVerify = new Set();
 let itemCount = 0;
 let payloadCount = 0;
@@ -99,6 +121,9 @@ for (const file of payloadFiles(DIST_DIR)) {
       .map((key) => [key, String(item[key])]);
 
     for (const service of services) {
+      if (allowedServices && !allowedServices.has(service)) {
+        policyDrift.add(`${rel}: targets "${service}", which provider-policy.json does not list as a Buffer publishing service`);
+      }
       if (IMAGE_REQUIRED_SERVICES.has(service) && mediaRefs.length === 0) {
         errors.push(`${label}: ${service} requires media but the payload has none — Buffer will reject or drop it`);
       }
@@ -145,6 +170,11 @@ if (mediaToVerify.size > 0) {
 console.log(`Validated ${itemCount} active item(s) across ${payloadCount} distribution payload(s).`);
 console.log(`Repository-hosted media referenced: ${mediaToVerify.size} file(s).`);
 for (const note of notes) console.log(`  note: ${note}`);
+if (policyDrift.size > 0) {
+  console.log(`\nProvider-policy drift (reported, not fatal): ${policyDrift.size}`);
+  for (const item of policyDrift) console.log(`  ~ ${item}`);
+  console.log('  Either connect and authorize the service in provider-policy.json, or retire the payload.');
+}
 
 if (errors.length > 0) {
   console.error(`\nDistribution payload check FAILED — ${errors.length} problem(s):`);

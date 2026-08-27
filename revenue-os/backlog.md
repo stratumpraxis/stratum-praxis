@@ -31,6 +31,66 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 - Separate pageview, qualified visit, CTA click, checkout click/start, purchase, delivery, activation, 24h revisit and 7d revisit. Do not collapse them into a generic completion state.
 - Update `revenue-os/metrics.json` only from observed analytics, platform, payment, or deployment evidence.
 
+## P1 — operational recovery (2026-08-27)
+
+Full inventory with evidence, recurrence risk and revenue impact for each item:
+`revenue-os/2026-08-27-operational-recovery-inventory.md`. Asset classification:
+`revenue-os/2026-08-27-asset-reference-audit.md`.
+
+- Six recurring failure classes now fail the build instead of a live campaign:
+  corrupt media, broken internal references, unshareable published pages,
+  unvalidated distribution payloads, unmeasured checkout pages, and bot
+  workflows racing each other's pushes. Checks live in `tools/` and run from
+  `.github/workflows/repo-integrity.yml`.
+- `.github/workflows/live-site-health.yml` checks 133 live destinations daily
+  (every sitemap URL, every external checkout link, every owned worker and
+  fallback host), read-only and without credentials. This replaces opening
+  pages by hand to see whether the funnel still resolves.
+- Both Instagram publishing workflows now run the payload validator and the
+  distribution safety audit before posting. `distribution-launch-once.yml` no
+  longer re-publishes a finished campaign when its own workflow file or the
+  publisher script is edited.
+- Repaired on current evidence: the dead `signal/index.html` → `partner.html`
+  nav link (the file is `partners.html`), and two buyer-delivery pages whose
+  "ROI Calculator" button still pointed at the retired
+  `icy-scene-001e.practicalaireport.workers.dev` worker.
+- 21 checkout-bearing pages had no analytics at all and are now instrumented,
+  including `sample-workflow-audit.html` and
+  `accounting-ai-workflow-audit.html`. Their CTA and checkout clicks were
+  previously absent from PostHog entirely, not merely under-counted — treat any
+  pre-2026-08-27 "no clicks" read on those pages as unmeasured, not as evidence
+  of no demand.
+- Media cleanup is closed with nothing to do: 0 delete candidates, 0 unknown
+  references, 0 byte-identical duplicates across all 27 assets. Do not attempt
+  deletions.
+
+### Not touched — AI/SaaS Spend measurement hold
+
+The AI/SaaS Spend funnel pages were deliberately excluded from the metadata
+backfill and the analytics instrumentation so the open pre/post measurement
+stays clean. The exemptions are dated and listed in
+`tools/check-analytics-coverage.mjs` and `tools/backfill-page-metadata.mjs`.
+Lift them once the 2026-08-30 post is confirmed sent and the calculator's
+`primary_cta_click` has been read.
+
+### Owner decision — provider-policy drift
+
+`distribution/content-queue.json` targets bluesky, threads and linkedin, which
+`distribution/provider-policy.json` does not authorize for Buffer publishing
+(bluesky/threads `publishingEnabled: false`, linkedin excluded on free). The
+scheduled queue runs daily, so today those items are a silent no-op. Resolve in
+one line: connect and authorize the services, or set `active: false` on the
+affected items. `tools/check-distribution-payloads.mjs` reports the drift on
+every run.
+
+### Verify, do not act yet
+
+`distribution-buffer.yml` has a daily cron but only one recorded scheduled run
+(2026-08-26T04:05Z). One missing window is not proof of a defect — GitHub drops
+scheduled runs under load. Re-check after the next two windows. Do not add a
+second scheduler in the meantime; that would create the duplicate-publisher
+condition `provider-policy.json` forbids.
+
 ## P2 — external waits; do not waste cycles
 
 - AIToolsDir submissions: wait for review / listing result; no resubmission or repeated follow-up.
@@ -40,6 +100,8 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 ## HUMAN REQUIRED — owner-only, not agent retry work
 
 - Microsoft Store AI Automation ROI Planner: as of 2026-08-27, manifest/service-worker/icon defects are fixed and verified locally (PWABuilder manifest validation 0/15 failed, SW precache confirmed, real desktop/mobile screenshots captured — see `microsoft-ai-roi-planner/STORE_SUBMISSION.md`). Still requires Partner Center account / identity steps (MFA/identity-verification), product identity / reservation, PWABuilder package generation against the merged production URL, package upload and final submission. Keep this as a bounded manual lane, not an automated retry loop.
+- Provider-policy decision (added 2026-08-27): `distribution/content-queue.json` targets bluesky, threads and linkedin, which `distribution/provider-policy.json` does not authorize for Buffer publishing. Smallest action: either connect and authorize those services, or set `active: false` on the affected queue items. Everything automatable here is done; `tools/check-distribution-payloads.mjs` reports the drift on every run.
+- AI/SaaS Spend measurement close-out (added 2026-08-27): after the 2026-08-30 Instagram post is confirmed sent and `primary_cta_click` on `ai-saas-waste-calculator.html` has been read pre/post, remove the five hold entries from `tools/check-analytics-coverage.mjs` and `tools/backfill-page-metadata.mjs`, then run `node tools/backfill-page-metadata.mjs`. Until then those pages stay deliberately untouched.
 
 ## Resolved blockers — do not reopen without new evidence
 
