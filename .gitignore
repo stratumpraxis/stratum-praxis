@@ -1,0 +1,3 @@
+# Wrangler/deploy console output can include internal binding names and
+# should not be committed going forward.
+.deployment-status/*.log
