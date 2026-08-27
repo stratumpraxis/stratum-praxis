@@ -1,8 +1,8 @@
 {
   "approved": true,
-  "outputFile": "media/trend-videos/2026-08-26-asking-to-doing-instagram-v4.mp4",
-  "bytes": 3958816,
-  "durationSeconds": 30.0,
+  "outputFile": "media/trend-videos/2026-08-27-agent-control-youtube-v5.mp4",
+  "bytes": 6963205,
+  "durationSeconds": 33.0,
   "videoCodec": "h264",
   "audioCodec": "aac",
   "dimensions": [
@@ -10,7 +10,7 @@
     1280
   ],
   "services": [
-    "instagram"
+    "youtube"
   ],
   "rightsMode": "original-procedural"
 }
