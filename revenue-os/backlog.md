@@ -4,8 +4,9 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 
 ## P0 — recover the live distribution run
 
-- The Instagram AI/SaaS cost-review run is already scheduled through Buffer and must not be duplicated. After the scheduled publication time, recover the real public post URL, then verify social UTM traffic and downstream calculator / CTA / checkout events.
-- Do not create another Instagram launch payload until the current run is classified as PUBLISHED and MEASURED or is shown to have failed.
+- VERIFIED 2026-08-27T12:23Z (`distribution/buffer-post-status.mjs`, GitHub Actions run 33071594665): the Instagram AI/SaaS cost-review post (Buffer id `6a8f23f6b2db23b19c501243`, due 2026-08-27T01:27:00Z) is `status: error`, `sentAt: null`, `externalLink: null`. It never reached anyone. Root cause: it referenced the corrupted `distribution/ai-saas-cost-instagram-20260827.png` before that file was fixed (fix merged in `11ae9be22f91675ddf302182864c935ec3647a77`, after this post's dueAt had already passed). This run is now classified FAILED per the rule below — a deliberate single re-launch of the `ai_saas_cost_review` campaign (not a blind retry) is unblocked, but has not been done yet. See `revenue-os/metrics.json` `first_distribution_run_2026_08_27`.
+- A second, unrelated Instagram post (`vector-note-ai-team-ig-20260827`, Buffer id `6a8ff2a9323198a35b118f6b`, due 2026-08-29T13:47:00Z) is currently `status: scheduled` and uses the now-fixed image, so it should publish normally — re-check status after its due time (see `second_distribution_run_2026_08_27`).
+- Do not create another Instagram launch payload for a given campaign until that specific run is classified as PUBLISHED and MEASURED or is shown to have failed (as above).
 
 ## P0 — first genuine purchase proof
 
