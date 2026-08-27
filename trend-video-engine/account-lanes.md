@@ -18,6 +18,17 @@ Purpose: keep separate brands, languages, monetization targets and publication r
 - Monetization direction: Shorts discovery -> subscribers -> winning topics expanded into original 3-8 minute long-form -> YPP eligibility.
 - Do not dilute watch-time/subscriber accumulation by opening redundant AI YouTube channels without evidence.
 
+### AX Solve — YouTube / X — EN-first, JA-compatible
+- Role: outward-facing acquisition media for autonomous revenue assets, practical AI problem solving, tool comparison, diagnostics and useful systems.
+- Language: English-first. Japanese videos are allowed when the topic has independent Japanese demand; do not mechanically translate English uploads.
+- Existing assets: YouTube channel and X account already exist. Keep them as separate media assets rather than merging them into Forwelle or Stratum Praxis.
+- Monetization direction: useful original videos -> free diagnostic/tool -> unmanned revenue hub -> relevant paid asset.
+- Publication status: PREPARED-PARTIAL. YouTube phone verification is not currently confirmed, so do not rely on features that require intermediate/advanced access until the owner verifies them.
+- Safe production scope before phone verification: original short-form videos, standard uploads within currently available channel features, channel-description/metadata preparation, content QA and X-native distribution where the account is accessible.
+- Quality rule: every video must add original narrative, analysis, examples or educational value. No generic slideshow factory, near-duplicate template uploads or mass-produced AI filler.
+- Channel-positioning rule: AX Solve should answer concrete questions/problems. Forwelle remains broader global AI/technology/systems media; Stratum Praxis remains B2B brand-led distribution.
+- Do not store account email, phone/recovery data or credentials in this repository.
+
 ### Stratum Instagram — EN supporting lane
 - Role: secondary distribution / brand reinforcement, not the primary monetization target.
 - Reuse the underlying idea only when the Instagram-native version adds value; do not blindly cross-post every file.
