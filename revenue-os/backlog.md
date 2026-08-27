@@ -31,7 +31,7 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 
 ## HUMAN REQUIRED — owner-only, not agent retry work
 
-- Microsoft Store AI Automation ROI Planner still requires Partner Center account / identity steps, product identity / reservation, real app screenshots, package upload and final submission. Keep this as a bounded manual lane, not an automated retry loop.
+- Microsoft Store AI Automation ROI Planner: as of 2026-08-27, manifest/service-worker/icon defects are fixed and verified locally (PWABuilder manifest validation 0/15 failed, SW precache confirmed, real desktop/mobile screenshots captured — see `microsoft-ai-roi-planner/STORE_SUBMISSION.md`). Still requires Partner Center account / identity steps (MFA/identity-verification), product identity / reservation, PWABuilder package generation against the merged production URL, package upload and final submission. Keep this as a bounded manual lane, not an automated retry loop.
 
 ## Resolved blockers — do not reopen without new evidence
 
