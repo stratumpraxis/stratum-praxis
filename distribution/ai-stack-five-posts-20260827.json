@@ -1,0 +1,52 @@
+[
+  {
+    "id":"stack-01-founder-image",
+    "active":true,
+    "services":["instagram"],
+    "target":"Founder / small-business owner",
+    "format":"image + diagram",
+    "text":"AI stacks are getting powerful fast. Agent teams, video generators, coding agents and multi-model workflows can all be useful — but every new tool adds another owner, renewal, permission set and cost line. The operating question is no longer ‘what AI can we add?’ It is ‘which tools earn a clear place in a real workflow?’ Start with the free 12-question stack audit.",
+    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_5x&utm_content=founder_image",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+  },
+  {
+    "id":"stack-02-ops-carousel",
+    "active":true,
+    "services":["instagram"],
+    "target":"Operations lead / AI operator",
+    "format":"carousel-style explainer",
+    "text":"Six checks before the next AI subscription: 1) owner, 2) workflow, 3) overlap, 4) real usage, 5) break-even, 6) fallback. Tool sprawl is not solved by randomly cancelling software. It is solved by making each tool’s job and decision rule explicit. Use the free checklist, then the calculator only where the spend is material.",
+    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_5x&utm_content=ops_carousel",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+  },
+  {
+    "id":"stack-03-creator-short",
+    "active":true,
+    "services":["instagram"],
+    "target":"Creator / marketer / AI video user",
+    "format":"vertical-short concept cover",
+    "text":"AI video is moving from ‘generate one clip’ to full production systems: reference assets, scenes, edits, voice, captions, routing and measurement. That is great — until the production stack becomes more complicated than the content. A better rule: every tool must reduce a measurable bottleneck. Map the stack before adding another subscription.",
+    "url":"https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_5x&utm_content=creator_short",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+  },
+  {
+    "id":"stack-04-finance-demo",
+    "active":true,
+    "services":["instagram"],
+    "target":"CFO / finance / procurement",
+    "format":"demo-video concept cover",
+    "text":"A tool can be impressive and still fail the budget test. Finance needs a visible chain: current workflow → cost → expected value → human review → uncertainty → go / hold threshold. If the decision can be owned internally, the $39 AI Value Realization Kit is the self-service middle step before a higher-touch audit.",
+    "url":"https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_5x&utm_content=finance_demo",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+  },
+  {
+    "id":"stack-05-engineer-webdemo",
+    "active":true,
+    "services":["instagram"],
+    "target":"Engineer / IT lead / AI implementer",
+    "format":"interactive web demo",
+    "text":"Try the stack instead of reading another AI claim. The live demo lets you change tool count, capability overlap and unclear ownership, then shows how review priority changes. It is not a savings promise — it is a quick way to visualize when an AI stack needs governance instead of another tool.",
+    "url":"https://stratumpraxis.com/ai-stack-sprawl-live-demo.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_5x&utm_content=engineer_webdemo",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+  }
+]
