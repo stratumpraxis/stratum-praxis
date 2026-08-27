@@ -1,8 +1,8 @@
 {
   "approved": true,
-  "outputFile": "media/trend-videos/2026-08-27-agent-control-youtube-v5.mp4",
-  "bytes": 6963205,
-  "durationSeconds": 33.0,
+  "outputFile": "media/trend-videos/2026-08-27-physical-ai-control-instagram-v6.mp4",
+  "bytes": 5137131,
+  "durationSeconds": 22.5,
   "videoCodec": "h264",
   "audioCodec": "aac",
   "dimensions": [
@@ -10,7 +10,7 @@
     1280
   ],
   "services": [
-    "youtube"
+    "instagram"
   ],
   "rightsMode": "original-procedural"
 }
