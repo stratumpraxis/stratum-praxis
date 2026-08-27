@@ -1,0 +1,46 @@
+name: Repository Integrity
+
+# Offline, secret-free, read-only correctness gate.
+#
+# It exists because the same three defect classes have each cost a real
+# revenue run at least once:
+#   - structurally corrupt media (a truncated PNG made an Instagram post fail
+#     with status=error and never reach anyone; a corrupt icon blocked a Store
+#     submission)
+#   - references that point at nothing (a dead worker host, a renamed page)
+#   - published pages with no share card or canonical URL
+#
+# Each one used to be caught by a human clicking through, or by an external
+# platform rejecting the asset. Now it is caught before merge.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: repo-integrity-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Media integrity (truncated / empty / malformed assets)
+        run: node tools/check-media-integrity.mjs
+
+      - name: Internal reference integrity (links, images, sitemap, manifests)
+        run: node tools/check-internal-links.mjs
+
+      - name: Published page metadata (title, canonical, share card)
+        run: node tools/check-page-metadata.mjs
+
+      - name: Distribution payload validation
+        run: node tools/check-distribution-payloads.mjs
