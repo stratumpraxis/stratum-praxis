@@ -44,3 +44,6 @@ jobs:
 
       - name: Distribution payload validation
         run: node tools/check-distribution-payloads.mjs
+
+      - name: Analytics coverage on checkout-bearing pages
+        run: node tools/check-analytics-coverage.mjs
