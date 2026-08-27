@@ -56,7 +56,17 @@
     "return_gate_events_after_publish": null,
     "cta_events_after_publish": null,
     "checkout_events_after_publish": null,
-    "safety_note": "This campaign is now classified FAILED per backlog.md's P0 rule (\"do not create another Instagram launch payload until the current run is classified as PUBLISHED and MEASURED or is shown to have failed\"). A deliberate, single re-launch (not a blind retry loop) is unblocked, but has not been done yet — see current_primary_bottleneck."
+    "safety_note": "This campaign is now classified FAILED per backlog.md's P0 rule (\"do not create another Instagram launch payload until the current run is classified as PUBLISHED and MEASURED or is shown to have failed\"). A single deliberate re-launch was performed — see retry_2026_08_27 below.",
+    "retry_2026_08_27": {
+      "queue_item": "ai-saas-cost-ig-20260827-retry1",
+      "commit": "e2fd58485e81f06aed400cdb93213229aeaea20a",
+      "workflow_run_id": 33071919211,
+      "workflow_result": "success",
+      "buffer_post_id": "6a902d26821a598e398e4c51",
+      "buffer_status_at_creation": "scheduled",
+      "dueAt": "2026-08-30T12:14:00.000Z",
+      "note": "Same approved text/URL/image as the original; Buffer accepted it with no image error this time, confirming the corrupted-PNG fix resolved the root cause. utm_content changed to ig_20260827_retry1 so it is separable from the failed original in analytics. Re-check status with distribution/buffer-post-status.mjs after 2026-08-30T12:14Z, then verify social_utm_pageviews / calculator / CTA / checkout events before declaring this run complete."
+    }
   },
   "second_distribution_run_2026_08_27": {
     "theme": "AI team operating model (JA note)",
