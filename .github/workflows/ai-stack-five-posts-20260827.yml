@@ -1,0 +1,69 @@
+name: AI Stack Five-Post Campaign 2026-08-27
+
+on:
+  schedule:
+    - cron: '0 1 27 8 *'
+    - cron: '0 2 27 8 *'
+    - cron: '0 3 27 8 *'
+    - cron: '0 4 27 8 *'
+    - cron: '0 5 27 8 *'
+  workflow_dispatch:
+    inputs:
+      item_index:
+        description: '0-4 campaign item index'
+        required: false
+        default: '0'
+      dry_run:
+        description: '1 = dry run, 0 = publish'
+        required: false
+        default: '1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ai-stack-five-posts-20260827
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Resolve campaign item safely
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            IDX="${{ inputs.item_index }}"
+            DRY="${{ inputs.dry_run }}"
+          else
+            TODAY=$(TZ=Asia/Tokyo date +%F)
+            if [[ "$TODAY" != "2026-08-27" ]]; then
+              echo "Outside campaign date; safe exit."
+              exit 0
+            fi
+            H=$(TZ=Asia/Tokyo date +%H)
+            case "$H" in
+              10) IDX=0 ;;
+              11) IDX=1 ;;
+              12) IDX=2 ;;
+              13) IDX=3 ;;
+              14) IDX=4 ;;
+              *) echo "Unexpected JST hour $H; safe exit."; exit 0 ;;
+            esac
+            DRY=0
+          fi
+          if ! [[ "$IDX" =~ ^[0-4]$ ]]; then
+            echo "Invalid item index $IDX" >&2
+            exit 1
+          fi
+          echo "BUFFER_ITEM_INDEX=$IDX" >> "$GITHUB_ENV"
+          echo "DRY_RUN=$DRY" >> "$GITHUB_ENV"
+      - name: Publish one approved campaign item through Buffer
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: instagram
+          BUFFER_QUEUE_FILE: ai-stack-five-posts-20260827.json
+          BUFFER_SELECT_MODE: first
+        run: node distribution/buffer-publisher.mjs
