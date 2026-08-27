@@ -1,0 +1,14 @@
+{
+  "id":"2026-08-27-ai-stack-finance-demo",
+  "title":"From AI Demo to Budget Decision",
+  "outputFile":"media/trend-videos/2026-08-27-ai-stack-finance-demo.mp4",
+  "language":"en",
+  "safety":{"approved":true,"realPersonLikeness":false,"copyrightedMedia":false,"notes":"Original procedural graphics and audio only. General decision support, no ROI promise."},
+  "scenes":[
+    {"duration":4.0,"eyebrow":"AI BUDGET","motionTag":"DEMO ≠ DECISION","headline":"A great AI demo\nis not a business case.","body":"Finance needs more than speed and novelty.","sourceLabel":"Stratum Praxis · original framework","background":"#050811","accent":"#FFD166"},
+    {"duration":4.0,"eyebrow":"BASELINE","motionTag":"BEFORE","headline":"Current workflow","body":"Time. Cost. Delay. Error. Revenue impact.","sourceLabel":"Decision model","background":"#071421","accent":"#5BE7FF"},
+    {"duration":4.0,"eyebrow":"VALUE","motionTag":"AFTER","headline":"Expected change","body":"What improves — and by how much?","sourceLabel":"Decision model","background":"#10102A","accent":"#B39CFF"},
+    {"duration":4.0,"eyebrow":"REAL COST","motionTag":"HUMAN + AI","headline":"Include review cost.","body":"Tools, implementation, human checks and failure cost all matter.","sourceLabel":"Decision model","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":4.0,"eyebrow":"DECIDE","motionTag":"GO / HOLD","headline":"Set the threshold.","body":"Proceed, test smaller, redesign or stop.","sourceLabel":"AI Value Realization Kit · $39","background":"#07151A","accent":"#65FF9D"}
+  ]
+}
