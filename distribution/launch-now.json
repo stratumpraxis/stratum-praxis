@@ -1,10 +1,10 @@
 [
   {
-    "id":"ai-saas-ladder-ig-20260827",
+    "id":"ai-stack-sprawl-ig-20260827",
     "active":true,
     "services":["instagram"],
-    "text":"Before renewing another AI or SaaS tool, make the decision explicit: owner, workflow, overlap, seats, AI add-ons, break-even, renewal date and fallback. Start with the free 12-question checklist. From there, use the free calculator, the $39 self-service decision kit, or the $499 audit only if the decision value justifies it.",
-    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_saas_revenue_ladder&utm_content=ig_checklist_20260827",
+    "text":"AI is moving from single tools to production systems: agent teams, video pipelines, 3D web generation and multi-model routing. That creates a second problem most demos skip: tool sprawl, unclear ownership and rising inference + SaaS cost. Before adding another AI tool, map the workflow, owner, overlap, usage, break-even and fallback. Free 12-question checklist.",
+    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_sprawl&utm_content=signal_20260827",
     "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
   }
 ]
