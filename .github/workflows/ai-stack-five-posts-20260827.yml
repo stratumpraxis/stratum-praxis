@@ -1,12 +1,6 @@
 name: AI Stack Five-Post Campaign 2026-08-27
 
 on:
-  schedule:
-    - cron: '0 1 27 8 *'
-    - cron: '0 2 27 8 *'
-    - cron: '0 3 27 8 *'
-    - cron: '0 4 27 8 *'
-    - cron: '0 5 27 8 *'
   workflow_dispatch:
     inputs:
       item_index:
@@ -34,26 +28,8 @@ jobs:
       - name: Resolve campaign item safely
         shell: bash
         run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            IDX="${{ inputs.item_index }}"
-            DRY="${{ inputs.dry_run }}"
-          else
-            TODAY=$(TZ=Asia/Tokyo date +%F)
-            if [[ "$TODAY" != "2026-08-27" ]]; then
-              echo "Outside campaign date; safe exit."
-              exit 0
-            fi
-            H=$(TZ=Asia/Tokyo date +%H)
-            case "$H" in
-              10) IDX=0 ;;
-              11) IDX=1 ;;
-              12) IDX=2 ;;
-              13) IDX=3 ;;
-              14) IDX=4 ;;
-              *) echo "Unexpected JST hour $H; safe exit."; exit 0 ;;
-            esac
-            DRY=0
-          fi
+          IDX="${{ inputs.item_index }}"
+          DRY="${{ inputs.dry_run }}"
           if ! [[ "$IDX" =~ ^[0-4]$ ]]; then
             echo "Invalid item index $IDX" >&2
             exit 1
