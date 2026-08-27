@@ -1,0 +1,43 @@
+name: Live Site Health
+
+# Read-only availability check for the live revenue funnel.
+#
+# It replaces a recurring manual chore — opening pages by hand to see whether
+# the site, the buyer-delivery workers, the fallback tools and the checkout
+# links still resolve. That chore is how a dead worker host was eventually
+# found, long after it started costing activations.
+#
+# One request per unique destination, sequentially, with a delay. It reads and
+# reports; it never posts, submits, purchases, or retries in a loop, and it
+# uses no credentials.
+
+on:
+  schedule:
+    - cron: '25 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: live-site-health
+  cancel-in-progress: false
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check live pages, payment destinations and owned services
+        run: node tools/live-site-health.mjs --json live-site-health.json
+
+      - name: Upload health report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-site-health
+          path: live-site-health.json
+          retention-days: 30
+          if-no-files-found: warn
