@@ -139,6 +139,19 @@
         "sharedNow": true,
         "externalLink": "https://www.youtube.com/watch?v=CJdJaAZsJ_I"
       }
+    },
+    "2026-08-27-stratum-tiktok-ai-control-heygen-v1": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-08-27T11:51:15.923Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://resource2.heygen.ai/aws_pacific/avatar_tmp/a97602ecc435417ab1b776674e7db173/ve6f960ed0ea04f888ef85598f4165eff/caption_b068548938e3451db425862bfa61225b.mp4",
+        "postId": "6a9024a97d1a5188a5eb6c70",
+        "dueAt": "2026-08-27T11:51:05.705Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
     }
   }
 }
