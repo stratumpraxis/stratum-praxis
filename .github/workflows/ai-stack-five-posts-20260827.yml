@@ -36,6 +36,15 @@ jobs:
           fi
           echo "BUFFER_ITEM_INDEX=$IDX" >> "$GITHUB_ENV"
           echo "DRY_RUN=$DRY" >> "$GITHUB_ENV"
+      - name: Validate campaign payload and its media
+        run: node tools/check-distribution-payloads.mjs
+      - name: Distribution safety audit
+        env:
+          BUFFER_QUEUE_FILE: ai-stack-five-posts-20260827.json
+          MAX_SERVICES_PER_ITEM: '3'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
       - name: Publish one approved campaign item through Buffer
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}

@@ -44,10 +44,7 @@ jobs:
           OUTPUT="$(python3 -c "import json;print(json.load(open('trend-video-engine/current.json'))['outputFile'])")"
           git config user.name "stratum-trend-video-bot"
           git config user.email "stratumpraxis@gmail.com"
-          git add "$OUTPUT" trend-video-engine/last-qa.json
-          git diff --cached --quiet || git commit -m "Render approved trend video"
-          git pull --rebase origin main
-          git push
+          tools/git-sync-push.sh "Render approved trend video" "$OUTPUT" trend-video-engine/last-qa.json
           echo "TREND_VIDEO_OUTPUT=$OUTPUT" >> "$GITHUB_ENV"
           echo "TREND_VIDEO_URL=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/$OUTPUT" >> "$GITHUB_ENV"
 
@@ -74,8 +71,5 @@ jobs:
           if [ -f trend-video-engine/publish-ledger.json ]; then
             git config user.name "stratum-trend-video-bot"
             git config user.email "stratumpraxis@gmail.com"
-            git add trend-video-engine/publish-ledger.json
-            git diff --cached --quiet || git commit -m "Record trend video publication state"
-            git pull --rebase origin main
-            git push
+            tools/git-sync-push.sh "Record trend video publication state" trend-video-engine/publish-ledger.json
           fi

@@ -1,12 +1,14 @@
 name: One-shot Product Launch Distribution
 
+# Publishing is triggered by the payload itself changing, and by nothing else.
+# Listing the publisher script or this workflow file here meant that editing
+# either one re-published whatever was still sitting in launch-now.json — a
+# duplicate post for a campaign that had already gone out.
 on:
   push:
     branches: [main]
     paths:
       - 'distribution/launch-now.json'
-      - 'distribution/buffer-publisher.mjs'
-      - '.github/workflows/distribution-launch-once.yml'
   workflow_dispatch:
 
 permissions:
@@ -22,6 +24,15 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Validate launch payload and its media
+        run: node tools/check-distribution-payloads.mjs
+      - name: Distribution safety audit
+        env:
+          BUFFER_QUEUE_FILE: launch-now.json
+          MAX_SERVICES_PER_ITEM: '3'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
       - name: Publish approved launch payload through Buffer
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}

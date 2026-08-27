@@ -50,8 +50,5 @@ jobs:
           if [ -f trend-video-engine/publish-ledger.json ]; then
             git config user.name "stratum-tiktok-bot"
             git config user.email "stratumpraxis@gmail.com"
-            git add trend-video-engine/publish-ledger.json
-            git diff --cached --quiet || git commit -m "Record Stratum Praxis TikTok publication state"
-            git pull --rebase origin main
-            git push
+            tools/git-sync-push.sh "Record Stratum Praxis TikTok publication state" trend-video-engine/publish-ledger.json
           fi

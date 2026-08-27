@@ -36,10 +36,6 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add media/trend-videos/2026-08-27-ai-stack-sprawl-short.mp4 media/trend-videos/2026-08-27-ai-stack-finance-demo.mp4
-          if git diff --cached --quiet; then
-            echo "No rendered media changes."
-            exit 0
-          fi
-          git commit -m "Render AI stack campaign videos"
-          git push
+          tools/git-sync-push.sh "Render AI stack campaign videos" \
+            media/trend-videos/2026-08-27-ai-stack-sprawl-short.mp4 \
+            media/trend-videos/2026-08-27-ai-stack-finance-demo.mp4
