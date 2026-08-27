@@ -1,0 +1,39 @@
+name: Claude Bridge Inbox Validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'claude-bridge/inbox/*.json'
+      - 'claude-bridge/validate-candidate.mjs'
+      - '.github/workflows/claude-bridge-validate.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: claude-bridge-validate
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate all Claude inbox candidates
+        shell: bash
+        run: |
+          shopt -s nullglob
+          files=(claude-bridge/inbox/*.json)
+          if (( ${#files[@]} == 0 )); then
+            echo "No inbox candidates; safe exit."
+            exit 0
+          fi
+          for file in "${files[@]}"; do
+            echo "Validating $file"
+            node claude-bridge/validate-candidate.mjs "$file"
+          done
+      - name: Safety boundary
+        run: echo "Validation only. No publish step exists in this workflow."
