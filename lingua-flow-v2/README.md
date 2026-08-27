@@ -1,31 +1,30 @@
 # Lingua Flow v2
 
-Independent-language-brand site prototype for Lingua Flow / structureflow.
+Isolated staging implementation for the Lingua Flow language-structure diagnostic.
 
 ## Purpose
+Upgrade the existing diagnostic into a stronger mobile-first language-learning hub without overwriting the current production diagnostic.
 
-Upgrade Lingua Flow from a single diagnostic landing experience into a lightweight language-structure learning hub while preserving the existing diagnostic as a working asset.
-
-## Current routes
-
+## Preserved production asset
 - Existing diagnostic: https://lingua-flow-diagnostic.user-ex26.chatgpt.site/
 - note: https://note.com/structureflow
 - X: https://x.com/linguaflowqvof
 - Contact: language.structure.flow@gmail.com
 
-## Implementation
-
-- Static HTML / CSS / JavaScript only
-- Mobile-first responsive navigation
-- Accessible skip link and reduced-motion support
-- Interactive five-layer language structure map
-- No paid dependencies, frameworks, analytics SDKs, or copied diagnostic content
-- Existing diagnostic is linked, not recreated or overwritten
+## v2 direction
+- Dark indigo / purple visual identity
+- 18-question / ~5-minute value proposition
+- Five-layer language model: sound → meaning → structure → operation → expression
+- Mobile-first responsive layout
+- Existing diagnostic remains the actual diagnostic engine
+- Other languages are shown as preparation only until real diagnostic flows exist
+- No unsupported email newsletter collection
 
 ## Safety boundary
+Do not replace the current ChatGPT-site production route until a preview is published and mobile QA passes.
 
-This folder is intentionally isolated from the current Lingua Flow production site. Do not replace the existing diagnostic until the v2 UI is visually reviewed and a dedicated Lingua Flow hosting destination is selected. The Stratum Praxis repository is being used only as a reversible staging source; the brand should remain operationally separate.
+## Preview plan
+The safest public preview in the existing repository is a dedicated `/lingua-flow-v2/` route after merge to `main`. Because the repository's current production deployment is tied to `main`, this route must be validated before any redirect or replacement of the current diagnostic.
 
-## Next production step
-
-Deploy this folder to a dedicated Lingua Flow host/domain or a separate repository, validate mobile rendering and outbound links, then route the current diagnostic and note/X traffic through the new hub.
+## QA
+See `QA.md` and `.qa-scope` for the mobile and accessibility checks.
