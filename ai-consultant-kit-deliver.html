@@ -46,7 +46,7 @@ Day 7：続行 / 修正 / 中止を決める</div><p>成功判定は「便利だ
 </section>
 </main>
 <script>
-const API='https://ai-consultant-verify.stratumpraxis.workers.dev';
+const API='https://ai-consultant-verify.practicalaireport.workers.dev';
 const p=new URLSearchParams(location.search);const session=p.get('session_id');const status=document.getElementById('status');
 async function run(){
  if(!session){status.innerHTML='<span class="bad">決済セッションIDがありません。Stripe Checkout完了後のURLから開いてください。</span>';window.addEventListener('load',()=>window.scosCapture&&window.scosCapture('access_denied',{product:'ai_implementation_kit',reason:'missing_session'}),{once:true});return}

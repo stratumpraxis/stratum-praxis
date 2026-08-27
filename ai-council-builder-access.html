@@ -9,7 +9,7 @@
 <body data-funnel="ai_council_builder_access" data-product="ai_council_builder">
 <main class="w"><div class="brand">STRATUM PRAXIS · VERIFIED DELIVERY</div><h1>Open your AI Council Builder workspace.</h1><p class="m">The Checkout Session is verified server-side against the exact product and payment link. Enter the same email used at checkout.</p><section class="card"><div id="status" class="m" aria-live="polite">Waiting for verification.</div><label for="email">Purchase email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"><button id="open">Verify and open workspace</button></section><p class="m">This public page does not contain the paid toolkit. No AI-service password, API key or account credential is requested.</p></main>
 <script>
-const API='https://ai-consultant-verify.stratumpraxis.workers.dev';
+const API='https://ai-consultant-verify.practicalaireport.workers.dev';
 const sid=new URLSearchParams(location.search).get('session_id');const status=document.getElementById('status');const button=document.getElementById('open');
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 if(!sid||!sid.startsWith('cs_')){status.innerHTML='<span class="bad">Checkout Session is missing. Open this page from the Stripe payment completion redirect.</span>';button.disabled=true;window.addEventListener('load',()=>window.scosCapture&&window.scosCapture('access_denied',{product:'ai_council_builder',reason:'missing_session'}),{once:true});}
