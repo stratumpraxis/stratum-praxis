@@ -7,6 +7,7 @@ on:
       - 'trend-video-engine/variants/2026-08-27-ai-stack-sprawl-short.json'
       - 'trend-video-engine/variants/2026-08-27-ai-stack-finance-demo.json'
       - 'trend-video-engine/render.py'
+      - 'trend-video-engine/render-campaign.py'
   workflow_dispatch:
 
 permissions:
@@ -27,9 +28,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y ffmpeg fonts-noto-cjk
       - name: Render vertical short
-        run: python3 trend-video-engine/render.py trend-video-engine/variants/2026-08-27-ai-stack-sprawl-short.json
+        run: python3 trend-video-engine/render-campaign.py trend-video-engine/variants/2026-08-27-ai-stack-sprawl-short.json
       - name: Render finance demo
-        run: python3 trend-video-engine/render.py trend-video-engine/variants/2026-08-27-ai-stack-finance-demo.json
+        run: python3 trend-video-engine/render-campaign.py trend-video-engine/variants/2026-08-27-ai-stack-finance-demo.json
       - name: Commit rendered MP4 files
         shell: bash
         run: |
