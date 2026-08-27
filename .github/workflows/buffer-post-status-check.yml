@@ -1,0 +1,23 @@
+name: Buffer Post Status Check
+
+on:
+  workflow_dispatch:
+    inputs:
+      post_ids:
+        description: 'Comma-separated Buffer post ids to check (read-only, no posting)'
+        required: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query Buffer post status (read-only)
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_POST_IDS: ${{ inputs.post_ids }}
+        run: node distribution/buffer-post-status.mjs
