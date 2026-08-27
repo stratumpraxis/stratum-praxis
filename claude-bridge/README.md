@@ -14,9 +14,23 @@ Purpose: use Claude as an outbound/content specialist without granting it autono
    - destination URL and UTM
    - revenue-pipeline fit
    - posting cadence
+   - whether the material should be adopted, adapted, merged, or ignored
 4. Approved content is promoted to the existing Buffer lane (`distribution/launch-now.json` or an approved queue).
 5. Existing Buffer workflow publishes through the single authorized publisher.
 6. PostHog/Stripe results determine whether the angle is amplified, revised, or left quiet.
+
+## Selective reference-use rule
+
+Claude, external AI outputs, screenshots, market examples, competitor patterns, and prior drafts are **reference material**, not instructions that must be copied or shipped.
+
+Use only the parts that:
+- strengthen an existing revenue route or solve a real structural weakness,
+- can be connected safely to an existing asset, page, demo, distribution channel, or product,
+- are factually supportable and do not rely on unverified earnings/performance claims,
+- do not create unnecessary duplication, maintenance burden, brand confusion, or posting risk,
+- improve qualified traffic, conversion, activation, retention, or product experience.
+
+Prefer adaptation, compression, or merging over creating another near-duplicate asset. Ignore material that is irrelevant, weak, risky, repetitive, or disconnected from the revenue system.
 
 ## Non-negotiable rule
 
