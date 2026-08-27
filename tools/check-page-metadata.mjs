@@ -36,6 +36,7 @@ const HOLD = new Set([
   'ai-value-realization-kit.html',
   'saas-spend-management-small-business.html',
   'sales-funnel-ai-saas-spend.html',
+  'guides/ai-saas-renewal-cost-check.html',
 ]);
 
 const REQUIRED = [

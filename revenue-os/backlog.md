@@ -68,7 +68,9 @@ Full inventory with evidence, recurrence risk and revenue impact for each item:
 
 The AI/SaaS Spend funnel pages were deliberately excluded from the metadata
 backfill and the analytics instrumentation so the open pre/post measurement
-stays clean. The exemptions are dated and listed in
+stays clean. The held set is the funnel chain plus
+`guides/ai-saas-renewal-cost-check.html`, whose only job is routing into that
+calculator and kit. The exemptions are dated and listed in
 `tools/check-analytics-coverage.mjs` and `tools/backfill-page-metadata.mjs`.
 Lift them once the 2026-08-30 post is confirmed sent and the calculator's
 `primary_cta_click` has been read.

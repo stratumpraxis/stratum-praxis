@@ -13,6 +13,10 @@ measurement (Instagram post `6a902d26821a598e398e4c51`, due 2026-08-30, and the
 pre/post `primary_cta_click` read on `ai-saas-waste-calculator.html`). Nothing
 in that funnel's pages or payloads was modified. Where a fix would otherwise
 have touched it, the page is listed as a documented, dated exemption instead.
+The held set is the funnel chain itself plus
+`guides/ai-saas-renewal-cost-check.html`, whose only job is routing into that
+calculator and kit. Hub pages that merely list the $39 kit among many products
+are treated as general site assets and were fixed normally.
 
 ---
 
@@ -92,7 +96,7 @@ have touched it, the page is listed as a documented, dated exemption instead.
   destination or event-name change). `tools/check-analytics-coverage.mjs`
   fails the build on any new checkout page without analytics. Five documented
   exemptions: the four AI/SaaS Spend funnel pages (measurement hold) and the
-  Store-submission PWA.
+  Store-submission PWA. The metadata hold covers three pages.
 
 ## 6. Dead and stale destinations — FIXED (durable)
 
