@@ -13,12 +13,23 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: safe-buffer-distribution
+  cancel-in-progress: false
+
 jobs:
   distribute:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+      - name: Distribution safety audit
+        env:
+          BUFFER_QUEUE_FILE: content-queue.json
+          MAX_SERVICES_PER_ITEM: '3'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
       - name: Publish through Buffer
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
