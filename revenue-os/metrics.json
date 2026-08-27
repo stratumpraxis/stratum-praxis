@@ -93,6 +93,45 @@
     "change": "Repointed all 7 pages at the live worker host, ai-consultant-verify.practicalaireport.workers.dev.",
     "status": "PRODUCTION_CHANGE_DEPLOYED_AND_VERIFIED (verify-stratumpraxis-pages.yml run 33071447892 success); revenue_verified/activation event volume after this fix is still unmeasured — needs a real post-fix purchase to confirm end-to-end."
   },
+  "market_signal_loop_2026_08_27": {
+    "purpose": "Market-signal-driven strengthening pass: public demand evidence -> existing-asset fit -> score -> smallest reversible LP/offer improvement -> measure. Not a new-product exercise; see New-product gate in backlog.md.",
+    "signals_collected": [
+      {
+        "signal": "SaaS/AI subscription waste is widely reported at 25-30% of spend, ~$19.8M/yr average org waste, AI subscription proliferation ('three AI assistants doing the same job').",
+        "sources": ["Zylo SaaS Spend Management 2026 guide", "RedHub AI SaaS cost/audit blog posts", "G2 2026 SaaS spend management roundup"]
+      },
+      {
+        "signal": "'Shadow AI' spend and CFO budget accountability is a distinct, currently-trending 2026 term: enterprise AI spend +108% YoY, 78% of CFOs/IT leaders report unbudgeted AI charges, organizations moving to quarterly AI/SaaS spend audits, some capping per-tool/per-employee AI spend.",
+        "sources": ["Witness AI hidden-cost-of-enterprise-AI 2026 breakdown", "Redress Compliance Shadow AI Spend Report 2026", "Kyriba CFO AI spend 2026", "The SaaS CFO AI budget reallocation", "Optro shadow AI stats 2026"]
+      },
+      {
+        "signal": "General SMB AI-workflow-automation ROI content is common and non-differentiated (broad automation-ROI marketing claims, no distinct new angle found).",
+        "sources": ["dev.to AI workflow automation 2026 posts (aggregate, low differentiation)"]
+      }
+    ],
+    "scoring_note": "0-10 per criterion, 11 criteria, 110 max. Used only to rank which existing asset to push, not as a target itself.",
+    "top_signal_score": {
+      "signal": "Shadow AI / AI-SaaS spend waste + CFO quarterly-accountability pressure",
+      "problem_frequency": 9, "urgency": 8, "willingness_to_pay": 7, "existing_product_fit": 10,
+      "revenue_proximity": 9, "competition_weakness": 6, "distribution_feasibility": 8,
+      "automation_feasibility": 9, "gross_margin": 9, "repeat_retention_potential": 6, "evidence_quality": 7,
+      "total": "88/110",
+      "decision": "Matches the existing AI & SaaS Spend Decision Hub funnel (free ai-saas-waste-calculator.html -> ai-saas-spend-audit-checklist.html -> $39 ai-value-realization-kit.html -> $499 ai-saas-spend-waste-audit.html) exactly, which is also the current active distribution target (retried Instagram ai_saas_cost_review campaign, PR #37). New-product gate fails (existing offer already absorbs this demand) -> strengthen the existing entry page instead of building anything new."
+    },
+    "action_taken": {
+      "type": "LP strengthening (existing asset only, no new product/page/offer)",
+      "target": "ai-saas-waste-calculator.html",
+      "commit": "fd189b19900291081b7dd3a655db7202312c7c44 (PR #39, merged to main)",
+      "changes": ["Added 'Shadow AI tools' as a 7th item in the existing waste-pattern checklist", "Added a 4-item objection-handling FAQ section", "Updated meta description to include 'shadow AI tools'"],
+      "unchanged": ["pricing", "CTA hrefs/destinations", "calculator logic", "PostHog event names/taxonomy", "Return Gate routing"]
+    },
+    "measurement": {
+      "deploy_status": "DEPLOYED — GitHub Pages build run 33075294569 for commit fd189b1 completed with conclusion=success.",
+      "traffic_impact_status": "PENDING/UNVERIFIED",
+      "reason": "No PostHog credentials available in this session, so pre/post primary_cta_click rate on this page cannot be measured from here yet. This page is also outside verify-stratumpraxis-pages.yml's watched path list, so the deploy check above used pages-build-deployment directly rather than an HTTP content assertion.",
+      "what_to_check_next": "Once real traffic arrives, compare primary_cta_click rate on ai-saas-waste-calculator.html pre- vs post-2026-08-27 using the existing PostHog funnel_view/primary_cta_click events (already instrumented, no new events added). Do not assume improvement without this evidence."
+    }
+  },
   "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck, and the one confirmed outbound distribution attempt this campaign (Instagram, ai_saas_cost_review) failed at publish time before reaching anyone. Every currently active sellable offer now has a shared external-acquisition entry from the public GitHub README through the tracked product router, but real external visits and purchases still need observation. Prioritize proving traffic and conversion on this route before expanding the catalog.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate route-created, deployed, visited, clicked, checkout-started, purchased, delivered and activated states."
 }
