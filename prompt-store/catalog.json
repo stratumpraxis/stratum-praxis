@@ -1,0 +1,44 @@
+{
+  "store": "Stratum Praxis Prompt Store",
+  "version": "2026-08-27",
+  "currency": "USD",
+  "products": [
+    {
+      "id": "task-workflow-architect",
+      "name": "Task to Workflow Architect",
+      "price": 6.99,
+      "language": ["en"],
+      "category": "workflow",
+      "status": "ready",
+      "source": "AI Workflow Operator"
+    },
+    {
+      "id": "ai-tool-role-router",
+      "name": "AI Tool and Role Router",
+      "price": 5.99,
+      "language": ["en"],
+      "category": "routing",
+      "status": "ready",
+      "source": "AI Workflow Operator"
+    },
+    {
+      "id": "company-brain-builder",
+      "name": "Company Brain Builder",
+      "price": 7.99,
+      "language": ["en"],
+      "category": "knowledge-system",
+      "status": "ready",
+      "source": "AI Workflow Operator"
+    },
+    {
+      "id": "ai-workflow-operator-bundle",
+      "name": "AI Workflow Operator Bundle",
+      "price": 17.0,
+      "standard_price": 24.0,
+      "language": ["en"],
+      "category": "bundle",
+      "status": "ready",
+      "source": "AI Workflow Operator"
+    }
+  ]
+}
