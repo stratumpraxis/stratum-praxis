@@ -1,10 +1,10 @@
 [
   {
-    "id":"ai-stack-sprawl-ig-20260827",
+    "id":"workflow-audit-outbound-ig-20260827",
     "active":true,
     "services":["instagram"],
-    "text":"AI is moving from single tools to production systems: agent teams, video pipelines, 3D web generation and multi-model routing. That creates a second problem most demos skip: tool sprawl, unclear ownership and rising inference + SaaS cost. Before adding another AI tool, map the workflow, owner, overlap, usage, break-even and fallback. Free 12-question checklist.",
-    "url":"https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_stack_sprawl&utm_content=signal_20260827",
+    "text":"Most AI workflow problems are not model problems. They are ownership, handoff, duplicate-tool, permission and fallback problems. If a workflow touches revenue, customers or recurring SaaS cost, map the operating path before adding another agent. Start with the free diagnostic layer, then use the independent workflow audit when the decision needs deeper review.",
+    "url":"https://stratumpraxis.com/live-lab.html?utm_source=instagram&utm_medium=social&utm_campaign=workflow_audit_outbound&utm_content=ops_route_20260827",
     "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
   }
 ]
