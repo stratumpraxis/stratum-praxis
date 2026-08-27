@@ -1,0 +1,22 @@
+{
+  "id": "claude-example-001",
+  "target": "Operations lead / AI operator",
+  "platform": "instagram",
+  "format": "image-caption",
+  "text": "Draft outbound copy goes here.",
+  "destination_url": "https://stratumpraxis.com/live-lab.html?utm_source=instagram&utm_medium=social&utm_campaign=claude_bridge&utm_content=example",
+  "revenue_route": "Instagram → Live Lab → free diagnostic → relevant paid offer",
+  "source_basis": [
+    "Existing Stratum Praxis product/diagnostic architecture",
+    "Publicly verifiable market signal or internal approved asset"
+  ],
+  "safety": {
+    "facts_verified": false,
+    "original_copy": true,
+    "copyrighted_media": false,
+    "real_person_likeness": false,
+    "earnings_claim": false,
+    "contains_private_data": false,
+    "requires_human_review": true
+  }
+}
