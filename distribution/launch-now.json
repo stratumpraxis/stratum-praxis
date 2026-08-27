@@ -1,10 +1,10 @@
 [
   {
-    "id":"workflow-audit-outbound-ig-20260827",
+    "id":"vector-note-ai-team-ig-20260827",
     "active":true,
     "services":["instagram"],
-    "text":"Most AI workflow problems are not model problems. They are ownership, handoff, duplicate-tool, permission and fallback problems. If a workflow touches revenue, customers or recurring SaaS cost, map the operating path before adding another agent. Start with the free diagnostic layer, then use the independent workflow audit when the decision needs deeper review.",
-    "url":"https://stratumpraxis.com/live-lab.html?utm_source=instagram&utm_medium=social&utm_campaign=workflow_audit_outbound&utm_content=ops_route_20260827",
+    "text":"AI tools keep multiplying. The harder problem is no longer choosing one model — it is deciding who does what, where work is handed off, what gets reviewed, and how activity connects to revenue. I documented a practical operating model for ChatGPT, Claude, GitHub, Buffer, analytics and payments: role separation, handoffs, safety gates and the path from distribution to purchase. New Japanese paid note is live. #ChatGPT #Claude #生成AI #AI活用 #AI自動化 #仕事術",
+    "url":"https://note.com/deft_eel6718/n/ncaff8351e529?app_launch=false&utm_source=instagram&utm_medium=social&utm_campaign=ai_team_note_20260827&utm_content=launch",
     "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
   }
 ]
