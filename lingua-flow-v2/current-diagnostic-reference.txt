@@ -1,0 +1,12 @@
+Current production diagnostic reference:
+https://lingua-flow-diagnostic.user-ex26.chatgpt.site/
+
+Observed mobile visual direction from user-provided screenshot on 2026-08-27:
+- dark navy / violet gradient background
+- centered white heading
+- four language cards visible in a 2x2 mobile grid
+- card content uses simple icon + language label
+- one selected card uses a brighter violet outline
+- primary continue button sits below the grid
+
+This file is descriptive only and does not copy proprietary imagery or replace the production diagnostic.

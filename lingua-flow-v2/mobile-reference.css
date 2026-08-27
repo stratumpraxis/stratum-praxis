@@ -1,0 +1,20 @@
+/* Visual reference layer for Lingua Flow v2.
+   Mirrors the current diagnostic direction without modifying production. */
+:root {
+  --lf-bg-start:#091421;
+  --lf-bg-mid:#17143f;
+  --lf-bg-end:#220f3e;
+  --lf-card:#15152f;
+  --lf-card-border:rgba(153,146,255,.24);
+  --lf-selected:#6f68f6;
+  --lf-text:#f7f7ff;
+  --lf-muted:#9ca0b8;
+  --lf-radius:20px;
+}
+.lf-diagnostic-shell{background:radial-gradient(circle at 50% 20%,rgba(90,62,170,.18),transparent 28%),linear-gradient(135deg,var(--lf-bg-start),var(--lf-bg-mid) 56%,var(--lf-bg-end));color:var(--lf-text)}
+.lf-language-card{min-height:118px;border:1px solid var(--lf-card-border);border-radius:var(--lf-radius);background:linear-gradient(145deg,rgba(28,29,64,.96),rgba(17,17,42,.94));box-shadow:0 14px 32px rgba(2,3,18,.24);transition:transform .18s ease,border-color .18s ease,background .18s ease}
+.lf-language-card:hover{transform:translateY(-2px);border-color:rgba(146,138,255,.55)}
+.lf-language-card:focus-visible{outline:3px solid rgba(148,140,255,.75);outline-offset:3px}
+.lf-language-card[aria-pressed="true"]{border-color:var(--lf-selected);background:linear-gradient(145deg,rgba(72,67,160,.48),rgba(24,23,70,.96));box-shadow:0 0 0 1px rgba(111,104,246,.25),0 16px 36px rgba(9,7,36,.30)}
+@media(max-width:480px){.lf-language-card{min-height:104px;border-radius:18px}}
+@media(prefers-reduced-motion:reduce){.lf-language-card{transition:none}}
