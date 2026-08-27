@@ -1,0 +1,43 @@
+{
+  "brand": "Vector Praxis",
+  "status": "approved_copy_waiting_for_vector_publisher",
+  "created_at": "2026-08-27T17:49:00+09:00",
+  "source": {
+    "type": "paid_note",
+    "title": "AIを増やすほど仕事が遅くなる理由──ChatGPT・Claude・GitHubを「チーム」に変える設計",
+    "url": "https://note.com/deft_eel6718/n/ncaff8351e529?app_launch=false"
+  },
+  "routing": {
+    "allowed_brand": "Vector Praxis",
+    "do_not_use": ["Stratum Praxis Buffer", "Stratum Praxis Instagram", "Stratum Praxis TikTok"],
+    "preferred_channels": ["Vector Praxis X", "Vector Praxis note internal circulation", "Vector Praxis YouTube community when eligible", "Vector Praxis LINE when appropriate"]
+  },
+  "x_posts": [
+    {
+      "angle": "problem",
+      "copy": "AIを増やしたのに、なぜか仕事が終わらない。\n\nChatGPT、Claude、GitHub、自動化ツール。問題は性能より『役割・権限・受け渡し』かもしれません。\n\n複数AIを競争させるのではなく、チームとして働かせる設計を実運用ベースでまとめました。\n\nhttps://note.com/deft_eel6718/n/ncaff8351e529?app_launch=false\n\n#ChatGPT #Claude #生成AI #AI活用",
+      "target": "複数の生成AIを使い始めたが整理・コピペ作業が増えている日本語ユーザー"
+    },
+    {
+      "angle": "system",
+      "copy": "Claude → GitHub → 自動チェック → ChatGPTで監査 → SNS → 計測。\n\nAI同士を直接つなげなくても『受け渡し場所』を作ればチーム化できます。\n\nAIを便利なチャットから、役割を持って働く仕組みに変える考え方とテンプレートをまとめました。\n\nhttps://note.com/deft_eel6718/n/ncaff8351e529?app_launch=false\n\n#生成AI #AI自動化 #仕事術",
+      "target": "AI自動化・業務設計・エージェント運用に関心があるユーザー"
+    },
+    {
+      "angle": "safety",
+      "copy": "AI自動化で意外と重要なのが『全部の権限を1つのAIに渡さない』こと。\n\n作るAI、チェックするAI、実行する仕組み、結果を見るツールを分ける。\n\nAIチームの役割分担・安全設計・収益導線まで整理しました。\n\nhttps://note.com/deft_eel6718/n/ncaff8351e529?app_launch=false\n\n#ChatGPT #Claude #AI自動化",
+      "target": "AIエージェントの安全性・自動化事故・権限管理を気にする実務ユーザー"
+    }
+  ],
+  "note_internal_cta": "複数AIを使っているのに、比較・コピペ・整理の時間が増えているなら、AIそのものより『役割と受け渡し』を見直す余地があります。今回の記事では、ChatGPT / Claude / GitHubなどを競争させず、チームとして動かす設計を実運用ベースで整理しています。",
+  "measurement": {
+    "primary": ["note article views", "paid conversions"],
+    "secondary": ["X impressions", "X link clicks", "profile visits"],
+    "rule": "Do not claim purchase or conversion performance until observed."
+  },
+  "safety": {
+    "copyright": "No third-party logos or copyrighted character assets required.",
+    "claims": "No guaranteed income, guaranteed productivity, or unverified performance claims.",
+    "posting": "Do not cross-post through Stratum Praxis accounts. Avoid rapid duplicate posting."
+  }
+}
