@@ -97,23 +97,16 @@ def render_scene(scene, idx, tmpdir, font, palette):
         'noise=alls=2:allf=t+u',
         'drawgrid=w=72:h=72:t=1:c=white@0.035',
         'vignette=angle=PI/5',
-        # Slow parallax bands.
         f"drawbox=x='-180+mod(t*42+{idx*57},900)':y=180:w=240:h=780:color={accent}@0.055:t=fill",
         f"drawbox=x='780-mod(t*28+{idx*91},980)':y=320:w=180:h=540:color=white@0.028:t=fill",
-        # Sliding HUD rail.
         f"drawbox=x='-260+min(t/0.55,1)*310':y=56:w=650:h=112:color=white@0.035:t=fill",
         f"drawbox=x=0:y=0:w={W}:h=12:color={accent}:t=fill",
-        # Accent pulse line: low amplitude opacity equivalent via moving width.
         f"drawbox=x=48:y=174:w='180+70*sin(t*1.35)':h=3:color={accent}@0.75:t=fill",
-        # Moving bottom progress rail.
         f"drawbox=x=48:y=1062:w='max(8,min(610,610*t/{duration}))':h=4:color={accent}@0.88:t=fill",
-        # Orbit-like procedural markers.
         f"drawbox=x='360+250*cos(t*0.52+{idx})':y='620+420*sin(t*0.38+{idx}*0.6)':w=7:h=7:color={accent}@0.65:t=fill",
         f"drawbox=x='360+170*cos(t*0.77+{idx}*0.4)':y='620+310*sin(t*0.61+{idx})':w=4:h=4:color=white@0.45:t=fill",
-        # Eyebrow and moving tag.
         f"drawtext=fontfile='{font_e}':textfile='{ef}':expansion=none:fontsize=27:fontcolor={accent}:x='52+18*(1-exp(-6*t))':y='88+3*sin(t*1.2)'",
         f"drawtext=fontfile='{font_e}':textfile='{tf}':expansion=none:fontsize=18:fontcolor=white@0.42:x='w-text_w-54-18*(1-exp(-5*t))':y='90+4*cos(t*1.1)'",
-        # Headline enters with velocity then settles; afterwards has subtle camera drift.
         f"drawtext=fontfile='{font_e}':textfile='{hf}':expansion=none:fontsize=67:fontcolor=white:line_spacing=16:x='(w-text_w)/2 + 70*exp(-5*t) + 9*sin(t*0.72)':y='248 + 38*exp(-4*t) + 8*sin(t*0.56)':box=1:boxcolor=black@0.10:boxborderw=20",
     ]
     if body_file.read_text(encoding='utf-8').strip():
@@ -122,7 +115,6 @@ def render_scene(scene, idx, tmpdir, font, palette):
         )
 
     filters.extend([
-        # UI microcopy and counter. Gives rhythm without copying platform UI.
         f"drawtext=fontfile='{font_e}':text='/// SIGNAL {idx+1:02d}':expansion=none:fontsize=17:fontcolor={accent}@0.58:x='54+mod(t*24,90)':y=1090",
         f"drawtext=fontfile='{font_e}':text='00\\:{idx+1:02d}':expansion=none:fontsize=16:fontcolor=white@0.33:x=w-text_w-58:y=1090",
     ])
@@ -131,7 +123,6 @@ def render_scene(scene, idx, tmpdir, font, palette):
             f"drawtext=fontfile='{font_e}':textfile='{sf}':expansion=none:fontsize=20:fontcolor=white@0.55:line_spacing=8:x='55+4*sin(t*0.5)':y=h-text_h-72"
         )
 
-    # Continuous micro zoom + position drift makes each scene feel like a moving camera.
     filters.extend([
         "scale=760:1352:flags=lanczos",
         f"crop={W}:{H}:x='20+8*sin(t*0.44+{idx})':y='36+10*cos(t*0.37+{idx}*0.7)'",
@@ -182,7 +173,8 @@ def main():
         ])
 
         # Procedural electronic soundtrack: no samples, no licensed music, no third-party stems.
-        # Adds rhythmic pulse + low bed + short transient pattern while keeping speech-space open.
+        # Quote the expression so commas inside if()/mod() stay part of the expression instead of
+        # being parsed as lavfi filter separators.
         audio_expr = (
             '0.014*sin(2*PI*74*t)'
             '+0.007*sin(2*PI*148*t)'
@@ -190,10 +182,11 @@ def main():
             '+0.010*if(lt(mod(t,0.50),0.045),sin(2*PI*660*t)*exp(-45*mod(t,0.50)),0)'
             '+0.007*if(lt(mod(t+0.25,0.50),0.035),sin(2*PI*330*t)*exp(-55*mod(t+0.25,0.50)),0)'
         )
+        audio_source = f"aevalsrc=exprs='{audio_expr}':s=48000:d={total:.3f}"
         run([
             'ffmpeg', '-y', '-hide_banner', '-loglevel', 'warning',
             '-i', str(video_only),
-            '-f', 'lavfi', '-i', f'aevalsrc={audio_expr}:s=48000:d={total:.3f}',
+            '-f', 'lavfi', '-i', audio_source,
             '-filter:a', f'volume=0.78,highpass=f=45,lowpass=f=9000,afade=t=in:st=0:d=0.30,afade=t=out:st={max(0.0,total-0.50):.3f}:d=0.50',
             '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k',
             '-shortest', '-movflags', '+faststart', str(output)
