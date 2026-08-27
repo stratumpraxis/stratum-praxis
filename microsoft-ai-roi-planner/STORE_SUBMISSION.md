@@ -82,20 +82,23 @@ After merge/deploy, use:
 
 Included in this branch:
 
-- `icon-192.png` — Chromium/PWA install icon
-- `icon-512.png` — Chromium/PWA install + maskable icon
+- `icon-192.png` — Chromium/PWA install icon (purpose: any)
+- `icon-512.png` — Chromium/PWA install icon (purpose: any)
+- `icon-512-maskable.png` — dedicated maskable icon (full-bleed background, safe-zone artwork) — required as a separate file per PWABuilder's manifest validation; a single icon declared `"any maskable"` fails the check
 - `store-icon-300.png` — recommended 300×300 Microsoft Store tile icon
-- `icon.svg` — scalable source artwork
+- `icon.svg` — scalable source artwork (regular, non-maskable)
 
-Desktop screenshot requirement:
+`icon-512.png` was previously a truncated/corrupted PNG (missing its final IEND chunk — unreadable by any decoder) and would have broken installability and Store icon rendering. It has been re-rendered from `icon.svg` and verified to load correctly. `manifest.webmanifest` and `sw.js` were updated to reference the new maskable icon and were re-validated (0/15 failed checks against PWABuilder's own `@pwabuilder/manifest-validation` library).
 
-1. 1366×768+ — Main planner with realistic assumptions and calculated ROI
+Desktop screenshots — captured from the real running app (headless Chromium against this exact `index.html`, not mockups) in `store-screenshots/`:
+
+1. `store-screenshots/01-planner-assumptions.png` (1366×768) — Main planner with realistic assumptions entered
    Caption: Estimate savings, payback, and first-year ROI from practical workflow assumptions.
-2. 1366×768+ — Decision snapshot showing GO / TEST / HOLD result
+2. `store-screenshots/02-decision-snapshot.png` (1366×768) — Decision snapshot showing the GO / TEST / HOLD result
    Caption: Turn modeled economics into a clear implementation decision signal.
-3. 1366×768+ — Saved scenarios table
+3. `store-screenshots/03-saved-scenarios.png` (1366×1148) — Saved scenarios table with three compared workflows
    Caption: Save and compare automation opportunities locally on your device.
-4. 1366×768+ — CSV export / offline-ready app view
+4. `store-screenshots/04-csv-export-offline.png` (1366×1087) — Full app view with CSV export / offline-ready state
    Caption: Export scenarios for review and keep the core planner available offline.
 
 Microsoft requires at least one screenshot; four or more are recommended. Do not target Xbox in v1, so do not upload Xbox-only assets.
@@ -134,14 +137,16 @@ AI Automation ROI Planner is a static PWA. Core calculations run client-side. Sc
 
 ## Packaging path
 
-1. Deploy this folder over HTTPS.
-2. Validate the live URL in PWABuilder.
-3. In Partner Center, create New product → MSIX or PWA app and reserve “AI Automation ROI Planner” if available.
+1. Deploy this folder over HTTPS (already served at https://stratumpraxis.com/microsoft-ai-roi-planner/ once this branch is merged to `main` and Pages redeploys).
+2. Validate the live URL in PWABuilder. **Local pre-check already done** (this session had no outbound internet access, so PWABuilder's live URL scan and MSIX generation could not be run directly): manifest passes all 15 required/recommended checks in PWABuilder's own `@pwabuilder/manifest-validation` library with 0 failures; the service worker registers, activates, and precaches every asset (verified with headless Chromium against a local server); both icons load correctly; zero console/network errors on load. What's left is PWABuilder's own live-URL scan, which only needs the merged production URL.
+3. In Partner Center, create New product → MSIX or PWA app and reserve "AI Automation ROI Planner" if available.
 4. Record Product ID / Package ID, Publisher ID, and Publisher display name from Product identity.
 5. Generate the Store package with PWABuilder using the Partner Center identity values.
 6. Upload the generated MSIX/MSIXUPLOAD package to the submission.
 7. Complete Pricing and availability, Properties, Age ratings, Packages, Store listings, and Submission options.
 8. Submit for certification.
+
+Steps 2 (URL scan only) through 8 all require either a live merged URL, a Microsoft/Partner Center account with MFA, or a package-generation call to PWABuilder's hosted service — none of which were reachable from this environment. Everything reachable without those (manifest correctness, service worker behavior, icon integrity, responsive layout, real screenshots) has been fixed and verified in this branch.
 
 ## Official Microsoft references checked for this launch
 
