@@ -1,0 +1,14 @@
+{
+  "id":"2026-08-27-ai-stack-sprawl-short",
+  "title":"More AI ≠ More Profit",
+  "outputFile":"media/trend-videos/2026-08-27-ai-stack-sprawl-short.mp4",
+  "language":"en",
+  "safety":{"approved":true,"realPersonLikeness":false,"copyrightedMedia":false,"notes":"Original procedural graphics and audio only. No earnings claims or third-party logos."},
+  "scenes":[
+    {"duration":3.0,"eyebrow":"AI STACK","motionTag":"MORE TOOLS","headline":"More AI ≠\nMore Profit.","body":"A bigger stack can create a new bottleneck.","sourceLabel":"Stratum Praxis · original framework","background":"#050811","accent":"#7CFFDA"},
+    {"duration":3.0,"eyebrow":"01","motionTag":"AGENTS","headline":"Agent teams","body":"More roles. More permissions. More handoffs.","sourceLabel":"Operational pattern","background":"#071421","accent":"#5BE7FF"},
+    {"duration":3.0,"eyebrow":"02","motionTag":"VIDEO + CODE","headline":"Production stacks","body":"Video, coding, research and automation tools multiply.","sourceLabel":"Operational pattern","background":"#10102A","accent":"#B39CFF"},
+    {"duration":3.0,"eyebrow":"03","motionTag":"THE LEAK","headline":"Overlap +\nunclear ownership","body":"The demo looks fast. The operating model gets messy.","sourceLabel":"Original synthesis","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":3.0,"eyebrow":"AUDIT","motionTag":"MAP → MEASURE","headline":"Audit the stack.","body":"Owner. Workflow. Usage. Break-even. Fallback.","sourceLabel":"Free 12-question checklist · stratumpraxis.com","background":"#07151A","accent":"#65FF9D"}
+  ]
+}
