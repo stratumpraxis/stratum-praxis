@@ -1,0 +1,18 @@
+{
+  "approved": true,
+  "services": ["tiktok"],
+  "language": "en",
+  "durationSeconds": 20,
+  "aspectRatio": "9:16",
+  "aiGenerated": true,
+  "checks": {
+    "englishOnly": true,
+    "noRealPersonLikeness": true,
+    "noCopyrightedMedia": true,
+    "noThirdPartyLogos": true,
+    "noJapaneseText": true,
+    "dynamicShortFormFormat": true,
+    "captionSafe": true
+  },
+  "notes": "HeyGen Video Agent completed the requested 20-second English-only, no-avatar Stratum Praxis TikTok using original procedural/dark technical visuals. External factual framing was independently checked against Reuters on 2026-08-27 before publication."
+}
