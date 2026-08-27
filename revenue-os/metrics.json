@@ -44,28 +44,45 @@
     "buffer_connection_status": "verified successful via Buffer Connection Check and One-shot Product Launch Distribution",
     "buffer_channel": "instagram:praxisstratum",
     "buffer_post_id": "6a8f23f6b2db23b19c501243",
-    "buffer_status": "scheduled",
+    "buffer_status": "error",
     "scheduled_at_utc": "2026-08-27T01:27:00Z",
     "scheduled_at_jst": "2026-08-27T10:27:00+09:00",
     "workflow_run_id": 32995070556,
     "workflow_result": "success",
-    "publication_status": "scheduled; public post URL pending actual publication",
+    "publication_status": "FAILED — verified 2026-08-27T12:23Z via distribution/buffer-post-status.mjs (GitHub Actions run 33071594665): Buffer post(id) query returned status=\"error\", sentAt=null, sharedNow=false, externalLink=null. Root cause: this post referenced distribution/ai-saas-cost-instagram-20260827.png, which was a truncated/corrupted PNG at the time this post's dueAt (2026-08-27T01:27:00Z) elapsed — see revenue-os/2026-08-27-buffer-instagram-image-fix.md. The image was fixed and merged to main in commit 11ae9be22f91675ddf302182864c935ec3647a77, but after this post had already failed, so the fix did not save this specific run.",
     "published_post_url": null,
     "social_utm_pageviews_after_publish": 0,
     "calculator_events_after_publish": null,
     "return_gate_events_after_publish": null,
     "cta_events_after_publish": null,
     "checkout_events_after_publish": null,
-    "safety_note": "No blind publish, duplicate retry, or unverified-channel posting. After publication, verify the real Instagram post URL and PostHog UTM -> Calculator/Return Gate -> CTA -> Checkout events before declaring the run complete."
+    "safety_note": "This campaign is now classified FAILED per backlog.md's P0 rule (\"do not create another Instagram launch payload until the current run is classified as PUBLISHED and MEASURED or is shown to have failed\"). A deliberate, single re-launch (not a blind retry loop) is unblocked, but has not been done yet — see current_primary_bottleneck."
+  },
+  "second_distribution_run_2026_08_27": {
+    "theme": "AI team operating model (JA note)",
+    "queue_item": "vector-note-ai-team-ig-20260827",
+    "destination": "https://note.com/deft_eel6718/n/ncaff8351e529",
+    "buffer_channel": "instagram:praxisstratum",
+    "buffer_post_id": "6a8ff2a9323198a35b118f6b",
+    "buffer_status": "scheduled",
+    "scheduled_at_utc": "2026-08-29T13:47:00Z",
+    "verified_at": "2026-08-27T12:23Z via distribution/buffer-post-status.mjs, GitHub Actions run 33071594665",
+    "note": "Uses the same image file (distribution/ai-saas-cost-instagram-20260827.png) that was corrupted and is now fixed on main as of commit 11ae9be22f91675ddf302182864c935ec3647a77 — this fix landed before this post's dueAt, so it should publish normally. Re-check status after 2026-08-29T13:47:00Z."
   },
   "og_metadata_fix_2026_08_27": {
     "finding": "Sitewide, 0 of 76 Production pages had og:image or twitter:card; every external share of any page rendered a blank/generic link preview.",
     "change": "Added a shared branded 1200x630 og:image (media/og/stratum-praxis-og-default.png) plus twitter:card summary_large_image to the 15 highest revenue-proximity pages from backlog.md P1.",
-    "commit": "PENDING_AT_WRITE_TIME_SEE_GIT_LOG",
-    "verification_done": "All 15 files parsed as well-formed HTML with exactly one og:image and one twitter:card each; image asset served 200 locally.",
-    "verification_not_done": "No PostHog, Buffer, or Stripe credentials were available in this session, so real external CTR/impression lift and the previously scheduled Instagram post (buffer_post_id 6a8f23f6b2db23b19c501243) could not be verified from here.",
-    "status": "PRODUCTION_CHANGE_IMPLEMENTED; SOCIAL_CTR_IMPACT_UNMEASURED"
+    "commit": "9e60869a47caec8d1190cd3955c3dfb9d7fb2f61 (merged to main in 11ae9be22f91675ddf302182864c935ec3647a77)",
+    "verification_done": "All 15 files parsed as well-formed HTML with exactly one og:image and one twitter:card each; image asset served 200 locally; merge verified in production via GitHub Actions run 33071447892 (Verify Stratum Praxis Pages, conclusion=success) against live stratumpraxis.com URLs.",
+    "verification_not_done": "No PostHog or Buffer credentials were available directly in this session's sandbox (egress-proxied), so real external CTR/impression lift is still unmeasured.",
+    "status": "PRODUCTION_CHANGE_DEPLOYED_AND_VERIFIED; SOCIAL_CTR_IMPACT_UNMEASURED"
   },
-  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck. Every currently active sellable offer now has a shared external-acquisition entry from the public GitHub README through the tracked product router, but real external visits and purchases still need observation. Prioritize proving traffic and conversion on this route before expanding the catalog.",
+  "revenue_funnel_e2e_fix_2026_08_27": {
+    "finding": "7 buyer-access pages (AI Council Builder EN/JA, AI Consultant deliver/kit-deliver, AI Agent Risk & Cost Audit, Solo Company OS) called ai-consultant-verify.stratumpraxis.workers.dev, a host no longer serving the deployed worker — every completed Stripe checkout for these offers had no path to delivery/activation events.",
+    "fix_commit": "d9ecb6308a52005193e60ba94c055809373ff0c1 (merged to main in 11ae9be22f91675ddf302182864c935ec3647a77)",
+    "change": "Repointed all 7 pages at the live worker host, ai-consultant-verify.practicalaireport.workers.dev.",
+    "status": "PRODUCTION_CHANGE_DEPLOYED_AND_VERIFIED (verify-stratumpraxis-pages.yml run 33071447892 success); revenue_verified/activation event volume after this fix is still unmeasured — needs a real post-fix purchase to confirm end-to-end."
+  },
+  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck, and the one confirmed outbound distribution attempt this campaign (Instagram, ai_saas_cost_review) failed at publish time before reaching anyone. Every currently active sellable offer now has a shared external-acquisition entry from the public GitHub README through the tracked product router, but real external visits and purchases still need observation. Prioritize proving traffic and conversion on this route before expanding the catalog.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate route-created, deployed, visited, clicked, checkout-started, purchased, delivered and activated states."
 }
