@@ -152,6 +152,19 @@
         "sharedNow": true,
         "externalLink": null
       }
+    },
+    "2026-08-27-physical-ai-control-instagram-v6": {
+      "instagram": {
+        "status": "sending",
+        "at": "2026-08-27T23:01:42.327Z",
+        "channelId": "6a8e5b5accaf649a671a0cd9",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-27-physical-ai-control-instagram-v6.mp4",
+        "postId": "6a90c1cbb12b8efbe7312386",
+        "dueAt": "2026-08-27T23:01:32.036Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
     }
   }
 }
