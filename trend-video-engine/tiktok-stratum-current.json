@@ -1,0 +1,46 @@
+{
+  "id": "2026-08-27-stratum-tiktok-ai-control-heygen-v1",
+  "createdAt": "2026-08-27T20:20:00+09:00",
+  "brandLane": "stratum-praxis-en",
+  "platformVariant": "tiktok-en-discovery",
+  "title": "AI Wasn't the Bottleneck. Control Was.",
+  "topic": "Why aggressive AI-native workforce transformation can fail when reliability, security, workflow control, and accountability lag behind automation",
+  "language": "en",
+  "summary": "A fast English TikTok on the operational lesson from a major tech company's AI-native workforce experiment: execution can scale faster than control.",
+  "videoUrl": "https://resource2.heygen.ai/aws_pacific/avatar_tmp/a97602ecc435417ab1b776674e7db173/ve6f960ed0ea04f888ef85598f4165eff/caption_b068548938e3451db425862bfa61225b.mp4",
+  "sources": [
+    {
+      "name": "Reuters — How Meta's AI workforce transformation plans went kaput",
+      "url": "https://www.reuters.com/technology/artificial-intelligence/how-metas-ai-workforce-transformation-plans-went-kaput-2026-08-26/",
+      "factSource": true,
+      "verified": true,
+      "published": "2026-08-26"
+    }
+  ],
+  "thirdPartyAssets": [],
+  "originality": {
+    "creatorSignals": [
+      "original control-over-intelligence thesis",
+      "original kinetic short-form treatment",
+      "original procedural visuals with no news footage"
+    ],
+    "notReusedCompilation": true,
+    "notTemplateVariant": true
+  },
+  "safety": {
+    "approved": true,
+    "factsVerified": true,
+    "originalityVerified": true,
+    "realPersonLikeness": false,
+    "copyrightedMedia": false,
+    "categories": ["ai", "future-of-work", "agents", "operations"],
+    "notes": "English-only. No company logo, celebrity likeness, news footage, or third-party media. AI-generated labeling remains enabled."
+  },
+  "publish": {
+    "services": ["tiktok"],
+    "mode": "shareNow",
+    "aiGeneratedLabel": true,
+    "title": "AI Wasn't the Bottleneck. Control Was.",
+    "caption": "AI wasn’t the bottleneck. Control was. The next AI advantage isn’t more agents — it’s knowing when they should stop. #AI #AIAgents #FutureOfWork #TechTok"
+  }
+}
