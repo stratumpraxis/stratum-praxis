@@ -72,5 +72,5 @@ $('roiForm').addEventListener('submit',e=>{e.preventDefault();calculate()});$('s
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;$('install').style.display='inline-block'});$('install').addEventListener('click',async()=>{if(!deferredPrompt)return;deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;$('install').style.display='none'});
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}));calculate();render();
 </script>
-</body>
+<script defer src="/scos-analytics.js"></script></body>
 </html>

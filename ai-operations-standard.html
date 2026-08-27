@@ -59,5 +59,5 @@ document.addEventListener('change',calc);
 document.getElementById('copyBtn').addEventListener('click',async()=>{const org=document.getElementById('org').value.trim(),wf=document.getElementById('workflow').value.trim(),score=document.getElementById('score').textContent,tier=document.getElementById('tier').textContent;const ps=[...document.querySelectorAll('#pillarScores div')].map(x=>x.innerText.replace('\n',': ')).join(' | ');const txt=`Stratum Praxis AI Operations Standard v0.1\n${org?org+' · ':''}${wf||'Workflow'}\nSelf-assessed score: ${score}/100 · ${tier}\n${ps}\nNot a certification.`;try{await navigator.clipboard.writeText(txt);document.getElementById('copyBtn').textContent='Copied'}catch(e){prompt('Copy this result:',txt)}});
 calc();
 </script>
-</body>
+<script defer src="/scos-analytics.js"></script></body>
 </html>
