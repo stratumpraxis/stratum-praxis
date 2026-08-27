@@ -55,6 +55,36 @@ Demand/traffic evidence → revenue bottleneck → highest-leverage intervention
 
 Write handoffs and decisions into `revenue-os/` so parallel agents can consume durable state rather than relying on chat history.
 
+## Outbound Revenue Executor
+
+Use a dedicated outbound role for work outside the owned site. Its job is not to generate more content for its own sake. Its job is to move qualified people from places they already spend time into the existing revenue system.
+
+Operating principle: one agent / one job / one primary source of truth. Do not create multiple agents that rewrite the same source, target the same audience with the same message, or compete for ownership of one task. Add a new role only when it owns a non-overlapping job.
+
+The Outbound Revenue Executor owns:
+
+- External signal collection from search, public social discussion, marketplace/category demand, public communities, directories and other policy-safe public surfaces.
+- Lead-quality filtering before outreach or distribution. Prefer public intent signals, fit, timing and relevance over raw list size.
+- Target-specific social distribution. Founder, operations, finance, engineering, creator and other audiences should receive different entry points when their problems differ.
+- Routing each outbound item to an existing free demo, calculator, diagnostic, field guide, Live Lab route, product or Return Gate path rather than creating a new landing page by default.
+- UTM/source labeling and handoff to PostHog so external source → free experience → CTA → checkout → purchase → return can be compared.
+- Closing the loop by feeding traffic quality, CTA, checkout and purchase evidence back to Revenue CEO / Growth Analyst.
+
+The Outbound Revenue Executor does not own product invention, pricing changes, destructive cleanup, or high-volume unsolicited outreach.
+
+Pair this role with separate checks:
+
+- Safety Auditor: stops spam, rapid-repeat posting, misleading claims, rights issues, prohibited scraping, authentication bypass, unsafe account behavior and unsupported automation.
+- Duplication Auditor: checks whether the same audience, source, route, post or offer is already being handled before creating a parallel version.
+- Conversion Analyst: evaluates whether outbound traffic becomes qualified views, CTA clicks, checkout starts and purchases rather than optimizing vanity metrics.
+- Retention Operator: takes successful first-touch traffic and creates a reason to return through Return Gate, updates, diagnostics, video, tools or relevant cross-sell.
+
+Default outbound sequence:
+
+Signal → fit check → choose existing asset → choose one audience → create one platform-native distribution item → route with UTM → publish through an already-authorized channel → measure → amplify only if downstream behavior improves.
+
+Do not equate large lead lists, high post volume, views, likes or follower counts with revenue success. Qualified traffic and downstream movement are the decision metrics.
+
 ## Safety and account-protection rules
 
 - No infinite retries.
