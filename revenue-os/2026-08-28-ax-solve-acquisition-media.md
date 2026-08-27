@@ -1,16 +1,21 @@
-# AX Solve Acquisition Media Lane — 2026-08-28
+# AX.cvel Acquisition Media Lane — 2026-08-28
 
 ## Objective
-Build AX Solve as a distinct EN-first / JA-compatible acquisition media lane that sends qualified viewers into the existing unmanned revenue system without duplicating Forwelle or Stratum Praxis.
+Build AX.cvel as a distinct EN-first / JA-compatible acquisition media lane that sends qualified viewers into the existing unmanned revenue system without duplicating Forwelle or Stratum Praxis.
+
+## Brand handling
+- Public display name: `AX.cvel`.
+- Internal legacy references may still use `ax-solve`; keep them unless changing them is operationally necessary.
+- The dot is part of the visual brand, not a promise of uniqueness or trademark clearance.
+- Do not store account email, phone/recovery data, passwords or API keys in this public repository.
 
 ## Existing account state
 - Existing YouTube channel: owner-confirmed.
 - Existing X account: owner-confirmed active.
-- Contact/account email is owner-supplied but must NOT be stored in this public repository.
 - YouTube phone verification: not currently confirmed. Treat intermediate/advanced feature access as unavailable until verified in YouTube Studio.
 
 ## Positioning
-AX Solve = concrete problem-solving media.
+AX.cvel = concrete problem-solving media.
 
 Core promise:
 - one practical problem per video;
@@ -66,7 +71,7 @@ For long-form after phone verification / sufficient feature access:
 - custom thumbnail only when the channel has access.
 
 ## Funnel
-AX Solve YouTube / X
+AX.cvel YouTube / X
 → useful video/post
 → free tool / diagnostic / comparison
 → `/unmanned/`
@@ -105,6 +110,40 @@ Use standard available uploads and Shorts first.
 
 Do not optimize for ad revenue before qualified traffic and conversion evidence.
 
+## First 3 production briefs
+
+### AXC-001 — Stop Paying for AI Tools You Forgot
+- Language: EN
+- Hook: `You're probably paying for AI tools you no longer use.`
+- Structure: subscription stack visual → 3 waste signals → quick audit rule → calculator CTA.
+- Destination: `/ai-saas-waste-calculator.html`
+- Goal: useful cost-saving discovery, not fear-based selling.
+- Visual requirement: show a changing tool-stack / cost tally, not static slides.
+
+### AXC-002 — ChatGPT vs Claude vs Codex: Pick by Job, Not Hype
+- Language: EN
+- Hook: `The best AI depends on the job.`
+- Structure: one task → three different roles → simple routing rule → free-fit CTA.
+- Destination: relevant EN comparison asset or product router; do not send EN traffic to a Japanese-only page unless localized first.
+- Goal: search/share utility and tool-selection credibility.
+- Visual requirement: distinct task cards, decision branch, final routing map.
+
+### AXC-003 — AIで自動化する前に、ここだけ見て
+- Language: JA
+- Hook: `自動化すると逆に遅くなる仕事があります。`
+- Structure: repeated task → risk/approval check → automation fit → free diagnostic CTA.
+- Destination: `/ai-consultant.html` if Japanese presentation is acceptable; otherwise hold until the destination is localized.
+- Goal: prove Japanese-native editorial quality rather than translated EN content.
+- Visual requirement: Japanese-native captioning and examples.
+
+## X companion rule
+For each approved video, create one X-native post that:
+- gives the useful takeaway in text;
+- does not merely say `new video`;
+- links to the mapped free tool when appropriate;
+- uses one clear CTA at most;
+- avoids repetitive copy across posts.
+
 ## Metrics
 Per video/post:
 - impressions/views
@@ -123,13 +162,14 @@ No claim of success until downstream evidence exists.
 - No fake engagement, follow-for-follow automation or view manipulation.
 - No account-farm behavior.
 - No scraping/reposting other creators with minimal edits.
-- No duplicate upload farm across AX Solve / Forwelle / Stratum Praxis.
+- No duplicate upload farm across AX.cvel / Forwelle / Stratum Praxis.
 - Stop automated publication on CAPTCHA, identity challenge, platform warning or uncertain account mapping.
 
-## Next execution gate
-Before direct auto-publishing:
-1. confirm the exact AX Solve YouTube channel identity inside the publishing connector/workspace;
-2. confirm the exact X account identity;
-3. confirm available YouTube feature tier in Studio;
-4. publish one QA-approved native AX Solve test video;
-5. measure outbound traffic before scaling cadence.
+## Completion gate
+The lane is considered operationally complete when:
+1. public channel display name/profile assets are updated by the owner where required;
+2. exact YouTube/X identities are verified in the publishing connector/workspace;
+3. one QA-approved AX.cvel video is published natively;
+4. its outbound destination is reachable and analytics fire;
+5. no platform warning/identity challenge occurs;
+6. performance is measured before scaling cadence.
