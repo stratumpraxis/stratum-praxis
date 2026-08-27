@@ -1,0 +1,57 @@
+name: Stratum Praxis TikTok Direct Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'trend-video-engine/tiktok-stratum-current.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-praxis-tiktok-direct-publish
+  cancel-in-progress: false
+
+jobs:
+  qa-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load manifest
+        run: |
+          VIDEO_URL="$(python3 -c "import json;print(json.load(open('trend-video-engine/tiktok-stratum-current.json'))['videoUrl'])")"
+          echo "TREND_VIDEO_URL=$VIDEO_URL" >> "$GITHUB_ENV"
+
+      - name: Verify public video URL
+        run: |
+          curl --fail --silent --show-error --location --head "$TREND_VIDEO_URL" >/dev/null
+
+      - name: Distribution safety audit
+        env:
+          TREND_VIDEO_MANIFEST: trend-video-engine/tiktok-stratum-current.json
+          TREND_VIDEO_QA: trend-video-engine/tiktok-stratum-last-qa.json
+          DISTRIBUTION_PROVIDER_POLICY: distribution/provider-policy.json
+        run: node distribution/distribution-safety-auditor.mjs
+
+      - name: Publish TikTok through Buffer only
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: trend-video-engine/tiktok-stratum-current.json
+          TREND_VIDEO_URL: ${{ env.TREND_VIDEO_URL }}
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Persist publication evidence
+        if: always()
+        run: |
+          if [ -f trend-video-engine/publish-ledger.json ]; then
+            git config user.name "stratum-tiktok-bot"
+            git config user.email "stratumpraxis@gmail.com"
+            git add trend-video-engine/publish-ledger.json
+            git diff --cached --quiet || git commit -m "Record Stratum Praxis TikTok publication state"
+            git pull --rebase origin main
+            git push
+          fi
