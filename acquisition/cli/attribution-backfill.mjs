@@ -12,7 +12,7 @@
 
 import fs from 'node:fs/promises';
 
-import { classifyAttribution, summarizeAttribution } from '../lib/attribution.mjs';
+import { classifyAttribution, establishCaptionProof, summarizeAttribution } from '../lib/attribution.mjs';
 import { collectManifests } from '../lib/manifest-sources.mjs';
 import { loadInventory } from '../lib/inventory.mjs';
 import { knownChannels, loadSourceRouting } from '../lib/utm.mjs';
@@ -32,12 +32,16 @@ const sourceRouting = await loadSourceRouting();
 const inventory = await loadInventory('acquisition/asset-inventory.json', { knownChannels: knownChannels(sourceRouting) });
 const { manifests, sources } = await collectManifests();
 
+// Re-establish the caption proof from the publisher's own source before classifying
+// anything. If the publisher changed, every record degrades to UNVERIFIED.
+const captionProof = await establishCaptionProof(VIDEO_LEDGER);
+
 const records = [];
 for (const [manifestId, services] of Object.entries(videoLedger.items || {})) {
   for (const [platform, entry] of Object.entries(services || {})) {
     if (platform.startsWith('_') || !entry) continue;
     const manifest = manifests.get(manifestId) || null;
-    const record = classifyAttribution(manifest, entry, { platform, manifestId, inventory, sourceRouting });
+    const record = classifyAttribution(manifest, entry, { platform, manifestId, inventory, sourceRouting, captionProof });
     records.push({ ...record, manifest_source: manifest ? sources.get(manifestId) : null });
   }
 }
@@ -56,6 +60,7 @@ if (write) {
   await saveLedger({
     ...ledger,
     attribution_overlay: Object.fromEntries(records.map((r) => [r.ledger_id, r])),
+    attribution_payload_proof: captionProof,
     attribution_overlay_note:
       'Derived, additive attribution for the trend-video lane. Source of truth for publication remains '
       + `${VIDEO_LEDGER}, which this process never writes. Regenerate with acquisition/cli/attribution-backfill.mjs --write.`,
@@ -63,13 +68,16 @@ if (write) {
   });
 }
 
-const report = { generated_at: nowIso(), video_ledger_untouched: true, summary, records };
+const report = { generated_at: nowIso(), video_ledger_untouched: true, caption_proof: captionProof, summary, records };
 
 if (asJson) {
   console.log(JSON.stringify(report, null, 2));
 } else {
   console.log(`Video-lane attribution backfill${write ? ' (written)' : ' (report only)'}`);
-  console.log(`  manifests resolved: ${manifests.size}\n`);
+  console.log(`  manifests resolved: ${manifests.size}`);
+  console.log(`  payload proof     : ${captionProof.proven ? 'PROVEN' : 'NOT PROVEN'} via ${captionProof.publisher || 'no registered publisher'}`);
+  for (const reason of captionProof.reasons) console.log(`    ${reason}`);
+  console.log('');
   const width = Math.max(9, ...records.map((r) => r.ledger_id.length)) + 2;
   const pad = (s, n) => String(s).padEnd(n);
   console.log(`  ${pad('LEDGER_ID', width)}${pad('PUBLICATION', 12)}${pad('ATTRIBUTION', 16)}DESTINATION`);

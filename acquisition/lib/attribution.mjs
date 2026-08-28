@@ -10,9 +10,82 @@
 //
 // Everything here is DERIVED and additive. The video ledger is never written.
 
+import fs from 'node:fs/promises';
+
 import { hasLiveCheckout, isRoutableDestination } from './inventory.mjs';
 import { APPROVED_DESTINATION_DOMAINS } from './taxonomy.mjs';
-import { hostOf, isPlainObject, parseUrl } from './util.mjs';
+import { hostOf, isPlainObject, parseUrl, repoPath } from './util.mjs';
+
+/**
+ * The caption proof is NOT a general property of manifests. It is a property of one
+ * publishing path, and it must be re-established from that path's source on every run.
+ *
+ * A ledger only qualifies if the script that CREATES its records provably transmits
+ * `publish.caption` as the post body. Both halves are required:
+ *   - assignment:   the caption variable is read from publish.caption
+ *   - transmission: that same variable is sent as the post text
+ *
+ * If a publisher is changed so either half no longer holds, classification degrades to
+ * UNVERIFIED rather than silently continuing to claim attribution.
+ */
+export const LEDGER_PUBLISHER_PROOFS = Object.freeze({
+  'trend-video-engine/publish-ledger.json': Object.freeze({
+    publisher: 'distribution/buffer-video-publisher.mjs',
+    payload_source: 'publish.caption',
+    assignment: /const\s+caption\s*=\s*String\(\s*publish\.caption/,
+    transmission: /createPost\(input:\{text:\$\{q\(caption\)\}/
+  })
+});
+
+/**
+ * Publishing paths the caption proof explicitly does NOT cover. Recorded so the
+ * boundary is visible rather than merely absent.
+ */
+export const UNPROVEN_PUBLISHERS = Object.freeze({
+  'distribution/buffer-publisher.mjs':
+    'sends `${item.text}\\n\\n${item.url}` built from distribution/content-queue.json, not publish.caption from a manifest. '
+    + 'It writes no ledger this module reads, and the caption proof does not transfer to it.',
+  'distribution/buffer-video-status.mjs':
+    'only updates ledger entries that already exist (it bails when ledger.items[manifest.id] is absent) and creates no records, '
+    + 'so it introduces no post whose payload is unproven.'
+});
+
+/**
+ * Re-establish the caption proof for a ledger by reading its publisher's source.
+ * Returns { proven, publisher, reasons }. Never throws on a missing file.
+ */
+export async function establishCaptionProof(ledgerFile, { readFile = (f) => fs.readFile(repoPath(f), 'utf8') } = {}) {
+  const spec = LEDGER_PUBLISHER_PROOFS[ledgerFile];
+  if (!spec) {
+    return {
+      proven: false,
+      publisher: null,
+      reasons: [`no publishing path is registered as proving the payload of ${ledgerFile}; attribution cannot be claimed for it`]
+    };
+  }
+
+  let source;
+  try {
+    source = await readFile(spec.publisher);
+  } catch (error) {
+    return { proven: false, publisher: spec.publisher, reasons: [`could not read ${spec.publisher}: ${error.message}`] };
+  }
+
+  const reasons = [];
+  if (!spec.assignment.test(source)) {
+    reasons.push(`${spec.publisher} no longer reads the post body from ${spec.payload_source}`);
+  }
+  if (!spec.transmission.test(source)) {
+    reasons.push(`${spec.publisher} no longer transmits that caption as the post text`);
+  }
+
+  return {
+    proven: reasons.length === 0,
+    publisher: spec.publisher,
+    payload_source: spec.payload_source,
+    reasons: reasons.length ? reasons : [`${spec.publisher} reads the post body from ${spec.payload_source} and sends it verbatim as the post text`]
+  };
+}
 
 export const ATTRIBUTION_STATES = Object.freeze([
   'ATTRIBUTED',      // the sent payload provably carried a tracked destination
@@ -96,10 +169,14 @@ export function publicationState(rawStatus) {
  *
  * @param {object|null} manifest  the trend-video manifest that produced the post, or null
  * @param {object} ledgerEntry    the per-service entry from publish-ledger.json
- * @param {object} context        { platform, manifestId, inventory, sourceRouting }
+ * @param {object} context        { platform, manifestId, inventory, sourceRouting, captionProof }
+ *
+ * `captionProof` must come from establishCaptionProof() for the ledger this entry belongs
+ * to. Without a proven path the caption is just text we happen to have on disk, not
+ * evidence of what was transmitted, so the result can never be ATTRIBUTED.
  */
 export function classifyAttribution(manifest, ledgerEntry, context) {
-  const { platform, manifestId, inventory } = context;
+  const { platform, manifestId, inventory, captionProof } = context;
   const publication = publicationState(ledgerEntry?.status);
   const problems = [];
 
@@ -120,8 +197,25 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
     attribution_state: 'UNVERIFIED',
     attribution_evidence: null,
     attribution_verified_at: null,
+    payload_proof: captionProof
+      ? { proven: captionProof.proven, publisher: captionProof.publisher ?? null }
+      : { proven: false, publisher: null },
     problems
   };
+
+  // The publishing path must prove the caption was the payload. Without that, a caption
+  // on disk says nothing about what the platform received.
+  if (!captionProof || captionProof.proven !== true) {
+    for (const reason of captionProof?.reasons || ['no caption proof was supplied for this ledger']) {
+      problems.push(reason);
+    }
+    return {
+      ...base,
+      attribution_state: 'UNVERIFIED',
+      attribution_evidence: 'the publishing path for this ledger does not prove that the manifest caption was the transmitted payload, '
+        + 'so the caption cannot be used as attribution evidence'
+    };
+  }
 
   // No manifest survives -> we genuinely cannot prove what was sent.
   if (!isPlainObject(manifest)) {
@@ -204,7 +298,8 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
     // ATTRIBUTED describes the payload, independent of whether the post is live yet.
     // publication_state stays the separate fact about whether it actually went out.
     attribution_state: 'ATTRIBUTED',
-    attribution_evidence: `manifest publish.caption contains ${url.origin}${url.pathname}; buffer-video-publisher.mjs sends publish.caption verbatim as the post text`,
+    attribution_evidence: `manifest ${captionProof.payload_source || 'publish.caption'} contains ${url.origin}${url.pathname}; `
+      + `${captionProof.publisher} sends that caption verbatim as the post text (proof re-established from its source at classification time)`,
     attribution_verified_at: new Date().toISOString()
   };
 }
