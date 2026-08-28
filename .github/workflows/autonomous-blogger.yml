@@ -3,7 +3,7 @@ name: Autonomous Blogger
 on:
   workflow_dispatch:
   schedule:
-    - cron: '23 */6 * * *'
+    - cron: '23 3 * * *'
 
 permissions:
   contents: write
@@ -23,13 +23,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run blogger lane
+      - name: Run free-only blogger lane
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          BLOGGER_MODEL: ${{ vars.BLOGGER_MODEL || 'gpt-5.6-sol' }}
-        run: node acquisition/blogger/runner.mjs
-      - name: Commit READY artifacts and state
-        if: success()
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          BLOGGER_FREE_MODEL: ${{ vars.BLOGGER_FREE_MODEL || '@cf/google/gemma-4-26b-a4b-it' }}
+        run: node acquisition/blogger/free-runner.mjs
+      - name: Commit blogger artifacts and state
+        if: always()
         run: |
           if git diff --quiet -- acquisition/blogger; then
             echo "No blogger changes"
