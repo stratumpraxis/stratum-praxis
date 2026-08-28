@@ -1,0 +1,1020 @@
+{
+  "version": 1,
+  "purpose": "Issue #53 source candidates. Append-only history per candidate.",
+  "candidates": [
+    {
+      "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+      "thesis_id": "shadow-ai-spend-accountability-2026-08",
+      "thesis": "Teams are accumulating unbudgeted AI and SaaS subscriptions, and someone now has to justify the total on a quarterly cycle. The buyer wants a defensible number before the next renewal, not a general automation pitch.",
+      "status": "SOURCE_CANDIDATE",
+      "promoted": true,
+      "supporting_signal_ids": [
+        "owned-funnel-commercial-intent-2026-08-27",
+        "saas-spend-waste-benchmark-2026-08-27",
+        "ai-workflow-roi-content-saturation-2026-08-27",
+        "shadow-ai-cfo-accountability-2026-08-27"
+      ],
+      "all_signal_ids": [
+        "owned-funnel-commercial-intent-2026-08-27",
+        "saas-spend-waste-benchmark-2026-08-27",
+        "shadow-ai-cfo-accountability-2026-08-27",
+        "ai-workflow-roi-content-saturation-2026-08-27"
+      ],
+      "corroboration_families": [
+        "builder_discussion",
+        "industry_change",
+        "owned_behavior",
+        "search_demand"
+      ],
+      "corroboration_groups": [
+        "builder",
+        "industry",
+        "owned",
+        "search"
+      ],
+      "corroboration_buckets": [
+        "DEMAND_SIGNAL",
+        "PAIN_SIGNAL",
+        "MONEY_SIGNAL"
+      ],
+      "corroboration_satisfied": true,
+      "corroboration_failures": [],
+      "excluded_as_dependent": [],
+      "expired_signal_ids": [],
+      "non_observed_signals": [],
+      "evidence_strength": "STRONG",
+      "external_consensus": true,
+      "money_evidence_note": "At least one external money signal is present.",
+      "revenue_signal_score": 74.63,
+      "revenue_signal_raw_score": 79.27,
+      "revenue_signal_band": "SOURCE_CANDIDATE",
+      "score_blocks": [],
+      "claim_strength": "EVIDENCE_BACKED",
+      "score_breakdown": {
+        "purchase_intent": {
+          "score": 6,
+          "weight": 4,
+          "contribution": 24,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 12,
+          "derived": false,
+          "note": "checkout_click fires on the owned funnel, but revenue-os/metrics.json records stripe_live_payment_intents 0; intent is observed, completion is not"
+        },
+        "pain_severity": {
+          "score": 8,
+          "weight": 3,
+          "contribution": 24,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 24,
+          "derived": false,
+          "note": "unbudgeted AI charges reported by 78% of CFO/IT leaders in the 2026-08-27 recorded pass"
+        },
+        "urgency": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 14,
+          "derived": false,
+          "note": "the same pass records a move to quarterly AI/SaaS spend audits, which is a dated trigger"
+        },
+        "demand_growth": {
+          "score": 8,
+          "weight": 2,
+          "contribution": 16,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 16,
+          "derived": false,
+          "note": "enterprise AI spend +108% YoY in the same recorded pass"
+        },
+        "evidence_independence": {
+          "score": 10,
+          "weight": 3,
+          "contribution": 30,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 30,
+          "derived": true,
+          "note": "4 independent OBSERVED signal(s) across 4 independence group(s), 3 external"
+        },
+        "evidence_quality": {
+          "score": 7,
+          "weight": 3,
+          "contribution": 21,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 21,
+          "derived": true,
+          "note": "4 counted signal(s), mean tier 2.8, 100% carry a reference"
+        },
+        "existing_product_fit": {
+          "score": 9,
+          "weight": 4,
+          "contribution": 36,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 36,
+          "derived": true,
+          "note": "ai-saas-waste-calculator at fit 0.935, verification HTTP_VERIFIED"
+        },
+        "audience_fit": {
+          "score": 9,
+          "weight": 3,
+          "contribution": 27,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 27,
+          "derived": false,
+          "note": "finance / ops / SMB owner is exactly the audience the live AI & SaaS Spend funnel already declares"
+        },
+        "content_lens_fit": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 7,
+          "derived": false,
+          "note": "a cost-visibility explanation should travel on the practical_operator lens; not yet demonstrated on these channels"
+        },
+        "margin_fit": {
+          "score": 9,
+          "weight": 1,
+          "contribution": 9,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 9,
+          "derived": false,
+          "note": "digital products at 39 and 499 USD with no per-unit cost"
+        },
+        "differentiation": {
+          "score": 5,
+          "weight": 2,
+          "contribution": 10,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 10,
+          "derived": false,
+          "note": "the same pass records general AI-workflow-ROI content as common and non-differentiated, so the angle must be narrower than the category"
+        },
+        "freshness": {
+          "score": 10,
+          "weight": 2,
+          "contribution": 20,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 20,
+          "derived": true,
+          "note": "mean 98% of the evidence TTL remains"
+        },
+        "automation_feasibility": {
+          "score": 8,
+          "weight": 1,
+          "contribution": 8,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 8,
+          "derived": false,
+          "note": "the destination is a live static calculator; no new runtime is required"
+        },
+        "measurement_quality": {
+          "score": 6,
+          "weight": 3,
+          "contribution": 18,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 18,
+          "derived": false,
+          "note": "funnel_view, calculator_input and primary_cta_click fire on the destination; checkout is one hop downstream"
+        },
+        "operational_burden": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 14,
+          "derived": false,
+          "note": "routes into an existing funnel with no new asset to maintain"
+        },
+        "safety": {
+          "score": 10,
+          "weight": 4,
+          "contribution": 40,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 40,
+          "derived": false,
+          "note": "free calculator, owned destination, no earnings claim, existing safety lane"
+        }
+      },
+      "derived_dimensions": [
+        "evidence_independence",
+        "evidence_quality",
+        "freshness",
+        "existing_product_fit"
+      ],
+      "best_existing_asset": "ai-saas-waste-calculator",
+      "asset_id": "ai-saas-waste-calculator",
+      "product_or_offer": "AI/SaaS Waste Calculator",
+      "primary_user_problem": "Cannot see how much of the current AI/SaaS spend is actually reducible before a renewal decision.",
+      "target_audience": [
+        "smb_owner",
+        "ops_lead",
+        "finance"
+      ],
+      "primary_cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "secondary_route": {
+        "asset_id": "ai-saas-spend-audit-checklist",
+        "destination_url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+        "role": "PURCHASE_PATH"
+      },
+      "asset_fit_score": 0.935,
+      "verification_state": "HTTP_VERIFIED",
+      "measurement_quality": "CTA_MEASURED_CHECKOUT_DOWNSTREAM",
+      "asset_fit_outcome": "EXISTING_ASSET_FIT",
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "product_created": false,
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Run the reducible-spend estimate"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
+      ],
+      "eligible_audiences": [
+        "finance",
+        "ops_lead",
+        "smb_owner"
+      ],
+      "eligible_lenses": [
+        "independent_builder",
+        "practical_operator",
+        "structural_reflection"
+      ],
+      "channel_candidates": [
+        {
+          "channel": "instagram",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "tiktok",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "youtube",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "devto",
+          "automation": "HUMAN_REQUIRED",
+          "human_required_reason": "no provider in distribution/provider-policy.json has publishingEnabled for this channel"
+        },
+        {
+          "channel": "pinterest",
+          "automation": "HUMAN_REQUIRED",
+          "human_required_reason": "no provider in distribution/provider-policy.json has publishingEnabled for this channel"
+        }
+      ],
+      "prohibited_claims": [
+        {
+          "claim_pattern": "/guaranteed\\s+(income|profit|revenue|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/risk[- ]?free\\s+(income|profit|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/get\\s+rich(\\s+quick)?/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/instant\\s+(income|profit|money)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\bno\\s+risk\\b/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/100%\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\$\\d+[kKmM]?\\s*(?:per|\\/)\\s*(?:day|week|month)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/passive\\s+income\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "PURCHASE_AVAILABLE_ON_THIS_PAGE",
+          "reason": "ai-saas-waste-calculator has no live checkout of its own; the purchase happens downstream"
+        },
+        {
+          "claim_pattern": "VERIFIED_REVENUE_FROM_THIS_THESIS",
+          "reason": "no payment-provider record is attached to this candidate; revenue may not be claimed"
+        }
+      ],
+      "language": "en",
+      "freshness": {
+        "counted_signals": 4,
+        "newest_evidence_age_days": 1.69,
+        "oldest_evidence_age_days": 1.69,
+        "state": "FRESH"
+      },
+      "expiry": "2026-10-27T16:35:21.127Z",
+      "generated_at": "2026-08-28T16:35:21.148Z",
+      "handoff": {
+        "consumer": "acquisition/media-engine (Issue #52)",
+        "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
+      },
+      "history": [
+        {
+          "at": "2026-08-28T16:35:21.148Z",
+          "from_status": null,
+          "to_status": "SOURCE_CANDIDATE"
+        }
+      ]
+    },
+    {
+      "source_candidate_id": "sc-ai_agent_payback_uncertainty_2026_08",
+      "thesis_id": "ai-agent-payback-uncertainty-2026-08",
+      "thesis": "Teams evaluating AI agents cannot state a payback period once human-review overhead is counted, so the purchase stalls at the business-case step.",
+      "status": "RESEARCH_GAP",
+      "promoted": false,
+      "supporting_signal_ids": [
+        "shadow-ai-cfo-accountability-2026-08-27"
+      ],
+      "all_signal_ids": [
+        "shadow-ai-cfo-accountability-2026-08-27",
+        "agent-payback-overhead-assumption-2026-08"
+      ],
+      "corroboration_families": [
+        "industry_change"
+      ],
+      "corroboration_groups": [
+        "industry"
+      ],
+      "corroboration_buckets": [
+        "PAIN_SIGNAL",
+        "MONEY_SIGNAL"
+      ],
+      "corroboration_satisfied": false,
+      "corroboration_failures": [
+        "only 1 independent OBSERVED signal(s); the 2-Signal Rule requires 2",
+        "independent signals span 1 independence group(s); 2 are required so one event cannot corroborate itself"
+      ],
+      "excluded_as_dependent": [],
+      "expired_signal_ids": [],
+      "non_observed_signals": [
+        {
+          "signal_id": "agent-payback-overhead-assumption-2026-08",
+          "evidence_class": "ASSUMPTION",
+          "effect": "raises research priority only; excluded from the 2-Signal Rule"
+        }
+      ],
+      "evidence_strength": "INSUFFICIENT",
+      "external_consensus": true,
+      "money_evidence_note": "At least one external money signal is present.",
+      "revenue_signal_score": 59.15,
+      "revenue_signal_raw_score": 71.22,
+      "revenue_signal_band": "WATCH",
+      "score_blocks": [],
+      "claim_strength": "EVIDENCE_BACKED",
+      "score_breakdown": {
+        "purchase_intent": {
+          "score": 5,
+          "weight": 4,
+          "contribution": 20,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 10,
+          "derived": false,
+          "note": "the ROI calculator carries a live payment link, but no purchase or checkout has been attributed to this thesis"
+        },
+        "pain_severity": {
+          "score": 7,
+          "weight": 3,
+          "contribution": 21,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 10.5,
+          "derived": false,
+          "note": "plausible from the recorded budget-accountability evidence, but no pain record specific to agent payback has been observed"
+        },
+        "urgency": {
+          "score": 5,
+          "weight": 2,
+          "contribution": 10,
+          "evidence": "HYPOTHESIS",
+          "evidence_multiplier": 0,
+          "adjusted_contribution": 0,
+          "derived": false,
+          "note": "no dated trigger has been observed for this thesis"
+        },
+        "demand_growth": {
+          "score": 6,
+          "weight": 2,
+          "contribution": 12,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 6,
+          "derived": false,
+          "note": "inherited from the general AI spend growth record, not measured for this thesis"
+        },
+        "evidence_independence": {
+          "score": 6,
+          "weight": 3,
+          "contribution": 18,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 18,
+          "derived": true,
+          "note": "1 independent OBSERVED signal(s) across 1 independence group(s), 1 external"
+        },
+        "evidence_quality": {
+          "score": 4,
+          "weight": 3,
+          "contribution": 12,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 12,
+          "derived": true,
+          "note": "1 counted signal(s), mean tier 4.0, 100% carry a reference"
+        },
+        "existing_product_fit": {
+          "score": 10,
+          "weight": 4,
+          "contribution": 40,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 40,
+          "derived": true,
+          "note": "ai-agent-cost-roi-calculator at fit 0.991, verification HTTP_VERIFIED"
+        },
+        "audience_fit": {
+          "score": 8,
+          "weight": 3,
+          "contribution": 24,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 24,
+          "derived": false,
+          "note": "revenue-link-ledger.md records ai-agent-cost-roi-calculator.html as a live entry built for this audience"
+        },
+        "content_lens_fit": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 7,
+          "derived": false,
+          "note": "fits independent_builder framing"
+        },
+        "margin_fit": {
+          "score": 9,
+          "weight": 1,
+          "contribution": 9,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 9,
+          "derived": false,
+          "note": "digital product, no per-unit cost"
+        },
+        "differentiation": {
+          "score": 6,
+          "weight": 2,
+          "contribution": 12,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 6,
+          "derived": false,
+          "note": "human-review overhead is a narrower angle than generic agent ROI, but this has not been checked against a competitor set"
+        },
+        "freshness": {
+          "score": 10,
+          "weight": 2,
+          "contribution": 20,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 20,
+          "derived": true,
+          "note": "mean 99% of the evidence TTL remains"
+        },
+        "automation_feasibility": {
+          "score": 8,
+          "weight": 1,
+          "contribution": 8,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 8,
+          "derived": false,
+          "note": "existing live calculator"
+        },
+        "measurement_quality": {
+          "score": 6,
+          "weight": 3,
+          "contribution": 18,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 18,
+          "derived": false,
+          "note": "calculator_input and primary_cta_click fire on the destination"
+        },
+        "operational_burden": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 14,
+          "derived": false,
+          "note": "no new asset required"
+        },
+        "safety": {
+          "score": 10,
+          "weight": 4,
+          "contribution": 40,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 40,
+          "derived": false,
+          "note": "free calculator, owned destination, no earnings claim"
+        }
+      },
+      "derived_dimensions": [
+        "evidence_independence",
+        "evidence_quality",
+        "freshness",
+        "existing_product_fit"
+      ],
+      "best_existing_asset": "ai-agent-cost-roi-calculator",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "product_or_offer": "AI Agent Cost & ROI Calculator",
+      "primary_user_problem": "Cannot tell whether an AI agent pays back after human-review overhead.",
+      "target_audience": [
+        "ops_lead",
+        "engineering_lead",
+        "founder"
+      ],
+      "primary_cta": "Estimate agent payback",
+      "destination_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html",
+      "secondary_route": {
+        "asset_id": "product-router",
+        "destination_url": "https://stratumpraxis.com/product-router.html",
+        "role": "LOW_FRICTION_ENTRY"
+      },
+      "asset_fit_score": 0.991,
+      "verification_state": "HTTP_VERIFIED",
+      "measurement_quality": "CTA_AND_CHECKOUT_MEASURED",
+      "asset_fit_outcome": "EXISTING_ASSET_FIT",
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "product_created": false,
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-agent-cost-roi-calculator",
+          "url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html",
+          "cta": "Estimate agent payback"
+        },
+        {
+          "role": "LOW_FRICTION_ENTRY",
+          "asset_id": "product-router",
+          "url": "https://stratumpraxis.com/product-router.html",
+          "cta": null
+        }
+      ],
+      "eligible_audiences": [
+        "ops_lead",
+        "engineering_lead",
+        "founder"
+      ],
+      "eligible_lenses": [
+        "independent_builder",
+        "structural_reflection"
+      ],
+      "channel_candidates": [
+        {
+          "channel": "youtube",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "tiktok",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "devto",
+          "automation": "HUMAN_REQUIRED",
+          "human_required_reason": "no provider in distribution/provider-policy.json has publishingEnabled for this channel"
+        }
+      ],
+      "prohibited_claims": [
+        {
+          "claim_pattern": "/guaranteed\\s+(income|profit|revenue|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/risk[- ]?free\\s+(income|profit|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/get\\s+rich(\\s+quick)?/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/instant\\s+(income|profit|money)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\bno\\s+risk\\b/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/100%\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\$\\d+[kKmM]?\\s*(?:per|\\/)\\s*(?:day|week|month)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/passive\\s+income\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "VERIFIED_REVENUE_FROM_THIS_THESIS",
+          "reason": "no payment-provider record is attached to this candidate; revenue may not be claimed"
+        }
+      ],
+      "language": "en",
+      "freshness": {
+        "counted_signals": 1,
+        "newest_evidence_age_days": 1.69,
+        "oldest_evidence_age_days": 1.69,
+        "state": "FRESH"
+      },
+      "expiry": "2026-10-27T16:35:21.127Z",
+      "generated_at": "2026-08-28T16:35:21.151Z",
+      "handoff": {
+        "consumer": "acquisition/media-engine (Issue #52)",
+        "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
+      },
+      "history": [
+        {
+          "at": "2026-08-28T16:35:21.151Z",
+          "from_status": null,
+          "to_status": "RESEARCH_GAP"
+        }
+      ]
+    },
+    {
+      "source_candidate_id": "sc-repeat_visit_retention_architecture_2026_08",
+      "thesis_id": "repeat-visit-retention-architecture-2026-08",
+      "thesis": "Site owners want a reason for readers to return rather than more articles, and treat recurring checking behaviour as the asset.",
+      "status": "RESEARCH_GAP",
+      "promoted": false,
+      "supporting_signal_ids": [
+        "return-gate-owned-traffic-2026-08-27"
+      ],
+      "all_signal_ids": [
+        "return-gate-owned-traffic-2026-08-27",
+        "owner-source-repeat-visit-package-2026-08-26"
+      ],
+      "corroboration_families": [
+        "owned_behavior"
+      ],
+      "corroboration_groups": [
+        "owned"
+      ],
+      "corroboration_buckets": [
+        "DEMAND_SIGNAL"
+      ],
+      "corroboration_satisfied": false,
+      "corroboration_failures": [
+        "only 1 independent OBSERVED signal(s); the 2-Signal Rule requires 2",
+        "independent signals span 1 independence group(s); 2 are required so one event cannot corroborate itself",
+        "no external independent OBSERVED signal; owned behaviour alone cannot establish external demand"
+      ],
+      "excluded_as_dependent": [
+        {
+          "signal_id": "owner-source-repeat-visit-package-2026-08-26",
+          "conflicts_with": "return-gate-owned-traffic-2026-08-27",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the owned independence group; this is weak corroboration by policy"
+        }
+      ],
+      "expired_signal_ids": [],
+      "non_observed_signals": [],
+      "evidence_strength": "INSUFFICIENT",
+      "external_consensus": false,
+      "money_evidence_note": "No money evidence.",
+      "revenue_signal_score": 53.29,
+      "revenue_signal_raw_score": 63.17,
+      "revenue_signal_band": "WATCH",
+      "score_blocks": [],
+      "claim_strength": "EVIDENCE_BACKED",
+      "score_breakdown": {
+        "purchase_intent": {
+          "score": 2,
+          "weight": 4,
+          "contribution": 8,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 8,
+          "derived": false,
+          "note": "return-gate-growth-os.html renders 'Direct checkout temporarily paused' and carries no payment link, so no purchase is currently possible on this route"
+        },
+        "pain_severity": {
+          "score": 6,
+          "weight": 3,
+          "contribution": 18,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 9,
+          "derived": false,
+          "note": "argued in the owner's completed source package; not corroborated by an external observation"
+        },
+        "urgency": {
+          "score": 3,
+          "weight": 2,
+          "contribution": 6,
+          "evidence": "HYPOTHESIS",
+          "evidence_multiplier": 0,
+          "adjusted_contribution": 0,
+          "derived": false,
+          "note": "no dated trigger observed"
+        },
+        "demand_growth": {
+          "score": 4,
+          "weight": 2,
+          "contribution": 8,
+          "evidence": "HYPOTHESIS",
+          "evidence_multiplier": 0,
+          "adjusted_contribution": 0,
+          "derived": false,
+          "note": "no growth measurement exists for this thesis"
+        },
+        "evidence_independence": {
+          "score": 4,
+          "weight": 3,
+          "contribution": 12,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 12,
+          "derived": true,
+          "note": "1 independent OBSERVED signal(s) across 1 independence group(s), 0 external"
+        },
+        "evidence_quality": {
+          "score": 10,
+          "weight": 3,
+          "contribution": 30,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 30,
+          "derived": true,
+          "note": "1 counted signal(s), mean tier 1.0, 100% carry a reference"
+        },
+        "existing_product_fit": {
+          "score": 7,
+          "weight": 4,
+          "contribution": 28,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 28,
+          "derived": true,
+          "note": "return-gate-growth-os at fit 0.68, verification HTTP_VERIFIED"
+        },
+        "audience_fit": {
+          "score": 7,
+          "weight": 3,
+          "contribution": 21,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 10.5,
+          "derived": false,
+          "note": "creator and site-owner audience is declared but not measured"
+        },
+        "content_lens_fit": {
+          "score": 9,
+          "weight": 2,
+          "contribution": 18,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 18,
+          "derived": false,
+          "note": "a COMPLETE owner-approved source package on exactly this thesis exists in content/note-publish-queue/"
+        },
+        "margin_fit": {
+          "score": 5,
+          "weight": 1,
+          "contribution": 5,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 5,
+          "derived": false,
+          "note": "the matching product's checkout is paused, so margin cannot currently be realised"
+        },
+        "differentiation": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 7,
+          "derived": false,
+          "note": "the source package takes a structural angle rather than a listicle angle"
+        },
+        "freshness": {
+          "score": 10,
+          "weight": 2,
+          "contribution": 20,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 20,
+          "derived": true,
+          "note": "mean 96% of the evidence TTL remains"
+        },
+        "automation_feasibility": {
+          "score": 7,
+          "weight": 1,
+          "contribution": 7,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 7,
+          "derived": false,
+          "note": "existing pages, no new runtime"
+        },
+        "measurement_quality": {
+          "score": 4,
+          "weight": 3,
+          "contribution": 12,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 12,
+          "derived": false,
+          "note": "return_gate_view and return_gate_return fire, but the sample is 3 pageviews in 7 days"
+        },
+        "operational_burden": {
+          "score": 6,
+          "weight": 2,
+          "contribution": 12,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 12,
+          "derived": false,
+          "note": "no new asset required"
+        },
+        "safety": {
+          "score": 10,
+          "weight": 4,
+          "contribution": 40,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 40,
+          "derived": false,
+          "note": "owned destination, no earnings claim"
+        }
+      },
+      "derived_dimensions": [
+        "evidence_independence",
+        "evidence_quality",
+        "freshness",
+        "existing_product_fit"
+      ],
+      "best_existing_asset": "return-gate-growth-os",
+      "asset_id": "return-gate-growth-os",
+      "product_or_offer": "Return Gate Growth OS",
+      "primary_user_problem": "Owns useful pages but has no reason for anyone to come back.",
+      "target_audience": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
+      "primary_cta": "UNKNOWN - checkout paused",
+      "destination_url": "https://stratumpraxis.com/return-gate-growth-os.html",
+      "secondary_route": {
+        "asset_id": "ai-council-builder-en",
+        "destination_url": "https://stratumpraxis.com/ai-council-builder.html",
+        "role": "PURCHASE_PATH"
+      },
+      "asset_fit_score": 0.68,
+      "verification_state": "HTTP_VERIFIED",
+      "measurement_quality": "CTA_MEASURED_CHECKOUT_DOWNSTREAM",
+      "asset_fit_outcome": "EXISTING_ASSET_FIT",
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "product_created": false,
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "return-gate-growth-os",
+          "url": "https://stratumpraxis.com/return-gate-growth-os.html",
+          "cta": "UNKNOWN - checkout paused"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-council-builder-en",
+          "url": "https://stratumpraxis.com/ai-council-builder.html",
+          "cta": null
+        }
+      ],
+      "eligible_audiences": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
+      "eligible_lenses": [
+        "practical_operator"
+      ],
+      "channel_candidates": [],
+      "prohibited_claims": [
+        {
+          "claim_pattern": "/guaranteed\\s+(income|profit|revenue|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/risk[- ]?free\\s+(income|profit|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/get\\s+rich(\\s+quick)?/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/instant\\s+(income|profit|money)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\bno\\s+risk\\b/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/100%\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\$\\d+[kKmM]?\\s*(?:per|\\/)\\s*(?:day|week|month)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/passive\\s+income\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "EXTERNAL_CONSENSUS",
+          "reason": "No money evidence."
+        },
+        {
+          "claim_pattern": "PURCHASE_AVAILABLE_ON_THIS_PAGE",
+          "reason": "return-gate-growth-os has no live checkout of its own; the purchase happens downstream"
+        },
+        {
+          "claim_pattern": "VERIFIED_REVENUE_FROM_THIS_THESIS",
+          "reason": "no payment-provider record is attached to this candidate; revenue may not be claimed"
+        }
+      ],
+      "language": "en",
+      "freshness": {
+        "counted_signals": 1,
+        "newest_evidence_age_days": 1.69,
+        "oldest_evidence_age_days": 1.69,
+        "state": "FRESH"
+      },
+      "expiry": "2026-10-27T16:35:21.127Z",
+      "generated_at": "2026-08-28T16:35:21.152Z",
+      "handoff": {
+        "consumer": "acquisition/media-engine (Issue #52)",
+        "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
+      },
+      "history": [
+        {
+          "at": "2026-08-28T16:35:21.152Z",
+          "from_status": null,
+          "to_status": "RESEARCH_GAP"
+        }
+      ]
+    }
+  ],
+  "updated_at": "2026-08-28T16:35:21.154Z"
+}

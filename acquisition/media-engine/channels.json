@@ -1,0 +1,89 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-28",
+  "purpose": "Issue #52 channel bindings. This file does NOT define channels and does NOT grant permission. Channel names must already exist in distribution/source-routing.json, and publishing rights are read at run time from distribution/provider-policy.json, which stays authoritative. This file adds only what the media engine needs on top: which desk language a channel can carry, which already-existing account would carry it, and whether the platform's AI-content and disclosure position has actually been verified.",
+  "authority": {
+    "channel_names": "distribution/source-routing.json",
+    "publishing_rights": "distribution/provider-policy.json",
+    "utm_values": "distribution/source-routing.json",
+    "note": "Neither file is written by this engine."
+  },
+  "out_of_scope_channels": {
+    "instagram": "Owned by the existing image/video distribution lanes (distribution/launch-now.json, trend-video-engine). One channel, one owning lane: the media engine does not queue against them.",
+    "tiktok": "Owned by trend-video-engine.",
+    "youtube": "Owned by trend-video-engine.",
+    "line": "Retention-only per distribution/provider-policy.json, not a publication channel.",
+    "pinterest": "Visual-first surface owned by the image lane; no article format."
+  },
+  "channels": {
+    "devto": {
+      "channel_id": "devto",
+      "source_routing_key": "devto",
+      "supported_desks": ["en_desk"],
+      "supported_languages": ["en"],
+      "format": "LONG_FORM_ARTICLE",
+      "account_alias": "UNKNOWN",
+      "account_state": "NOT_CONNECTED",
+      "account_evidence": "No DEV account id appears anywhere in this repository. distribution/provider-policy.json records dev-community as adopted-connection-candidate with publishingEnabled false and a one-time RSS import configuration outstanding.",
+      "ai_content_policy_state": "UNVERIFIED",
+      "ai_content_policy_note": "The platform's current position on AI-assisted publishing has not been read and recorded. Until it is, an AI-derived draft cannot be auto-published here.",
+      "external_cta_allowed": "UNVERIFIED",
+      "disclosure_required": ["ai_assistance", "commercial_relationship"],
+      "canonical_url_supported": true,
+      "one_time_owner_action": "Connect the DEV account and configure the RSS import from https://stratumpraxis.com/feed.xml with canonical URLs pointing at stratumpraxis.com, then record the account id and the platform's AI-content position here.",
+      "notes": "The strongest English article fit in the current channel set: DEV officially supports RSS import and canonical URLs, which keeps the owned site as the canonical source."
+    },
+    "bluesky": {
+      "channel_id": "bluesky",
+      "source_routing_key": "bluesky",
+      "supported_desks": ["en_desk", "es_desk"],
+      "supported_languages": ["en", "es"],
+      "format": "SHORT_POST_WITH_LINK",
+      "account_alias": "UNKNOWN",
+      "account_state": "NOT_CONNECTED",
+      "account_evidence": "distribution/provider-policy.json records bluesky as priority-social-candidate with publishingEnabled false. No account handle appears in this repository.",
+      "ai_content_policy_state": "UNVERIFIED",
+      "external_cta_allowed": "UNVERIFIED",
+      "disclosure_required": ["commercial_relationship"],
+      "canonical_url_supported": false,
+      "one_time_owner_action": "Create or nominate the account, connect it, and assign a single owning publisher under the single-publisher rule in distribution/provider-policy.json. No account is created by this engine.",
+      "notes": "Only channel in the current set that could carry the Spanish desk. It is not connected, so the Spanish desk currently has no reachable channel."
+    },
+    "threads": {
+      "channel_id": "threads",
+      "source_routing_key": "threads",
+      "supported_desks": ["en_desk", "es_desk"],
+      "supported_languages": ["en", "es"],
+      "format": "SHORT_POST_WITH_LINK",
+      "account_alias": "UNKNOWN",
+      "account_state": "NOT_CONNECTED",
+      "account_evidence": "distribution/provider-policy.json records threads as priority-social-candidate with publishingEnabled false.",
+      "ai_content_policy_state": "UNVERIFIED",
+      "external_cta_allowed": "UNVERIFIED",
+      "disclosure_required": ["commercial_relationship"],
+      "canonical_url_supported": false,
+      "one_time_owner_action": "Confirm account ownership and publishing lane before any queueing.",
+      "notes": null
+    },
+    "note": {
+      "channel_id": "note",
+      "source_routing_key": "note",
+      "supported_desks": [],
+      "supported_languages": ["ja"],
+      "format": "LONG_FORM_ARTICLE",
+      "account_alias": "UNKNOWN",
+      "account_state": "MANUAL_ONLY",
+      "account_evidence": "distribution/provider-policy.json records note as active-manual-japanese-asset with publishingEnabled false. content/note-publish-queue/README.md records that no verified official publishing API was found and forbids private-endpoint or session-cookie automation.",
+      "ai_content_policy_state": "UNVERIFIED",
+      "external_cta_allowed": "UNVERIFIED",
+      "disclosure_required": ["ai_assistance", "commercial_relationship"],
+      "canonical_url_supported": false,
+      "one_time_owner_action": "None available. note remains a manual lane owned by content/note-publish-queue/. The media engine does not queue against it.",
+      "notes": "Listed so a Japanese source is not silently routed here. Neither desk is Japanese, so no desk maps to this channel."
+    }
+  },
+  "current_state_summary": {
+    "auto_publish_allowed_channels": [],
+    "reason": "No channel in this set satisfies all of: configured destination, authorised account, provider policy publishingEnabled, verified AI-content compatibility, and satisfied disclosure requirements. Every route therefore terminates at HUMAN_PUBLISH_REQUIRED or BLOCKED, which is the correct outcome rather than a gap to work around."
+  }
+}

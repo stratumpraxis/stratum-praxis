@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-08-28",
+  "purpose": "Issue #53 - the honest connection register for evidence providers. A provider listed here is NOT automatically connected. connection_state is the only field that decides whether this repository can obtain evidence from it without a human, and nothing in acquisition/signal-intelligence/ ever changes that field on its own.",
+  "connection_states": {
+    "REPOSITORY_EVIDENCE": "The evidence already lives in this repository and can be read offline with no credential and no network call.",
+    "MANUAL_EVIDENCE_ONLY": "A real external account exists on the owner side, but this repository has no connection to it. Evidence enters only when the owner records it into a repository file. No automation is claimed.",
+    "CONTRACT_ONLY": "The contract is implemented and testable, but no connection, credential, quota or terms review exists. This provider currently supplies zero evidence records.",
+    "BLOCKED": "Must not be used as an automated evidence provider."
+  },
+  "providers": {
+    "repository_records": {
+      "connection_state": "REPOSITORY_EVIDENCE",
+      "families": ["owned_behavior", "search_demand", "industry_change", "builder_discussion"],
+      "reads": ["revenue-os/metrics.json", "revenue-os/backlog.md", "revenue-link-ledger.md", "acquisition/demand-signals.json"],
+      "automation_allowed": true,
+      "manual_step": null,
+      "notes": "Durable operator-recorded evidence. Every record sourced here cites the exact file and key it was read from."
+    },
+    "owner_source_material": {
+      "connection_state": "REPOSITORY_EVIDENCE",
+      "families": ["editorial_source"],
+      "reads": ["content/note-publish-queue/", "content/note-drafts/"],
+      "automation_allowed": true,
+      "manual_step": null,
+      "notes": "Completed owner-approved source packages. content/note-publish-queue/README.md defines what COMPLETE means; drafts are not COMPLETE."
+    },
+    "posthog": {
+      "connection_state": "MANUAL_EVIDENCE_ONLY",
+      "families": ["owned_behavior"],
+      "automation_allowed": false,
+      "manual_step": "One-time owner action: add a read-only PostHog project API key as a GitHub Actions secret and add a query step. Until then, owned analytics reach this layer only through revenue-os/metrics.json entries the owner writes.",
+      "notes": "revenue-os/metrics.json distribution_baseline_2026_08_27 cites PostHog project 573335. That is an owner-recorded observation, not a live connection from this repository."
+    },
+    "stripe": {
+      "connection_state": "MANUAL_EVIDENCE_ONLY",
+      "families": ["owned_behavior"],
+      "automation_allowed": false,
+      "manual_step": "One-time owner action: expose a read-only Stripe key to CI if automated purchase evidence is wanted. Purchase counts remain unusable without a payment-provider record either way.",
+      "notes": "revenue-os/metrics.json records stripe_live_payment_intents: 0 as of 2026-08-24. That is a measured zero, not a missing measurement."
+    },
+    "payhip": {
+      "connection_state": "MANUAL_EVIDENCE_ONLY",
+      "families": ["owned_behavior"],
+      "automation_allowed": false,
+      "manual_step": "Owner-side export of Payhip order records when a purchase occurs.",
+      "notes": null
+    },
+    "gumroad": {
+      "connection_state": "MANUAL_EVIDENCE_ONLY",
+      "families": ["owned_behavior"],
+      "automation_allowed": false,
+      "manual_step": "Owner-side export of Gumroad sales records when a purchase occurs.",
+      "notes": null
+    },
+    "reddit": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["community_pain"],
+      "automation_allowed": false,
+      "manual_step": "No connection. distribution/provider-policy.json marks reddit community-only-deferred with publishingEnabled false. Reading would additionally require an approved API application and rate-limit terms review.",
+      "notes": "Zero evidence records today. The contract exists so a corroborating PAIN_SIGNAL can be ingested the moment it is legitimately obtained."
+    },
+    "product_hunt": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["product_discovery"],
+      "automation_allowed": false,
+      "manual_step": "No connection. Would require a Product Hunt API token and terms review.",
+      "notes": "Zero evidence records today."
+    },
+    "google_trends": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["trend_evidence"],
+      "automation_allowed": false,
+      "manual_step": "No connection. There is no official public API; any access route needs an explicit terms review before use.",
+      "notes": "Zero evidence records today."
+    },
+    "youtube_search_trends": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["trend_evidence"],
+      "automation_allowed": false,
+      "manual_step": "No connection. Would require a YouTube Data API key and quota.",
+      "notes": "Zero evidence records today. Shares the trends independence group with google_trends, so the two cannot corroborate each other."
+    },
+    "software_reviews": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["review_signal"],
+      "automation_allowed": false,
+      "manual_step": "No connection. G2 / Capterra / GetApp / Software Advice each require a licensed data route; scraping is not an option.",
+      "notes": "Zero evidence records today."
+    },
+    "question_demand": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["question_demand"],
+      "automation_allowed": false,
+      "manual_step": "No connection. Would require a paid question-demand tool account.",
+      "notes": "Zero evidence records today."
+    },
+    "competitor_pricing_pages": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["competitor_pricing"],
+      "automation_allowed": false,
+      "manual_step": "No connection. Public pricing pages may be read by a human and recorded; no automated crawler is authorised here.",
+      "notes": "Zero evidence records today."
+    },
+    "hacker_news": {
+      "connection_state": "CONTRACT_ONLY",
+      "families": ["builder_discussion"],
+      "automation_allowed": false,
+      "manual_step": "No connection.",
+      "notes": "Zero evidence records today."
+    }
+  }
+}

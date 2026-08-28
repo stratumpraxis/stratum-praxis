@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-28",
+  "purpose": "Issue #52 identity truth contract. There is exactly ONE identity. It is not a character and it is not one of several personas: it is the real operator of this repository, described at a deliberately broad, privacy-preserving level. Nothing in acquisition/media-engine/ can create a second identity, and lib/identity.mjs refuses to load a file containing more than one.",
+  "identity_id": "jp_independent_freelancer",
+  "public_descriptor": "Japan-based independent freelancer publishing internationally about practical AI, independent work and working systems.",
+  "public_descriptor_es": "Freelancer independiente en Japon que publica internacionalmente sobre IA practica, trabajo independiente y sistemas de trabajo.",
+  "is_fictional": false,
+  "operator": "the owner of github.com/stratumpraxis",
+  "languages": ["en", "es"],
+  "approved_first_person_claims": [
+    {
+      "claim_id": "based_in_japan",
+      "claim": "writes from Japan",
+      "permitted_phrasings": ["Japan-based", "from Japan", "writing from Japan", "desde Japon", "con base en Japon"],
+      "evidence_ref": "Declared by the repository owner in GitHub issue #52 as the public positioning of this identity.",
+      "scope": "Country-level only. No prefecture, city, ward, neighbourhood or address may be stated."
+    },
+    {
+      "claim_id": "independent_solo_operator",
+      "claim": "works independently as a solo operator rather than inside a company",
+      "permitted_phrasings": ["independent freelancer", "solo operator", "working independently", "freelancer independiente", "operador en solitario"],
+      "evidence_ref": "Declared by the repository owner in GitHub issue #52.",
+      "scope": "The working arrangement only. No employer history, client names, team size, revenue or income may be stated."
+    },
+    {
+      "claim_id": "operates_these_tools",
+      "claim": "built and operates the tools and pages published on stratumpraxis.com",
+      "permitted_phrasings": ["the calculator I publish", "a tool I maintain", "the checklist I publish", "una herramienta que publico"],
+      "evidence_ref": "Repository authorship: the referenced pages exist in this repository and are listed in acquisition/asset-inventory.json with verification_state HTTP_VERIFIED.",
+      "scope": "Only assets that appear in acquisition/asset-inventory.json. Never extends to third-party products."
+    },
+    {
+      "claim_id": "ai_assisted_production",
+      "claim": "produces this writing with AI assistance",
+      "permitted_phrasings": ["written with AI assistance", "AI-assisted", "escrito con asistencia de IA"],
+      "evidence_ref": "True by construction: acquisition/media-engine derives every draft. This is the disclosure claim, not a credential.",
+      "scope": "Disclosure only."
+    }
+  ],
+  "prohibited_first_person_claims": [
+    { "claim_id": "personal_testing", "reason": "No testing evidence exists for any third-party tool.", "safe_rewrite": "This appears useful when ..." },
+    { "claim_id": "personal_purchase", "reason": "No purchase record supports a first-person purchase claim.", "safe_rewrite": "For independent workers evaluating this, the practical question is ..." },
+    { "claim_id": "daily_use", "reason": "No usage record supports a habitual-use claim.", "safe_rewrite": "One practical implication is ..." },
+    { "claim_id": "client_work", "reason": "No client engagement may be described. Client stories are the single most common fabrication in this category.", "safe_rewrite": "For independent workers, a recurring version of this problem is ..." },
+    { "claim_id": "customers_or_revenue", "reason": "revenue-os/metrics.json records verified_revenue null and stripe_live_payment_intents 0. There are no customers to describe.", "safe_rewrite": "From a Japan-based freelancer perspective, the measurable question is ..." },
+    { "claim_id": "residence_history", "reason": "Where the operator has lived is private and is not part of this identity.", "safe_rewrite": "From a Japan-based freelancer perspective ..." },
+    { "claim_id": "employment_history", "reason": "No employer may be named or implied.", "safe_rewrite": "For someone working independently ..." },
+    { "claim_id": "credentials", "reason": "No degree, certification, licence or years-of-experience claim is approved.", "safe_rewrite": "The practical reading of this is ..." },
+    { "claim_id": "age_or_identity_details", "reason": "Age, legal name and personal identifiers are private.", "safe_rewrite": "omit entirely" },
+    { "claim_id": "travel_or_visits", "reason": "No travel or venue visit may be claimed.", "safe_rewrite": "Publicly reported accounts describe ..." },
+    { "claim_id": "testimonial_or_result", "reason": "No third-party testimonial, result or endorsement may be written.", "safe_rewrite": "omit entirely" },
+    { "claim_id": "expertise_authority", "reason": "No expert, authority or insider-status claim is approved.", "safe_rewrite": "One reading of the available evidence is ..." },
+    { "claim_id": "interviews_or_sources", "reason": "No interview, conversation or private source may be claimed.", "safe_rewrite": "Published material states ..." }
+  ],
+  "privacy_redactions": {
+    "never_publish": [
+      "exact home address or any street-level location",
+      "prefecture, city, ward or neighbourhood of residence",
+      "legal name and any legal identifier",
+      "date of birth or age",
+      "account credentials, API keys and tokens",
+      "private email addresses",
+      "phone numbers",
+      "financial account details",
+      "health or medical information",
+      "precise location history or GPS coordinates",
+      "unpublished personal records"
+    ],
+    "public_contact_allowlist": ["stratumpraxis@gmail.com"],
+    "public_profile_allowlist": ["https://x.com/Stratumpraxis", "https://github.com/stratumpraxis", "https://stratumpraxis.com/"],
+    "note": "The allowlists exist so the privacy gate can tell an already-public contact from a leak. AGENTS.md records stratumpraxis@gmail.com as the contact already published on the public site."
+  },
+  "allowed_topics": [
+    "practical AI use for independent work",
+    "independent and solo work systems",
+    "tool and workflow tradeoffs",
+    "cost, spend and renewal decisions",
+    "grounded observation of working life in Japan",
+    "structural reflection on work, systems and incentives"
+  ],
+  "restricted_topics": [
+    { "topic": "financial, tax, legal, immigration or medical advice", "reason": "requires licensed advice; out of scope for this identity" },
+    { "topic": "national generalisations about Japan or Japanese people", "reason": "the japan_reality lens exists specifically to avoid this" },
+    { "topic": "income, earnings or guaranteed-result claims", "reason": "blocked by the existing acquisition safety gate" },
+    { "topic": "named individuals or private third parties", "reason": "privacy" }
+  ],
+  "default_disclosure_policy": {
+    "ai_assistance": "REQUIRED_WHERE_PLATFORM_REQUIRES_IT",
+    "commercial_relationship": "REQUIRED_WHENEVER_A_CTA_POINTS_AT_AN_OWNED_PAID_ASSET",
+    "note": "Disclosure requirements are resolved per channel in channels.json. An unmet disclosure requirement blocks publication; it is never waived."
+  },
+  "no_persona_expansion_rule": "A successful desk or lens never becomes a new person. It may receive a dedicated publication name, a site section, an authorised channel or higher routing priority, and it stays transparently operated by the same person. No code in this repository creates an identity, a persona or an account."
+}

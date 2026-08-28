@@ -41,7 +41,9 @@ jobs:
       - name: Syntax check every module
         run: |
           set -euo pipefail
-          for file in acquisition/lib/*.mjs acquisition/cli/*.mjs acquisition/test/*.mjs; do
+          for file in acquisition/lib/*.mjs acquisition/cli/*.mjs acquisition/test/*.mjs \
+                      acquisition/signal-intelligence/lib/*.mjs acquisition/signal-intelligence/cli/*.mjs acquisition/signal-intelligence/test/*.mjs \
+                      acquisition/media-engine/lib/*.mjs acquisition/media-engine/cli/*.mjs acquisition/media-engine/test/*.mjs; do
             node --check "$file"
           done
           for file in $(find acquisition -name '*.json'); do
@@ -49,7 +51,11 @@ jobs:
           done
 
       - name: Unit and integration tests
-        run: node --test 'acquisition/test/*.test.mjs'
+        run: |
+          set -euo pipefail
+          node --test 'acquisition/test/*.test.mjs'
+          node --test 'acquisition/signal-intelligence/test/*.test.mjs'
+          node --test 'acquisition/media-engine/test/*.test.mjs'
 
       - name: Verify asset inventory (offline)
         run: node acquisition/cli/verify-inventory.mjs
@@ -74,6 +80,36 @@ jobs:
 
       - name: Daily acquisition report
         run: node acquisition/cli/daily-report.mjs
+
+      - name: Signal intelligence - ingest, rank and report (Issue #53)
+        run: |
+          set -euo pipefail
+          node acquisition/signal-intelligence/cli/ingest.mjs
+          node acquisition/signal-intelligence/cli/rank.mjs
+          node acquisition/signal-intelligence/cli/promote.mjs
+          node acquisition/signal-intelligence/cli/report.mjs
+
+      - name: Media engine - sources, derivation plan and gates (Issue #52)
+        run: |
+          set -euo pipefail
+          node acquisition/media-engine/cli/ingest-source.mjs
+          node acquisition/media-engine/cli/derive.mjs
+          node acquisition/media-engine/cli/queue-check.mjs
+          node acquisition/media-engine/cli/publish-check.mjs
+          node acquisition/media-engine/cli/report.mjs
+
+      - name: Confirm nothing reached an auto-publish or published state
+        run: |
+          set -euo pipefail
+          node -e "
+            const { execFileSync } = require('node:child_process');
+            const report = JSON.parse(execFileSync(process.execPath, ['acquisition/media-engine/cli/report.mjs', '--json'], { encoding: 'utf8' }));
+            const auto = report.q6_channel_lanes.AUTO_PUBLISH_ALLOWED;
+            if (auto.length) { console.error('a route claims AUTO_PUBLISH_ALLOWED: ' + auto.join(', ')); process.exit(1); }
+            if (report.q11_safety.publishes_performed !== 0) { console.error('a publish was claimed'); process.exit(1); }
+            if (report.q11_safety.accounts_created !== 0) { console.error('an account creation was claimed'); process.exit(1); }
+            console.log('No auto-publish lane, no publish and no account creation is claimed.');
+          "
 
       - name: Confirm existing distribution safety checks still pass
         run: |
