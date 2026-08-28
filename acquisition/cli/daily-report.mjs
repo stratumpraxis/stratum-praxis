@@ -124,6 +124,7 @@ const report = {
   q12_insufficient_data: grouped.INSUFFICIENT_DATA,
   iterate: grouped.ITERATE,
   ledger_summary: ledgerSummary,
+  attribution_gap: ledgerSummary.attribution,
   commercial_path_gaps: commercialGaps,
   human_required: humanRequired
 };
@@ -176,6 +177,10 @@ line('   SCALE', report.q10_scale.length ? report.q10_scale.join(', ') : 'none')
 line('   ITERATE', report.iterate.length ? report.iterate.join(', ') : 'none');
 line('   STOP', report.q11_stop.length ? report.q11_stop.join(', ') : 'none');
 line('   INSUFFICIENT_DATA', `${report.q12_insufficient_data.length} route(s)`);
+
+console.log('\nAttribution gap (published posts that cannot be traced to a destination)');
+line('   published, attributed', report.attribution_gap.published_with_attribution);
+line('   published, unattributed', report.attribution_gap.published_without_attribution);
 
 console.log('\nCommercial path gaps (routes that cannot end in a purchase)');
 for (const gap of report.commercial_path_gaps) line(`   ${gap.asset_id}`, `${gap.status} / ${gap.destination_type}`);

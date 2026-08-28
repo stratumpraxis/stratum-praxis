@@ -58,6 +58,11 @@ export function makeRecord(input) {
     published_at: input.published_at ?? null,
     destination: input.destination ?? 'UNKNOWN',
     utm: isPlainObject(input.utm) ? input.utm : null,
+    // PRESENT: the destination link carries attribution.
+    // NONE_HISTORICAL: it does not, and that is the historical truth for this post.
+    // Never back-fill attribution onto a post that was published without it.
+    attribution_state: input.attribution_state
+      ?? (isPlainObject(input.utm) && input.utm.utm_source ? 'PRESENT' : 'NONE_HISTORICAL'),
     status: input.status,                 // PUBLISHED | IN_FLIGHT | ERROR | UNKNOWN
     external_link: input.external_link ?? null,
     verification_time: input.verification_time ?? null,
@@ -186,9 +191,19 @@ export function summarize(records) {
   for (const stage of Object.keys(LEDGER_STAGE_FIELDS)) {
     if (stages[stage].measured === 0) stages[stage].total = 'NOT_MEASURED';
   }
+  const published = records.filter((r) => r.status === 'PUBLISHED');
+  const unattributedPublished = published.filter((r) => r.attribution_state !== 'PRESENT');
+
   return {
     records: records.length,
-    published: records.filter((r) => r.status === 'PUBLISHED').length,
+    published: published.length,
+    attribution: {
+      published_with_attribution: published.length - unattributedPublished.length,
+      published_without_attribution: unattributedPublished.length,
+      unattributed_ledger_ids: unattributedPublished.map((r) => r.ledger_id),
+      note: 'A published post without attribution cannot be traced to a destination or a funnel stage. '
+        + 'These are recorded as NONE_HISTORICAL and are never back-filled: the absence is the historical truth.'
+    },
     in_flight: records.filter((r) => r.status === 'IN_FLIGHT').length,
     errored: records.filter((r) => r.status === 'ERROR').length,
     unknown: records.filter((r) => r.status === 'UNKNOWN').length,

@@ -18,6 +18,9 @@ const node = process.execPath;
 const PROTECTED = [
   'trend-video-engine/publish-ledger.json',
   'trend-video-engine/current.json',
+  'trend-video-engine/last-qa.json',
+  'async-ai-advisor.html',
+  'unmanned/index.html',
   'distribution/provider-policy.json',
   'distribution/source-routing.json',
   'distribution/content-queue.json',

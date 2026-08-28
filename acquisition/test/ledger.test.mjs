@@ -46,15 +46,51 @@ test('Buffer statuses map to distinct meanings', () => {
 });
 
 test('the adapter agrees with the real ledger contents', () => {
+  // Derived from the live ledger, never from a frozen count: the video lane is an
+  // append-only production state file that legitimately grows between runs.
   const records = adaptTrendVideoLedger(videoLedger);
-  const inFlight = records.filter((r) => r.status === 'IN_FLIGHT');
-  assert.equal(inFlight.length, 1);
-  assert.equal(inFlight[0].platform, 'tiktok');
-  assert.equal(inFlight[0].published_at, null, 'an in-flight post has no publication time');
+  const byId = new Map(records.map((r) => [r.ledger_id, r]));
 
-  const published = records.find((r) => r.ledger_id === 'tve:2026-08-26-ai-agents-japan-v1:youtube');
+  for (const [manifestId, services] of Object.entries(videoLedger.items)) {
+    for (const [service, entry] of Object.entries(services)) {
+      if (service.startsWith('_')) continue;
+      const record = byId.get(`tve:${manifestId}:${service}`);
+      assert.ok(record, `${manifestId}.${service} is missing from the adapted view`);
+      assert.equal(record.status, normalizeExternalStatus(entry.status));
+      assert.equal(record.post_id, entry.postId ?? null);
+      assert.equal(record.published_at, entry.sentAt ?? null);
+      assert.equal(record.external_link, entry.externalLink ?? null);
+
+      // The invariant that matters: only a genuinely sent post is PUBLISHED, and a
+      // PUBLISHED record must carry the platform's own send timestamp.
+      if (record.status === 'PUBLISHED') {
+        assert.ok(record.published_at, `${record.ledger_id} is PUBLISHED without a sentAt`);
+      } else {
+        assert.equal(record.published_at, null, `${record.ledger_id} is not PUBLISHED but carries a publication time`);
+      }
+    }
+  }
+
+  const published = byId.get('tve:2026-08-26-ai-agents-japan-v1:youtube');
   assert.equal(published.status, 'PUBLISHED');
   assert.equal(published.external_link, 'https://www.youtube.com/watch?v=OgrDG1Z16rY');
+});
+
+test('a post still in flight on main is never counted as published', () => {
+  // Guards the exact regression main introduced: a new "sending" record must not
+  // silently become a publication.
+  const records = adaptTrendVideoLedger(videoLedger);
+  const sending = Object.entries(videoLedger.items)
+    .flatMap(([id, services]) => Object.entries(services)
+      .filter(([service, entry]) => !service.startsWith('_') && ['sending', 'scheduled', 'attempted'].includes(entry.status))
+      .map(([service]) => `tve:${id}:${service}`));
+
+  for (const id of sending) {
+    const record = records.find((r) => r.ledger_id === id);
+    assert.equal(record.status, 'IN_FLIGHT', `${id} must stay IN_FLIGHT`);
+    assert.notEqual(record.status, 'PUBLISHED');
+    assert.equal(record.published_at, null);
+  }
 });
 
 test('a new record starts with every funnel stage NOT_MEASURED, never zero', () => {
@@ -132,4 +168,43 @@ test('adapting an empty or malformed ledger yields no records rather than throwi
   assert.deepEqual(adaptTrendVideoLedger({}), []);
   assert.deepEqual(adaptTrendVideoLedger(null), []);
   assert.deepEqual(adaptTrendVideoLedger({ items: { a: null, b: { _state: { status: 'x' } } } }), []);
+});
+
+test('attribution absence on historical posts is recorded, never back-filled', () => {
+  const records = adaptTrendVideoLedger(videoLedger);
+  for (const record of records) {
+    // Every adapted record must state its attribution status explicitly.
+    assert.ok(['PRESENT', 'NONE_HISTORICAL'].includes(record.attribution_state),
+      `${record.ledger_id} has no attribution_state`);
+
+    if (record.attribution_state === 'PRESENT') {
+      assert.ok(record.utm && record.utm.utm_source,
+        `${record.ledger_id} claims attribution without a utm_source`);
+    } else {
+      assert.ok(!record.utm || !record.utm.utm_source,
+        `${record.ledger_id} claims NONE_HISTORICAL but carries a utm_source`);
+    }
+  }
+});
+
+test('a post published without attribution is never counted as attributed', () => {
+  const summary = summarize(adaptTrendVideoLedger(videoLedger));
+  assert.equal(
+    summary.attribution.published_with_attribution + summary.attribution.published_without_attribution,
+    summary.published,
+    'every published record must fall into exactly one attribution bucket'
+  );
+  assert.equal(summary.attribution.unattributed_ledger_ids.length, summary.attribution.published_without_attribution);
+});
+
+test('a record built with real attribution is reported as attributed', () => {
+  const attributed = makeRecord({
+    ledger_id: 'acq:attributed',
+    lane: 'acquisition',
+    platform: 'tiktok',
+    status: 'PUBLISHED',
+    utm: { utm_source: 'tiktok', utm_medium: 'social_video', utm_campaign: 'c', utm_content: 'd', asset_id: 'e' }
+  });
+  assert.equal(attributed.attribution_state, 'PRESENT');
+  assert.equal(summarize([attributed]).attribution.published_with_attribution, 1);
 });
