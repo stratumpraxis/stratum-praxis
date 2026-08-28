@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 
 import {
   ATTRIBUTION_STATES,
+  EVIDENCE_TYPES,
   LEDGER_PUBLISHER_PROOFS,
   UNPROVEN_PUBLISHERS,
   classifyAttribution,
@@ -11,7 +12,10 @@ import {
   contributesEvidence,
   extractUrls,
   findTrackedDestination,
+  ledgerFingerprint,
   matchAsset,
+  matchAssets,
+  routingConflicts,
   publicationState,
   summarizeAttribution,
   validateManifestAttribution
@@ -370,4 +374,135 @@ test('every workflow that writes the video ledger routes through a registered pu
       );
     }
   }
+});
+
+// ---- G: publication-state guard, every non-published state -------------------
+
+const publicationCases = [
+  ['sending', 'IN_FLIGHT'],
+  ['scheduled', 'IN_FLIGHT'],   // QUEUED
+  ['attempted', 'IN_FLIGHT'],
+  ['accepted', 'IN_FLIGHT'],
+  ['error', 'ERROR'],           // FAILED
+  ['rejected', 'ERROR'],
+  ['unknown', 'IN_FLIGHT']
+];
+
+for (const [status, expected] of publicationCases) {
+  test(`a "${status}" post with a tracked URL is ${expected} and never counted as published attribution`, async () => {
+    const entry = { status, postId: `p-${status}`, sentAt: null, externalLink: null };
+    const record = classifyAttribution(await fixture('attributed-youtube'), entry, ctx());
+
+    assert.equal(record.publication_state, expected);
+    assert.notEqual(record.publication_state, 'PUBLISHED');
+    assert.equal(record.published_at, null, 'a post that never went out has no publication time');
+    assert.equal(record.attribution_state, 'ATTRIBUTED', 'the payload is still known');
+    assert.equal(contributesEvidence(record), false, 'but it contributes no evidence');
+
+    const summary = summarizeAttribution([record]);
+    assert.equal(summary.published, 0);
+    assert.equal(summary.published_with_attribution, 0,
+      `${status} must not increment published_with_attribution`);
+  });
+}
+
+test('published_with_attribution only counts records the platform ledger proves PUBLISHED', async () => {
+  const attributedFixture = await fixture('attributed-youtube');
+  const records = [
+    classifyAttribution(attributedFixture, { status: 'sent', postId: 'a', sentAt: '2026-08-27T00:00:00Z' }, ctx('youtube', 'a')),
+    classifyAttribution(attributedFixture, { status: 'sending', postId: 'b', sentAt: null }, ctx('instagram', 'b')),
+    classifyAttribution(attributedFixture, { status: 'scheduled', postId: 'c', sentAt: null }, ctx('tiktok', 'c')),
+    classifyAttribution(attributedFixture, { status: 'error', postId: 'd', sentAt: null }, ctx('youtube', 'd'))
+  ];
+  const summary = summarizeAttribution(records);
+  assert.equal(summary.published, 1);
+  assert.equal(summary.published_with_attribution, 1, 'exactly the one PUBLISHED record');
+});
+
+// ---- D: ambiguity and routing conflicts -------------------------------------
+
+test('an ambiguous destination mapping is rejected, never resolved by picking one', async () => {
+  const url = 'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html';
+  const duplicated = {
+    assets: [
+      { asset_id: 'alpha', public_url: url, status: 'LIVE', verification_state: 'REPO_AND_SITEMAP', revenue_destination: { type: 'NONE' } },
+      { asset_id: 'beta', public_url: url, status: 'LIVE', verification_state: 'REPO_AND_SITEMAP', revenue_destination: { type: 'NONE' } }
+    ]
+  };
+  assert.equal(matchAssets(new URL(url), duplicated).length, 2);
+  assert.equal(matchAsset(new URL(url), duplicated), null, 'two candidates is not a match');
+
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, {
+    platform: 'youtube', manifestId: 'm1', inventory: duplicated, sourceRouting, captionProof
+  });
+  assert.equal(record.attribution_state, 'UNVERIFIED');
+  assert.equal(record.destination_asset_id, null);
+  assert.ok(record.problems.some((p) => p.includes('matches 2 inventory assets')));
+});
+
+test('routing conflicts are recorded against source-routing, never rewritten', () => {
+  // The real historical divergence: youtube captions were sent with utm_medium=social
+  // while source-routing.json declares video.
+  const conflicts = routingConflicts({ utm_source: 'youtube', utm_medium: 'social' }, 'youtube', sourceRouting);
+  assert.equal(conflicts.length, 1);
+  assert.match(conflicts[0], /utm_medium "social" was sent but .* declares "video"/);
+
+  assert.deepEqual(routingConflicts({ utm_source: 'youtube', utm_medium: 'video' }, 'youtube', sourceRouting), []);
+  assert.deepEqual(routingConflicts(null, 'youtube', sourceRouting), []);
+  assert.deepEqual(routingConflicts({ utm_medium: 'x' }, 'not-a-channel', sourceRouting), []);
+});
+
+// ---- B: the full contract field set -----------------------------------------
+
+test('an ATTRIBUTED record carries every field the contract requires', async () => {
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, ctx());
+  for (const field of [
+    'attribution_state', 'destination_url', 'destination_asset_id', 'campaign_id',
+    'utm_source', 'utm_medium', 'utm_campaign', 'platform', 'post_id',
+    'external_post_url', 'published_at', 'attribution_verified_at',
+    'attribution_evidence_type', 'attribution_evidence_ref', 'downstream_measurement_state'
+  ]) {
+    assert.ok(field in record, `missing contract field ${field}`);
+  }
+  assert.equal(record.campaign_id, 'fixture_campaign');
+  assert.equal(record.attribution_evidence_type, 'PUBLISHER_PROVEN_FIELD');
+  assert.ok(EVIDENCE_TYPES.includes(record.attribution_evidence_type));
+  assert.equal(record.downstream_measurement_state, 'NOT_MEASURED');
+});
+
+test('evidence type reflects which rung of the ladder was reached', async () => {
+  assert.equal((await classify('attributed-youtube')).attribution_evidence_type, 'PUBLISHER_PROVEN_FIELD');
+  assert.equal((await classify('awareness-only')).attribution_evidence_type, 'MANIFEST_DECLARATION');
+  assert.equal(classifyAttribution(null, sent, ctx()).attribution_evidence_type, 'NONE',
+    'no manifest means no evidence rung was reached');
+
+  async function classify(name) {
+    return classifyAttribution(await fixture(name), sent, ctx());
+  }
+});
+
+test('the evidence ref names the manifest an auditor can open', async () => {
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, {
+    platform: 'youtube', manifestId: 'm1', inventory, sourceRouting, captionProof,
+    manifestRef: 'trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json'
+  });
+  assert.equal(record.attribution_evidence_ref, 'trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json');
+});
+
+// ---- C: hash-level immutability ---------------------------------------------
+
+test('the historical publish ledger fingerprint is stable across classification', async () => {
+  const before = await ledgerFingerprint();
+  const videoLedger = await readJson('trend-video-engine/publish-ledger.json');
+  const { manifests } = await collectManifests();
+  for (const [manifestId, services] of Object.entries(videoLedger.items || {})) {
+    for (const [platform, entry] of Object.entries(services || {})) {
+      if (platform.startsWith('_')) continue;
+      classifyAttribution(manifests.get(manifestId) || null, entry, { platform, manifestId, inventory, sourceRouting, captionProof });
+    }
+  }
+  const after = await ledgerFingerprint();
+  assert.equal(after.sha256, before.sha256, 'publish-ledger.json sha256 must not change');
+  assert.equal(after.bytes, before.bytes);
+  assert.match(before.sha256, /^[0-9a-f]{64}$/);
 });

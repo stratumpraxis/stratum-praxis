@@ -10,6 +10,7 @@
 //
 // Everything here is DERIVED and additive. The video ledger is never written.
 
+import crypto from 'node:crypto';
 import fs from 'node:fs/promises';
 
 import { hasLiveCheckout, isRoutableDestination } from './inventory.mjs';
@@ -87,6 +88,34 @@ export async function establishCaptionProof(ledgerFile, { readFile = (f) => fs.r
   };
 }
 
+/**
+ * Evidence ladder, strongest first. The type recorded on a classification says WHICH
+ * rung the proof came from, so an auditor can see why a record was believed.
+ *
+ *   PLATFORM_PAYLOAD      the immutable payload the platform itself returned (not yet available)
+ *   PUBLISHER_PROVEN_FIELD a manifest field a publisher provably transmits unchanged
+ *   MANIFEST_DECLARATION   the manifest states intent (awareness-only) rather than payload
+ *   NONE                   no evidence rung was reached
+ */
+/**
+ * Byte-level fingerprint of a historical publishing record. Captured before any derived
+ * work and re-checked after, so immutability is asserted on content rather than trusted.
+ */
+export async function ledgerFingerprint(file = 'trend-video-engine/publish-ledger.json') {
+  const bytes = await fs.readFile(repoPath(file));
+  return { file, bytes: bytes.length, sha256: crypto.createHash('sha256').update(bytes).digest('hex') };
+}
+
+export const EVIDENCE_TYPES = Object.freeze([
+  'PLATFORM_PAYLOAD',
+  'PUBLISHER_PROVEN_FIELD',
+  'MANIFEST_DECLARATION',
+  'NONE'
+]);
+
+/** Whether the funnel has any measurement attached yet. Never conflated with zero. */
+export const MEASUREMENT_STATES = Object.freeze(['MEASURED', 'NOT_MEASURED']);
+
 export const ATTRIBUTION_STATES = Object.freeze([
   'ATTRIBUTED',      // the sent payload provably carried a tracked destination
   'UNATTRIBUTED',    // the sent payload provably carried no usable destination
@@ -133,15 +162,41 @@ export function findTrackedDestination(caption) {
   return { url: null, rejected };
 }
 
-/** Match a destination URL to an inventory asset by exact origin+pathname. */
-export function matchAsset(url, inventory) {
-  if (!url) return null;
+/**
+ * All inventory assets whose public_url resolves to the same origin+pathname.
+ * Returned as a list so an ambiguous mapping can be rejected instead of silently
+ * resolving to whichever asset happens to appear first.
+ */
+export function matchAssets(url, inventory) {
+  if (!url) return [];
   const key = `${url.origin}${url.pathname}`;
-  const assets = inventory?.assets || [];
-  return assets.find((asset) => {
+  return (inventory?.assets || []).filter((asset) => {
     const assetUrl = parseUrl(asset.public_url);
     return assetUrl && `${assetUrl.origin}${assetUrl.pathname}` === key;
-  }) || null;
+  });
+}
+
+/** Single unambiguous match, or null. Two or more candidates is not a match. */
+export function matchAsset(url, inventory) {
+  const matches = matchAssets(url, inventory);
+  return matches.length === 1 ? matches[0] : null;
+}
+
+/**
+ * Compare the attribution actually sent against the deterministic routing table.
+ * A mismatch is recorded, never rewritten: the sent value is the historical truth.
+ */
+export function routingConflicts(utm, platform, sourceRouting) {
+  const conflicts = [];
+  const declared = sourceRouting?.sources?.[String(platform || '').toLowerCase()];
+  if (!declared || !utm) return conflicts;
+  if (utm.utm_source && declared.utm_source && utm.utm_source !== declared.utm_source) {
+    conflicts.push(`utm_source "${utm.utm_source}" was sent but distribution/source-routing.json declares "${declared.utm_source}" for ${platform}`);
+  }
+  if (utm.utm_medium && declared.utm_medium && utm.utm_medium !== declared.utm_medium) {
+    conflicts.push(`utm_medium "${utm.utm_medium}" was sent but distribution/source-routing.json declares "${declared.utm_medium}" for ${platform}`);
+  }
+  return conflicts;
 }
 
 /** Read attribution parameters verbatim. Existing conventions are never normalised away. */
@@ -176,7 +231,7 @@ export function publicationState(rawStatus) {
  * evidence of what was transmitted, so the result can never be ATTRIBUTED.
  */
 export function classifyAttribution(manifest, ledgerEntry, context) {
-  const { platform, manifestId, inventory, captionProof } = context;
+  const { platform, manifestId, inventory, sourceRouting, captionProof, manifestRef = null } = context;
   const publication = publicationState(ledgerEntry?.status);
   const problems = [];
 
@@ -191,12 +246,19 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
     publication_state: publication,
     destination_url: null,
     destination_asset_id: null,
+    campaign_id: null,
     utm_source: null,
     utm_medium: null,
     utm_campaign: null,
     attribution_state: 'UNVERIFIED',
     attribution_evidence: null,
+    attribution_evidence_type: 'NONE',
+    attribution_evidence_ref: null,
     attribution_verified_at: null,
+    routing_conflicts: [],
+    // Downstream measurement is a separate axis entirely. Attribution says a route can
+    // be measured; this says whether anything has been.
+    downstream_measurement_state: 'NOT_MEASURED',
     payload_proof: captionProof
       ? { proven: captionProof.proven, publisher: captionProof.publisher ?? null }
       : { proven: false, publisher: null },
@@ -235,6 +297,8 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
       ...base,
       attribution_state: 'NOT_APPLICABLE',
       attribution_evidence: 'manifest declares publish.awareness_only = true; no destination was intended',
+      attribution_evidence_type: 'MANIFEST_DECLARATION',
+      attribution_evidence_ref: manifestRef,
       attribution_verified_at: new Date().toISOString()
     };
   }
@@ -249,11 +313,26 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
       attribution_evidence: rejected.length
         ? 'the sent caption contained only links that failed the destination rules'
         : 'the sent caption contained no destination URL',
+      attribution_evidence_type: 'PUBLISHER_PROVEN_FIELD',
+      attribution_evidence_ref: manifestRef,
       attribution_verified_at: new Date().toISOString()
     };
   }
 
-  const asset = matchAsset(url, inventory);
+  const candidates = matchAssets(url, inventory);
+  if (candidates.length > 1) {
+    problems.push(`destination ${url.origin}${url.pathname} matches ${candidates.length} inventory assets (${candidates.map((a) => a.asset_id).join(', ')}); an ambiguous mapping is never resolved by picking one`);
+    return {
+      ...base,
+      destination_url: url.toString(),
+      attribution_state: 'UNVERIFIED',
+      attribution_evidence: 'the sent destination maps to more than one inventory asset, so which asset received the traffic cannot be proven',
+      attribution_evidence_type: 'PUBLISHER_PROVEN_FIELD',
+      attribution_evidence_ref: manifestRef,
+      attribution_verified_at: new Date().toISOString()
+    };
+  }
+  const asset = candidates[0] || null;
   if (!asset) {
     problems.push(`destination ${url.origin}${url.pathname} does not match any asset in the acquisition inventory`);
     return {
@@ -261,6 +340,8 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
       destination_url: url.toString(),
       attribution_state: 'UNATTRIBUTED',
       attribution_evidence: 'a tracked destination was sent but it maps to no known inventory asset, so downstream events cannot be associated',
+      attribution_evidence_type: 'PUBLISHER_PROVEN_FIELD',
+      attribution_evidence_ref: manifestRef,
       attribution_verified_at: new Date().toISOString()
     };
   }
@@ -274,6 +355,8 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
       destination_asset_id: null,
       attribution_state: 'UNATTRIBUTED',
       attribution_evidence: 'declared destination_asset_id disagrees with the destination actually sent in the caption',
+      attribution_evidence_type: 'PUBLISHER_PROVEN_FIELD',
+      attribution_evidence_ref: manifestRef,
       attribution_verified_at: new Date().toISOString()
     };
   }
@@ -287,14 +370,23 @@ export function classifyAttribution(manifest, ledgerEntry, context) {
     problems.push('destination carries an incomplete attribution parameter set');
   }
 
+  const conflicts = routingConflicts(utm, platform, sourceRouting);
+  for (const conflict of conflicts) problems.push(conflict);
+
   return {
     ...base,
     destination_url: url.toString(),
     destination_asset_id: asset.asset_id,
     destination_has_live_checkout: hasLiveCheckout(asset),
+    // campaign_id is the manifest's declared token when present, otherwise the campaign
+    // actually transmitted. Never invented.
+    campaign_id: publish.campaign_id ?? utm.utm_campaign ?? null,
     utm_source: utm.utm_source ?? null,
     utm_medium: utm.utm_medium ?? null,
     utm_campaign: utm.utm_campaign ?? null,
+    routing_conflicts: conflicts,
+    attribution_evidence_type: 'PUBLISHER_PROVEN_FIELD',
+    attribution_evidence_ref: manifestRef,
     // ATTRIBUTED describes the payload, independent of whether the post is live yet.
     // publication_state stays the separate fact about whether it actually went out.
     attribution_state: 'ATTRIBUTED',
