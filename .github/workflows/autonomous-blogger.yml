@@ -1,0 +1,42 @@
+name: Autonomous Blogger
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autonomous-blogger
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run blogger lane
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          BLOGGER_MODEL: ${{ vars.BLOGGER_MODEL || 'gpt-5.6-sol' }}
+        run: node acquisition/blogger/runner.mjs
+      - name: Commit READY artifacts and state
+        if: success()
+        run: |
+          if git diff --quiet -- acquisition/blogger; then
+            echo "No blogger changes"
+            exit 0
+          fi
+          git config user.name "stratum-blogger-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add acquisition/blogger/outbox acquisition/blogger/state.json
+          git commit -m "chore(blogger): store autonomous editorial output"
+          git push
