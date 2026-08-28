@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "desks": [
+    { "desk_id": "en_desk", "language": "en", "state": "ENABLED", "default_locale": "en", "requires_localization_qa": true, "product_language_disclosure": false },
+    { "desk_id": "es_desk", "language": "es", "state": "TEST", "default_locale": "es-419-neutral", "requires_localization_qa": true, "product_language_disclosure": true }
+  ]
+}
