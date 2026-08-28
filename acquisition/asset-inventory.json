@@ -10,7 +10,7 @@
     "HTTP_VERIFIED": "written only by verify-inventory.mjs --live after a real HTTP check",
     "UNKNOWN": "explicitly unknown"
   },
-  "http_verification_note": "Live HTTPS verification ran in GitHub Actions on 2026-08-28 (workflow 'Acquisition Intelligence Engine Check', run 33142540735, job 98756379227, head 0c74d66) against all 26 assets and completed with INVENTORY_OK and zero findings. verify-inventory.mjs records a finding for any non-ok HTTP status or failed request and exits non-zero, so a clean run means every public_url responded. Per-asset verification_state is deliberately NOT flipped to HTTP_VERIFIED: that run used --live without --write, so no per-asset result was persisted, and claiming a state the committed data cannot reproduce offline would be unverifiable. The states below remain what this repository can prove on its own.",
+  "http_verification_note": "Live HTTPS verification ran in GitHub Actions at 2026-08-28T07:15:51Z — https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757) — against all 26 assets. Every public_url returned HTTP 200 with schema_errors=0 and findings=0. The per-asset statuses are printed verbatim in that job's LIVE_VERIFICATION_RESULTS block, and each asset below records its own http_status, http_checked_at and http_evidence. HTTP_VERIFIED was applied only to assets that were REPO_AND_SITEMAP and actually returned 200; it is never inferred from repository presence, sitemap presence or a prior deployment.",
   "assets": [
     {
       "asset_id": "ai-saas-waste-calculator",
@@ -56,11 +56,13 @@
         "calculator_input",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-saas-waste-calculator.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -105,11 +107,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-agent-cost-roi-calculator.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -153,11 +157,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-saas-spend-audit-checklist.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -200,11 +206,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-saas-spend.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -245,11 +253,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "saas-spend-management-small-business.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -292,11 +302,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-saas-spend-decision-kit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -337,11 +349,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-saas-spend-waste-audit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -383,11 +397,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-value-realization-kit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -428,11 +444,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "workflow-audit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -471,11 +489,13 @@
         "funnel_view",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "sample-workflow-audit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -516,11 +536,13 @@
         "funnel_view",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "accounting-ai-workflow-audit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -566,11 +588,13 @@
         "checkout_click",
         "activation"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-council-builder.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -616,11 +640,13 @@
         "checkout_click",
         "activation"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-council-builder-ja.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -662,11 +688,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-monetization-reality-check.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -706,11 +734,13 @@
         "funnel_view",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-income-claim-checklist.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -753,11 +783,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-workspace-safety-workflow-kit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -798,11 +830,13 @@
         "funnel_view",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-workspace-safety-checklist.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -842,11 +876,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "revenue-router.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -888,11 +924,13 @@
         "checkout_click",
         "activation"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "smartphone-income-blueprint.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -934,11 +972,13 @@
         "checkout_click",
         "activation"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "smartphone-ai-slide-factory.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -975,11 +1015,13 @@
         "funnel_view",
         "primary_cta_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "return-gate-growth-os.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -1018,11 +1060,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "product-router.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -1059,7 +1103,9 @@
       "verification": {
         "repo_file": null,
         "in_sitemap": false,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -1104,11 +1150,13 @@
         "advisor_checkout",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "async-ai-advisor.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       }
     },
     {
@@ -1143,11 +1191,13 @@
         "analytics_id": "UNKNOWN"
       },
       "analytics_events": [],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "unmanned/index.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       },
       "measurement_gap": "unmanned/index.html does not load scos-analytics.js, so no funnel_view, primary_cta_click or route event is emitted for this hub. Not changed here: adding a tracker to a page another lane just shipped is a production behavior change, not an integration fix. Recorded for the owner."
     },
@@ -1194,11 +1244,13 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "agentic-ai-governance-permission-kit.html",
         "in_sitemap": true,
-        "http_checked_at": null
+        "http_checked_at": "2026-08-28T07:15:51Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       },
       "distribution_note": "This is the only destination the trend-video lane has ever sent traffic to (agent-control-youtube-v5, physical-ai-control-instagram-v6). Added so the video lane's tracked destination maps to a known asset."
     }
