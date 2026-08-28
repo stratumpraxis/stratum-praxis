@@ -1,0 +1,98 @@
+name: Acquisition Intelligence Engine Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'acquisition/**'
+      - 'distribution/source-routing.json'
+      - 'distribution/provider-policy.json'
+      - 'trend-video-engine/publish-ledger.json'
+      - '.github/workflows/acquisition-engine-check.yml'
+  pull_request:
+    paths:
+      - 'acquisition/**'
+      - '.github/workflows/acquisition-engine-check.yml'
+  workflow_dispatch:
+    inputs:
+      live_url_verification:
+        description: 'Also run live HTTPS verification of every inventory public_url'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acquisition-engine-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax check every module
+        run: |
+          set -euo pipefail
+          for file in acquisition/lib/*.mjs acquisition/cli/*.mjs acquisition/test/*.mjs; do
+            node --check "$file"
+          done
+          for file in $(find acquisition -name '*.json'); do
+            node -e "JSON.parse(require('fs').readFileSync('$file','utf8'))"
+          done
+
+      - name: Unit and integration tests
+        run: node --test 'acquisition/test/*.test.mjs'
+
+      - name: Verify asset inventory (offline)
+        run: node acquisition/cli/verify-inventory.mjs
+
+      - name: Validate distribution queue and run the safety gate
+        run: node acquisition/cli/queue-check.mjs
+
+      - name: Build the unified distribution ledger view (read-only)
+        run: node acquisition/cli/ledger-sync.mjs
+
+      - name: Daily acquisition report
+        run: node acquisition/cli/daily-report.mjs
+
+      - name: Confirm existing distribution safety checks still pass
+        run: |
+          set -euo pipefail
+          node distribution/distribution-safety-auditor.mjs
+          BUFFER_QUEUE_FILE=launch-now.json node distribution/safety-audit.mjs
+
+      - name: Confirm no production lane file was modified
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- \
+            trend-video-engine/ \
+            distribution/ \
+            revenue-os/ \
+            revenue-link-ledger.md \
+            scos-analytics.js \
+            sitemap.xml \
+            AGENTS.md
+          echo "No production lane file was modified by the acquisition engine."
+
+      - name: Safety boundary
+        run: echo "Validation and reporting only. This workflow contains no publish step."
+
+  live-url-verification:
+    if: github.event_name == 'workflow_dispatch' && inputs.live_url_verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify every inventory public_url over HTTPS
+        run: node acquisition/cli/verify-inventory.mjs --live

@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-08-27",
+  "purpose": "Demand signals scored by acquisition/lib/signal-score.mjs. Every dimension carries an explicit evidence class. OBSERVED means it was read from a measurement, a repository record or an operational document in this repository. ASSUMPTION and HYPOTHESIS are NOT evidence and must never be reported as such.",
+  "evidence_sources": {
+    "backlog": "revenue-os/backlog.md",
+    "metrics": "revenue-os/metrics.json",
+    "ledger": "revenue-link-ledger.md",
+    "agents": "AGENTS.md"
+  },
+  "signals": [
+    {
+      "signal_id": "shadow-ai-spend-accountability-2026-08",
+      "title": "Shadow AI spend and quarterly cost accountability",
+      "language": "en",
+      "user_problem": "AI tools are being expensed across a team without a shared record, and someone now has to justify the total before the next renewal.",
+      "problem_keys": ["shadow_ai", "ai_saas_spend", "renewal_cost", "cost_visibility", "tool_overlap"],
+      "target_audience": ["finance", "ops_lead", "smb_owner"],
+      "observed_basis": [
+        "revenue-os/backlog.md P1 (2026-08-27) records a completed public-search market-signal pass that scored this signal 88/110 and matched it to the existing AI & SaaS Spend funnel",
+        "revenue-os/metrics.json market_signal_loop_2026_08_27 stores that scoring run",
+        "ai-saas-waste-calculator.html was strengthened for this exact signal in commit fd189b19900291081b7dd3a655db7202312c7c44 (PR #39)"
+      ],
+      "scores": {
+        "pain_intensity": {"score": 8, "evidence": "OBSERVED", "note": "recorded in the 2026-08-27 market-signal pass in backlog.md"},
+        "urgency": {"score": 7, "evidence": "OBSERVED", "note": "renewal and quarterly-review timing is the stated trigger in the same pass"},
+        "audience_fit": {"score": 9, "evidence": "OBSERVED", "note": "matches the audience the AI/SaaS Spend funnel already targets"},
+        "commercial_intent": {"score": 8, "evidence": "ASSUMPTION", "note": "the funnel is priced and live, but no purchase from this signal has been observed"},
+        "asset_fit": {"score": 10, "evidence": "OBSERVED", "note": "ai-saas-waste-calculator.html was updated specifically for this signal"},
+        "content_fit": {"score": 8, "evidence": "ASSUMPTION", "note": "short-form cost-visibility explanation is expected to travel; not yet demonstrated on these accounts"},
+        "distribution_fit": {"score": 7, "evidence": "OBSERVED", "note": "Instagram/TikTok/YouTube are Buffer-connected with a verified publishing lane"},
+        "measurement_quality": {"score": 6, "evidence": "OBSERVED", "note": "funnel_view / calculator_input / primary_cta_click fire on the destination; checkout happens one hop downstream"},
+        "safety": {"score": 10, "evidence": "OBSERVED", "note": "free calculator, no earnings claim, owned destination, existing safety lane"}
+      }
+    },
+    {
+      "signal_id": "ai-agent-payback-uncertainty-2026-08",
+      "title": "AI agent payback uncertainty after human-review overhead",
+      "language": "en",
+      "user_problem": "An AI agent looks cheap per call but the human review it triggers may erase the saving, and nobody has done that arithmetic.",
+      "problem_keys": ["ai_agent_cost", "agent_roi", "payback_period", "human_review_overhead"],
+      "target_audience": ["ops_lead", "engineering_lead", "founder"],
+      "observed_basis": [
+        "revenue-link-ledger.md records ai-agent-cost-roi-calculator.html as a live high-intent free entry created for this intent",
+        "the page carries the $39 Stripe payment link, so the commercial path exists"
+      ],
+      "scores": {
+        "pain_intensity": {"score": 7, "evidence": "ASSUMPTION", "note": "asserted by the ledger's routing rule; no measurement of this audience exists yet"},
+        "urgency": {"score": 5, "evidence": "HYPOTHESIS", "note": "no timing trigger has been observed for this signal"},
+        "audience_fit": {"score": 8, "evidence": "OBSERVED", "note": "the asset was built for this audience and states it in copy"},
+        "commercial_intent": {"score": 9, "evidence": "OBSERVED", "note": "the free calculator links directly to a live $39 Stripe checkout"},
+        "asset_fit": {"score": 10, "evidence": "OBSERVED", "note": "a dedicated calculator for this exact question already exists"},
+        "content_fit": {"score": 7, "evidence": "HYPOTHESIS", "note": "no content on this angle has been published or measured"},
+        "distribution_fit": {"score": 6, "evidence": "OBSERVED", "note": "YouTube is Buffer-connected; DEV requires a one-time human RSS setup"},
+        "measurement_quality": {"score": 8, "evidence": "OBSERVED", "note": "funnel_view, primary_cta_click and checkout_click all fire on this page"},
+        "safety": {"score": 10, "evidence": "OBSERVED", "note": "owned destination, no earnings claim, arithmetic only"}
+      }
+    },
+    {
+      "signal_id": "return-gate-repeat-visit-demand-2026-08",
+      "title": "Repeat-visit architecture demand",
+      "language": "en",
+      "user_problem": "A site gets one-off visits and the owner has no reason to offer for a second one.",
+      "problem_keys": ["repeat_visits", "retention_architecture"],
+      "target_audience": ["creator", "founder", "site_owner"],
+      "observed_basis": [
+        "revenue-os/metrics.json records 3 Return Gate pageviews in the 7-day window at 2026-08-27, all reported as direct referrer traffic",
+        "return-gate-growth-os.html currently renders 'Direct checkout temporarily paused' and contains no payment link"
+      ],
+      "scores": {
+        "pain_intensity": {"score": 6, "evidence": "HYPOTHESIS", "note": "no demand measurement for this problem exists in the repository"},
+        "urgency": {"score": 3, "evidence": "HYPOTHESIS", "note": "no timing trigger observed"},
+        "audience_fit": {"score": 7, "evidence": "ASSUMPTION", "note": "asserted by the product page's stated audience"},
+        "commercial_intent": {"score": 2, "evidence": "OBSERVED", "note": "the only matching offer has a paused checkout, so intent cannot convert"},
+        "asset_fit": {"score": 8, "evidence": "OBSERVED", "note": "a matching asset exists"},
+        "content_fit": {"score": 6, "evidence": "HYPOTHESIS", "note": "untested"},
+        "distribution_fit": {"score": 5, "evidence": "ASSUMPTION", "note": "no channel has been assigned to this asset"},
+        "measurement_quality": {"score": 3, "evidence": "OBSERVED", "note": "3 pageviews in 7 days, all direct; too little to learn from"},
+        "safety": {"score": 10, "evidence": "OBSERVED", "note": "owned destination, no claims"}
+      }
+    }
+  ]
+}
