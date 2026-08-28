@@ -28,7 +28,9 @@ const inventory = await loadInventory('acquisition/asset-inventory.json', { know
 const signalFile = await readJson('acquisition/demand-signals.json');
 const queue = await loadQueue();
 const ledger = await loadLedger();
-const adapted = adaptTrendVideoLedger(await readJson('trend-video-engine/publish-ledger.json'));
+const adapted = adaptTrendVideoLedger(await readJson('trend-video-engine/publish-ledger.json'), {
+  attributionOverlay: ledger.attribution_overlay || null
+});
 const unified = unifiedView(ledger, adapted);
 const ledgerSummary = summarize(unified);
 
@@ -181,6 +183,8 @@ line('   INSUFFICIENT_DATA', `${report.q12_insufficient_data.length} route(s)`);
 console.log('\nAttribution gap (published posts that cannot be traced to a destination)');
 line('   published, attributed', report.attribution_gap.published_with_attribution);
 line('   published, unattributed', report.attribution_gap.published_without_attribution);
+line('   published, not applicable', report.attribution_gap.published_not_applicable);
+for (const [state, count] of Object.entries(report.attribution_gap.by_state)) line(`     ${state}`, count);
 
 console.log('\nCommercial path gaps (routes that cannot end in a purchase)');
 for (const gap of report.commercial_path_gaps) line(`   ${gap.asset_id}`, `${gap.status} / ${gap.destination_type}`);

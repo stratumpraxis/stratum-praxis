@@ -1,0 +1,13 @@
+{
+  "id": "fixture-attributed-youtube",
+  "_comment": "Valid: the tracked destination appears verbatim in the caption that gets sent.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["youtube"],
+    "caption": "A short explainer about agent permission design.\n\nPractical control framework: https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=video&utm_campaign=fixture_campaign\n\n#AI",
+    "destination_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=video&utm_campaign=fixture_campaign",
+    "destination_asset_id": "agentic-ai-governance-permission-kit",
+    "campaign_id": "fixture_campaign"
+  }
+}

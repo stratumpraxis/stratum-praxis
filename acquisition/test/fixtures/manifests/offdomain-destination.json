@@ -1,0 +1,10 @@
+{
+  "id": "fixture-offdomain",
+  "_comment": "DELIBERATELY INVALID: the only caption link points off-domain and must be rejected.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["youtube"],
+    "caption": "Read more at https://medium.com/@someone/not-our-domain and subscribe."
+  }
+}

@@ -1150,6 +1150,57 @@
         "http_checked_at": null
       },
       "measurement_gap": "unmanned/index.html does not load scos-analytics.js, so no funnel_view, primary_cta_click or route event is emitted for this hub. Not changed here: adding a tracker to a page another lane just shipped is a production behavior change, not an integration fix. Recorded for the owner."
+    },
+    {
+      "asset_id": "agentic-ai-governance-permission-kit",
+      "brand": "Stratum Praxis",
+      "asset_name": "Agentic AI Governance & Permission Kit",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/5kQ28s1kwgTF4Wk1tp6Zy0A",
+        "price": "USD 99",
+        "evidence": "in-page Stripe payment link directly beneath the '$99 one-time' price block"
+      },
+      "primary_user_problem": "AI agents are being adopted with no defined permissions, approval gates, retry ceilings or rollback rules.",
+      "problem_keys": [
+        "ai_governance",
+        "agent_permissions",
+        "connector_permissions",
+        "workflow_automation",
+        "shadow_ai"
+      ],
+      "target_audience": [
+        "ops_lead",
+        "engineering_lead",
+        "founder"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "youtube",
+        "instagram",
+        "tiktok",
+        "devto"
+      ],
+      "cta": {
+        "label": "Get the kit - $99",
+        "analytics_id": "agentic_ai_governance_permission_kit_primary"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "agentic-ai-governance-permission-kit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      },
+      "distribution_note": "This is the only destination the trend-video lane has ever sent traffic to (agent-control-youtube-v5, physical-ai-control-instagram-v6). Added so the video lane's tracked destination maps to a known asset."
     }
   ]
 }

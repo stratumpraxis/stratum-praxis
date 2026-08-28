@@ -1,0 +1,13 @@
+{
+  "id": "fixture-destination-not-in-caption",
+  "_comment": "DELIBERATELY INVALID: a destination declared but absent from the caption is never actually sent.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["youtube"],
+    "caption": "An explainer with no link in the text at all.",
+    "destination_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=video&utm_campaign=fixture",
+    "destination_asset_id": "agentic-ai-governance-permission-kit",
+    "campaign_id": "fixture"
+  }
+}

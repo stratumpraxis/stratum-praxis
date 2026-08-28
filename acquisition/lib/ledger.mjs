@@ -58,11 +58,14 @@ export function makeRecord(input) {
     published_at: input.published_at ?? null,
     destination: input.destination ?? 'UNKNOWN',
     utm: isPlainObject(input.utm) ? input.utm : null,
-    // PRESENT: the destination link carries attribution.
-    // NONE_HISTORICAL: it does not, and that is the historical truth for this post.
-    // Never back-fill attribution onto a post that was published without it.
+    // ATTRIBUTED | UNATTRIBUTED | NOT_APPLICABLE | UNVERIFIED - see lib/attribution.mjs.
+    // Derived from what the post's payload provably contained, never from topic similarity,
+    // and never back-filled onto a post that was published without a destination.
     attribution_state: input.attribution_state
-      ?? (isPlainObject(input.utm) && input.utm.utm_source ? 'PRESENT' : 'NONE_HISTORICAL'),
+      ?? (isPlainObject(input.utm) && input.utm.utm_source ? 'ATTRIBUTED' : 'UNVERIFIED'),
+    attribution_evidence: input.attribution_evidence ?? null,
+    destination_asset_id: input.destination_asset_id ?? null,
+    manifest_id: input.manifest_id ?? null,
     status: input.status,                 // PUBLISHED | IN_FLIGHT | ERROR | UNKNOWN
     external_link: input.external_link ?? null,
     verification_time: input.verification_time ?? null,
@@ -77,7 +80,7 @@ export function makeRecord(input) {
  * Read-only adapter over trend-video-engine/publish-ledger.json.
  * The video ledger's own file is never written by this module.
  */
-export function adaptTrendVideoLedger(videoLedger, { sourceFile = 'trend-video-engine/publish-ledger.json' } = {}) {
+export function adaptTrendVideoLedger(videoLedger, { sourceFile = 'trend-video-engine/publish-ledger.json', attributionOverlay = null } = {}) {
   const records = [];
   const items = isPlainObject(videoLedger?.items) ? videoLedger.items : {};
   for (const [manifestId, services] of Object.entries(items)) {
@@ -85,14 +88,22 @@ export function adaptTrendVideoLedger(videoLedger, { sourceFile = 'trend-video-e
     for (const [service, entry] of Object.entries(services)) {
       if (service.startsWith('_') || !isPlainObject(entry)) continue;
       const status = normalizeExternalStatus(entry.status);
-      const destination = entry.externalLink || entry.videoUrl || 'UNKNOWN';
-      const url = parseUrl(destination);
+      const ledgerId = `tve:${manifestId}:${service}`;
+      // Derived attribution, if acquisition/cli/attribution-backfill.mjs has produced it.
+      // The overlay never changes publication facts - only what the sent payload contained.
+      const derived = isPlainObject(attributionOverlay) ? attributionOverlay[ledgerId] : null;
+      const destination = derived?.destination_url || entry.externalLink || entry.videoUrl || 'UNKNOWN';
+      const url = parseUrl(derived?.destination_url || entry.externalLink || entry.videoUrl || '');
       records.push(makeRecord({
-        ledger_id: `tve:${manifestId}:${service}`,
+        ledger_id: ledgerId,
         lane: 'trend-video-engine',
         platform: service,
-        asset: manifestId,
-        campaign: 'UNKNOWN',
+        asset: derived?.destination_asset_id || manifestId,
+        manifest_id: manifestId,
+        campaign: derived?.utm_campaign || 'UNKNOWN',
+        attribution_state: derived?.attribution_state,
+        attribution_evidence: derived?.attribution_evidence ?? null,
+        destination_asset_id: derived?.destination_asset_id ?? null,
         post_id: entry.postId ?? null,
         published_at: entry.sentAt ?? null,
         destination,
@@ -192,17 +203,24 @@ export function summarize(records) {
     if (stages[stage].measured === 0) stages[stage].total = 'NOT_MEASURED';
   }
   const published = records.filter((r) => r.status === 'PUBLISHED');
-  const unattributedPublished = published.filter((r) => r.attribution_state !== 'PRESENT');
+  const byState = { ATTRIBUTED: [], UNATTRIBUTED: [], NOT_APPLICABLE: [], UNVERIFIED: [] };
+  for (const record of published) {
+    (byState[record.attribution_state] || byState.UNVERIFIED).push(record.ledger_id);
+  }
 
   return {
     records: records.length,
     published: published.length,
     attribution: {
-      published_with_attribution: published.length - unattributedPublished.length,
-      published_without_attribution: unattributedPublished.length,
-      unattributed_ledger_ids: unattributedPublished.map((r) => r.ledger_id),
-      note: 'A published post without attribution cannot be traced to a destination or a funnel stage. '
-        + 'These are recorded as NONE_HISTORICAL and are never back-filled: the absence is the historical truth.'
+      published_with_attribution: byState.ATTRIBUTED.length,
+      published_without_attribution: byState.UNATTRIBUTED.length + byState.UNVERIFIED.length,
+      published_not_applicable: byState.NOT_APPLICABLE.length,
+      by_state: Object.fromEntries(Object.entries(byState).map(([k, v]) => [k, v.length])),
+      attributed_ledger_ids: byState.ATTRIBUTED,
+      unattributed_ledger_ids: [...byState.UNATTRIBUTED, ...byState.UNVERIFIED],
+      note: 'ATTRIBUTED means the sent payload provably carried a tracked owned destination. '
+        + 'UNATTRIBUTED means it provably did not. UNVERIFIED means no manifest survives to prove either way. '
+        + 'Only ATTRIBUTED is counted, and attribution is never back-filled onto a post published without it.'
     },
     in_flight: records.filter((r) => r.status === 'IN_FLIGHT').length,
     errored: records.filter((r) => r.status === 'ERROR').length,

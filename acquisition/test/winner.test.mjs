@@ -89,3 +89,66 @@ test('grouping covers every verdict bucket', () => {
   assert.deepEqual(grouped.INSUFFICIENT_DATA, ['c']);
   assert.deepEqual(grouped.ITERATE, ['d']);
 });
+
+// ---- attribution gating (video-lane attribution work) ----------------------
+
+const strongCommercial = { route_id: 'r', destination_views: 500, cta_clicks: 60, checkout: 10 };
+
+test('an ATTRIBUTED route with commercial progression can still SCALE', () => {
+  const result = classifyRoute({ ...strongCommercial, attribution_state: 'ATTRIBUTED' });
+  assert.equal(result.verdict, 'SCALE');
+  assert.equal(result.attribution_state, 'ATTRIBUTED');
+});
+
+test('an UNATTRIBUTED route can never SCALE, however good its numbers look', () => {
+  const result = classifyRoute({ ...strongCommercial, attribution_state: 'UNATTRIBUTED' });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+  assert.ok(result.reasons.some((r) => r.includes('cannot be associated')));
+});
+
+test('UNVERIFIED is treated exactly like UNATTRIBUTED: unproven is not proven', () => {
+  const result = classifyRoute({ ...strongCommercial, attribution_state: 'UNVERIFIED' });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+});
+
+test('an awareness-only route is INSUFFICIENT_DATA with an explicit reason', () => {
+  const result = classifyRoute({ ...strongCommercial, attribution_state: 'NOT_APPLICABLE' });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+  assert.ok(result.reasons.some((r) => r.includes('awareness-only')));
+});
+
+test('even a verified purchase cannot SCALE an unattributed route', () => {
+  // The purchase is real, but nothing proves this post produced it.
+  const result = classifyRoute({
+    ...strongCommercial,
+    attribution_state: 'UNATTRIBUTED',
+    purchase: 5,
+    purchase_evidence: 'stripe:pi_3REAL'
+  });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+});
+
+test('an attributed route with no downstream measurement is INSUFFICIENT_DATA, not SCALE', () => {
+  const result = classifyRoute({ route_id: 'r', attribution_state: 'ATTRIBUTED' });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+  assert.equal(result.measurement.destination_views, 'NOT_MEASURED');
+});
+
+test('attribution never manufactures measurement', () => {
+  const result = classifyRoute({ route_id: 'r', attribution_state: 'ATTRIBUTED', destination_views: 500 });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+  assert.equal(result.measurement.cta_clicks, 'NOT_MEASURED');
+  assert.equal(result.measurement.purchase, 'NOT_MEASURED');
+});
+
+test('routes without an attribution field keep working (legacy callers)', () => {
+  const result = classifyRoute(strongCommercial);
+  assert.equal(result.verdict, 'SCALE');
+  assert.equal(result.attribution_state, 'NOT_TRACKED');
+});
+
+test('every verdict carries the attribution state it was judged under', () => {
+  for (const state of ['ATTRIBUTED', 'UNATTRIBUTED', 'UNVERIFIED', 'NOT_APPLICABLE']) {
+    assert.equal(classifyRoute({ ...strongCommercial, attribution_state: state }).attribution_state, state);
+  }
+});

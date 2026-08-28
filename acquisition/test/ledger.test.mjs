@@ -174,15 +174,15 @@ test('attribution absence on historical posts is recorded, never back-filled', (
   const records = adaptTrendVideoLedger(videoLedger);
   for (const record of records) {
     // Every adapted record must state its attribution status explicitly.
-    assert.ok(['PRESENT', 'NONE_HISTORICAL'].includes(record.attribution_state),
+    assert.ok(['ATTRIBUTED', 'UNATTRIBUTED', 'NOT_APPLICABLE', 'UNVERIFIED'].includes(record.attribution_state),
       `${record.ledger_id} has no attribution_state`);
 
-    if (record.attribution_state === 'PRESENT') {
+    if (record.attribution_state === 'ATTRIBUTED') {
       assert.ok(record.utm && record.utm.utm_source,
         `${record.ledger_id} claims attribution without a utm_source`);
     } else {
       assert.ok(!record.utm || !record.utm.utm_source,
-        `${record.ledger_id} claims NONE_HISTORICAL but carries a utm_source`);
+        `${record.ledger_id} is not ATTRIBUTED but carries a utm_source`);
     }
   }
 });
@@ -190,7 +190,9 @@ test('attribution absence on historical posts is recorded, never back-filled', (
 test('a post published without attribution is never counted as attributed', () => {
   const summary = summarize(adaptTrendVideoLedger(videoLedger));
   assert.equal(
-    summary.attribution.published_with_attribution + summary.attribution.published_without_attribution,
+    summary.attribution.published_with_attribution
+    + summary.attribution.published_without_attribution
+    + summary.attribution.published_not_applicable,
     summary.published,
     'every published record must fall into exactly one attribution bucket'
   );
@@ -205,6 +207,6 @@ test('a record built with real attribution is reported as attributed', () => {
     status: 'PUBLISHED',
     utm: { utm_source: 'tiktok', utm_medium: 'social_video', utm_campaign: 'c', utm_content: 'd', asset_id: 'e' }
   });
-  assert.equal(attributed.attribution_state, 'PRESENT');
+  assert.equal(attributed.attribution_state, 'ATTRIBUTED');
   assert.equal(summarize([attributed]).attribution.published_with_attribution, 1);
 });

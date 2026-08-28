@@ -1,0 +1,10 @@
+{
+  "id": "fixture-no-destination",
+  "_comment": "Valid legacy manifest: nothing declared, no URL in the caption. Classifies UNATTRIBUTED.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["tiktok"],
+    "caption": "A short explainer with no destination link at all. #AI #Automation"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "id": "fixture-asset-mismatch",
+  "_comment": "DELIBERATELY INVALID: declared destination_asset_id disagrees with the URL actually sent.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["youtube"],
+    "caption": "Framework: https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=video&utm_campaign=fixture",
+    "destination_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=video&utm_campaign=fixture",
+    "destination_asset_id": "ai-saas-waste-calculator",
+    "campaign_id": "fixture"
+  }
+}

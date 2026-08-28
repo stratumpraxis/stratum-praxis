@@ -134,6 +134,47 @@ Required fields include:
 - `scenes`
 - `publish`
 
+## Attribution (optional, additive)
+
+A post only becomes measurable if the caption carries a tracked destination.
+`distribution/buffer-video-publisher.mjs` sends `publish.caption` verbatim as the post
+text, so the caption *is* the published payload: a link that is not in the caption is
+never sent.
+
+The `publish` block may therefore carry four optional fields:
+
+| Field | Meaning |
+| --- | --- |
+| `destination_url` | the tracked URL. Must also appear verbatim in `publish.caption`. |
+| `destination_asset_id` | the acquisition inventory asset it points at |
+| `campaign_id` | the campaign token used in `utm_campaign` |
+| `awareness_only` | `true` for a deliberate no-destination post |
+
+All four are optional. A manifest without them renders and publishes exactly as before;
+it is simply classified `UNATTRIBUTED` and cannot contribute routing evidence.
+
+Generate the fields (source and medium come from `distribution/source-routing.json`, never
+hardcoded):
+
+```bash
+node acquisition/cli/plan-video-attribution.mjs \
+  --asset agentic-ai-governance-permission-kit --platform youtube --campaign agent_control_20260828
+```
+
+Validate a manifest before publishing:
+
+```bash
+node acquisition/cli/plan-video-attribution.mjs --validate trend-video-engine/current.json
+```
+
+Attribution for already-published posts is derived read-only from the manifest that
+produced them and stored in `acquisition/distribution-ledger.json`. This file and
+`publish-ledger.json` are never modified by that process.
+
+Known divergence: existing hand-written captions used `utm_medium=social` for YouTube,
+while `distribution/source-routing.json` declares `video`. The planner emits the
+declared value. Historical records keep whatever was actually sent and are never rewritten.
+
 ## Render and QA
 
 `render.py` renders a 720x1280 H.264/AAC MP4 using FFmpeg, original procedural graphics and original procedural audio.
