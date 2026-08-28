@@ -152,3 +152,68 @@ test('every verdict carries the attribution state it was judged under', () => {
     assert.equal(classifyRoute({ ...strongCommercial, attribution_state: state }).attribution_state, state);
   }
 });
+
+// ---- H3-H6: measured events never become other events -----------------------
+
+test('landing measurement alone never becomes purchase evidence', () => {
+  const result = classifyRoute({
+    route_id: 'landing-only',
+    attribution_state: 'ATTRIBUTED',
+    destination_views: 900
+  });
+  assert.equal(result.verdict, 'INSUFFICIENT_DATA');
+  assert.equal(result.measurement.purchase, 'NOT_MEASURED');
+  assert.equal(result.measurement.checkout, 'NOT_MEASURED');
+  assert.equal(result.measurement.cta_clicks, 'NOT_MEASURED');
+  assert.ok(result.reasons.some((r) => r.includes('cta_clicks is NOT_MEASURED')));
+});
+
+test('CTA measurement alone never becomes a synthetic conversion', () => {
+  const result = classifyRoute({
+    route_id: 'cta-only',
+    attribution_state: 'ATTRIBUTED',
+    destination_views: 900,
+    cta_clicks: 120
+  });
+  // A 13% CTA rate is strong, and it still cannot scale without commercial progression.
+  assert.equal(result.verdict, 'ITERATE');
+  assert.equal(result.measurement.checkout, 'NOT_MEASURED');
+  assert.equal(result.measurement.purchase, 'NOT_MEASURED');
+  assert.ok(result.reasons.some((r) => r.includes('checkout is NOT_MEASURED')));
+});
+
+test('checkout is used only when actually measured', () => {
+  const unmeasured = classifyRoute({ route_id: 'a', attribution_state: 'ATTRIBUTED', destination_views: 500, cta_clicks: 60 });
+  assert.equal(unmeasured.verdict, 'ITERATE');
+
+  const measuredZero = classifyRoute({ route_id: 'b', attribution_state: 'ATTRIBUTED', destination_views: 500, cta_clicks: 60, checkout: 0 });
+  assert.equal(measuredZero.verdict, 'ITERATE');
+  assert.equal(measuredZero.measurement.checkout, 0, 'a measured zero stays zero, not NOT_MEASURED');
+
+  const measured = classifyRoute({ route_id: 'c', attribution_state: 'ATTRIBUTED', destination_views: 500, cta_clicks: 60, checkout: 10 });
+  assert.equal(measured.verdict, 'SCALE');
+});
+
+test('no rate is inferred from a missing or zero denominator', () => {
+  const noDenominator = classifyRoute({ route_id: 'a', attribution_state: 'ATTRIBUTED', cta_clicks: 50 });
+  assert.equal(noDenominator.measurement.cta_rate, 'NOT_MEASURED');
+  assert.equal(noDenominator.verdict, 'INSUFFICIENT_DATA');
+
+  const zeroDenominator = classifyRoute({ route_id: 'b', attribution_state: 'ATTRIBUTED', destination_views: 0, cta_clicks: 0 });
+  assert.equal(zeroDenominator.measurement.cta_rate, 'NOT_MEASURED', 'never divide by a measured zero');
+  assert.equal(zeroDenominator.verdict, 'INSUFFICIENT_DATA');
+});
+
+test('a SCALE verdict is always traceable to measured funnel evidence', () => {
+  const byPurchase = classifyRoute({
+    route_id: 'p', attribution_state: 'ATTRIBUTED', destination_views: 120, cta_clicks: 9,
+    purchase: 1, purchase_evidence: 'stripe:pi_3ABC'
+  });
+  assert.equal(byPurchase.verdict, 'SCALE');
+  assert.ok(byPurchase.reasons.some((r) => r.includes('stripe:pi_3ABC')));
+
+  const byFunnel = classifyRoute({ route_id: 'f', attribution_state: 'ATTRIBUTED', destination_views: 500, cta_clicks: 60, checkout: 10 });
+  assert.equal(byFunnel.verdict, 'SCALE');
+  assert.ok(byFunnel.reasons.some((r) => r.includes('CTA rate') && r.includes('checkout rate')),
+    'the reason must name the measured rates it relied on');
+});

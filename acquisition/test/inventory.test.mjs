@@ -78,3 +78,35 @@ test('every asset claiming a checkout type carries a real checkout URL', async (
     assert.equal(hasLiveCheckout(asset), true);
   }
 });
+
+test('HTTP_VERIFIED is never claimed without a recorded successful live check', async () => {
+  const inventory = await loadInventory('acquisition/asset-inventory.json', options);
+  for (const asset of inventory.assets) {
+    if (asset.verification_state !== 'HTTP_VERIFIED') continue;
+    const v = asset.verification || {};
+    assert.equal(v.http_status, 200, `${asset.asset_id} claims HTTP_VERIFIED without a 200`);
+    assert.ok(v.http_checked_at, `${asset.asset_id} claims HTTP_VERIFIED with no check timestamp`);
+    assert.ok(v.http_evidence, `${asset.asset_id} claims HTTP_VERIFIED with no citable evidence`);
+    assert.match(v.http_evidence, /actions\/runs\/\d+/, `${asset.asset_id} evidence must name a real workflow run`);
+  }
+});
+
+test('a recorded 200 does not by itself upgrade a weaker verification tier', async () => {
+  const inventory = await loadInventory('acquisition/asset-inventory.json', options);
+  const docOnly = inventory.byId.get('roi-calculator-subdomain');
+  // It genuinely returned 200, and that is recorded - but it has no repo file and is not
+  // in sitemap.xml, so its tier stays DOC_ONLY. Reachability is not provenance.
+  assert.equal(docOnly.verification.http_status, 200);
+  assert.equal(docOnly.verification_state, 'DOC_ONLY');
+  assert.equal(isRoutableDestination(docOnly), false);
+});
+
+test('every asset that was live-checked records its own per-asset evidence', async () => {
+  const inventory = await loadInventory('acquisition/asset-inventory.json', options);
+  const checked = inventory.assets.filter((a) => a.verification?.http_status !== undefined && a.verification?.http_status !== null);
+  assert.ok(checked.length >= 25, 'the live run covered the whole inventory');
+  for (const asset of checked) {
+    assert.ok(asset.verification.http_checked_at, `${asset.asset_id} has a status but no timestamp`);
+    assert.ok(asset.verification.http_evidence, `${asset.asset_id} has a status but no evidence reference`);
+  }
+});

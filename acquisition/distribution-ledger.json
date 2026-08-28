@@ -18,12 +18,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
+      "attribution_evidence_type": "NONE",
+      "attribution_evidence_ref": null,
       "attribution_verified_at": null,
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -41,12 +46,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
+      "attribution_evidence_type": "NONE",
+      "attribution_evidence_ref": null,
       "attribution_verified_at": null,
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -64,12 +74,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
+      "attribution_evidence_type": "NONE",
+      "attribution_evidence_ref": null,
       "attribution_verified_at": null,
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -87,12 +102,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
+      "attribution_evidence_type": "NONE",
+      "attribution_evidence_ref": null,
       "attribution_verified_at": null,
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -110,12 +130,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-26-dopagaki-youtube-v2.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.062Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -133,12 +158,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
+      "attribution_evidence_type": "NONE",
+      "attribution_evidence_ref": null,
       "attribution_verified_at": null,
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -156,12 +186,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-26-ai-slop-youtube-v3.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.062Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -179,12 +214,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-26-asking-to-doing-youtube-v4.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.062Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -202,12 +242,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-26-asking-to-doing-tiktok-v4.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.063Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -225,12 +270,17 @@
       "publication_state": "PUBLISHED",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-26-asking-to-doing-instagram-v4.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.063Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -248,17 +298,26 @@
       "publication_state": "PUBLISHED",
       "destination_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube&utm_medium=social&utm_campaign=agent-control-20260827",
       "destination_asset_id": "agentic-ai-governance-permission-kit",
+      "campaign_id": "agent-control-20260827",
       "utm_source": "youtube",
       "utm_medium": "social",
       "utm_campaign": "agent-control-20260827",
       "attribution_state": "ATTRIBUTED",
       "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; distribution/buffer-video-publisher.mjs sends that caption verbatim as the post text (proof re-established from its source at classification time)",
-      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.063Z",
+      "routing_conflicts": [
+        "utm_medium \"social\" was sent but distribution/source-routing.json declares \"video\" for youtube"
+      ],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
       },
-      "problems": [],
+      "problems": [
+        "utm_medium \"social\" was sent but distribution/source-routing.json declares \"video\" for youtube"
+      ],
       "destination_has_live_checkout": true,
       "manifest_source": "trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json"
     },
@@ -272,12 +331,17 @@
       "publication_state": "IN_FLIGHT",
       "destination_url": null,
       "destination_asset_id": null,
+      "campaign_id": null,
       "utm_source": null,
       "utm_medium": null,
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/tiktok-stratum-current.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.063Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -295,12 +359,17 @@
       "publication_state": "IN_FLIGHT",
       "destination_url": "https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=instagram&utm_medium=social&utm_campaign=physical-ai-control-20260827",
       "destination_asset_id": "agentic-ai-governance-permission-kit",
+      "campaign_id": "physical-ai-control-20260827",
       "utm_source": "instagram",
       "utm_medium": "social",
       "utm_campaign": "physical-ai-control-20260827",
       "attribution_state": "ATTRIBUTED",
       "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; distribution/buffer-video-publisher.mjs sends that caption verbatim as the post text (proof re-established from its source at classification time)",
-      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "attribution_evidence_type": "PUBLISHER_PROVEN_FIELD",
+      "attribution_evidence_ref": "trend-video-engine/current.json",
+      "attribution_verified_at": "2026-08-28T07:13:57.063Z",
+      "routing_conflicts": [],
+      "downstream_measurement_state": "NOT_MEASURED",
       "payload_proof": {
         "proven": true,
         "publisher": "distribution/buffer-video-publisher.mjs"
@@ -311,8 +380,8 @@
     }
   },
   "attribution_overlay_note": "Derived, additive attribution for the trend-video lane. Source of truth for publication remains trend-video-engine/publish-ledger.json, which this process never writes. Regenerate with acquisition/cli/attribution-backfill.mjs --write.",
-  "attribution_generated_at": "2026-08-28T05:06:18.606Z",
-  "updated_at": "2026-08-28T05:06:18.606Z",
+  "attribution_generated_at": "2026-08-28T07:13:57.064Z",
+  "updated_at": "2026-08-28T07:13:57.064Z",
   "attribution_payload_proof": {
     "proven": true,
     "publisher": "distribution/buffer-video-publisher.mjs",
@@ -320,5 +389,10 @@
     "reasons": [
       "distribution/buffer-video-publisher.mjs reads the post body from publish.caption and sends it verbatim as the post text"
     ]
+  },
+  "attribution_source_ledger_fingerprint": {
+    "file": "trend-video-engine/publish-ledger.json",
+    "bytes": 7430,
+    "sha256": "067d4a32c7273bb6282142fedda186088666e6fcc2be12a3d333059a8b74eb8c"
   }
 }

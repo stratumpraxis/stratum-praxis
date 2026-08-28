@@ -12,7 +12,7 @@
 
 import fs from 'node:fs/promises';
 
-import { classifyAttribution, establishCaptionProof, summarizeAttribution } from '../lib/attribution.mjs';
+import { classifyAttribution, establishCaptionProof, ledgerFingerprint, summarizeAttribution } from '../lib/attribution.mjs';
 import { collectManifests } from '../lib/manifest-sources.mjs';
 import { loadInventory } from '../lib/inventory.mjs';
 import { knownChannels, loadSourceRouting } from '../lib/utm.mjs';
@@ -26,6 +26,7 @@ const asJson = argv.has('--json');
 const VIDEO_LEDGER = 'trend-video-engine/publish-ledger.json';
 
 const before = await fs.readFile(repoPath(VIDEO_LEDGER), 'utf8');
+const fingerprintBefore = await ledgerFingerprint(VIDEO_LEDGER);
 const videoLedger = JSON.parse(before);
 
 const sourceRouting = await loadSourceRouting();
@@ -41,8 +42,11 @@ for (const [manifestId, services] of Object.entries(videoLedger.items || {})) {
   for (const [platform, entry] of Object.entries(services || {})) {
     if (platform.startsWith('_') || !entry) continue;
     const manifest = manifests.get(manifestId) || null;
-    const record = classifyAttribution(manifest, entry, { platform, manifestId, inventory, sourceRouting, captionProof });
-    records.push({ ...record, manifest_source: manifest ? sources.get(manifestId) : null });
+    const manifestRef = manifest ? sources.get(manifestId) : null;
+    const record = classifyAttribution(manifest, entry, {
+      platform, manifestId, inventory, sourceRouting, captionProof, manifestRef
+    });
+    records.push({ ...record, manifest_source: manifestRef });
   }
 }
 
@@ -50,8 +54,11 @@ const summary = summarizeAttribution(records);
 
 // Byte-identity guard: prove we did not touch the production ledger.
 const after = await fs.readFile(repoPath(VIDEO_LEDGER), 'utf8');
-if (before !== after) {
+const fingerprintAfter = await ledgerFingerprint(VIDEO_LEDGER);
+if (before !== after || fingerprintBefore.sha256 !== fingerprintAfter.sha256) {
   console.error(`FATAL: ${VIDEO_LEDGER} changed during a read-only backfill`);
+  console.error(`  sha256 before ${fingerprintBefore.sha256}`);
+  console.error(`  sha256 after  ${fingerprintAfter.sha256}`);
   process.exit(1);
 }
 
@@ -61,6 +68,7 @@ if (write) {
     ...ledger,
     attribution_overlay: Object.fromEntries(records.map((r) => [r.ledger_id, r])),
     attribution_payload_proof: captionProof,
+    attribution_source_ledger_fingerprint: fingerprintAfter,
     attribution_overlay_note:
       'Derived, additive attribution for the trend-video lane. Source of truth for publication remains '
       + `${VIDEO_LEDGER}, which this process never writes. Regenerate with acquisition/cli/attribution-backfill.mjs --write.`,
@@ -68,7 +76,7 @@ if (write) {
   });
 }
 
-const report = { generated_at: nowIso(), video_ledger_untouched: true, caption_proof: captionProof, summary, records };
+const report = { generated_at: nowIso(), video_ledger_untouched: true, ledger_fingerprint: fingerprintAfter, caption_proof: captionProof, summary, records };
 
 if (asJson) {
   console.log(JSON.stringify(report, null, 2));
@@ -91,12 +99,26 @@ if (asJson) {
   console.log(`\n  published_with_attribution : ${summary.published_with_attribution}`);
   console.log(`  published_without_attribution: ${summary.published_without_attribution}`);
   console.log(`  routes that can contribute evidence: ${summary.evidence_capable_routes.join(', ') || 'none'}`);
+  console.log('\n  Evidence table:');
+  const w = (v, n) => String(v ?? '-').padEnd(n);
+  console.log(`    ${w('POST_ID', 26)}${w('PLATFORM', 11)}${w('PUBLICATION', 12)}${w('ATTRIBUTION', 16)}${w('DESTINATION_ASSET', 38)}${w('EVIDENCE_TYPE', 24)}DOWNSTREAM`);
+  for (const r of records) {
+    console.log(`    ${w(r.post_id, 26)}${w(r.platform, 11)}${w(r.publication_state, 12)}${w(r.attribution_state, 16)}${w(r.destination_asset_id, 38)}${w(r.attribution_evidence_type, 24)}${r.downstream_measurement_state}`);
+  }
+
+  const conflicted = records.filter((r) => r.routing_conflicts?.length);
+  if (conflicted.length) {
+    console.log('\n  Routing conflicts (sent value kept as historical truth, never rewritten):');
+    for (const r of conflicted) for (const c of r.routing_conflicts) console.log(`    ${r.ledger_id}: ${c}`);
+  }
+
   const withProblems = records.filter((r) => r.problems.length);
   if (withProblems.length) {
     console.log('\n  Problems recorded (never silently resolved):');
     for (const r of withProblems) for (const p of r.problems) console.log(`    ${r.ledger_id}: ${p}`);
   }
-  console.log(`\n  ${VIDEO_LEDGER} untouched: yes (${before.length} bytes before and after)`);
+  console.log(`\n  ${VIDEO_LEDGER} untouched: yes`);
+  console.log(`    sha256 ${fingerprintAfter.sha256} (${fingerprintAfter.bytes} bytes), identical before and after`);
 }
 
 // In --json mode stdout stays pure JSON; the status marker goes to stderr.

@@ -108,3 +108,18 @@ jobs:
           node-version: '22'
       - name: Verify every inventory public_url over HTTPS
         run: node acquisition/cli/verify-inventory.mjs --live
+
+      - name: Emit per-asset live results for audit
+        run: |
+          set -euo pipefail
+          # --write updates the working copy only; this job never commits. The JSON below
+          # is the citable record of which URLs actually responded, so HTTP_VERIFIED can
+          # be earned from a real check rather than assumed from repo presence.
+          node acquisition/cli/verify-inventory.mjs --live --write --json > /tmp/live-inventory.json
+          node -e "
+            const r = require('/tmp/live-inventory.json');
+            console.log('LIVE_VERIFICATION_RESULTS');
+            for (const a of r.results) console.log(a.asset_id + '\t' + (a.checks.http_status ?? 'NOT_CHECKED'));
+            console.log('schema_errors=' + r.schema_errors.length + ' findings=' + r.findings.length);
+          "
+
