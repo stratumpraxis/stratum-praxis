@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-28T03:44:25.177Z",
+  "generated_at": "2026-08-28T04:40:22.282Z",
   "generated_by": "acquisition/cli/daily-report.mjs",
   "evidence_policy": "Numbers appear only when a measurement was recorded. NOT_MEASURED and NOT_INSTRUMENTED are distinct from 0. No traffic, click, checkout or revenue figure in this report is inferred.",
   "q1_demand_signals": [
@@ -126,22 +126,31 @@
     "records": 13,
     "published": 11,
     "attribution": {
-      "published_with_attribution": 0,
-      "published_without_attribution": 11,
+      "published_with_attribution": 1,
+      "published_without_attribution": 10,
+      "published_not_applicable": 0,
+      "by_state": {
+        "ATTRIBUTED": 1,
+        "UNATTRIBUTED": 5,
+        "NOT_APPLICABLE": 0,
+        "UNVERIFIED": 5
+      },
+      "attributed_ledger_ids": [
+        "tve:2026-08-27-agent-control-youtube-v5:youtube"
+      ],
       "unattributed_ledger_ids": [
-        "tve:2026-08-26-ai-agents-japan-v1:instagram",
-        "tve:2026-08-26-ai-agents-japan-v1:tiktok",
-        "tve:2026-08-26-ai-agents-japan-v1:youtube",
-        "tve:2026-08-26-ai-slop-tiktok-v3:tiktok",
         "tve:2026-08-26-ai-slop-youtube-v3:youtube",
         "tve:2026-08-26-asking-to-doing-instagram-v4:instagram",
         "tve:2026-08-26-asking-to-doing-tiktok-v4:tiktok",
         "tve:2026-08-26-asking-to-doing-youtube-v4:youtube",
-        "tve:2026-08-26-dopagaki-tiktok-v2-r2:tiktok",
         "tve:2026-08-26-dopagaki-youtube-v2:youtube",
-        "tve:2026-08-27-agent-control-youtube-v5:youtube"
+        "tve:2026-08-26-ai-agents-japan-v1:instagram",
+        "tve:2026-08-26-ai-agents-japan-v1:tiktok",
+        "tve:2026-08-26-ai-agents-japan-v1:youtube",
+        "tve:2026-08-26-ai-slop-tiktok-v3:tiktok",
+        "tve:2026-08-26-dopagaki-tiktok-v2-r2:tiktok"
       ],
-      "note": "A published post without attribution cannot be traced to a destination or a funnel stage. These are recorded as NONE_HISTORICAL and are never back-filled: the absence is the historical truth."
+      "note": "ATTRIBUTED means the sent payload provably carried a tracked owned destination. UNATTRIBUTED means it provably did not. UNVERIFIED means no manifest survives to prove either way. Only ATTRIBUTED is counted, and attribution is never back-filled onto a post published without it."
     },
     "in_flight": 2,
     "errored": 0,
@@ -194,22 +203,31 @@
     }
   },
   "attribution_gap": {
-    "published_with_attribution": 0,
-    "published_without_attribution": 11,
+    "published_with_attribution": 1,
+    "published_without_attribution": 10,
+    "published_not_applicable": 0,
+    "by_state": {
+      "ATTRIBUTED": 1,
+      "UNATTRIBUTED": 5,
+      "NOT_APPLICABLE": 0,
+      "UNVERIFIED": 5
+    },
+    "attributed_ledger_ids": [
+      "tve:2026-08-27-agent-control-youtube-v5:youtube"
+    ],
     "unattributed_ledger_ids": [
-      "tve:2026-08-26-ai-agents-japan-v1:instagram",
-      "tve:2026-08-26-ai-agents-japan-v1:tiktok",
-      "tve:2026-08-26-ai-agents-japan-v1:youtube",
-      "tve:2026-08-26-ai-slop-tiktok-v3:tiktok",
       "tve:2026-08-26-ai-slop-youtube-v3:youtube",
       "tve:2026-08-26-asking-to-doing-instagram-v4:instagram",
       "tve:2026-08-26-asking-to-doing-tiktok-v4:tiktok",
       "tve:2026-08-26-asking-to-doing-youtube-v4:youtube",
-      "tve:2026-08-26-dopagaki-tiktok-v2-r2:tiktok",
       "tve:2026-08-26-dopagaki-youtube-v2:youtube",
-      "tve:2026-08-27-agent-control-youtube-v5:youtube"
+      "tve:2026-08-26-ai-agents-japan-v1:instagram",
+      "tve:2026-08-26-ai-agents-japan-v1:tiktok",
+      "tve:2026-08-26-ai-agents-japan-v1:youtube",
+      "tve:2026-08-26-ai-slop-tiktok-v3:tiktok",
+      "tve:2026-08-26-dopagaki-tiktok-v2-r2:tiktok"
     ],
-    "note": "A published post without attribution cannot be traced to a destination or a funnel stage. These are recorded as NONE_HISTORICAL and are never back-filled: the absence is the historical truth."
+    "note": "ATTRIBUTED means the sent payload provably carried a tracked owned destination. UNATTRIBUTED means it provably did not. UNVERIFIED means no manifest survives to prove either way. Only ATTRIBUTED is counted, and attribution is never back-filled onto a post published without it."
   },
   "commercial_path_gaps": [
     {

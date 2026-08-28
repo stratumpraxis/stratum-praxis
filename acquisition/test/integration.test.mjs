@@ -19,6 +19,9 @@ const PROTECTED = [
   'trend-video-engine/publish-ledger.json',
   'trend-video-engine/current.json',
   'trend-video-engine/last-qa.json',
+  'trend-video-engine/tiktok-stratum-current.json',
+  'trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json',
+  'trend-video-engine/variants/2026-08-26-asking-to-doing-tiktok-v4.json',
   'async-ai-advisor.html',
   'unmanned/index.html',
   'distribution/provider-policy.json',
@@ -49,7 +52,9 @@ test('every read-only CLI runs clean and leaves production files untouched', asy
     ['acquisition/cli/route.mjs', '--all'],
     ['acquisition/cli/queue-check.mjs'],
     ['acquisition/cli/ledger-sync.mjs'],
-    ['acquisition/cli/daily-report.mjs']
+    ['acquisition/cli/daily-report.mjs'],
+    ['acquisition/cli/attribution-backfill.mjs'],
+    ['acquisition/cli/plan-video-attribution.mjs', '--asset', 'agentic-ai-governance-permission-kit', '--platform', 'youtube', '--campaign', 'probe']
   ]) {
     const { stdout } = await run(node, argv, { cwd: REPO_ROOT });
     assert.ok(stdout.length > 0, `${argv[0]} produced no output`);
@@ -66,7 +71,9 @@ test('every CLI emits valid JSON in --json mode', async () => {
     ['acquisition/cli/verify-inventory.mjs', '--json'],
     ['acquisition/cli/route.mjs', '--all', '--json'],
     ['acquisition/cli/queue-check.mjs', '--json'],
-    ['acquisition/cli/daily-report.mjs', '--json']
+    ['acquisition/cli/daily-report.mjs', '--json'],
+    ['acquisition/cli/attribution-backfill.mjs', '--json'],
+    ['acquisition/cli/plan-video-attribution.mjs', '--asset', 'agentic-ai-governance-permission-kit', '--platform', 'youtube', '--campaign', 'probe', '--json']
   ]) {
     const { stdout } = await run(node, argv, { cwd: REPO_ROOT });
     assert.doesNotThrow(() => JSON.parse(stdout), `${argv[0]} did not emit parseable JSON`);

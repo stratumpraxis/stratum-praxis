@@ -26,6 +26,18 @@ export function classifyRoute(route, thresholds = DEFAULT_THRESHOLDS) {
   const t = { ...DEFAULT_THRESHOLDS, ...thresholds };
   const reasons = [];
 
+  // Attribution gate. A distribution route whose payload carried no tracked destination
+  // cannot have produced the traffic being measured, so its numbers cannot justify SCALE.
+  // UNVERIFIED is treated exactly like UNATTRIBUTED: unproven is not proven.
+  const attribution = route.attribution_state;
+  const attributionKnown = attribution !== undefined && attribution !== null;
+  if (attributionKnown && attribution !== 'ATTRIBUTED') {
+    reasons.push(attribution === 'NOT_APPLICABLE'
+      ? 'route is awareness-only (NOT_APPLICABLE); it has no destination and cannot produce routing evidence'
+      : `route attribution_state is ${attribution}; downstream numbers cannot be associated with this post`);
+    return verdict('INSUFFICIENT_DATA', reasons, measurementOf(route), t, attribution);
+  }
+
   const views = route.destination_views;
   const cta = route.cta_clicks;
   const checkout = route.checkout;
@@ -41,36 +53,26 @@ export function classifyRoute(route, thresholds = DEFAULT_THRESHOLDS) {
   const ctaRate = rate(cta, views);
   const checkoutRate = rate(checkout, views);
 
-  const measurement = {
-    impressions: isMeasured(route.impressions) ? route.impressions : 'NOT_MEASURED',
-    destination_views: isMeasured(views) ? views : 'NOT_MEASURED',
-    cta_clicks: isMeasured(cta) ? cta : 'NOT_MEASURED',
-    checkout: isMeasured(checkout) ? checkout : 'NOT_MEASURED',
-    purchase: usablePurchase === null ? 'NOT_MEASURED' : usablePurchase,
-    activation: isMeasured(route.activation) ? route.activation : 'NOT_MEASURED',
-    revisits: isMeasured(route.revisits) ? route.revisits : 'NOT_MEASURED',
-    cta_rate: ctaRate === null ? 'NOT_MEASURED' : Number(ctaRate.toFixed(4)),
-    checkout_rate: checkoutRate === null ? 'NOT_MEASURED' : Number(checkoutRate.toFixed(4))
-  };
+  const measurement = measurementOf(route, { usablePurchase });
 
   // Gate 1: is there enough qualified-traffic measurement to say anything at all?
   if (!isMeasured(views)) {
     reasons.push('destination_views is NOT_MEASURED; qualified traffic is unknown');
-    return verdict('INSUFFICIENT_DATA', reasons, measurement, t);
+    return verdict('INSUFFICIENT_DATA', reasons, measurement, t, attribution);
   }
   if (views < t.minDestinationViews) {
     reasons.push(`only ${views} destination views; below the minimum sample of ${t.minDestinationViews}`);
-    return verdict('INSUFFICIENT_DATA', reasons, measurement, t);
+    return verdict('INSUFFICIENT_DATA', reasons, measurement, t, attribution);
   }
   if (!isMeasured(cta)) {
     reasons.push('cta_clicks is NOT_MEASURED; intent quality cannot be judged from views alone');
-    return verdict('INSUFFICIENT_DATA', reasons, measurement, t);
+    return verdict('INSUFFICIENT_DATA', reasons, measurement, t, attribution);
   }
 
   // Gate 2: real purchase evidence is the strongest possible signal.
   if (usablePurchase !== null && usablePurchase > 0) {
     reasons.push(`${usablePurchase} verified purchase(s) with evidence ${route.purchase_evidence}`);
-    return verdict('SCALE', reasons, measurement, t);
+    return verdict('SCALE', reasons, measurement, t, attribution);
   }
 
   // Gate 3: commercial progression without a purchase yet.
@@ -78,32 +80,61 @@ export function classifyRoute(route, thresholds = DEFAULT_THRESHOLDS) {
   if (ctaRate !== null && ctaRate >= t.minCtaRate) {
     if (commercialSignal) {
       reasons.push(`CTA rate ${measurement.cta_rate} >= ${t.minCtaRate} and checkout rate ${measurement.checkout_rate} >= ${t.minCheckoutRate}`);
-      return verdict('SCALE', reasons, measurement, t);
+      return verdict('SCALE', reasons, measurement, t, attribution);
     }
     if (t.scaleRequiresCommercialSignal) {
       reasons.push(isMeasured(checkout)
         ? `CTA rate is healthy but checkout rate ${measurement.checkout_rate} is below ${t.minCheckoutRate}`
         : 'CTA rate is healthy but checkout is NOT_MEASURED, so commercial progression is unproven');
-      return verdict('ITERATE', reasons, measurement, t);
+      return verdict('ITERATE', reasons, measurement, t, attribution);
     }
   }
 
   // Gate 4: enough traffic, demonstrably low intent.
   if (ctaRate !== null && ctaRate < t.stopCtaRate && views >= t.minViewsForStop) {
     reasons.push(`CTA rate ${measurement.cta_rate} is below ${t.stopCtaRate} across ${views} views: high traffic, low intent`);
-    return verdict('STOP', reasons, measurement, t);
+    return verdict('STOP', reasons, measurement, t, attribution);
   }
 
   reasons.push(`CTA rate ${measurement.cta_rate} is below the scale threshold ${t.minCtaRate} but the sample does not justify stopping`);
-  return verdict('ITERATE', reasons, measurement, t);
+  return verdict('ITERATE', reasons, measurement, t, attribution);
 }
 
-function verdict(name, reasons, measurement, thresholds) {
+/** Build the measurement view. Shared so the attribution gate reports the same numbers. */
+export function measurementOf(route, { usablePurchase } = {}) {
+  const views = route.destination_views;
+  const cta = route.cta_clicks;
+  const checkout = route.checkout;
+  const purchase = usablePurchase !== undefined
+    ? usablePurchase
+    : (isMeasured(route.purchase) && route.purchase_evidence ? route.purchase : null);
+  const ctaRate = rate(cta, views);
+  const checkoutRate = rate(checkout, views);
+
+  return {
+    impressions: isMeasured(route.impressions) ? route.impressions : 'NOT_MEASURED',
+    destination_views: isMeasured(views) ? views : 'NOT_MEASURED',
+    cta_clicks: isMeasured(cta) ? cta : 'NOT_MEASURED',
+    checkout: isMeasured(checkout) ? checkout : 'NOT_MEASURED',
+    purchase: purchase === null || purchase === undefined ? 'NOT_MEASURED' : purchase,
+    activation: isMeasured(route.activation) ? route.activation : 'NOT_MEASURED',
+    revisits: isMeasured(route.revisits) ? route.revisits : 'NOT_MEASURED',
+    cta_rate: ctaRate === null ? 'NOT_MEASURED' : Number(ctaRate.toFixed(4)),
+    checkout_rate: checkoutRate === null ? 'NOT_MEASURED' : Number(checkoutRate.toFixed(4))
+  };
+}
+
+function verdict(name, reasons, measurement, thresholds, attribution = null) {
   if (!WINNER_VERDICTS.includes(name)) throw new Error(`unknown verdict ${name}`);
+  if (name === 'SCALE' && attribution !== null && attribution !== 'ATTRIBUTED') {
+    // Defence in depth: SCALE must never escape the attribution gate.
+    throw new Error(`refusing to SCALE a route whose attribution_state is ${attribution}`);
+  }
   return {
     verdict: name,
     reasons,
     measurement,
+    attribution_state: attribution ?? 'NOT_TRACKED',
     thresholds,
     // Explicit guard against the "it got lots of views so it won" failure mode.
     views_only_warning: measurement.cta_clicks === 'NOT_MEASURED' && measurement.destination_views !== 'NOT_MEASURED'

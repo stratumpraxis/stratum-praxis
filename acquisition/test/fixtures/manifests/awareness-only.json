@@ -1,0 +1,11 @@
+{
+  "id": "fixture-awareness-only",
+  "_comment": "Deliberate awareness post. NOT_APPLICABLE is a choice, not a measurement failure.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["tiktok"],
+    "awareness_only": true,
+    "caption": "Pure awareness post. No destination intended."
+  }
+}

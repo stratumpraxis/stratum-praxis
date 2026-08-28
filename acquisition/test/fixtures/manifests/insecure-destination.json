@@ -1,0 +1,10 @@
+{
+  "id": "fixture-insecure",
+  "_comment": "DELIBERATELY INVALID: http:// destination must never be accepted as attribution.",
+  "title": "Fixture",
+  "summary": "Fixture summary",
+  "publish": {
+    "services": ["youtube"],
+    "caption": "Framework here: http://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=youtube"
+  }
+}

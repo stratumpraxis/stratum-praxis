@@ -57,6 +57,18 @@ jobs:
       - name: Validate distribution queue and run the safety gate
         run: node acquisition/cli/queue-check.mjs
 
+      - name: Derive video-lane attribution (read-only)
+        run: node acquisition/cli/attribution-backfill.mjs
+
+      - name: Validate manifest attribution contracts
+        run: |
+          set -euo pipefail
+          for manifest in trend-video-engine/current.json trend-video-engine/tiktok-stratum-current.json trend-video-engine/variants/*.json; do
+            [ -f "$manifest" ] || continue
+            echo "Validating $manifest"
+            node acquisition/cli/plan-video-attribution.mjs --validate "$manifest"
+          done
+
       - name: Build the unified distribution ledger view (read-only)
         run: node acquisition/cli/ledger-sync.mjs
 

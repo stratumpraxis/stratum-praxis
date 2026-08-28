@@ -27,9 +27,10 @@ const asJson = argv.has('--json');
 
 const videoLedger = await readJson('trend-video-engine/publish-ledger.json');
 const videoBefore = JSON.stringify(videoLedger);
-const adapted = adaptTrendVideoLedger(videoLedger);
 
 let ledger = await loadLedger();
+// Derived attribution produced by acquisition/cli/attribution-backfill.mjs.
+const adapted = adaptTrendVideoLedger(videoLedger, { attributionOverlay: ledger.attribution_overlay || null });
 
 // Mirror queue items that have actually reached PUBLISHED or VERIFIED. Nothing
 // earlier is a distribution event, so nothing earlier enters the ledger.
@@ -74,6 +75,10 @@ if (asJson) {
   console.log(`  acquisition lane      : ${unified.filter((r) => r.lane === 'acquisition').length}`);
   console.log(`  trend-video-engine    : ${unified.filter((r) => r.lane === 'trend-video-engine').length} (adapted read-only)`);
   console.log(`  published / in-flight / error / unknown: ${summary.published} / ${summary.in_flight} / ${summary.errored} / ${summary.unknown}`);
+  console.log('\n  Attribution of published posts:');
+  for (const [state, count] of Object.entries(summary.attribution.by_state)) {
+    console.log(`    ${state.padEnd(18)} ${count}`);
+  }
   console.log('\n  Funnel roll-up (NOT_MEASURED is never counted as zero):');
   for (const [stage, value] of Object.entries(summary.stages)) {
     console.log(`    ${stage.padEnd(20)} ${JSON.stringify(value)}`);
