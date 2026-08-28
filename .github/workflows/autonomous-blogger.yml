@@ -1,0 +1,45 @@
+name: Autonomous Revenue Publisher
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '23 3 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: autonomous-revenue-publisher
+  cancel-in-progress: false
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Generate one article with free-only Workers AI
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          BLOGGER_FREE_MODEL: ${{ vars.BLOGGER_FREE_MODEL || '@cf/google/gemma-4-26b-a4b-it' }}
+        run: node acquisition/blogger/free-runner.mjs
+      - name: Route READY output to owned Signal site
+        run: node acquisition/blogger/owned-publisher.mjs
+      - name: Commit generated revenue media, sitemap and state
+        if: always()
+        run: |
+          if git diff --quiet -- acquisition/blogger signal/auto signal/sitemap.xml; then
+            echo "No autonomous revenue changes"
+            exit 0
+          fi
+          git config user.name "stratum-revenue-publisher-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add acquisition/blogger/outbox acquisition/blogger/state.json signal/auto signal/sitemap.xml
+          git commit -m "chore(revenue): publish evidence-grounded owned media"
+          git push
