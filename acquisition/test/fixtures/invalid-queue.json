@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "_comment": "DELIBERATELY INVALID. Proves the queue refuses forged or incomplete states.",
+  "items": [
+    {
+      "queue_id": "published-without-post-id",
+      "platform": "instagram",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "This item claims it was published but has no external post id, which is exactly the failure mode the state contract exists to prevent.",
+      "cta": "Run the estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=instagram&utm_medium=social&utm_campaign=x&utm_content=y&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {"utm_source": "instagram", "utm_medium": "social", "utm_campaign": "x", "utm_content": "y", "asset_id": "ai-saas-waste-calculator"},
+      "safety_status": "PASSED",
+      "approval_status": "HUMAN_APPROVED",
+      "status": "PUBLISHED",
+      "external_post_id": null,
+      "published_at": null
+    },
+    {
+      "queue_id": "verified-without-evidence",
+      "platform": "youtube",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "content_angle": "This item claims verification without any recorded evidence of a status read against the platform.",
+      "cta": "Estimate agent payback",
+      "destination_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=youtube&utm_medium=video&utm_campaign=x&utm_content=y&asset_id=ai-agent-cost-roi-calculator",
+      "utm_parameters": {"utm_source": "youtube", "utm_medium": "video", "utm_campaign": "x", "utm_content": "y", "asset_id": "ai-agent-cost-roi-calculator"},
+      "safety_status": "PASSED",
+      "approval_status": "HUMAN_APPROVED",
+      "status": "VERIFIED",
+      "external_post_id": "abc123",
+      "published_at": "2026-08-27T00:00:00.000Z",
+      "verification_status": null
+    },
+    {
+      "queue_id": "scheduled-without-approval",
+      "platform": "tiktok",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "This item reached SCHEDULED without a human approval decision, which the state contract forbids.",
+      "cta": "Run the estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=tiktok&utm_medium=social_video&utm_campaign=x&utm_content=z&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {"utm_source": "tiktok", "utm_medium": "social_video", "utm_campaign": "x", "utm_content": "z", "asset_id": "ai-saas-waste-calculator"},
+      "safety_status": "PASSED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "SCHEDULED",
+      "scheduled_at": null
+    },
+    {
+      "queue_id": "unknown-state",
+      "platform": "tiktok",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "This item uses a state that does not exist in the contract at all, so it must be rejected outright.",
+      "cta": "Run the estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=tiktok&utm_medium=social_video&utm_campaign=x&utm_content=w&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {"utm_source": "tiktok", "utm_medium": "social_video", "utm_campaign": "x", "utm_content": "w", "asset_id": "ai-saas-waste-calculator"},
+      "safety_status": "PASSED",
+      "approval_status": "HUMAN_APPROVED",
+      "status": "PURCHASED"
+    }
+  ]
+}

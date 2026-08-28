@@ -1,0 +1,221 @@
+{
+  "generated_at": "2026-08-28T02:22:45.291Z",
+  "generated_by": "acquisition/cli/daily-report.mjs",
+  "evidence_policy": "Numbers appear only when a measurement was recorded. NOT_MEASURED and NOT_INSTRUMENTED are distinct from 0. No traffic, click, checkout or revenue figure in this report is inferred.",
+  "q1_demand_signals": [
+    {
+      "signal_id": "shadow-ai-spend-accountability-2026-08",
+      "title": "Shadow AI spend and quarterly cost accountability",
+      "score": "191/230",
+      "verdict": "DISTRIBUTE",
+      "claim_strength": "EVIDENCE_BACKED",
+      "blocks": []
+    },
+    {
+      "signal_id": "ai-agent-payback-uncertainty-2026-08",
+      "title": "AI agent payback uncertainty after human-review overhead",
+      "score": "184/230",
+      "verdict": "DISTRIBUTE",
+      "claim_strength": "EVIDENCE_BACKED",
+      "blocks": []
+    },
+    {
+      "signal_id": "return-gate-repeat-visit-demand-2026-08",
+      "title": "Repeat-visit architecture demand",
+      "score": "133/230",
+      "verdict": "REJECT",
+      "claim_strength": "PARTIALLY_OBSERVED",
+      "blocks": [
+        "measurement_quality 3 is below the floor of 4; a publish here would not be learnable"
+      ]
+    }
+  ],
+  "q2_matched_assets": [
+    {
+      "signal_id": "shadow-ai-spend-accountability-2026-08",
+      "asset_id": "ai-saas-waste-calculator",
+      "confidence": 0.909,
+      "risk": [
+        "NONE_IDENTIFIED"
+      ],
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT"
+    },
+    {
+      "signal_id": "ai-agent-payback-uncertainty-2026-08",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "confidence": 0.965,
+      "risk": [
+        "NONE_IDENTIFIED"
+      ],
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT"
+    },
+    {
+      "signal_id": "return-gate-repeat-visit-demand-2026-08",
+      "asset_id": "return-gate-growth-os",
+      "confidence": 0.68,
+      "risk": [
+        "CHECKOUT_PAUSED_NO_PURCHASE_POSSIBLE",
+        "REVENUE_DESTINATION_UNKNOWN"
+      ],
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT"
+    }
+  ],
+  "q3_recommended_distribution": [
+    {
+      "signal_id": "shadow-ai-spend-accountability-2026-08",
+      "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "channels": [
+        {
+          "channel": "instagram",
+          "automation": "AUTOMATED_VIA_BUFFER"
+        },
+        {
+          "channel": "tiktok",
+          "automation": "AUTOMATED_VIA_BUFFER"
+        }
+      ]
+    },
+    {
+      "signal_id": "ai-agent-payback-uncertainty-2026-08",
+      "destination": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html",
+      "channels": [
+        {
+          "channel": "youtube",
+          "automation": "AUTOMATED_VIA_BUFFER"
+        },
+        {
+          "channel": "tiktok",
+          "automation": "AUTOMATED_VIA_BUFFER"
+        }
+      ]
+    }
+  ],
+  "q4_actually_published": {
+    "from_acquisition_queue": [],
+    "from_all_lanes": 11,
+    "in_flight_all_lanes": 1,
+    "errored_all_lanes": 0
+  },
+  "q5_actually_verified": {
+    "from_acquisition_queue": [],
+    "note": "A PUBLISHED record becomes VERIFIED only after an independent status read. Buffer \"sent\" is treated as PUBLISHED, not VERIFIED."
+  },
+  "q6_qualified_traffic": "NOT_MEASURED - no route in the unified ledger carries a recorded destination_view count",
+  "q7_cta_activity": "NOT_MEASURED - no route carries a recorded cta_click count",
+  "q8_checkout_activity": "NOT_MEASURED - no route carries a recorded checkout count",
+  "q9_purchase_evidence": "NO_VERIFIED_PURCHASE - no route carries a purchase count backed by payment-provider evidence",
+  "q10_scale": [],
+  "q11_stop": [],
+  "q12_insufficient_data": [
+    "tve:2026-08-26-ai-agents-japan-v1:instagram",
+    "tve:2026-08-26-ai-agents-japan-v1:tiktok",
+    "tve:2026-08-26-ai-agents-japan-v1:youtube",
+    "tve:2026-08-26-ai-slop-tiktok-v3:tiktok",
+    "tve:2026-08-26-ai-slop-youtube-v3:youtube",
+    "tve:2026-08-26-asking-to-doing-instagram-v4:instagram",
+    "tve:2026-08-26-asking-to-doing-tiktok-v4:tiktok",
+    "tve:2026-08-26-asking-to-doing-youtube-v4:youtube",
+    "tve:2026-08-26-dopagaki-tiktok-v2-r2:tiktok",
+    "tve:2026-08-26-dopagaki-youtube-v2:youtube",
+    "tve:2026-08-27-agent-control-youtube-v5:youtube",
+    "tve:2026-08-27-stratum-tiktok-ai-control-heygen-v1:tiktok"
+  ],
+  "iterate": [],
+  "ledger_summary": {
+    "records": 12,
+    "published": 11,
+    "in_flight": 1,
+    "errored": 0,
+    "unknown": 0,
+    "stages": {
+      "impression": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      },
+      "profile_visit": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      },
+      "external_click": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      },
+      "destination_view": {
+        "measured": 0,
+        "total": "NOT_MEASURED",
+        "not_measured": 12
+      },
+      "funnel_view": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      },
+      "primary_cta_click": {
+        "measured": 0,
+        "total": "NOT_MEASURED",
+        "not_measured": 12
+      },
+      "checkout": {
+        "measured": 0,
+        "total": "NOT_MEASURED",
+        "not_measured": 12
+      },
+      "purchase": {
+        "measured": 0,
+        "total": "NOT_MEASURED",
+        "not_measured": 12
+      },
+      "activation": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      },
+      "revisit": {
+        "instrumented": false,
+        "total": "NOT_INSTRUMENTED"
+      }
+    }
+  },
+  "commercial_path_gaps": [
+    {
+      "asset_id": "return-gate-growth-os",
+      "status": "PAUSED_CHECKOUT",
+      "destination_type": "PAUSED",
+      "note": "the live page renders 'Direct checkout temporarily paused' and contains no Stripe/Payhip/Gumroad link; the $24 price is stated in copy only"
+    },
+    {
+      "asset_id": "roi-calculator-subdomain",
+      "status": "DRAFT",
+      "destination_type": "UNKNOWN",
+      "note": "listed under AGENTS.md verified destinations, but no source file for it exists in this repository and it is not in sitemap.xml"
+    }
+  ],
+  "human_required": [
+    {
+      "scope": "queue:ai-saas-waste-calculator-instagram-v1",
+      "reason": "awaiting a human approval decision before it may be scheduled"
+    },
+    {
+      "scope": "queue:ai-agent-cost-roi-calculator-youtube-v1",
+      "reason": "awaiting a human approval decision before it may be scheduled"
+    },
+    {
+      "scope": "provider:dev-community",
+      "reason": "one-time RSS import configuration and per-post quality review if DEV requires it"
+    },
+    {
+      "scope": "provider:pinterest",
+      "reason": "account connection / authentication is a manual owner step"
+    },
+    {
+      "scope": "provider:bluesky",
+      "reason": "account connection / authentication is a manual owner step"
+    },
+    {
+      "scope": "provider:threads",
+      "reason": "account connection / authentication is a manual owner step"
+    },
+    {
+      "scope": "provider:line-official",
+      "reason": "account connection / authentication is a manual owner step"
+    }
+  ]
+}

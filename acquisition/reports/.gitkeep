@@ -1,0 +1,2 @@
+Dated report output from `node acquisition/cli/daily-report.mjs --write` lands here.
+Reports are append-only evidence: never edit a past report to match a newer belief.

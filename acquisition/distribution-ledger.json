@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "purpose": "Acquisition-owned distribution ledger records. Append-only, keyed by ledger_id. The trend-video-engine ledger is adapted into the unified view at read time by acquisition/lib/ledger.mjs and is never written here.",
+  "evidence_contract": {
+    "status": "PUBLISHED requires a post id from the platform. A sent request is IN_FLIGHT, not PUBLISHED.",
+    "funnel": "null means NOT_MEASURED. 0 means measured and zero. The two are never merged.",
+    "purchase": "may only be written together with purchase_evidence naming a payment-provider record."
+  },
+  "records": []
+}

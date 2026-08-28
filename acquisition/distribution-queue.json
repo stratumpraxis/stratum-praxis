@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "purpose": "Machine-readable distribution queue for the Acquisition Intelligence Engine. Every item was produced by acquisition/cli/route.mjs from a scored demand signal and a verified inventory asset. Nothing here is published automatically: SCHEDULED and beyond require approval_status HUMAN_APPROVED.",
+  "state_contract": {
+    "DRAFT": "routed, not yet safety-checked",
+    "SAFETY_CHECK": "in the safety gate",
+    "READY": "safety passed; waiting for a human approval decision",
+    "SCHEDULED": "approved and handed to a publisher with a scheduled_at",
+    "PUBLISHED": "an external_post_id exists; the request alone is never enough",
+    "VERIFIED": "an independent status read confirmed the post is live",
+    "ERROR": "blocked or failed; carries the reason",
+    "STOPPED": "deliberately withdrawn"
+  },
+  "items": [
+    {
+      "queue_id": "ai-saas-waste-calculator-instagram-v1",
+      "platform": "instagram",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "AI tools are being expensed across a team without a shared record, and someone now has to justify the total before the next renewal. Run the reducible-spend estimate.",
+      "cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=instagram&utm_medium=social&utm_campaign=shadow_ai_spend_accountability&utm_content=shadow_ai_spend_and_quarterly_cost_accou_v1&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {
+        "utm_source": "instagram",
+        "utm_medium": "social",
+        "utm_campaign": "shadow_ai_spend_accountability",
+        "utm_content": "shadow_ai_spend_and_quarterly_cost_accou_v1",
+        "asset_id": "ai-saas-waste-calculator"
+      },
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": null,
+      "published_at": null,
+      "external_post_id": null,
+      "verification_status": null,
+      "automation": "AUTOMATED_VIA_BUFFER",
+      "human_required_reason": null,
+      "signal_ref": "shadow-ai-spend-accountability-2026-08",
+      "signal_claim_strength": "EVIDENCE_BACKED",
+      "attempts": 0,
+      "notes": "Instagram already carries an in-flight ai_saas_cost_review run for this same destination (distribution/launch-now.json). The cross-lane collision guard is expected to block this item until that run is confirmed published or failed.",
+      "history": []
+    },
+    {
+      "queue_id": "ai-agent-cost-roi-calculator-youtube-v1",
+      "platform": "youtube",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "content_angle": "An AI agent looks cheap per call but the human review it triggers may erase the saving, and nobody has done that arithmetic. Estimate agent payback.",
+      "cta": "Estimate agent payback",
+      "destination_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=youtube&utm_medium=video&utm_campaign=ai_agent_payback_uncertainty&utm_content=ai_agent_payback_uncertainty_after_human_v1&asset_id=ai-agent-cost-roi-calculator",
+      "utm_parameters": {
+        "utm_source": "youtube",
+        "utm_medium": "video",
+        "utm_campaign": "ai_agent_payback_uncertainty",
+        "utm_content": "ai_agent_payback_uncertainty_after_human_v1",
+        "asset_id": "ai-agent-cost-roi-calculator"
+      },
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": null,
+      "published_at": null,
+      "external_post_id": null,
+      "verification_status": null,
+      "automation": "AUTOMATED_VIA_BUFFER",
+      "human_required_reason": null,
+      "signal_ref": "ai-agent-payback-uncertainty-2026-08",
+      "signal_claim_strength": "EVIDENCE_BACKED",
+      "attempts": 0,
+      "notes": "No creative asset has been produced for this item yet. Creative production and the human approval decision both remain HUMAN_REQUIRED.",
+      "history": []
+    }
+  ]
+}

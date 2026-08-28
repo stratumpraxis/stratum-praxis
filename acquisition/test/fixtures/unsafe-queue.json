@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "_comment": "DELIBERATELY UNSAFE but structurally valid. Proves the safety gate rejects what the schema alone cannot catch.",
+  "items": [
+    {
+      "queue_id": "earnings-claim",
+      "platform": "instagram",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "Guaranteed income from cutting your AI spend - risk-free profit in thirty days with no risk whatsoever, $5000 per month.",
+      "cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=instagram&utm_medium=social&utm_campaign=claim_test&utm_content=a&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {"utm_source": "instagram", "utm_medium": "social", "utm_campaign": "claim_test", "utm_content": "a", "asset_id": "ai-saas-waste-calculator"},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-01T09:00:00.000Z",
+      "attempts": 0
+    },
+    {
+      "queue_id": "unverified-destination",
+      "platform": "instagram",
+      "asset_id": "roi-calculator-subdomain",
+      "content_angle": "This item points at an asset whose only evidence is an operational document, so it must never become a live distribution destination.",
+      "cta": "Open the calculator",
+      "destination_url": "https://roi.stratumpraxis.com/?utm_source=instagram&utm_medium=social&utm_campaign=unverified_test&utm_content=b&asset_id=roi-calculator-subdomain",
+      "utm_parameters": {"utm_source": "instagram", "utm_medium": "social", "utm_campaign": "unverified_test", "utm_content": "b", "asset_id": "roi-calculator-subdomain"},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-02T09:00:00.000Z",
+      "attempts": 0
+    },
+    {
+      "queue_id": "no-attribution",
+      "platform": "tiktok",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "This item has a valid owned destination but carries no attribution parameters at all, so nothing downstream could ever be attributed to it.",
+      "cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "utm_parameters": {},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-03T09:00:00.000Z",
+      "attempts": 0
+    },
+    {
+      "queue_id": "retry-storm",
+      "platform": "youtube",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "content_angle": "This item has already been attempted far more times than the retry ceiling allows, which is how automated systems get accounts rate limited or banned.",
+      "cta": "Estimate agent payback",
+      "destination_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=youtube&utm_medium=video&utm_campaign=retry_test&utm_content=c&asset_id=ai-agent-cost-roi-calculator",
+      "utm_parameters": {"utm_source": "youtube", "utm_medium": "video", "utm_campaign": "retry_test", "utm_content": "c", "asset_id": "ai-agent-cost-roi-calculator"},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-04T09:00:00.000Z",
+      "attempts": 9
+    },
+    {
+      "queue_id": "wrong-platform-for-asset",
+      "platform": "note",
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "content_angle": "This English asset is being pushed to a Japanese-language channel that is not one of its approved distribution candidates.",
+      "cta": "Estimate agent payback",
+      "destination_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=note&utm_medium=content&utm_campaign=wrong_channel&utm_content=d&asset_id=ai-agent-cost-roi-calculator",
+      "utm_parameters": {"utm_source": "note", "utm_medium": "content", "utm_campaign": "wrong_channel", "utm_content": "d", "asset_id": "ai-agent-cost-roi-calculator"},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-05T09:00:00.000Z",
+      "attempts": 0
+    },
+    {
+      "queue_id": "destination-asset-mismatch",
+      "platform": "tiktok",
+      "asset_id": "ai-saas-waste-calculator",
+      "content_angle": "The declared asset and the actual destination URL disagree, which would silently misattribute every downstream event this route produces.",
+      "cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/workflow-audit.html?utm_source=tiktok&utm_medium=social_video&utm_campaign=mismatch&utm_content=e&asset_id=ai-saas-waste-calculator",
+      "utm_parameters": {"utm_source": "tiktok", "utm_medium": "social_video", "utm_campaign": "mismatch", "utm_content": "e", "asset_id": "ai-saas-waste-calculator"},
+      "safety_status": "UNCHECKED",
+      "approval_status": "PENDING_HUMAN",
+      "status": "DRAFT",
+      "scheduled_at": "2026-09-06T09:00:00.000Z",
+      "attempts": 0
+    }
+  ]
+}

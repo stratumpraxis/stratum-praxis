@@ -1,0 +1,729 @@
+{
+  "version": 1,
+  "generated_by": "acquisition/cli/verify-inventory.mjs",
+  "reviewed_at": "2026-08-27",
+  "purpose": "Machine-readable inventory of VERIFIED existing revenue assets. Nothing here is invented: every public_url corresponds to a file in this repository, and every revenue_destination was read out of that file's markup or an operational document. Unknown values stay UNKNOWN.",
+  "verification_method": {
+    "REPO_AND_SITEMAP": "source file exists in this repository AND the URL is present in sitemap.xml",
+    "REPO_ONLY": "source file exists in this repository but the URL is not in sitemap.xml",
+    "DOC_ONLY": "asserted in AGENTS.md or revenue-link-ledger.md; not confirmed from a repository file in this pass",
+    "HTTP_VERIFIED": "written only by verify-inventory.mjs --live after a real HTTP check",
+    "UNKNOWN": "explicitly unknown"
+  },
+  "http_verification_note": "No live HTTP verification has been recorded. Outbound HTTPS to stratumpraxis.com is blocked from the authoring environment; run `node acquisition/cli/verify-inventory.mjs --live` from GitHub Actions to record HTTP_VERIFIED states.",
+  "assets": [
+    {
+      "asset_id": "ai-saas-waste-calculator",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI/SaaS Waste Calculator",
+      "asset_type": "FREE_CALCULATOR",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/ai-value-realization-kit.html",
+        "price": null,
+        "evidence": "in-page hrefs to ai-value-realization-kit.html, ai-saas-spend-audit-checklist.html and ai-saas-spend-waste-audit.html"
+      },
+      "primary_user_problem": "Cannot see how much of the current AI/SaaS spend is actually reducible before a renewal decision.",
+      "problem_keys": ["ai_saas_spend", "renewal_cost", "shadow_ai", "tool_overlap", "cost_visibility"],
+      "target_audience": ["smb_owner", "ops_lead", "finance"],
+      "commercial_intent": "MID",
+      "distribution_candidates": ["instagram", "tiktok", "youtube", "devto", "pinterest"],
+      "cta": {
+        "label": "Run the reducible-spend estimate",
+        "analytics_id": "ai_saas_waste_calculator_primary"
+      },
+      "analytics_events": ["funnel_view", "calculator_input", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-saas-waste-calculator.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-agent-cost-roi-calculator",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Agent Cost & ROI Calculator",
+      "asset_type": "FREE_CALCULATOR",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Cannot tell whether an AI agent pays back after human-review overhead.",
+      "problem_keys": ["ai_agent_cost", "agent_roi", "payback_period", "human_review_overhead"],
+      "target_audience": ["ops_lead", "engineering_lead", "founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["youtube", "devto", "tiktok"],
+      "cta": {
+        "label": "Estimate agent payback",
+        "analytics_id": "ai_agent_cost_roi_primary"
+      },
+      "analytics_events": ["funnel_view", "calculator_input", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-agent-cost-roi-calculator.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-saas-spend-audit-checklist",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI & SaaS Spend Audit Checklist",
+      "asset_type": "FREE_CHECKLIST",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "No repeatable procedure for auditing AI/SaaS subscriptions before renewal.",
+      "problem_keys": ["ai_saas_spend", "renewal_cost", "audit_procedure", "tool_overlap"],
+      "target_audience": ["smb_owner", "ops_lead", "finance"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube", "pinterest"],
+      "cta": {
+        "label": "Start the spend audit",
+        "analytics_id": "ai_saas_spend_audit_checklist_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-saas-spend-audit-checklist.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-saas-spend-hub",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI & SaaS Spend Decision Hub",
+      "asset_type": "HUB",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-saas-spend.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment links for the 39 and 499 offers"
+      },
+      "primary_user_problem": "Needs one place to decide what to keep, cut or renegotiate across the AI/SaaS stack.",
+      "problem_keys": ["ai_saas_spend", "renewal_cost", "tool_overlap", "spend_management"],
+      "target_audience": ["smb_owner", "ops_lead", "finance"],
+      "commercial_intent": "MID",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Choose your spend-decision path",
+        "analytics_id": "ai_saas_spend_hub_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-saas-spend.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "saas-spend-management-small-business",
+      "brand": "Stratum Praxis",
+      "asset_name": "SaaS Spend Management for Small Business",
+      "asset_type": "GUIDE",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/saas-spend-management-small-business.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment links for the 39 and 499 offers"
+      },
+      "primary_user_problem": "Unsure whether a small team needs dedicated SaaS spend-management software at all.",
+      "problem_keys": ["spend_management", "ai_saas_spend", "buy_vs_process"],
+      "target_audience": ["smb_owner", "finance"],
+      "commercial_intent": "MID",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Read the decision guide",
+        "analytics_id": "saas_spend_management_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "saas-spend-management-small-business.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-saas-spend-decision-kit",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI & SaaS Spend Decision Kit",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Wants a self-service system to make and defend AI/SaaS keep-cut-renegotiate decisions.",
+      "problem_keys": ["ai_saas_spend", "renewal_cost", "spend_management", "decision_system"],
+      "target_audience": ["smb_owner", "ops_lead", "finance"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Get the Decision Kit - $39",
+        "analytics_id": "ai_saas_spend_decision_kit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_ONLY",
+      "verification": {
+        "repo_file": "ai-saas-spend-decision-kit.html",
+        "in_sitemap": false,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-saas-spend-waste-audit",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI & SaaS Spend Waste Audit",
+      "asset_type": "PAID_SERVICE",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02",
+        "price": "USD 499",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Wants an independent audit of AI/SaaS spend rather than doing it in-house.",
+      "problem_keys": ["ai_saas_spend", "independent_audit", "spend_management"],
+      "target_audience": ["smb_owner", "finance", "ops_lead"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto"],
+      "cta": {
+        "label": "Book the spend audit - $499",
+        "analytics_id": "ai_saas_spend_waste_audit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-saas-spend-waste-audit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-value-realization-kit",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Value Realization Kit",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-value-realization-kit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "AI is adopted but nobody can show the business value it produced.",
+      "problem_keys": ["ai_value", "roi_proof", "adoption_gap"],
+      "target_audience": ["ops_lead", "founder", "finance"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Get the Value Realization Kit - $39",
+        "analytics_id": "ai_value_realization_kit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-value-realization-kit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "workflow-audit",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Workflow Opportunity Audit",
+      "asset_type": "PAID_SERVICE",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/workflow-audit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02",
+        "price": "USD 499",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Does not know which workflow to automate first, or what it is worth.",
+      "problem_keys": ["workflow_automation", "process_audit", "ai_adoption"],
+      "target_audience": ["founder", "ops_lead"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Book the workflow audit - $499",
+        "analytics_id": "workflow_audit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "workflow-audit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "sample-workflow-audit",
+      "brand": "Stratum Praxis",
+      "asset_name": "Sample Workflow Audit",
+      "asset_type": "PROOF",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/sample-workflow-audit.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/workflow-audit.html",
+        "price": null,
+        "evidence": "AGENTS.md records this as the proof asset for the $499 audit"
+      },
+      "primary_user_problem": "Cannot judge whether a paid audit deliverable is worth the price.",
+      "problem_keys": ["purchase_uncertainty", "process_audit", "workflow_automation"],
+      "target_audience": ["founder", "ops_lead"],
+      "commercial_intent": "MID",
+      "distribution_candidates": ["devto"],
+      "cta": {
+        "label": "See a real audit deliverable",
+        "analytics_id": "sample_workflow_audit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "sample-workflow-audit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "accounting-ai-workflow-audit",
+      "brand": "Stratum Praxis",
+      "asset_name": "Accounting AI Workflow Audit",
+      "asset_type": "GUIDE",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/accounting-ai-workflow-audit.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/workflow-audit.html",
+        "price": null,
+        "evidence": "AGENTS.md records this as the current niche high-intent page for the audit funnel"
+      },
+      "primary_user_problem": "Accounting and bookkeeping teams lose hours to document chasing and manual review.",
+      "problem_keys": ["accounting_workflow", "document_collection", "workflow_automation"],
+      "target_audience": ["accountant", "bookkeeper", "smb_owner"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "See the accounting workflow audit",
+        "analytics_id": "accounting_ai_workflow_audit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "accounting-ai-workflow-audit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-council-builder-en",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Council Builder (EN)",
+      "asset_type": "FREE_DIAGNOSTIC",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-council-builder.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/dRm00k2oAdHt0G49ZV6Zy0E",
+        "price": "USD 29",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Does not know whether one AI, a specialist pair, or a role-separated council is needed.",
+      "problem_keys": ["multi_ai_workflow", "model_choice", "ai_subscription_overlap"],
+      "target_audience": ["founder", "creator", "ops_lead"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["youtube", "tiktok", "devto"],
+      "cta": {
+        "label": "Run the council diagnostic",
+        "analytics_id": "ai_council_builder_primary"
+      },
+      "analytics_events": ["funnel_view", "diagnostic_start", "diagnostic_complete", "primary_cta_click", "checkout_click", "activation"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-council-builder.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-council-builder-ja",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Council Builder (JA)",
+      "asset_type": "FREE_DIAGNOSTIC",
+      "language": "ja",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-council-builder-ja.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNiaEY3sE5aX88wegb6Zy0F",
+        "price": "JPY 3980",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "どのAIを使うか、役割分担が必要かを判断できない。",
+      "problem_keys": ["multi_ai_workflow", "model_choice", "ai_subscription_overlap"],
+      "target_audience": ["founder", "creator", "ops_lead"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["note", "youtube", "tiktok"],
+      "cta": {
+        "label": "AI体制診断を実行",
+        "analytics_id": "ai_council_builder_ja_primary"
+      },
+      "analytics_events": ["funnel_view", "diagnostic_start", "diagnostic_complete", "primary_cta_click", "checkout_click", "activation"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-council-builder-ja.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-monetization-reality-check",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Monetization Reality Check",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-monetization-reality-check.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNi7sMgfq1YLagE4FB6Zy0j",
+        "price": "USD 19",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Cannot tell which AI income claims are reproducible and which are not.",
+      "problem_keys": ["ai_income_claims", "claim_verification", "risk_assessment"],
+      "target_audience": ["creator", "founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["youtube", "tiktok", "devto"],
+      "cta": {
+        "label": "Check the claim - $19",
+        "analytics_id": "ai_monetization_reality_check_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-monetization-reality-check.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-income-claim-checklist",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Income Claim Checklist",
+      "asset_type": "FREE_CHECKLIST",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-income-claim-checklist.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/ai-monetization-reality-check.html",
+        "price": null,
+        "evidence": "revenue-link-ledger.md records this as the free entry for the Reality Check product"
+      },
+      "primary_user_problem": "Needs a quick way to pressure-test an AI income claim before acting on it.",
+      "problem_keys": ["ai_income_claims", "claim_verification"],
+      "target_audience": ["creator", "founder"],
+      "commercial_intent": "LOW",
+      "distribution_candidates": ["tiktok", "youtube", "instagram"],
+      "cta": {
+        "label": "Run the claim checklist",
+        "analytics_id": "ai_income_claim_checklist_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-income-claim-checklist.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-workspace-safety-workflow-kit",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Workspace Safety & Workflow Kit",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-workspace-safety-workflow-kit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/28E3cwd3e9rd9cAb3Z6Zy0m",
+        "price": "USD 19",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "No practical data boundaries or permission rules for AI tools at work.",
+      "problem_keys": ["ai_governance", "data_boundaries", "connector_permissions", "shadow_ai"],
+      "target_audience": ["ops_lead", "engineering_lead", "founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Get the safety kit - $19",
+        "analytics_id": "ai_workspace_safety_kit_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-workspace-safety-workflow-kit.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "ai-workspace-safety-checklist",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Workspace Safety Checklist",
+      "asset_type": "FREE_CHECKLIST",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/ai-workspace-safety-checklist.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/ai-workspace-safety-workflow-kit.html",
+        "price": null,
+        "evidence": "revenue-link-ledger.md records this as the free entry for the Workspace Safety Kit"
+      },
+      "primary_user_problem": "Needs a fast check of where AI tools touch sensitive work data.",
+      "problem_keys": ["ai_governance", "data_boundaries", "shadow_ai"],
+      "target_audience": ["ops_lead", "engineering_lead"],
+      "commercial_intent": "LOW",
+      "distribution_candidates": ["devto", "youtube", "instagram"],
+      "cta": {
+        "label": "Run the safety checklist",
+        "analytics_id": "ai_workspace_safety_checklist_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "ai-workspace-safety-checklist.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "revenue-router",
+      "brand": "Stratum Praxis",
+      "asset_name": "Revenue Router",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/revenue-router.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08",
+        "price": "USD 29",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Has research and ideas but no repeatable way to turn them into a revenue action.",
+      "problem_keys": ["monetization_routing", "research_to_revenue"],
+      "target_audience": ["creator", "founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["devto", "youtube"],
+      "cta": {
+        "label": "Get Revenue Router - $29",
+        "analytics_id": "revenue_router_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "revenue-router.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "smartphone-income-blueprint",
+      "brand": "Stratum Praxis",
+      "asset_name": "Smartphone Income Blueprint",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/smartphone-income-blueprint.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/8x200kfbm1YLcoM2xt6Zy0w",
+        "price": "USD 19",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Wants to validate a small digital product using only a phone, without building a catalog first.",
+      "problem_keys": ["digital_product_validation", "phone_first_workflow"],
+      "target_audience": ["creator", "solo_founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["tiktok", "instagram", "youtube"],
+      "cta": {
+        "label": "Get the Blueprint - $19",
+        "analytics_id": "smartphone_income_blueprint_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click", "activation"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "smartphone-income-blueprint.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "smartphone-ai-slide-factory",
+      "brand": "Stratum Praxis",
+      "asset_name": "Smartphone AI Slide Factory",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/smartphone-ai-slide-factory.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/7sY3cw7IU46T1K80pl6Zy0v",
+        "price": "USD 19",
+        "evidence": "in-page Stripe payment link"
+      },
+      "primary_user_problem": "Needs to produce presentation-grade material from a phone without a desktop toolchain.",
+      "problem_keys": ["phone_first_workflow", "content_production"],
+      "target_audience": ["creator", "solo_founder"],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": ["tiktok", "instagram", "youtube"],
+      "cta": {
+        "label": "Get the Slide Factory - $19",
+        "analytics_id": "smartphone_ai_slide_factory_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click", "activation"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "smartphone-ai-slide-factory.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "return-gate-growth-os",
+      "brand": "Stratum Praxis",
+      "asset_name": "Return Gate Growth OS",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "PAUSED_CHECKOUT",
+      "public_url": "https://stratumpraxis.com/return-gate-growth-os.html",
+      "revenue_destination": {
+        "type": "PAUSED",
+        "url": "UNKNOWN",
+        "price": "USD 24",
+        "evidence": "the live page renders 'Direct checkout temporarily paused' and contains no Stripe/Payhip/Gumroad link; the $24 price is stated in copy only"
+      },
+      "primary_user_problem": "Owns useful pages but has no reason for anyone to come back.",
+      "problem_keys": ["repeat_visits", "retention_architecture"],
+      "target_audience": ["creator", "founder", "site_owner"],
+      "commercial_intent": "NONE",
+      "distribution_candidates": [],
+      "cta": {
+        "label": "UNKNOWN - checkout paused",
+        "analytics_id": "return_gate_growth_os"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click"],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "return-gate-growth-os.html",
+        "in_sitemap": true,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "product-router",
+      "brand": "Stratum Praxis",
+      "asset_name": "Product Router",
+      "asset_type": "ROUTER",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/product-router.html",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/ai-revenue-toolkit.html",
+        "price": null,
+        "evidence": "revenue-os/metrics.json all_offer_external_acquisition_2026_08_27 records this as the multi-offer external entry point"
+      },
+      "primary_user_problem": "Arrives from an external listing and does not know which offer applies.",
+      "problem_keys": ["offer_selection"],
+      "target_audience": ["founder", "creator", "ops_lead"],
+      "commercial_intent": "MID",
+      "distribution_candidates": ["devto"],
+      "cta": {
+        "label": "Find the right offer",
+        "analytics_id": "product_router_primary"
+      },
+      "analytics_events": ["funnel_view", "primary_cta_click", "checkout_click"],
+      "verification_state": "REPO_ONLY",
+      "verification": {
+        "repo_file": "product-router.html",
+        "in_sitemap": false,
+        "http_checked_at": null
+      }
+    },
+    {
+      "asset_id": "roi-calculator-subdomain",
+      "brand": "Stratum Praxis",
+      "asset_name": "ROI Calculator (subdomain)",
+      "asset_type": "FREE_CALCULATOR",
+      "language": "en",
+      "status": "DRAFT",
+      "public_url": "https://roi.stratumpraxis.com/",
+      "revenue_destination": {
+        "type": "UNKNOWN",
+        "url": "UNKNOWN",
+        "price": null,
+        "evidence": "listed under AGENTS.md verified destinations, but no source file for it exists in this repository and it is not in sitemap.xml"
+      },
+      "primary_user_problem": "Wants a quick ROI estimate before committing to an AI project.",
+      "problem_keys": ["roi_proof", "ai_agent_cost"],
+      "target_audience": ["founder", "ops_lead"],
+      "commercial_intent": "MID",
+      "distribution_candidates": [],
+      "cta": {
+        "label": "UNKNOWN",
+        "analytics_id": "UNKNOWN"
+      },
+      "analytics_events": [],
+      "verification_state": "DOC_ONLY",
+      "verification": {
+        "repo_file": null,
+        "in_sitemap": false,
+        "http_checked_at": null
+      }
+    }
+  ]
+}
