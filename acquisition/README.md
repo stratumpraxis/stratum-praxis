@@ -40,6 +40,13 @@ demand signal
 
 Nothing here is a parallel copy of an existing mechanism.
 
+The `signal-intelligence/` companion is the Issue #53 upstream intake layer. It adds
+multi-family evidence normalization, independent two-signal corroboration, Revenue Signal
+Score thresholds, mandatory existing-asset fit and the Source Candidate handoff. The
+downstream `../persona-distribution/` layer consumes that handoff for the single truthful
+owner identity, language desks and editorial lenses. Both import the mechanisms documented
+below rather than replacing them.
+
 | Existing system | How this engine uses it |
 | --- | --- |
 | `distribution/source-routing.json` | the only source of `utm_source` / `utm_medium`. Channel names are validated against it; an undefined channel is refused, never invented. |

@@ -1,0 +1,12 @@
+{
+  "identity_id": "jp_independent_freelancer",
+  "public_descriptor": "Japan-based independent freelancer / solo worker publishing internationally.",
+  "approved_first_person_claims": [],
+  "prohibited_first_person_claims": ["testing", "purchase", "daily_use", "client_work", "customers", "employment", "credentials", "revenue", "travel", "biography"],
+  "privacy_redactions": ["exact_home_address", "legal_identifiers", "credentials", "private_email", "financial_accounts", "private_records", "precise_location_history"],
+  "allowed_topics": ["AI", "independent work", "practical systems", "Japan", "work and incentives"],
+  "restricted_topics": ["unsupported personal experience", "unsupported national generalization"],
+  "languages": ["en", "es"],
+  "default_disclosure_policy": "Disclose AI assistance when the destination requires it; never imply unsupported first-hand experience.",
+  "updated_at": "2026-08-29"
+}

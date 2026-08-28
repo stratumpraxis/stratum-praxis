@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "lenses": [
+    { "lens_id": "japan_reality", "purpose": "Grounded inside perspective without clichés or unsupported national generalizations.", "required_distinctions": ["personal_observation", "public_evidence", "interpretation", "system_claim"] },
+    { "lens_id": "independent_builder", "purpose": "Explain what a tool or market change practically changes for a solo operator.", "required_elements": ["implication", "tradeoff", "workflow_or_revenue_relevance"] },
+    { "lens_id": "practical_operator", "purpose": "Solve a concrete work problem close to intent and purchase behavior.", "required_elements": ["problem", "diagnosis", "decision_criteria", "next_step"] },
+    { "lens_id": "structural_reflection", "purpose": "Preserve nuanced thinking about work, AI, people, systems and incentives.", "cta_optional": true }
+  ]
+}

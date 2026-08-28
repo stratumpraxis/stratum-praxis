@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "providers": {
+    "repository_owned_analytics": { "state": "CONTRACT_ONLY", "reason": "No live analytics credential or API client exists in this repository." },
+    "payment_providers": { "state": "CONTRACT_ONLY", "reason": "Evidence references are accepted by the ledger; no payment API credential is committed." },
+    "google_search_trends": { "state": "CONTRACT_ONLY" },
+    "reddit": { "state": "CONTRACT_ONLY" },
+    "product_hunt": { "state": "CONTRACT_ONLY" },
+    "software_reviews": { "state": "CONTRACT_ONLY" },
+    "youtube_search": { "state": "CONTRACT_ONLY" },
+    "completed_owner_source": { "state": "CONNECTED", "reason": "Local COMPLETE owner-approved records require no external provider." }
+  }
+}
