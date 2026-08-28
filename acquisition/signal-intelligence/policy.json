@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-08-28",
+  "purpose": "Issue #53 - the evidence policy for the Acquisition Signal Intelligence layer. This file is the only place where evidence families, corroboration strength, freshness and promotion thresholds are defined. It does not replace acquisition/lib/signal-score.mjs: that model still scores a demand signal for distribution. This layer decides whether a market thesis is corroborated well enough to become a SOURCE_CANDIDATE at all.",
+  "evidence_families": {
+    "owned_behavior": {
+      "tier": 1,
+      "independence_group": "owned",
+      "external": false,
+      "default_buckets": ["MONEY_SIGNAL"],
+      "ttl_days": 45,
+      "notes": "Owned CTA / checkout / verified-purchase / analytics behaviour. Strong evidence of internal fit. Never evidence of external consensus."
+    },
+    "search_demand": {
+      "tier": 2,
+      "independence_group": "search",
+      "external": true,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 120,
+      "notes": "Public search-demand evidence, including recorded public-search research passes."
+    },
+    "community_pain": {
+      "tier": 2,
+      "independence_group": "community",
+      "external": true,
+      "default_buckets": ["PAIN_SIGNAL"],
+      "ttl_days": 90,
+      "notes": "Public problem/pain discussion, e.g. Reddit threads. Participation and publishing there remain governed by distribution/provider-policy.json."
+    },
+    "review_signal": {
+      "tier": 2,
+      "independence_group": "reviews",
+      "external": true,
+      "default_buckets": ["PAIN_SIGNAL", "MONEY_SIGNAL"],
+      "ttl_days": 180,
+      "notes": "Software review complaints and evaluation criteria where legally and technically accessible."
+    },
+    "competitor_pricing": {
+      "tier": 2,
+      "independence_group": "pricing",
+      "external": true,
+      "default_buckets": ["MONEY_SIGNAL"],
+      "ttl_days": 180,
+      "notes": "Paid alternatives, published pricing, comparison pages."
+    },
+    "product_discovery": {
+      "tier": 3,
+      "independence_group": "product_launch",
+      "external": true,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 45,
+      "notes": "Product Hunt launches and category activity."
+    },
+    "trend_evidence": {
+      "tier": 3,
+      "independence_group": "trends",
+      "external": true,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 30,
+      "notes": "Google Trends, YouTube trend/search evidence, early-trend trackers. Two members of this family describing the same event are WEAK corroboration by design."
+    },
+    "question_demand": {
+      "tier": 3,
+      "independence_group": "trends",
+      "external": true,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 60,
+      "notes": "Question-demand evidence. Shares the trends independence group because it is usually derived from the same query stream."
+    },
+    "builder_discussion": {
+      "tier": 4,
+      "independence_group": "builder",
+      "external": true,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 60,
+      "notes": "Hacker News / dev community discussion. Useful for differentiation reading, weak for purchase intent."
+    },
+    "industry_change": {
+      "tier": 4,
+      "independence_group": "industry",
+      "external": true,
+      "default_buckets": ["PAIN_SIGNAL"],
+      "ttl_days": 180,
+      "notes": "Regulation, policy, pricing or product changes that create operational demand."
+    },
+    "editorial_source": {
+      "tier": 4,
+      "independence_group": "owned",
+      "external": false,
+      "default_buckets": ["DEMAND_SIGNAL"],
+      "ttl_days": 365,
+      "notes": "Completed owner-approved source material. Shares the owned independence group: the operator's own note cannot corroborate the operator's own analytics."
+    }
+  },
+  "corroboration": {
+    "min_observed_signals": 2,
+    "min_independence_groups": 2,
+    "min_external_observed_signals": 1,
+    "mirror_similarity_threshold": 0.8,
+    "notes": "Automatic promotion requires at least two OBSERVED, non-mirrored signals drawn from at least two different independence groups, at least one of which is external. ASSUMPTION and HYPOTHESIS records may raise research priority and are reported, but never satisfy this rule."
+  },
+  "buckets": {
+    "one_bucket": "WATCH",
+    "two_buckets": "SOURCE_CANDIDATE_ELIGIBLE",
+    "three_buckets": "HIGH_PRIORITY_ELIGIBLE",
+    "notes": "Bucket coverage is an eligibility ceiling, not a promotion. The Revenue Signal Score and the existing-asset fit gate must also pass."
+  },
+  "score_bands": [
+    { "min": 0, "max": 49, "status": "REJECT_LOW_VALUE" },
+    { "min": 50, "max": 69, "status": "WATCH" },
+    { "min": 70, "max": 84, "status": "SOURCE_CANDIDATE" },
+    { "min": 85, "max": 100, "status": "HIGH_PRIORITY_SOURCE_CANDIDATE" }
+  ],
+  "gates": {
+    "safety_floor": 7,
+    "measurement_floor": 4,
+    "asset_fit_floor": 0.45,
+    "new_product_recommendation_min_score": 85,
+    "notes": "asset_fit_floor mirrors ROUTE_FLOOR in acquisition/lib/router.mjs so this layer cannot promote a candidate the existing router would refuse to route."
+  },
+  "freshness": {
+    "stale_grace_days": 0,
+    "candidate_ttl_days": 60,
+    "notes": "A signal older than its family ttl_days is EXPIRED and cannot corroborate. Candidates carry their own expiry so a stale thesis cannot be re-derived silently."
+  },
+  "exploration": {
+    "reserved_share": 0.3,
+    "stop_cooldown_days": 14,
+    "max_winner_boost": 1.25,
+    "notes": "At least this share of ranked capacity is reserved for candidates with no prior measured outcome, so yesterday's winner cannot suppress newly corroborated demand. A STOP verdict places the route in cooldown; it is not regenerated during that window."
+  },
+  "lens_affinity": {
+    "owned_behavior": ["practical_operator"],
+    "search_demand": ["practical_operator", "independent_builder"],
+    "community_pain": ["practical_operator"],
+    "review_signal": ["practical_operator"],
+    "competitor_pricing": ["practical_operator", "independent_builder"],
+    "product_discovery": ["independent_builder"],
+    "trend_evidence": ["independent_builder"],
+    "question_demand": ["practical_operator"],
+    "builder_discussion": ["independent_builder", "structural_reflection"],
+    "industry_change": ["independent_builder", "structural_reflection"],
+    "editorial_source": ["structural_reflection", "japan_reality"],
+    "notes": "Eligible lens hints handed to Issue #52. #52 owns the final editorial decision, the truth gate and the localization gate; this map only narrows the candidate set."
+  }
+}

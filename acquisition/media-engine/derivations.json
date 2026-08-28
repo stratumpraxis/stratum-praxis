@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-28",
+  "purpose": "Issue #52 derivation queue. Every record here was produced from a COMPLETE source or a promoted Issue #53 candidate, carries full provenance, and sits on the publish-proof ladder DRAFT -> READY -> PUBLISH_REQUESTED -> PUBLISHED -> VERIFIED. PUBLISH_REQUESTED is not PUBLISHED and PUBLISHED is not VERIFIED. No record here has been published; none can be, because no bound channel currently satisfies the nine auto-publish conditions.",
+  "state_contract": {
+    "DRAFT": "derived, gates not yet all proven",
+    "READY": "truth, localization, duplication, attribution and safety gates all passed; waiting on a human decision",
+    "PUBLISH_REQUESTED": "a human approved it and it was handed to a publisher; this is a request, not a publication",
+    "PUBLISHED": "an external post id, a published timestamp and an account id exist",
+    "VERIFIED": "an independent status read confirmed the canonical URL is live"
+  },
+  "derivations": [
+    {
+      "derivation_id": "shadow-ai-spend-en-practical-operator-v1",
+      "source_id": "shadow-ai-spend-accountability-candidate",
+      "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+      "identity_id": "jp_independent_freelancer",
+      "desk_id": "en_desk",
+      "lens_id": "practical_operator",
+      "channel_id": "devto",
+      "language": "en",
+      "audience": ["finance", "ops_lead", "smb_owner"],
+      "target_asset": "ai-saas-waste-calculator",
+      "cta_id": "ai_saas_waste_calculator_primary",
+      "campaign": "shadow_ai_spend_review_en",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "destination_language": "en",
+      "title": "Before the next renewal, someone has to name the number",
+      "hook": "The hard part of an AI subscription review is not finding waste. It is producing one figure you are willing to defend in a meeting.",
+      "body": "## The problem\n\nA team signs up for tools one at a time, each one small enough not to need approval. By renewal season nobody owns the total, and the person asked to explain it has a list of line items rather than an argument.\n\nWritten with AI assistance from a Japan-based independent freelancer.\n\n## What is actually going wrong\n\nThe usual diagnosis is overspending. That is rarely the whole story. Three separate problems get reported as one:\n\n- **No owner.** The charges are spread across cards and departments, so no single person can answer for them.\n- **Overlap.** Several tools solve the same job well enough that none of them looks obviously removable.\n- **No baseline.** Without a figure agreed in advance, every cut becomes a negotiation instead of a decision.\n\nPublicly reported figures put SaaS and AI subscription waste in the 25-30% range, and describe a large share of finance and IT leaders encountering AI charges that were never budgeted. Those numbers are useful for framing the conversation. They are not a substitute for your own.\n\n## Deciding what to cut\n\nFor independent workers and small teams, four questions settle most of it:\n\n1. Which tools have more than one active seat doing the same job?\n2. Which renewals fall inside the next quarter, where a decision is still cheap?\n3. Which tools would cause visible pain within a week if switched off?\n4. Which spend is reducible without changing what anyone actually does?\n\nOnly the fourth question produces a defensible number. The first three narrow the list.\n\n## A practical next step\n\nWork out the reducible portion before the meeting, not during it. The reducible-spend calculator I publish on stratumpraxis.com takes your own seat counts and renewal dates and returns an estimate you can put on one slide. It runs in the browser, needs no signup, and the output is an estimate from your inputs rather than a benchmark from someone else's.\n\nThis article routes to a page I publish and maintain, which is also where a paid audit checklist lives.\n",
+      "cta_text": "Run the reducible-spend estimate on your own numbers before the next renewal.",
+      "disclosure": {
+        "ai_assistance": "Written with AI assistance from a Japan-based independent freelancer.",
+        "commercial_relationship": "This article routes to a page I publish and maintain, which is also where a paid audit checklist lives."
+      },
+      "localization": {},
+      "utm_parameters": {
+        "utm_source": "devto",
+        "utm_medium": "community_content",
+        "utm_campaign": "shadow_ai_spend_review_en",
+        "utm_content": "en_desk_practical_operator_ai_saas_waste",
+        "asset_id": "ai-saas-waste-calculator"
+      },
+      "tracked_destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=devto&utm_medium=community_content&utm_campaign=shadow_ai_spend_review_en&utm_content=en_desk_practical_operator_ai_saas_waste&asset_id=ai-saas-waste-calculator",
+      "provenance": {
+        "source_id": "shadow-ai-spend-accountability-candidate",
+        "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+        "identity_id": "jp_independent_freelancer",
+        "desk_id": "en_desk",
+        "lens_id": "practical_operator",
+        "channel_id": "devto",
+        "account_alias": "UNKNOWN",
+        "campaign": "shadow_ai_spend_review_en",
+        "target_asset": "ai-saas-waste-calculator",
+        "cta_id": "ai_saas_waste_calculator_primary"
+      },
+      "ai_transformation_used": true,
+      "human_approved_source": true,
+      "human_review_required": true,
+      "proof_state": "DRAFT",
+      "publish_proof": {},
+      "created_at": "2026-08-28T00:00:00Z",
+      "published_at": null,
+      "measurement": {
+        "qualified_views": null,
+        "cta_clicks": null,
+        "checkout": null,
+        "purchase": null,
+        "revenue": null,
+        "purchase_evidence": null,
+        "measurement_source": null,
+        "measured_at": null
+      }
+    },
+    {
+      "derivation_id": "shadow-ai-spend-es-practical-operator-v1",
+      "source_id": "shadow-ai-spend-accountability-candidate",
+      "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+      "identity_id": "jp_independent_freelancer",
+      "desk_id": "es_desk",
+      "lens_id": "practical_operator",
+      "channel_id": "bluesky",
+      "language": "es",
+      "audience": ["founder", "creator", "smb_owner"],
+      "target_asset": "ai-saas-waste-calculator",
+      "cta_id": "ai_saas_waste_calculator_primary",
+      "campaign": "shadow_ai_spend_review_es",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "destination_language": "en",
+      "title": "Cuando trabajas por tu cuenta, la suscripcion olvidada la pagas tu",
+      "hook": "Nadie te va a pedir cuentas por las herramientas que dejaste activas. Ese es justamente el problema.",
+      "body": "Un equipo grande descubre el gasto en una revision trimestral. Quien trabaja por su cuenta lo descubre cuando revisa la tarjeta, y para entonces ya lleva meses pagando.\n\nEscrito con asistencia de IA por un freelancer independiente en Japon.\n\nLa pregunta util no es cuanto gastas. Es cuanto de ese gasto podrias quitar manana sin cambiar como trabajas. Esa cifra es la unica que sirve para decidir.\n\nTres cosas ayudan a encontrarla. Primero, mira que herramientas cobran por puesto cuando el unico puesto eres tu. Segundo, apunta las fechas de renovacion: cancelar el dia antes cuesta cero, cancelar el dia despues cuesta un ciclo completo. Tercero, separa lo que usas cada semana de lo que abriste una vez y dejaste ahi.\n\nUn detalle que cambia el calculo si facturas fuera de tu pais: muchas de estas suscripciones se cobran en dolares. La cifra que ves en tu moneda depende del tipo de cambio del dia del cargo, asi que conviene calcular el total anual en la moneda en la que realmente cobras antes de decidir que se queda.\n\nEnlace al calculador gratuito, sin registro. Aviso: la herramienta y la pagina estan en ingles. La calculadora es una pagina que publico y mantengo yo, y en el mismo sitio hay un producto de pago.\n",
+      "cta_text": "Calcula tu gasto reducible antes de la proxima renovacion. La herramienta esta en ingles.",
+      "disclosure": {
+        "ai_assistance": "Escrito con asistencia de IA por un freelancer independiente en Japon.",
+        "commercial_relationship": "La calculadora es una pagina que publico y mantengo yo, y en el mismo sitio hay un producto de pago."
+      },
+      "destination_language_note": "La pagina de destino esta en ingles.",
+      "localization": {
+        "framing": "The English desk frames this as a team renewal review with an internal owner problem. The Spanish desk frames it around the solo operator who has no one to report to, which is the audience this desk actually reaches.",
+        "hook": "Rewritten around the absence of accountability rather than around the renewal meeting, because the meeting does not exist for this reader.",
+        "terminology": "Uses gasto reducible, renovacion and puesto rather than calques of reducible spend, renewal cycle and seat.",
+        "examples": "Replaces the multi-department card sprawl example with a per-seat tool billed to one person, which is the shape of the problem for this audience.",
+        "assumptions": "Drops the assumption that a finance function exists, that renewals are reviewed quarterly, and that a slide will be presented to anyone.",
+        "currency_context": "Adds the USD billing and exchange-rate point, which materially changes the annual total for a reader invoicing in another currency and has no equivalent in the English version.",
+        "cta_wording": "States explicitly that the destination tool and page are in English, so no Spanish-language delivery is implied.",
+        "cultural_context": "Uses broadly understandable international Spanish and avoids regional tax, invoicing or banking specifics, because no evidence identifies a single target country."
+      },
+      "utm_parameters": {
+        "utm_source": "bluesky",
+        "utm_medium": "social",
+        "utm_campaign": "shadow_ai_spend_review_es",
+        "utm_content": "es_desk_practical_operator_ai_saas_waste",
+        "asset_id": "ai-saas-waste-calculator"
+      },
+      "tracked_destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=bluesky&utm_medium=social&utm_campaign=shadow_ai_spend_review_es&utm_content=es_desk_practical_operator_ai_saas_waste&asset_id=ai-saas-waste-calculator",
+      "provenance": {
+        "source_id": "shadow-ai-spend-accountability-candidate",
+        "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+        "identity_id": "jp_independent_freelancer",
+        "desk_id": "es_desk",
+        "lens_id": "practical_operator",
+        "channel_id": "bluesky",
+        "account_alias": "UNKNOWN",
+        "campaign": "shadow_ai_spend_review_es",
+        "target_asset": "ai-saas-waste-calculator",
+        "cta_id": "ai_saas_waste_calculator_primary"
+      },
+      "ai_transformation_used": true,
+      "human_approved_source": true,
+      "human_review_required": true,
+      "proof_state": "DRAFT",
+      "publish_proof": {},
+      "created_at": "2026-08-28T00:00:00Z",
+      "published_at": null,
+      "measurement": {
+        "qualified_views": null,
+        "cta_clicks": null,
+        "checkout": null,
+        "purchase": null,
+        "revenue": null,
+        "purchase_evidence": null,
+        "measurement_source": null,
+        "measured_at": null
+      }
+    }
+  ]
+}

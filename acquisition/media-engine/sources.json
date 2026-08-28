@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-28",
+  "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
+  "sources": [
+    {
+      "source_id": "shadow-ai-spend-accountability-candidate",
+      "source_type": "SOURCE_CANDIDATE",
+      "source_candidate_id": "sc-shadow_ai_spend_accountability_2026_08",
+      "title": "Unbudgeted AI and SaaS spend now needs a defensible number before renewal",
+      "language": "en",
+      "content_hash": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "source_url": null,
+      "created_at": "2026-08-28T00:00:00Z",
+      "completed_at": "2026-08-28T00:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": ["finance", "ops_lead", "smb_owner"],
+      "evidence_families": ["search_demand", "industry_change", "owned_behavior", "builder_discussion"],
+      "allowed_claims": [
+        "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range.",
+        "Publicly reported figures describe 78% of CFO and IT leaders encountering unbudgeted AI charges.",
+        "Organisations are reported to be moving to quarterly AI and SaaS spend audits.",
+        "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup."
+      ],
+      "restricted_claims": [
+        { "phrase": "our customers saved", "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null." },
+        { "phrase": "guaranteed savings", "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs." },
+        { "phrase": "the market has validated", "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis." }
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "revenue-os/metrics.json#market_signal_loop_2026_08_27.signals_collected",
+        "revenue-os/metrics.json#distribution_baseline_2026_08_27.downstream_events_last_30d",
+        "acquisition/signal-intelligence/candidates.json#sc-shadow_ai_spend_accountability_2026_08"
+      ],
+      "existing_product_routes": [
+        { "role": "PRIMARY", "asset_id": "ai-saas-waste-calculator", "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html", "cta": "Run the reducible-spend estimate" },
+        { "role": "PURCHASE_PATH", "asset_id": "ai-saas-spend-audit-checklist", "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html", "cta": null }
+      ],
+      "excerpt": "Teams are accumulating unbudgeted AI and SaaS subscriptions, and someone now has to justify the total on a quarterly cycle. The buyer wants a defensible number before the next renewal, not a general automation pitch.",
+      "notes": "content_hash is a fixed placeholder digest because a candidate-derived source has no file on disk; lib/source.mjs only recomputes and enforces the hash for sources that name a source_file. The provenance guarantee for this record is the candidate store entry named in source_candidate_id, which lib/source.mjs verifies is promoted and unexpired on every load."
+    },
+    {
+      "source_id": "repeat-visit-sites-win-owner-package",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Recurring checking behaviour, not article volume, is what makes a site durable",
+      "language": "ja",
+      "content_hash": "sha256:1d00e004a8e2c0fdf47100101c983592874b63922f8e41c24d5675e753517017",
+      "source_file": "content/note-publish-queue/2026-08-26-repeat-visit-sites-win.md",
+      "source_url": null,
+      "created_at": "2026-08-26T00:00:00Z",
+      "completed_at": "2026-08-26T00:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": ["creator", "founder", "site_owner"],
+      "evidence_families": ["editorial_source"],
+      "allowed_claims": [
+        "Some widely used services are built on a recurring checking behaviour rather than on article volume.",
+        "The package names timeanddate.com, Flightradar24, StatusGator and Going as public examples of that pattern.",
+        "Rights, licensing and operator liability are given as reasons to avoid certain categories."
+      ],
+      "restricted_claims": [
+        { "phrase": "i built a site like this", "safe_rewrite": "The source argues a pattern; it does not record the operator building one of these services." },
+        { "phrase": "these companies told me", "safe_rewrite": "The examples are public services described from public information." }
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "content/note-publish-queue/README.md defines the COMPLETE criteria this package meets",
+        "content/note-publish-queue/2026-08-26-repeat-visit-sites-win.md"
+      ],
+      "existing_product_routes": [],
+      "excerpt": "Strong sites are not necessarily the ones with the most articles. Timetables, outage pages, fare checks and price changes create a reason to come back, and that recurring check is the asset.",
+      "notes": "COMPLETE owner-approved package. The Japanese original is immutable; any derivation is a new record, never an edit of this one."
+    },
+    {
+      "source_id": "routine-information-assets-draft",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Routine information assets (draft)",
+      "language": "ja",
+      "content_hash": "sha256:ce9f3e98c8106029b88cf4d60ad36620201329e95b884db4e56f98f6cff90a3c",
+      "source_file": "content/note-drafts/2026-08-26-routine-information-assets.md",
+      "source_url": null,
+      "created_at": "2026-08-26T00:00:00Z",
+      "status": "DRAFT",
+      "audience_keys": ["creator", "site_owner"],
+      "evidence_families": ["editorial_source"],
+      "allowed_claims": [],
+      "restricted_claims": [],
+      "personal_experience_claims": [],
+      "evidence_refs": ["content/note-drafts/2026-08-26-routine-information-assets.md"],
+      "existing_product_routes": [],
+      "excerpt": null,
+      "notes": "Registered deliberately as DRAFT. It sits in content/note-drafts/, not in the publish queue, so it does not meet the COMPLETE criteria and is not derivable. It is here so the incomplete-source path is exercised against a real file rather than a synthetic one."
+    }
+  ]
+}

@@ -156,3 +156,29 @@ Only add an asset you can verify. `verify-inventory.mjs` cross-checks the declar
 the declared `verification_state` claims more than can be proven. Read the
 `revenue_destination` out of the page's own markup rather than from a document, and record
 where you read it in `revenue_destination.evidence`.
+
+## Companion modules
+
+Two upstream/downstream companions live inside this directory. Neither is a parallel
+engine: both import this engine's inventory, router, UTM builder, safety patterns, queue
+vocabulary, ledger guards and winner logic rather than reimplementing them, and neither
+writes any file this engine owns.
+
+| Module | Issue | Job |
+| --- | --- | --- |
+| [`signal-intelligence/`](signal-intelligence/README.md) | #53 | upstream. Ingests multi-family market evidence, enforces independent corroboration and the 2-Signal Rule, scores a Revenue Signal Score, runs a mandatory verified existing-asset fit gate, and emits `SOURCE_CANDIDATE` records. |
+| [`media-engine/`](media-engine/README.md) | #52 | downstream. Consumes promoted candidates and owner-approved sources under one truthful operator identity, derives EN/ES desk x lens outputs, and runs the truth, localization, duplication, provider-policy and publish-proof gates. |
+
+```
+market + owned evidence
+  -> signal-intelligence  (corroboration, score, verified-asset fit)
+  -> SOURCE_CANDIDATE
+  -> media-engine         (identity, desk, lens, localization, truth, duplication)
+  -> provider gate        -> distribution/provider-policy.json
+  -> attribution          -> lib/utm.mjs, distribution/source-routing.json
+  -> ledger + winner      -> lib/ledger.mjs, lib/winner.mjs
+```
+
+Neither module publishes anything, creates a product, creates an account, or creates an
+identity. `signal-intelligence/cli/promote.mjs --write` is the only write path across both,
+and it writes only `signal-intelligence/candidates.json`.

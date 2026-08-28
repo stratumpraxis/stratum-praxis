@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-28",
+  "purpose": "Issue #52 language/market desks. A desk is a language and an audience, not a person. Both desks are operated by identity jp_independent_freelancer.",
+  "desks": {
+    "en_desk": {
+      "desk_id": "en_desk",
+      "identity_id": "jp_independent_freelancer",
+      "language": "en",
+      "state": "ACTIVE",
+      "state_reason": "English is the language of every LIVE revenue asset in acquisition/asset-inventory.json except the three Japanese ones, so an English route can reach a verified destination today.",
+      "positioning": "Japan-based independent freelancer writing about AI, independent work, practical systems, and what Japan is actually like from the inside.",
+      "audience": [
+        "english_speaking_independent_workers",
+        "solo_builders",
+        "ai_enabled_freelancers",
+        "practical_business_productivity_readers",
+        "readers_interested_in_japan_beyond_tourism"
+      ],
+      "audience_keys": ["finance", "ops_lead", "smb_owner", "founder", "creator", "engineering_lead", "site_owner"],
+      "revenue_route_language": "en",
+      "requires_localization_review": false,
+      "notes": "Prefer verified existing English revenue routes. This desk does not create products."
+    },
+    "es_desk": {
+      "desk_id": "es_desk",
+      "identity_id": "jp_independent_freelancer",
+      "language": "es",
+      "state": "TEST",
+      "state_reason": "First-class contract, but held at TEST until two things are true: a localization QA pass is signed off by the owner, and a channel exists whose provider policy permits Spanish publishing. Neither is proven today, so no ES output may reach AUTO_PUBLISH_ALLOWED.",
+      "positioning": "Freelancer independiente en Japon que escribe sobre IA practica, trabajo independiente, sistemas personales y la realidad cotidiana de Japon para lectores hispanohablantes.",
+      "audience": [
+        "spanish_speaking_independent_workers",
+        "creators",
+        "freelancers",
+        "solo_operators",
+        "readers_interested_in_japan",
+        "practical_ai_productivity_readers"
+      ],
+      "audience_keys": ["founder", "creator", "smb_owner", "site_owner"],
+      "revenue_route_language": "en",
+      "requires_localization_review": true,
+      "spanish_variant": "INTERNATIONAL",
+      "spanish_variant_rule": "Default to broadly understandable international Spanish. A regional variant requires evidence that a specific market is the target; no such evidence exists today.",
+      "english_only_destination_rule": "Every verified revenue asset in the inventory is English-language. An ES output routing to one of them MUST state that the destination is in English. Implying Spanish-language delivery is a blocking localization failure.",
+      "notes": "Not a machine-translation lane. Framing, hook, terminology, examples, assumptions, currency context and CTA wording must be localized, and lib/localize.mjs rejects an output that is only a translation of the English one."
+    }
+  }
+}
