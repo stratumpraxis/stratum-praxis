@@ -171,6 +171,21 @@ Attribution for already-published posts is derived read-only from the manifest t
 produced them and stored in `acquisition/distribution-ledger.json`. This file and
 `publish-ledger.json` are never modified by that process.
 
+**Why the caption counts as evidence, and where that stops.** The caption is treated as
+proof of what was transmitted only because `distribution/buffer-video-publisher.mjs` --
+the only script that creates records in `publish-ledger.json` -- reads the post body from
+`publish.caption` and sends it verbatim as the post text. That proof is re-established
+from the publisher's own source on every classification run: if the publisher is changed
+so it no longer reads or no longer transmits that caption, every record degrades to
+`UNVERIFIED` instead of continuing to claim attribution.
+
+The proof does **not** generalise to other lanes. `distribution/buffer-publisher.mjs`
+(image/text) builds its payload from `content-queue.json` as `${item.text}\n\n${item.url}`,
+not from a manifest caption, and writes no ledger this contract covers.
+`distribution/buffer-video-status.mjs` only updates entries that already exist and creates
+none. Adding a new publisher that writes this ledger requires registering its own proof in
+`acquisition/lib/attribution.mjs` first; until then its posts classify `UNVERIFIED`.
+
 Known divergence: existing hand-written captions used `utm_medium=social` for YouTube,
 while `distribution/source-routing.json` declares `video`. The planner emits the
 declared value. Historical records keep whatever was actually sent and are never rewritten.

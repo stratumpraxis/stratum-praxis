@@ -177,3 +177,36 @@ test('existing GitHub workflows still parse as YAML-ish and were not touched', a
     assert.ok(!raw.includes('\t'), `${file} contains a tab, which YAML forbids for indentation`);
   }
 });
+
+test('the backfill WRITE path leaves the historical publish ledger byte-identical', async () => {
+  // The read-only path is guarded elsewhere. This exercises the dangerous one: the run
+  // that actually persists derived attribution must still not touch the video ledger.
+  const ledgerPath = repoPath('trend-video-engine/publish-ledger.json');
+  const before = await fs.readFile(ledgerPath, 'utf8');
+  const overlayPath = repoPath('acquisition/distribution-ledger.json');
+  const overlayBefore = await fs.readFile(overlayPath, 'utf8');
+
+  try {
+    const { stdout } = await run(node, ['acquisition/cli/attribution-backfill.mjs', '--write'], { cwd: REPO_ROOT });
+    assert.match(stdout, /ATTRIBUTION_BACKFILL_OK write=true/);
+
+    const after = await fs.readFile(ledgerPath, 'utf8');
+    assert.equal(after, before, 'trend-video-engine/publish-ledger.json must be byte-identical after a --write run');
+  } finally {
+    // Restore the overlay so the test leaves no diff behind.
+    await fs.writeFile(overlayPath, overlayBefore, 'utf8');
+  }
+});
+
+test('the backfill refuses to claim attribution when the publishing path is unproven', async () => {
+  const { stdout } = await run(node, ['acquisition/cli/attribution-backfill.mjs', '--json'], { cwd: REPO_ROOT });
+  const report = JSON.parse(stdout);
+  assert.equal(report.caption_proof.proven, true, 'the real publisher currently proves the payload');
+  for (const record of report.records) {
+    if (record.attribution_state === 'ATTRIBUTED') {
+      assert.equal(record.payload_proof.proven, true,
+        `${record.ledger_id} is ATTRIBUTED without a proven publishing path`);
+      assert.ok(record.destination_asset_id, `${record.ledger_id} is ATTRIBUTED with no mapped asset`);
+    }
+  }
+});

@@ -4,7 +4,10 @@ import fs from 'node:fs/promises';
 
 import {
   ATTRIBUTION_STATES,
+  LEDGER_PUBLISHER_PROOFS,
+  UNPROVEN_PUBLISHERS,
   classifyAttribution,
+  establishCaptionProof,
   contributesEvidence,
   extractUrls,
   findTrackedDestination,
@@ -23,7 +26,10 @@ const inventory = await loadInventory('acquisition/asset-inventory.json', { know
 const fixture = (name) => readJson(`acquisition/test/fixtures/manifests/${name}.json`);
 const sent = { status: 'sent', postId: 'p1', sentAt: '2026-08-27T09:59:15.685Z', externalLink: 'https://www.youtube.com/watch?v=X' };
 const sending = { status: 'sending', postId: 'p2', sentAt: null, externalLink: null };
-const ctx = (platform = 'youtube', manifestId = 'm1') => ({ platform, manifestId, inventory, sourceRouting });
+const VIDEO_LEDGER = 'trend-video-engine/publish-ledger.json';
+// Established once from the real publisher source, exactly as the backfill does.
+const captionProof = await establishCaptionProof(VIDEO_LEDGER);
+const ctx = (platform = 'youtube', manifestId = 'm1') => ({ platform, manifestId, inventory, sourceRouting, captionProof });
 
 test('a published post whose caption carried a tracked URL is ATTRIBUTED', async () => {
   const record = classifyAttribution(await fixture('attributed-youtube'), sent, ctx());
@@ -201,7 +207,7 @@ test('the real video ledger classifies without error and produces the recorded c
   for (const [manifestId, services] of Object.entries(videoLedger.items || {})) {
     for (const [platform, entry] of Object.entries(services || {})) {
       if (platform.startsWith('_')) continue;
-      records.push(classifyAttribution(manifests.get(manifestId) || null, entry, { platform, manifestId, inventory, sourceRouting }));
+      records.push(classifyAttribution(manifests.get(manifestId) || null, entry, { platform, manifestId, inventory, sourceRouting, captionProof }));
     }
   }
   const summary = summarizeAttribution(records);
@@ -228,7 +234,7 @@ test('classifying the real ledger leaves the video ledger byte-identical', async
   for (const [manifestId, services] of Object.entries(videoLedger.items || {})) {
     for (const [platform, entry] of Object.entries(services || {})) {
       if (platform.startsWith('_')) continue;
-      classifyAttribution(manifests.get(manifestId) || null, entry, { platform, manifestId, inventory, sourceRouting });
+      classifyAttribution(manifests.get(manifestId) || null, entry, { platform, manifestId, inventory, sourceRouting, captionProof });
     }
   }
   const after = await fs.readFile(repoPath('trend-video-engine/publish-ledger.json'), 'utf8');
@@ -239,4 +245,129 @@ test('the manifest resolver finds a manifest for the attributed post', async () 
   const { manifests, sources } = await collectManifests();
   assert.ok(manifests.has('2026-08-27-agent-control-youtube-v5'));
   assert.ok(sources.get('2026-08-27-agent-control-youtube-v5').includes('variants/'));
+});
+
+// ---- the caption proof is a property of the publishing path, not of manifests -------
+
+test('the caption proof holds for the video ledger, established from the real publisher source', async () => {
+  const proof = await establishCaptionProof(VIDEO_LEDGER);
+  assert.equal(proof.proven, true);
+  assert.equal(proof.publisher, 'distribution/buffer-video-publisher.mjs');
+  assert.equal(proof.payload_source, 'publish.caption');
+});
+
+test('the real publisher still satisfies both halves of the proof', async () => {
+  // If someone edits buffer-video-publisher.mjs so it no longer reads publish.caption,
+  // or no longer sends that caption as the post text, this fails loudly instead of
+  // letting the engine keep claiming attribution it can no longer justify.
+  const spec = LEDGER_PUBLISHER_PROOFS[VIDEO_LEDGER];
+  const source = await fs.readFile(repoPath(spec.publisher), 'utf8');
+  assert.match(source, spec.assignment, 'publisher no longer reads the body from publish.caption');
+  assert.match(source, spec.transmission, 'publisher no longer sends that caption as the post text');
+});
+
+test('a ledger with no registered publishing path is never proven', async () => {
+  const proof = await establishCaptionProof('distribution/content-queue.json');
+  assert.equal(proof.proven, false);
+  assert.match(proof.reasons[0], /no publishing path is registered/);
+});
+
+test('a publisher that stopped reading publish.caption breaks the proof', async () => {
+  const proof = await establishCaptionProof(VIDEO_LEDGER, {
+    readFile: async () => 'const caption = String(manifest.summary).trim();\nconst m = `createPost(input:{text:${q(caption)}`;'
+  });
+  assert.equal(proof.proven, false);
+  assert.ok(proof.reasons.some((r) => r.includes('no longer reads the post body')));
+});
+
+test('a publisher that stopped transmitting the caption breaks the proof', async () => {
+  const proof = await establishCaptionProof(VIDEO_LEDGER, {
+    readFile: async () => 'const caption = String(publish.caption).trim();\nconst m = `createPost(input:{text:${q(title)}`;'
+  });
+  assert.equal(proof.proven, false);
+  assert.ok(proof.reasons.some((r) => r.includes('no longer transmits')));
+});
+
+test('an unreadable publisher breaks the proof rather than defaulting to true', async () => {
+  const proof = await establishCaptionProof(VIDEO_LEDGER, {
+    readFile: async () => { throw new Error('ENOENT'); }
+  });
+  assert.equal(proof.proven, false);
+  assert.ok(proof.reasons.some((r) => r.includes('could not read')));
+});
+
+test('without a proven path a perfect tracked caption is still only UNVERIFIED', async () => {
+  const broken = { proven: false, publisher: 'distribution/buffer-video-publisher.mjs', reasons: ['publisher changed'] };
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, {
+    platform: 'youtube', manifestId: 'm1', inventory, sourceRouting, captionProof: broken
+  });
+  assert.equal(record.attribution_state, 'UNVERIFIED');
+  assert.equal(record.destination_asset_id, null);
+  assert.match(record.attribution_evidence, /does not prove that the manifest caption was the transmitted payload/);
+  assert.ok(record.problems.includes('publisher changed'));
+});
+
+test('omitting the caption proof entirely yields UNVERIFIED, never ATTRIBUTED', async () => {
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, {
+    platform: 'youtube', manifestId: 'm1', inventory, sourceRouting
+  });
+  assert.equal(record.attribution_state, 'UNVERIFIED');
+  assert.equal(record.payload_proof.proven, false);
+});
+
+test('an awareness-only manifest also needs a proven path before it can be NOT_APPLICABLE', async () => {
+  const broken = { proven: false, publisher: null, reasons: ['no proof'] };
+  const record = classifyAttribution(await fixture('awareness-only'), sent, {
+    platform: 'tiktok', manifestId: 'm1', inventory, sourceRouting, captionProof: broken
+  });
+  assert.equal(record.attribution_state, 'UNVERIFIED');
+});
+
+test('every classified record carries the payload proof it was judged under', async () => {
+  const record = classifyAttribution(await fixture('attributed-youtube'), sent, ctx());
+  assert.equal(record.payload_proof.proven, true);
+  assert.equal(record.payload_proof.publisher, 'distribution/buffer-video-publisher.mjs');
+  assert.match(record.attribution_evidence, /buffer-video-publisher\.mjs/);
+});
+
+test('the image/text lane is explicitly recorded as not covered by this proof', () => {
+  assert.ok(UNPROVEN_PUBLISHERS['distribution/buffer-publisher.mjs']);
+  assert.match(UNPROVEN_PUBLISHERS['distribution/buffer-publisher.mjs'], /content-queue\.json/);
+  assert.ok(UNPROVEN_PUBLISHERS['distribution/buffer-video-status.mjs']);
+  assert.match(UNPROVEN_PUBLISHERS['distribution/buffer-video-status.mjs'], /creates no records/);
+});
+
+test('the image/text publisher genuinely uses a different payload shape', async () => {
+  // Guards the boundary: if buffer-publisher.mjs ever started sending publish.caption,
+  // this assumption would need revisiting rather than silently persisting.
+  const source = await fs.readFile(repoPath('distribution/buffer-publisher.mjs'), 'utf8');
+  assert.doesNotMatch(source, /publish\.caption/, 'the image/text lane must not be assumed to share the video caption contract');
+  assert.match(source, /item\.text/, 'the image/text lane builds its payload from the queue item');
+});
+
+test('buffer-video-status.mjs cannot introduce a record whose payload is unproven', async () => {
+  const source = await fs.readFile(repoPath('distribution/buffer-video-status.mjs'), 'utf8');
+  // It reads the existing item and bails when absent, so it never creates a new post record.
+  assert.match(source, /ledger\.items\?\.\[manifest\.id\]/);
+  assert.doesNotMatch(source, /createPost\(/, 'the status checker must never create posts');
+});
+
+test('every workflow that writes the video ledger routes through a registered publisher', async () => {
+  const registered = new Set(Object.values(LEDGER_PUBLISHER_PROOFS).map((p) => p.publisher));
+  // Status-only writers are allowed because they create no records.
+  const statusOnly = new Set(['distribution/buffer-video-status.mjs']);
+
+  const dir = repoPath('.github/workflows');
+  for (const file of await fs.readdir(dir)) {
+    const raw = await fs.readFile(`${dir}/${file}`, 'utf8');
+    if (!raw.includes('publish-ledger.json') && !raw.includes('buffer-video-publisher')) continue;
+    const invoked = [...raw.matchAll(/node\s+(distribution\/[\w.-]+\.mjs)/g)].map((m) => m[1]);
+    for (const script of invoked) {
+      if (!script.includes('video')) continue;
+      assert.ok(
+        registered.has(script) || statusOnly.has(script),
+        `${file} invokes ${script}, which is neither a registered caption-proving publisher nor a status-only writer`
+      );
+    }
+  }
 });

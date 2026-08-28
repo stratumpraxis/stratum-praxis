@@ -24,6 +24,10 @@
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
       "attribution_verified_at": null,
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": null
     },
@@ -43,6 +47,10 @@
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
       "attribution_verified_at": null,
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": null
     },
@@ -62,6 +70,10 @@
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
       "attribution_verified_at": null,
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": null
     },
@@ -81,6 +93,10 @@
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
       "attribution_verified_at": null,
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": null
     },
@@ -99,7 +115,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.160Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/variants/2026-08-26-dopagaki-youtube-v2.json"
     },
@@ -119,6 +139,10 @@
       "attribution_state": "UNVERIFIED",
       "attribution_evidence": "no manifest found for this post in variants/, current.json or git history; the sent caption cannot be reconstructed",
       "attribution_verified_at": null,
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": null
     },
@@ -137,7 +161,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.160Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/variants/2026-08-26-ai-slop-youtube-v3.json"
     },
@@ -156,7 +184,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.160Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/variants/2026-08-26-asking-to-doing-youtube-v4.json"
     },
@@ -175,7 +207,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.160Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/variants/2026-08-26-asking-to-doing-tiktok-v4.json"
     },
@@ -194,7 +230,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.160Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.604Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/variants/2026-08-26-asking-to-doing-instagram-v4.json"
     },
@@ -212,8 +252,12 @@
       "utm_medium": "social",
       "utm_campaign": "agent-control-20260827",
       "attribution_state": "ATTRIBUTED",
-      "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; buffer-video-publisher.mjs sends publish.caption verbatim as the post text",
-      "attribution_verified_at": "2026-08-28T04:36:03.161Z",
+      "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; distribution/buffer-video-publisher.mjs sends that caption verbatim as the post text (proof re-established from its source at classification time)",
+      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "destination_has_live_checkout": true,
       "manifest_source": "trend-video-engine/variants/2026-08-27-agent-control-youtube-v5.json"
@@ -233,7 +277,11 @@
       "utm_campaign": null,
       "attribution_state": "UNATTRIBUTED",
       "attribution_evidence": "the sent caption contained no destination URL",
-      "attribution_verified_at": "2026-08-28T04:36:03.161Z",
+      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "manifest_source": "trend-video-engine/tiktok-stratum-current.json"
     },
@@ -251,14 +299,26 @@
       "utm_medium": "social",
       "utm_campaign": "physical-ai-control-20260827",
       "attribution_state": "ATTRIBUTED",
-      "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; buffer-video-publisher.mjs sends publish.caption verbatim as the post text",
-      "attribution_verified_at": "2026-08-28T04:36:03.161Z",
+      "attribution_evidence": "manifest publish.caption contains https://stratumpraxis.com/agentic-ai-governance-permission-kit.html; distribution/buffer-video-publisher.mjs sends that caption verbatim as the post text (proof re-established from its source at classification time)",
+      "attribution_verified_at": "2026-08-28T05:06:18.605Z",
+      "payload_proof": {
+        "proven": true,
+        "publisher": "distribution/buffer-video-publisher.mjs"
+      },
       "problems": [],
       "destination_has_live_checkout": true,
       "manifest_source": "trend-video-engine/current.json"
     }
   },
   "attribution_overlay_note": "Derived, additive attribution for the trend-video lane. Source of truth for publication remains trend-video-engine/publish-ledger.json, which this process never writes. Regenerate with acquisition/cli/attribution-backfill.mjs --write.",
-  "attribution_generated_at": "2026-08-28T04:36:03.162Z",
-  "updated_at": "2026-08-28T04:36:03.163Z"
+  "attribution_generated_at": "2026-08-28T05:06:18.606Z",
+  "updated_at": "2026-08-28T05:06:18.606Z",
+  "attribution_payload_proof": {
+    "proven": true,
+    "publisher": "distribution/buffer-video-publisher.mjs",
+    "payload_source": "publish.caption",
+    "reasons": [
+      "distribution/buffer-video-publisher.mjs reads the post body from publish.caption and sends it verbatim as the post text"
+    ]
+  }
 }
