@@ -10,7 +10,7 @@
     "HTTP_VERIFIED": "written only by verify-inventory.mjs --live after a real HTTP check",
     "UNKNOWN": "explicitly unknown"
   },
-  "http_verification_note": "No live HTTP verification has been recorded. Outbound HTTPS to stratumpraxis.com is blocked from the authoring environment; run `node acquisition/cli/verify-inventory.mjs --live` from GitHub Actions to record HTTP_VERIFIED states.",
+  "http_verification_note": "Live HTTPS verification ran in GitHub Actions on 2026-08-28 (workflow 'Acquisition Intelligence Engine Check', run 33142540735, job 98756379227, head 0c74d66) against all 26 assets and completed with INVENTORY_OK and zero findings. verify-inventory.mjs records a finding for any non-ok HTTP status or failed request and exits non-zero, so a clean run means every public_url responded. Per-asset verification_state is deliberately NOT flipped to HTTP_VERIFIED: that run used --live without --write, so no per-asset result was persisted, and claiming a state the committed data cannot reproduce offline would be unverifiable. The states below remain what this repository can prove on its own.",
   "assets": [
     {
       "asset_id": "ai-saas-waste-calculator",
@@ -1037,7 +1037,7 @@
         "type": "UNKNOWN",
         "url": "UNKNOWN",
         "price": null,
-        "evidence": "listed under AGENTS.md verified destinations, but no source file for it exists in this repository and it is not in sitemap.xml"
+        "evidence": "listed under AGENTS.md verified destinations; no source file for it exists in this repository and it is not in sitemap.xml, so it stays DOC_ONLY for repo-provability. The 2026-08-28 live run (Actions run 33142540735) reached https://roi.stratumpraxis.com/ without a finding, so the host is confirmed reachable even though its content and revenue destination remain unverified here."
       },
       "primary_user_problem": "Wants a quick ROI estimate before committing to an AI project.",
       "problem_keys": [
