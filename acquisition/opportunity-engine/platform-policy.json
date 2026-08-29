@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "platforms": {
+    "kaggle": {
+      "enabled": true,
+      "priority": 1,
+      "discovery_mode": "API_OR_WEB_READ",
+      "submission_mode": "OFFICIAL_CLI_OR_API_AFTER_RULE_ACCEPTANCE",
+      "default_human_gates": [
+        "COMPETITION_RULES_ACCEPTANCE",
+        "CAPTCHA_OR_LIVENESS",
+        "KYC",
+        "TAX_FORMS",
+        "LEGAL_DECLARATION"
+      ],
+      "auto_stop_http": [401, 403, 429],
+      "allow_captcha_bypass": false,
+      "allow_identity_automation": false,
+      "allow_terms_acceptance_automation": false,
+      "allow_multiple_accounts": false,
+      "post_win_profile": "BOUNDED_PRIZE_CLAIM"
+    },
+    "devpost": {
+      "enabled": true,
+      "priority": 2,
+      "discovery_mode": "WEB_READ",
+      "submission_mode": "PREPARE_ONLY_UNTIL_HUMAN_LEGAL_GATE",
+      "default_human_gates": [
+        "OFFICIAL_RULES_ACCEPTANCE",
+        "FINAL_TERMS_ACCEPTANCE",
+        "CAPTCHA_OR_LIVENESS",
+        "KYC",
+        "TAX_FORMS",
+        "AFFIDAVIT_OR_SIGNATURE"
+      ],
+      "auto_stop_http": [401, 403, 429],
+      "allow_captcha_bypass": false,
+      "allow_identity_automation": false,
+      "allow_terms_acceptance_automation": false,
+      "allow_multiple_accounts": false,
+      "post_win_profile": "BOUNDED_PRIZE_CLAIM"
+    }
+  },
+  "global_stop_signals": [
+    "captcha",
+    "recaptcha",
+    "hcaptcha",
+    "turnstile",
+    "verify you are human",
+    "are you human",
+    "i'm not a robot",
+    "security check",
+    "verify your identity",
+    "liveness",
+    "passport",
+    "driver's license",
+    "tax id",
+    "w-8ben",
+    "w-9",
+    "electronic signature",
+    "i certify",
+    "i declare",
+    "legal name",
+    "affidavit"
+  ]
+}

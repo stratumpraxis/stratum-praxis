@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "updated_at": "2026-08-29T18:00:00+09:00",
+  "items": [
+    {
+      "id": "kaggle-rsna-knee-abnormality-2026",
+      "platform": "kaggle",
+      "title": "RSNA Knee Abnormality Detection",
+      "source_url": "https://www.kaggle.com/competitions/rsna-knee-abnormality-detection/rules",
+      "status": "DISCOVERED",
+      "expected_reward_usd": 9000,
+      "estimated_success_probability": 0.01,
+      "reuse_multiplier": 1.25,
+      "pre_win_hours_estimate": 24,
+      "post_win_hours_estimate": 8,
+      "entry_fee": false,
+      "prize_release_fee": false,
+      "crypto_transfer_required": false,
+      "japan_eligible": true,
+      "individual_allowed": true,
+      "ai_policy": "ALLOWED",
+      "open_ended_employment": false,
+      "mandatory_post_win_service": false,
+      "trusted_sponsor": true,
+      "ip_policy": "LICENSE_ONLY",
+      "mandatory_phase_2": false,
+      "interview_required": false,
+      "publicity_required": false,
+      "payment_route_clear": true,
+      "rules_acceptance_required": true,
+      "terms_acceptance_required": false,
+      "captcha_or_liveness": false,
+      "kyc_required": false,
+      "tax_form_required": true,
+      "legal_declaration_required": true,
+      "signature_required": true,
+      "evidence": {
+        "prize_pool_usd": 77000,
+        "first_prize_usd": 9000,
+        "winner_license": "CC-BY-NC 4.0",
+        "winner_must_deliver_reproducible_code": true,
+        "winner_tax_form_example": "W-8BEN for foreign resident",
+        "rules_are_binding": true
+      },
+      "expected_gate": "HUMAN_REQUIRED",
+      "notes": "Real active candidate used as the first operational audit. Do not accept rules or submit automatically until the owner reviews the binding rules and winner obligations."
+    }
+  ]
+}

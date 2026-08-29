@@ -1,27 +1,436 @@
-import baseWorker from './slide-factory-worker.js';
-const te=new TextEncoder(),td=new TextDecoder();
-const OFFERS={
- bundle3:{product:'prod_V9C0rjjF6V6Cjf',price:'price_1U8tcVJMK7zFs997DDR8EyDh',link:'plink_1U8tdhJMK7zFs997Al4dAAOW',amount:1700,currency:'usd',title:'AI Workflow Operator Bundle',path:'/prompt-store/workspace'},
- ops10:{product:'prod_V9CzTM2i3HzgCu',price:'price_1U8uZRJMK7zFs997VY06pUWF',link:'plink_1U8uZcJMK7zFs997WwI48ntR',amount:3900,currency:'usd',title:'AI Operations Systems Pack',path:'/prompt-store/ops10/workspace'},
- cross_personal:{product:'prod_VA15eq5Gxy3Zzj',price:'price_1U9h41JMK7zFs997QSWUJZrI',link:'plink_1U9h4LJMK7zFs997nRbhDVq9',amount:6900,currency:'usd',title:'Cross-Agent Operating Kit · Personal',path:'/cross-agent-kit/workspace'},
- cross_commercial:{product:'prod_VA15eq5Gxy3Zzj',price:'price_1U9h48JMK7zFs9971zEnU7Ue',link:'plink_1U9h4QJMK7zFs997EbnP5tS3',amount:14900,currency:'usd',title:'Cross-Agent Operating Kit · Commercial',path:'/cross-agent-kit/workspace'},
- cross_agency:{product:'prod_VA15eq5Gxy3Zzj',price:'price_1U9h4FJMK7zFs997YUDnLz4N',link:'plink_1U9h4VJMK7zFs997YyCnb8Vr',amount:29900,currency:'usd',title:'Cross-Agent Operating Kit · Agency',path:'/cross-agent-kit/workspace'}
+import baseWorker from "./slide-factory-worker.js";
+const te = new TextEncoder(),
+  td = new TextDecoder();
+const OFFERS = {
+  bundle3: {
+    product: "prod_V9C0rjjF6V6Cjf",
+    price: "price_1U8tcVJMK7zFs997DDR8EyDh",
+    link: "plink_1U8tdhJMK7zFs997Al4dAAOW",
+    amount: 1700,
+    currency: "usd",
+    title: "AI Workflow Operator Bundle",
+    path: "/prompt-store/workspace",
+  },
+  ops10: {
+    product: "prod_V9CzTM2i3HzgCu",
+    price: "price_1U8uZRJMK7zFs997VY06pUWF",
+    link: "plink_1U8uZcJMK7zFs997WwI48ntR",
+    amount: 3900,
+    currency: "usd",
+    title: "AI Operations Systems Pack",
+    path: "/prompt-store/ops10/workspace",
+  },
+  cross_personal: {
+    product: "prod_VA15eq5Gxy3Zzj",
+    price: "price_1U9h41JMK7zFs997QSWUJZrI",
+    link: "plink_1U9h4LJMK7zFs997nRbhDVq9",
+    amount: 6900,
+    currency: "usd",
+    title: "Cross-Agent Operating Kit · Personal",
+    path: "/cross-agent-kit/workspace",
+  },
+  cross_commercial: {
+    product: "prod_VA15eq5Gxy3Zzj",
+    price: "price_1U9h48JMK7zFs9971zEnU7Ue",
+    link: "plink_1U9h4QJMK7zFs997EbnP5tS3",
+    amount: 14900,
+    currency: "usd",
+    title: "Cross-Agent Operating Kit · Commercial",
+    path: "/cross-agent-kit/workspace",
+  },
+  cross_agency: {
+    product: "prod_VA15eq5Gxy3Zzj",
+    price: "price_1U9h4FJMK7zFs997YUDnLz4N",
+    link: "plink_1U9h4VJMK7zFs997YyCnb8Vr",
+    amount: 29900,
+    currency: "usd",
+    title: "Cross-Agent Operating Kit · Agency",
+    path: "/cross-agent-kit/workspace",
+  },
 };
-function j(x,s=200,h={}){return new Response(JSON.stringify(x),{status:s,headers:{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store',...h}})}
-function b64(b){let s='';for(const x of b)s+=String.fromCharCode(x);return btoa(s).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'')}
-function unb64(s){s=s.replace(/-/g,'+').replace(/_/g,'/');while(s.length%4)s+='=';return Uint8Array.from(atob(s),c=>c.charCodeAt(0))}
-async function sign(secret,sid,key){const p=b64(te.encode(JSON.stringify({sid,offer:key,exp:Date.now()+30*864e5})));const k=await crypto.subtle.importKey('raw',te.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['sign']);return p+'.'+b64(new Uint8Array(await crypto.subtle.sign('HMAC',k,te.encode('prompt-store-v3|'+p))))}
-async function verify(secret,t){try{const [p,s]=String(t||'').split('.');if(!p||!s)return null;const k=await crypto.subtle.importKey('raw',te.encode(secret),{name:'HMAC',hash:'SHA-256'},false,['verify']);if(!await crypto.subtle.verify('HMAC',k,unb64(s),te.encode('prompt-store-v3|'+p)))return null;const x=JSON.parse(td.decode(unb64(p)));return x.sid&&OFFERS[x.offer]&&x.exp>Date.now()?x:null}catch{return null}}
-async function stripe(env,path){const r=await fetch('https://api.stripe.com/v1/'+path,{headers:{Authorization:`Bearer ${env.STRIPE_SECRET_KEY}`}});const x=await r.json();if(!r.ok)throw Error('Stripe verification failed');return x}
-async function session(env,sid){return stripe(env,`checkout/sessions/${encodeURIComponent(sid)}?expand[]=line_items.data.price`)}
-function paid(s,o){const li=s.line_items?.data||[];return s.payment_status==='paid'&&s.mode==='payment'&&li.length===1&&li[0]?.price?.id===o.price&&Number(li[0]?.quantity||0)===1&&Number(s.amount_total)===o.amount&&String(s.currency||'').toLowerCase()===o.currency&&s.payment_link===o.link}
-function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-async function content(env,o){const p=await stripe(env,`products/${o.product}`);let body='';for(let i=1;i<=99;i++){const k='content_'+String(i).padStart(2,'0');if(!(k in p.metadata))break;body+=p.metadata[k]}return body}
-function split(body,key){if(key==='bundle3'){const a=body.indexOf('## 1)'),b=body.indexOf('## 2)'),c=body.indexOf('## 3)');if(a>=0&&b>=0&&c>=0)return[{n:'Task → Workflow Architect',b:body.slice(a,b)},{n:'AI Tool & Role Router',b:body.slice(b,c)},{n:'Company Brain Builder',b:body.slice(c)}]}
- if(key==='ops10')return body.split(/(?=## \d{2} — )/).map(x=>x.trim()).filter(Boolean).map((x,i)=>({n:(x.match(/^## \d{2} — ([^\n]+)/)||[])[1]||`System ${i+1}`,b:x}));
- return body.split(/(?=# FILE: )/).map(x=>x.trim()).filter(Boolean).map((x,i)=>({n:(x.match(/^# FILE: ([^\n]+)/)||[])[1]||`Asset ${i+1}`,b:x}));
+function j(x, s = 200, h = {}) {
+  return new Response(JSON.stringify(x), {
+    status: s,
+    headers: {
+      "Content-Type": "application/json; charset=utf-8",
+      "Cache-Control": "no-store",
+      ...h,
+    },
+  });
 }
-async function page(env,o,key){const body=await content(env,o),parts=split(body,key),data=JSON.stringify(parts.map(x=>x.b)).replace(/</g,'\\u003c');const cards=parts.map((x,i)=>`<section class="card"><div class="num">${String(i+1).padStart(2,'0')}</div><h2>${esc(x.n)}</h2><button class="copy" data-i="${i}">Copy</button><pre>${esc(x.b)}</pre></section>`).join('');return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>${esc(o.title)} | Buyer Workspace</title><style>:root{--b:#080b12;--p:#111722;--l:#293449;--t:#f5f7fb;--m:#9ba8ba;--a:#73d9ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 70% -100px,#15294d 0,transparent 65%),var(--b);color:var(--t);font:15px/1.65 system-ui,sans-serif}.w{width:min(1000px,calc(100% - 30px));margin:auto;padding:42px 0 80px}.ey{font-size:10px;letter-spacing:.16em;color:var(--a);font-weight:900}h1{font-size:clamp(38px,7vw,68px);line-height:1;margin:.2em 0}.m{color:var(--m)}.top{display:flex;gap:8px;margin:22px 0;flex-wrap:wrap}button{border:1px solid var(--l);background:#172033;color:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:#f5f7fb;color:#09101a}.card{background:linear-gradient(180deg,#131b28,#0d131d);border:1px solid var(--l);border-radius:18px;padding:20px;margin:12px 0}.num{font-size:10px;color:#71819a}.card h2{font-size:22px}.copy{margin-bottom:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#070a10;border:1px solid #273247;border-radius:12px;padding:15px;color:#d3dae5;font:12px/1.6 ui-monospace,monospace}.fine{font-size:11px;color:#7e8a9b;border-top:1px solid var(--l);padding-top:18px;margin-top:26px}</style></head><body><main class="w"><div class="ey">STRATUM PRAXIS · VERIFIED PURCHASE</div><h1>${esc(o.title)}</h1><p class="m">Purchase verified server-side. Your operating assets are available below.</p><div class="top"><button class="primary" id="copyAll">Copy all</button><button id="download">Download TXT</button></div>${cards}<p class="fine">License tier: ${esc(key.replace('cross_',''))}. Do not redistribute this source kit as a standalone product. Review production permissions, provider terms and high-impact actions before deployment.</p></main><script>const parts=${data},all=parts.join('\n\n');async function cp(t,b){try{await navigator.clipboard.writeText(t);let x=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=x,800)}catch{b.textContent='Copy failed'}}document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>cp(parts[+b.dataset.i],b));copyAll.onclick=()=>cp(all,copyAll);download.onclick=()=>{let a=document.createElement('a'),blob=new Blob([all],{type:'text/plain;charset=utf-8'});a.href=URL.createObjectURL(blob);a.download='${key.startsWith('cross_')?'Cross-Agent-Operating-Kit-v1.txt':key==='ops10'?'AI-Operations-Systems-Pack-v1.txt':'AI-Workflow-Operator-Bundle-v1.txt'}';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}</script></body></html>`}
-async function login(req,env,u,cors){const b=await req.json(),sid=String(b.session_id||''),email=String(b.email||'').trim().toLowerCase(),requested=String(b.offer||'');if(!sid.startsWith('cs_')||!email)return j({error:'Checkout Session ID and checkout email are required'},400,cors);const s=await session(env,sid);let key=requested&&OFFERS[requested]?requested:Object.keys(OFFERS).find(k=>paid(s,OFFERS[k]));if(!key||!paid(s,OFFERS[key]))return j({error:'Paid purchase could not be verified'},402,cors);const pe=String(s.customer_details?.email||s.customer_email||'').trim().toLowerCase();if(!pe||pe!==email)return j({error:'Email does not match checkout email'},403,cors);const o=OFFERS[key];return j({authorized:true,workspace_url:`${u.origin}${o.path}?token=${encodeURIComponent(await sign(env.STRIPE_SECRET_KEY,s.id,key))}`},200,cors)}
-async function workspace(env,u){const p=await verify(env.STRIPE_SECRET_KEY,u.searchParams.get('token'));if(!p)return new Response('Access token is invalid or expired.',{status:401});const o=OFFERS[p.offer],s=await session(env,p.sid);if(!paid(s,o))return new Response('Purchase could not be verified.',{status:402});return new Response(await page(env,o,p.offer),{headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, private','X-Robots-Tag':'noindex,nofollow,noarchive','Referrer-Policy':'no-referrer','Content-Security-Policy':"default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'"}})}
-export default{async fetch(req,env,ctx){const u=new URL(req.url),ours=u.pathname.startsWith('/prompt-store/')||u.pathname.startsWith('/cross-agent-kit/');if(!ours)return baseWorker.fetch(req,env,ctx);const origin=req.headers.get('Origin')||'',cors=origin==='https://stratumpraxis.com'?{'Access-Control-Allow-Origin':origin,'Vary':'Origin'}:{};if(req.method==='OPTIONS')return new Response(null,{status:204,headers:{...cors,'Access-Control-Allow-Headers':'Content-Type','Access-Control-Allow-Methods':'POST,GET,OPTIONS'}});if(!env.STRIPE_SECRET_KEY)return j({error:'Server is not configured'},500,cors);try{if(req.method==='POST'&&['/prompt-store/login','/prompt-store/ops10/login','/cross-agent-kit/login'].includes(u.pathname))return login(req,env,u,cors);if(req.method==='GET'&&['/prompt-store/workspace','/prompt-store/ops10/workspace','/cross-agent-kit/workspace'].includes(u.pathname))return workspace(env,u);return j({error:'Not found'},404,cors)}catch(e){return j({error:'Purchase verification failed'},500,cors)}}};
+function b64(b) {
+  let s = "";
+  for (const x of b) s += String.fromCharCode(x);
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+}
+function unb64(s) {
+  s = s.replace(/-/g, "+").replace(/_/g, "/");
+  while (s.length % 4) s += "=";
+  return Uint8Array.from(atob(s), (c) => c.charCodeAt(0));
+}
+async function sign(secret, sid, key) {
+  const p = b64(
+    te.encode(
+      JSON.stringify({ sid, offer: key, exp: Date.now() + 30 * 864e5 }),
+    ),
+  );
+  const k = await crypto.subtle.importKey(
+    "raw",
+    te.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  return (
+    p +
+    "." +
+    b64(
+      new Uint8Array(
+        await crypto.subtle.sign("HMAC", k, te.encode("prompt-store-v3|" + p)),
+      ),
+    )
+  );
+}
+async function verify(secret, t) {
+  try {
+    const [p, s] = String(t || "").split(".");
+    if (!p || !s) return null;
+    const k = await crypto.subtle.importKey(
+      "raw",
+      te.encode(secret),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"],
+    );
+    if (
+      !(await crypto.subtle.verify(
+        "HMAC",
+        k,
+        unb64(s),
+        te.encode("prompt-store-v3|" + p),
+      ))
+    )
+      return null;
+    const x = JSON.parse(td.decode(unb64(p)));
+    return x.sid && OFFERS[x.offer] && x.exp > Date.now() ? x : null;
+  } catch {
+    return null;
+  }
+}
+async function stripe(env, path) {
+  const r = await fetch("https://api.stripe.com/v1/" + path, {
+    headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` },
+  });
+  const x = await r.json();
+  if (!r.ok) throw Error("Stripe verification failed");
+  return x;
+}
+async function stripePost(env, path, fields) {
+  const body = new URLSearchParams();
+  for (const [key, value] of Object.entries(fields)) {
+    if (value !== undefined && value !== null && value !== "")
+      body.set(key, String(value).slice(0, 500));
+  }
+  const r = await fetch("https://api.stripe.com/v1/" + path, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    body,
+  });
+  const x = await r.json();
+  if (!r.ok) throw Error("Stripe record update failed");
+  return x;
+}
+async function session(env, sid) {
+  return stripe(
+    env,
+    `checkout/sessions/${encodeURIComponent(sid)}?expand[]=line_items.data.price`,
+  );
+}
+function paid(s, o) {
+  const li = s.line_items?.data || [];
+  return (
+    s.payment_status === "paid" &&
+    s.mode === "payment" &&
+    li.length === 1 &&
+    li[0]?.price?.id === o.price &&
+    Number(li[0]?.quantity || 0) === 1 &&
+    Number(s.amount_total) === o.amount &&
+    String(s.currency || "").toLowerCase() === o.currency &&
+    s.payment_link === o.link
+  );
+}
+function offerFor(s) {
+  return Object.entries(OFFERS).find(([, offer]) => paid(s, offer)) || null;
+}
+function routeId(s) {
+  const value = String(s.client_reference_id || "");
+  return /^[a-zA-Z0-9_-]{1,200}$/.test(value) ? value : "unattributed";
+}
+async function recordSession(env, s, fields) {
+  const metadata = {
+    "metadata[attribution_route_id]": routeId(s),
+    "metadata[attribution_state]":
+      routeId(s) === "unattributed" ? "UNATTRIBUTED" : "ATTRIBUTED",
+    "metadata[payment_evidence]": `stripe:${s.payment_intent || s.id}`,
+    ...Object.fromEntries(
+      Object.entries(fields).map(([key, value]) => [`metadata[${key}]`, value]),
+    ),
+  };
+  return stripePost(
+    env,
+    `checkout/sessions/${encodeURIComponent(s.id)}`,
+    metadata,
+  );
+}
+function sameBytes(a, b) {
+  if (a.length !== b.length) return false;
+  let different = 0;
+  for (let i = 0; i < a.length; i++) different |= a[i] ^ b[i];
+  return different === 0;
+}
+function hexToBytes(value) {
+  if (!/^[0-9a-f]{64}$/i.test(value)) return null;
+  return Uint8Array.from(value.match(/.{2}/g), (part) => parseInt(part, 16));
+}
+async function verifyWebhook(raw, header, secret) {
+  const fields = Object.fromEntries(
+    String(header || "")
+      .split(",")
+      .map((part) => part.split("=", 2)),
+  );
+  const timestamp = Number(fields.t);
+  const supplied = hexToBytes(fields.v1 || "");
+  if (!timestamp || !supplied || Math.abs(Date.now() / 1000 - timestamp) > 300)
+    return false;
+  const key = await crypto.subtle.importKey(
+    "raw",
+    te.encode(secret),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"],
+  );
+  const expected = new Uint8Array(
+    await crypto.subtle.sign("HMAC", key, te.encode(`${timestamp}.${raw}`)),
+  );
+  return sameBytes(expected, supplied);
+}
+async function webhook(req, env) {
+  if (!env.STRIPE_WEBHOOK_SECRET)
+    return j({ error: "Webhook is not configured" }, 503);
+  const raw = await req.text();
+  if (
+    !(await verifyWebhook(
+      raw,
+      req.headers.get("Stripe-Signature"),
+      env.STRIPE_WEBHOOK_SECRET,
+    ))
+  )
+    return j({ error: "Invalid Stripe signature" }, 400);
+  const event = JSON.parse(raw);
+  if (
+    ![
+      "checkout.session.completed",
+      "checkout.session.async_payment_succeeded",
+    ].includes(event.type)
+  )
+    return j({ received: true, ignored: true });
+  const incoming = event.data?.object;
+  if (!incoming?.id?.startsWith("cs_"))
+    return j({ error: "Checkout Session is missing" }, 400);
+  const s = await session(env, incoming.id);
+  const match = offerFor(s);
+  if (!match) return j({ received: true, ignored: true });
+  const [key] = match;
+  await recordSession(env, s, {
+    webhook_event_id: event.id,
+    revenue_recorded_at: new Date(event.created * 1000).toISOString(),
+    revenue_product: key,
+    revenue_amount: s.amount_total,
+    revenue_currency: s.currency,
+    delivery_state: "READY_FOR_BUYER_VERIFICATION",
+  });
+  return j({ received: true });
+}
+function esc(s) {
+  return String(s).replace(
+    /[&<>"']/g,
+    (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ],
+  );
+}
+async function content(env, o) {
+  const p = await stripe(env, `products/${o.product}`);
+  let body = "";
+  for (let i = 1; i <= 99; i++) {
+    const k = "content_" + String(i).padStart(2, "0");
+    if (!(k in p.metadata)) break;
+    body += p.metadata[k];
+  }
+  return body;
+}
+function split(body, key) {
+  if (key === "bundle3") {
+    const a = body.indexOf("## 1)"),
+      b = body.indexOf("## 2)"),
+      c = body.indexOf("## 3)");
+    if (a >= 0 && b >= 0 && c >= 0)
+      return [
+        { n: "Task → Workflow Architect", b: body.slice(a, b) },
+        { n: "AI Tool & Role Router", b: body.slice(b, c) },
+        { n: "Company Brain Builder", b: body.slice(c) },
+      ];
+  }
+  if (key === "ops10")
+    return body
+      .split(/(?=## \d{2} — )/)
+      .map((x) => x.trim())
+      .filter(Boolean)
+      .map((x, i) => ({
+        n: (x.match(/^## \d{2} — ([^\n]+)/) || [])[1] || `System ${i + 1}`,
+        b: x,
+      }));
+  return body
+    .split(/(?=# FILE: )/)
+    .map((x) => x.trim())
+    .filter(Boolean)
+    .map((x, i) => ({
+      n: (x.match(/^# FILE: ([^\n]+)/) || [])[1] || `Asset ${i + 1}`,
+      b: x,
+    }));
+}
+async function page(env, o, key) {
+  const body = await content(env, o),
+    parts = split(body, key),
+    data = JSON.stringify(parts.map((x) => x.b)).replace(/</g, "\\u003c");
+  const cards = parts
+    .map(
+      (x, i) =>
+        `<section class="card"><div class="num">${String(i + 1).padStart(2, "0")}</div><h2>${esc(x.n)}</h2><button class="copy" data-i="${i}">Copy</button><pre>${esc(x.b)}</pre></section>`,
+    )
+    .join("");
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>${esc(o.title)} | Buyer Workspace</title><style>:root{--b:#080b12;--p:#111722;--l:#293449;--t:#f5f7fb;--m:#9ba8ba;--a:#73d9ff}*{box-sizing:border-box}body{margin:0;background:radial-gradient(900px 500px at 70% -100px,#15294d 0,transparent 65%),var(--b);color:var(--t);font:15px/1.65 system-ui,sans-serif}.w{width:min(1000px,calc(100% - 30px));margin:auto;padding:42px 0 80px}.ey{font-size:10px;letter-spacing:.16em;color:var(--a);font-weight:900}h1{font-size:clamp(38px,7vw,68px);line-height:1;margin:.2em 0}.m{color:var(--m)}.top{display:flex;gap:8px;margin:22px 0;flex-wrap:wrap}button{border:1px solid var(--l);background:#172033;color:#fff;border-radius:10px;padding:10px 13px;font-weight:800;cursor:pointer}.primary{background:#f5f7fb;color:#09101a}.card{background:linear-gradient(180deg,#131b28,#0d131d);border:1px solid var(--l);border-radius:18px;padding:20px;margin:12px 0}.num{font-size:10px;color:#71819a}.card h2{font-size:22px}.copy{margin-bottom:10px}pre{white-space:pre-wrap;overflow-wrap:anywhere;background:#070a10;border:1px solid #273247;border-radius:12px;padding:15px;color:#d3dae5;font:12px/1.6 ui-monospace,monospace}.fine{font-size:11px;color:#7e8a9b;border-top:1px solid var(--l);padding-top:18px;margin-top:26px}</style></head><body><main class="w"><div class="ey">STRATUM PRAXIS · VERIFIED PURCHASE</div><h1>${esc(o.title)}</h1><p class="m">Purchase verified server-side. Your operating assets are available below.</p><div class="top"><button class="primary" id="copyAll">Copy all</button><button id="download">Download TXT</button></div>${cards}<p class="fine">License tier: ${esc(key.replace("cross_", ""))}. Do not redistribute this source kit as a standalone product. Review production permissions, provider terms and high-impact actions before deployment.</p></main><script>const parts=${data},all=parts.join('\n\n');async function cp(t,b){try{await navigator.clipboard.writeText(t);let x=b.textContent;b.textContent='Copied';setTimeout(()=>b.textContent=x,800)}catch{b.textContent='Copy failed'}}document.querySelectorAll('.copy').forEach(b=>b.onclick=()=>cp(parts[+b.dataset.i],b));copyAll.onclick=()=>cp(all,copyAll);download.onclick=()=>{let a=document.createElement('a'),blob=new Blob([all],{type:'text/plain;charset=utf-8'});a.href=URL.createObjectURL(blob);a.download='${key.startsWith("cross_") ? "Cross-Agent-Operating-Kit-v1.txt" : key === "ops10" ? "AI-Operations-Systems-Pack-v1.txt" : "AI-Workflow-Operator-Bundle-v1.txt"}';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}</script></body></html>`;
+}
+async function login(req, env, u, cors) {
+  const b = await req.json(),
+    sid = String(b.session_id || ""),
+    email = String(b.email || "")
+      .trim()
+      .toLowerCase(),
+    requested = String(b.offer || "");
+  if (!sid.startsWith("cs_") || !email)
+    return j(
+      { error: "Checkout Session ID and checkout email are required" },
+      400,
+      cors,
+    );
+  const s = await session(env, sid);
+  let key =
+    requested && OFFERS[requested]
+      ? requested
+      : Object.keys(OFFERS).find((k) => paid(s, OFFERS[k]));
+  if (!key || !paid(s, OFFERS[key]))
+    return j({ error: "Paid purchase could not be verified" }, 402, cors);
+  const pe = String(s.customer_details?.email || s.customer_email || "")
+    .trim()
+    .toLowerCase();
+  if (!pe || pe !== email)
+    return j({ error: "Email does not match checkout email" }, 403, cors);
+  const o = OFFERS[key];
+  await recordSession(env, s, {
+    revenue_verified_at: new Date().toISOString(),
+    revenue_product: key,
+    revenue_amount: s.amount_total,
+    revenue_currency: s.currency,
+    buyer_record_state: "VERIFIED",
+    delivery_state: "AUTHORIZED",
+  });
+  return j(
+    {
+      authorized: true,
+      workspace_url: `${u.origin}${o.path}?token=${encodeURIComponent(await sign(env.STRIPE_SECRET_KEY, s.id, key))}`,
+    },
+    200,
+    cors,
+  );
+}
+async function workspace(env, u) {
+  const p = await verify(env.STRIPE_SECRET_KEY, u.searchParams.get("token"));
+  if (!p)
+    return new Response("Access token is invalid or expired.", { status: 401 });
+  const o = OFFERS[p.offer],
+    s = await session(env, p.sid);
+  if (!paid(s, o))
+    return new Response("Purchase could not be verified.", { status: 402 });
+  if (!s.metadata?.delivery_activated_at)
+    await recordSession(env, s, {
+      delivery_activated_at: new Date().toISOString(),
+      delivery_state: "ACTIVATED",
+    });
+  return new Response(await page(env, o, p.offer), {
+    headers: {
+      "Content-Type": "text/html; charset=utf-8",
+      "Cache-Control": "no-store, private",
+      "X-Robots-Tag": "noindex,nofollow,noarchive",
+      "Referrer-Policy": "no-referrer",
+      "Content-Security-Policy":
+        "default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'; form-action 'none'",
+    },
+  });
+}
+export { verifyWebhook };
+export default {
+  async fetch(req, env, ctx) {
+    const u = new URL(req.url),
+      ours =
+        u.pathname.startsWith("/prompt-store/") ||
+        u.pathname.startsWith("/cross-agent-kit/") ||
+        u.pathname === "/stripe/webhook";
+    if (!ours) return baseWorker.fetch(req, env, ctx);
+    const origin = req.headers.get("Origin") || "",
+      cors =
+        origin === "https://stratumpraxis.com"
+          ? { "Access-Control-Allow-Origin": origin, Vary: "Origin" }
+          : {};
+    if (req.method === "OPTIONS")
+      return new Response(null, {
+        status: 204,
+        headers: {
+          ...cors,
+          "Access-Control-Allow-Headers": "Content-Type",
+          "Access-Control-Allow-Methods": "POST,GET,OPTIONS",
+        },
+      });
+    if (!env.STRIPE_SECRET_KEY)
+      return j({ error: "Server is not configured" }, 500, cors);
+    try {
+      if (req.method === "POST" && u.pathname === "/stripe/webhook")
+        return webhook(req, env);
+      if (
+        req.method === "POST" &&
+        [
+          "/prompt-store/login",
+          "/prompt-store/ops10/login",
+          "/cross-agent-kit/login",
+        ].includes(u.pathname)
+      )
+        return login(req, env, u, cors);
+      if (
+        req.method === "GET" &&
+        [
+          "/prompt-store/workspace",
+          "/prompt-store/ops10/workspace",
+          "/cross-agent-kit/workspace",
+        ].includes(u.pathname)
+      )
+        return workspace(env, u);
+      return j({ error: "Not found" }, 404, cors);
+    } catch (e) {
+      return j({ error: "Purchase verification failed" }, 500, cors);
+    }
+  },
+};
