@@ -119,12 +119,16 @@ function assertFreeOnly(model = MODEL) {
  * come back empty on its first run. Each stage now asks for only what it produces.
  */
 const STAGE_BUDGET = Object.freeze({
-  draft: 2600,
-  critic: 900,
-  deepen: 2600,
-  polish: 2600,
-  envelope: 800
+  draft: 7000,
+  critic: 4000,
+  deepen: 7000,
+  polish: 7000,
+  envelope: 4000
 });
+
+/** A truncated stage is retried once at this multiple of its budget. */
+const BUDGET_ESCALATION = 1.6;
+const MAX_TOKENS_CEILING = 12000;
 
 /**
  * Which stages the run cannot proceed without. The free tier returns an empty
@@ -141,20 +145,27 @@ const stageDiagnostics = [];
 let consecutiveEmpty = 0;
 
 /**
- * Consecutive empty completions on a 200 response are how this free tier reports that
- * the allowance is spent. Past this many in a row, stop: the policy is that quota
- * exhaustion halts the run, and burning further attempts neither helps nor is free.
+ * Two different failures both arrive as HTTP 200 with an empty completion, and they
+ * need opposite responses:
+ *
+ *   finish_reason "length"  the allowlisted models are reasoning models. They emit
+ *                           reasoning_content first, and if max_tokens runs out before
+ *                           they reach message.content the completion is empty. The fix
+ *                           is a larger budget, not a retry at the same size. This is
+ *                           what actually broke the first three v2 runs.
+ *   anything else           the free allowance is spent or the request was refused.
+ *                           Stop. Never upgrade, never fall back to a paid provider.
  */
 const EMPTY_COMPLETION_CIRCUIT_BREAK = 4;
 
-async function callModelOnce(stage, prompt) {
+async function callModelOnce(stage, prompt, maxTokens) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { authorization: `Bearer ${TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: STAGE_BUDGET[stage] ?? 2500,
+      max_tokens: maxTokens,
       temperature: STAGE_TEMPERATURE[stage] ?? 0.5
     })
   });
@@ -166,21 +177,28 @@ async function callModelOnce(stage, prompt) {
     throw new Error(`WORKERS_AI_ERROR ${response.status} ${raw.slice(0, 500)}`);
   }
   const json = JSON.parse(raw);
-  const text = json?.result?.response || json?.result?.text || json?.result?.choices?.[0]?.message?.content || '';
+  const choice = json?.result?.choices?.[0];
+  // reasoning_content is the model thinking out loud. It is never the article.
+  const text = json?.result?.response || json?.result?.text || choice?.message?.content || '';
+  const finishReason = choice?.finish_reason ?? null;
+  const truncated = !text && finishReason === 'length';
+
   stageDiagnostics.push({
     stage,
     prompt_chars: prompt.length,
-    max_tokens: STAGE_BUDGET[stage] ?? 2500,
+    max_tokens: maxTokens,
     returned_chars: text.length,
-    result_keys: Object.keys(json?.result || {}),
+    finish_reason: finishReason,
+    reasoning_chars: (choice?.message?.reasoning_content || '').length,
     usage: json?.result?.usage ?? null,
-    finish_reason: json?.result?.choices?.[0]?.finish_reason ?? null,
-    // An empty completion arrives as HTTP 200, so the body is the only place the reason
-    // is visible. Kept short and only when the completion was empty.
-    empty_body_sample: text ? null : raw.slice(0, 400)
+    outcome: text ? 'OK' : truncated ? 'TRUNCATED_IN_REASONING' : 'EMPTY'
   });
-  if (!text) consecutiveEmpty += 1; else consecutiveEmpty = 0;
-  return text;
+
+  // Only a genuinely empty completion counts toward the stop. A truncation is a budget
+  // problem this runner can fix by asking for more room on the same free model.
+  if (!text && !truncated) consecutiveEmpty += 1;
+  if (text) consecutiveEmpty = 0;
+  return { text, truncated };
 }
 
 async function callModel(stage, prompt) {
@@ -188,15 +206,23 @@ async function callModel(stage, prompt) {
   assertFreeOnly();
   // Two retries, because an empty completion on the free tier is transient. A retry is
   // not an upgrade: same model, same free allowance, no billable provider anywhere.
-  for (const attempt of [1, 2]) {
-    const text = await callModelOnce(stage, prompt);
+  let budget = STAGE_BUDGET[stage] ?? 4000;
+  for (const attempt of [1, 2, 3]) {
+    const { text, truncated } = await callModelOnce(stage, prompt, budget);
     if (text.trim()) return text;
+
     if (consecutiveEmpty >= EMPTY_COMPLETION_CIRCUIT_BREAK) {
-      throw new Error(`FREE_TIER_STOP ${consecutiveEmpty} consecutive empty completions on HTTP 200; the free Workers AI allowance appears to be spent. Stopping rather than upgrading.`);
+      throw new Error(`FREE_TIER_STOP ${consecutiveEmpty} consecutive empty completions on HTTP 200 with no truncation; the free allowance appears to be spent or the request refused. Stopping rather than upgrading.`);
     }
-    if (attempt < 2) continue;
-    if (REQUIRED_STAGES.includes(stage)) throw new Error(`NO_TEXT_RETURNED ${stage} after 2 attempts`);
-    console.log(`  STAGE_SKIPPED ${stage} returned no text after 2 attempts; continuing without it`);
+    // Give the reasoning room to finish rather than asking the same question again.
+    if (truncated && budget < MAX_TOKENS_CEILING) {
+      budget = Math.min(MAX_TOKENS_CEILING, Math.round(budget * BUDGET_ESCALATION));
+      console.log(`  STAGE_RETRY ${stage} ran out of room inside its reasoning; retrying at max_tokens=${budget}`);
+      continue;
+    }
+    if (attempt < 3) continue;
+    if (REQUIRED_STAGES.includes(stage)) throw new Error(`NO_TEXT_RETURNED ${stage} after ${attempt} attempts`);
+    console.log(`  STAGE_SKIPPED ${stage} returned no text after ${attempt} attempts; continuing without it`);
     return '';
   }
   return '';
@@ -501,7 +527,7 @@ async function main() {
   await writeJson(STATE_FILE, state);
 
   for (const d of stageDiagnostics) {
-    console.log(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars}`);
+    console.log(`  STAGE ${d.stage} ${d.outcome} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} reasoning_chars=${d.reasoning_chars}`);
   }
   console.log(`BLOGGER_${status} ${id} quality=${gates.quality.score} band=${gates.quality.band} vertical=${verticalId ?? 'none'} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
   for (const reason of gates.blocking_reasons) console.log(`  BLOCKED_BY ${reason}`);
@@ -512,7 +538,7 @@ const isEntry = process.argv[1] && import.meta.url === `file://${path.resolve(pr
 if (isEntry) {
   main().catch((error) => {
     for (const d of stageDiagnostics) {
-      console.error(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} finish=${d.finish_reason} usage=${JSON.stringify(d.usage)}${d.empty_body_sample ? ` body=${JSON.stringify(d.empty_body_sample)}` : ''}`);
+      console.error(`  STAGE ${d.stage} ${d.outcome} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} reasoning_chars=${d.reasoning_chars} finish=${d.finish_reason}`);
     }
     console.error(`BLOGGER_STOP ${error.message}`);
     process.exitCode = 0;
