@@ -8,6 +8,8 @@ on:
       - 'distribution/buffer-video-status.mjs'
       - '.github/workflows/trend-video-status.yml'
   workflow_dispatch:
+  schedule:
+    - cron: '23 */6 * * *'
 
 permissions:
   contents: write
@@ -24,6 +26,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Allow platform delivery to settle
+        if: github.event_name != 'schedule'
         run: sleep 20
 
       - name: Verify Buffer destination state once
@@ -42,4 +45,5 @@ jobs:
             exit 0
           fi
           git commit -m "Verify trend video delivery state"
+          git pull --rebase origin main
           git push
