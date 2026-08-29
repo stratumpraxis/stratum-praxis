@@ -138,6 +138,14 @@ const REQUIRED_STAGES = Object.freeze(['draft', 'envelope']);
 const STAGE_TEMPERATURE = Object.freeze({ draft: 0.6, critic: 0.3, deepen: 0.5, polish: 0.45, envelope: 0.2 });
 
 const stageDiagnostics = [];
+let consecutiveEmpty = 0;
+
+/**
+ * Consecutive empty completions on a 200 response are how this free tier reports that
+ * the allowance is spent. Past this many in a row, stop: the policy is that quota
+ * exhaustion halts the run, and burning further attempts neither helps nor is free.
+ */
+const EMPTY_COMPLETION_CIRCUIT_BREAK = 4;
 
 async function callModelOnce(stage, prompt) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}`;
@@ -165,8 +173,13 @@ async function callModelOnce(stage, prompt) {
     max_tokens: STAGE_BUDGET[stage] ?? 2500,
     returned_chars: text.length,
     result_keys: Object.keys(json?.result || {}),
-    usage: json?.result?.usage ?? null
+    usage: json?.result?.usage ?? null,
+    finish_reason: json?.result?.choices?.[0]?.finish_reason ?? null,
+    // An empty completion arrives as HTTP 200, so the body is the only place the reason
+    // is visible. Kept short and only when the completion was empty.
+    empty_body_sample: text ? null : raw.slice(0, 400)
   });
+  if (!text) consecutiveEmpty += 1; else consecutiveEmpty = 0;
   return text;
 }
 
@@ -175,12 +188,15 @@ async function callModel(stage, prompt) {
   assertFreeOnly();
   // Two retries, because an empty completion on the free tier is transient. A retry is
   // not an upgrade: same model, same free allowance, no billable provider anywhere.
-  for (const attempt of [1, 2, 3]) {
+  for (const attempt of [1, 2]) {
     const text = await callModelOnce(stage, prompt);
     if (text.trim()) return text;
-    if (attempt < 3) continue;
-    if (REQUIRED_STAGES.includes(stage)) throw new Error(`NO_TEXT_RETURNED ${stage} after 3 attempts`);
-    console.log(`  STAGE_SKIPPED ${stage} returned no text after 3 attempts; continuing without it`);
+    if (consecutiveEmpty >= EMPTY_COMPLETION_CIRCUIT_BREAK) {
+      throw new Error(`FREE_TIER_STOP ${consecutiveEmpty} consecutive empty completions on HTTP 200; the free Workers AI allowance appears to be spent. Stopping rather than upgrading.`);
+    }
+    if (attempt < 2) continue;
+    if (REQUIRED_STAGES.includes(stage)) throw new Error(`NO_TEXT_RETURNED ${stage} after 2 attempts`);
+    console.log(`  STAGE_SKIPPED ${stage} returned no text after 2 attempts; continuing without it`);
     return '';
   }
   return '';
@@ -496,7 +512,7 @@ const isEntry = process.argv[1] && import.meta.url === `file://${path.resolve(pr
 if (isEntry) {
   main().catch((error) => {
     for (const d of stageDiagnostics) {
-      console.error(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} result_keys=${d.result_keys.join(',')}`);
+      console.error(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} finish=${d.finish_reason} usage=${JSON.stringify(d.usage)}${d.empty_body_sample ? ` body=${JSON.stringify(d.empty_body_sample)}` : ''}`);
     }
     console.error(`BLOGGER_STOP ${error.message}`);
     process.exitCode = 0;
