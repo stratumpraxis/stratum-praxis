@@ -1,19 +1,30 @@
 {
-  "schema_version": 1,
+  "schema_version": 2,
+  "phase": "REVENUE_VALIDATION",
+  "primary_goal": "FIRST_VERIFIED_PURCHASE",
   "routes": [
     {
       "route_id": "vpj_hub_cross_agent_v1",
       "state": "ACTIVE_CURRENT_ROUTE",
       "source": "vector_praxis",
       "medium": "hub",
-      "campaign": "revenue_closure_20260829",
+      "campaign": "revenue_validation_20260830",
       "content": "cross_agent_kit",
       "source_url": "https://vector-praxis-japan.user-ex26.chatgpt.site/",
-      "landing_url": "https://stratumpraxis.com/cross-agent-operating-kit.html",
+      "landing_url": "https://stratum-praxis-site.pages.dev/cross-agent-operating-kit.html",
       "product_id": "prod_VA15eq5Gxy3Zzj",
       "canonical_payment_link_id": "plink_1U9h4LJMK7zFs997nRbhDVq9",
       "winner_input_adapter": "acquisition/lib/stripe-route.mjs",
-      "historical_claim": false
+      "historical_claim": false,
+      "success_condition": "verified_purchase_count >= 1",
+      "on_success": [
+        "identify_product_and_license",
+        "identify_attributed_source_route",
+        "reconstruct_landing_and_cta_path",
+        "infer_purchase_reason_only_from_observed_evidence",
+        "amplify_winning_route_only"
+      ],
+      "pre_sale_rule": "Do not create a new product. Improve only distribution, route clarity, attribution, checkout continuity, or buyer confidence when evidence supports the change."
     }
   ]
 }
