@@ -1,1 +1,18 @@
-BLOGGER_STOP NO_TEXT_RETURNED critic after 2 attempts
+  STAGE_SKIPPED critic returned no text after 3 attempts; continuing without it
+  STAGE_SKIPPED deepen returned no text after 3 attempts; continuing without it
+  STAGE_SKIPPED polish returned no text after 3 attempts; continuing without it
+  STAGE draft prompt_chars=8193 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE draft prompt_chars=8193 max_tokens=2600 returned_chars=2951 result_keys=choices,created,id,model,object,usage
+  STAGE critic prompt_chars=5789 max_tokens=900 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE critic prompt_chars=5789 max_tokens=900 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE critic prompt_chars=5789 max_tokens=900 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE deepen prompt_chars=5826 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE deepen prompt_chars=5826 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE deepen prompt_chars=5826 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE polish prompt_chars=5817 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE polish prompt_chars=5817 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE polish prompt_chars=5817 max_tokens=2600 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE envelope prompt_chars=6117 max_tokens=800 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE envelope prompt_chars=6117 max_tokens=800 returned_chars=0 result_keys=choices,created,id,model,object,usage
+  STAGE envelope prompt_chars=6117 max_tokens=800 returned_chars=0 result_keys=choices,created,id,model,object,usage
+BLOGGER_STOP NO_TEXT_RETURNED envelope after 3 attempts
