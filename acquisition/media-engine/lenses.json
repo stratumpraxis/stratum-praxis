@@ -1,88 +1,116 @@
 {
-  "version": 1,
-  "updated_at": "2026-08-28",
-  "purpose": "Issue #52 editorial lenses. A lens is an editorial contract - an angle the one identity may take. It is not a person, it has no biography, and no lens may be described as a separate author.",
+  "version": 2,
+  "updated_at": "2026-08-30",
+  "purpose": "Editorial ghost lanes. Each lane is an editorial contract and not a fabricated person, biography or separate public author.",
   "lenses": {
     "japan_reality": {
       "lens_id": "japan_reality",
+      "ghost_label": "Japan Reality Editor",
       "state": "ACTIVE",
-      "purpose": "Explain Japan from a grounded inside perspective, without tourism cliches, fetishization, sensationalism or unsupported national generalisation.",
+      "purpose": "Explain Japan from a grounded inside perspective without tourism cliches, fetishization, sensationalism or unsupported national generalisation.",
       "eligible_source_types": ["OWNER_APPROVED_SOURCE", "SOURCE_CANDIDATE"],
       "eligible_families": ["editorial_source", "search_demand", "industry_change"],
       "required_distinctions": ["personal_observation", "public_evidence", "interpretation", "broader_system_claim"],
-      "banned_patterns": [
-        "the truth Japan does not want you to know",
-        "what Japan hides",
-        "shocking truth about Japan",
-        "Japanese people all",
-        "every Japanese",
-        "in Japan everyone",
-        "la verdad que Japon no quiere",
-        "todos los japoneses"
-      ],
-      "generalisation_rule": "A sentence of the form 'Japan is X' or 'Japanese people are X' requires public evidence attached to the claim. Without it, rewrite to scope the claim: 'in this context', 'this system tends to', 'publicly reported figures show'.",
+      "banned_patterns": ["the truth Japan does not want you to know", "what Japan hides", "shocking truth about Japan", "Japanese people all", "every Japanese", "in Japan everyone"],
+      "generalisation_rule": "Broad claims about Japan or Japanese people require public evidence. Otherwise scope the claim narrowly.",
       "cta_required": false,
-      "notes": "Distinguishing observation from generalisation is the whole point of this lens. A grounded observation with an honest scope beats a confident claim about a country."
+      "notes": "Grounded observation beats confident national generalisation."
     },
     "independent_builder": {
       "lens_id": "independent_builder",
+      "ghost_label": "Independent Builder",
       "state": "ACTIVE",
       "purpose": "Read AI tools, launches, automation and market changes through one question: what does this actually change for a solo operator?",
       "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
       "eligible_families": ["product_discovery", "trend_evidence", "industry_change", "builder_discussion", "search_demand", "competitor_pricing"],
       "required_sections": ["what_changed", "implication_for_a_solo_operator", "tradeoff_or_cost", "practical_next_step"],
-      "banned_patterns": [
-        "here is everything you need to know about",
-        "top 10 ai tools",
-        "this changes everything",
-        "game changer"
-      ],
-      "generalisation_rule": "No first-hand testing may be claimed. Describe what the published material states and what it implies, not what the writer experienced.",
+      "banned_patterns": ["here is everything you need to know about", "top 10 ai tools", "this changes everything", "game changer"],
+      "generalisation_rule": "No first-hand testing may be claimed unless the source proves it.",
       "cta_required": true,
-      "notes": "A generic AI-news summary is a failure of this lens, not an output of it. The value is the implication, not the announcement."
+      "notes": "The value is implication, not announcement."
     },
     "practical_operator": {
       "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
       "state": "ACTIVE",
       "purpose": "Solve a concrete work problem close to real intent and purchase behaviour.",
       "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
       "eligible_families": ["community_pain", "search_demand", "review_signal", "owned_behavior", "competitor_pricing", "question_demand"],
       "required_sections": ["problem", "diagnosis", "decision_criteria", "practical_next_step", "relevant_verified_asset"],
-      "banned_patterns": [
-        "one of my clients",
-        "a client of mine",
-        "my client",
-        "uno de mis clientes",
-        "guaranteed roi",
-        "act now before",
-        "only today",
-        "limited time only"
-      ],
-      "generalisation_rule": "No fake client stories, no invented ROI figures, no manufactured urgency and no guaranteed-income framing.",
+      "banned_patterns": ["one of my clients", "a client of mine", "my client", "guaranteed roi", "act now before", "only today", "limited time only"],
+      "generalisation_rule": "No fake client stories, invented ROI, manufactured urgency or guaranteed-income framing.",
       "cta_required": true,
-      "notes": "This is the lens closest to purchase behaviour, which is exactly why its fabrication rules are the strictest."
+      "notes": "Closest to purchase behaviour, so fabrication rules are strictest."
     },
     "structural_reflection": {
       "lens_id": "structural_reflection",
+      "ghost_label": "Structural Essayist",
       "state": "ACTIVE",
-      "purpose": "Preserve the non-commodity layer: structural thinking about work, AI, people, systems, incentives and lived observation.",
+      "purpose": "Preserve the non-commodity layer: structural thinking about work, AI, people, systems and incentives.",
       "eligible_source_types": ["OWNER_APPROVED_SOURCE", "SOURCE_CANDIDATE"],
       "eligible_families": ["editorial_source", "builder_discussion", "industry_change"],
       "required_distinctions": ["observation", "interpretation"],
-      "banned_patterns": [
-        "5 lessons i learned",
-        "the ultimate guide to",
-        "you need to understand this now"
-      ],
-      "generalisation_rule": "Preserve nuance. Do not flatten strong source material into a listicle or into SEO filler.",
+      "banned_patterns": ["5 lessons i learned", "the ultimate guide to", "you need to understand this now"],
+      "generalisation_rule": "Preserve nuance; do not flatten strong material into listicle or SEO filler.",
       "cta_required": false,
-      "cta_optional_reason": "A sales CTA is optional here. When it would be unnatural, the output routes to trust and return readership instead, and the winner logic judges it on measured downstream behaviour rather than on having a CTA.",
-      "notes": "This lens exists so that good source material is not destroyed by the funnel."
+      "notes": "Sales CTA is optional."
+    },
+    "evidence_auditor": {
+      "lens_id": "evidence_auditor",
+      "ghost_label": "Evidence Auditor",
+      "state": "ACTIVE",
+      "purpose": "Take viral AI or business claims apart into verified facts, plausible inference, unknowns and unsupported claims while preserving the useful signal.",
+      "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
+      "eligible_families": ["trend_evidence", "industry_change", "builder_discussion", "review_signal", "product_discovery"],
+      "required_sections": ["what_is_verified", "what_is_not_verified", "what_the_signal_still_means", "decision_implication"],
+      "banned_patterns": ["confirmed profit", "guaranteed return", "everyone is making", "proof that this works"],
+      "generalisation_rule": "Screenshots, social posts and self-reported metrics are claims unless independently verified.",
+      "cta_required": false,
+      "notes": "Optimized for trust, freshness and safe trend capture."
+    },
+    "workflow_mechanic": {
+      "lens_id": "workflow_mechanic",
+      "ghost_label": "Workflow Mechanic",
+      "state": "ACTIVE",
+      "purpose": "Turn a trend or tool announcement into an implementation map: inputs, state, permissions, failure modes, human gates and measurable outputs.",
+      "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
+      "eligible_families": ["product_discovery", "industry_change", "builder_discussion", "community_pain", "question_demand"],
+      "required_sections": ["system_boundary", "minimum_workflow", "failure_modes", "human_gate", "measurement"],
+      "banned_patterns": ["fully autonomous with no risk", "set and forget forever", "zero maintenance"],
+      "generalisation_rule": "Distinguish a proposed architecture from a production-verified implementation.",
+      "cta_required": true,
+      "notes": "Best fit for reusable systems and implementation products."
+    },
+    "economic_skeptic": {
+      "lens_id": "economic_skeptic",
+      "ghost_label": "Economic Skeptic",
+      "state": "ACTIVE",
+      "purpose": "Interrogate AI claims through unit economics: subscription cost, usage cost, failure cost, review time, displacement value and break-even conditions.",
+      "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
+      "eligible_families": ["competitor_pricing", "product_discovery", "owned_behavior", "review_signal", "industry_change", "search_demand"],
+      "required_sections": ["headline_cost", "hidden_costs", "break_even_logic", "when_it_is_not_worth_it"],
+      "banned_patterns": ["guaranteed savings", "guaranteed roi", "pays for itself", "free money"],
+      "generalisation_rule": "Do not invent ROI. State assumptions and separate listed prices from estimated operating cost.",
+      "cta_required": false,
+      "notes": "Useful for high-intent buyers who distrust hype."
+    },
+    "opportunity_mapper": {
+      "lens_id": "opportunity_mapper",
+      "ghost_label": "Opportunity Mapper",
+      "state": "ACTIVE",
+      "purpose": "Translate a new capability into concrete adjacent opportunities, who benefits, what changes, what remains hard and which opportunities are premature.",
+      "eligible_source_types": ["SOURCE_CANDIDATE", "OWNER_APPROVED_SOURCE"],
+      "eligible_families": ["trend_evidence", "industry_change", "product_discovery", "search_demand", "builder_discussion"],
+      "required_sections": ["capability_shift", "near_term_opportunities", "constraints", "who_should_ignore_it", "next_signal_to_watch"],
+      "banned_patterns": ["million dollar opportunity", "easy passive income", "anyone can get rich", "blue ocean guaranteed"],
+      "generalisation_rule": "Opportunity is not proof of demand; distinguish capability, demand evidence and monetization evidence.",
+      "cta_required": false,
+      "notes": "Designed for PV plus future product discovery without forcing a sale."
     }
   },
   "derivation_rule": {
     "no_cartesian_product": true,
-    "max_outputs_per_source": 2,
-    "explanation": "A source does not generate every desk x lens combination. Eligibility is scored on audience fit, evidence fit, revenue fit, localization quality, truth risk, policy risk, duplicate risk, freshness and operational burden, and only the strongest combinations are derived. Fewer strong outputs beat more content."
+    "max_outputs_per_source": 3,
+    "explanation": "Do not generate every lens for every source. Score evidence fit, audience fit, revenue fit, freshness, truth risk, duplicate risk and operational burden; derive only the strongest one to three angles."
   }
 }
