@@ -439,12 +439,25 @@ export function deriveEvidenceNotes(body, source) {
   return notes;
 }
 
+/**
+ * Does this outbox record represent something the duplication gate should defend?
+ *
+ * A DRAFT is an attempt the gate already rejected. It was never published, it holds no
+ * audience and it occupies no route, so counting it makes a source's own retry
+ * cannibalise itself - which is exactly what happened on the run before this rule
+ * existed. Only READY work, and anything that reached the owned site, competes.
+ */
+export function isPriorPublication(record) {
+  const PUBLISHED_STATES = ['PUBLISH_REQUESTED', 'PUBLISHED', 'VERIFIED'];
+  return record?.status === 'READY' || PUBLISHED_STATES.includes(record?.publication_state);
+}
+
 async function loadPriorOutputs() {
   const names = (await fs.readdir(OUT_DIR).catch(() => [])).filter((n) => n.endsWith('.json')).sort();
   const records = [];
   for (const name of names) {
     const record = await readJson(path.join(OUT_DIR, name)).catch(() => null);
-    if (!record) continue;
+    if (!record || !isPriorPublication(record)) continue;
     records.push({
       derivation_id: record.output_id,
       source_id: record.source_id,

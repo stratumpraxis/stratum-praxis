@@ -81,6 +81,30 @@ test('a genuinely different article on the same source is not treated as a dupli
   assert.equal(result.duplication.ok, true, JSON.stringify(result.duplication.blocks));
 });
 
+test('a rejected DRAFT never cannibalises its own replacement', async () => {
+  const { isPriorPublication } = await import('../free-runner.mjs');
+
+  // A discarded attempt holds no audience and occupies no route.
+  assert.equal(isPriorPublication({ status: 'DRAFT', publication_state: null }), false);
+  assert.equal(isPriorPublication({ status: 'DRAFT' }), false);
+  // Anything READY, or anything that reached the owned site, does compete.
+  assert.equal(isPriorPublication({ status: 'READY' }), true);
+  assert.equal(isPriorPublication({ status: 'DRAFT', publication_state: 'PUBLISH_REQUESTED' }), true);
+  assert.equal(isPriorPublication({ status: 'DRAFT', publication_state: 'VERIFIED' }), true);
+
+  // The failure this rule prevents: a same-source retry blocked by the attempt before it.
+  const rejectedAttempt = derivationFrom(
+    { ...STRONG_ARTICLE, output_id: 'earlier-draft' },
+    { source: SOURCE, lensId: 'practical_operator', ctaAssetId: 'ai-saas-waste-calculator', createdAt: new Date().toISOString() }
+  );
+  const blocked = runEditorialGates(STRONG_ARTICLE, { ...base, published: [rejectedAttempt] });
+  assert.equal(blocked.duplication.ok, false, 'a real prior publication on the same route does block');
+  assert.ok(blocked.duplication.blocks.some((b) => b.rule === 'SAME_SOURCE_SAME_CHANNEL_COOLDOWN'));
+
+  const clean = runEditorialGates(STRONG_ARTICLE, { ...base, published: [] });
+  assert.equal(clean.duplication.ok, true, 'with the draft filtered out, the retry is free to proceed');
+});
+
 test('the disclosure names only the gates that actually executed', () => {
   const withIdentity = runEditorialGates(STRONG_ARTICLE, base);
   const withoutIdentity = runEditorialGates(STRONG_ARTICLE, { ...base, identity: null });
