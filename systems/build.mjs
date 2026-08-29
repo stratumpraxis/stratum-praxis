@@ -232,9 +232,9 @@ const landingBody = `
 
 <section><div class="wrap">
   <h2>What these are</h2>
-  <p class="sub">Three of these systems came out of one publishing pipeline that was already
-  running them in production. The fourth is an existing product listed here because it
-  belongs in the same catalogue, not because it was rebuilt for it.</p>
+  <p class="sub">${packaged.length} of these systems came out of one publishing pipeline that
+  was already running them in production. The other ${external.length} are existing products
+  listed here because they belong in the same catalogue, not because they were rebuilt for it.</p>
   <div class="scroll"><table>
     <thead><tr><th>Question</th><th>Answer</th></tr></thead>
     <tbody>
