@@ -1,0 +1,12 @@
+{
+  "$comment": "Declare every channel once. utm_source and utm_medium are never invented at call time.",
+  "channels": {
+    "newsletter": { "utm_source": "newsletter", "utm_medium": "email" },
+    "x": { "utm_source": "x", "utm_medium": "social" },
+    "youtube": { "utm_source": "youtube", "utm_medium": "video" },
+    "github": { "utm_source": "github", "utm_medium": "referral" },
+    "organic_search": { "utm_source": "google", "utm_medium": "organic" }
+  },
+  "owned_domains": ["example.com"],
+  "checkout_hosts": ["buy.stripe.com", "payhip.com", "gumroad.com"]
+}

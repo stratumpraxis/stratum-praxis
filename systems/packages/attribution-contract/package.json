@@ -1,0 +1,20 @@
+{
+  "name": "@stratum-praxis/attribution-contract",
+  "version": "1.0.0",
+  "description": "Deterministic UTM attribution: one routing table, identical links every time, and a CI check that fails when a CTA would arrive unattributed. Zero dependencies.",
+  "type": "module",
+  "main": "src/attribution.mjs",
+  "exports": {
+    ".": "./src/attribution.mjs",
+    "./routing": "./src/routing.mjs"
+  },
+  "bin": { "attribution-contract": "src/cli.mjs" },
+  "engines": { "node": ">=18.0.0" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node src/cli.mjs verify --routing examples/routing.example.json --links examples/links.example.json"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "keywords": ["utm", "attribution", "analytics", "campaign-tracking", "funnel", "marketing-ops"]
+}

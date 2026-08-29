@@ -1,0 +1,7 @@
+{
+  "lens_id": "regional_reality",
+  "purpose": "Grounded perspective on a place without clichés or unsupported collective claims.",
+  "generalisation_subject": "Examplestan",
+  "generalisation_rule": "Attribute the claim to published evidence, or scope it to the specific case you can show.",
+  "banned_patterns": ["the secret of", "what nobody tells you about"]
+}

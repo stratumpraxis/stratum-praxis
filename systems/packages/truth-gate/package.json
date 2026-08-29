@@ -1,0 +1,20 @@
+{
+  "name": "@stratum-praxis/truth-gate",
+  "version": "1.0.0",
+  "description": "A first-person truth gate, fabricated-biography gate and privacy gate for AI publishing pipelines. Zero dependencies.",
+  "type": "module",
+  "main": "src/truth-gate.mjs",
+  "exports": {
+    ".": "./src/truth-gate.mjs",
+    "./identity": "./src/identity.mjs"
+  },
+  "bin": { "truth-gate": "src/cli.mjs" },
+  "engines": { "node": ">=18.0.0" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node src/cli.mjs --identity examples/identity.example.json --draft examples/sample-input.json --lens examples/lens.example.json"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "keywords": ["ai", "publishing", "guardrail", "hallucination", "editorial", "quality-gate"]
+}
