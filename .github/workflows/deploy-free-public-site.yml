@@ -1,0 +1,65 @@
+name: Deploy Free Public Site
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: stratum-praxis-free-public-site
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'worker' \
+            --exclude 'node_modules' \
+            --exclude 'revenue-os' \
+            --exclude 'CNAME'
+
+      - name: Ensure free Pages project exists
+        working-directory: _site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@latest pages project create stratum-praxis-site --production-branch main >/tmp/pages-create.log 2>&1 || true
+          cat /tmp/pages-create.log || true
+
+      - name: Deploy to free pages.dev domain
+        working-directory: _site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main
+
+      - name: Verify free public routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://stratum-praxis-site.pages.dev'
+          for path in / /systems/ /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html; do
+            code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
+            if [ "$code" != '200' ]; then
+              echo "Expected 200 for $BASE$path, got $code"
+              head -c 500 /tmp/page.txt || true
+              exit 1
+            fi
+            echo "Public route OK: $BASE$path -> 200"
+          done
