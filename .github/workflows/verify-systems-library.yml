@@ -19,6 +19,17 @@ on:
       - 'systems/**'
       - 'sitemap.xml'
       - 'index.html'
+  # On a pull request only the offline job runs: the branch is not deployed, so the
+  # live checks below would be asserting against main's pages, not this PR's.
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-systems-library.yml'
+      - 'systems/**'
+      - 'prompt-store/index.html'
+      - 'scos-analytics.js'
+      - 'sitemap.xml'
+      - 'index.html'
   workflow_dispatch:
 
 permissions:
@@ -84,6 +95,8 @@ jobs:
 
   live-routes:
     needs: generated-pages-are-current
+    # Only meaningful once the change is actually deployed.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
