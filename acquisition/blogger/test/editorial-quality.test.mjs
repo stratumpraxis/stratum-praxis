@@ -214,6 +214,53 @@ test('a truth-gate violation reported by the media engine overrides the aggregat
   assert.ok(result.score <= 49);
 });
 
+test('a decision rule counts in either order, and flat prose still counts as none', () => {
+  // "cancel it when X" and "if X, cancel" are the same rule. Catching only the first
+  // was a false negative that cost a real article its insight score.
+  assert.ok(detectInsight('Cancel it when the workflow that justified it has stopped.')
+    .some((i) => i.id === 'conditional_decision_rule'));
+  assert.ok(detectInsight('If usage is low and criticality is low, cancel.')
+    .some((i) => i.id === 'conditional_decision_rule'));
+
+  assert.ok(detectInsight('The most common decision rule is to cut whatever you rarely open.')
+    .some((i) => i.id === 'explicit_rule'));
+  assert.ok(detectInsight('That rule fails when it ignores criticality.')
+    .some((i) => i.id === 'counterargument'));
+  assert.ok(detectInsight('You must weigh this against the switching cost.')
+    .some((i) => i.id === 'tradeoff'));
+
+  // Two patterns for one kind of insight still count once, so a writer cannot inflate
+  // depth by restating the same rule twice.
+  const doubled = detectInsight('Cancel it when usage stops. If the workflow ends, cancel.');
+  assert.equal(doubled.filter((i) => i.id === 'conditional_decision_rule').length, 1);
+
+  for (const flat of [
+    'Reviewing subscriptions regularly is a sensible practice that keeps costs visible.',
+    'There are many AI tools available and the market continues to change quickly.',
+    'It is important to understand your spending before making any decisions about it.'
+  ]) {
+    assert.deepEqual(detectInsight(flat), [], `flat prose should score no insight: ${flat}`);
+  }
+});
+
+test('the body cleaner removes the artifacts a free model leaves around an article', async () => {
+  const { cleanBody } = await import('../free-runner.mjs');
+  const raw = `# Rationalizing the AI Subscription Stack
+
+The real opening paragraph.
+
+Another paragraph.
+
+[0] Estimate how much of your AI/SaaS spend is reducible
+Free · No signup`;
+  const cleaned = cleanBody(raw);
+  assert.equal(cleaned.startsWith('The real opening paragraph.'), true, 'the duplicated H1 goes');
+  assert.equal(/\[0\]/.test(cleaned), false, 'the route marker goes');
+  assert.equal(/No signup/i.test(cleaned), false, 'the duplicated CTA microcopy goes');
+  assert.equal(cleaned.includes('Another paragraph.'), true, 'the article survives');
+  assert.equal(/\n{3,}/.test(cleaned), false, 'no gaps are left behind');
+});
+
 test('the detectors are individually sound', () => {
   assert.equal(extractNumericClaims('Nothing happened in 2026.', '').length, 0, 'a year is not a statistic');
   assert.equal(extractNumericClaims('Waste sits at 25-30%.', 'reported waste of 25-30%')[0].traceable, true);

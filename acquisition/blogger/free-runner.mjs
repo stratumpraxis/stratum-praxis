@@ -298,7 +298,7 @@ async function generate(source, identity, lens, vertical) {
   const base = buildRules(identity, source, lens, vertical);
   const brief = buildRules(identity, source, lens, vertical, { compact: true });
 
-  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of roughly 900-1300 words. Open on the reader's actual decision, not on a scene. Article only, markdown headings allowed.`);
+  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of 1100-1600 words. Open on the reader's actual decision, not on a scene. Article only, markdown headings allowed.`);
 
   const critic = await callModel('critic', `${brief}\n\nCRITIC: List every violation of the hard rules in the article below, plus generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments and false certainty. Quote the offending sentence for each. Be brief.\n\n${draft}`);
 
@@ -307,12 +307,17 @@ async function generate(source, identity, lens, vertical) {
     : `${brief}\n\nDEEPEN: Rewrite the article below. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - grounded only in the allowed claims. Article only.\n\nARTICLE:\n${draft}`;
   const deepened = (await callModel('deepen', deepenPrompt)) || draft;
 
-  const polished = (await callModel('polish', `${brief}\n\nFINAL EDIT: Humanize the rhythm and transitions. Vary sentence length. Cut filler, textbook scaffolding, unearned sales language, repeated summaries, and any coined capitalised term beyond two. Never fake an anecdote or a typo. Return the finished article only - no preamble, no JSON.\n\n${deepened}`)) || deepened;
+  const polishedRaw = (await callModel('polish', `${brief}\n\nFINAL EDIT: Humanize the rhythm and transitions. Vary sentence length. Cut filler, textbook scaffolding, unearned sales language, repeated summaries, and any coined capitalised term beyond two. Never fake an anecdote or a typo.\n\nThis is an edit, not a summary. Keep every distinct point, example and decision rule, and keep the article at least as long as the one below - never under 1000 words. Return the finished article only, no preamble, no JSON, no CTA block and no route marker.\n\n${deepened}`)) || deepened;
+
+  // An edit that loses a fifth of the article is a summary. Keep the longer text: the
+  // quality gate would reject the short version anyway, and a shorter-but-cleaner draft
+  // is not worth the points it costs on substance.
+  const polished = wordCount(polishedRaw) >= wordCount(deepened) * 0.85 ? polishedRaw : deepened;
 
   // The body never round-trips through JSON: it is taken verbatim from the polish
   // stage, and only the small metadata envelope is asked for as JSON. That keeps the
   // envelope well inside the free model's output budget.
-  const body = stripFence(polished).replace(/^#\s+.+\n+/, '').trim();
+  const body = cleanBody(polished);
   // Five short scalars. A longer envelope is what truncated the previous run mid-array.
   const envelopeRaw = await callModel('envelope', `${brief}\n\nReturn STRICT JSON and nothing else. Exactly these five keys, all short strings except cta_route_index which is an integer naming one of the routes above:\n{"selected_title": "...", "dek": "one sentence", "cta_route_index": 0, "cta_label": "...", "cta_microcopy": "..."}\nThe cta_label must say what the reader gets, never "Continue" or "Learn more". Do not include the article body or any other key.\n\nARTICLE:\n${body}`);
 
@@ -325,6 +330,24 @@ async function generate(source, identity, lens, vertical) {
     stages_completed: { draft: Boolean(draft), critic: Boolean(critic), deepen: deepened !== draft, polish: polished !== deepened, envelope: true },
     final: { ...envelope, body_markdown: body }
   };
+}
+
+function wordCount(text) {
+  return String(text || '').split(/\s+/).filter(Boolean).length;
+}
+
+/**
+ * Strip the artifacts a free model leaves around an article: a leading H1 that
+ * duplicates the title, a route marker like "[0] Run the thing", and a CTA block the
+ * model appended even though it was told not to. The publisher renders the CTA itself
+ * from the verified route, so a copy inside the body is duplication, not content.
+ */
+export function cleanBody(text) {
+  let body = stripFence(text).replace(/^#\s+.+\n+/, '');
+  body = body.replace(/^\s*\[\d+\]\s.*$/gm, '');
+  body = body.replace(/^\s*(?:Free\s*[·|.]\s*No\s*signup|No\s*signup\s*[·|.]\s*Free)\s*$/gim, '');
+  body = body.replace(/\n{3,}/g, '\n\n');
+  return body.trim();
 }
 
 /**

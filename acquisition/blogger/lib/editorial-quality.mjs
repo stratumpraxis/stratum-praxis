@@ -126,12 +126,17 @@ export const CLAIMED_OUTCOME_PATTERNS = Object.freeze([
   { id: 'monthly_outcome', pattern: /\bby\s+\$\s?[\d,]+\s+(?:per|a)\s+(?:month|year|quarter|week)\b/i }
 ]);
 
+const DECISION_VERBS = 'keep|renew|downgrade|consolidate|cancel|cut|drop|retain|pay\\s+for|migrate|switch';
+
 export const INSIGHT_MARKERS = Object.freeze([
-  { id: 'conditional_decision_rule', pattern: /\b(?:keep|renew|downgrade|consolidate|cancel|cut|drop|retain|pay for)\s+(?:it|them|the\s+\w+|this)?\s*(?:only\s+)?(?:when|if|unless)\b/i },
-  { id: 'explicit_rule', pattern: /\b(?:the\s+test\s+is|rule\s+of\s+thumb|the\s+decision\s+rule|the\s+threshold\s+is|decide\s+by\s+asking)\b/i },
-  { id: 'counterargument', pattern: /\b(?:counter-?argument|the\s+case\s+against|the\s+obvious\s+(?:answer|move|recommendation)\s+is\s+wrong|do\s+not\s+(?:follow|apply)\s+this\s+when|this\s+advice\s+fails\s+when|the\s+opposite\s+is\s+true\s+when)\b/i },
-  { id: 'tradeoff', pattern: /\b(?:trade-?offs?|at\s+the\s+cost\s+of|in\s+exchange\s+for|you\s+(?:give|lose)\s+up\b|the\s+price\s+of\s+this\s+is)\b/i },
-  { id: 'boundary_condition', pattern: /\b(?:only\s+(?:holds|applies|works|makes\s+sense)\s+(?:when|if)|breaks\s+down\s+when|does\s+not\s+apply\s+(?:to|when)|stops\s+being\s+true\s+(?:when|once))\b/i },
+  // A conditional decision rule reads in either order: "cancel it when X" and
+  // "if X, cancel" are the same rule, and only catching the first was a false negative.
+  { id: 'conditional_decision_rule', pattern: new RegExp(`\\b(?:${DECISION_VERBS})\\s+(?:it|them|the\\s+\\w+|this)?\\s*(?:only\\s+)?(?:when|if|unless)\\b`, 'i') },
+  { id: 'conditional_decision_rule', pattern: new RegExp(`\\b(?:if|when|unless)\\b[^.!?]{3,120}?,\\s*(?:then\\s+)?(?:${DECISION_VERBS})\\b`, 'i') },
+  { id: 'explicit_rule', pattern: /\b(?:the\s+test\s+is|rule\s+of\s+thumb|decision\s+rule|the\s+threshold\s+is|decide\s+by\s+asking|the\s+question\s+to\s+ask\s+is)\b/i },
+  { id: 'counterargument', pattern: /\b(?:counter-?argument|the\s+case\s+against|the\s+obvious\s+(?:answer|move|recommendation|choice)[^.!?]{0,40}?\s+is\s+wrong|do\s+not\s+(?:follow|apply)\s+this\s+when|this\s+(?:advice|rule|approach)\s+fails\s+when|(?:that|this)\s+rule\s+fails\b|the\s+opposite\s+is\s+true\s+when|a\s+similar\s+error\s+occurs)\b/i },
+  { id: 'tradeoff', pattern: /\b(?:trade-?offs?|at\s+the\s+cost\s+of|in\s+exchange\s+for|you\s+(?:give|lose)\s+up\b|the\s+price\s+of\s+this\s+is|must\s+weigh\s+this\s+against|weighed?\s+against)\b/i },
+  { id: 'boundary_condition', pattern: /\b(?:only\s+(?:holds|applies|works|makes\s+sense)\s+(?:when|if)|breaks\s+down\s+when|does\s+not\s+apply\s+(?:to|when)|stops\s+being\s+true\s+(?:when|once)|the\s+risk\s+is\s+the\s+hidden)\b/i },
   { id: 'ordering_rule', pattern: /\b(?:before\s+you\s+(?:cancel|cut|consolidate|downgrade)|do\s+this\s+first|the\s+order\s+matters)\b/i }
 ]);
 
@@ -320,13 +325,15 @@ export function rhythmProfile(body) {
   };
 }
 
+/** Distinct insight kinds present. Two patterns for one kind still count once. */
 export function detectInsight(body) {
-  const found = [];
+  const found = new Map();
   for (const marker of INSIGHT_MARKERS) {
+    if (found.has(marker.id)) continue;
     const match = String(body || '').match(marker.pattern);
-    if (match) found.push({ id: marker.id, evidence: match[0] });
+    if (match) found.set(marker.id, { id: marker.id, evidence: match[0] });
   }
-  return found;
+  return [...found.values()];
 }
 
 // --- the model --------------------------------------------------------------------

@@ -20,8 +20,7 @@
   },
   "last_publish_pass_at": "2026-08-29T03:45:43.817Z",
   "attempts": {
-    "shadow-ai-spend-accountability-candidate": 1,
-    "ai-subscription-rationalization-candidate": 1
+    "shadow-ai-spend-accountability-candidate": 1
   },
   "last_selection": {
     "at": "2026-08-29T03:45:43.752Z",
@@ -37,5 +36,6 @@
         "opportunity_score": 19.303
       }
     ]
-  }
+  },
+  "attempt_reset_note": "ai-subscription-rationalization-candidate: attempt counter cleared 2026-08-29 because the attempt was spent on a polish stage that summarised rather than edited. The DRAFT artifact from that attempt is kept in the outbox."
 }
