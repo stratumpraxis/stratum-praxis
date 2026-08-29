@@ -1355,6 +1355,107 @@
         "in_sitemap": true,
         "note": "Generated from systems/manifest.json by systems/build.mjs; drift fails systems/build.mjs --check. Live HTTP check is performed by .github/workflows/verify-systems-library.yml, not from the authoring session."
       }
+    },
+    {
+      "asset_id": "cross-agent-operating-kit",
+      "brand": "Stratum Praxis",
+      "asset_name": "Cross-Agent Operating Kit",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/cross-agent-operating-kit.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T",
+        "price": "USD 69",
+        "evidence": "in-page Stripe payment link, entry tier of three published tiers ($69/$149/$299)"
+      },
+      "primary_user_problem": "Agent setup is trapped in one runtime: brain, policy, skills and state have to be rebuilt by hand when moving between Claude Code, Codex or Cursor.",
+      "problem_keys": [
+        "agent_portability",
+        "runtime_migration",
+        "agent_governance",
+        "cost_guardrails",
+        "human_approval_boundaries"
+      ],
+      "target_audience": [
+        "engineering_lead",
+        "founder",
+        "ops_lead"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "youtube",
+        "bluesky"
+      ],
+      "cta": {
+        "label": "Open the Cross-Agent Operating Kit",
+        "analytics_id": "systems_card_cross-agent-operating-kit"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click",
+        "access_granted",
+        "access_denied"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "cross-agent-operating-kit.html",
+        "in_sitemap": true,
+        "note": "Published to main separately on 2026-08-29. Added to sitemap.xml here; it was previously absent. Live HTTP check runs from Actions, not from the authoring session."
+      }
+    },
+    {
+      "asset_id": "ai-operations-systems-pack",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Operations Systems Pack",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/prompt-store/operations-10.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/6oU14ofbmeLxdsQ2xt6Zy0Q",
+        "price": "USD 39",
+        "evidence": "in-page Stripe payment link on prompt-store/operations-10.html"
+      },
+      "primary_user_problem": "AI work is run as a series of one-off requests instead of as an operation with standing systems.",
+      "problem_keys": [
+        "repeatable_execution",
+        "sop_creation",
+        "ai_operations",
+        "workflow_architecture"
+      ],
+      "target_audience": [
+        "ops_lead",
+        "founder",
+        "smb_owner"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "note",
+        "youtube"
+      ],
+      "cta": {
+        "label": "Open the AI Operations Systems Pack",
+        "analytics_id": "systems_card_ai-operations-systems-pack"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click",
+        "access_granted",
+        "access_denied"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "prompt-store/operations-10.html",
+        "in_sitemap": true,
+        "note": "Added to sitemap.xml here; it was previously absent. The /systems/ page published to main linked /prompt-store/ops10/, which has no page - the worker serves only /prompt-store/ops10/login and /workspace under that path."
+      }
     }
   ]
 }

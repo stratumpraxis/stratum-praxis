@@ -160,3 +160,43 @@ That is a checkout-completion problem, and it sits after every part of the path 
 work measured. It should be diagnosed from the Stripe dashboard — abandoned sessions,
 payment-method failures, currency or country blocks — before any further acquisition
 work. Sending more traffic into it would not change the outcome.
+
+## 9. Collision with a parallel session, resolved by merge rather than by choosing
+
+While this work was in flight, `main` gained five commits from another session,
+including `78fb26d Publish Stratum Praxis Systems Library` — a second, hand-written
+`/systems/index.html` on the same route, acting as a storefront for a newly shipped
+Cross-Agent Operating Kit ($69 / $149 / $299) plus the prompt store.
+
+Both pages claim one URL, so one of them had to give. Neither was discarded:
+
+- The generated, manifest-driven library is kept, because it carries the drift check,
+  the three package pages, the licence, docs and changelog routes, and 48 tests. A
+  hand-written page would have left the other six `/systems/` routes 404 against the
+  sitemap this work publishes.
+- Everything the other session was selling is kept, by adding it to
+  `systems/manifest.json` as external paid entries: the Cross-Agent Operating Kit at
+  its entry tier, and the AI Operations Systems Pack. Both now render as measurable
+  cards, and both were added to `acquisition/asset-inventory.json`.
+
+Their own files — `cross-agent-operating-kit.html`, its access page, the worker and
+the deploy workflow — are untouched. The set of `buy.stripe.com` URLs across the site
+is byte-identical to `main`: nothing was added, removed or repointed.
+
+Two further findings from that commit, both the same class of defect this work already
+fixed once:
+
+1. `cross-agent-operating-kit.html` was not in `sitemap.xml`. A just-shipped $69–$299
+   product had no organic discovery path. Added.
+2. That page's `/systems/` card linked `/prompt-store/ops10/`, which has no page —
+   the worker serves only `/prompt-store/ops10/login` and `/prompt-store/ops10/workspace`
+   under that path. The manifest routes it to `/prompt-store/operations-10.html`, the
+   real sales page, which was also missing from the sitemap and is now in it.
+
+The CI attribution guard is now driven from the manifest rather than a hardcoded id,
+so a product added later cannot skip it.
+
+**This resolution is the one judgement call in this work that an owner should confirm**,
+because it changes what a visitor sees at `/systems/`. The commercial content is a
+superset of what the other session shipped; the presentation is the generated one.
+

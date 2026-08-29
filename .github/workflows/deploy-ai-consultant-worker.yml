@@ -37,7 +37,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
-          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace; do
+          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace /cross-agent-kit/workspace; do
             code="$(curl -sS -o /tmp/worker-response.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '401' ]; then
               echo "Expected 401 for unauthenticated $path, got $code"
@@ -54,3 +54,11 @@ jobs:
             exit 1
           fi
           echo "Prompt Store invalid-login guard OK: 400"
+
+          code="$(curl -sS -o /tmp/cross-agent-login.txt -w '%{http_code}' -X POST "$BASE/cross-agent-kit/login" -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com","offer":"cross_personal"}')"
+          if [ "$code" != '400' ]; then
+            echo "Expected 400 for invalid Cross-Agent Kit login, got $code"
+            cat /tmp/cross-agent-login.txt
+            exit 1
+          fi
+          echo "Cross-Agent Kit invalid-login guard OK: 400"

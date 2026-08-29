@@ -80,7 +80,13 @@ jobs:
           }
           # The library -> product hop must emit primary_cta_click, otherwise the
           # Systems Library cannot be told apart from a page nobody clicks through.
-          need systems/index.html 'data-primary-cta data-analytics-id="systems_card_ai-workflow-operator-bundle" data-product="workflow_operator_bundle"'
+          # Driven from the manifest so a product added later cannot skip the check.
+          while read -r id product; do
+            need systems/index.html "data-primary-cta data-analytics-id=\"systems_card_${id}\" data-product=\"${product}\""
+          done < <(node -e '
+            const m = require("./systems/manifest.json");
+            for (const p of m.products) if (p.checkout_url) console.log(p.id, p.attribution_product_id);
+          ')
           # Every checkout CTA needs a stable id. Without one scos-analytics.js falls
           # back to the link text, which is copy-dependent and language-dependent, so
           # the same button reports two different cta_id values in EN and JA.
@@ -219,8 +225,13 @@ jobs:
 
           check "$lib" '/scos-analytics.js' 'live /systems/ loads scos-analytics.js'
           check "$lib" 'data-funnel="systems_library"' 'live /systems/ declares its funnel'
-          check "$lib" 'data-primary-cta data-analytics-id="systems_card_ai-workflow-operator-bundle" data-product="workflow_operator_bundle"' \
-            'live /systems/ paid card emits primary_cta_click with a stable id and product'
+          while read -r id product; do
+            check "$lib" "data-primary-cta data-analytics-id=\"systems_card_${id}\" data-product=\"${product}\"" \
+              "live /systems/ paid card $id emits primary_cta_click with a stable id and product"
+          done < <(node -e '
+            const m = require("./systems/manifest.json");
+            for (const p of m.products) if (p.checkout_url) console.log(p.id, p.attribution_product_id);
+          ')
 
           check "$store" '/scos-analytics.js' 'live /prompt-store/ loads scos-analytics.js'
           for id in prompt_store_hero_checkout prompt_store_offer_checkout prompt_store_sticky_checkout; do
