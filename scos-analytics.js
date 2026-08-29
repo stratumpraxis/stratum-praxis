@@ -137,6 +137,7 @@
   window.posthog.init(TOKEN, {
     api_host: HOST,
     ui_host: 'https://us.posthog.com',
+    bootstrap: { distinctID: anonymousId, isIdentifiedID: false },
     person_profiles: 'identified_only',
     capture_pageview: false,
     capture_pageleave: false,
@@ -153,9 +154,17 @@
   };
   window.scosAttribution = attribution;
 
+  function distinctId() {
+    try {
+      const current = window.posthog && typeof window.posthog.get_distinct_id === 'function' && window.posthog.get_distinct_id();
+      if (current) return current;
+    } catch (_) {}
+    return anonymousId;
+  }
+
   function captureBeforeNavigation(name, props) {
     const properties = Object.assign({}, attribution, { path: location.pathname, funnel: funnelId(), '$process_person_profile': false }, props || {});
-    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
+    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: distinctId(), event: name, properties });
     try {
       if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return;
     } catch (_) {}
@@ -238,7 +247,52 @@
     });
   }
 
-  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
+  function observePrimaryCta() {
+    if (!('IntersectionObserver' in window)) return;
+    const ctas = document.querySelectorAll('[data-primary-cta]:not([data-cta-persistent])');
+    if (!ctas.length) return;
+    let reported = false;
+    const observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (reported || !entry.isIntersecting) return;
+        reported = true;
+        observer.disconnect();
+        window.scosCapture('primary_cta_view', {
+          cta_id: clean(entry.target.dataset.analyticsId || entry.target.textContent, 100),
+          product: clean(entry.target.dataset.product || document.body.dataset.product || funnelId(), 100)
+        });
+      });
+    }, { threshold: 0.5 });
+    ctas.forEach(function (cta) { observer.observe(cta); });
+  }
+
+  function trackScrollDepth() {
+    const milestones = [25, 50, 75, 90];
+    let index = 0;
+    let scheduled = false;
+
+    function measure() {
+      scheduled = false;
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollable <= 0) return;
+      const percent = Math.min(100, Math.round((window.scrollY / scrollable) * 100));
+      while (index < milestones.length && percent >= milestones[index]) {
+        window.scosCapture('scroll_depth', { depth_percent: milestones[index] });
+        index++;
+      }
+      if (index >= milestones.length) window.removeEventListener('scroll', onScroll);
+    }
+
+    function onScroll() {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(measure);
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+  }
+
+  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); observePrimaryCta(); trackScrollDepth(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
@@ -255,6 +309,7 @@
       product: clean(link.dataset.product || document.body.dataset.product || funnelId(), 100)
     };
     if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) captureBeforeNavigation('primary_cta_click', properties);
+    else if (link.dataset.analyticsId) captureBeforeNavigation('secondary_cta_click', properties);
     if (CHECKOUT_HOSTS.has(destination.hostname)) captureBeforeNavigation('checkout_click', properties);
     if (destination.origin !== location.origin && !CHECKOUT_HOSTS.has(destination.hostname)) {
       captureBeforeNavigation('external_route_click', Object.assign({}, properties, { external_category: externalCategory(destination.hostname) }));
