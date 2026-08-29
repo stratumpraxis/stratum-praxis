@@ -5,20 +5,34 @@
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
       "at": "2026-08-29T02:09:39.338Z",
       "status": "READY"
+    },
+    "repeat-visit-sites-win-owner-package": {
+      "output_id": "2026-08-29-repeat-visit-sites-win-owner-package-636a141c",
+      "at": "2026-08-29T03:35:01.932Z",
+      "status": "READY"
     }
   },
-  "last_run_at": "2026-08-29T02:09:39.338Z",
+  "last_run_at": "2026-08-29T03:35:01.932Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
       "title": "Beyond the Productivity Pitch: Defending AI Budgets with Economic Displacement",
       "canonical_url": "https://stratumpraxis.com/signal/auto/beyond-the-productivity-pitch-defending-ai-budgets-with-economic-displacement-e59af22d.html",
+      "state": "VERIFIED",
+      "requested_at": "2026-08-29T02:09:39.394Z",
+      "verified_at": "2026-08-29T03:35:02.211Z"
+    },
+    "2026-08-29-repeat-visit-sites-win-owner-package-636a141c": {
+      "output_id": "2026-08-29-repeat-visit-sites-win-owner-package-636a141c",
+      "title": "The Durability of the Dashboard: Why Checking Behavior Beats Content Volume",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/the-durability-of-the-dashboard-why-checking-behavior-beats-content-volume-636a141c.html",
       "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-08-29T02:09:39.394Z"
+      "requested_at": "2026-08-29T03:35:02.218Z"
     }
   },
-  "last_publish_pass_at": "2026-08-29T02:09:39.395Z",
+  "last_publish_pass_at": "2026-08-29T03:35:02.238Z",
   "attempts": {
-    "shadow-ai-spend-accountability-candidate": 1
+    "shadow-ai-spend-accountability-candidate": 1,
+    "repeat-visit-sites-win-owner-package": 1
   }
 }
