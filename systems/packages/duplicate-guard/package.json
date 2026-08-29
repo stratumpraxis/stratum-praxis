@@ -1,0 +1,20 @@
+{
+  "name": "@stratum-praxis/duplicate-guard",
+  "version": "1.0.0",
+  "description": "Duplicate and cannibalization guard for automated publishing: copy-spin, source echo, cross-language duplicates, repeated titles, and audience/CTA collisions. Zero dependencies.",
+  "type": "module",
+  "main": "src/duplicate-guard.mjs",
+  "exports": {
+    ".": "./src/duplicate-guard.mjs",
+    "./text": "./src/text.mjs"
+  },
+  "bin": { "duplicate-guard": "src/cli.mjs" },
+  "engines": { "node": ">=18.0.0" },
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "check": "node src/cli.mjs --draft examples/draft.example.json --catalog examples/catalog.example.json"
+  },
+  "license": "MIT",
+  "dependencies": {},
+  "keywords": ["duplicate-detection", "cannibalization", "seo", "publishing", "content-ops", "near-duplicate"]
+}

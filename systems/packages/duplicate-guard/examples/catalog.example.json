@@ -1,0 +1,17 @@
+[
+  {
+    "id": "published-2026-08-27",
+    "title": "Where small teams lose time on AI tools",
+    "hook": "Three tools, one job, and no owner.",
+    "body": "Small teams add an AI tool for each new problem, and Notion, Slack and Linear each grow a subscription.\n\nNobody retires the previous one, so 3 tools cover 1 job by March 2026.\n\nAt renewal, not at purchase, the cost shows up, and the invoice reads $99 per seat.",
+    "cta_text": "Run the checklist",
+    "language": "en",
+    "channel_id": "newsletter",
+    "source_id": "src-1",
+    "target_asset": "checklist",
+    "campaign": "tool-sprawl",
+    "cta_id": "checklist_cta",
+    "audience": ["founder"],
+    "published_at": "2026-08-27T09:00:00Z"
+  }
+]
