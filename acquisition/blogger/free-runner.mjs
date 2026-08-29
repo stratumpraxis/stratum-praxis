@@ -35,13 +35,28 @@ function stripFence(s) { return String(s).trim().replace(/^```(?:json)?\s*/i, ''
 
 function pickLens(source, lenses) {
   const families = new Set(source.evidence_families || []);
-  const order = ['practical_operator', 'independent_builder', 'structural_reflection', 'japan_reality'];
+  const order = [
+    'evidence_auditor',
+    'workflow_mechanic',
+    'economic_skeptic',
+    'opportunity_mapper',
+    'practical_operator',
+    'independent_builder',
+    'structural_reflection',
+    'japan_reality'
+  ];
   let best = null;
   for (const id of order) {
     const lens = lenses.lenses[id];
+    if (!lens || lens.state !== 'ACTIVE') continue;
     const overlap = (lens.eligible_families || []).filter((x) => families.has(x)).length;
     const sourceOk = (lens.eligible_source_types || []).includes(source.source_type);
-    const score = (sourceOk ? 2 : 0) + overlap + (id === 'practical_operator' && source.existing_product_routes?.length ? 2 : 0);
+    let score = (sourceOk ? 2 : 0) + overlap;
+    if (id === 'practical_operator' && source.existing_product_routes?.length) score += 2;
+    if (id === 'workflow_mechanic' && source.existing_product_routes?.length) score += 1;
+    if (id === 'evidence_auditor' && (families.has('trend_evidence') || families.has('review_signal'))) score += 2;
+    if (id === 'economic_skeptic' && families.has('competitor_pricing')) score += 2;
+    if (id === 'opportunity_mapper' && families.has('industry_change')) score += 1;
     if (!best || score > best.score) best = { id, lens, score };
   }
   return best;
@@ -51,8 +66,8 @@ function rules(identity, source, lens) {
   return `You are a world-class editorial desk, not a content spinner. Identity: ${identity.public_descriptor}\n` +
     `SOURCE: ${source.title}\n${source.excerpt || ''}\nALLOWED CLAIMS:\n${(source.allowed_claims || []).map((x) => `- ${x}`).join('\n')}\n` +
     `RESTRICTED CLAIMS:\n${(source.restricted_claims || []).map((x) => `- ${typeof x === 'string' ? x : x.phrase}`).join('\n')}\n` +
-    `LENS: ${lens.lens_id} — ${lens.purpose}\n` +
-    `Never invent biography, clients, purchases, testing, revenue, credentials, travel, private facts, quotes, sources, numbers, lived experience, testimonials or results. ` +
+    `EDITORIAL GHOST LANE: ${lens.ghost_label || lens.lens_id} (${lens.lens_id}) — ${lens.purpose}\n` +
+    `This ghost lane is an internal editorial contract, not a fictional person. Never invent a biography, byline identity, clients, purchases, testing, revenue, credentials, travel, private facts, quotes, sources, numbers, lived experience, testimonials or results. ` +
     `Do not closely paraphrase copyrighted prose or imitate a named writer's distinctive style. Preserve uncertainty. No defamation, fake scarcity, guaranteed ROI, hidden sponsorship, legal/medical/financial professional advice, keyword stuffing or spam. ` +
     `The article must be useful without clicking a CTA. Prefer original synthesis, concrete distinctions, tradeoffs, counterarguments and decision criteria.`;
 }
@@ -121,6 +136,7 @@ async function main() {
   if (!ACCOUNT_ID || !TOKEN) { console.log('BLOGGER_BLOCKED free Workers AI credentials missing; no paid fallback'); return; }
   const source = eligible[0]; state.attempts[source.source_id] = (state.attempts[source.source_id] || 0) + 1;
   const chosen = pickLens(source, lensesDoc);
+  if (!chosen) { console.log('BLOGGER_IDLE no active editorial ghost lane'); return; }
   const generated = await generate(source, identity, chosen.lens);
   const q = quality(generated.final, source);
   const ctaRoute = chooseCta(generated.final, source);
@@ -131,19 +147,19 @@ async function main() {
   const record = {
     version: 2, output_id: id, generated_at: new Date().toISOString(), provider: 'cloudflare-workers-ai-free-only', model: MODEL,
     billing_policy: 'FREE_ONLY_NO_PAID_FALLBACK', source_id: source.source_id, source_candidate_id: source.source_candidate_id || null,
-    identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, title_options: generated.final.title_options || [],
+    identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, ghost_label: chosen.lens.ghost_label || chosen.id, title_options: generated.final.title_options || [],
     title: generated.final.selected_title, dek: generated.final.dek || '', body: generated.final.body_markdown,
     evidence_notes: generated.final.evidence_notes || [], allowed_claim_report: generated.final.allowed_claim_report || [], restricted_claim_report: generated.final.restricted_claim_report || [],
     editorial_notes: generated.final.editorial_notes || [], quality: q, status, publication_lane: publishLane, publication_proof: null,
     cta: ctaRoute ? { asset_id: ctaRoute.asset_id, label: ctaRoute.cta, destination_url: ctaRoute.url, tracked_url: trackedUrl(ctaRoute, source, chosen.id) } : null,
-    attribution: { source_id: source.source_id, source_candidate_id: source.source_candidate_id || null, identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, channel_id: 'devto', campaign: 'international_personal_media' },
+    attribution: { source_id: source.source_id, source_candidate_id: source.source_candidate_id || null, identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, ghost_label: chosen.lens.ghost_label || chosen.id, channel_id: 'devto', campaign: 'international_personal_media' },
     stages: { draft_sha256: sha(generated.draft), critic_sha256: sha(generated.critic), deepen_sha256: sha(generated.deepened), final_sha256: sha(generated.final.body_markdown) }
   };
   await writeJson(path.join(OUT_DIR, `${id}.json`), record);
   await fs.writeFile(path.join(OUT_DIR, `${id}.md`), `# ${record.title}\n\n${record.dek ? `${record.dek}\n\n` : ''}${record.body}${record.cta?.tracked_url ? `\n\n---\n\n${record.cta.label || 'Continue'}: ${record.cta.tracked_url}\n` : ''}`);
-  if (status === 'READY') state.processed[source.source_id] = { output_id: id, at: record.generated_at, status };
+  if (status === 'READY') state.processed[source.source_id] = { output_id: id, at: record.generated_at, status, lens_id: chosen.id, ghost_label: record.ghost_label };
   state.last_run_at = record.generated_at; await writeJson(STATE_FILE, state);
-  console.log(`BLOGGER_${status} ${id} quality=${q.score} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
+  console.log(`BLOGGER_${status} ${id} ghost=${record.ghost_label} quality=${q.score} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
 }
 
 main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
