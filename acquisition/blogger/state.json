@@ -13,11 +13,12 @@
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
       "title": "Beyond the Productivity Pitch: Defending AI Budgets with Economic Displacement",
       "canonical_url": "https://stratumpraxis.com/signal/auto/beyond-the-productivity-pitch-defending-ai-budgets-with-economic-displacement-e59af22d.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-08-29T02:09:39.394Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-08-29T02:09:39.394Z",
+      "verified_at": "2026-08-29T03:08:06.207Z"
     }
   },
-  "last_publish_pass_at": "2026-08-29T02:55:20.621Z",
+  "last_publish_pass_at": "2026-08-29T03:08:06.217Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1
   }
