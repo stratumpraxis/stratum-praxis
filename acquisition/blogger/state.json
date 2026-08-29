@@ -20,8 +20,7 @@
   },
   "last_publish_pass_at": "2026-08-29T04:03:51.521Z",
   "attempts": {
-    "shadow-ai-spend-accountability-candidate": 1,
-    "ai-subscription-rationalization-candidate": 1
+    "shadow-ai-spend-accountability-candidate": 1
   },
   "last_selection": {
     "at": "2026-08-29T04:03:51.464Z",
@@ -38,5 +37,5 @@
       }
     ]
   },
-  "attempt_reset_note": "ai-subscription-rationalization-candidate: attempt counter cleared 2026-08-29. The first attempt was spent on a polish stage that summarised rather than edited; the second on a duplication gate that counted the first attempt's rejected DRAFT as a prior publication. Both defects are fixed. The DRAFT artifacts from those attempts are kept in the outbox as the record of the runs."
+  "attempt_reset_note": "ai-subscription-rationalization-candidate: attempt counter cleared 2026-08-29 after three attempts spent on defects in this runner rather than on the source: a polish stage that summarised, a duplication gate that counted a rejected DRAFT, and an editorial contract that let the model invent a currency amount the shared safety gate refuses. All three are fixed. The DRAFT artifacts are kept in the outbox as the record of those runs."
 }
