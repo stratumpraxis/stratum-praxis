@@ -119,14 +119,25 @@ function assertFreeOnly(model = MODEL) {
  * come back empty on its first run. Each stage now asks for only what it produces.
  */
 const STAGE_BUDGET = Object.freeze({
-  draft: 3200,
-  critic: 1400,
-  deepen: 3200,
-  polish: 3200,
-  envelope: 900
+  draft: 2600,
+  critic: 900,
+  deepen: 2600,
+  polish: 2600,
+  envelope: 800
 });
 
+/**
+ * Which stages the run cannot proceed without. The free tier returns an empty
+ * completion often enough that treating every stage as required makes the lane
+ * fragile for no editorial benefit: a missing critique costs quality, and the quality
+ * gate is what decides whether the result is publishable anyway. A missing draft or a
+ * missing envelope leaves nothing to gate, so those still stop the run.
+ */
+const REQUIRED_STAGES = Object.freeze(['draft', 'envelope']);
+
 const STAGE_TEMPERATURE = Object.freeze({ draft: 0.6, critic: 0.3, deepen: 0.5, polish: 0.45, envelope: 0.2 });
+
+const stageDiagnostics = [];
 
 async function callModelOnce(stage, prompt) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}`;
@@ -147,20 +158,32 @@ async function callModelOnce(stage, prompt) {
     throw new Error(`WORKERS_AI_ERROR ${response.status} ${raw.slice(0, 500)}`);
   }
   const json = JSON.parse(raw);
-  return json?.result?.response || json?.result?.text || json?.result?.choices?.[0]?.message?.content || '';
+  const text = json?.result?.response || json?.result?.text || json?.result?.choices?.[0]?.message?.content || '';
+  stageDiagnostics.push({
+    stage,
+    prompt_chars: prompt.length,
+    max_tokens: STAGE_BUDGET[stage] ?? 2500,
+    returned_chars: text.length,
+    result_keys: Object.keys(json?.result || {}),
+    usage: json?.result?.usage ?? null
+  });
+  return text;
 }
 
 async function callModel(stage, prompt) {
   if (!ACCOUNT_ID || !TOKEN) throw new Error('CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN not configured');
   assertFreeOnly();
-  // One retry, because an empty completion on the free tier is usually transient. A
-  // retry is not an upgrade: it is the same model on the same free allowance.
-  for (const attempt of [1, 2]) {
+  // Two retries, because an empty completion on the free tier is transient. A retry is
+  // not an upgrade: same model, same free allowance, no billable provider anywhere.
+  for (const attempt of [1, 2, 3]) {
     const text = await callModelOnce(stage, prompt);
     if (text.trim()) return text;
-    if (attempt === 2) throw new Error(`NO_TEXT_RETURNED ${stage} after 2 attempts`);
+    if (attempt < 3) continue;
+    if (REQUIRED_STAGES.includes(stage)) throw new Error(`NO_TEXT_RETURNED ${stage} after 3 attempts`);
+    console.log(`  STAGE_SKIPPED ${stage} returned no text after 3 attempts; continuing without it`);
+    return '';
   }
-  throw new Error(`NO_TEXT_RETURNED ${stage}`);
+  return '';
 }
 
 /** The editorial contract handed to the model, built from the source and the vertical. */
@@ -233,9 +256,15 @@ async function generate(source, identity, lens, vertical) {
   const brief = buildRules(identity, source, lens, vertical, { compact: true });
 
   const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of roughly 900-1300 words. Open on the reader's actual decision, not on a scene. Article only, markdown headings allowed.`);
+
   const critic = await callModel('critic', `${brief}\n\nCRITIC: List every violation of the hard rules in the article below, plus generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments and false certainty. Quote the offending sentence for each. Be brief.\n\n${draft}`);
-  const deepened = await callModel('deepen', `${brief}\n\nDEEPEN: Rewrite the article using the critique. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - grounded only in the allowed claims. Article only.\n\nARTICLE:\n${draft}\n\nCRITIQUE:\n${critic}`);
-  const polished = await callModel('polish', `${brief}\n\nFINAL EDIT: Humanize the rhythm and transitions. Vary sentence length. Cut filler, textbook scaffolding, unearned sales language, repeated summaries, and any coined capitalised term beyond two. Never fake an anecdote or a typo. Return the finished article only - no preamble, no JSON.\n\n${deepened}`);
+
+  const deepenPrompt = critic
+    ? `${brief}\n\nDEEPEN: Rewrite the article using the critique. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - grounded only in the allowed claims. Article only.\n\nARTICLE:\n${draft}\n\nCRITIQUE:\n${critic}`
+    : `${brief}\n\nDEEPEN: Rewrite the article below. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - grounded only in the allowed claims. Article only.\n\nARTICLE:\n${draft}`;
+  const deepened = (await callModel('deepen', deepenPrompt)) || draft;
+
+  const polished = (await callModel('polish', `${brief}\n\nFINAL EDIT: Humanize the rhythm and transitions. Vary sentence length. Cut filler, textbook scaffolding, unearned sales language, repeated summaries, and any coined capitalised term beyond two. Never fake an anecdote or a typo. Return the finished article only - no preamble, no JSON.\n\n${deepened}`)) || deepened;
 
   // The body never round-trips through JSON: it is taken verbatim from the polish
   // stage, and only the small metadata envelope is asked for as JSON. That keeps the
@@ -244,7 +273,14 @@ async function generate(source, identity, lens, vertical) {
   const envelopeRaw = await callModel('envelope', `${brief}\n\nReturn STRICT JSON only, no prose, describing the article below. Keys: title_options (array, max 3), selected_title (string), dek (one sentence), evidence_notes (array: for each figure used, where it came from), claim_type_report (array of {claim, type} where type is one of VERIFIED_FACT, PUBLIC_CLAIM, EXAMPLE, HYPOTHESIS, INTERPRETATION), allowed_claim_report (array), restricted_claim_report (array), cta_recommendation ({include: boolean, reason: string, route_index: integer, label: string, microcopy: string}), editorial_notes (array). Do NOT include the article body.\n\nARTICLE:\n${body}`);
 
   const envelope = parseEnvelope(envelopeRaw);
-  return { draft, critic, deepened, polished, final: { ...envelope, body_markdown: body } };
+  return {
+    draft,
+    critic,
+    deepened,
+    polished,
+    stages_completed: { draft: Boolean(draft), critic: Boolean(critic), deepen: deepened !== draft, polish: polished !== deepened, envelope: true },
+    final: { ...envelope, body_markdown: body }
+  };
 }
 
 /** Tolerant JSON extraction: a free model often wraps or prefaces its JSON. */
@@ -423,6 +459,8 @@ async function main() {
       channel_id: 'owned_signal',
       campaign: 'autonomous_revenue_publisher'
     },
+    stages_completed: generated.stages_completed,
+    stage_diagnostics: stageDiagnostics,
     stages: {
       draft_sha256: sha(generated.draft),
       critic_sha256: sha(generated.critic),
@@ -446,6 +484,9 @@ async function main() {
   state.last_selection = { at: record.generated_at, selected: verticalId, lane, eligible: opportunity.eligible };
   await writeJson(STATE_FILE, state);
 
+  for (const d of stageDiagnostics) {
+    console.log(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars}`);
+  }
   console.log(`BLOGGER_${status} ${id} quality=${gates.quality.score} band=${gates.quality.band} vertical=${verticalId ?? 'none'} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
   for (const reason of gates.blocking_reasons) console.log(`  BLOCKED_BY ${reason}`);
   for (const cap of gates.quality.caps) console.log(`  CAP ${cap.code} ceiling=${cap.ceiling} ${cap.detail}`);
@@ -453,7 +494,13 @@ async function main() {
 
 const isEntry = process.argv[1] && import.meta.url === `file://${path.resolve(process.argv[1])}`;
 if (isEntry) {
-  main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
+  main().catch((error) => {
+    for (const d of stageDiagnostics) {
+      console.error(`  STAGE ${d.stage} prompt_chars=${d.prompt_chars} max_tokens=${d.max_tokens} returned_chars=${d.returned_chars} result_keys=${d.result_keys.join(',')}`);
+    }
+    console.error(`BLOGGER_STOP ${error.message}`);
+    process.exitCode = 0;
+  });
 }
 
 export { main, assertFreeOnly, FREE_MODELS, PAID_PROVIDER_ENV, STAGE_BUDGET };
