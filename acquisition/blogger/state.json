@@ -7,7 +7,7 @@
       "status": "READY"
     }
   },
-  "last_run_at": "2026-08-29T03:54:03.104Z",
+  "last_run_at": "2026-08-29T04:03:51.464Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -18,12 +18,13 @@
       "verified_at": "2026-08-29T03:08:06.207Z"
     }
   },
-  "last_publish_pass_at": "2026-08-29T03:54:03.161Z",
+  "last_publish_pass_at": "2026-08-29T04:03:51.521Z",
   "attempts": {
-    "shadow-ai-spend-accountability-candidate": 1
+    "shadow-ai-spend-accountability-candidate": 1,
+    "ai-subscription-rationalization-candidate": 1
   },
   "last_selection": {
-    "at": "2026-08-29T03:54:03.104Z",
+    "at": "2026-08-29T04:03:51.464Z",
     "selected": "ai_subscription_rationalization",
     "lane": "REVENUE_VERTICAL",
     "eligible": [

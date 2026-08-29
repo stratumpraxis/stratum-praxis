@@ -1,16 +1,15 @@
   STAGE_RETRY critic ran out of room inside its reasoning; retrying at max_tokens=6400
-  STAGE_RETRY critic ran out of room inside its reasoning; retrying at max_tokens=10240
   STAGE_RETRY deepen ran out of room inside its reasoning; retrying at max_tokens=11200
-  STAGE draft OK prompt_chars=8186 max_tokens=7000 returned_chars=6582 reasoning_chars=11839
-  STAGE critic TRUNCATED_IN_REASONING prompt_chars=9420 max_tokens=4000 returned_chars=0 reasoning_chars=16662
-  STAGE critic TRUNCATED_IN_REASONING prompt_chars=9420 max_tokens=6400 returned_chars=0 reasoning_chars=0
-  STAGE critic OK prompt_chars=9420 max_tokens=10240 returned_chars=1586 reasoning_chars=22626
-  STAGE deepen TRUNCATED_IN_REASONING prompt_chars=11068 max_tokens=7000 returned_chars=0 reasoning_chars=28949
-  STAGE deepen OK prompt_chars=11068 max_tokens=11200 returned_chars=2285 reasoning_chars=34691
-  STAGE polish OK prompt_chars=5352 max_tokens=7000 returned_chars=5059 reasoning_chars=11093
-  STAGE envelope OK prompt_chars=8031 max_tokens=9000 returned_chars=317 reasoning_chars=0
-BLOGGER_DRAFT 2026-08-29-ai-subscription-rationalization-candidate-354503fb quality=49 band=CRITICAL_FAIL vertical=ai_subscription_rationalization attempt=1/2
-  BLOCKED_BY SAME_SOURCE_SAME_CHANNEL_COOLDOWN: source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days
-  BLOCKED_BY SAME_AUDIENCE_CTA_COOLDOWN: same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days
-  BLOCKED_BY DUPLICATE_OR_CANNIBALIZING: SAME_SOURCE_SAME_CHANNEL_COOLDOWN: source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days
-  BLOCKED_BY DUPLICATE_OR_CANNIBALIZING: SAME_AUDIENCE_CTA_COOLDOWN: same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days
+  STAGE_RETRY deepen ran out of room inside its reasoning; retrying at max_tokens=16000
+  STAGE_RETRY polish ran out of room inside its reasoning; retrying at max_tokens=11200
+  STAGE draft OK prompt_chars=8186 max_tokens=7000 returned_chars=6720 reasoning_chars=9634
+  STAGE critic TRUNCATED_IN_REASONING prompt_chars=9558 max_tokens=4000 returned_chars=0 reasoning_chars=15934
+  STAGE critic OK prompt_chars=9558 max_tokens=6400 returned_chars=1322 reasoning_chars=22477
+  STAGE deepen TRUNCATED_IN_REASONING prompt_chars=10942 max_tokens=7000 returned_chars=0 reasoning_chars=30141
+  STAGE deepen TRUNCATED_IN_REASONING prompt_chars=10942 max_tokens=11200 returned_chars=0 reasoning_chars=44136
+  STAGE deepen OK prompt_chars=10942 max_tokens=16000 returned_chars=2318 reasoning_chars=40301
+  STAGE polish TRUNCATED_IN_REASONING prompt_chars=5385 max_tokens=7000 returned_chars=0 reasoning_chars=28009
+  STAGE polish OK prompt_chars=5385 max_tokens=11200 returned_chars=5688 reasoning_chars=28108
+  STAGE envelope OK prompt_chars=8677 max_tokens=9000 returned_chars=336 reasoning_chars=9705
+BLOGGER_DRAFT 2026-08-29-ai-subscription-rationalization-candidate-17c18440 quality=49 band=CRITICAL_FAIL vertical=ai_subscription_rationalization attempt=1/2
+  BLOCKED_BY BLOCKED_SAFETY_CLAIM: matched /\$\d+[kKmM]?\s*(?:per|\/)\s*(?:day|week|month)/i
