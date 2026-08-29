@@ -19,6 +19,7 @@ import crypto from 'node:crypto';
 import { loadInventory } from '../lib/inventory.mjs';
 import { loadVerticals, selectOpportunity } from '../lib/vertical.mjs';
 import { knownChannels, loadSourceRouting } from '../lib/utm.mjs';
+import { extractNumericClaims } from './lib/editorial-quality.mjs';
 import { loadAssetPageText, trackedUrl } from './lib/cta-gate.mjs';
 import { disclosureFor, runEditorialGates } from './lib/gates.mjs';
 
@@ -123,12 +124,12 @@ const STAGE_BUDGET = Object.freeze({
   critic: 4000,
   deepen: 7000,
   polish: 7000,
-  envelope: 4000
+  envelope: 9000
 });
 
 /** A truncated stage is retried once at this multiple of its budget. */
 const BUDGET_ESCALATION = 1.6;
-const MAX_TOKENS_CEILING = 12000;
+const MAX_TOKENS_CEILING = 16000;
 
 /**
  * Which stages the run cannot proceed without. The free tier returns an empty
@@ -312,9 +313,10 @@ async function generate(source, identity, lens, vertical) {
   // stage, and only the small metadata envelope is asked for as JSON. That keeps the
   // envelope well inside the free model's output budget.
   const body = stripFence(polished).replace(/^#\s+.+\n+/, '').trim();
-  const envelopeRaw = await callModel('envelope', `${brief}\n\nReturn STRICT JSON only, no prose, describing the article below. Keys: title_options (array, max 3), selected_title (string), dek (one sentence), evidence_notes (array: for each figure used, where it came from), claim_type_report (array of {claim, type} where type is one of VERIFIED_FACT, PUBLIC_CLAIM, EXAMPLE, HYPOTHESIS, INTERPRETATION), allowed_claim_report (array), restricted_claim_report (array), cta_recommendation ({include: boolean, reason: string, route_index: integer, label: string, microcopy: string}), editorial_notes (array). Do NOT include the article body.\n\nARTICLE:\n${body}`);
+  // Five short scalars. A longer envelope is what truncated the previous run mid-array.
+  const envelopeRaw = await callModel('envelope', `${brief}\n\nReturn STRICT JSON and nothing else. Exactly these five keys, all short strings except cta_route_index which is an integer naming one of the routes above:\n{"selected_title": "...", "dek": "one sentence", "cta_route_index": 0, "cta_label": "...", "cta_microcopy": "..."}\nThe cta_label must say what the reader gets, never "Continue" or "Learn more". Do not include the article body or any other key.\n\nARTICLE:\n${body}`);
 
-  const envelope = parseEnvelope(envelopeRaw);
+  const envelope = toEnvelope(parseEnvelope(envelopeRaw));
   return {
     draft,
     critic,
@@ -325,17 +327,93 @@ async function generate(source, identity, lens, vertical) {
   };
 }
 
-/** Tolerant JSON extraction: a free model often wraps or prefaces its JSON. */
+/**
+ * Tolerant JSON extraction. A free reasoning model wraps its JSON, prefaces it, and
+ * sometimes runs out of budget mid-object. The first two are recoverable by slicing;
+ * the third by closing whatever is still open. A value that is not recovered is simply
+ * absent - nothing is invented to fill it.
+ */
 export function parseEnvelope(raw) {
   const cleaned = stripFence(raw);
-  try {
-    return JSON.parse(cleaned);
-  } catch {
-    const start = cleaned.indexOf('{');
-    const end = cleaned.lastIndexOf('}');
-    if (start === -1 || end <= start) throw new Error('ENVELOPE_NOT_JSON');
-    return JSON.parse(cleaned.slice(start, end + 1));
+  const start = cleaned.indexOf('{');
+  if (start === -1) throw new Error('ENVELOPE_NOT_JSON');
+
+  const candidates = [cleaned, cleaned.slice(start, cleaned.lastIndexOf('}') + 1), repairTruncatedJson(cleaned.slice(start))];
+  for (const candidate of candidates) {
+    if (!candidate) continue;
+    try {
+      const parsed = JSON.parse(candidate);
+      if (parsed && typeof parsed === 'object') return parsed;
+    } catch { /* try the next recovery */ }
   }
+  throw new Error('ENVELOPE_NOT_JSON');
+}
+
+/** Close a JSON object that was cut off mid-value, discarding the partial tail. */
+export function repairTruncatedJson(text) {
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  let lastSafe = -1;
+  for (let i = 0; i < text.length; i += 1) {
+    const ch = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === '\\') escaped = true;
+      else if (ch === '"') inString = false;
+      continue;
+    }
+    if (ch === '"') { inString = true; continue; }
+    if (ch === '{' || ch === '[') depth += 1;
+    else if (ch === '}' || ch === ']') depth -= 1;
+    // A complete key/value pair ends at a comma at depth 1.
+    else if (ch === ',' && depth === 1) lastSafe = i;
+  }
+  if (lastSafe === -1) return null;
+  return `${text.slice(0, lastSafe)}}`;
+}
+
+/** Normalize the small envelope into the shape the rest of the runner expects. */
+function toEnvelope(parsed) {
+  const routeIndex = Number.isInteger(parsed?.cta_route_index)
+    ? parsed.cta_route_index
+    : Number.isInteger(parsed?.cta_recommendation?.route_index) ? parsed.cta_recommendation.route_index : null;
+  return {
+    title_options: Array.isArray(parsed?.title_options) ? parsed.title_options : [],
+    selected_title: parsed?.selected_title || parsed?.title || '',
+    dek: parsed?.dek || '',
+    editorial_notes: Array.isArray(parsed?.editorial_notes) ? parsed.editorial_notes : [],
+    cta_recommendation: {
+      include: routeIndex !== null,
+      reason: parsed?.cta_reason || parsed?.cta_recommendation?.reason || 'route named by the editorial envelope',
+      route_index: routeIndex,
+      label: parsed?.cta_label || parsed?.cta_recommendation?.label || '',
+      microcopy: parsed?.cta_microcopy || parsed?.cta_recommendation?.microcopy || ''
+    }
+  };
+}
+
+/**
+ * Provenance notes, derived from the source register rather than asked for.
+ * For every figure in the article that is traceable to the recorded material, this
+ * names the claim and the evidence_ref it came from. A model restating its own sources
+ * is not evidence; the register is.
+ */
+export function deriveEvidenceNotes(body, source) {
+  const claims = extractNumericClaims(body, [source.title, source.excerpt, ...(source.allowed_claims || [])].filter(Boolean).join('\n'));
+  const notes = [];
+  const seen = new Set();
+  for (const claim of claims) {
+    if (!claim.traceable || seen.has(claim.key)) continue;
+    seen.add(claim.key);
+    const ledger = (source.claim_ledger || []).find((entry) => String(entry.claim).includes(claim.token.trim()));
+    const allowed = (source.allowed_claims || []).find((text) => String(text).includes(claim.token.trim()));
+    notes.push(`"${claim.token.trim()}" is carried from the recorded source material${ledger ? ` [${ledger.claim_type}] ${ledger.evidence_ref || 'no evidence_ref recorded'}` : allowed ? `: ${allowed}` : ''}`);
+  }
+  for (const claim of claims.filter((c) => c.labelled_scenario && !c.traceable)) {
+    notes.push(`"${claim.token.trim()}" is illustrative and appears inside a labelled example; it is not a reported figure`);
+  }
+  return notes;
 }
 
 async function loadPriorOutputs() {
@@ -416,7 +494,7 @@ async function main() {
     title: generated.final.selected_title,
     dek: generated.final.dek || '',
     body: generated.final.body_markdown,
-    evidence_notes: generated.final.evidence_notes || [],
+    evidence_notes: deriveEvidenceNotes(generated.final.body_markdown, source),
     cta_recommendation: generated.final.cta_recommendation || {}
   };
 
@@ -468,9 +546,7 @@ async function main() {
     body: article.body,
     audience: source.audience_keys || [],
     evidence_notes: article.evidence_notes,
-    claim_type_report: generated.final.claim_type_report || [],
-    allowed_claim_report: generated.final.allowed_claim_report || [],
-    restricted_claim_report: generated.final.restricted_claim_report || [],
+    claim_ledger: source.claim_ledger || [],
     editorial_notes: generated.final.editorial_notes || [],
     quality: gates.quality,
     gates: {
