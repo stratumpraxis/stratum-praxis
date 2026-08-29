@@ -217,27 +217,33 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          # Read-only. No token is presented, no session is created, no payment is made.
-          # A buyer route must not serve buyer content to an anonymous request. Anything
-          # that is not a 200-with-content is a pass: 401, 403, 404 and redirects to a
-          # login all withhold the deliverable.
+          # Read-only. No token is presented, no session is created, no payment is made,
+          # and nothing is deployed. The buyer workspace is served by the Worker origin,
+          # not by the apex domain, so it is the Worker that must be asked.
+          BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
           fail=0
-          for path in \
-            /prompt-store/workspace \
-            /prompt-store/ops10/workspace \
-            /cross-agent-kit/workspace
-          do
-            url="https://stratumpraxis.com$path"
-            code="$(curl -s -o /tmp/body.txt -w '%{http_code}' -L --max-time 20 "$url")"
+          for path in /prompt-store/workspace /prompt-store/ops10/workspace /cross-agent-kit/workspace; do
+            code="$(curl -sS -o /tmp/body.txt -w '%{http_code}' --max-time 20 "$BASE$path")"
             leaked=0
-            grep -qiE 'Copy all|Download TXT|VERIFIED PURCHASE|Buyer Workspace' /tmp/body.txt && leaked=1
-            if [ "$code" = "200" ] && [ "$leaked" = "1" ]; then
-              echo "::error::$path served buyer content to an unauthenticated request ($code)"
-              fail=1
+            grep -qiE 'Copy all|Download TXT|VERIFIED PURCHASE' /tmp/body.txt && leaked=1
+            if [ "$code" = "401" ] && [ "$leaked" = "0" ]; then
+              echo "OK   401  $path  rejected without a buyer token"
             else
-              echo "OK   $code  $path  withheld (buyer content present: no)"
+              echo "::error::$path returned $code (buyer content present: $leaked); expected 401 and no content"
+              fail=1
             fi
           done
+
+          # An invalid checkout session must not mint a token.
+          code="$(curl -sS -o /tmp/login.txt -w '%{http_code}' --max-time 20 -X POST "$BASE/prompt-store/login" \
+            -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com"}')"
+          if [ "$code" = "400" ]; then
+            echo "OK   400  /prompt-store/login  refuses an invalid session"
+          else
+            echo "::error::/prompt-store/login returned $code for an invalid session; expected 400"
+            fail=1
+          fi
+
           if [ "$fail" = "0" ]; then
             echo "DELIVERY_GATE_PROTECTED_VERIFIED"
             echo "DELIVERY_END_TO_END_VERIFIED: not available - requires a real paid purchase"
