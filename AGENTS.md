@@ -109,6 +109,21 @@ Do not equate large lead lists, high post volume, views, likes or follower count
 - Check current repository context before outreach or new-product work to reduce duplication across parallel agents.
 - After a context reset, treat live, verified files and URLs as the source of truth.
 
+## Commerce connection guard
+
+Before connecting a site, sales page, checkout, delivery path, or external platform, inspect its current production role and existing commerce flow.
+
+Confirm from code, configuration, live routes, and current provider behavior:
+
+- whether the service owns acquisition, sales content, checkout, delivery, or more than one stage;
+- whether payment is external Stripe or platform-native checkout such as note, Payhip, or Gumroad;
+- where buyer delivery currently completes;
+- provider-specific terms, Human Gates, identity, tax, and buyer-protection constraints;
+- how far attribution can survive through checkout and delivery; and
+- whether existing URLs, products, buyers, or successful purchase paths would be disrupted.
+
+Never classify `not connected to another system` as a defect by itself. Preserve a platform-native commerce path when it already completes payment and delivery correctly. Add, integrate, or migrate only when verified evidence shows that the change is necessary to close a real gap. Ask the owner only after existing code, configuration, production routes, and provider documentation cannot resolve a material ambiguity.
+
 ## Data integrity and change-control guard
 
 - Do not casually rewrite, replace, repurpose, merge, or delete an existing operating system, revenue cell, product definition, route map, ledger, workflow, or strategy document merely because a new idea overlaps with it.
