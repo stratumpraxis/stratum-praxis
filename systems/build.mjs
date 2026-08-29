@@ -21,6 +21,7 @@ const CHECK_ONLY = process.argv.includes('--check');
 
 const manifest = JSON.parse(await fs.readFile(path.join(SYSTEMS, 'manifest.json'), 'utf8'));
 const { library, products, license_tiers: tiers, prohibited_uses: prohibited, deferred } = manifest;
+const editorial = manifest.editorial || [];
 const ORIGIN = library.origin;
 const OG_IMAGE = `${ORIGIN}/media/og/stratum-praxis-og-default.png`;
 
@@ -258,14 +259,15 @@ const landingBody = `
 
 <section><div class="wrap">
   <h2>Paid</h2>
-  <p class="sub">One entry, and it is not new. This is an existing Stratum Praxis product
-  listed here because it belongs in the same catalogue.</p>
+  <p class="sub">${external.length} ${external.length === 1 ? 'entry' : 'entries'}, none of them new.
+  These are existing Stratum Praxis products listed here because they belong in the same
+  catalogue.</p>
   <ul class="cards">
     ${external.map(productCard).join('\n    ')}
   </ul>
-  <p class="muted" style="margin-top:16px;max-width:70ch">Its page, price, checkout and
+  <p class="muted" style="margin-top:16px;max-width:70ch">Their pages, prices, checkouts and
   buyer delivery already existed and were not created, changed or duplicated for this
-  library. Buying goes through the same checkout it has always used.</p>
+  library. Buying goes through the same checkout each has always used.</p>
 </div></section>
 
 <section><div class="wrap">
@@ -281,13 +283,22 @@ const landingBody = `
     <a href="/systems/licenses/">The licence page explains it in full.</a></p>
   </div>
   <div class="note">
-    <p><strong>The paid entry keeps its own terms.</strong> The AI Workflow Operator Bundle
-    is a single-user product with a buyer-only workspace behind payment verification. Its
-    price and terms live on its own page and were not created or changed here.</p>
+    <p><strong>The paid entries keep their own terms.</strong> Each is sold under the
+    terms published on its own page, with its own delivery behind payment verification.
+    Those prices and terms were not created or changed here.</p>
   </div>
 </div></section>
 
-<section><div class="wrap">
+${editorial.length ? `<section><div class="wrap">
+  <h2>Writing</h2>
+  <p class="sub">Published to this section rather than to a product page. Kept here so it
+  stays reachable from the library it was written for.</p>
+  <ul class="plain">
+    ${editorial.map((e) => `<li><a href="${esc(e.path)}" data-analytics-id="${esc(e.cta_id)}">${esc(e.title)}</a><br><span class="muted">${esc(e.summary)}</span></li>`).join('\n    ')}
+  </ul>
+</div></section>
+
+` : ''}<section><div class="wrap">
   <h2>Considered and not shipped</h2>
   <p class="sub">Five internal assets were audited and left out. Catalogue size is not the goal.</p>
   <div class="scroll"><table>

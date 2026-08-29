@@ -321,6 +321,17 @@
       "reuse_note": "Existing live product. Linked to /prompt-store/operations-10.html, its real sales page. The /systems/ page published to main linked /prompt-store/ops10/, which has no page: the worker serves only /prompt-store/ops10/login and /workspace under that path."
     }
   ],
+  "editorial": [
+    {
+      "id": "how-to-run-an-ai-swarm-without-losing-control",
+      "title": "How to Run an AI Swarm Without Losing Control",
+      "path": "/systems/how-to-run-an-ai-swarm-without-losing-control.html",
+      "summary": "A systems architect's guide to coordinating multiple AI agents without losing the ability to say what any one of them did.",
+      "published_at": "2026-08-29",
+      "origin_note": "Published to main by a parallel session at commit d8a3c62. Carried here so the generated library keeps it linked; the article file itself is untouched.",
+      "cta_id": "systems_editorial_ai_swarm"
+    }
+  ],
   "deferred": [
     {
       "id": "publisher-gate",
