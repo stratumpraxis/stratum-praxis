@@ -12,7 +12,7 @@
       "status": "READY"
     }
   },
-  "last_run_at": "2026-08-29T03:35:01.932Z",
+  "last_run_at": "2026-08-29T15:09:35.990Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -26,11 +26,12 @@
       "output_id": "2026-08-29-repeat-visit-sites-win-owner-package-636a141c",
       "title": "The Durability of the Dashboard: Why Checking Behavior Beats Content Volume",
       "canonical_url": "https://stratumpraxis.com/signal/auto/the-durability-of-the-dashboard-why-checking-behavior-beats-content-volume-636a141c.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-08-29T03:35:02.218Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-08-29T03:35:02.218Z",
+      "verified_at": "2026-08-29T15:09:36.229Z"
     }
   },
-  "last_publish_pass_at": "2026-08-29T03:35:02.238Z",
+  "last_publish_pass_at": "2026-08-29T15:09:36.249Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1
