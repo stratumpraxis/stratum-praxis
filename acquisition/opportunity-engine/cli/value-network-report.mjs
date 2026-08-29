@@ -3,7 +3,10 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { rankOpportunities } from '../lib/value-network.mjs';
 
-const file = process.argv[2] || path.resolve('acquisition/opportunity-engine/live-candidates.json');
+const args = process.argv.slice(2);
+const jsonMode = args.includes('--json');
+const inputArg = args.find((arg) => !arg.startsWith('--'));
+const file = inputArg || path.resolve('acquisition/opportunity-engine/live-candidates.json');
 const payload = JSON.parse(fs.readFileSync(file, 'utf8'));
 const ranked = rankOpportunities(payload.items || []);
 
@@ -27,7 +30,7 @@ const report = {
   }))
 };
 
-if (process.argv.includes('--json')) console.log(JSON.stringify(report, null, 2));
+if (jsonMode) console.log(JSON.stringify(report, null, 2));
 else {
   console.log(`Value Acquisition Network: ${report.total} candidate(s)`);
   for (const item of report.items) {
