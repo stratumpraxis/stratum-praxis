@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-28",
+  "updated_at": "2026-08-29",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -14,8 +14,17 @@
       "created_at": "2026-08-28T00:00:00Z",
       "completed_at": "2026-08-28T00:00:00Z",
       "status": "COMPLETE",
-      "audience_keys": ["finance", "ops_lead", "smb_owner"],
-      "evidence_families": ["search_demand", "industry_change", "owned_behavior", "builder_discussion"],
+      "audience_keys": [
+        "finance",
+        "ops_lead",
+        "smb_owner"
+      ],
+      "evidence_families": [
+        "search_demand",
+        "industry_change",
+        "owned_behavior",
+        "builder_discussion"
+      ],
       "allowed_claims": [
         "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range.",
         "Publicly reported figures describe 78% of CFO and IT leaders encountering unbudgeted AI charges.",
@@ -23,9 +32,18 @@
         "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup."
       ],
       "restricted_claims": [
-        { "phrase": "our customers saved", "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null." },
-        { "phrase": "guaranteed savings", "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs." },
-        { "phrase": "the market has validated", "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis." }
+        {
+          "phrase": "our customers saved",
+          "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null."
+        },
+        {
+          "phrase": "guaranteed savings",
+          "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs."
+        },
+        {
+          "phrase": "the market has validated",
+          "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis."
+        }
       ],
       "personal_experience_claims": [],
       "evidence_refs": [
@@ -34,11 +52,159 @@
         "acquisition/signal-intelligence/candidates.json#sc-shadow_ai_spend_accountability_2026_08"
       ],
       "existing_product_routes": [
-        { "role": "PRIMARY", "asset_id": "ai-saas-waste-calculator", "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html", "cta": "Run the reducible-spend estimate" },
-        { "role": "PURCHASE_PATH", "asset_id": "ai-saas-spend-audit-checklist", "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html", "cta": null }
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Run the reducible-spend estimate"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
       ],
       "excerpt": "Teams are accumulating unbudgeted AI and SaaS subscriptions, and someone now has to justify the total on a quarterly cycle. The buyer wants a defensible number before the next renewal, not a general automation pitch.",
       "notes": "content_hash is a fixed placeholder digest because a candidate-derived source has no file on disk; lib/source.mjs only recomputes and enforces the hash for sources that name a source_file. The provenance guarantee for this record is the candidate store entry named in source_candidate_id, which lib/source.mjs verifies is promoted and unexpired on every load."
+    },
+    {
+      "source_id": "ai-subscription-rationalization-candidate",
+      "source_type": "SOURCE_CANDIDATE",
+      "source_candidate_id": "sc-ai_subscription_rationalization_2026_08",
+      "vertical_id": "ai_subscription_rationalization",
+      "title": "Deciding which AI subscriptions to keep, downgrade, consolidate or cancel",
+      "language": "en",
+      "content_hash": "sha256:aabefafeb466b7e63a01e45988faa3f557183764ff20dc328d84796bf799fc36",
+      "source_url": null,
+      "created_at": "2026-08-29T00:00:00Z",
+      "completed_at": "2026-08-29T00:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "evidence_families": [
+        "social_public_post",
+        "owned_behavior",
+        "search_demand",
+        "builder_discussion"
+      ],
+      "claim_ledger": [
+        {
+          "claim": "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range.",
+          "claim_type": "PUBLIC_CLAIM",
+          "evidence_ref": "acquisition/signal-intelligence/signals.json#saas-spend-waste-benchmark-2026-08-27",
+          "attribution_required": true,
+          "note": "A reported range from a recorded public-search pass. It may be used only with the words that mark it as reported, never as a measured fact about the reader's own stack."
+        },
+        {
+          "claim": "People paying for AI subscriptions publicly ask for a way to identify the ones they barely use, describe unused subscription capacity and unused credits as money already spent, compare subscription pricing against API pricing without being able to tell which is cheaper at their volume, let expensive subscriptions lapse when a cheaper option looks adequate, and say that evaluating current tools requires holding several paid subscriptions at once.",
+          "claim_type": "PUBLIC_CLAIM",
+          "evidence_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json",
+          "attribution_required": true,
+          "note": "OBSERVED as language that exists in public posts on 2026-08-29. Nothing about how many people, how much money or which products is established. No post may be quoted, linked or attributed to an account: post identity is UNRECORDED."
+        },
+        {
+          "claim": "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup.",
+          "claim_type": "VERIFIED_FACT",
+          "evidence_ref": "acquisition/asset-inventory.json#ai-saas-waste-calculator (status LIVE, verification_state HTTP_VERIFIED) and the page text of ai-saas-waste-calculator.html",
+          "attribution_required": false,
+          "note": "Checkable against the repository and the live page."
+        },
+        {
+          "claim": "A KEEP / DOWNGRADE / CONSOLIDATE / CANCEL decision can be made from actual usage, criticality, functional overlap, replacement cost, switching cost, workflow dependency, economic displacement, subscription or API cost, and whether a free or cheaper alternative is adequate.",
+          "claim_type": "INTERPRETATION",
+          "evidence_ref": "acquisition/revenue-verticals.json#ai_subscription_rationalization.decision_dimensions",
+          "attribution_required": false,
+          "note": "This is the editorial argument of the piece, not a reported finding. It must read as reasoning the reader can disagree with."
+        },
+        {
+          "claim": "Any specific subscription price, seat count, usage level or saving used to illustrate the procedure.",
+          "claim_type": "EXAMPLE",
+          "evidence_ref": null,
+          "attribution_required": true,
+          "note": "Permitted ONLY inside a sentence or block that labels it as an example or scenario. An illustrative figure presented as a report of something that happened is a fabrication and fails the editorial gate."
+        },
+        {
+          "claim": "That consolidating onto fewer tools reduces total cost for a given reader.",
+          "claim_type": "HYPOTHESIS",
+          "evidence_ref": null,
+          "attribution_required": true,
+          "note": "Untested. It must be written as a hypothesis with its failure case (switching cost, workflow dependency) stated alongside it."
+        }
+      ],
+      "allowed_claims": [
+        "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range, and must be attributed as reported figures rather than stated as fact.",
+        "Public posts recorded by this publication on 2026-08-29 describe people wanting to identify subscriptions they pay for but barely use.",
+        "The same recorded posts describe unused AI subscription capacity, and unused cloud or AI credits, as an economic problem rather than a technical one.",
+        "The same recorded posts describe users comparing subscription pricing against API pricing for the same capability and being unable to tell which is cheaper at their own volume.",
+        "The same recorded posts describe users letting an expensive subscription expire because a free or cheaper alternative looks adequate for what they actually do with it.",
+        "The same recorded posts describe evaluating current AI tools as requiring several paid subscriptions at once, and a stated preference for fewer connected tools over a large collection.",
+        "A recorded pass describes general AI-workflow-ROI content as common and non-differentiated.",
+        "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup.",
+        "A subscription decision can be sorted into KEEP, DOWNGRADE, CONSOLIDATE or CANCEL using actual usage, criticality, functional overlap, replacement cost, switching cost, workflow dependency, economic displacement, subscription or API cost, and the adequacy of a free or cheaper alternative."
+      ],
+      "restricted_claims": [
+        {
+          "phrase": "our customers saved",
+          "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null."
+        },
+        {
+          "phrase": "guaranteed savings",
+          "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs."
+        },
+        {
+          "phrase": "the market has validated",
+          "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis."
+        },
+        {
+          "phrase": "users report saving",
+          "safe_rewrite": "No saving was reported to this publication. Describe the decision, not an outcome."
+        },
+        {
+          "phrase": "most people cancel",
+          "safe_rewrite": "No proportion was measured. Say that the recorded posts describe this behaviour without establishing how common it is."
+        },
+        {
+          "phrase": "studies show",
+          "safe_rewrite": "Name the recorded evidence instead, or drop the claim. This publication has one recorded public-search pass, not a body of studies."
+        }
+      ],
+      "personal_experience_claims": [],
+      "prohibited_claims": [
+        "usage, pricing, market-share or user-count figures for any named third-party AI product",
+        "a recommendation to cancel a specific named third-party subscription",
+        "any claim made inside an observed public post presented as verified fact",
+        "quoting, linking or naming the account behind any observed post while post identity remains UNRECORDED"
+      ],
+      "evidence_refs": [
+        "acquisition/signal-intelligence/candidates.json#sc-ai_subscription_rationalization_2026_08",
+        "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json",
+        "acquisition/signal-intelligence/signals.json#saas-spend-waste-benchmark-2026-08-27",
+        "acquisition/signal-intelligence/signals.json#ai-workflow-roi-content-saturation-2026-08-27",
+        "revenue-os/metrics.json#distribution_baseline_2026_08_27.downstream_events_last_30d",
+        "acquisition/asset-inventory.json#ai-saas-waste-calculator"
+      ],
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Estimate how much of your AI/SaaS spend is reducible",
+          "microcopy": "Free · No signup"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
+      ],
+      "excerpt": "AI subscriptions accumulate faster than anyone can judge them. The question a solo operator or a small team actually faces is not which AI tool is best, but which of the subscriptions already on the card should be kept, downgraded, consolidated or cancelled - and how to decide that without guessing.",
+      "notes": "Registered from the promoted candidate sc-ai_subscription_rationalization_2026_08. content_hash is a real digest of the excerpt above, so this record cannot collide with the placeholder digest used by the earlier candidate-derived source. The existing-asset fit gate returned BLOCKED_EXISTING_ASSET_SUFFICIENT: ai-saas-waste-calculator already answers the reducible-spend question this piece ends on, so no new product is proposed. Post identity for the social evidence is UNRECORDED; until the owner records post_url and account, no derivative may cite an individual post."
     },
     {
       "source_id": "repeat-visit-sites-win-owner-package",
@@ -51,16 +217,28 @@
       "created_at": "2026-08-26T00:00:00Z",
       "completed_at": "2026-08-26T00:00:00Z",
       "status": "COMPLETE",
-      "audience_keys": ["creator", "founder", "site_owner"],
-      "evidence_families": ["editorial_source"],
+      "audience_keys": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
+      "evidence_families": [
+        "editorial_source"
+      ],
       "allowed_claims": [
         "Some widely used services are built on a recurring checking behaviour rather than on article volume.",
         "The package names timeanddate.com, Flightradar24, StatusGator and Going as public examples of that pattern.",
         "Rights, licensing and operator liability are given as reasons to avoid certain categories."
       ],
       "restricted_claims": [
-        { "phrase": "i built a site like this", "safe_rewrite": "The source argues a pattern; it does not record the operator building one of these services." },
-        { "phrase": "these companies told me", "safe_rewrite": "The examples are public services described from public information." }
+        {
+          "phrase": "i built a site like this",
+          "safe_rewrite": "The source argues a pattern; it does not record the operator building one of these services."
+        },
+        {
+          "phrase": "these companies told me",
+          "safe_rewrite": "The examples are public services described from public information."
+        }
       ],
       "personal_experience_claims": [],
       "evidence_refs": [
@@ -81,12 +259,19 @@
       "source_url": null,
       "created_at": "2026-08-26T00:00:00Z",
       "status": "DRAFT",
-      "audience_keys": ["creator", "site_owner"],
-      "evidence_families": ["editorial_source"],
+      "audience_keys": [
+        "creator",
+        "site_owner"
+      ],
+      "evidence_families": [
+        "editorial_source"
+      ],
       "allowed_claims": [],
       "restricted_claims": [],
       "personal_experience_claims": [],
-      "evidence_refs": ["content/note-drafts/2026-08-26-routine-information-assets.md"],
+      "evidence_refs": [
+        "content/note-drafts/2026-08-26-routine-information-assets.md"
+      ],
       "existing_product_routes": [],
       "excerpt": null,
       "notes": "Registered deliberately as DRAFT. It sits in content/note-drafts/, not in the publish queue, so it does not meet the COMPLETE criteria and is not derivable. It is here so the incomplete-source path is exercised against a real file rather than a synthetic one."

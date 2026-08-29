@@ -7,6 +7,7 @@ import { EVIDENCE_CLASSES } from '../../lib/taxonomy.mjs';
 import { isPlainObject, readJson } from '../../lib/util.mjs';
 import { fingerprint, originKey } from './fingerprint.mjs';
 import { EVIDENCE_BUCKETS, validateBuckets } from './bucket.mjs';
+import { isSocialFamily, validateSocialEvidence } from './social-evidence.mjs';
 
 export const REQUIRED_FIELDS = Object.freeze([
   'signal_id',
@@ -69,6 +70,10 @@ export function validateSignal(record, { policy, providers = null } = {}) {
   }
 
   errors.push(...validateBuckets(record.evidence_buckets, label));
+
+  // A social post declares what kind of post it is and what it does NOT verify, or it
+  // is not usable evidence at all.
+  errors.push(...validateSocialEvidence(record, label));
 
   if (!EVIDENCE_CLASSES.includes(record.evidence_class)) {
     errors.push(`${label}: evidence_class must be one of ${EVIDENCE_CLASSES.join(', ')}`);
@@ -144,6 +149,10 @@ export function normalizeSignal(record, { policy, now = Date.now() } = {}) {
     commercial_intent_indicators: record.commercial_intent_indicators || [],
     rights_policy_notes: record.rights_policy_notes ?? 'UNKNOWN',
     confidence: Number.isFinite(record.confidence) ? record.confidence : null,
+    content_integrity: record.content_integrity ?? null,
+    independent_demand_evidence: isSocialFamily(record.source_family)
+      ? record.content_integrity?.independent_demand_evidence === true
+      : true,
     fingerprint: record.fingerprint || fingerprint(record),
     origin_key: originKey(record),
     tier: family.tier ?? null,

@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "reviewed_at": "2026-08-29",
+  "purpose": "Revenue Publisher v2 - the reusable revenue-theme contract. Before this file existed, the publisher lane was shaped around one thesis (shadow-ai-spend-accountability). A vertical declares the buyer problem, which evidence families count, which audience is being written for, which VERIFIED existing asset the CTA must reach, and what may never be claimed. Adding a revenue theme is a record here plus evidence in acquisition/signal-intelligence/signals.json - not a code change.",
+  "selection_principle": "demand_strength x purchase_intent x existing_asset_fit x freshness x measurement_quality / operational_burden. Exactly one opportunity is published at a time: the highest-scoring ACTIVE vertical with an eligible, unexpired candidate. Article count is never the objective.",
+  "state_meanings": {
+    "ACTIVE": "Evidence and a verified existing asset both support publishing into this vertical now.",
+    "WATCH": "The thesis is legitimate but either the evidence or the existing-asset fit is not yet sufficient. Nothing is generated for a WATCH vertical.",
+    "RETIRED": "No longer pursued. Kept for provenance."
+  },
+  "verticals": [
+    {
+      "vertical_id": "ai_spend_accountability",
+      "state": "ACTIVE",
+      "buyer_problem": "Unbudgeted AI and SaaS spend has to be justified with a defensible number before the next renewal or budget approval.",
+      "editorial_angle": "Turn a vague productivity defence into a spend figure a reader can defend. Stay narrower than the general AI-workflow-ROI category, which the recorded evidence describes as saturated.",
+      "eligible_source_families": ["owned_behavior", "search_demand", "industry_change", "builder_discussion", "competitor_pricing"],
+      "target_audiences": ["finance", "ops_lead", "smb_owner"],
+      "audience_lexicon": ["renewal", "budget", "spend", "finance", "team", "subscription"],
+      "required_decision_terms": ["renew", "cut", "renegotiate"],
+      "thesis_ids": ["shadow-ai-spend-accountability-2026-08"],
+      "primary_asset_id": "ai-saas-waste-calculator",
+      "best_existing_assets": ["ai-saas-waste-calculator", "ai-saas-spend-audit-checklist", "ai-saas-spend-hub"],
+      "cta_required": true,
+      "cta_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Estimate how much of your AI/SaaS spend is reducible",
+          "microcopy": "Free · No signup"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
+      ],
+      "freshness_requirement_days": 120,
+      "minimum_evidence": {
+        "independent_observed_signals": 2,
+        "independence_groups": 2,
+        "external_observed_signals": 1,
+        "evidence_buckets": 2
+      },
+      "minimum_revenue_signal_score": 70,
+      "prohibited_claims": [
+        "EXTERNAL_CONSENSUS",
+        "VERIFIED_REVENUE_FROM_THIS_THESIS",
+        "PURCHASE_AVAILABLE_ON_THIS_PAGE",
+        "customer outcome or saving attributed to this publication"
+      ],
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "new_product_gate_reason": "ai-saas-waste-calculator is LIVE and HTTP_VERIFIED and already answers the buyer problem."
+    },
+    {
+      "vertical_id": "ai_subscription_rationalization",
+      "state": "ACTIVE",
+      "buyer_problem": "Individuals and small teams have accumulated AI subscriptions and cannot decide which ones to keep, downgrade, consolidate or cancel.",
+      "editorial_angle": "A decision procedure, not a tool roundup. The reader should finish able to sort their own subscriptions into KEEP / DOWNGRADE / CONSOLIDATE / CANCEL using criteria that survive the cases where the obvious answer is wrong. Written for a solo operator or a small team, not for enterprise finance.",
+      "eligible_source_families": ["social_public_post", "owned_behavior", "search_demand", "builder_discussion", "competitor_pricing", "community_pain", "review_signal"],
+      "target_audiences": ["solo_operator", "freelancer", "smb_owner", "team_lead"],
+      "audience_lexicon": ["solo", "freelancer", "small team", "subscription", "seat", "plan", "workflow"],
+      "required_decision_terms": ["keep", "downgrade", "consolidate", "cancel"],
+      "decision_model": ["KEEP", "DOWNGRADE", "CONSOLIDATE", "CANCEL"],
+      "decision_dimensions": [
+        "actual usage",
+        "criticality",
+        "functional overlap",
+        "replacement cost",
+        "switching cost",
+        "workflow dependency",
+        "economic displacement",
+        "subscription or API cost",
+        "adequacy of a free or cheaper alternative"
+      ],
+      "thesis_ids": ["ai-subscription-rationalization-2026-08"],
+      "primary_asset_id": "ai-saas-waste-calculator",
+      "best_existing_assets": ["ai-saas-waste-calculator", "ai-saas-spend-audit-checklist", "ai-saas-spend-hub"],
+      "cta_required": true,
+      "cta_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Estimate how much of your AI/SaaS spend is reducible",
+          "microcopy": "Free · No signup"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
+      ],
+      "freshness_requirement_days": 90,
+      "minimum_evidence": {
+        "independent_observed_signals": 2,
+        "independence_groups": 2,
+        "external_observed_signals": 1,
+        "evidence_buckets": 2
+      },
+      "minimum_revenue_signal_score": 70,
+      "prohibited_claims": [
+        "EXTERNAL_CONSENSUS",
+        "VERIFIED_REVENUE_FROM_THIS_THESIS",
+        "PURCHASE_AVAILABLE_ON_THIS_PAGE",
+        "a claim made inside an observed public post presented as verified fact",
+        "usage, pricing or market-share figures for any named third-party AI product",
+        "a recommendation to cancel a specific named third-party subscription"
+      ],
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "new_product_gate_reason": "The reducible-spend question this vertical ends on is exactly what ai-saas-waste-calculator already answers. It is LIVE, HTTP_VERIFIED, free and requires no signup, so a second calculator would cannibalise it rather than add anything."
+    },
+    {
+      "vertical_id": "ai_agent_roi",
+      "state": "WATCH",
+      "buyer_problem": "Teams evaluating AI agents cannot state a payback period once human-review overhead is counted, so the purchase stalls at the business case.",
+      "editorial_angle": "Payback arithmetic that survives review overhead. Not published until the evidence is corroborated by something other than an inherited assumption.",
+      "eligible_source_families": ["search_demand", "industry_change", "builder_discussion", "owned_behavior"],
+      "target_audiences": ["ops_lead", "engineering_lead", "founder"],
+      "audience_lexicon": ["agent", "payback", "review", "automation"],
+      "required_decision_terms": ["build", "buy", "defer"],
+      "thesis_ids": ["ai-agent-payback-uncertainty-2026-08"],
+      "primary_asset_id": "ai-agent-cost-roi-calculator",
+      "best_existing_assets": ["ai-agent-cost-roi-calculator"],
+      "cta_required": true,
+      "cta_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-agent-cost-roi-calculator",
+          "url": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html",
+          "cta": "Work out the agent payback period with review overhead included"
+        }
+      ],
+      "freshness_requirement_days": 90,
+      "minimum_evidence": {
+        "independent_observed_signals": 2,
+        "independence_groups": 2,
+        "external_observed_signals": 1,
+        "evidence_buckets": 2
+      },
+      "minimum_revenue_signal_score": 70,
+      "prohibited_claims": ["EXTERNAL_CONSENSUS", "VERIFIED_REVENUE_FROM_THIS_THESIS"],
+      "watch_reason": "acquisition/signal-intelligence/candidates.json records sc-ai_agent_payback_uncertainty_2026_08 as RESEARCH_GAP at 59.15. The pain and demand dimensions are ASSUMPTION, inherited from the spend-accountability evidence rather than observed for this thesis.",
+      "promotion_requires": "At least one OBSERVED, external, independent signal specific to agent payback, from an independence group other than owned.",
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "new_product_gate_reason": "ai-agent-cost-roi-calculator is LIVE and already serves this problem."
+    },
+    {
+      "vertical_id": "ai_runtime_cost",
+      "state": "WATCH",
+      "buyer_problem": "Per-token and per-run AI costs are unpredictable, so operators cannot price work or set a budget ceiling with confidence.",
+      "editorial_angle": "Runtime cost as an operating constraint rather than a pricing-page comparison. Deliberately held back: publishing this now would produce a fourth page competing with three existing spend pages for the same queries.",
+      "eligible_source_families": ["competitor_pricing", "builder_discussion", "search_demand", "social_public_post"],
+      "target_audiences": ["solo_operator", "engineering_lead", "founder"],
+      "audience_lexicon": ["token", "api", "runtime", "per-run", "budget"],
+      "required_decision_terms": ["cap", "route", "absorb"],
+      "thesis_ids": [],
+      "primary_asset_id": null,
+      "best_existing_assets": [],
+      "cta_required": true,
+      "cta_routes": [],
+      "freshness_requirement_days": 60,
+      "minimum_evidence": {
+        "independent_observed_signals": 3,
+        "independence_groups": 2,
+        "external_observed_signals": 2,
+        "evidence_buckets": 2
+      },
+      "minimum_revenue_signal_score": 75,
+      "prohibited_claims": ["EXTERNAL_CONSENSUS", "VERIFIED_REVENUE_FROM_THIS_THESIS", "current per-token prices for any named provider"],
+      "watch_reason": "No thesis and no OBSERVED evidence records exist for this vertical yet, and the observed subscription-vs-API pricing posts sit in the same independence group as the subscription-rationalization evidence, so they cannot corroborate a separate runtime-cost thesis on their own. Promotion also requires a distinct existing-asset fit: the spend pages already cover the adjacent queries.",
+      "promotion_requires": "Its own corroborated thesis with at least two external OBSERVED signals from different independence groups, plus an asset-fit result that is not already served by the ai_spend_accountability or ai_subscription_rationalization routes.",
+      "new_product_gate": "CLOSED",
+      "new_product_gate_reason": "Nothing is built for a WATCH vertical."
+    }
+  ]
+}

@@ -7,7 +7,9 @@
       "tier": 1,
       "independence_group": "owned",
       "external": false,
-      "default_buckets": ["MONEY_SIGNAL"],
+      "default_buckets": [
+        "MONEY_SIGNAL"
+      ],
       "ttl_days": 45,
       "notes": "Owned CTA / checkout / verified-purchase / analytics behaviour. Strong evidence of internal fit. Never evidence of external consensus."
     },
@@ -15,7 +17,9 @@
       "tier": 2,
       "independence_group": "search",
       "external": true,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 120,
       "notes": "Public search-demand evidence, including recorded public-search research passes."
     },
@@ -23,15 +27,32 @@
       "tier": 2,
       "independence_group": "community",
       "external": true,
-      "default_buckets": ["PAIN_SIGNAL"],
+      "default_buckets": [
+        "PAIN_SIGNAL"
+      ],
       "ttl_days": 90,
       "notes": "Public problem/pain discussion, e.g. Reddit threads. Participation and publishing there remain governed by distribution/provider-policy.json."
+    },
+    "social_public_post": {
+      "tier": 3,
+      "independence_group": "social_public",
+      "external": true,
+      "default_buckets": [
+        "PAIN_SIGNAL",
+        "DEMAND_SIGNAL"
+      ],
+      "ttl_days": 60,
+      "requires_content_integrity": true,
+      "notes": "Public social posts (currently X) recorded by the owner. A post existing is OBSERVED evidence that the language exists; nothing inside the post is a verified fact. Promotional, affiliate, quote-echo and duplicate-account posts are recorded but never count as independent demand evidence. Every record in this family shares the social_public independence group, so two posts can never corroborate each other."
     },
     "review_signal": {
       "tier": 2,
       "independence_group": "reviews",
       "external": true,
-      "default_buckets": ["PAIN_SIGNAL", "MONEY_SIGNAL"],
+      "default_buckets": [
+        "PAIN_SIGNAL",
+        "MONEY_SIGNAL"
+      ],
       "ttl_days": 180,
       "notes": "Software review complaints and evaluation criteria where legally and technically accessible."
     },
@@ -39,7 +60,9 @@
       "tier": 2,
       "independence_group": "pricing",
       "external": true,
-      "default_buckets": ["MONEY_SIGNAL"],
+      "default_buckets": [
+        "MONEY_SIGNAL"
+      ],
       "ttl_days": 180,
       "notes": "Paid alternatives, published pricing, comparison pages."
     },
@@ -47,7 +70,9 @@
       "tier": 3,
       "independence_group": "product_launch",
       "external": true,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 45,
       "notes": "Product Hunt launches and category activity."
     },
@@ -55,7 +80,9 @@
       "tier": 3,
       "independence_group": "trends",
       "external": true,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 30,
       "notes": "Google Trends, YouTube trend/search evidence, early-trend trackers. Two members of this family describing the same event are WEAK corroboration by design."
     },
@@ -63,7 +90,9 @@
       "tier": 3,
       "independence_group": "trends",
       "external": true,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 60,
       "notes": "Question-demand evidence. Shares the trends independence group because it is usually derived from the same query stream."
     },
@@ -71,7 +100,9 @@
       "tier": 4,
       "independence_group": "builder",
       "external": true,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 60,
       "notes": "Hacker News / dev community discussion. Useful for differentiation reading, weak for purchase intent."
     },
@@ -79,7 +110,9 @@
       "tier": 4,
       "independence_group": "industry",
       "external": true,
-      "default_buckets": ["PAIN_SIGNAL"],
+      "default_buckets": [
+        "PAIN_SIGNAL"
+      ],
       "ttl_days": 180,
       "notes": "Regulation, policy, pricing or product changes that create operational demand."
     },
@@ -87,7 +120,9 @@
       "tier": 4,
       "independence_group": "owned",
       "external": false,
-      "default_buckets": ["DEMAND_SIGNAL"],
+      "default_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "ttl_days": 365,
       "notes": "Completed owner-approved source material. Shares the owned independence group: the operator's own note cannot corroborate the operator's own analytics."
     }
@@ -106,10 +141,26 @@
     "notes": "Bucket coverage is an eligibility ceiling, not a promotion. The Revenue Signal Score and the existing-asset fit gate must also pass."
   },
   "score_bands": [
-    { "min": 0, "max": 49, "status": "REJECT_LOW_VALUE" },
-    { "min": 50, "max": 69, "status": "WATCH" },
-    { "min": 70, "max": 84, "status": "SOURCE_CANDIDATE" },
-    { "min": 85, "max": 100, "status": "HIGH_PRIORITY_SOURCE_CANDIDATE" }
+    {
+      "min": 0,
+      "max": 49,
+      "status": "REJECT_LOW_VALUE"
+    },
+    {
+      "min": 50,
+      "max": 69,
+      "status": "WATCH"
+    },
+    {
+      "min": 70,
+      "max": 84,
+      "status": "SOURCE_CANDIDATE"
+    },
+    {
+      "min": 85,
+      "max": 100,
+      "status": "HIGH_PRIORITY_SOURCE_CANDIDATE"
+    }
   ],
   "gates": {
     "safety_floor": 7,
@@ -130,17 +181,60 @@
     "notes": "At least this share of ranked capacity is reserved for candidates with no prior measured outcome, so yesterday's winner cannot suppress newly corroborated demand. A STOP verdict places the route in cooldown; it is not regenerated during that window."
   },
   "lens_affinity": {
-    "owned_behavior": ["practical_operator"],
-    "search_demand": ["practical_operator", "independent_builder"],
-    "community_pain": ["practical_operator"],
-    "review_signal": ["practical_operator"],
-    "competitor_pricing": ["practical_operator", "independent_builder"],
-    "product_discovery": ["independent_builder"],
-    "trend_evidence": ["independent_builder"],
-    "question_demand": ["practical_operator"],
-    "builder_discussion": ["independent_builder", "structural_reflection"],
-    "industry_change": ["independent_builder", "structural_reflection"],
-    "editorial_source": ["structural_reflection", "japan_reality"],
-    "notes": "Eligible lens hints handed to Issue #52. #52 owns the final editorial decision, the truth gate and the localization gate; this map only narrows the candidate set."
+    "owned_behavior": [
+      "practical_operator"
+    ],
+    "search_demand": [
+      "practical_operator",
+      "independent_builder"
+    ],
+    "community_pain": [
+      "practical_operator"
+    ],
+    "review_signal": [
+      "practical_operator"
+    ],
+    "competitor_pricing": [
+      "practical_operator",
+      "independent_builder"
+    ],
+    "product_discovery": [
+      "independent_builder"
+    ],
+    "trend_evidence": [
+      "independent_builder"
+    ],
+    "question_demand": [
+      "practical_operator"
+    ],
+    "builder_discussion": [
+      "independent_builder",
+      "structural_reflection"
+    ],
+    "industry_change": [
+      "independent_builder",
+      "structural_reflection"
+    ],
+    "editorial_source": [
+      "structural_reflection",
+      "japan_reality"
+    ],
+    "notes": "Eligible lens hints handed to Issue #52. #52 owns the final editorial decision, the truth gate and the localization gate; this map only narrows the candidate set.",
+    "social_public_post": [
+      "practical_operator",
+      "independent_builder"
+    ]
+  },
+  "social_evidence": {
+    "contract_module": "acquisition/signal-intelligence/lib/social-evidence.mjs",
+    "non_independent_post_types": [
+      "PROMOTIONAL",
+      "AFFILIATE",
+      "QUOTE_ECHO",
+      "DUPLICATE_ACCOUNT",
+      "PRESS_OR_VENDOR_ANNOUNCEMENT"
+    ],
+    "observed_claim_scope": "POST_EXISTENCE_ONLY",
+    "notes": "A post is evidence of demand-side language, not of the claims it contains. A record whose in-post claims are unverified must set factual_verification_required_before_publication, and the resulting candidate carries IN_POST_CLAIM_AS_VERIFIED_FACT in prohibited_claims."
   }
 }

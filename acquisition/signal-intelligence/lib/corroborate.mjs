@@ -14,6 +14,7 @@
 
 import { coverage, eligibilityCeiling, moneyEvidenceProfile } from './bucket.mjs';
 import { textSimilarity } from './fingerprint.mjs';
+import { isIndependentDemandEvidence, isSocialFamily, reasonNotIndependent } from './social-evidence.mjs';
 
 /** Pairwise independence test between two normalized signals. */
 export function independencePair(a, b, { mirrorThreshold = 0.8 } = {}) {
@@ -90,7 +91,23 @@ export function corroborate(signals, policy) {
   const expired = observed.filter((s) => s.freshness?.state === 'EXPIRED');
   const nonObserved = all.filter((s) => s.evidence_class !== 'OBSERVED');
 
-  const { chosen, excluded } = independentSet(fresh, { mirrorThreshold });
+  // A promotional, affiliate, quote-echo or duplicated post is recorded evidence that
+  // somebody said something. It is never evidence that a buyer wants something, so it
+  // is removed before the independent set is built rather than competing inside it.
+  const eligible = fresh.filter((s) => isIndependentDemandEvidence(s));
+  const nonIndependentSource = fresh
+    .filter((s) => !isIndependentDemandEvidence(s))
+    .map((s) => ({
+      signal_id: s.signal_id,
+      source_family: s.source_family,
+      post_type: s.content_integrity?.post_type ?? 'UNKNOWN',
+      reason: 'NOT_INDEPENDENT_DEMAND_EVIDENCE',
+      detail: s.content_integrity?.non_independence_reason
+        || reasonNotIndependent(s.content_integrity?.post_type)
+        || 'the record does not declare itself as independent demand evidence'
+    }));
+
+  const { chosen, excluded } = independentSet(eligible, { mirrorThreshold });
   const groups = [...new Set(chosen.map((s) => s.independence_group))].sort();
   const families = [...new Set(chosen.map((s) => s.source_family))].sort();
   const externalCount = chosen.filter((s) => s.external === true).length;
@@ -128,6 +145,8 @@ export function corroborate(signals, policy) {
     external_observed_count: externalCount,
     money_evidence: money,
     excluded_as_dependent: excluded,
+    excluded_as_non_independent_source: nonIndependentSource,
+    social_evidence_present: chosen.some((s) => isSocialFamily(s.source_family)),
     expired_signal_ids: expired.map((s) => s.signal_id),
     non_observed: nonObserved.map((s) => ({
       signal_id: s.signal_id,

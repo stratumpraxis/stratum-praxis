@@ -1,39 +1,66 @@
+// Autonomous Revenue Publisher v2 - free-only generation lane.
+//
+// ZERO PAID AI API COST. Cloudflare Workers AI only, from a fixed allowlist. There is no
+// paid fallback, no gateway to a third-party model, and no automatic upgrade. Quota
+// exhaustion stops the run; it never escalates.
+//
+// What changed in v2:
+//   - the source is chosen by the revenue-vertical contract, not by array order
+//   - the authoritative media-engine truth and duplication gates actually execute here
+//   - the quality model is acquisition/blogger/lib/editorial-quality.mjs, where a
+//     critical truth failure overrides the aggregate and 100 is very hard to reach
+//   - the CTA must reach a verified route and must complete the reader's decision
+//   - the artifact records which gates ran, so the published disclosure can be true
+
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+
+import { loadInventory } from '../lib/inventory.mjs';
+import { loadVerticals, selectOpportunity } from '../lib/vertical.mjs';
+import { knownChannels, loadSourceRouting } from '../lib/utm.mjs';
+import { loadAssetPageText, trackedUrl } from './lib/cta-gate.mjs';
+import { disclosureFor, runEditorialGates } from './lib/gates.mjs';
 
 const ROOT = process.cwd();
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID || '';
 const TOKEN = process.env.CLOUDFLARE_API_TOKEN || '';
 const MODEL = process.env.BLOGGER_FREE_MODEL || '@cf/google/gemma-4-26b-a4b-it';
+
+/** The only models this lane may call. Every one is on the Cloudflare free allowance. */
 const FREE_MODELS = new Set([
   '@cf/google/gemma-4-26b-a4b-it',
   '@cf/zai-org/glm-4.7-flash',
   '@cf/nvidia/nemotron-3-120b-a12b'
 ]);
+
+/** Environment variables that would indicate a billable provider is in play. */
+const PAID_PROVIDER_ENV = Object.freeze([
+  'OPENAI_API_KEY', 'ANTHROPIC_API_KEY', 'GEMINI_API_KEY', 'GOOGLE_API_KEY',
+  'AZURE_OPENAI_API_KEY', 'MISTRAL_API_KEY', 'COHERE_API_KEY', 'AI_GATEWAY_TOKEN'
+]);
+
 const OUT_DIR = path.join(ROOT, 'acquisition/blogger/outbox');
 const STATE_FILE = path.join(ROOT, 'acquisition/blogger/state.json');
 const SOURCES_FILE = path.join(ROOT, 'acquisition/media-engine/sources.json');
 const IDENTITY_FILE = path.join(ROOT, 'acquisition/media-engine/identity.json');
 const LENSES_FILE = path.join(ROOT, 'acquisition/media-engine/lenses.json');
 const CHANNELS_FILE = path.join(ROOT, 'acquisition/media-engine/channels.json');
+const CANDIDATES_FILE = path.join(ROOT, 'acquisition/signal-intelligence/candidates.json');
+
 const MAX_ATTEMPTS = 2;
 const MIN_WORDS = 750;
-const QUALITY_THRESHOLD = 82;
-
-const BANNED_GENERIC = [
-  "in today's fast-paced world", "in today's digital landscape", 'game changer',
-  'this changes everything', 'everything you need to know', 'ultimate guide',
-  'in conclusion', 'it is important to note that', 'unlock the power of'
-];
 
 async function readJson(file) { return JSON.parse(await fs.readFile(file, 'utf8')); }
-async function writeJson(file, value) { await fs.mkdir(path.dirname(file), { recursive: true }); await fs.writeFile(file, `${JSON.stringify(value, null, 2)}\n`); }
+async function writeJson(file, value) {
+  await fs.mkdir(path.dirname(file), { recursive: true });
+  await fs.writeFile(file, `${JSON.stringify(value, null, 2)}\n`);
+}
 function sha(s) { return crypto.createHash('sha256').update(String(s)).digest('hex'); }
 function slug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 80); }
 function stripFence(s) { return String(s).trim().replace(/^```(?:json)?\s*/i, '').replace(/\s*```$/, ''); }
 
-function pickLens(source, lenses) {
+export function pickLens(source, lenses) {
   const families = new Set(source.evidence_families || []);
   const order = ['practical_operator', 'independent_builder', 'structural_reflection', 'japan_reality'];
   let best = null;
@@ -47,27 +74,62 @@ function pickLens(source, lenses) {
   return best;
 }
 
-function rules(identity, source, lens) {
-  return `You are a world-class editorial desk, not a content spinner. Identity: ${identity.public_descriptor}\n` +
-    `SOURCE: ${source.title}\n${source.excerpt || ''}\nALLOWED CLAIMS:\n${(source.allowed_claims || []).map((x) => `- ${x}`).join('\n')}\n` +
-    `RESTRICTED CLAIMS:\n${(source.restricted_claims || []).map((x) => `- ${typeof x === 'string' ? x : x.phrase}`).join('\n')}\n` +
-    `LENS: ${lens.lens_id} — ${lens.purpose}\n` +
-    `Never invent biography, clients, purchases, testing, revenue, credentials, travel, private facts, quotes, sources, numbers, lived experience, testimonials or results. ` +
-    `Do not closely paraphrase copyrighted prose or imitate a named writer's distinctive style. Preserve uncertainty. No defamation, fake scarcity, guaranteed ROI, hidden sponsorship, legal/medical/financial professional advice, keyword stuffing or spam. ` +
-    `The article must be useful without clicking a CTA. Prefer original synthesis, concrete distinctions, tradeoffs, counterarguments and decision criteria.`;
+/**
+ * Choose what to write, in the order the routing principle demands.
+ * Vertical opportunities first, ranked by
+ * demand x purchase intent x asset fit x freshness x measurement / burden.
+ * Owner-approved packages remain eligible behind them so the existing lane still works.
+ */
+export function chooseWork({ opportunity, sources, state }) {
+  const attempts = state.attempts || {};
+  const processed = state.processed || {};
+  const usable = (source) => source
+    && source.status === 'COMPLETE'
+    && !processed[source.source_id]
+    && (attempts[source.source_id] || 0) < MAX_ATTEMPTS;
+
+  for (const assessment of opportunity.eligible) {
+    const full = opportunity.assessments.find((a) => a.vertical_id === assessment.vertical_id);
+    const candidateId = full?.candidate?.source_candidate_id;
+    const source = sources.find((s) => s.source_candidate_id && s.source_candidate_id === candidateId);
+    if (usable(source)) {
+      return { source, vertical_id: assessment.vertical_id, assessment: full, lane: 'REVENUE_VERTICAL' };
+    }
+  }
+
+  const ownerPackage = sources.find((s) => s.source_type === 'OWNER_APPROVED_SOURCE' && usable(s));
+  if (ownerPackage) return { source: ownerPackage, vertical_id: null, assessment: null, lane: 'OWNER_APPROVED_SOURCE' };
+
+  return null;
+}
+
+function assertFreeOnly(model = MODEL) {
+  if (!FREE_MODELS.has(model)) {
+    throw new Error(`BLOGGER_FREE_MODEL_NOT_ALLOWLISTED ${model}; this lane may only call the free Workers AI allowlist`);
+  }
+  const paid = PAID_PROVIDER_ENV.filter((name) => process.env[name]);
+  // A paid credential in the environment is not used and never becomes a fallback. It is
+  // reported so an operator can see that the free-only policy held anyway.
+  return { model, allowlisted: true, paid_credentials_present: paid, paid_fallback_used: false };
 }
 
 async function callModel(stage, prompt) {
   if (!ACCOUNT_ID || !TOKEN) throw new Error('CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN not configured');
-  if (!FREE_MODELS.has(MODEL)) throw new Error(`BLOGGER_FREE_MODEL_NOT_ALLOWLISTED ${MODEL}`);
+  assertFreeOnly();
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { authorization: `Bearer ${TOKEN}`, 'content-type': 'application/json' },
-    body: JSON.stringify({ messages: [{ role: 'user', content: prompt }], max_tokens: stage === 'final' ? 7000 : 5000, temperature: stage === 'critic' ? 0.3 : 0.55 })
+    body: JSON.stringify({
+      messages: [{ role: 'user', content: prompt }],
+      max_tokens: stage === 'final' ? 7000 : 5000,
+      temperature: stage === 'critic' ? 0.3 : 0.55
+    })
   });
   const raw = await response.text();
   if (!response.ok) {
+    // Free quota exhausted or refused: stop. Never upgrade, never fall back to a
+    // billable provider.
     if (response.status === 429 || response.status === 403) throw new Error(`FREE_TIER_STOP ${response.status} ${raw.slice(0, 500)}`);
     throw new Error(`WORKERS_AI_ERROR ${response.status} ${raw.slice(0, 500)}`);
   }
@@ -77,73 +139,259 @@ async function callModel(stage, prompt) {
   return text;
 }
 
-async function generate(source, identity, lens) {
-  const base = rules(identity, source, lens);
-  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article around 900-1500 words. Strong opening, no canned intro/conclusion. Article only.`);
-  const critic = await callModel('critic', `${base}\n\nCRITIC: Identify generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments, shallow sections and false certainty.\n\n${draft}`);
-  const deepened = await callModel('deepen', `${base}\n\nDEEPEN: Rewrite using the critique. Add at least one non-obvious distinction, real tradeoff, concrete decision criteria and a limiting case grounded only in the source.\n\nDRAFT:\n${draft}\n\nCRITIC:\n${critic}`);
-  const finalRaw = await callModel('final', `${base}\n\nFINAL EDIT: Humanize rhythm and transitions; remove filler, textbook scaffolding and unearned sales language. Never fake anecdotes. Return STRICT JSON with title_options (max 3), selected_title, dek, body_markdown, evidence_notes, allowed_claim_report, restricted_claim_report, cta_recommendation {include,reason,route_index}, editorial_notes.\n\n${deepened}`);
+/** The editorial contract handed to the model, built from the source and the vertical. */
+export function buildRules(identity, source, lens, vertical) {
+  const claimLedger = (source.claim_ledger || [])
+    .map((c) => `- [${c.claim_type}] ${c.claim}${c.attribution_required ? '  (MUST be attributed or labelled)' : ''}`)
+    .join('\n');
+  const routes = (source.existing_product_routes || [])
+    .map((r, i) => `  ${i}. role=${r.role} asset=${r.asset_id} cta="${r.cta ?? 'none declared'}"${r.microcopy ? ` microcopy="${r.microcopy}"` : ''}`)
+    .join('\n');
+
+  return [
+    `You are a working editorial desk, not a content spinner. Identity: ${identity.public_descriptor}`,
+    '',
+    `SOURCE: ${source.title}`,
+    source.excerpt || '',
+    '',
+    vertical ? `REVENUE VERTICAL: ${vertical.vertical_id}
+BUYER PROBLEM: ${vertical.buyer_problem}
+EDITORIAL ANGLE: ${vertical.editorial_angle}
+READER: ${(vertical.target_audiences || []).join(', ')} - write for one of these people, not for an enterprise finance department.
+DECISION MODEL the reader must be able to apply by the end: ${(vertical.decision_model || []).join(' / ') || 'n/a'}
+DECISION DIMENSIONS available: ${(vertical.decision_dimensions || []).join('; ') || 'n/a'}` : '',
+    '',
+    'ALLOWED CLAIMS (nothing outside this list may be asserted):',
+    (source.allowed_claims || []).map((x) => `- ${x}`).join('\n'),
+    '',
+    claimLedger ? `CLAIM LEDGER - every claim you use belongs to exactly one of these types, and the writing must make the type obvious to the reader:\n${claimLedger}` : '',
+    '',
+    'RESTRICTED CLAIMS (these phrases and their meanings are forbidden):',
+    (source.restricted_claims || []).map((x) => `- ${typeof x === 'string' ? x : x.phrase}`).join('\n'),
+    (source.prohibited_claims || []).length ? `\nPROHIBITED:\n${source.prohibited_claims.map((x) => `- ${x}`).join('\n')}` : '',
+    vertical?.prohibited_claims?.length ? vertical.prohibited_claims.map((x) => `- ${x}`).join('\n') : '',
+    '',
+    `LENS: ${lens.lens_id} - ${lens.purpose}`,
+    '',
+    'EXISTING ROUTES (the CTA must be one of these by index):',
+    routes || '  none',
+    '',
+    'HARD RULES - each of these is checked mechanically after you write, and a violation fails the article:',
+    '1. NUMBERS. Do not write any statistic, price, percentage, count or money amount that is not present in ALLOWED CLAIMS, unless the sentence itself labels it as an example or scenario ("for example", "suppose", "say a"). An unlabelled number that is not in the source is a fabrication.',
+    '2. ATTRIBUTION. Any figure that comes from the source must carry its provenance in the same sentence ("publicly reported figures describe...", "posts recorded by this publication describe..."). A bare number reads as a fact you measured.',
+    '3. NO INVENTED EXPERIENCE. Never write a remembered email, a routine that "usually" happens, a client situation, a purchase, a test, a conversation, a daily habit, a saving, or any outcome that happened to someone. You have none. Not softened, not hedged, not attributed to a persona: absent.',
+    '4. HYPOTHETICALS. If you need a concrete illustration, label it as an example or scenario in the same sentence or in the heading above it. Never present an illustration as a report.',
+    '5. STRUCTURE. At most one heading per roughly 300 words. At most two coined capitalised terms in the whole piece - no page of "The X Gap", "The Y Tax", "The Z Framework", "The W Matrix". No closing motivational paragraph, no summary that restates what the reader just read, no "in conclusion", "moreover", "furthermore", "at its core", "ultimately".',
+    '6. RHYTHM. Vary sentence and paragraph length deliberately. Some sentences should be short. Do not write every paragraph at the same size.',
+    '7. INSIGHT. The article must contain at least one non-obvious decision rule, a real tradeoff, and at least one case where the obvious recommendation is wrong. State the boundary conditions.',
+    '8. CTA. The closing route must be the one that actually completes the reader\'s decision, named by its route index. Give it a label that says what the reader gets, never "Continue", "Learn more" or "Open the tool".',
+    '',
+    'Do not closely paraphrase copyrighted prose or imitate a named writer. Preserve uncertainty. No defamation, fake scarcity, guaranteed ROI, hidden sponsorship, professional legal/medical/financial advice, keyword stuffing. The article must be useful to someone who never clicks the CTA.'
+  ].filter((x) => x !== '').join('\n');
+}
+
+async function generate(source, identity, lens, vertical) {
+  const base = buildRules(identity, source, lens, vertical);
+  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of roughly 1000-1500 words. Open on the reader's actual decision, not on a scene. Article only.`);
+  const critic = await callModel('critic', `${base}\n\nCRITIC: Find every violation of the hard rules above in the draft, plus generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments and false certainty. Quote the offending sentence for each.\n\n${draft}`);
+  const deepened = await callModel('deepen', `${base}\n\nDEEPEN: Rewrite using the critique. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - all grounded only in the allowed source material.\n\nDRAFT:\n${draft}\n\nCRITIC:\n${critic}`);
+  const finalRaw = await callModel('final', `${base}\n\nFINAL EDIT: Humanize the rhythm and transitions. Cut filler, textbook scaffolding, unearned sales language, repeated summaries and coined jargon beyond two terms. Never fake an anecdote or a typo.\n\nReturn STRICT JSON with: title_options (max 3), selected_title, dek, body_markdown, evidence_notes (array naming, for each figure used, where it came from), claim_type_report (array of {claim, type} using the claim ledger types), allowed_claim_report, restricted_claim_report, cta_recommendation {include, reason, route_index, label, microcopy}, editorial_notes.\n\n${deepened}`);
   return { draft, critic, deepened, final: JSON.parse(stripFence(finalRaw)) };
 }
 
-function quality(final, source) {
-  const body = String(final.body_markdown || '');
-  const lower = body.toLowerCase();
-  const words = body.split(/\s+/).filter(Boolean).length;
-  const genericHits = BANNED_GENERIC.filter((p) => lower.includes(p));
-  const restrictedHits = (source.restricted_claims || []).map((x) => typeof x === 'string' ? x : x.phrase).filter((p) => p && lower.includes(String(p).toLowerCase()));
-  const firstPersonRisk = /\b(i tested|i bought|i purchased|my client|my customers|i earned|i visited|when i lived)\b/i.test(body);
-  let score = 100 - (words < MIN_WORDS ? 25 : 0) - genericHits.length * 10 - restrictedHits.length * 25 - (firstPersonRisk ? 35 : 0);
-  if (!final.selected_title || !body) score = 0;
-  return { score: Math.max(0, score), words, generic_hits: genericHits, restricted_hits: restrictedHits, first_person_risk: firstPersonRisk, threshold: QUALITY_THRESHOLD };
-}
-
-function chooseCta(final, source) {
-  if (!final.cta_recommendation?.include) return null;
-  const i = Number(final.cta_recommendation.route_index);
-  return Number.isInteger(i) ? source.existing_product_routes?.[i] || null : null;
-}
-function trackedUrl(route, source, lensId) {
-  if (!route?.url) return null;
-  const u = new URL(route.url);
-  u.searchParams.set('utm_source', 'owned_media'); u.searchParams.set('utm_medium', 'blog');
-  u.searchParams.set('utm_campaign', 'international_personal_media'); u.searchParams.set('utm_content', `${source.source_id}:${lensId}`.slice(0, 140));
-  return u.toString();
+async function loadPriorOutputs() {
+  const names = (await fs.readdir(OUT_DIR).catch(() => [])).filter((n) => n.endsWith('.json')).sort();
+  const records = [];
+  for (const name of names) {
+    const record = await readJson(path.join(OUT_DIR, name)).catch(() => null);
+    if (!record) continue;
+    records.push({
+      derivation_id: record.output_id,
+      source_id: record.source_id,
+      language: 'en',
+      lens_id: record.lens_id,
+      channel_id: record.attribution?.channel_id || 'owned_signal',
+      campaign: record.attribution?.campaign || 'autonomous_revenue_publisher',
+      target_asset: record.cta?.asset_id || null,
+      cta_id: record.cta?.asset_id || null,
+      audience: record.audience || [],
+      title: record.title,
+      hook: record.dek,
+      body: record.body,
+      created_at: record.generated_at,
+      published_at: record.publication_state === 'PUBLISH_REQUESTED' ? record.generated_at : null
+    });
+  }
+  return records;
 }
 
 async function main() {
   await fs.mkdir(OUT_DIR, { recursive: true });
-  const [sourcesDoc, identity, lensesDoc, channelsDoc] = await Promise.all([readJson(SOURCES_FILE), readJson(IDENTITY_FILE), readJson(LENSES_FILE), readJson(CHANNELS_FILE)]);
-  const state = await readJson(STATE_FILE).catch(() => ({ version: 2, processed: {}, attempts: {}, last_run_at: null }));
+
+  const [sourcesDoc, identity, lensesDoc, channelsDoc, candidatesDoc, verticals, sourceRouting] = await Promise.all([
+    readJson(SOURCES_FILE), readJson(IDENTITY_FILE), readJson(LENSES_FILE), readJson(CHANNELS_FILE),
+    readJson(CANDIDATES_FILE), loadVerticals(), loadSourceRouting()
+  ]);
+  const inventory = await loadInventory('acquisition/asset-inventory.json', { knownChannels: knownChannels(sourceRouting) });
+  const state = await readJson(STATE_FILE).catch(() => ({ version: 3, processed: {}, attempts: {}, last_run_at: null }));
   state.attempts ||= {};
-  const eligible = sourcesDoc.sources.filter((s) => s.status === 'COMPLETE' && !state.processed[s.source_id] && (state.attempts[s.source_id] || 0) < MAX_ATTEMPTS);
-  if (!eligible.length) { state.last_run_at = new Date().toISOString(); await writeJson(STATE_FILE, state); console.log('BLOGGER_IDLE'); return; }
-  if (!ACCOUNT_ID || !TOKEN) { console.log('BLOGGER_BLOCKED free Workers AI credentials missing; no paid fallback'); return; }
-  const source = eligible[0]; state.attempts[source.source_id] = (state.attempts[source.source_id] || 0) + 1;
+  state.processed ||= {};
+
+  // One opportunity per run, chosen by the routing principle, never by article count.
+  const opportunity = selectOpportunity(verticals, candidatesDoc.candidates || []);
+  const work = chooseWork({ opportunity, sources: sourcesDoc.sources, state });
+
+  if (!work) {
+    state.last_run_at = new Date().toISOString();
+    state.last_selection = {
+      at: state.last_run_at,
+      selected: null,
+      eligible: opportunity.eligible,
+      not_eligible: opportunity.assessments.filter((a) => !a.eligible).map((a) => ({ vertical_id: a.vertical_id, reasons: a.reasons }))
+    };
+    await writeJson(STATE_FILE, state);
+    console.log('BLOGGER_IDLE no eligible revenue opportunity and no unprocessed owner package');
+    return;
+  }
+
+  const policy = assertFreeOnly();
+  if (!ACCOUNT_ID || !TOKEN) {
+    console.log('BLOGGER_BLOCKED free Workers AI credentials missing; no paid fallback, no source marked processed');
+    return;
+  }
+
+  const { source, vertical_id: verticalId, assessment, lane } = work;
+  const vertical = verticalId ? verticals.byId.get(verticalId) : null;
+  state.attempts[source.source_id] = (state.attempts[source.source_id] || 0) + 1;
+
   const chosen = pickLens(source, lensesDoc);
-  const generated = await generate(source, identity, chosen.lens);
-  const q = quality(generated.final, source);
-  const ctaRoute = chooseCta(generated.final, source);
-  const channel = channelsDoc.channels.devto;
-  const publishLane = channel?.account_state === 'CONNECTED' && channel.ai_content_policy_state === 'VERIFIED' ? 'HUMAN_REVIEW_REQUIRED' : 'HUMAN_PUBLISH_REQUIRED';
-  const status = q.score >= q.threshold && !q.first_person_risk && q.restricted_hits.length === 0 ? 'READY' : 'DRAFT';
-  const id = `${new Date().toISOString().slice(0, 10)}-${slug(source.source_id)}-${sha(generated.final.body_markdown).slice(0, 8)}`;
-  const record = {
-    version: 2, output_id: id, generated_at: new Date().toISOString(), provider: 'cloudflare-workers-ai-free-only', model: MODEL,
-    billing_policy: 'FREE_ONLY_NO_PAID_FALLBACK', source_id: source.source_id, source_candidate_id: source.source_candidate_id || null,
-    identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, title_options: generated.final.title_options || [],
-    title: generated.final.selected_title, dek: generated.final.dek || '', body: generated.final.body_markdown,
-    evidence_notes: generated.final.evidence_notes || [], allowed_claim_report: generated.final.allowed_claim_report || [], restricted_claim_report: generated.final.restricted_claim_report || [],
-    editorial_notes: generated.final.editorial_notes || [], quality: q, status, publication_lane: publishLane, publication_proof: null,
-    cta: ctaRoute ? { asset_id: ctaRoute.asset_id, label: ctaRoute.cta, destination_url: ctaRoute.url, tracked_url: trackedUrl(ctaRoute, source, chosen.id) } : null,
-    attribution: { source_id: source.source_id, source_candidate_id: source.source_candidate_id || null, identity_id: identity.identity_id, desk_id: 'en_desk', lens_id: chosen.id, channel_id: 'devto', campaign: 'international_personal_media' },
-    stages: { draft_sha256: sha(generated.draft), critic_sha256: sha(generated.critic), deepen_sha256: sha(generated.deepened), final_sha256: sha(generated.final.body_markdown) }
+  const generated = await generate(source, identity, chosen.lens, vertical);
+
+  const primaryRoute = (source.existing_product_routes || [])[Number(generated.final?.cta_recommendation?.route_index)] || null;
+  const assetPageText = primaryRoute
+    ? await loadAssetPageText(inventory.byId?.get?.(primaryRoute.asset_id)
+      ?? inventory.assets.find((a) => a.asset_id === primaryRoute.asset_id))
+    : '';
+
+  const article = {
+    title: generated.final.selected_title,
+    dek: generated.final.dek || '',
+    body: generated.final.body_markdown,
+    evidence_notes: generated.final.evidence_notes || [],
+    cta_recommendation: generated.final.cta_recommendation || {}
   };
+
+  const gates = runEditorialGates(article, {
+    source,
+    identity,
+    lens: chosen.lens,
+    lensId: chosen.id,
+    vertical,
+    inventory,
+    published: await loadPriorOutputs(),
+    assetPageText,
+    minWords: MIN_WORDS
+  });
+
+  const channel = channelsDoc.channels.devto;
+  const publishLane = channel?.account_state === 'CONNECTED' && channel.ai_content_policy_state === 'VERIFIED'
+    ? 'HUMAN_REVIEW_REQUIRED' : 'HUMAN_PUBLISH_REQUIRED';
+  const status = gates.status;
+
+  const id = `${new Date().toISOString().slice(0, 10)}-${slug(source.source_id)}-${sha(article.body).slice(0, 8)}`;
+  const ctaRoute = gates.cta.ok ? gates.cta.route : null;
+
+  const record = {
+    version: 3,
+    output_id: id,
+    generated_at: new Date().toISOString(),
+    provider: 'cloudflare-workers-ai-free-only',
+    model: MODEL,
+    billing_policy: 'FREE_ONLY_NO_PAID_FALLBACK',
+    billing_evidence: policy,
+    selection: {
+      lane,
+      vertical_id: verticalId,
+      opportunity_score: assessment?.opportunity_score ?? null,
+      opportunity_breakdown: assessment?.opportunity_breakdown ?? null,
+      considered: opportunity.eligible,
+      not_eligible: opportunity.assessments.filter((a) => !a.eligible).map((a) => ({ vertical_id: a.vertical_id, reasons: a.reasons }))
+    },
+    source_id: source.source_id,
+    source_candidate_id: source.source_candidate_id || null,
+    source_hash: source.content_hash,
+    identity_id: identity.identity_id,
+    desk_id: 'en_desk',
+    lens_id: chosen.id,
+    title_options: generated.final.title_options || [],
+    title: article.title,
+    dek: article.dek,
+    body: article.body,
+    audience: source.audience_keys || [],
+    evidence_notes: article.evidence_notes,
+    claim_type_report: generated.final.claim_type_report || [],
+    allowed_claim_report: generated.final.allowed_claim_report || [],
+    restricted_claim_report: generated.final.restricted_claim_report || [],
+    editorial_notes: generated.final.editorial_notes || [],
+    quality: gates.quality,
+    gates: {
+      executed: gates.gates_executed,
+      truth: gates.truth,
+      duplication: gates.duplication,
+      cta: { ok: gates.cta.ok, failures: gates.cta.failures, warnings: gates.cta.warnings, reason: gates.cta.reason }
+    },
+    blocking_reasons: gates.blocking_reasons,
+    disclosure: disclosureFor(gates),
+    status,
+    publication_lane: publishLane,
+    publication_proof: null,
+    cta: ctaRoute ? {
+      asset_id: ctaRoute.asset_id,
+      label: gates.cta.label,
+      microcopy: gates.cta.microcopy_text,
+      destination_url: ctaRoute.url,
+      tracked_url: trackedUrl(ctaRoute, { source, lensId: chosen.id, verticalId })
+    } : null,
+    attribution: {
+      source_id: source.source_id,
+      source_candidate_id: source.source_candidate_id || null,
+      vertical_id: verticalId,
+      identity_id: identity.identity_id,
+      desk_id: 'en_desk',
+      lens_id: chosen.id,
+      channel_id: 'owned_signal',
+      campaign: 'autonomous_revenue_publisher'
+    },
+    stages: {
+      draft_sha256: sha(generated.draft),
+      critic_sha256: sha(generated.critic),
+      deepen_sha256: sha(generated.deepened),
+      final_sha256: sha(article.body)
+    }
+  };
+
   await writeJson(path.join(OUT_DIR, `${id}.json`), record);
-  await fs.writeFile(path.join(OUT_DIR, `${id}.md`), `# ${record.title}\n\n${record.dek ? `${record.dek}\n\n` : ''}${record.body}${record.cta?.tracked_url ? `\n\n---\n\n${record.cta.label || 'Continue'}: ${record.cta.tracked_url}\n` : ''}`);
+  const ctaBlock = record.cta?.tracked_url
+    ? `\n\n---\n\n**${record.cta.label}** — ${record.cta.tracked_url}${record.cta.microcopy ? `\n\n${record.cta.microcopy}` : ''}\n`
+    : '';
+  await fs.writeFile(
+    path.join(OUT_DIR, `${id}.md`),
+    `# ${record.title}\n\n${record.dek ? `${record.dek}\n\n` : ''}${record.body}${ctaBlock}`
+  );
+
   if (status === 'READY') state.processed[source.source_id] = { output_id: id, at: record.generated_at, status };
-  state.last_run_at = record.generated_at; await writeJson(STATE_FILE, state);
-  console.log(`BLOGGER_${status} ${id} quality=${q.score} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
+  state.last_run_at = record.generated_at;
+  state.last_selection = { at: record.generated_at, selected: verticalId, lane, eligible: opportunity.eligible };
+  await writeJson(STATE_FILE, state);
+
+  console.log(`BLOGGER_${status} ${id} quality=${gates.quality.score} band=${gates.quality.band} vertical=${verticalId ?? 'none'} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
+  for (const reason of gates.blocking_reasons) console.log(`  BLOCKED_BY ${reason}`);
+  for (const cap of gates.quality.caps) console.log(`  CAP ${cap.code} ceiling=${cap.ceiling} ${cap.detail}`);
 }
 
-main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
+const isEntry = process.argv[1] && import.meta.url === `file://${path.resolve(process.argv[1])}`;
+if (isEntry) {
+  main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
+}
+
+export { main, assertFreeOnly, FREE_MODELS, PAID_PROVIDER_ENV };

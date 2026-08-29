@@ -1,0 +1,180 @@
+{
+  "version": 1,
+  "observation_set_id": "x-ai-subscription-rationalization-2026-08-29",
+  "recorded_by": "repository owner",
+  "recorded_at": "2026-08-29",
+  "provider": "x_public_posts",
+  "platform": "x",
+  "purpose": "The owner's recorded pass over public posts on X about AI subscription cost, unused capacity and tool fatigue. This file is the provenance for the social_public_post evidence records in acquisition/signal-intelligence/signals.json. It exists so that what was observed, and what was NOT verified, are both durable.",
+  "reading_contract": {
+    "what_a_record_here_proves": "That a post making this kind of statement was observed on the recorded date. Post existence is OBSERVED evidence of demand-side language.",
+    "what_a_record_here_does_not_prove": "Nothing inside a post is a verified fact. A numerical, pricing, market-share or business-outcome claim written inside a post remains an UNVERIFIED_PUBLIC_CLAIM until it is confirmed against a primary source, and may not be published as fact.",
+    "independence_rule": "Promotional posts, affiliate posts, quote-post echoes and duplicated accounts are recorded but are NOT independent demand evidence. lib/social-evidence.mjs enforces this; acquisition/signal-intelligence/lib/corroborate.mjs excludes them from the 2-Signal Rule.",
+    "group_rule": "Every record here shares the social_public independence group, so two X posts can never corroborate each other. Corroboration for a thesis has to come from a different group."
+  },
+  "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+  "post_identity_note": "The owner supplied these observations as described patterns rather than as a link list. post_url and account are therefore recorded as UNRECORDED rather than invented. No URL, handle, follower count or post date has been generated. Until the owner fills them in, no derivative may cite, quote, name or link an individual post; the evidence may only be used in the aggregate form recorded in observation_summary.",
+  "observations": [
+    {
+      "observation_id": "x-unused-subscription-identification",
+      "evidence_family_pattern": "unused_subscriptions_and_capacity",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Wanting a way to identify the subscriptions being paid for but barely used.",
+      "commercial_intent_strength": "HIGH",
+      "commercial_intent_indicators": ["cancel_intent", "cost_reduction_intent"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "claims_inside_post": [],
+      "factual_verification_required_before_publication": false,
+      "verification_note": "The observation is a stated want. It contains no numerical or market claim to verify."
+    },
+    {
+      "observation_id": "x-unused-ai-capacity-and-credits",
+      "evidence_family_pattern": "unused_subscriptions_and_capacity",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Unused AI subscription capacity, and unused cloud or AI credits, discussed as an economic problem rather than a technical one.",
+      "commercial_intent_strength": "MEDIUM",
+      "commercial_intent_indicators": ["cost_reduction_intent"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "claims_inside_post": [],
+      "factual_verification_required_before_publication": false,
+      "verification_note": "Recorded as language about a problem, not as a measured quantity of wasted capacity."
+    },
+    {
+      "observation_id": "x-subscription-vs-api-pricing-comparison",
+      "evidence_family_pattern": "pricing_confusion_and_cost_optimization",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Users comparing subscription pricing against API pricing for the same underlying capability and being unable to tell which is cheaper for their own usage.",
+      "commercial_intent_strength": "HIGH",
+      "commercial_intent_indicators": ["price_comparison", "plan_change_intent"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "claims_inside_post": [
+        {
+          "claim": "specific per-plan and per-token prices for named products",
+          "status": "UNVERIFIED_PUBLIC_CLAIM",
+          "reason": "Prices change and were not checked against any vendor pricing page during this pass. No figure from these posts may be published."
+        }
+      ],
+      "factual_verification_required_before_publication": true,
+      "verification_note": "The behaviour (people comparing the two pricing models) is the usable evidence. The prices themselves are not."
+    },
+    {
+      "observation_id": "x-model-router-cheaper-routing-promotion",
+      "evidence_family_pattern": "pricing_confusion_and_cost_optimization",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "PROMOTIONAL",
+      "raw_pain": "A model router advertising cheaper routing to qualified providers.",
+      "commercial_intent_strength": "SELLER_SIDE",
+      "commercial_intent_indicators": ["vendor_promotion"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": false,
+      "non_independence_reason": "A vendor advertising its own product is supply-side marketing. It demonstrates that somebody is selling into this problem; it is not evidence that buyers are asking for it.",
+      "claims_inside_post": [
+        {
+          "claim": "routing through this product is cheaper",
+          "status": "UNVERIFIED_PUBLIC_CLAIM",
+          "reason": "A vendor's own cost claim about its own product."
+        }
+      ],
+      "factual_verification_required_before_publication": true,
+      "verification_note": "Recorded for completeness. Excluded from the 2-Signal Rule by post_type."
+    },
+    {
+      "observation_id": "x-expensive-subscription-allowed-to-lapse",
+      "evidence_family_pattern": "pricing_confusion_and_cost_optimization",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Users letting an expensive subscription expire because a free or cheaper alternative now looks adequate for what they actually do with it.",
+      "commercial_intent_strength": "HIGH",
+      "commercial_intent_indicators": ["cancel_intent", "substitution_intent"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "claims_inside_post": [
+        {
+          "claim": "the cheaper alternative is adequate for the same work",
+          "status": "UNVERIFIED_PUBLIC_CLAIM",
+          "reason": "An individual's judgement about their own workload. It is not a product comparison and must not be published as one."
+        }
+      ],
+      "factual_verification_required_before_publication": true,
+      "verification_note": "The decision behaviour is the evidence. Adequacy of any named alternative is not established."
+    },
+    {
+      "observation_id": "x-evaluating-peak-tools-requires-many-subscriptions",
+      "evidence_family_pattern": "ai_tool_fatigue",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Complaints that properly evaluating the current best AI tools requires holding several paid subscriptions at once.",
+      "commercial_intent_strength": "MEDIUM",
+      "commercial_intent_indicators": ["evaluation_cost"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "claims_inside_post": [],
+      "factual_verification_required_before_publication": false,
+      "verification_note": null
+    },
+    {
+      "observation_id": "x-tool-fatigue-too-many-to-evaluate",
+      "evidence_family_pattern": "ai_tool_fatigue",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "ORGANIC_USER_POST",
+      "raw_pain": "Too many AI tools to evaluate; difficulty finding signal among hundreds of options; a stated preference for fewer connected tools over a large collection.",
+      "commercial_intent_strength": "LOW",
+      "commercial_intent_indicators": ["consolidation_intent"],
+      "independence_group": "social_public",
+      "independent_demand_evidence": true,
+      "prior_observation_note": "Recorded previously by the owner as an independent-user pattern and re-observed in this pass.",
+      "claims_inside_post": [
+        {
+          "claim": "there are hundreds of comparable AI tools",
+          "status": "UNVERIFIED_PUBLIC_CLAIM",
+          "reason": "A rhetorical count, not a counted market. No tool-count figure from this pass may be published."
+        }
+      ],
+      "factual_verification_required_before_publication": true,
+      "verification_note": null
+    },
+    {
+      "observation_id": "x-quote-echo-of-tool-fatigue",
+      "evidence_family_pattern": "ai_tool_fatigue",
+      "observed_on": "2026-08-29",
+      "post_url": "UNRECORDED",
+      "account": "UNRECORDED",
+      "post_type": "QUOTE_ECHO",
+      "raw_pain": "A quote post restating the tool-fatigue complaint above.",
+      "commercial_intent_strength": "LOW",
+      "commercial_intent_indicators": [],
+      "independence_group": "social_public",
+      "independent_demand_evidence": false,
+      "non_independence_reason": "A quote post of an already-recorded observation is the same original signal seen twice. Counting it would inflate the apparent amount of evidence.",
+      "shared_origin_key": "x-tool-fatigue-too-many-to-evaluate",
+      "claims_inside_post": [],
+      "factual_verification_required_before_publication": false,
+      "verification_note": null
+    }
+  ],
+  "human_actions_outstanding": [
+    "Record post_url and account for each observation if any derivative should ever cite an individual post.",
+    "Verify, against vendor pricing pages, any pricing figure before it is published; nothing from this file may supply one.",
+    "Re-run acquisition/signal-intelligence/cli/rank.mjs after either action; a rising score with unchanged corroboration is not progress."
+  ]
+}

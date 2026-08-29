@@ -33,7 +33,7 @@ evidence records (signals.json)
 | `acquisition/lib/signal-score.mjs` | the model shape - named dimensions, integer scores, fixed weights, an evidence class on each - is deliberately the same, so both scores are auditable the same way. |
 | `distribution/provider-policy.json`, `distribution/source-routing.json` | read-only, through the existing router. Never written. |
 
-## The three rules that do the work
+## The four rules that do the work
 
 **1. The 2-Signal Rule.** Automatic promotion requires at least two `OBSERVED`,
 non-expired, mutually independent signals from at least two independence groups, at least
@@ -50,7 +50,24 @@ raise research priority, and they never enter this calculation.
 those four is overwritten, and the overwrite is reported in `overridden_dimensions`. A
 thesis cannot score its own homework.
 
-**3. Owned money evidence is never external consensus.** Owned CTA and checkout behaviour
+**3. A post is evidence that somebody said something.** `social_public_post` records
+public posts the owner read and recorded into `observations/`. Two distinctions are
+enforced rather than encouraged, in `lib/social-evidence.mjs`:
+
+- *Post existence vs. post content.* Every record declares
+  `observed_claim_scope: POST_EXISTENCE_ONLY`. Any numerical, pricing, market-size or
+  outcome claim written inside a post is an `UNVERIFIED_PUBLIC_CLAIM` until it is checked
+  against a primary source, and the candidate that uses the record carries
+  `IN_POST_CLAIM_AS_VERIFIED_FACT` in `prohibited_claims`.
+- *Post vs. demand.* `PROMOTIONAL`, `AFFILIATE`, `QUOTE_ECHO`, `DUPLICATE_ACCOUNT` and
+  `PRESS_OR_VENDOR_ANNOUNCEMENT` posts are recorded and reported, and dropped before the
+  2-Signal Rule is counted. A record cannot declare itself independent to get around it.
+
+Every post shares the `social_public` independence group, so two posts never corroborate
+each other, and a MONEY_SIGNAL bucket on a post can never flip `external_consensus`:
+people discussing prices is not a market validating an offer.
+
+**4. Owned money evidence is never external consensus.** Owned CTA and checkout behaviour
 is strong evidence of internal fit. `moneyEvidenceProfile()` reports
 `external_consensus: false` for it, the candidate record carries that flag verbatim, and
 `EXTERNAL_CONSENSUS` lands in `prohibited_claims`.
@@ -59,7 +76,8 @@ is strong evidence of internal fit. `moneyEvidenceProfile()` reports
 
 All four must hold, in this order:
 
-1. the 2-Signal Rule is satisfied by independent `OBSERVED` evidence
+1. the 2-Signal Rule is satisfied by independent `OBSERVED` evidence, after
+   non-independent post types have been removed
 2. the Revenue Signal Score bands at 70 or above (`<50` reject, `50-69` watch, `70-84`
    candidate, `85-100` high priority) after the evidence adjustment
 3. a **verified** existing asset clears the fit gate
@@ -79,10 +97,11 @@ acquisition/signal-intelligence/
   providers.json     the honest connection register (see below)
   signals.json       evidence records and the theses they support
   candidates.json    the candidate store, append-only history per candidate
+  observations/      owner-recorded public-post passes; the provenance for social evidence
   lib/               normalize, fingerprint, bucket, corroborate, revenue-score,
-                     asset-fit, source-candidate, feedback, pipeline
+                     asset-fit, social-evidence, source-candidate, feedback, pipeline
   cli/               ingest, rank, promote, report
-  test/              50 tests
+  test/              unit tests, including the social-evidence contract
 ```
 
 ## Commands
@@ -106,7 +125,7 @@ provider, so an unconnected provider cannot quietly become a source of evidence.
 
 - `REPOSITORY_EVIDENCE` - `repository_records`, `owner_source_material`. Readable offline
   today; these are the only providers currently supplying evidence.
-- `MANUAL_EVIDENCE_ONLY` - `posthog`, `stripe`, `payhip`, `gumroad`. Real accounts exist
+- `MANUAL_EVIDENCE_ONLY` - `x_public_posts`, `posthog`, `stripe`, `payhip`, `gumroad`. Real accounts exist
   on the owner side, this repository has no connection to them, and evidence arrives only
   when the owner records it into a repository file.
 - `CONTRACT_ONLY` - `reddit`, `product_hunt`, `google_trends`, `youtube_search_trends`,
@@ -121,5 +140,11 @@ provider, so an unconnected provider cannot quietly become a source of evidence.
 2. If it is a repost, mirror or syndication of something already recorded, give it the
    same `shared_origin_key`. The near-duplicate check catches most undeclared ones, but
    declaring it is the honest path.
-3. `node acquisition/signal-intelligence/cli/rank.mjs` and read the corroboration section
+3. For a `social_public_post` record, first add the observation to
+   `observations/`, then point the signal's `url_or_reference` and
+   `content_integrity.observation_ref` at it. Declare `post_type` honestly; a promotional
+   or quote post is still worth recording, it just does not count. Where the owner has not
+   recorded a post URL or account, those fields stay `UNRECORDED` - no identifier is ever
+   generated to fill the gap, and no derivative may cite an individual post until they are.
+4. `node acquisition/signal-intelligence/cli/rank.mjs` and read the corroboration section
    before the score. A rising score with unchanged corroboration is not progress.

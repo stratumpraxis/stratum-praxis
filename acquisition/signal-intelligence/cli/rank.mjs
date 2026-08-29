@@ -35,6 +35,9 @@ if (json) {
         console.log(`    excluded ${x.signal_id}: ${x.reason} (conflicts with ${x.conflicts_with})`);
       }
     }
+    for (const x of c.excluded_as_non_independent_source || []) {
+      console.log(`    not demand evidence ${x.signal_id} (${x.post_type}): ${x.detail}`);
+    }
     console.log(`  external consensus     ${c.external_consensus}`);
     console.log(`  asset fit              ${c.asset_fit_outcome} -> ${c.asset_id ?? 'NONE'} (${c.asset_fit_score})`);
     console.log(`  destination            ${c.destination_url ?? 'NONE'}`);

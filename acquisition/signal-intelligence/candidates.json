@@ -40,6 +40,7 @@
       "corroboration_satisfied": true,
       "corroboration_failures": [],
       "excluded_as_dependent": [],
+      "excluded_as_non_independent_source": [],
       "expired_signal_ids": [],
       "non_observed_signals": [],
       "evidence_strength": "STRONG",
@@ -169,7 +170,7 @@
           "evidence_multiplier": 1,
           "adjusted_contribution": 20,
           "derived": true,
-          "note": "mean 98% of the evidence TTL remains"
+          "note": "mean 97% of the evidence TTL remains"
         },
         "automation_feasibility": {
           "score": 8,
@@ -336,12 +337,12 @@
       "language": "en",
       "freshness": {
         "counted_signals": 4,
-        "newest_evidence_age_days": 1.69,
-        "oldest_evidence_age_days": 1.69,
+        "newest_evidence_age_days": 2.12,
+        "oldest_evidence_age_days": 2.12,
         "state": "FRESH"
       },
-      "expiry": "2026-10-27T16:35:21.127Z",
-      "generated_at": "2026-08-28T16:35:21.148Z",
+      "expiry": "2026-10-28T02:50:48.061Z",
+      "generated_at": "2026-08-29T02:50:48.089Z",
       "handoff": {
         "consumer": "acquisition/media-engine (Issue #52)",
         "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
@@ -383,6 +384,7 @@
         "independent signals span 1 independence group(s); 2 are required so one event cannot corroborate itself"
       ],
       "excluded_as_dependent": [],
+      "excluded_as_non_independent_source": [],
       "expired_signal_ids": [],
       "non_observed_signals": [
         {
@@ -670,12 +672,12 @@
       "language": "en",
       "freshness": {
         "counted_signals": 1,
-        "newest_evidence_age_days": 1.69,
-        "oldest_evidence_age_days": 1.69,
+        "newest_evidence_age_days": 2.12,
+        "oldest_evidence_age_days": 2.12,
         "state": "FRESH"
       },
-      "expiry": "2026-10-27T16:35:21.127Z",
-      "generated_at": "2026-08-28T16:35:21.151Z",
+      "expiry": "2026-10-28T02:50:48.061Z",
+      "generated_at": "2026-08-29T02:50:48.091Z",
       "handoff": {
         "consumer": "acquisition/media-engine (Issue #52)",
         "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
@@ -725,6 +727,7 @@
           "detail": "both records sit in the owned independence group; this is weak corroboration by policy"
         }
       ],
+      "excluded_as_non_independent_source": [],
       "expired_signal_ids": [],
       "non_observed_signals": [],
       "evidence_strength": "INSUFFICIENT",
@@ -854,7 +857,7 @@
           "evidence_multiplier": 1,
           "adjusted_contribution": 20,
           "derived": true,
-          "note": "mean 96% of the evidence TTL remains"
+          "note": "mean 95% of the evidence TTL remains"
         },
         "automation_feasibility": {
           "score": 7,
@@ -997,12 +1000,12 @@
       "language": "en",
       "freshness": {
         "counted_signals": 1,
-        "newest_evidence_age_days": 1.69,
-        "oldest_evidence_age_days": 1.69,
+        "newest_evidence_age_days": 2.12,
+        "oldest_evidence_age_days": 2.12,
         "state": "FRESH"
       },
-      "expiry": "2026-10-27T16:35:21.127Z",
-      "generated_at": "2026-08-28T16:35:21.152Z",
+      "expiry": "2026-10-28T02:50:48.061Z",
+      "generated_at": "2026-08-29T02:50:48.093Z",
       "handoff": {
         "consumer": "acquisition/media-engine (Issue #52)",
         "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
@@ -1014,7 +1017,455 @@
           "to_status": "RESEARCH_GAP"
         }
       ]
+    },
+    {
+      "source_candidate_id": "sc-ai_subscription_rationalization_2026_08",
+      "thesis_id": "ai-subscription-rationalization-2026-08",
+      "thesis": "People and small teams have accumulated AI subscriptions faster than they can judge them, and now need a way to decide which to keep, downgrade, consolidate or cancel. The buyer wants a defensible per-subscription decision, not a ranking of the best AI tools.",
+      "status": "SOURCE_CANDIDATE",
+      "promoted": true,
+      "supporting_signal_ids": [
+        "owned-funnel-commercial-intent-2026-08-27",
+        "saas-spend-waste-benchmark-2026-08-27",
+        "x-evaluation-cost-many-subscriptions-2026-08-29",
+        "ai-workflow-roi-content-saturation-2026-08-27"
+      ],
+      "all_signal_ids": [
+        "owned-funnel-commercial-intent-2026-08-27",
+        "saas-spend-waste-benchmark-2026-08-27",
+        "ai-workflow-roi-content-saturation-2026-08-27",
+        "x-unused-subscription-identification-2026-08-29",
+        "x-unused-ai-capacity-2026-08-29",
+        "x-subscription-vs-api-pricing-2026-08-29",
+        "x-expensive-subscription-lapse-2026-08-29",
+        "x-model-router-cheaper-routing-promotion-2026-08-29",
+        "x-evaluation-cost-many-subscriptions-2026-08-29",
+        "x-tool-fatigue-consolidation-preference-2026-08-29",
+        "x-tool-fatigue-quote-echo-2026-08-29"
+      ],
+      "corroboration_families": [
+        "builder_discussion",
+        "owned_behavior",
+        "search_demand",
+        "social_public_post"
+      ],
+      "corroboration_groups": [
+        "builder",
+        "owned",
+        "search",
+        "social_public"
+      ],
+      "corroboration_buckets": [
+        "DEMAND_SIGNAL",
+        "PAIN_SIGNAL",
+        "MONEY_SIGNAL"
+      ],
+      "corroboration_satisfied": true,
+      "corroboration_failures": [],
+      "excluded_as_dependent": [
+        {
+          "signal_id": "x-expensive-subscription-lapse-2026-08-29",
+          "conflicts_with": "x-evaluation-cost-many-subscriptions-2026-08-29",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the social_public independence group; this is weak corroboration by policy"
+        },
+        {
+          "signal_id": "x-subscription-vs-api-pricing-2026-08-29",
+          "conflicts_with": "x-evaluation-cost-many-subscriptions-2026-08-29",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the social_public independence group; this is weak corroboration by policy"
+        },
+        {
+          "signal_id": "x-tool-fatigue-consolidation-preference-2026-08-29",
+          "conflicts_with": "x-evaluation-cost-many-subscriptions-2026-08-29",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the social_public independence group; this is weak corroboration by policy"
+        },
+        {
+          "signal_id": "x-unused-ai-capacity-2026-08-29",
+          "conflicts_with": "x-evaluation-cost-many-subscriptions-2026-08-29",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the social_public independence group; this is weak corroboration by policy"
+        },
+        {
+          "signal_id": "x-unused-subscription-identification-2026-08-29",
+          "conflicts_with": "x-evaluation-cost-many-subscriptions-2026-08-29",
+          "independent": false,
+          "reason": "SAME_INDEPENDENCE_GROUP",
+          "detail": "both records sit in the social_public independence group; this is weak corroboration by policy"
+        }
+      ],
+      "excluded_as_non_independent_source": [
+        {
+          "signal_id": "x-model-router-cheaper-routing-promotion-2026-08-29",
+          "source_family": "social_public_post",
+          "post_type": "PROMOTIONAL",
+          "reason": "NOT_INDEPENDENT_DEMAND_EVIDENCE",
+          "detail": "A vendor advertising its own product is supply-side marketing. It shows somebody is selling into the problem; it is not evidence that buyers are asking for it."
+        },
+        {
+          "signal_id": "x-tool-fatigue-quote-echo-2026-08-29",
+          "source_family": "social_public_post",
+          "post_type": "QUOTE_ECHO",
+          "reason": "NOT_INDEPENDENT_DEMAND_EVIDENCE",
+          "detail": "A quote post of an already-recorded observation is the same original signal seen twice. Counting it would inflate the apparent amount of evidence."
+        }
+      ],
+      "expired_signal_ids": [],
+      "non_observed_signals": [],
+      "evidence_strength": "STRONG",
+      "external_consensus": false,
+      "money_evidence_note": "Owned commercial behaviour only. This demonstrates internal fit and must not be described as external market consensus.",
+      "revenue_signal_score": 70.98,
+      "revenue_signal_raw_score": 78.54,
+      "revenue_signal_band": "SOURCE_CANDIDATE",
+      "score_blocks": [],
+      "claim_strength": "EVIDENCE_BACKED",
+      "score_breakdown": {
+        "purchase_intent": {
+          "score": 6,
+          "weight": 4,
+          "contribution": 24,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 12,
+          "derived": false,
+          "note": "the recorded posts show cancel, substitution and plan-change intent, which is intent to act on cost; intent to buy anything published here is not observed and revenue-os/metrics.json still records stripe_live_payment_intents 0"
+        },
+        "pain_severity": {
+          "score": 8,
+          "weight": 3,
+          "contribution": 24,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 24,
+          "derived": false,
+          "note": "six independent organic observations across three distinct pain patterns - unused capacity, pricing confusion, tool fatigue - recorded in the 2026-08-29 pass, stated by the people paying rather than by a vendor"
+        },
+        "urgency": {
+          "score": 5,
+          "weight": 2,
+          "contribution": 10,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 5,
+          "derived": false,
+          "note": "subscriptions renew continuously, but no dated trigger specific to this thesis was observed in the pass"
+        },
+        "demand_growth": {
+          "score": 6,
+          "weight": 2,
+          "contribution": 12,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 6,
+          "derived": false,
+          "note": "inherited from the general AI spend growth record; not measured for this thesis"
+        },
+        "evidence_independence": {
+          "score": 10,
+          "weight": 3,
+          "contribution": 30,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 30,
+          "derived": true,
+          "note": "4 independent OBSERVED signal(s) across 4 independence group(s), 3 external"
+        },
+        "evidence_quality": {
+          "score": 7,
+          "weight": 3,
+          "contribution": 21,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 21,
+          "derived": true,
+          "note": "4 counted signal(s), mean tier 2.5, 100% carry a reference"
+        },
+        "existing_product_fit": {
+          "score": 8,
+          "weight": 4,
+          "contribution": 32,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 32,
+          "derived": true,
+          "note": "ai-saas-waste-calculator at fit 0.762, verification HTTP_VERIFIED"
+        },
+        "audience_fit": {
+          "score": 8,
+          "weight": 3,
+          "contribution": 24,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 24,
+          "derived": false,
+          "note": "the observed posts come from individual operators and small teams; ai-saas-waste-calculator declares smb_owner and ops_lead, so the destination already serves them, though its copy is written closer to a team than to a single freelancer"
+        },
+        "content_lens_fit": {
+          "score": 8,
+          "weight": 2,
+          "contribution": 16,
+          "evidence": "ASSUMPTION",
+          "evidence_multiplier": 0.5,
+          "adjusted_contribution": 8,
+          "derived": false,
+          "note": "a keep/downgrade/consolidate/cancel procedure is squarely practical_operator work; not yet demonstrated on the owned Signal lane for this audience"
+        },
+        "margin_fit": {
+          "score": 9,
+          "weight": 1,
+          "contribution": 9,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 9,
+          "derived": false,
+          "note": "digital products at 39 and 499 USD with no per-unit cost"
+        },
+        "differentiation": {
+          "score": 7,
+          "weight": 2,
+          "contribution": 14,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 14,
+          "derived": false,
+          "note": "the same recorded pass describes general AI-workflow-ROI content as saturated; a per-subscription decision procedure for individuals is narrower than that category and narrower than the CFO-facing spend pages already published"
+        },
+        "freshness": {
+          "score": 10,
+          "weight": 2,
+          "contribution": 20,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 20,
+          "derived": true,
+          "note": "mean 97% of the evidence TTL remains"
+        },
+        "automation_feasibility": {
+          "score": 9,
+          "weight": 1,
+          "contribution": 9,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 9,
+          "derived": false,
+          "note": "the destination is a live static calculator and the free-only publishing lane already ran end to end once; no new runtime is required"
+        },
+        "measurement_quality": {
+          "score": 7,
+          "weight": 3,
+          "contribution": 21,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 21,
+          "derived": false,
+          "note": "funnel_view, calculator_input and primary_cta_click fire on the destination, and the v2 CTA carries utm_term=vertical_id so this route is separable from the existing spend-accountability route in analytics; checkout is one hop downstream"
+        },
+        "operational_burden": {
+          "score": 8,
+          "weight": 2,
+          "contribution": 16,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 16,
+          "derived": false,
+          "note": "routes into an existing funnel with no new asset to maintain, and the vertical contract makes the theme reusable rather than a bespoke lane"
+        },
+        "safety": {
+          "score": 10,
+          "weight": 4,
+          "contribution": 40,
+          "evidence": "OBSERVED",
+          "evidence_multiplier": 1,
+          "adjusted_contribution": 40,
+          "derived": false,
+          "note": "free owned destination, no earnings claim, existing safety lane, and the in-post claims are mechanically prohibited by the candidate's prohibited_claims plus the v2 unsupported-statistic gate"
+        }
+      },
+      "derived_dimensions": [
+        "evidence_independence",
+        "evidence_quality",
+        "freshness",
+        "existing_product_fit"
+      ],
+      "best_existing_asset": "ai-saas-waste-calculator",
+      "asset_id": "ai-saas-waste-calculator",
+      "product_or_offer": "AI/SaaS Waste Calculator",
+      "primary_user_problem": "Cannot see how much of the current AI/SaaS spend is actually reducible before a renewal decision.",
+      "target_audience": [
+        "smb_owner",
+        "ops_lead",
+        "finance"
+      ],
+      "primary_cta": "Run the reducible-spend estimate",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "secondary_route": {
+        "asset_id": "ai-saas-spend-audit-checklist",
+        "destination_url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+        "role": "PURCHASE_PATH"
+      },
+      "asset_fit_score": 0.762,
+      "verification_state": "HTTP_VERIFIED",
+      "measurement_quality": "CTA_MEASURED_CHECKOUT_DOWNSTREAM",
+      "asset_fit_outcome": "EXISTING_ASSET_FIT",
+      "new_product_gate": "BLOCKED_EXISTING_ASSET_SUFFICIENT",
+      "product_created": false,
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "ai-saas-waste-calculator",
+          "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+          "cta": "Run the reducible-spend estimate"
+        },
+        {
+          "role": "PURCHASE_PATH",
+          "asset_id": "ai-saas-spend-audit-checklist",
+          "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+          "cta": null
+        }
+      ],
+      "eligible_audiences": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "eligible_lenses": [
+        "independent_builder",
+        "practical_operator",
+        "structural_reflection"
+      ],
+      "channel_candidates": [
+        {
+          "channel": "instagram",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "tiktok",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "youtube",
+          "automation": "AUTOMATED_VIA_BUFFER",
+          "human_required_reason": null
+        },
+        {
+          "channel": "devto",
+          "automation": "HUMAN_REQUIRED",
+          "human_required_reason": "no provider in distribution/provider-policy.json has publishingEnabled for this channel"
+        },
+        {
+          "channel": "pinterest",
+          "automation": "HUMAN_REQUIRED",
+          "human_required_reason": "no provider in distribution/provider-policy.json has publishingEnabled for this channel"
+        }
+      ],
+      "prohibited_claims": [
+        {
+          "claim_pattern": "/guaranteed\\s+(income|profit|revenue|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/risk[- ]?free\\s+(income|profit|returns?)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/get\\s+rich(\\s+quick)?/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/instant\\s+(income|profit|money)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\bno\\s+risk\\b/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/100%\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/\\$\\d+[kKmM]?\\s*(?:per|\\/)\\s*(?:day|week|month)/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "/passive\\s+income\\s+guaranteed/i",
+          "reason": "blocked by the existing acquisition safety gate (acquisition/lib/safety.mjs)"
+        },
+        {
+          "claim_pattern": "EXTERNAL_CONSENSUS",
+          "reason": "Owned commercial behaviour only. This demonstrates internal fit and must not be described as external market consensus."
+        },
+        {
+          "claim_pattern": "PURCHASE_AVAILABLE_ON_THIS_PAGE",
+          "reason": "ai-saas-waste-calculator has no live checkout of its own; the purchase happens downstream"
+        },
+        {
+          "claim_pattern": "VERIFIED_REVENUE_FROM_THIS_THESIS",
+          "reason": "no payment-provider record is attached to this candidate; revenue may not be claimed"
+        },
+        {
+          "claim_pattern": "IN_POST_CLAIM_AS_VERIFIED_FACT",
+          "reason": "social evidence observes that a post exists. Nothing written inside a post may be published as a verified fact without a primary source."
+        },
+        {
+          "claim_pattern": "UNVERIFIED_IN_POST_CLAIM: specific per-plan and per-token prices for named products",
+          "reason": "recorded as an UNVERIFIED_PUBLIC_CLAIM in the observation file; not checked against a primary source"
+        },
+        {
+          "claim_pattern": "UNVERIFIED_IN_POST_CLAIM: a cheaper or free alternative is adequate for the same work",
+          "reason": "recorded as an UNVERIFIED_PUBLIC_CLAIM in the observation file; not checked against a primary source"
+        },
+        {
+          "claim_pattern": "UNVERIFIED_IN_POST_CLAIM: routing through this product is cheaper",
+          "reason": "recorded as an UNVERIFIED_PUBLIC_CLAIM in the observation file; not checked against a primary source"
+        },
+        {
+          "claim_pattern": "UNVERIFIED_IN_POST_CLAIM: there are hundreds of comparable AI tools",
+          "reason": "recorded as an UNVERIFIED_PUBLIC_CLAIM in the observation file; not checked against a primary source"
+        },
+        {
+          "claim_pattern": "usage, pricing or market-share figures for any named third-party AI product",
+          "reason": "declared prohibited on the thesis"
+        },
+        {
+          "claim_pattern": "a recommendation to cancel a specific named third-party subscription",
+          "reason": "declared prohibited on the thesis"
+        },
+        {
+          "claim_pattern": "any claim made inside an observed public post presented as verified fact",
+          "reason": "declared prohibited on the thesis"
+        }
+      ],
+      "language": "en",
+      "freshness": {
+        "counted_signals": 4,
+        "newest_evidence_age_days": 0.12,
+        "oldest_evidence_age_days": 2.12,
+        "state": "FRESH"
+      },
+      "expiry": "2026-10-28T02:50:48.061Z",
+      "generated_at": "2026-08-29T02:50:48.098Z",
+      "handoff": {
+        "consumer": "acquisition/media-engine (Issue #52)",
+        "contract": "Only PROMOTED_STATUSES may be derived from. The media engine re-checks truth, localization, duplication and provider policy on its own; nothing here authorises a publish."
+      },
+      "history": [
+        {
+          "at": "2026-08-29T02:50:48.098Z",
+          "from_status": null,
+          "to_status": "SOURCE_CANDIDATE"
+        }
+      ]
     }
   ],
-  "updated_at": "2026-08-28T16:35:21.154Z"
+  "updated_at": "2026-08-29T02:50:48.100Z"
 }

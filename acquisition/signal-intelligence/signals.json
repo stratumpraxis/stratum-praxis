@@ -1,104 +1,444 @@
 {
   "version": 1,
-  "reviewed_at": "2026-08-28",
+  "reviewed_at": "2026-08-29",
   "purpose": "Issue #53 evidence set and the market theses it supports. Every OBSERVED record here was read out of a file in this repository and cites the exact key it was read from. No record was obtained from an external provider: acquisition/signal-intelligence/providers.json shows which providers are CONTRACT_ONLY, and a CONTRACT_ONLY provider is refused as a source of OBSERVED evidence by lib/normalize.mjs.",
   "evidence_note": "Nothing in this file was scraped, inferred from a trend, or written to make a thesis look better corroborated than it is. Two of the three theses below deliberately fail the 2-Signal Rule, and that is the correct current answer.",
   "theses": [
     {
       "thesis_id": "shadow-ai-spend-accountability-2026-08",
       "thesis": "Teams are accumulating unbudgeted AI and SaaS subscriptions, and someone now has to justify the total on a quarterly cycle. The buyer wants a defensible number before the next renewal, not a general automation pitch.",
-      "problem_keys": ["shadow_ai", "ai_saas_spend", "renewal_cost", "cost_visibility", "tool_overlap"],
-      "target_audience": ["finance", "ops_lead", "smb_owner"],
+      "problem_keys": [
+        "shadow_ai",
+        "ai_saas_spend",
+        "renewal_cost",
+        "cost_visibility",
+        "tool_overlap"
+      ],
+      "target_audience": [
+        "finance",
+        "ops_lead",
+        "smb_owner"
+      ],
       "language": "en",
       "acquisition_signal_ref": "shadow-ai-spend-accountability-2026-08",
       "scores": {
-        "purchase_intent": { "score": 6, "evidence": "ASSUMPTION", "note": "checkout_click fires on the owned funnel, but revenue-os/metrics.json records stripe_live_payment_intents 0; intent is observed, completion is not" },
-        "pain_severity": { "score": 8, "evidence": "OBSERVED", "note": "unbudgeted AI charges reported by 78% of CFO/IT leaders in the 2026-08-27 recorded pass" },
-        "urgency": { "score": 7, "evidence": "OBSERVED", "note": "the same pass records a move to quarterly AI/SaaS spend audits, which is a dated trigger" },
-        "demand_growth": { "score": 8, "evidence": "OBSERVED", "note": "enterprise AI spend +108% YoY in the same recorded pass" },
-        "evidence_independence": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived from the corroboration result at score time" },
-        "evidence_quality": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived from the tier and reference mix at score time" },
-        "existing_product_fit": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived from the asset-fit gate at score time" },
-        "audience_fit": { "score": 9, "evidence": "OBSERVED", "note": "finance / ops / SMB owner is exactly the audience the live AI & SaaS Spend funnel already declares" },
-        "content_lens_fit": { "score": 7, "evidence": "ASSUMPTION", "note": "a cost-visibility explanation should travel on the practical_operator lens; not yet demonstrated on these channels" },
-        "margin_fit": { "score": 9, "evidence": "OBSERVED", "note": "digital products at 39 and 499 USD with no per-unit cost" },
-        "differentiation": { "score": 5, "evidence": "OBSERVED", "note": "the same pass records general AI-workflow-ROI content as common and non-differentiated, so the angle must be narrower than the category" },
-        "freshness": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived from evidence age at score time" },
-        "automation_feasibility": { "score": 8, "evidence": "OBSERVED", "note": "the destination is a live static calculator; no new runtime is required" },
-        "measurement_quality": { "score": 6, "evidence": "OBSERVED", "note": "funnel_view, calculator_input and primary_cta_click fire on the destination; checkout is one hop downstream" },
-        "operational_burden": { "score": 7, "evidence": "OBSERVED", "note": "routes into an existing funnel with no new asset to maintain" },
-        "safety": { "score": 10, "evidence": "OBSERVED", "note": "free calculator, owned destination, no earnings claim, existing safety lane" }
+        "purchase_intent": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "checkout_click fires on the owned funnel, but revenue-os/metrics.json records stripe_live_payment_intents 0; intent is observed, completion is not"
+        },
+        "pain_severity": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "unbudgeted AI charges reported by 78% of CFO/IT leaders in the 2026-08-27 recorded pass"
+        },
+        "urgency": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "the same pass records a move to quarterly AI/SaaS spend audits, which is a dated trigger"
+        },
+        "demand_growth": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "enterprise AI spend +108% YoY in the same recorded pass"
+        },
+        "evidence_independence": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the corroboration result at score time"
+        },
+        "evidence_quality": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the tier and reference mix at score time"
+        },
+        "existing_product_fit": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the asset-fit gate at score time"
+        },
+        "audience_fit": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "finance / ops / SMB owner is exactly the audience the live AI & SaaS Spend funnel already declares"
+        },
+        "content_lens_fit": {
+          "score": 7,
+          "evidence": "ASSUMPTION",
+          "note": "a cost-visibility explanation should travel on the practical_operator lens; not yet demonstrated on these channels"
+        },
+        "margin_fit": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "digital products at 39 and 499 USD with no per-unit cost"
+        },
+        "differentiation": {
+          "score": 5,
+          "evidence": "OBSERVED",
+          "note": "the same pass records general AI-workflow-ROI content as common and non-differentiated, so the angle must be narrower than the category"
+        },
+        "freshness": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from evidence age at score time"
+        },
+        "automation_feasibility": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "the destination is a live static calculator; no new runtime is required"
+        },
+        "measurement_quality": {
+          "score": 6,
+          "evidence": "OBSERVED",
+          "note": "funnel_view, calculator_input and primary_cta_click fire on the destination; checkout is one hop downstream"
+        },
+        "operational_burden": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "routes into an existing funnel with no new asset to maintain"
+        },
+        "safety": {
+          "score": 10,
+          "evidence": "OBSERVED",
+          "note": "free calculator, owned destination, no earnings claim, existing safety lane"
+        }
       }
     },
     {
       "thesis_id": "ai-agent-payback-uncertainty-2026-08",
       "thesis": "Teams evaluating AI agents cannot state a payback period once human-review overhead is counted, so the purchase stalls at the business-case step.",
-      "problem_keys": ["ai_agent_cost", "agent_roi", "payback_period", "human_review_overhead"],
-      "target_audience": ["ops_lead", "engineering_lead", "founder"],
+      "problem_keys": [
+        "ai_agent_cost",
+        "agent_roi",
+        "payback_period",
+        "human_review_overhead"
+      ],
+      "target_audience": [
+        "ops_lead",
+        "engineering_lead",
+        "founder"
+      ],
       "language": "en",
       "acquisition_signal_ref": "ai-agent-payback-uncertainty-2026-08",
       "scores": {
-        "purchase_intent": { "score": 5, "evidence": "ASSUMPTION", "note": "the ROI calculator carries a live payment link, but no purchase or checkout has been attributed to this thesis" },
-        "pain_severity": { "score": 7, "evidence": "ASSUMPTION", "note": "plausible from the recorded budget-accountability evidence, but no pain record specific to agent payback has been observed" },
-        "urgency": { "score": 5, "evidence": "HYPOTHESIS", "note": "no dated trigger has been observed for this thesis" },
-        "demand_growth": { "score": 6, "evidence": "ASSUMPTION", "note": "inherited from the general AI spend growth record, not measured for this thesis" },
-        "evidence_independence": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "evidence_quality": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "existing_product_fit": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "audience_fit": { "score": 8, "evidence": "OBSERVED", "note": "revenue-link-ledger.md records ai-agent-cost-roi-calculator.html as a live entry built for this audience" },
-        "content_lens_fit": { "score": 7, "evidence": "ASSUMPTION", "note": "fits independent_builder framing" },
-        "margin_fit": { "score": 9, "evidence": "OBSERVED", "note": "digital product, no per-unit cost" },
-        "differentiation": { "score": 6, "evidence": "ASSUMPTION", "note": "human-review overhead is a narrower angle than generic agent ROI, but this has not been checked against a competitor set" },
-        "freshness": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "automation_feasibility": { "score": 8, "evidence": "OBSERVED", "note": "existing live calculator" },
-        "measurement_quality": { "score": 6, "evidence": "OBSERVED", "note": "calculator_input and primary_cta_click fire on the destination" },
-        "operational_burden": { "score": 7, "evidence": "OBSERVED", "note": "no new asset required" },
-        "safety": { "score": 10, "evidence": "OBSERVED", "note": "free calculator, owned destination, no earnings claim" }
+        "purchase_intent": {
+          "score": 5,
+          "evidence": "ASSUMPTION",
+          "note": "the ROI calculator carries a live payment link, but no purchase or checkout has been attributed to this thesis"
+        },
+        "pain_severity": {
+          "score": 7,
+          "evidence": "ASSUMPTION",
+          "note": "plausible from the recorded budget-accountability evidence, but no pain record specific to agent payback has been observed"
+        },
+        "urgency": {
+          "score": 5,
+          "evidence": "HYPOTHESIS",
+          "note": "no dated trigger has been observed for this thesis"
+        },
+        "demand_growth": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "inherited from the general AI spend growth record, not measured for this thesis"
+        },
+        "evidence_independence": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "evidence_quality": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "existing_product_fit": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "audience_fit": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "revenue-link-ledger.md records ai-agent-cost-roi-calculator.html as a live entry built for this audience"
+        },
+        "content_lens_fit": {
+          "score": 7,
+          "evidence": "ASSUMPTION",
+          "note": "fits independent_builder framing"
+        },
+        "margin_fit": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "digital product, no per-unit cost"
+        },
+        "differentiation": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "human-review overhead is a narrower angle than generic agent ROI, but this has not been checked against a competitor set"
+        },
+        "freshness": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "automation_feasibility": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "existing live calculator"
+        },
+        "measurement_quality": {
+          "score": 6,
+          "evidence": "OBSERVED",
+          "note": "calculator_input and primary_cta_click fire on the destination"
+        },
+        "operational_burden": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "no new asset required"
+        },
+        "safety": {
+          "score": 10,
+          "evidence": "OBSERVED",
+          "note": "free calculator, owned destination, no earnings claim"
+        }
       }
     },
     {
       "thesis_id": "repeat-visit-retention-architecture-2026-08",
       "thesis": "Site owners want a reason for readers to return rather than more articles, and treat recurring checking behaviour as the asset.",
-      "problem_keys": ["repeat_visits", "retention_architecture"],
-      "target_audience": ["creator", "founder", "site_owner"],
+      "problem_keys": [
+        "repeat_visits",
+        "retention_architecture"
+      ],
+      "target_audience": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
       "language": "en",
       "acquisition_signal_ref": "return-gate-repeat-visit-demand-2026-08",
       "scores": {
-        "purchase_intent": { "score": 2, "evidence": "OBSERVED", "note": "return-gate-growth-os.html renders 'Direct checkout temporarily paused' and carries no payment link, so no purchase is currently possible on this route" },
-        "pain_severity": { "score": 6, "evidence": "ASSUMPTION", "note": "argued in the owner's completed source package; not corroborated by an external observation" },
-        "urgency": { "score": 3, "evidence": "HYPOTHESIS", "note": "no dated trigger observed" },
-        "demand_growth": { "score": 4, "evidence": "HYPOTHESIS", "note": "no growth measurement exists for this thesis" },
-        "evidence_independence": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "evidence_quality": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "existing_product_fit": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "audience_fit": { "score": 7, "evidence": "ASSUMPTION", "note": "creator and site-owner audience is declared but not measured" },
-        "content_lens_fit": { "score": 9, "evidence": "OBSERVED", "note": "a COMPLETE owner-approved source package on exactly this thesis exists in content/note-publish-queue/" },
-        "margin_fit": { "score": 5, "evidence": "OBSERVED", "note": "the matching product's checkout is paused, so margin cannot currently be realised" },
-        "differentiation": { "score": 7, "evidence": "ASSUMPTION", "note": "the source package takes a structural angle rather than a listicle angle" },
-        "freshness": { "score": 0, "evidence": "OBSERVED", "note": "placeholder; derived" },
-        "automation_feasibility": { "score": 7, "evidence": "OBSERVED", "note": "existing pages, no new runtime" },
-        "measurement_quality": { "score": 4, "evidence": "OBSERVED", "note": "return_gate_view and return_gate_return fire, but the sample is 3 pageviews in 7 days" },
-        "operational_burden": { "score": 6, "evidence": "OBSERVED", "note": "no new asset required" },
-        "safety": { "score": 10, "evidence": "OBSERVED", "note": "owned destination, no earnings claim" }
+        "purchase_intent": {
+          "score": 2,
+          "evidence": "OBSERVED",
+          "note": "return-gate-growth-os.html renders 'Direct checkout temporarily paused' and carries no payment link, so no purchase is currently possible on this route"
+        },
+        "pain_severity": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "argued in the owner's completed source package; not corroborated by an external observation"
+        },
+        "urgency": {
+          "score": 3,
+          "evidence": "HYPOTHESIS",
+          "note": "no dated trigger observed"
+        },
+        "demand_growth": {
+          "score": 4,
+          "evidence": "HYPOTHESIS",
+          "note": "no growth measurement exists for this thesis"
+        },
+        "evidence_independence": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "evidence_quality": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "existing_product_fit": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "audience_fit": {
+          "score": 7,
+          "evidence": "ASSUMPTION",
+          "note": "creator and site-owner audience is declared but not measured"
+        },
+        "content_lens_fit": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "a COMPLETE owner-approved source package on exactly this thesis exists in content/note-publish-queue/"
+        },
+        "margin_fit": {
+          "score": 5,
+          "evidence": "OBSERVED",
+          "note": "the matching product's checkout is paused, so margin cannot currently be realised"
+        },
+        "differentiation": {
+          "score": 7,
+          "evidence": "ASSUMPTION",
+          "note": "the source package takes a structural angle rather than a listicle angle"
+        },
+        "freshness": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived"
+        },
+        "automation_feasibility": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "existing pages, no new runtime"
+        },
+        "measurement_quality": {
+          "score": 4,
+          "evidence": "OBSERVED",
+          "note": "return_gate_view and return_gate_return fire, but the sample is 3 pageviews in 7 days"
+        },
+        "operational_burden": {
+          "score": 6,
+          "evidence": "OBSERVED",
+          "note": "no new asset required"
+        },
+        "safety": {
+          "score": 10,
+          "evidence": "OBSERVED",
+          "note": "owned destination, no earnings claim"
+        }
+      }
+    },
+    {
+      "thesis_id": "ai-subscription-rationalization-2026-08",
+      "thesis": "People and small teams have accumulated AI subscriptions faster than they can judge them, and now need a way to decide which to keep, downgrade, consolidate or cancel. The buyer wants a defensible per-subscription decision, not a ranking of the best AI tools.",
+      "problem_keys": [
+        "ai_saas_spend",
+        "tool_overlap",
+        "cost_visibility",
+        "subscription_rationalization"
+      ],
+      "target_audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "language": "en",
+      "acquisition_signal_ref": "ai-subscription-rationalization-2026-08",
+      "vertical_id": "ai_subscription_rationalization",
+      "prohibited_claims": [
+        "usage, pricing or market-share figures for any named third-party AI product",
+        "a recommendation to cancel a specific named third-party subscription",
+        "any claim made inside an observed public post presented as verified fact"
+      ],
+      "scores": {
+        "purchase_intent": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "the recorded posts show cancel, substitution and plan-change intent, which is intent to act on cost; intent to buy anything published here is not observed and revenue-os/metrics.json still records stripe_live_payment_intents 0"
+        },
+        "pain_severity": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "six independent organic observations across three distinct pain patterns - unused capacity, pricing confusion, tool fatigue - recorded in the 2026-08-29 pass, stated by the people paying rather than by a vendor"
+        },
+        "urgency": {
+          "score": 5,
+          "evidence": "ASSUMPTION",
+          "note": "subscriptions renew continuously, but no dated trigger specific to this thesis was observed in the pass"
+        },
+        "demand_growth": {
+          "score": 6,
+          "evidence": "ASSUMPTION",
+          "note": "inherited from the general AI spend growth record; not measured for this thesis"
+        },
+        "evidence_independence": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the corroboration result at score time"
+        },
+        "evidence_quality": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the tier and reference mix at score time"
+        },
+        "existing_product_fit": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from the asset-fit gate at score time"
+        },
+        "audience_fit": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "the observed posts come from individual operators and small teams; ai-saas-waste-calculator declares smb_owner and ops_lead, so the destination already serves them, though its copy is written closer to a team than to a single freelancer"
+        },
+        "content_lens_fit": {
+          "score": 8,
+          "evidence": "ASSUMPTION",
+          "note": "a keep/downgrade/consolidate/cancel procedure is squarely practical_operator work; not yet demonstrated on the owned Signal lane for this audience"
+        },
+        "margin_fit": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "digital products at 39 and 499 USD with no per-unit cost"
+        },
+        "differentiation": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "the same recorded pass describes general AI-workflow-ROI content as saturated; a per-subscription decision procedure for individuals is narrower than that category and narrower than the CFO-facing spend pages already published"
+        },
+        "freshness": {
+          "score": 0,
+          "evidence": "OBSERVED",
+          "note": "placeholder; derived from evidence age at score time"
+        },
+        "automation_feasibility": {
+          "score": 9,
+          "evidence": "OBSERVED",
+          "note": "the destination is a live static calculator and the free-only publishing lane already ran end to end once; no new runtime is required"
+        },
+        "measurement_quality": {
+          "score": 7,
+          "evidence": "OBSERVED",
+          "note": "funnel_view, calculator_input and primary_cta_click fire on the destination, and the v2 CTA carries utm_term=vertical_id so this route is separable from the existing spend-accountability route in analytics; checkout is one hop downstream"
+        },
+        "operational_burden": {
+          "score": 8,
+          "evidence": "OBSERVED",
+          "note": "routes into an existing funnel with no new asset to maintain, and the vertical contract makes the theme reusable rather than a bespoke lane"
+        },
+        "safety": {
+          "score": 10,
+          "evidence": "OBSERVED",
+          "note": "free owned destination, no earnings claim, existing safety lane, and the in-post claims are mechanically prohibited by the candidate's prohibited_claims plus the v2 unsupported-statistic gate"
+        }
       }
     }
   ],
   "signals": [
     {
       "signal_id": "owned-funnel-commercial-intent-2026-08-27",
-      "thesis_ids": ["shadow-ai-spend-accountability-2026-08"],
+      "thesis_ids": [
+        "shadow-ai-spend-accountability-2026-08",
+        "ai-subscription-rationalization-2026-08"
+      ],
       "source_family": "owned_behavior",
-      "evidence_buckets": ["MONEY_SIGNAL"],
+      "evidence_buckets": [
+        "MONEY_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-27T00:00:00Z",
       "url_or_reference": "revenue-os/metrics.json#distribution_baseline_2026_08_27.downstream_events_last_30d",
       "topic": "Owned funnel commercial intent",
-      "topic_keys": ["ai_saas_spend", "shadow_ai", "cost_visibility"],
-      "audience": ["finance", "ops_lead", "smb_owner"],
+      "topic_keys": [
+        "ai_saas_spend",
+        "shadow_ai",
+        "cost_visibility"
+      ],
+      "audience": [
+        "finance",
+        "ops_lead",
+        "smb_owner"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "PostHog-recorded owned funnel behaviour for the 30 days to 2026-08-27: 56 funnel_view, 15 primary_cta_click, 17 checkout_click. Commercial intent exists on the owned funnel. These counts are site-wide rather than attributed to any one thesis, verified_social_utm_pageviews_last_30d is 0, and revenue-os/metrics.json records stripe_live_payment_intents 0, so no purchase has occurred.",
-      "commercial_intent_indicators": ["primary_cta_click", "checkout_click"],
+      "commercial_intent_indicators": [
+        "primary_cta_click",
+        "checkout_click"
+      ],
       "evidence_class": "OBSERVED",
       "confidence": 0.5,
       "rights_policy_notes": "The operator's own analytics. No third-party rights and no scraping involved.",
@@ -106,19 +446,35 @@
     },
     {
       "signal_id": "saas-spend-waste-benchmark-2026-08-27",
-      "thesis_ids": ["shadow-ai-spend-accountability-2026-08"],
+      "thesis_ids": [
+        "shadow-ai-spend-accountability-2026-08",
+        "ai-subscription-rationalization-2026-08"
+      ],
       "source_family": "search_demand",
-      "evidence_buckets": ["DEMAND_SIGNAL", "PAIN_SIGNAL"],
+      "evidence_buckets": [
+        "DEMAND_SIGNAL",
+        "PAIN_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-27T00:00:00Z",
       "url_or_reference": "revenue-os/metrics.json#market_signal_loop_2026_08_27.signals_collected[0]",
       "topic": "SaaS and AI subscription waste benchmarks",
-      "topic_keys": ["ai_saas_spend", "tool_overlap", "cost_visibility"],
-      "audience": ["finance", "ops_lead", "smb_owner"],
+      "topic_keys": [
+        "ai_saas_spend",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "finance",
+        "ops_lead",
+        "smb_owner"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "A recorded public-search pass on 2026-08-27 found SaaS and AI subscription waste widely reported at 25-30% of spend, with AI subscription proliferation described as three AI assistants doing the same job. The pass names Zylo SaaS spend management material, RedHub AI SaaS cost and audit posts, and a G2 2026 SaaS spend management roundup.",
-      "commercial_intent_indicators": ["spend_reduction_target"],
+      "commercial_intent_indicators": [
+        "spend_reduction_target"
+      ],
       "evidence_class": "OBSERVED",
       "confidence": 0.6,
       "rights_policy_notes": "Public search results summarised by the operator into revenue-os/metrics.json. No content was copied and no login-required or scraped source was used; the recorded pass states public search only.",
@@ -126,19 +482,37 @@
     },
     {
       "signal_id": "shadow-ai-cfo-accountability-2026-08-27",
-      "thesis_ids": ["shadow-ai-spend-accountability-2026-08", "ai-agent-payback-uncertainty-2026-08"],
+      "thesis_ids": [
+        "shadow-ai-spend-accountability-2026-08",
+        "ai-agent-payback-uncertainty-2026-08"
+      ],
       "source_family": "industry_change",
-      "evidence_buckets": ["PAIN_SIGNAL", "MONEY_SIGNAL"],
+      "evidence_buckets": [
+        "PAIN_SIGNAL",
+        "MONEY_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-27T00:00:00Z",
       "url_or_reference": "revenue-os/metrics.json#market_signal_loop_2026_08_27.signals_collected[1]",
       "topic": "Shadow AI spend and CFO budget accountability",
-      "topic_keys": ["shadow_ai", "renewal_cost", "ai_agent_cost", "agent_roi"],
-      "audience": ["finance", "ops_lead"],
+      "topic_keys": [
+        "shadow_ai",
+        "renewal_cost",
+        "ai_agent_cost",
+        "agent_roi"
+      ],
+      "audience": [
+        "finance",
+        "ops_lead"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "The same recorded pass found shadow AI spend and CFO budget accountability described as a distinct 2026 term: enterprise AI spend up 108% year on year, 78% of CFO and IT leaders reporting unbudgeted AI charges, organisations moving to quarterly AI and SaaS spend audits, and some capping per-tool or per-employee AI spend.",
-      "commercial_intent_indicators": ["budget_reallocation", "spend_caps", "quarterly_audit_cycle"],
+      "commercial_intent_indicators": [
+        "budget_reallocation",
+        "spend_caps",
+        "quarterly_audit_cycle"
+      ],
       "evidence_class": "OBSERVED",
       "confidence": 0.6,
       "rights_policy_notes": "Public search results summarised by the operator. No content copied.",
@@ -146,15 +520,26 @@
     },
     {
       "signal_id": "ai-workflow-roi-content-saturation-2026-08-27",
-      "thesis_ids": ["shadow-ai-spend-accountability-2026-08"],
+      "thesis_ids": [
+        "shadow-ai-spend-accountability-2026-08",
+        "ai-subscription-rationalization-2026-08"
+      ],
       "source_family": "builder_discussion",
-      "evidence_buckets": ["DEMAND_SIGNAL"],
+      "evidence_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-27T00:00:00Z",
       "url_or_reference": "revenue-os/metrics.json#market_signal_loop_2026_08_27.signals_collected[2]",
       "topic": "AI workflow automation ROI content saturation",
-      "topic_keys": ["ai_saas_spend", "agent_roi"],
-      "audience": ["ops_lead", "engineering_lead"],
+      "topic_keys": [
+        "ai_saas_spend",
+        "agent_roi"
+      ],
+      "audience": [
+        "ops_lead",
+        "engineering_lead"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "The same pass recorded that general SMB AI-workflow-automation ROI content is common and non-differentiated in aggregate dev community posts, with no distinct new angle found. This is demand that already exists and is already served, so it lowers the differentiation score rather than raising confidence.",
@@ -166,15 +551,27 @@
     },
     {
       "signal_id": "agent-payback-overhead-assumption-2026-08",
-      "thesis_ids": ["ai-agent-payback-uncertainty-2026-08"],
+      "thesis_ids": [
+        "ai-agent-payback-uncertainty-2026-08"
+      ],
       "source_family": "search_demand",
-      "evidence_buckets": ["PAIN_SIGNAL"],
+      "evidence_buckets": [
+        "PAIN_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-28T00:00:00Z",
       "url_or_reference": "acquisition/demand-signals.json#ai-agent-payback-uncertainty-2026-08.observed_basis",
       "topic": "Agent payback period once human review is counted",
-      "topic_keys": ["agent_roi", "payback_period", "human_review_overhead"],
-      "audience": ["ops_lead", "engineering_lead", "founder"],
+      "topic_keys": [
+        "agent_roi",
+        "payback_period",
+        "human_review_overhead"
+      ],
+      "audience": [
+        "ops_lead",
+        "engineering_lead",
+        "founder"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "The acquisition demand signal for this thesis cites only that a live calculator page was built for the intent and that it carries a payment link. That is an asset fact, not a demand observation, so this record is filed as an assumption about buyer behaviour rather than as evidence of it.",
@@ -186,15 +583,26 @@
     },
     {
       "signal_id": "return-gate-owned-traffic-2026-08-27",
-      "thesis_ids": ["repeat-visit-retention-architecture-2026-08"],
+      "thesis_ids": [
+        "repeat-visit-retention-architecture-2026-08"
+      ],
       "source_family": "owned_behavior",
-      "evidence_buckets": ["DEMAND_SIGNAL"],
+      "evidence_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "provider": "repository_records",
       "observed_at": "2026-08-27T00:00:00Z",
       "url_or_reference": "revenue-os/metrics.json#distribution_baseline_2026_08_27.return_gate_pageviews_last_7d",
       "topic": "Return Gate owned traffic",
-      "topic_keys": ["repeat_visits", "retention_architecture"],
-      "audience": ["creator", "founder", "site_owner"],
+      "topic_keys": [
+        "repeat_visits",
+        "retention_architecture"
+      ],
+      "audience": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
       "geography": "GLOBAL",
       "language": "en",
       "observation_summary": "Three Return Gate pageviews were recorded in the seven days to 2026-08-27, and the measurement note states the pageviews in that window were reported as direct referrer traffic. This is a measured number and it is very small; it is not evidence of external demand.",
@@ -206,15 +614,26 @@
     },
     {
       "signal_id": "owner-source-repeat-visit-package-2026-08-26",
-      "thesis_ids": ["repeat-visit-retention-architecture-2026-08"],
+      "thesis_ids": [
+        "repeat-visit-retention-architecture-2026-08"
+      ],
       "source_family": "editorial_source",
-      "evidence_buckets": ["DEMAND_SIGNAL"],
+      "evidence_buckets": [
+        "DEMAND_SIGNAL"
+      ],
       "provider": "owner_source_material",
       "observed_at": "2026-08-26T00:00:00Z",
       "url_or_reference": "content/note-publish-queue/2026-08-26-repeat-visit-sites-win.md",
       "topic": "Recurring checking behaviour as a site asset",
-      "topic_keys": ["repeat_visits", "retention_architecture"],
-      "audience": ["creator", "founder", "site_owner"],
+      "topic_keys": [
+        "repeat_visits",
+        "retention_architecture"
+      ],
+      "audience": [
+        "creator",
+        "founder",
+        "site_owner"
+      ],
       "geography": "GLOBAL",
       "language": "ja",
       "observation_summary": "A COMPLETE owner-approved source package argues that recurring checking behaviour, rather than article volume, is what makes a site durable, and works through public examples of services built on that behaviour. It is owner-authored material and shares the owned independence group with the operator's own analytics.",
@@ -223,6 +642,392 @@
       "confidence": 0.5,
       "rights_policy_notes": "Owner-authored. content/note-publish-queue/README.md defines the COMPLETE criteria this package meets.",
       "shared_origin_key": "owner-note-repeat-visit-2026-08"
+    },
+    {
+      "signal_id": "x-unused-subscription-identification-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL",
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-unused-subscription-identification",
+      "topic": "Wanting to identify barely-used paid subscriptions",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Recorded pass over public posts on X, 2026-08-29: people explicitly asking for a way to find which of the subscriptions they pay for they barely use. The want is stated by the payer, not inferred from a vendor survey. What is observed is that the language exists; no count, rate or amount is established.",
+      "commercial_intent_indicators": [
+        "cancel_intent",
+        "cost_reduction_intent"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-unused-subscription-identification",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [],
+        "factual_verification_required_before_publication": false
+      }
+    },
+    {
+      "signal_id": "x-unused-ai-capacity-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-unused-ai-capacity-and-credits",
+      "topic": "Unused AI subscription capacity and unused credits",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: unused AI subscription capacity, and unused cloud or AI credits, being discussed as money already spent rather than as a technical limit. Nothing about the size of that waste is established by the posts.",
+      "commercial_intent_indicators": [
+        "cost_reduction_intent"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-unused-ai-capacity-and-credits",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [],
+        "factual_verification_required_before_publication": false
+      }
+    },
+    {
+      "signal_id": "x-subscription-vs-api-pricing-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-subscription-vs-api-pricing-comparison",
+      "topic": "Subscription pricing compared against API pricing",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: users comparing a flat subscription against per-token API pricing for the same underlying capability and being unable to tell which is cheaper at their own volume. The comparison behaviour is what is observed.",
+      "commercial_intent_indicators": [
+        "price_comparison",
+        "plan_change_intent"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-subscription-vs-api-pricing-comparison",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [
+          {
+            "claim": "specific per-plan and per-token prices for named products",
+            "status": "UNVERIFIED_PUBLIC_CLAIM",
+            "reason": "Prices change and were not checked against any vendor pricing page. No figure from these posts may be published."
+          }
+        ],
+        "factual_verification_required_before_publication": true
+      }
+    },
+    {
+      "signal_id": "x-expensive-subscription-lapse-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL",
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-expensive-subscription-allowed-to-lapse",
+      "topic": "Expensive subscriptions allowed to lapse in favour of cheaper options",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: people letting an expensive subscription expire because a free or cheaper alternative now looks adequate for the work they actually do with it. The lapse decision is the observation; the adequacy judgement inside it is one person's view of their own workload.",
+      "commercial_intent_indicators": [
+        "cancel_intent",
+        "substitution_intent"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-expensive-subscription-allowed-to-lapse",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [
+          {
+            "claim": "a cheaper or free alternative is adequate for the same work",
+            "status": "UNVERIFIED_PUBLIC_CLAIM",
+            "reason": "An individual's judgement about their own workload, not a product comparison."
+          }
+        ],
+        "factual_verification_required_before_publication": true
+      }
+    },
+    {
+      "signal_id": "x-model-router-cheaper-routing-promotion-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-model-router-cheaper-routing-promotion",
+      "topic": "Model router advertising cheaper qualified-provider routing",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: a model router promoting cheaper routing to qualified providers. Recorded because it shows somebody is selling into this problem, which is a differentiation input rather than demand.",
+      "commercial_intent_indicators": [
+        "vendor_promotion"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "PROMOTIONAL",
+        "independent_demand_evidence": false,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-model-router-cheaper-routing-promotion",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [
+          {
+            "claim": "routing through this product is cheaper",
+            "status": "UNVERIFIED_PUBLIC_CLAIM",
+            "reason": "A vendor's own cost claim about its own product."
+          }
+        ],
+        "factual_verification_required_before_publication": true,
+        "non_independence_reason": "A vendor advertising its own product is supply-side marketing. It shows somebody is selling into the problem; it is not evidence that buyers are asking for it."
+      }
+    },
+    {
+      "signal_id": "x-evaluation-cost-many-subscriptions-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL",
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-evaluating-peak-tools-requires-many-subscriptions",
+      "topic": "Evaluating current best-in-class AI tools requires several paid subscriptions",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: complaints that keeping up with the current best AI tools means holding several paid subscriptions simultaneously, so evaluation itself carries a monthly cost.",
+      "commercial_intent_indicators": [
+        "evaluation_cost"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-evaluating-peak-tools-requires-many-subscriptions",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [],
+        "factual_verification_required_before_publication": false
+      }
+    },
+    {
+      "signal_id": "x-tool-fatigue-consolidation-preference-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL",
+        "DEMAND_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-tool-fatigue-too-many-to-evaluate",
+      "topic": "AI tool fatigue and a stated preference for fewer connected tools",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass, and consistent with an earlier owner-recorded pattern: too many AI tools to evaluate, difficulty finding signal among the available options, and a stated preference for a few connected tools over a large collection.",
+      "commercial_intent_indicators": [
+        "consolidation_intent"
+      ],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "ORGANIC_USER_POST",
+        "independent_demand_evidence": true,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-tool-fatigue-too-many-to-evaluate",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [
+          {
+            "claim": "there are hundreds of comparable AI tools",
+            "status": "UNVERIFIED_PUBLIC_CLAIM",
+            "reason": "A rhetorical count, not a counted market. No tool-count figure may be published."
+          }
+        ],
+        "factual_verification_required_before_publication": true,
+        "prior_observation_note": "Independently observed by the owner in an earlier pass and re-observed here."
+      },
+      "shared_origin_key": "x-tool-fatigue-too-many-to-evaluate"
+    },
+    {
+      "signal_id": "x-tool-fatigue-quote-echo-2026-08-29",
+      "thesis_ids": [
+        "ai-subscription-rationalization-2026-08"
+      ],
+      "source_family": "social_public_post",
+      "evidence_buckets": [
+        "PAIN_SIGNAL"
+      ],
+      "provider": "x_public_posts",
+      "observed_at": "2026-08-29T00:00:00Z",
+      "url_or_reference": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-quote-echo-of-tool-fatigue",
+      "topic": "Quote post restating the tool-fatigue complaint",
+      "topic_keys": [
+        "ai_saas_spend",
+        "subscription_rationalization",
+        "tool_overlap",
+        "cost_visibility"
+      ],
+      "audience": [
+        "solo_operator",
+        "freelancer",
+        "smb_owner",
+        "team_lead"
+      ],
+      "geography": "GLOBAL",
+      "language": "en",
+      "observation_summary": "Same recorded pass: a quote post repeating the tool-fatigue observation already recorded above. Kept in the register so the echo is visible rather than silently dropped.",
+      "commercial_intent_indicators": [],
+      "evidence_class": "OBSERVED",
+      "confidence": 0.5,
+      "rights_policy_notes": "Public posts read by the owner and recorded as an aggregate observation. No post is quoted, linked, scraped or reproduced; no account is named. No X API credential exists in this repository.",
+      "content_integrity": {
+        "post_type": "QUOTE_ECHO",
+        "independent_demand_evidence": false,
+        "observed_claim_scope": "POST_EXISTENCE_ONLY",
+        "observation_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json#x-quote-echo-of-tool-fatigue",
+        "post_identity_state": "UNRECORDED_PENDING_OWNER_ENTRY",
+        "claims_inside_post": [],
+        "factual_verification_required_before_publication": false,
+        "non_independence_reason": "A quote post of an already-recorded observation is the same original signal seen twice. Counting it would inflate the apparent amount of evidence."
+      },
+      "shared_origin_key": "x-tool-fatigue-too-many-to-evaluate"
     }
   ]
 }

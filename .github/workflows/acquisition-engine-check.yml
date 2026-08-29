@@ -43,7 +43,8 @@ jobs:
           set -euo pipefail
           for file in acquisition/lib/*.mjs acquisition/cli/*.mjs acquisition/test/*.mjs \
                       acquisition/signal-intelligence/lib/*.mjs acquisition/signal-intelligence/cli/*.mjs acquisition/signal-intelligence/test/*.mjs \
-                      acquisition/media-engine/lib/*.mjs acquisition/media-engine/cli/*.mjs acquisition/media-engine/test/*.mjs; do
+                      acquisition/media-engine/lib/*.mjs acquisition/media-engine/cli/*.mjs acquisition/media-engine/test/*.mjs \
+                      acquisition/blogger/*.mjs acquisition/blogger/lib/*.mjs acquisition/blogger/test/*.mjs; do
             node --check "$file"
           done
           for file in $(find acquisition -name '*.json'); do
@@ -56,6 +57,7 @@ jobs:
           node --test 'acquisition/test/*.test.mjs'
           node --test 'acquisition/signal-intelligence/test/*.test.mjs'
           node --test 'acquisition/media-engine/test/*.test.mjs'
+          node --test 'acquisition/blogger/test/*.test.mjs'
 
       - name: Verify asset inventory (offline)
         run: node acquisition/cli/verify-inventory.mjs
@@ -109,6 +111,46 @@ jobs:
             if (report.q11_safety.publishes_performed !== 0) { console.error('a publish was claimed'); process.exit(1); }
             if (report.q11_safety.accounts_created !== 0) { console.error('an account creation was claimed'); process.exit(1); }
             console.log('No auto-publish lane, no publish and no account creation is claimed.');
+          "
+
+      - name: Revenue verticals - contract and single-opportunity selection (read-only)
+        run: |
+          set -euo pipefail
+          node --input-type=module -e "
+            const { loadVerticals, selectOpportunity } = await import('./acquisition/lib/vertical.mjs');
+            const { readJson } = await import('./acquisition/lib/util.mjs');
+            const verticals = await loadVerticals();
+            const store = await readJson('acquisition/signal-intelligence/candidates.json');
+            const selection = selectOpportunity(verticals, store.candidates || []);
+            for (const a of selection.assessments) {
+              console.log(a.vertical_id + '\t' + (a.eligible ? 'ELIGIBLE ' + a.opportunity_score : 'NOT_ELIGIBLE: ' + a.reasons.join('; ')));
+            }
+            if (selection.eligible.length > 1 && selection.eligible[0].opportunity_score < selection.eligible[1].opportunity_score) {
+              console.error('selection is not ranked'); process.exit(1);
+            }
+            for (const v of verticals.verticals) {
+              if (v.new_product_gate === 'OPEN') { console.error(v.vertical_id + ' opened the new-product gate'); process.exit(1); }
+            }
+            console.log('SELECTED ' + (selection.selected ? selection.selected.vertical_id : 'none'));
+          "
+
+      - name: Confirm the publisher lane is free-only and claims no publication
+        run: |
+          set -euo pipefail
+          grep -q 'FREE_ONLY_NO_PAID_FALLBACK' acquisition/blogger/free-runner.mjs
+          # The test directory names these hosts on purpose, to assert their absence.
+          if grep -RnE 'api\.openai\.com|api\.anthropic\.com|generativelanguage\.googleapis\.com|api\.mistral\.ai|api\.cohere\.ai' \
+               --exclude-dir=test acquisition/blogger/; then
+            echo 'a billable provider endpoint appeared in the publisher lane'; exit 1
+          fi
+          node -e "
+            const fs = require('node:fs');
+            const state = JSON.parse(fs.readFileSync('acquisition/blogger/state.json', 'utf8'));
+            for (const [id, pub] of Object.entries(state.owned_publications || {})) {
+              if (!['PUBLISH_REQUESTED', 'VERIFIED'].includes(pub.state)) { console.error(id + ' claims state ' + pub.state); process.exit(1); }
+              if (pub.state === 'VERIFIED' && !pub.verified_at) { console.error(id + ' is VERIFIED with no verified_at'); process.exit(1); }
+            }
+            console.log('No publication is claimed beyond what was verified.');
           "
 
       - name: Confirm existing distribution safety checks still pass

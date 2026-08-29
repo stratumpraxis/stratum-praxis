@@ -6,6 +6,8 @@
 //
 // Bucket coverage is an eligibility ceiling. It never promotes anything on its own.
 
+import { isSocialFamily } from './social-evidence.mjs';
+
 export const EVIDENCE_BUCKETS = Object.freeze(['DEMAND_SIGNAL', 'PAIN_SIGNAL', 'MONEY_SIGNAL']);
 
 export function validateBuckets(buckets, label = 'record') {
@@ -59,11 +61,16 @@ export function eligibilityCeiling(bucketCount, policy) {
 export function moneyEvidenceProfile(signals) {
   const money = (signals || []).filter((s) => (s.evidence_buckets || []).includes('MONEY_SIGNAL'));
   const owned = money.filter((s) => s.external !== true);
-  const external = money.filter((s) => s.external === true);
+  // A public post about pricing is somebody talking about money. It is not evidence
+  // that a market has commercially validated anything, so it can never flip
+  // external_consensus on its own.
+  const external = money.filter((s) => s.external === true && !isSocialFamily(s.source_family));
+  const socialMoney = money.filter((s) => s.external === true && isSocialFamily(s.source_family));
   return {
     money_signals: money.map((s) => s.signal_id),
     owned_money_signals: owned.map((s) => s.signal_id),
     external_money_signals: external.map((s) => s.signal_id),
+    social_money_signals: socialMoney.map((s) => s.signal_id),
     // Never true from owned behaviour alone. This flag is read by revenue-score.mjs
     // and reproduced verbatim in the candidate record.
     external_consensus: external.length > 0,
@@ -71,6 +78,8 @@ export function moneyEvidenceProfile(signals) {
       ? 'Owned commercial behaviour only. This demonstrates internal fit and must not be described as external market consensus.'
       : external.length
         ? 'At least one external money signal is present.'
-        : 'No money evidence.'
+        : socialMoney.length
+          ? 'Money-adjacent language observed in public posts only. Public posts about pricing are not evidence of external commercial consensus.'
+          : 'No money evidence.'
   };
 }

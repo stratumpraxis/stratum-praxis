@@ -70,7 +70,13 @@ test('sources are immutable: a changed file breaks its own hash', async () => {
 test('the shipped register loads with the real file hashes intact', async () => {
   const result = await loadSources();
   assert.deepEqual(result.rejected, [], 'the shipped source register must verify against the real files');
-  assert.equal(result.accepted.length, 3);
+  assert.equal(result.accepted.length, 4);
+  // Two candidate-derived sources now coexist, so their content hashes must differ:
+  // a shared placeholder digest would have been collapsed as a duplicate registration.
+  const candidateSources = result.accepted.filter((s) => s.source_type === 'SOURCE_CANDIDATE');
+  assert.equal(candidateSources.length, 2);
+  assert.equal(new Set(candidateSources.map((s) => s.content_hash)).size, 2);
+  assert.deepEqual(result.duplicates, []);
   const owner = result.byId.get('repeat-visit-sites-win-owner-package');
   assert.equal(owner.source_type, 'OWNER_APPROVED_SOURCE');
   assert.equal(owner.status, 'COMPLETE');

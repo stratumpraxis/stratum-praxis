@@ -11,6 +11,7 @@ import { nowIso, slug } from '../../lib/util.mjs';
 import { corroborate } from './corroborate.mjs';
 import { assessAssetFit } from './asset-fit.mjs';
 import { scoreRevenueSignal } from './revenue-score.mjs';
+import { prohibitedClaimsFromSocial } from './social-evidence.mjs';
 
 export const CANDIDATE_STATUSES = Object.freeze([
   'REJECT_LOW_VALUE',
@@ -38,7 +39,7 @@ export function candidateId(thesisId) {
  *   - what the evidence does not support (no purchase evidence, no external consensus)
  *   - what the destination cannot deliver (a paused checkout, an English-only product)
  */
-export function prohibitedClaims(assetFit, corroboration, thesis) {
+export function prohibitedClaims(assetFit, corroboration, thesis, signals = []) {
   const claims = [
     ...BLOCKED_CLAIM_PATTERNS.map((pattern) => ({
       claim_pattern: String(pattern),
@@ -65,6 +66,9 @@ export function prohibitedClaims(assetFit, corroboration, thesis) {
     claim_pattern: 'VERIFIED_REVENUE_FROM_THIS_THESIS',
     reason: 'no payment-provider record is attached to this candidate; revenue may not be claimed'
   });
+  // Social evidence forces its own prohibitions: what a post says is never a fact.
+  claims.push(...prohibitedClaimsFromSocial(signals));
+
   if (thesis?.prohibited_claims) {
     for (const claim of thesis.prohibited_claims) {
       claims.push({ claim_pattern: claim, reason: 'declared prohibited on the thesis' });
@@ -124,6 +128,7 @@ export function buildSourceCandidate(thesis, signals, inventory, context = {}) {
     corroboration_satisfied: corroboration.satisfied,
     corroboration_failures: corroboration.failures,
     excluded_as_dependent: corroboration.excluded_as_dependent,
+    excluded_as_non_independent_source: corroboration.excluded_as_non_independent_source || [],
     expired_signal_ids: corroboration.expired_signal_ids,
     non_observed_signals: corroboration.non_observed,
     evidence_strength: corroboration.strength,
@@ -169,7 +174,7 @@ export function buildSourceCandidate(thesis, signals, inventory, context = {}) {
       human_required_reason: c.human_required_reason
     })),
 
-    prohibited_claims: prohibitedClaims(assetFit, corroboration, thesis),
+    prohibited_claims: prohibitedClaims(assetFit, corroboration, thesis, signals),
     language: thesis.language ?? 'UNKNOWN',
     freshness: freshnessOf(signals, corroboration),
     expiry: new Date(now + ttlDays * MS_PER_DAY).toISOString(),
