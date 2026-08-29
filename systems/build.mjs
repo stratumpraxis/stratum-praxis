@@ -199,7 +199,7 @@ ${body}
 function productCard(p) {
   const href = p.package_path ? `/systems/products/${p.slug}/` : p.external_page;
   return `<li class="card">
-  <h3><a href="${href}" data-analytics-id="systems_card_${esc(p.id)}" data-product="${esc(p.attribution_product_id)}">${esc(p.title)}</a></h3>
+  <h3><a href="${href}"${p.checkout_url ? ' data-primary-cta' : ''} data-analytics-id="systems_card_${esc(p.id)}" data-product="${esc(p.attribution_product_id)}">${esc(p.title)}</a></h3>
   <p>${esc(p.summary)}</p>
   <div class="cardfoot">
     <span class="price">${esc(priceLabel(p))}</span>

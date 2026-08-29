@@ -192,3 +192,46 @@ New section, no existing entry above is changed. Full handoff:
   `product=workflow_operator_bundle`, `destination_host=buy.stripe.com` and
   `first_landing_path=/systems/` preserved. Client-side attribution ends at the Stripe
   domain; that boundary is documented, not bridged by assumption.
+
+## Revenue activation — 2026-08-29 (append-only)
+
+New section. No entry above is changed. Full evidence:
+`revenue-os/2026-08-29-revenue-activation.md`.
+
+### Routes added
+
+- https://stratumpraxis.com/prompt-store/ added to `sitemap.xml`. It was previously
+  absent from the sitemap and linked from no public page, so the one live paid product
+  had no organic discovery path.
+
+### Measurement added (no checkout, price or destination changed)
+
+- `/systems/` paid card now emits `primary_cta_click` on the hop into `/prompt-store/`.
+- The three Stripe CTAs on `/prompt-store/` now carry stable `data-analytics-id` values
+  (`prompt_store_hero_checkout`, `prompt_store_offer_checkout`,
+  `prompt_store_sticky_checkout`) instead of falling back to language-dependent link text.
+- Both are guarded in CI by `.github/workflows/verify-systems-library.yml`.
+
+### Acquisition
+
+- `systems-library` and `ai-workflow-operator-bundle` added to
+  `acquisition/asset-inventory.json`, both `REPO_AND_SITEMAP`, neither claiming
+  `HTTP_VERIFIED`.
+- The Revenue Publisher's `repeat-visit-sites-win-owner-package` source had no product
+  routes, so its published article carried no CTA. Routes added and the article
+  re-rendered in place with a tracked CTA to `/systems/`.
+
+### Verification state
+
+- Attribution to the Stripe boundary: VERIFIED locally with headless Chromium, both
+  syndicated entry (full UTM chain preserved) and on-site entry (article preserved as
+  `first_landing_path`).
+- Live URL state: BLOCKED from the authoring session; egress policy answers 403 to
+  CONNECT for stratumpraxis.com. Live checks run from Actions.
+- CHECKOUT_ROUTE_VERIFIED: pending the Actions run on main.
+- TEST_PURCHASE_VERIFIED / LIVE_PURCHASE_VERIFIED: not attempted. The genuine-purchase
+  gate recorded above is unchanged: the first verified Stripe purchase remains WAITING
+  FOR REAL BUYER.
+- Verified revenue: none. `revenue-os/metrics.json` still records
+  `verified_revenue: null` and `stripe_live_payment_intents: 0`. Nothing in this work
+  changes that.

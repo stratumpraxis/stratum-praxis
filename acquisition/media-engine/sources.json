@@ -69,7 +69,11 @@
       ],
       "existing_product_routes": [],
       "excerpt": "Strong sites are not necessarily the ones with the most articles. Timetables, outage pages, fare checks and price changes create a reason to come back, and that recurring check is the asset.",
-      "notes": "COMPLETE owner-approved package. The Japanese original is immutable; any derivation is a new record, never an edit of this one."
+      "existing_product_routes": [
+        { "role": "PRIMARY", "asset_id": "systems-library", "url": "https://stratumpraxis.com/systems/", "cta": "See the systems built this way" },
+        { "role": "PURCHASE_PATH", "asset_id": "ai-workflow-operator-bundle", "url": "https://stratumpraxis.com/prompt-store/", "cta": "Get the operator bundle" }
+      ],
+      "notes": "COMPLETE owner-approved package. The Japanese original is immutable; any derivation is a new record, never an edit of this one. Product routes added 2026-08-29: the source argues that durable properties come from repeatable structure rather than output volume, which is what the Systems Library catalogues and what the AI Workflow Operator Bundle sells. Neither route asserts a claim the source does not make."
     },
     {
       "source_id": "routine-information-assets-draft",

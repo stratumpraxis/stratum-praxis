@@ -55,6 +55,33 @@ jobs:
           fi
           echo "clean"
 
+      - name: Attribution wiring is present in the committed markup
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+          need() {
+            if grep -F "$2" "$1" >/dev/null; then
+              echo "OK   $1 :: $2"
+            else
+              echo "::error::missing attribution wiring in $1: $2"; fail=1
+            fi
+          }
+          # The library -> product hop must emit primary_cta_click, otherwise the
+          # Systems Library cannot be told apart from a page nobody clicks through.
+          need systems/index.html 'data-primary-cta data-analytics-id="systems_card_ai-workflow-operator-bundle" data-product="workflow_operator_bundle"'
+          # Every checkout CTA needs a stable id. Without one scos-analytics.js falls
+          # back to the link text, which is copy-dependent and language-dependent, so
+          # the same button reports two different cta_id values in EN and JA.
+          for id in prompt_store_hero_checkout prompt_store_offer_checkout prompt_store_sticky_checkout; do
+            need prompt-store/index.html "data-analytics-id=\"$id\" data-product=\"workflow_operator_bundle\""
+          done
+          # Guard the contract scos-analytics.js provides; this file is reused unchanged.
+          need scos-analytics.js "'buy.stripe.com'"
+          need scos-analytics.js 'first_landing_path'
+          need scos-analytics.js 'checkout_click'
+          exit $fail
+
   live-routes:
     needs: generated-pages-are-current
     runs-on: ubuntu-latest
@@ -166,3 +193,30 @@ jobs:
           echo "CHECKOUT_ROUTE_VERIFIED"
           echo "TEST_PURCHASE_VERIFIED: not attempted - no purchase is made by this workflow"
           echo "LIVE_PURCHASE_VERIFIED: not attempted - requires a real buyer"
+
+      - name: Attribution — the live funnel is measurable to the Stripe boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+          lib="$(curl --fail --silent --show-error --location --max-time 20 https://stratumpraxis.com/systems/)"
+          store="$(curl --fail --silent --show-error --location --max-time 20 https://stratumpraxis.com/prompt-store/)"
+
+          check() { if grep -F "$2" <<<"$1" >/dev/null; then echo "OK   $3"; else echo "::error::$3"; fail=1; fi }
+
+          check "$lib" '/scos-analytics.js' 'live /systems/ loads scos-analytics.js'
+          check "$lib" 'data-funnel="systems_library"' 'live /systems/ declares its funnel'
+          check "$lib" 'data-primary-cta data-analytics-id="systems_card_ai-workflow-operator-bundle" data-product="workflow_operator_bundle"' \
+            'live /systems/ paid card emits primary_cta_click with a stable id and product'
+
+          check "$store" '/scos-analytics.js' 'live /prompt-store/ loads scos-analytics.js'
+          for id in prompt_store_hero_checkout prompt_store_offer_checkout prompt_store_sticky_checkout; do
+            check "$store" "data-analytics-id=\"$id\" data-product=\"workflow_operator_bundle\"" \
+              "live /prompt-store/ checkout CTA $id carries a stable id and product"
+          done
+
+          if [ "$fail" = "0" ]; then
+            echo "ATTRIBUTION_TO_CHECKOUT_VERIFIED"
+            echo "PURCHASE_ATTRIBUTION_VERIFIED: not available - client attribution ends at buy.stripe.com"
+          fi
+          exit $fail

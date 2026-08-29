@@ -1253,6 +1253,108 @@
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
       },
       "distribution_note": "This is the only destination the trend-video lane has ever sent traffic to (agent-control-youtube-v5, physical-ai-control-instagram-v6). Added so the video lane's tracked destination maps to a known asset."
+    },
+    {
+      "asset_id": "ai-workflow-operator-bundle",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Workflow Operator Bundle",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/prompt-store/",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P",
+        "price": "USD 17",
+        "evidence": "in-page Stripe payment link, three CTAs in prompt-store/index.html"
+      },
+      "primary_user_problem": "AI work stays one-off and unrepeatable: no owners, no failure path, no completion test, so the same task is re-improvised every time.",
+      "problem_keys": [
+        "workflow_architecture",
+        "sop_creation",
+        "ai_tool_routing",
+        "company_knowledge",
+        "repeatable_execution"
+      ],
+      "target_audience": [
+        "founder",
+        "ops_lead",
+        "creator",
+        "smb_owner"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "youtube",
+        "note"
+      ],
+      "cta": {
+        "label": "Open secure checkout",
+        "analytics_id": "prompt_store_offer_checkout"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click",
+        "access_granted",
+        "access_denied"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "prompt-store/index.html",
+        "in_sitemap": true,
+        "note": "Live HTTP check not performed from the authoring session: outbound HTTPS to stratumpraxis.com is refused by the network egress policy. .github/workflows/verify-systems-library.yml performs the live check from Actions."
+      }
+    },
+    {
+      "asset_id": "systems-library",
+      "brand": "Stratum Praxis",
+      "asset_name": "Stratum Praxis Systems Library",
+      "asset_type": "HUB",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/systems/",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/prompt-store/",
+        "price": null,
+        "evidence": "in-page href to /prompt-store/ on the paid catalogue card, carrying data-primary-cta and data-product=workflow_operator_bundle"
+      },
+      "primary_user_problem": "Cannot tell which small AI-pipeline modules actually work, what each one refuses to do, or which of them is worth paying for.",
+      "problem_keys": [
+        "ai_pipeline_quality",
+        "hallucination_control",
+        "content_duplication",
+        "attribution_measurement",
+        "repeatable_execution"
+      ],
+      "target_audience": [
+        "engineering_lead",
+        "ops_lead",
+        "founder",
+        "creator"
+      ],
+      "commercial_intent": "MID",
+      "distribution_candidates": [
+        "devto",
+        "bluesky",
+        "youtube"
+      ],
+      "cta": {
+        "label": "Browse the systems library",
+        "analytics_id": "systems_card_ai-workflow-operator-bundle"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "external_route_click"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "systems/index.html",
+        "in_sitemap": true,
+        "note": "Generated from systems/manifest.json by systems/build.mjs; drift fails systems/build.mjs --check. Live HTTP check is performed by .github/workflows/verify-systems-library.yml, not from the authoring session."
+      }
     }
   ]
 }
