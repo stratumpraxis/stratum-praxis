@@ -92,9 +92,22 @@ async function main(){
   await verifyPrevious(state);
   state.owned_publications ||= {};
   const ready=await listReady();
-  let created=0;
+  let created=0,rerendered=0;
   for(const {name,record} of ready){
-    if(state.owned_publications[record.output_id]) continue;
+    const published=state.owned_publications[record.output_id];
+    if(published){
+      // A record whose CTA was decided after it went out is re-rendered in place:
+      // same canonical URL, same publication history, only the page body changes.
+      // Without this an article published with no revenue destination keeps none
+      // for ever, which is the one thing this lane exists to prevent.
+      if(!published.canonical_url) continue;
+      const target=path.join(SITE_DIR,published.canonical_url.slice(BASE.length+1));
+      const current=await fs.readFile(target,'utf8').catch(()=>null);
+      if(current===null) continue;
+      const next=page(record,published.canonical_url);
+      if(next!==current){ await fs.writeFile(target,next); rerendered++; console.log(`OWNED_RERENDERED ${published.canonical_url}`); }
+      continue;
+    }
     const file=`${slug(record.title || record.output_id)}-${String(record.output_id).slice(-8)}.html`;
     const canonical=`${BASE}/${file}`;
     await fs.mkdir(SITE_DIR,{recursive:true}); await fs.writeFile(path.join(SITE_DIR,file),page(record,canonical));
@@ -105,7 +118,7 @@ async function main(){
     created++;
   }
   await updateIndex(state); await updateSitemap(state); state.last_publish_pass_at=new Date().toISOString(); await writeJson(STATE_FILE,state);
-  console.log(`OWNED_PUBLISHER created=${created} total=${Object.keys(state.owned_publications).length}`);
+  console.log(`OWNED_PUBLISHER created=${created} rerendered=${rerendered} total=${Object.keys(state.owned_publications).length}`);
 }
 
 main().catch(e=>{console.error(`OWNED_PUBLISHER_STOP ${e.message}`);process.exitCode=0;});

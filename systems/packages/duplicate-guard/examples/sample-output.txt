@@ -1,0 +1,13 @@
+WARN  [STRUCTURE_REUSE] 100% structural match with published-2026-08-27; check this is not the same article with substitutions
+
+BLOCKED - 3 rule(s) triggered.
+
+[REPEATED_TITLE] vs published-2026-08-27
+  title is 71% similar to published-2026-08-27
+
+[SAME_SOURCE_SAME_CHANNEL_COOLDOWN] vs published-2026-08-27
+  source src-1 already went to newsletter 1.9 days ago; the cooldown is 14 days
+
+[SAME_AUDIENCE_CTA_COOLDOWN] vs published-2026-08-27
+  same audience, CTA checklist_cta and destination as published-2026-08-27 within 7 days
+

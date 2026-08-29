@@ -1,0 +1,17 @@
+PASS  newsletter_to_checklist
+PASS  x_to_checkout checkout:buy.stripe.com
+FAIL  untagged_cta
+        destination is missing utm_source
+        destination is missing utm_medium
+        destination is missing utm_campaign
+        destination is missing utm_content
+        destination is missing asset_id
+FAIL  insecure_and_offsite
+        destination must use https
+        destination host unknown-partner.test is not an approved destination
+        destination is missing utm_medium
+        destination is missing utm_campaign
+        destination is missing utm_content
+        destination is missing asset_id
+
+2/4 link(s) attributable.

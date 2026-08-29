@@ -63,3 +63,7 @@ When deciding which path to pursue, the criteria should not be "which is easier,
 | **Identity** | The Publisher / The Voice | The Operator / The System |
 
 The shift from being a voice to being a dashboard is the shift from participating in the attention economy to becoming a pillar of a working system. In a world of infinite, synthetic content, the most valuable assets may be those that provide the constant.
+
+---
+
+See the systems built this way: https://stratumpraxis.com/systems/?utm_source=owned_media&utm_medium=blog&utm_campaign=international_personal_media&utm_content=repeat-visit-sites-win-owner-package%3Astructural_reflection

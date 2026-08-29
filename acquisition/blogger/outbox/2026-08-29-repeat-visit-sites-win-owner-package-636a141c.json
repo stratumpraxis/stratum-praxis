@@ -33,7 +33,12 @@
   "status": "READY",
   "publication_lane": "OWNED_SITE",
   "publication_proof": null,
-  "cta": null,
+  "cta": {
+    "asset_id": "systems-library",
+    "label": "See the systems built this way",
+    "destination_url": "https://stratumpraxis.com/systems/",
+    "tracked_url": "https://stratumpraxis.com/systems/?utm_source=owned_media&utm_medium=blog&utm_campaign=international_personal_media&utm_content=repeat-visit-sites-win-owner-package%3Astructural_reflection"
+  },
   "attribution": {
     "source_id": "repeat-visit-sites-win-owner-package",
     "source_candidate_id": null,

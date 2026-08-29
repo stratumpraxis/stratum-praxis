@@ -149,3 +149,89 @@ Selection rule: prefer programs with direct fit to current AI/workflow audience,
 - AI work safety / multi-AI workflow → Workspace Safety & Workflow Kit or AI Council Builder depending on intent
 - Verified research with monetization intent → Revenue Router
 - Relevant Japanese SaaS/tool comparison → A8 affiliate where disclosure and fit are appropriate
+
+## Systems Library — 2026-08-29 (append-only)
+
+New section, no existing entry above is changed. Full handoff:
+`revenue-os/2026-08-29-systems-library-mvp.md`.
+
+### Routes added
+
+- Library hub: https://stratumpraxis.com/systems/
+- https://stratumpraxis.com/systems/products/truth-gate/
+- https://stratumpraxis.com/systems/products/duplicate-guard/
+- https://stratumpraxis.com/systems/products/attribution-contract/
+- https://stratumpraxis.com/systems/licenses/
+- https://stratumpraxis.com/systems/docs/
+- https://stratumpraxis.com/systems/changelog/
+
+### Checkout position
+
+- No new checkout, price or store URL was created. The library's only paid entry is the
+  existing AI Workflow Operator Bundle at https://stratumpraxis.com/prompt-store/ with its
+  existing $17 Stripe link `https://buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P`.
+- The three packaged systems are free and MIT. They have no checkout because they have no
+  price, not because a checkout is missing.
+- Reason they are free: the repository is public and MIT-licensed, so the source is already
+  MIT to everyone. A restrictive licence over it would not be enforceable. Whether a
+  dual-licensed paid edition of future versions is possible is flagged for professional
+  legal review and remains an open owner decision.
+
+### Verification state at time of writing
+
+- Live URL state: NOT VERIFIED from the authoring session. Outbound HTTPS to
+  stratumpraxis.com was refused by the network egress policy (403 on CONNECT). Verification
+  is performed by `.github/workflows/verify-systems-library.yml` from GitHub Actions.
+- CHECKOUT_ROUTE_VERIFIED: pending that workflow run. It asserts the live product page
+  still links to the checkout recorded in `systems/manifest.json`.
+- TEST_PURCHASE_VERIFIED / LIVE_PURCHASE_VERIFIED: not attempted. No purchase was made and
+  none is automated. The genuine-purchase gate recorded above is unchanged: the first
+  verified Stripe purchase remains WAITING FOR REAL BUYER.
+- Attribution: verified locally with a headless browser. Landing on /systems/ from a tagged
+  link and following the paid card through to the buy CTA produces `checkout_click` with
+  `product=workflow_operator_bundle`, `destination_host=buy.stripe.com` and
+  `first_landing_path=/systems/` preserved. Client-side attribution ends at the Stripe
+  domain; that boundary is documented, not bridged by assumption.
+
+## Revenue activation — 2026-08-29 (append-only)
+
+New section. No entry above is changed. Full evidence:
+`revenue-os/2026-08-29-revenue-activation.md`.
+
+### Routes added
+
+- https://stratumpraxis.com/prompt-store/ added to `sitemap.xml`. It was previously
+  absent from the sitemap and linked from no public page, so the one live paid product
+  had no organic discovery path.
+
+### Measurement added (no checkout, price or destination changed)
+
+- `/systems/` paid card now emits `primary_cta_click` on the hop into `/prompt-store/`.
+- The three Stripe CTAs on `/prompt-store/` now carry stable `data-analytics-id` values
+  (`prompt_store_hero_checkout`, `prompt_store_offer_checkout`,
+  `prompt_store_sticky_checkout`) instead of falling back to language-dependent link text.
+- Both are guarded in CI by `.github/workflows/verify-systems-library.yml`.
+
+### Acquisition
+
+- `systems-library` and `ai-workflow-operator-bundle` added to
+  `acquisition/asset-inventory.json`, both `REPO_AND_SITEMAP`, neither claiming
+  `HTTP_VERIFIED`.
+- The Revenue Publisher's `repeat-visit-sites-win-owner-package` source had no product
+  routes, so its published article carried no CTA. Routes added and the article
+  re-rendered in place with a tracked CTA to `/systems/`.
+
+### Verification state
+
+- Attribution to the Stripe boundary: VERIFIED locally with headless Chromium, both
+  syndicated entry (full UTM chain preserved) and on-site entry (article preserved as
+  `first_landing_path`).
+- Live URL state: BLOCKED from the authoring session; egress policy answers 403 to
+  CONNECT for stratumpraxis.com. Live checks run from Actions.
+- CHECKOUT_ROUTE_VERIFIED: pending the Actions run on main.
+- TEST_PURCHASE_VERIFIED / LIVE_PURCHASE_VERIFIED: not attempted. The genuine-purchase
+  gate recorded above is unchanged: the first verified Stripe purchase remains WAITING
+  FOR REAL BUYER.
+- Verified revenue: none. `revenue-os/metrics.json` still records
+  `verified_revenue: null` and `stripe_live_payment_intents: 0`. Nothing in this work
+  changes that.

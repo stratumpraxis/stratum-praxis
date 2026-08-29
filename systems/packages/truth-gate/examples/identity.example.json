@@ -1,0 +1,48 @@
+{
+  "$comment": "Placeholder contract. Replace every value with facts you can evidence. Approved claims without an evidence_ref are rejected by the loader.",
+  "identity_id": "example_operator",
+  "public_descriptor": "Independent operator publishing about a practical subject.",
+  "is_fictional": false,
+  "languages": ["en", "es"],
+  "updated_at": "2026-01-01",
+  "owned_asset_pattern": "example\\.com|the\\s+(?:calculator|checklist|tool|page)\\s+I\\s+publish",
+  "approved_location_values": ["examplestan"],
+  "location_safe_rewrite": "State the country only.",
+  "approved_first_person_claims": [
+    {
+      "claim_id": "operates_own_assets",
+      "claim": "built and operates the pages published on example.com",
+      "evidence_ref": "REPLACE ME: point at the repository, invoice, or record that proves this.",
+      "scope": "Only assets you actually publish. Never extends to third-party products."
+    }
+  ],
+  "prohibited_first_person_claims": [
+    { "claim_id": "personal_testing", "safe_rewrite": "This appears useful when ..." },
+    { "claim_id": "personal_purchase", "safe_rewrite": "For someone evaluating this, the practical question is ..." },
+    { "claim_id": "daily_use", "safe_rewrite": "One practical implication is ..." },
+    { "claim_id": "client_work", "safe_rewrite": "A recurring version of this problem is ..." },
+    { "claim_id": "customers_or_revenue", "safe_rewrite": "The measurable question is ..." },
+    { "claim_id": "residence_history", "safe_rewrite": "omit entirely" },
+    { "claim_id": "employment_history", "safe_rewrite": "For someone working independently ..." },
+    { "claim_id": "credentials", "safe_rewrite": "The practical reading of this is ..." },
+    { "claim_id": "age_or_identity_details", "safe_rewrite": "omit entirely" },
+    { "claim_id": "travel_or_visits", "safe_rewrite": "Publicly reported accounts describe ..." },
+    { "claim_id": "testimonial_or_result", "safe_rewrite": "omit entirely" },
+    { "claim_id": "expertise_authority", "safe_rewrite": "One reading of the available evidence is ..." },
+    { "claim_id": "interviews_or_sources", "safe_rewrite": "Published material states ..." },
+    { "claim_id": "unapproved_first_person_experience", "safe_rewrite": "Rewrite as observation rather than autobiography." }
+  ],
+  "privacy_redactions": {
+    "never_publish": [
+      "exact home address or any street-level location",
+      "legal name and any legal identifier",
+      "date of birth or age",
+      "account credentials, API keys and tokens",
+      "private email addresses",
+      "phone numbers",
+      "financial account details",
+      "precise location history or GPS coordinates"
+    ],
+    "public_contact_allowlist": ["hello@example.com"]
+  }
+}
