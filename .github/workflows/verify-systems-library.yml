@@ -213,6 +213,37 @@ jobs:
           echo "TEST_PURCHASE_VERIFIED: not attempted - no purchase is made by this workflow"
           echo "LIVE_PURCHASE_VERIFIED: not attempted - requires a real buyer"
 
+      - name: Delivery gate — buyer routes are protected without a token
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Read-only. No token is presented, no session is created, no payment is made.
+          # A buyer route must not serve buyer content to an anonymous request. Anything
+          # that is not a 200-with-content is a pass: 401, 403, 404 and redirects to a
+          # login all withhold the deliverable.
+          fail=0
+          for path in \
+            /prompt-store/workspace \
+            /prompt-store/ops10/workspace \
+            /cross-agent-kit/workspace
+          do
+            url="https://stratumpraxis.com$path"
+            code="$(curl -s -o /tmp/body.txt -w '%{http_code}' -L --max-time 20 "$url")"
+            leaked=0
+            grep -qiE 'Copy all|Download TXT|VERIFIED PURCHASE|Buyer Workspace' /tmp/body.txt && leaked=1
+            if [ "$code" = "200" ] && [ "$leaked" = "1" ]; then
+              echo "::error::$path served buyer content to an unauthenticated request ($code)"
+              fail=1
+            else
+              echo "OK   $code  $path  withheld (buyer content present: no)"
+            fi
+          done
+          if [ "$fail" = "0" ]; then
+            echo "DELIVERY_GATE_PROTECTED_VERIFIED"
+            echo "DELIVERY_END_TO_END_VERIFIED: not available - requires a real paid purchase"
+          fi
+          exit $fail
+
       - name: Attribution — the live funnel is measurable to the Stripe boundary
         shell: bash
         run: |
