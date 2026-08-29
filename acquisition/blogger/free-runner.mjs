@@ -113,17 +113,30 @@ function assertFreeOnly(model = MODEL) {
   return { model, allowlisted: true, paid_credentials_present: paid, paid_fallback_used: false };
 }
 
-async function callModel(stage, prompt) {
-  if (!ACCOUNT_ID || !TOKEN) throw new Error('CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN not configured');
-  assertFreeOnly();
+/**
+ * Output budget per stage. A free model has a finite context, and the whole editorial
+ * contract plus a full draft plus a large output budget is what made the v2 final stage
+ * come back empty on its first run. Each stage now asks for only what it produces.
+ */
+const STAGE_BUDGET = Object.freeze({
+  draft: 3200,
+  critic: 1400,
+  deepen: 3200,
+  polish: 3200,
+  envelope: 900
+});
+
+const STAGE_TEMPERATURE = Object.freeze({ draft: 0.6, critic: 0.3, deepen: 0.5, polish: 0.45, envelope: 0.2 });
+
+async function callModelOnce(stage, prompt) {
   const url = `https://api.cloudflare.com/client/v4/accounts/${ACCOUNT_ID}/ai/run/${MODEL}`;
   const response = await fetch(url, {
     method: 'POST',
     headers: { authorization: `Bearer ${TOKEN}`, 'content-type': 'application/json' },
     body: JSON.stringify({
       messages: [{ role: 'user', content: prompt }],
-      max_tokens: stage === 'final' ? 7000 : 5000,
-      temperature: stage === 'critic' ? 0.3 : 0.55
+      max_tokens: STAGE_BUDGET[stage] ?? 2500,
+      temperature: STAGE_TEMPERATURE[stage] ?? 0.5
     })
   });
   const raw = await response.text();
@@ -134,19 +147,44 @@ async function callModel(stage, prompt) {
     throw new Error(`WORKERS_AI_ERROR ${response.status} ${raw.slice(0, 500)}`);
   }
   const json = JSON.parse(raw);
-  const text = json?.result?.response || json?.result?.text || json?.result?.choices?.[0]?.message?.content;
-  if (!text) throw new Error(`NO_TEXT_RETURNED ${stage}`);
-  return text;
+  return json?.result?.response || json?.result?.text || json?.result?.choices?.[0]?.message?.content || '';
+}
+
+async function callModel(stage, prompt) {
+  if (!ACCOUNT_ID || !TOKEN) throw new Error('CLOUDFLARE_ACCOUNT_ID/CLOUDFLARE_API_TOKEN not configured');
+  assertFreeOnly();
+  // One retry, because an empty completion on the free tier is usually transient. A
+  // retry is not an upgrade: it is the same model on the same free allowance.
+  for (const attempt of [1, 2]) {
+    const text = await callModelOnce(stage, prompt);
+    if (text.trim()) return text;
+    if (attempt === 2) throw new Error(`NO_TEXT_RETURNED ${stage} after 2 attempts`);
+  }
+  throw new Error(`NO_TEXT_RETURNED ${stage}`);
 }
 
 /** The editorial contract handed to the model, built from the source and the vertical. */
-export function buildRules(identity, source, lens, vertical) {
+export function buildRules(identity, source, lens, vertical, { compact = false } = {}) {
   const claimLedger = (source.claim_ledger || [])
     .map((c) => `- [${c.claim_type}] ${c.claim}${c.attribution_required ? '  (MUST be attributed or labelled)' : ''}`)
     .join('\n');
   const routes = (source.existing_product_routes || [])
     .map((r, i) => `  ${i}. role=${r.role} asset=${r.asset_id} cta="${r.cta ?? 'none declared'}"${r.microcopy ? ` microcopy="${r.microcopy}"` : ''}`)
     .join('\n');
+
+  if (compact) {
+    // The later stages already hold the article. They need the prohibitions and the
+    // route list, not the whole contract again.
+    return [
+      `Identity: ${identity.public_descriptor}`,
+      vertical ? `Reader: ${(vertical.target_audiences || []).join(', ')}. Decision model: ${(vertical.decision_model || []).join(' / ') || 'n/a'}.` : '',
+      'ALLOWED CLAIMS (nothing outside this list may be asserted):',
+      (source.allowed_claims || []).map((x) => `- ${x}`).join('\n'),
+      'HARD RULES: no statistic, price or count that is not in ALLOWED CLAIMS unless the sentence labels it as an example; every source figure carries its provenance in the same sentence; no invented email, routine, client, purchase, test, conversation or outcome; at most one heading per 300 words and at most two coined capitalised terms; no closing motivational paragraph and no summary restating the piece; vary sentence and paragraph length; keep at least one decision rule, one tradeoff and one case where the obvious answer is wrong.',
+      'EXISTING ROUTES (the CTA must be one of these by index):',
+      routes || '  none'
+    ].filter(Boolean).join('\n');
+  }
 
   return [
     `You are a working editorial desk, not a content spinner. Identity: ${identity.public_descriptor}`,
@@ -192,11 +230,34 @@ DECISION DIMENSIONS available: ${(vertical.decision_dimensions || []).join('; ')
 
 async function generate(source, identity, lens, vertical) {
   const base = buildRules(identity, source, lens, vertical);
-  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of roughly 1000-1500 words. Open on the reader's actual decision, not on a scene. Article only.`);
-  const critic = await callModel('critic', `${base}\n\nCRITIC: Find every violation of the hard rules above in the draft, plus generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments and false certainty. Quote the offending sentence for each.\n\n${draft}`);
-  const deepened = await callModel('deepen', `${base}\n\nDEEPEN: Rewrite using the critique. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - all grounded only in the allowed source material.\n\nDRAFT:\n${draft}\n\nCRITIC:\n${critic}`);
-  const finalRaw = await callModel('final', `${base}\n\nFINAL EDIT: Humanize the rhythm and transitions. Cut filler, textbook scaffolding, unearned sales language, repeated summaries and coined jargon beyond two terms. Never fake an anecdote or a typo.\n\nReturn STRICT JSON with: title_options (max 3), selected_title, dek, body_markdown, evidence_notes (array naming, for each figure used, where it came from), claim_type_report (array of {claim, type} using the claim ledger types), allowed_claim_report, restricted_claim_report, cta_recommendation {include, reason, route_index, label, microcopy}, editorial_notes.\n\n${deepened}`);
-  return { draft, critic, deepened, final: JSON.parse(stripFence(finalRaw)) };
+  const brief = buildRules(identity, source, lens, vertical, { compact: true });
+
+  const draft = await callModel('draft', `${base}\n\nDRAFT: Write an English long-form article of roughly 900-1300 words. Open on the reader's actual decision, not on a scene. Article only, markdown headings allowed.`);
+  const critic = await callModel('critic', `${brief}\n\nCRITIC: List every violation of the hard rules in the article below, plus generic AI phrasing, unsupported claims, weak logic, repetition, predictable structure, missing counterarguments and false certainty. Quote the offending sentence for each. Be brief.\n\n${draft}`);
+  const deepened = await callModel('deepen', `${brief}\n\nDEEPEN: Rewrite the article using the critique. Remove every unsupported number and every invented human detail. Add at least one non-obvious decision rule, one real tradeoff, and one case where the obvious recommendation should not be followed - grounded only in the allowed claims. Article only.\n\nARTICLE:\n${draft}\n\nCRITIQUE:\n${critic}`);
+  const polished = await callModel('polish', `${brief}\n\nFINAL EDIT: Humanize the rhythm and transitions. Vary sentence length. Cut filler, textbook scaffolding, unearned sales language, repeated summaries, and any coined capitalised term beyond two. Never fake an anecdote or a typo. Return the finished article only - no preamble, no JSON.\n\n${deepened}`);
+
+  // The body never round-trips through JSON: it is taken verbatim from the polish
+  // stage, and only the small metadata envelope is asked for as JSON. That keeps the
+  // envelope well inside the free model's output budget.
+  const body = stripFence(polished).replace(/^#\s+.+\n+/, '').trim();
+  const envelopeRaw = await callModel('envelope', `${brief}\n\nReturn STRICT JSON only, no prose, describing the article below. Keys: title_options (array, max 3), selected_title (string), dek (one sentence), evidence_notes (array: for each figure used, where it came from), claim_type_report (array of {claim, type} where type is one of VERIFIED_FACT, PUBLIC_CLAIM, EXAMPLE, HYPOTHESIS, INTERPRETATION), allowed_claim_report (array), restricted_claim_report (array), cta_recommendation ({include: boolean, reason: string, route_index: integer, label: string, microcopy: string}), editorial_notes (array). Do NOT include the article body.\n\nARTICLE:\n${body}`);
+
+  const envelope = parseEnvelope(envelopeRaw);
+  return { draft, critic, deepened, polished, final: { ...envelope, body_markdown: body } };
+}
+
+/** Tolerant JSON extraction: a free model often wraps or prefaces its JSON. */
+export function parseEnvelope(raw) {
+  const cleaned = stripFence(raw);
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const start = cleaned.indexOf('{');
+    const end = cleaned.lastIndexOf('}');
+    if (start === -1 || end <= start) throw new Error('ENVELOPE_NOT_JSON');
+    return JSON.parse(cleaned.slice(start, end + 1));
+  }
 }
 
 async function loadPriorOutputs() {
@@ -366,6 +427,7 @@ async function main() {
       draft_sha256: sha(generated.draft),
       critic_sha256: sha(generated.critic),
       deepen_sha256: sha(generated.deepened),
+      polish_sha256: sha(generated.polished),
       final_sha256: sha(article.body)
     }
   };
@@ -394,4 +456,4 @@ if (isEntry) {
   main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
 }
 
-export { main, assertFreeOnly, FREE_MODELS, PAID_PROVIDER_ENV };
+export { main, assertFreeOnly, FREE_MODELS, PAID_PROVIDER_ENV, STAGE_BUDGET };
