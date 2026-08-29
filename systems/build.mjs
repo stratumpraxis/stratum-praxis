@@ -26,6 +26,7 @@ const OG_IMAGE = `${ORIGIN}/media/og/stratum-praxis-og-default.png`;
 
 const packaged = products.filter((p) => p.package_path);
 const external = products.filter((p) => !p.package_path);
+const articles = Array.isArray(manifest.articles) ? manifest.articles : [];
 
 // ---------------------------------------------------------------- helpers
 
@@ -247,6 +248,17 @@ const landingBody = `
   </table></div>
 </div></section>
 
+${articles.length ? `<section><div class="wrap">
+  <h2>Writing</h2>
+  <p class="sub">Articles published into the Systems Library.</p>
+  <ul class="cards">
+    ${articles.map((a) => `<li class="card">
+  <h3><a href="${esc(a.path)}" data-analytics-id="systems_article_${esc(String(a.path).split('/').pop().replace(/\.html$/, ''))}">${esc(a.title)}</a></h3>
+  <p>${esc(a.summary || '')}</p>
+</li>`).join('\n    ')}
+  </ul>
+</div></section>` : ''}
+
 <section id="catalogue"><div class="wrap">
   <h2>Packaged systems</h2>
   <p class="sub">Free, MIT, and downloadable from this site. Each one is a directory of
@@ -258,8 +270,8 @@ const landingBody = `
 
 <section><div class="wrap">
   <h2>Paid</h2>
-  <p class="sub">One entry, and it is not new. This is an existing Stratum Praxis product
-  listed here because it belongs in the same catalogue.</p>
+  <p class="sub">${external.length === 1 ? 'One entry, and it is not new. This is an existing' : `${external.length} entries, and none of them are new. These are existing`}
+  Stratum Praxis ${external.length === 1 ? 'product' : 'products'} listed here because they belong in the same catalogue.</p>
   <ul class="cards">
     ${external.map(productCard).join('\n    ')}
   </ul>

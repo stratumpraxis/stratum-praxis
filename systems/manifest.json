@@ -11,7 +11,11 @@
     {
       "id": "mit",
       "name": "MIT",
-      "applies_to": ["truth-gate", "duplicate-guard", "attribution-contract"],
+      "applies_to": [
+        "truth-gate",
+        "duplicate-guard",
+        "attribution-contract"
+      ],
       "summary": "Use, modify and redistribute, including commercially, in personal, business and client work. Keep the copyright and licence notice.",
       "supportable": true,
       "note": "This is the only tier currently offered for the packaged systems, and the reason is factual rather than generous: the source repository is public and MIT-licensed, so those files are already MIT to everyone. A restrictive tier would not be enforceable on published versions."
@@ -19,7 +23,9 @@
     {
       "id": "single_user",
       "name": "Single-user product licence",
-      "applies_to": ["ai-workflow-operator-bundle"],
+      "applies_to": [
+        "ai-workflow-operator-bundle"
+      ],
       "summary": "One buyer, one-time purchase, buyer-only workspace. The existing terms on the product page govern; nothing here changes them.",
       "supportable": true
     }
@@ -43,11 +49,25 @@
       "price": 0,
       "currency": "USD",
       "price_note": "Free and MIT-licensed. See the licence page for why this is not a paid tier.",
-      "license_options": ["mit"],
-      "supported_platforms": ["Node.js 18+", "macOS", "Linux", "Windows", "Docker", "GitHub Actions", "GitLab CI"],
+      "license_options": [
+        "mit"
+      ],
+      "supported_platforms": [
+        "Node.js 18+",
+        "macOS",
+        "Linux",
+        "Windows",
+        "Docker",
+        "GitHub Actions",
+        "GitLab CI"
+      ],
       "setup_difficulty": "low",
       "estimated_setup_time": "20-40 minutes, almost all of it writing an honest identity contract",
-      "requirements": ["Node.js 18 or newer", "no dependencies", "no network access"],
+      "requirements": [
+        "Node.js 18 or newer",
+        "no dependencies",
+        "no network access"
+      ],
       "checkout_url": null,
       "checkout_provider": null,
       "delivery_type": "direct_download",
@@ -60,10 +80,17 @@
       "attribution_product_id": "systems_truth_gate",
       "cta_id": "systems_truth_gate_download",
       "files": [
-        "README.md", "LICENSE", "CHANGELOG.md", "package.json",
-        "src/truth-gate.mjs", "src/identity.mjs", "src/cli.mjs",
-        "examples/identity.example.json", "examples/lens.example.json",
-        "examples/sample-input.json", "examples/sample-output.txt",
+        "README.md",
+        "LICENSE",
+        "CHANGELOG.md",
+        "package.json",
+        "src/truth-gate.mjs",
+        "src/identity.mjs",
+        "src/cli.mjs",
+        "examples/identity.example.json",
+        "examples/lens.example.json",
+        "examples/sample-input.json",
+        "examples/sample-output.txt",
         "test/truth-gate.test.mjs"
       ]
     },
@@ -78,11 +105,25 @@
       "price": 0,
       "currency": "USD",
       "price_note": "Free and MIT-licensed. See the licence page for why this is not a paid tier.",
-      "license_options": ["mit"],
-      "supported_platforms": ["Node.js 18+", "macOS", "Linux", "Windows", "Docker", "GitHub Actions", "GitLab CI"],
+      "license_options": [
+        "mit"
+      ],
+      "supported_platforms": [
+        "Node.js 18+",
+        "macOS",
+        "Linux",
+        "Windows",
+        "Docker",
+        "GitHub Actions",
+        "GitLab CI"
+      ],
       "setup_difficulty": "low",
       "estimated_setup_time": "30-60 minutes, mostly shaping your published catalogue into the item shape",
-      "requirements": ["Node.js 18 or newer", "a list of what you have already published", "no dependencies"],
+      "requirements": [
+        "Node.js 18 or newer",
+        "a list of what you have already published",
+        "no dependencies"
+      ],
       "checkout_url": null,
       "checkout_provider": null,
       "delivery_type": "direct_download",
@@ -95,9 +136,16 @@
       "attribution_product_id": "systems_duplicate_guard",
       "cta_id": "systems_duplicate_guard_download",
       "files": [
-        "README.md", "LICENSE", "CHANGELOG.md", "package.json",
-        "src/duplicate-guard.mjs", "src/text.mjs", "src/cli.mjs",
-        "examples/draft.example.json", "examples/catalog.example.json", "examples/sample-output.txt",
+        "README.md",
+        "LICENSE",
+        "CHANGELOG.md",
+        "package.json",
+        "src/duplicate-guard.mjs",
+        "src/text.mjs",
+        "src/cli.mjs",
+        "examples/draft.example.json",
+        "examples/catalog.example.json",
+        "examples/sample-output.txt",
         "test/duplicate-guard.test.mjs"
       ]
     },
@@ -112,11 +160,25 @@
       "price": 0,
       "currency": "USD",
       "price_note": "Free and MIT-licensed. See the licence page for why this is not a paid tier.",
-      "license_options": ["mit"],
-      "supported_platforms": ["Node.js 18+", "macOS", "Linux", "Windows", "Docker", "GitHub Actions", "GitLab CI"],
+      "license_options": [
+        "mit"
+      ],
+      "supported_platforms": [
+        "Node.js 18+",
+        "macOS",
+        "Linux",
+        "Windows",
+        "Docker",
+        "GitHub Actions",
+        "GitLab CI"
+      ],
       "setup_difficulty": "low",
       "estimated_setup_time": "20-30 minutes to declare your channels, longer if your existing tags need reconciling",
-      "requirements": ["Node.js 18 or newer", "a decision about what your channels are called", "no dependencies"],
+      "requirements": [
+        "Node.js 18 or newer",
+        "a decision about what your channels are called",
+        "no dependencies"
+      ],
       "checkout_url": null,
       "checkout_provider": null,
       "delivery_type": "direct_download",
@@ -129,9 +191,16 @@
       "attribution_product_id": "systems_attribution_contract",
       "cta_id": "systems_attribution_contract_download",
       "files": [
-        "README.md", "LICENSE", "CHANGELOG.md", "package.json",
-        "src/attribution.mjs", "src/routing.mjs", "src/cli.mjs",
-        "examples/routing.example.json", "examples/links.example.json", "examples/sample-output.txt",
+        "README.md",
+        "LICENSE",
+        "CHANGELOG.md",
+        "package.json",
+        "src/attribution.mjs",
+        "src/routing.mjs",
+        "src/cli.mjs",
+        "examples/routing.example.json",
+        "examples/links.example.json",
+        "examples/sample-output.txt",
         "test/attribution.test.mjs"
       ]
     },
@@ -146,11 +215,18 @@
       "price": 17,
       "currency": "USD",
       "price_note": "Existing published price. Not set or changed by this work.",
-      "license_options": ["single_user"],
-      "supported_platforms": ["any modern general-purpose chat model", "browser"],
+      "license_options": [
+        "single_user"
+      ],
+      "supported_platforms": [
+        "any modern general-purpose chat model",
+        "browser"
+      ],
       "setup_difficulty": "none",
       "estimated_setup_time": "immediate; it is a system to run, not code to install",
-      "requirements": ["access to a general-purpose chat model"],
+      "requirements": [
+        "access to a general-purpose chat model"
+      ],
       "external_page": "/prompt-store/",
       "checkout_url": "https://buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P",
       "checkout_provider": "buy.stripe.com",
@@ -165,13 +241,113 @@
       "attribution_product_id": "workflow_operator_bundle",
       "cta_id": "systems_workflow_operator_bundle",
       "reuse_note": "Existing live product. The Systems Library links to its canonical page and its existing checkout. No page, price or checkout was created or changed."
+    },
+    {
+      "id": "cross-agent-operating-kit",
+      "slug": "cross-agent-operating-kit",
+      "title": "Cross-Agent Operating Kit",
+      "summary": "Keep Brain, Policy, Skills and State portable across Claude Code, Codex, Cursor and future agent runtimes, with human gates, cost guards and a migration path.",
+      "category": "operating-systems",
+      "maturity": "stable",
+      "version": "1.0.0",
+      "price": 69,
+      "currency": "USD",
+      "price_note": "Entry tier of three published tiers ($69 / $149 / $299). Existing published prices, not set or changed by this work.",
+      "license_options": [
+        "single_user"
+      ],
+      "supported_platforms": [
+        "Claude Code",
+        "Codex",
+        "Cursor",
+        "future agent runtimes"
+      ],
+      "setup_difficulty": "low",
+      "estimated_setup_time": "a working session; it is an operating kit, not code to install",
+      "requirements": [
+        "at least one agent runtime you already use"
+      ],
+      "external_page": "/cross-agent-operating-kit.html",
+      "checkout_url": "https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T",
+      "checkout_provider": "buy.stripe.com",
+      "delivery_type": "verified_buyer_workspace",
+      "delivery_note": "Stripe purchase, then the Cloudflare Worker verifies the paid session and purchase email at /cross-agent-kit/login before issuing a signed token for the buyer-only workspace.",
+      "package_path": null,
+      "docs_url": "/cross-agent-operating-kit.html",
+      "changelog_url": null,
+      "validation_command": null,
+      "test_count": null,
+      "status": "live_external",
+      "attribution_product_id": "cross_agent_operating_kit",
+      "cta_id": "systems_cross_agent_operating_kit",
+      "reuse_note": "Existing live product already on main. Carried into the generated hub so the page that replaces main's hand-written /systems/index.html does not drop it. Its page, tiers and checkouts are untouched; all three tiers are sold on that page."
+    },
+    {
+      "id": "ai-operations-systems-pack",
+      "slug": "ai-operations-systems-pack",
+      "title": "AI Operations Systems Pack",
+      "summary": "Ten operating systems for running AI work as an operation rather than a series of one-off requests.",
+      "category": "operating-systems",
+      "maturity": "stable",
+      "version": "1.0.0",
+      "price": 39,
+      "currency": "USD",
+      "price_note": "Existing published price. Not set or changed by this work.",
+      "license_options": [
+        "single_user"
+      ],
+      "supported_platforms": [
+        "any modern general-purpose chat model",
+        "browser"
+      ],
+      "setup_difficulty": "none",
+      "estimated_setup_time": "immediate; it is a system to run, not code to install",
+      "requirements": [
+        "access to a general-purpose chat model"
+      ],
+      "external_page": "/prompt-store/operations-10.html",
+      "checkout_url": "https://buy.stripe.com/6oU14ofbmeLxdsQ2xt6Zy0Q",
+      "checkout_provider": "buy.stripe.com",
+      "delivery_type": "verified_buyer_workspace",
+      "delivery_note": "Stripe purchase, then the Cloudflare Worker verifies the paid session and purchase email at /prompt-store/ops10/login before issuing a signed token for the buyer-only workspace.",
+      "package_path": null,
+      "docs_url": "/prompt-store/operations-10.html",
+      "changelog_url": null,
+      "validation_command": null,
+      "test_count": null,
+      "status": "live_external",
+      "attribution_product_id": "ai_operations_systems_pack",
+      "cta_id": "systems_ai_operations_systems_pack",
+      "reuse_note": "Existing live product already on main. main's hand-written hub linked /prompt-store/ops10/, which has no page - the worker serves only /prompt-store/ops10/login and /workspace under that path. This links /prompt-store/operations-10.html, the real sales page."
     }
   ],
   "deferred": [
-    { "id": "publisher-gate", "reason": "Four-file policy coupling; clean-room cost is high and the product is hard to explain without the surrounding engine." },
-    { "id": "signal-intelligence", "reason": "Inseparable from a populated asset inventory; packaging it would ship an empty scoring engine." },
-    { "id": "revenue-publisher", "reason": "Needs an owner decision: it calls a third-party AI API, which puts the buyer's cost and terms-of-service position on the seller." },
-    { "id": "github-actions-starter", "reason": "Nothing survives genericisation; it would be new writing presented as an extraction." },
-    { "id": "prompt-pack", "reason": "Duplicate of the already-live AI Workflow Operator Bundle." }
+    {
+      "id": "publisher-gate",
+      "reason": "Four-file policy coupling; clean-room cost is high and the product is hard to explain without the surrounding engine."
+    },
+    {
+      "id": "signal-intelligence",
+      "reason": "Inseparable from a populated asset inventory; packaging it would ship an empty scoring engine."
+    },
+    {
+      "id": "revenue-publisher",
+      "reason": "Needs an owner decision: it calls a third-party AI API, which puts the buyer's cost and terms-of-service position on the seller."
+    },
+    {
+      "id": "github-actions-starter",
+      "reason": "Nothing survives genericisation; it would be new writing presented as an extraction."
+    },
+    {
+      "id": "prompt-pack",
+      "reason": "Duplicate of the already-live AI Workflow Operator Bundle."
+    }
+  ],
+  "articles": [
+    {
+      "title": "How to run an AI swarm without losing control",
+      "path": "/systems/how-to-run-an-ai-swarm-without-losing-control.html",
+      "summary": "Published to the Systems Library on main. Carried through so the generated hub keeps linking it."
+    }
   ]
 }
