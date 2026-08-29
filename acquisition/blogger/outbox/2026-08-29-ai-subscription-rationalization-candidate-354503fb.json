@@ -1,0 +1,495 @@
+{
+  "version": 3,
+  "output_id": "2026-08-29-ai-subscription-rationalization-candidate-354503fb",
+  "generated_at": "2026-08-29T03:54:03.104Z",
+  "provider": "cloudflare-workers-ai-free-only",
+  "model": "@cf/google/gemma-4-26b-a4b-it",
+  "billing_policy": "FREE_ONLY_NO_PAID_FALLBACK",
+  "billing_evidence": {
+    "model": "@cf/google/gemma-4-26b-a4b-it",
+    "allowlisted": true,
+    "paid_credentials_present": [],
+    "paid_fallback_used": false
+  },
+  "selection": {
+    "lane": "REVENUE_VERTICAL",
+    "vertical_id": "ai_subscription_rationalization",
+    "opportunity_score": 19.303,
+    "opportunity_breakdown": {
+      "demand_strength": 0.6333,
+      "purchase_intent": 0.6,
+      "existing_asset_fit": 0.762,
+      "freshness": 1,
+      "measurement_quality": 0.8,
+      "operational_burden_divisor": 1.2
+    },
+    "considered": [
+      {
+        "vertical_id": "ai_spend_accountability",
+        "opportunity_score": 26.4688
+      },
+      {
+        "vertical_id": "ai_subscription_rationalization",
+        "opportunity_score": 19.303
+      }
+    ],
+    "not_eligible": [
+      {
+        "vertical_id": "ai_agent_roi",
+        "reasons": [
+          "vertical state is WATCH: acquisition/signal-intelligence/candidates.json records sc-ai_agent_payback_uncertainty_2026_08 as RESEARCH_GAP at 59.15. The pain and demand dimensions are ASSUMPTION, inherited from the spend-accountability evidence rather than observed for this thesis."
+        ]
+      },
+      {
+        "vertical_id": "ai_runtime_cost",
+        "reasons": [
+          "vertical state is WATCH: No thesis and no OBSERVED evidence records exist for this vertical yet, and the observed subscription-vs-API pricing posts sit in the same independence group as the subscription-rationalization evidence, so they cannot corroborate a separate runtime-cost thesis on their own. Promotion also requires a distinct existing-asset fit: the spend pages already cover the adjacent queries."
+        ]
+      }
+    ]
+  },
+  "source_id": "ai-subscription-rationalization-candidate",
+  "source_candidate_id": "sc-ai_subscription_rationalization_2026_08",
+  "source_hash": "sha256:aabefafeb466b7e63a01e45988faa3f557183764ff20dc328d84796bf799fc36",
+  "identity_id": "jp_independent_freelancer",
+  "desk_id": "en_desk",
+  "lens_id": "practical_operator",
+  "title_options": [],
+  "title": "The Economics of AI Subscription Waste",
+  "dek": "A decision framework to manage the 25-30% of SaaS and AI subscription spend reported as waste.",
+  "body": "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range. This is not a technical failure of the software or a lack of feature depth. It is an economic problem. Public posts recorded by this publication on 2026-08-29 describe unused AI subscription capacity, and unused cloud or AI credits, as an economic problem rather than a technical one. The waste exists in the gap between what is paid for and what is actually consumed. Public posts recorded by this publication on 2026-08-29 describe people wanting to identify subscriptions they pay for but barely use.\n\nManaging these costs is difficult because of mathematical uncertainty. Public posts recorded by this publication on 2026-08-29 describe users comparing subscription pricing against API pricing for the same capability and being unable to tell which is cheaper at their own volume. This uncertainty prevents clean optimization. For example, a monthly subscription cost of $20 might be less efficient than an API-based model that costs $5 for the same volume. However, if that volume increases, the subscription may suddenly become the more economical choice. Without a clear understanding of volume-based thresholds, the decision to switch models is often a guess.\n\n# The Decision Framework\n\nA subscription decision can be sorted into KEEP, DOWNGRADE, CONSOLIDATE or CANCEL using actual usage, criticality, functional overlap, replacement cost, switching cost, workflow dependency, economic displacement, subscription or API cost, and the adequacy of a free or cheaper alternative.\n\nActual usage is the most intuitive metric, but it is often the least reliable when used in isolation. A tool might show low engagement in a monthly report, yet remain essential to a specific, high-value task. This is where criticality must be weighed against usage. If a tool is critical, the decision is to KEEP, regardless of how often it is opened. If a tool has low usage and low criticality, the decision is to CANCEL.\n\nThe decision to CANCEL is frequently complicated by replacement cost and switching cost. The obvious answer is not always correct. For example, if a tool has low usage, the obvious recommendation is to CANCEL. However, if that tool is critical, the decision is to KEEP. Similarly, public posts recorded by this publication on 2026-08-29 describe users letting an expensive subscription expire because a free or cheaper alternative looks adequate for what they actually do with it. If the switching cost or replacement cost of moving to that alternative is higher than the subscription fee, the obvious choice to switch is a mistake. This is how Subscription Bloat persists even when cheaper options exist.\n\nConsolidation addresses the problem of functional overlap. Public posts recorded by this publication on 2026-08-29 describe users evaluating current AI tools as requiring several paid subscriptions at once, and a stated preference for fewer connected tools over a large collection. When two tools perform the same core function, the goal is to CONSOLIDATE. This process requires evaluating economic displacement—determining if one tool can effectively replace the utility of another without losing essential features.\n\nConsolidation involves a fundamental tradeoff. While consolidating onto fewer tools reduces Stack Friction, it increases workflow dependency on a single provider. A leaner stack is easier to manage and monitor, but it creates a single point of failure. If a single provider changes their pricing, deprecates a feature, or suffers an outage, the impact on the operator is magnified.\n\nDowngrading is a middle path used when a tool is necessary but the current tier is excessive. This decision relies on the adequacy of a free or cheaper alternative and the subscription or API cost. If the current tier provides features that are never utilized, the economic displacement of the higher tier is unjustifiable. The operator must determine if a lower tier or a pay-as-you-go API model provides the same functional utility for the actual volume of work being performed.\n\nThe current landscape of AI-workflow-ROI content is often common and non-differentiated. Most advice focuses on how to use the tools rather than how to manage the economics of the tools themselves. A recorded pass describes general AI-workflow-ROI content as common and non-differentiated. The real challenge for the solo operator or the team lead is not finding more ways to use AI, but finding the most efficient way to pay for it.\n\nThe complexity of these decisions is compounded by the speed of the market. A tool that is adequate today may be obsolete in six months. This makes the assessment of switching costs and replacement costs a moving target. An operator must balance the desire for the latest capability against the economic reality of the subscription model.\n\nTo begin this process, use the reducible-spend calculator published on stratumpraxis.com. It is free and requires no signup.\n\nEstimate how much of your AI/SaaS spend is reducible",
+  "audience": [
+    "solo_operator",
+    "freelancer",
+    "smb_owner",
+    "team_lead"
+  ],
+  "evidence_notes": [
+    "\"30%\" is carried from the recorded source material [PUBLIC_CLAIM] acquisition/signal-intelligence/signals.json#saas-spend-waste-benchmark-2026-08-27",
+    "\"$20 m\" is illustrative and appears inside a labelled example; it is not a reported figure",
+    "\"$5\" is illustrative and appears inside a labelled example; it is not a reported figure"
+  ],
+  "claim_ledger": [
+    {
+      "claim": "Publicly reported figures describe SaaS and AI subscription waste in the 25-30% range.",
+      "claim_type": "PUBLIC_CLAIM",
+      "evidence_ref": "acquisition/signal-intelligence/signals.json#saas-spend-waste-benchmark-2026-08-27",
+      "attribution_required": true,
+      "note": "A reported range from a recorded public-search pass. It may be used only with the words that mark it as reported, never as a measured fact about the reader's own stack."
+    },
+    {
+      "claim": "People paying for AI subscriptions publicly ask for a way to identify the ones they barely use, describe unused subscription capacity and unused credits as money already spent, compare subscription pricing against API pricing without being able to tell which is cheaper at their volume, let expensive subscriptions lapse when a cheaper option looks adequate, and say that evaluating current tools requires holding several paid subscriptions at once.",
+      "claim_type": "PUBLIC_CLAIM",
+      "evidence_ref": "acquisition/signal-intelligence/observations/2026-08-29-x-ai-subscription-rationalization.json",
+      "attribution_required": true,
+      "note": "OBSERVED as language that exists in public posts on 2026-08-29. Nothing about how many people, how much money or which products is established. No post may be quoted, linked or attributed to an account: post identity is UNRECORDED."
+    },
+    {
+      "claim": "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup.",
+      "claim_type": "VERIFIED_FACT",
+      "evidence_ref": "acquisition/asset-inventory.json#ai-saas-waste-calculator (status LIVE, verification_state HTTP_VERIFIED) and the page text of ai-saas-waste-calculator.html",
+      "attribution_required": false,
+      "note": "Checkable against the repository and the live page."
+    },
+    {
+      "claim": "A KEEP / DOWNGRADE / CONSOLIDATE / CANCEL decision can be made from actual usage, criticality, functional overlap, replacement cost, switching cost, workflow dependency, economic displacement, subscription or API cost, and whether a free or cheaper alternative is adequate.",
+      "claim_type": "INTERPRETATION",
+      "evidence_ref": "acquisition/revenue-verticals.json#ai_subscription_rationalization.decision_dimensions",
+      "attribution_required": false,
+      "note": "This is the editorial argument of the piece, not a reported finding. It must read as reasoning the reader can disagree with."
+    },
+    {
+      "claim": "Any specific subscription price, seat count, usage level or saving used to illustrate the procedure.",
+      "claim_type": "EXAMPLE",
+      "evidence_ref": null,
+      "attribution_required": true,
+      "note": "Permitted ONLY inside a sentence or block that labels it as an example or scenario. An illustrative figure presented as a report of something that happened is a fabrication and fails the editorial gate."
+    },
+    {
+      "claim": "That consolidating onto fewer tools reduces total cost for a given reader.",
+      "claim_type": "HYPOTHESIS",
+      "evidence_ref": null,
+      "attribution_required": true,
+      "note": "Untested. It must be written as a hypothesis with its failure case (switching cost, workflow dependency) stated alongside it."
+    }
+  ],
+  "editorial_notes": [],
+  "quality": {
+    "version": 2,
+    "score": 49,
+    "raw_dimension_score": 81.84,
+    "band": "CRITICAL_FAIL",
+    "thresholds": {
+      "strong": 90,
+      "ready": 82,
+      "revise": 0
+    },
+    "threshold": 82,
+    "publishable": false,
+    "critical_failures": [
+      {
+        "code": "DUPLICATE_OR_CANNIBALIZING",
+        "detail": "SAME_SOURCE_SAME_CHANNEL_COOLDOWN: source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days"
+      },
+      {
+        "code": "DUPLICATE_OR_CANNIBALIZING",
+        "detail": "SAME_AUDIENCE_CTA_COOLDOWN: same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days"
+      }
+    ],
+    "caps": [],
+    "words": 794,
+    "dimensions": {
+      "source_fidelity": {
+        "score": 10,
+        "weight": 4,
+        "contribution": 40,
+        "note": "1 allowed claim(s) carried with their own figures; 0 restricted claim(s); 0 untraceable figure(s)"
+      },
+      "source_traceability": {
+        "score": 10,
+        "weight": 3,
+        "contribution": 30,
+        "note": "100% of specific figures carry a provenance marker; 3 evidence note(s)"
+      },
+      "factual_support": {
+        "score": 10,
+        "weight": 4,
+        "contribution": 40,
+        "note": "0 untraceable, 0 traceable-but-unmarked, 0 illustrative figure(s)"
+      },
+      "insight_depth": {
+        "score": 2,
+        "weight": 4,
+        "contribution": 8,
+        "note": "distinct insight markers: tradeoff"
+      },
+      "originality_of_framing": {
+        "score": 10,
+        "weight": 3,
+        "contribution": 30,
+        "note": "1 coined term(s) (The Decision Framework); 0 restatement paragraph(s)"
+      },
+      "specificity": {
+        "score": 7,
+        "weight": 2,
+        "contribution": 14,
+        "note": "14 conditional marker(s); 0 abstraction word(s)"
+      },
+      "practical_usefulness": {
+        "score": 7,
+        "weight": 3,
+        "contribution": 21,
+        "note": "4/4 required decision term(s) present"
+      },
+      "naturalness_rhythm": {
+        "score": 10,
+        "weight": 3,
+        "contribution": 30,
+        "note": "sentence cv 0.49, spread 35, short-sentence share 0.2, paragraph cadence cv 0.46"
+      },
+      "anti_template": {
+        "score": 10,
+        "weight": 4,
+        "contribution": 40,
+        "note": "1 heading(s) (1.26/1000 words); AI transitions: none"
+      },
+      "unsupported_specificity_control": {
+        "score": 10,
+        "weight": 4,
+        "contribution": 40,
+        "note": "0 specific figure(s) with no source, 0 with no visible provenance"
+      },
+      "fake_experience_control": {
+        "score": 10,
+        "weight": 5,
+        "contribution": 50,
+        "note": "0 invented-texture sentence(s), 0 unlabelled outcome(s), 0 truth-gate violation(s)"
+      },
+      "cta_fit": {
+        "score": 10,
+        "weight": 3,
+        "contribution": 30,
+        "note": "routes to verified ai-saas-waste-calculator; label quality 10/10"
+      },
+      "audience_fit": {
+        "score": 4,
+        "weight": 2,
+        "contribution": 8,
+        "note": "3/7 audience term(s) present; declared audiences solo_operator, freelancer, smb_owner, team_lead"
+      },
+      "duplication_control": {
+        "score": 0,
+        "weight": 3,
+        "contribution": 0,
+        "note": "2 block(s), 0 warning(s) from the duplication gate"
+      },
+      "editing_burden_control": {
+        "score": 10,
+        "weight": 2,
+        "contribution": 20,
+        "note": "0 item(s) a human editor would have to fix before publication"
+      }
+    },
+    "signals": {
+      "numeric_claims": 3,
+      "untraceable_numeric_claims": [],
+      "unmarked_numeric_claims": [],
+      "illustrative_numeric_claims": [],
+      "fake_texture": [],
+      "claimed_outcomes": [],
+      "insight_markers": [
+        "tradeoff"
+      ],
+      "template": {
+        "words": 794,
+        "heading_count": 1,
+        "headings_per_1000_words": 1.26,
+        "coinages": [
+          "The Decision Framework"
+        ],
+        "coinage_count": 1,
+        "ai_transitions": [],
+        "abstraction_words": [],
+        "not_just_but_count": 0,
+        "restatement_count": 0,
+        "paragraph_cadence_cv": 0.46,
+        "empty_motivational_ending": false
+      },
+      "rhythm": {
+        "sentences": 49,
+        "mean": 16.2,
+        "spread": 35,
+        "cv": 0.49,
+        "short_share": 0.2
+      }
+    }
+  },
+  "gates": {
+    "executed": [
+      "first_person_truth_gate",
+      "privacy_gate",
+      "lens_contract_gate",
+      "source_restricted_claim_gate",
+      "safety_blocked_claim_gate",
+      "duplication_gate",
+      "cta_route_verification_gate",
+      "editorial_quality_v2"
+    ],
+    "truth": {
+      "ok": true,
+      "violations": [],
+      "checked_sentences": 51,
+      "gate": "acquisition/media-engine/lib/truth-gate.mjs"
+    },
+    "duplication": {
+      "ok": false,
+      "blocks": [
+        {
+          "rule": "SAME_SOURCE_SAME_CHANNEL_COOLDOWN",
+          "against": "2026-08-29-ai-subscription-rationalization-candidate-945928a7",
+          "detail": "source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days"
+        },
+        {
+          "rule": "SAME_AUDIENCE_CTA_COOLDOWN",
+          "against": "2026-08-29-ai-subscription-rationalization-candidate-945928a7",
+          "detail": "same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days"
+        }
+      ],
+      "warnings": [],
+      "gate": "acquisition/media-engine/lib/duplication.mjs"
+    },
+    "cta": {
+      "ok": true,
+      "failures": [],
+      "warnings": [],
+      "reason": "routes to verified ai-saas-waste-calculator; label quality 10/10"
+    }
+  },
+  "blocking_reasons": [
+    "SAME_SOURCE_SAME_CHANNEL_COOLDOWN: source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days",
+    "SAME_AUDIENCE_CTA_COOLDOWN: same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days",
+    "DUPLICATE_OR_CANNIBALIZING: SAME_SOURCE_SAME_CHANNEL_COOLDOWN: source ai-subscription-rationalization-candidate already went to owned_signal 0.0 days ago; the cooldown is 14 days",
+    "DUPLICATE_OR_CANNIBALIZING: SAME_AUDIENCE_CTA_COOLDOWN: same audience, CTA ai-saas-waste-calculator and destination as 2026-08-29-ai-subscription-rationalization-candidate-945928a7 within 7 days"
+  ],
+  "disclosure": "AI-assisted editorial production. Claims are limited to the source material recorded for this publication and may require independent verification. Before publication this article passed the repository’s first-person truth, privacy, restricted-claim, duplication and CTA-route checks. Product and platform details change; verify current terms before acting.",
+  "status": "DRAFT",
+  "publication_lane": "HUMAN_PUBLISH_REQUIRED",
+  "publication_proof": null,
+  "cta": {
+    "asset_id": "ai-saas-waste-calculator",
+    "label": "Estimate how much of your AI/SaaS spend is reducible",
+    "microcopy": "Free · No signup",
+    "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+    "tracked_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=ai-subscription-rationalization-candidate%3Apractical_operator&utm_term=ai_subscription_rationalization&sp_channel=owned_signal"
+  },
+  "attribution": {
+    "source_id": "ai-subscription-rationalization-candidate",
+    "source_candidate_id": "sc-ai_subscription_rationalization_2026_08",
+    "vertical_id": "ai_subscription_rationalization",
+    "identity_id": "jp_independent_freelancer",
+    "desk_id": "en_desk",
+    "lens_id": "practical_operator",
+    "channel_id": "owned_signal",
+    "campaign": "autonomous_revenue_publisher"
+  },
+  "stages_completed": {
+    "draft": true,
+    "critic": true,
+    "deepen": true,
+    "polish": true,
+    "envelope": true
+  },
+  "stage_diagnostics": [
+    {
+      "stage": "draft",
+      "prompt_chars": 8186,
+      "max_tokens": 7000,
+      "returned_chars": 6582,
+      "finish_reason": "stop",
+      "reasoning_chars": 11839,
+      "usage": {
+        "prompt_tokens": 1783,
+        "completion_tokens": 4415,
+        "total_tokens": 6198,
+        "prompt_tokens_details": {
+          "cached_tokens": 1728
+        },
+        "neurons": 136.61817932128906
+      },
+      "outcome": "OK"
+    },
+    {
+      "stage": "critic",
+      "prompt_chars": 9420,
+      "max_tokens": 4000,
+      "returned_chars": 0,
+      "finish_reason": "length",
+      "reasoning_chars": 16662,
+      "usage": {
+        "prompt_tokens": 1961,
+        "completion_tokens": 4000,
+        "total_tokens": 5961,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 126.91818237304688
+      },
+      "outcome": "TRUNCATED_IN_REASONING"
+    },
+    {
+      "stage": "critic",
+      "prompt_chars": 9420,
+      "max_tokens": 6400,
+      "returned_chars": 0,
+      "finish_reason": "length",
+      "reasoning_chars": 0,
+      "usage": {
+        "prompt_tokens": 1961,
+        "completion_tokens": 6400,
+        "total_tokens": 8361,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 192.3727264404297
+      },
+      "outcome": "TRUNCATED_IN_REASONING"
+    },
+    {
+      "stage": "critic",
+      "prompt_chars": 9420,
+      "max_tokens": 10240,
+      "returned_chars": 1586,
+      "finish_reason": "stop",
+      "reasoning_chars": 22626,
+      "usage": {
+        "prompt_tokens": 1961,
+        "completion_tokens": 5994,
+        "total_tokens": 7955,
+        "prompt_tokens_details": {
+          "cached_tokens": 1920
+        },
+        "neurons": 181.3000030517578
+      },
+      "outcome": "OK"
+    },
+    {
+      "stage": "deepen",
+      "prompt_chars": 11068,
+      "max_tokens": 7000,
+      "returned_chars": 0,
+      "finish_reason": "length",
+      "reasoning_chars": 28949,
+      "usage": {
+        "prompt_tokens": 2309,
+        "completion_tokens": 7000,
+        "total_tokens": 9309,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 211.89999389648438
+      },
+      "outcome": "TRUNCATED_IN_REASONING"
+    },
+    {
+      "stage": "deepen",
+      "prompt_chars": 11068,
+      "max_tokens": 11200,
+      "returned_chars": 2285,
+      "finish_reason": "stop",
+      "reasoning_chars": 34691,
+      "usage": {
+        "prompt_tokens": 2309,
+        "completion_tokens": 8783,
+        "total_tokens": 11092,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 260.52728271484375
+      },
+      "outcome": "OK"
+    },
+    {
+      "stage": "polish",
+      "prompt_chars": 5352,
+      "max_tokens": 7000,
+      "returned_chars": 5059,
+      "finish_reason": "stop",
+      "reasoning_chars": 11093,
+      "usage": {
+        "prompt_tokens": 1134,
+        "completion_tokens": 3745,
+        "total_tokens": 4879,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 112.44544982910156
+      },
+      "outcome": "OK"
+    },
+    {
+      "stage": "envelope",
+      "prompt_chars": 8031,
+      "max_tokens": 9000,
+      "returned_chars": 317,
+      "finish_reason": "stop",
+      "reasoning_chars": 0,
+      "usage": {
+        "prompt_tokens": 1685,
+        "completion_tokens": 1449,
+        "total_tokens": 3134,
+        "prompt_tokens_details": {
+          "cached_tokens": 0
+        },
+        "neurons": 54.836360931396484
+      },
+      "outcome": "OK"
+    }
+  ],
+  "stages": {
+    "draft_sha256": "64e97d88a8ffec5e35e8a38f69672251ea8bc30b8979fc64fea0c08c13e78057",
+    "critic_sha256": "04e9f1c813d80f5be45fe0c6f699291b17de85556a5bbdf7c0f56ebea9e141d7",
+    "deepen_sha256": "3e95179dacb7b6600fc7aa20392c1f9018a385983197b0f39b4eaaa76f25bc3b",
+    "polish_sha256": "966aa6aebe15243cc04cc277b9978602e79578c9f845e66672ade18ee1f31d3e",
+    "final_sha256": "354503fb80b43590a238d55df91aa3e93143d2915fd95fb60a511cd675846fbb"
+  }
+}
