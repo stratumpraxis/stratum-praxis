@@ -1,0 +1,168 @@
+name: Verify Systems Library
+
+# This session could not reach stratumpraxis.com: outbound HTTPS is refused by the
+# network egress policy. Actions can reach it, so live verification happens here.
+#
+# Three separate things are checked, and they are deliberately not collapsed into one
+# "verified" state:
+#   1. routes           - every generated page is reachable and carries its own content
+#   2. delivery         - every package file a product page links to is actually served
+#   3. checkout route   - the paid entry still points at the checkout the manifest records
+#
+# It never performs a purchase and never sends money anywhere.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-systems-library.yml'
+      - 'systems/**'
+      - 'sitemap.xml'
+      - 'index.html'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  generated-pages-are-current:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Manifest is the source of truth
+        run: node systems/build.mjs --check
+      - name: Package test suites pass
+        run: |
+          set -euo pipefail
+          for dir in systems/packages/*/; do
+            echo "::group::$dir"
+            (cd "$dir" && node --test test/*.test.mjs)
+            echo "::endgroup::"
+          done
+      - name: No credential-shaped strings in any package
+        run: |
+          set -uo pipefail
+          # The truth-gate test asserts that a fake key is caught, so that one line is
+          # expected. Anything else is a finding.
+          hits="$(grep -rnE 'sk-[A-Za-z0-9]{16,}|ghp_[A-Za-z0-9]{20,}|AKIA[0-9A-Z]{16}|xox[baprs]-|-----BEGIN|price_[A-Za-z0-9]{20,}|plink_[A-Za-z0-9]{20,}' systems/packages/ \
+            | grep -v 'test/truth-gate.test.mjs' || true)"
+          if [ -n "$hits" ]; then
+            echo "credential-shaped strings found:"; echo "$hits"; exit 1
+          fi
+          echo "clean"
+
+  live-routes:
+    needs: generated-pages-are-current
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Routes are live and carry their own content
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+
+          wait_for_contains() {
+            local url="$1"; shift
+            local body=""
+            for attempt in $(seq 1 12); do
+              body="$(curl --fail --silent --show-error --location --max-time 20 "$url" || true)"
+              local ok=1
+              for needle in "$@"; do
+                if ! grep -F "$needle" <<<"$body" >/dev/null; then ok=0; fi
+              done
+              [ "$ok" = "1" ] && { echo "OK   $url"; return 0; }
+              sleep 15
+            done
+            echo "FAIL $url"; return 1
+          }
+
+          wait_for_contains https://stratumpraxis.com/systems/ \
+            'Systems Library' 'Packaged systems' 'Truth Gate' 'Duplicate Guard' 'Attribution Contract' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/products/truth-gate/ \
+            'Truth Gate' 'Known limitations' 'MIT' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/products/duplicate-guard/ \
+            'Duplicate Guard' 'Known limitations' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/products/attribution-contract/ \
+            'Attribution Contract' 'Known limitations' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/licenses/ \
+            'Licences' 'MIT' 'professional legal review' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/docs/ 'Documentation' 'Support boundary' || fail=1
+          wait_for_contains https://stratumpraxis.com/systems/changelog/ 'Changelog' || fail=1
+
+          echo "--- one navigation entry from the main site ---"
+          wait_for_contains https://stratumpraxis.com/ 'href="/systems/"' || fail=1
+
+          echo "--- existing routes must be unaffected ---"
+          for url in \
+            https://stratumpraxis.com/ \
+            https://stratumpraxis.com/prompt-store/ \
+            https://stratumpraxis.com/revenue-router.html \
+            https://stratumpraxis.com/workflow-audit.html \
+            https://stratumpraxis.com/prompt-systems.html \
+            https://stratumpraxis.com/sitemap.xml \
+            https://stratumpraxis.com/robots.txt \
+            https://stratumpraxis.com/scos-analytics.js
+          do
+            code="$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 20 "$url")"
+            echo "$code  $url"
+            [ "$code" = "200" ] || fail=1
+          done
+
+          exit $fail
+
+      - name: Delivery — every linked package file is actually served
+        shell: bash
+        run: |
+          set -euo pipefail
+          fail=0
+          # Read the file list straight from the manifest so this cannot drift.
+          while read -r path; do
+            code="$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 20 "https://stratumpraxis.com$path")"
+            echo "$code  $path"
+            [ "$code" = "200" ] || fail=1
+          done < <(node -e '
+            const m = require("./systems/manifest.json");
+            for (const p of m.products) {
+              if (!p.package_path) continue;
+              for (const f of p.files) console.log(p.package_path + f);
+            }
+          ')
+          if [ "$fail" != "0" ]; then
+            echo "::error::A package file linked from a product page is not served."
+            echo "If these are 404s on .md files, the Pages Jekyll build is filtering them; adding a root .nojekyll file is the fix."
+          fi
+          exit $fail
+
+      - name: Checkout route — the paid entry still points where the manifest says
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(node -e '
+            const m = require("./systems/manifest.json");
+            const p = m.products.find((x) => x.checkout_url);
+            console.log(p.checkout_url);
+          ')"
+          echo "manifest checkout_url: $expected"
+
+          page="$(curl --fail --silent --show-error --location --max-time 20 https://stratumpraxis.com/prompt-store/)"
+          if ! grep -F "$expected" <<<"$page" >/dev/null; then
+            echo "::error::The live product page no longer links to the checkout recorded in the manifest."
+            exit 1
+          fi
+          echo "OK   the live page links to the recorded checkout"
+
+          # Reachability only. No session is created and no payment is attempted.
+          code="$(curl -s -o /dev/null -w '%{http_code}' -L --max-time 25 "$expected")"
+          echo "$code  $expected"
+          [ "$code" = "200" ] || { echo "::error::checkout URL did not return 200"; exit 1; }
+
+          echo "CHECKOUT_ROUTE_VERIFIED"
+          echo "TEST_PURCHASE_VERIFIED: not attempted - no purchase is made by this workflow"
+          echo "LIVE_PURCHASE_VERIFIED: not attempted - requires a real buyer"

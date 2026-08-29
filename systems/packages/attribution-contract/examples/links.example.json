@@ -1,0 +1,6 @@
+[
+  { "id": "newsletter_to_checklist", "url": "https://example.com/checklist?utm_source=newsletter&utm_medium=email&utm_campaign=tool_sprawl&utm_content=checklist&asset_id=checklist" },
+  { "id": "x_to_checkout", "url": "https://buy.stripe.com/test_link?utm_source=x&utm_medium=social&utm_campaign=tool_sprawl&utm_content=thread_a&asset_id=checklist" },
+  { "id": "untagged_cta", "url": "https://example.com/checklist" },
+  { "id": "insecure_and_offsite", "url": "http://unknown-partner.test/page?utm_source=x" }
+]
