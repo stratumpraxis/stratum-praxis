@@ -97,7 +97,8 @@ correctly: first touch stays the article, so `checkout_click` carries
 path rather than by campaign. This is first-touch behaviour working as designed, not a
 defect: the internal CTA's UTMs deliberately do not overwrite a real acquisition source.
 
-Attribution ends at `buy.stripe.com`. No purchase is inferred from `checkout_click`.
+Attribution ended at `buy.stripe.com` when this was written. It no longer does — see §10.
+No purchase is inferred from `checkout_click` either way.
 
 ## 5. Delivery
 
@@ -199,4 +200,45 @@ so a product added later cannot skip it.
 **This resolution is the one judgement call in this work that an owner should confirm**,
 because it changes what a visitor sees at `/systems/`. The commercial content is a
 superset of what the other session shipped; the presentation is the generated one.
+
+## 10. The Stripe boundary was bridged by parallel work, after §4 was written
+
+`main` gained three more commits during this work, one of them
+`534b95b Close Vector to Stripe revenue attribution loop`. It changes
+`scos-analytics.js` to decorate every `buy.stripe.com` link at render and again at
+pointerdown, setting `client_reference_id` plus the four UTM parameters on the
+outbound checkout URL.
+
+That supersedes the limitation recorded in §4. The correction matters, so it is stated
+plainly rather than left to be inferred: **client-side attribution no longer stops at
+the Stripe domain.** A payment can now be joined back to the session that produced it
+through `client_reference_id`, which Stripe stores on the Checkout Session.
+
+Re-verified in a browser after merging, on the full path from a syndicated entry:
+
+```
+/systems/?utm_source=owned_media&utm_medium=blog&utm_campaign=international_personal_media
+  -> primary_cta_click   cta_id=systems_card_ai-workflow-operator-bundle
+  -> /prompt-store/
+  -> checkout_click      product=workflow_operator_bundle
+                         cta_id=prompt_store_offer_checkout
+                         first_landing_path=/systems/  first_utm_source=owned_media
+  -> outbound URL        buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P
+       client_reference_id=prompt_store_owned_media_international_personal_media_
+                           repeat-visit-sites-win-owner-package_structural_reflection
+       utm_source=owned_media  utm_medium=blog
+       utm_campaign=international_personal_media
+       utm_content=repeat-visit-sites-win-owner-package:structural_reflection
+```
+
+The two pieces of work compose rather than collide. That commit bridges the boundary;
+this one supplies a `/systems/` route worth attributing and the stable `cta_id` that
+keeps the pre-checkout hops distinguishable. Neither is sufficient alone.
+
+What is still NOT established: no purchase has occurred, so no `client_reference_id`
+has ever been observed on a real Stripe payment. `verified_revenue` remains null and
+`stripe_live_payment_intents` remains 0. The mechanism is verified; the revenue is not.
+
+After the merge: 326 acquisition tests pass (310 plus 16 from the new work), 48 package
+tests pass, build drift clean, and the manifest-driven attribution guard passes.
 
