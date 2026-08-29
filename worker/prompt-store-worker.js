@@ -196,14 +196,23 @@ function hexToBytes(value) {
   return Uint8Array.from(value.match(/.{2}/g), (part) => parseInt(part, 16));
 }
 async function verifyWebhook(raw, header, secret) {
-  const fields = Object.fromEntries(
-    String(header || "")
-      .split(",")
-      .map((part) => part.split("=", 2)),
-  );
-  const timestamp = Number(fields.t);
-  const supplied = hexToBytes(fields.v1 || "");
-  if (!timestamp || !supplied || Math.abs(Date.now() / 1000 - timestamp) > 300)
+  let timestamp = 0;
+  // Stripe sends one v1 per active signing secret, so a rotation window
+  // carries several. Any one of them matching is a valid signature.
+  const supplied = [];
+  for (const part of String(header || "").split(",")) {
+    const [name, value] = part.split("=", 2);
+    if (name === "t") timestamp = Number(value);
+    else if (name === "v1") {
+      const bytes = hexToBytes(value || "");
+      if (bytes) supplied.push(bytes);
+    }
+  }
+  if (
+    !timestamp ||
+    !supplied.length ||
+    Math.abs(Date.now() / 1000 - timestamp) > 300
+  )
     return false;
   const key = await crypto.subtle.importKey(
     "raw",
@@ -215,7 +224,7 @@ async function verifyWebhook(raw, header, secret) {
   const expected = new Uint8Array(
     await crypto.subtle.sign("HMAC", key, te.encode(`${timestamp}.${raw}`)),
   );
-  return sameBytes(expected, supplied);
+  return supplied.some((candidate) => sameBytes(expected, candidate));
 }
 async function webhook(req, env) {
   if (!env.STRIPE_WEBHOOK_SECRET)

@@ -1,0 +1,82 @@
+name: Verify Stripe Webhook
+
+on:
+  workflow_dispatch:
+  push:
+    branches: ['claude/**']
+    paths:
+      - 'worker/**'
+      - '.github/workflows/verify-stripe-webhook.yml'
+
+concurrency:
+  group: verify-stripe-webhook
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Worker webhook unit and delivery tests
+        working-directory: worker
+        run: node --test *.test.mjs
+
+      - name: Probe the production webhook over real POST requests
+        shell: bash
+        env:
+          ENDPOINT: https://ai-consultant-verify.practicalaireport.workers.dev/stripe/webhook
+        run: |
+          set -uo pipefail
+          fail=0
+          body='{"id":"evt_probe","type":"checkout.session.completed","created":1756468800,"data":{"object":{"id":"cs_probe"}}}'
+
+          # A structurally valid Stripe-Signature signed with a key the Worker does not hold.
+          now="$(date +%s)"
+          stale="$(( now - 400 ))"
+          fresh_sig="t=${now},v1=$(printf '%064d' 1)"
+          stale_sig="t=${stale},v1=$(printf '%064d' 1)"
+
+          probe () { # name method expected extra-args...
+            local name="$1" method="$2" expected="$3"; shift 3
+            local code
+            code="$(curl -sS -o /tmp/probe.txt -w '%{http_code}' -X "$method" "$@" "$ENDPOINT" || echo 000)"
+            if [ "$code" = "$expected" ]; then
+              echo "PASS  $name -> $code"
+            else
+              echo "FAIL  $name -> got $code, expected $expected"
+              echo "      body: $(cat /tmp/probe.txt)"
+              fail=1
+            fi
+          }
+
+          echo "== Production webhook probe: $ENDPOINT =="
+
+          # 503 here means STRIPE_WEBHOOK_SECRET is not bound to the Worker.
+          probe 'unsigned POST is rejected'            POST 400 -H 'Content-Type: application/json' --data "$body"
+          probe 'unparseable signature is rejected'    POST 400 -H 'Content-Type: application/json' -H 'Stripe-Signature: garbage' --data "$body"
+          probe 'wrong-key signature is rejected'      POST 400 -H 'Content-Type: application/json' -H "Stripe-Signature: $fresh_sig" --data "$body"
+          probe 'replayed timestamp is rejected'       POST 400 -H 'Content-Type: application/json' -H "Stripe-Signature: $stale_sig" --data "$body"
+          probe 'empty POST body is rejected'          POST 400 -H 'Content-Type: application/json' --data ''
+          probe 'GET is not a delivery path'           GET  404
+          probe 'CORS preflight is answered'           OPTIONS 204
+
+          if [ "$fail" -ne 0 ]; then
+            echo
+            echo "Production webhook verification FAILED."
+            echo "A 503 on the signature probes means STRIPE_WEBHOOK_SECRET is not bound to the"
+            echo "ai-consultant-verify Worker. Bind it, then re-run this workflow:"
+            echo "  wrangler secret put STRIPE_WEBHOOK_SECRET"
+            exit 1
+          fi
+
+          echo
+          echo "Production webhook VERIFIED: the endpoint is live, holds a signing secret,"
+          echo "and rejects unsigned, forged, replayed and non-POST traffic."

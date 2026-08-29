@@ -64,8 +64,9 @@ jobs:
           echo "Cross-Agent Kit invalid-login guard OK: 400"
 
           code="$(curl -sS -o /tmp/stripe-webhook.txt -w '%{http_code}' -X POST "$BASE/stripe/webhook" -H 'Content-Type: application/json' --data '{}')"
-          if [ "$code" != '400' ] && [ "$code" != '503' ]; then
-            echo "Expected 400 (signature guard) or 503 (secret not configured) for unsigned webhook, got $code"
+          if [ "$code" != '400' ]; then
+            echo "Expected 400 from the signature guard for an unsigned webhook, got $code"
+            echo "A 503 means STRIPE_WEBHOOK_SECRET is not bound to the Worker."
             cat /tmp/stripe-webhook.txt
             exit 1
           fi
