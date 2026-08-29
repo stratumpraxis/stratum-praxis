@@ -43,7 +43,8 @@ jobs:
           set -euo pipefail
           for file in acquisition/lib/*.mjs acquisition/cli/*.mjs acquisition/test/*.mjs \
                       acquisition/signal-intelligence/lib/*.mjs acquisition/signal-intelligence/cli/*.mjs acquisition/signal-intelligence/test/*.mjs \
-                      acquisition/media-engine/lib/*.mjs acquisition/media-engine/cli/*.mjs acquisition/media-engine/test/*.mjs; do
+                      acquisition/media-engine/lib/*.mjs acquisition/media-engine/cli/*.mjs acquisition/media-engine/test/*.mjs \
+                      acquisition/opportunity-engine/lib/*.mjs acquisition/opportunity-engine/cli/*.mjs acquisition/opportunity-engine/test/*.mjs; do
             node --check "$file"
           done
           for file in $(find acquisition -name '*.json'); do
@@ -56,6 +57,7 @@ jobs:
           node --test 'acquisition/test/*.test.mjs'
           node --test 'acquisition/signal-intelligence/test/*.test.mjs'
           node --test 'acquisition/media-engine/test/*.test.mjs'
+          node --test 'acquisition/opportunity-engine/test/*.test.mjs'
 
       - name: Verify asset inventory (offline)
         run: node acquisition/cli/verify-inventory.mjs
@@ -80,6 +82,11 @@ jobs:
 
       - name: Daily acquisition report
         run: node acquisition/cli/daily-report.mjs
+
+      - name: Opportunity network - audit, rank and stop at human gates
+        run: |
+          set -euo pipefail
+          node acquisition/opportunity-engine/cli/value-network-report.mjs --json
 
       - name: Signal intelligence - ingest, rank and report (Issue #53)
         run: |
@@ -148,9 +155,6 @@ jobs:
       - name: Emit per-asset live results for audit
         run: |
           set -euo pipefail
-          # --write updates the working copy only; this job never commits. The JSON below
-          # is the citable record of which URLs actually responded, so HTTP_VERIFIED can
-          # be earned from a real check rather than assumed from repo presence.
           node acquisition/cli/verify-inventory.mjs --live --write --json > /tmp/live-inventory.json
           node -e "
             const r = require('/tmp/live-inventory.json');
@@ -158,4 +162,3 @@ jobs:
             for (const a of r.results) console.log(a.asset_id + '\t' + (a.checks.http_status ?? 'NOT_CHECKED'));
             console.log('schema_errors=' + r.schema_errors.length + ' findings=' + r.findings.length);
           "
-
