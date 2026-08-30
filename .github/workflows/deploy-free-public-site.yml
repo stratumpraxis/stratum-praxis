@@ -63,3 +63,17 @@ jobs:
             fi
             echo "Public route OK: $BASE$path -> 200"
           done
+
+      - name: Verify Pinterest media routes
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://stratum-praxis-site.pages.dev'
+          for path in /media/pinterest/ai-workflow-checklist-v1.mp4 /media/pinterest/ai-workflow-checklist-v1-cover.png; do
+            code="$(curl -L -sS -o /dev/null -w '%{http_code}' "$BASE$path")"
+            if [ "$code" != '200' ]; then
+              echo "Expected 200 for $BASE$path, got $code"
+              exit 1
+            fi
+            echo "Public media OK: $BASE$path -> 200"
+          done
