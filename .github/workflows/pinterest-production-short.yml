@@ -1,0 +1,63 @@
+name: Pinterest Production Short
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/pinterest-ai-workflow-checklist-v1.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: pinterest-production-short
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        working-directory: automation/pinterest-production
+        run: npm install
+
+      - name: Generate narration and original audio bed
+        working-directory: automation/pinterest-production
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+        run: npm run assets
+
+      - name: Render Pinterest video and cover
+        working-directory: automation/pinterest-production
+        run: |
+          npm run render
+          npm run cover
+
+      - name: Publish media into repository
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p media/pinterest
+          cp automation/pinterest-production/out/pinterest-ai-workflow-checklist.mp4 media/pinterest/ai-workflow-checklist-v1.mp4
+          cp automation/pinterest-production/out/pinterest-ai-workflow-checklist-cover.png media/pinterest/ai-workflow-checklist-v1-cover.png
+          git config user.name 'stratumpraxis-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add media/pinterest/ai-workflow-checklist-v1.mp4 media/pinterest/ai-workflow-checklist-v1-cover.png
+          if git diff --cached --quiet; then
+            echo 'Media unchanged; nothing to commit.'
+            exit 0
+          fi
+          git commit -m 'Render Pinterest AI workflow checklist v1'
+          git push origin HEAD:main
