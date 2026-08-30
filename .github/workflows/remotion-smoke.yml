@@ -1,0 +1,46 @@
+name: Remotion Smoke Test
+
+on:
+  push:
+    paths:
+      - 'automation/remotion-smoke/**'
+      - '.github/workflows/remotion-smoke.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: automation/remotion-smoke
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Generate narration and verify APIs
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+          STABILITY_API_KEY: ${{ secrets.STABILITY_API_KEY }}
+        run: npm run assets
+
+      - name: Render Remotion video
+        run: npm run render
+
+      - name: Upload rendered video
+        uses: actions/upload-artifact@v4
+        with:
+          name: stratum-remotion-smoke
+          path: automation/remotion-smoke/out/stratum-smoke.mp4
+          if-no-files-found: error
