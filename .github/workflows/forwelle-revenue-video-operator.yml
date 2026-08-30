@@ -1,0 +1,140 @@
+name: Forwelle Revenue Video Operator
+
+on:
+  schedule:
+    - cron: '0 23 * * *' # 08:00 JST
+  workflow_dispatch:
+  push:
+    paths:
+      - 'automation/forwelle-operator/run.trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forwelle-revenue-video-operator
+  cancel-in-progress: false
+
+jobs:
+  scout-plan-render-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install media runtime
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+
+      - name: Source Scout
+        run: node automation/forwelle-operator/scripts/source-scout.mjs
+
+      - name: Select signal and build original editorial plan
+        id: plan
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node automation/forwelle-operator/scripts/plan-video.mjs
+
+      - name: Persist scout state when no safe signal exists
+        if: steps.plan.outputs.publish != 'true'
+        run: |
+          git config user.name "forwelle-operator"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/scout-latest.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json
+          git diff --cached --quiet || git commit -m "Record Forwelle scout no-publish state"
+          git pull --rebase origin main
+          git push
+
+      - name: Generate English narration
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+        run: node automation/forwelle-operator/scripts/narrate.mjs
+
+      - name: Render original procedural vertical video
+        if: steps.plan.outputs.publish == 'true'
+        run: python3 trend-video-engine/render.py automation/forwelle-operator/current.json
+
+      - name: Mix narration over original procedural soundtrack
+        if: steps.plan.outputs.publish == 'true'
+        run: node automation/forwelle-operator/scripts/mix-narration.mjs
+
+      - name: Fail-closed rights and technical QA
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          TREND_VIDEO_QA_OUTPUT: automation/forwelle-operator/last-qa.json
+        run: python3 trend-video-engine/qa.py automation/forwelle-operator/current.json
+
+      - name: Distribution provider and duplicate-path safety audit
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          TREND_VIDEO_MANIFEST: automation/forwelle-operator/current.json
+          TREND_VIDEO_QA: automation/forwelle-operator/last-qa.json
+          DISTRIBUTION_PROVIDER_POLICY: distribution/provider-policy.json
+        run: node distribution/distribution-safety-auditor.mjs
+
+      - name: Persist approved asset before external publication
+        if: steps.plan.outputs.publish == 'true'
+        run: |
+          OUTPUT="$(node -e "console.log(require('./automation/forwelle-operator/current.json').outputFile)")"
+          git config user.name "forwelle-operator"
+          git config user.email "forwelle.media@gmail.com"
+          git add "$OUTPUT" automation/forwelle-operator/current.json automation/forwelle-operator/scout-latest.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json automation/forwelle-operator/last-qa.json
+          git diff --cached --quiet || git commit -m "Render approved Forwelle short"
+          git pull --rebase origin main
+          git push
+          echo "FORWELLE_OUTPUT=$OUTPUT" >> "$GITHUB_ENV"
+          echo "FORWELLE_VIDEO_URL=https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/main/$OUTPUT" >> "$GITHUB_ENV"
+
+      - name: Verify public media URL
+        if: steps.plan.outputs.publish == 'true'
+        run: |
+          for n in 1 2 3; do
+            if curl --fail --silent --show-error --location --head "$FORWELLE_VIDEO_URL" >/dev/null; then
+              exit 0
+            fi
+            sleep 4
+          done
+          echo "Public media URL was not verifiable; stop before publishing."
+          exit 1
+
+      - name: Publish through official Buffer API
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: automation/forwelle-operator/current.json
+          TREND_VIDEO_URL: ${{ env.FORWELLE_VIDEO_URL }}
+          VIDEO_PUBLISH_LEDGER: automation/forwelle-operator/publish-ledger.json
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Bounded read-only publication verification
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: automation/forwelle-operator/current.json
+          TREND_VIDEO_URL: ${{ env.FORWELLE_VIDEO_URL }}
+          VIDEO_PUBLISH_LEDGER: automation/forwelle-operator/publish-ledger.json
+        run: |
+          sleep 45
+          node distribution/buffer-video-publisher.mjs
+
+      - name: Record publication evidence
+        if: steps.plan.outputs.publish == 'true'
+        run: node automation/forwelle-operator/scripts/record-run.mjs
+
+      - name: Persist publication ledger and history
+        if: steps.plan.outputs.publish == 'true'
+        run: |
+          git config user.name "forwelle-operator"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/publish-ledger.json automation/forwelle-operator/history.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json
+          git diff --cached --quiet || git commit -m "Record Forwelle publication evidence"
+          git pull --rebase origin main
+          git push
