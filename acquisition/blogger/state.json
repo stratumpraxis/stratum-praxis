@@ -20,7 +20,7 @@
       "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-08-30T03:06:25.143Z",
+  "last_run_at": "2026-08-30T03:30:27.095Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -42,11 +42,12 @@
       "output_id": "2026-08-30-agent-company-control-owner-package-35afe35f",
       "title": "Agent Count Is the Wrong Scaling Metric",
       "canonical_url": "https://stratumpraxis.com/signal/auto/agent-count-is-the-wrong-scaling-metric-35afe35f.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-08-30T03:06:25.201Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-08-30T03:06:25.201Z",
+      "verified_at": "2026-08-30T03:30:27.378Z"
     }
   },
-  "last_publish_pass_at": "2026-08-30T03:06:25.218Z",
+  "last_publish_pass_at": "2026-08-30T03:30:27.405Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
