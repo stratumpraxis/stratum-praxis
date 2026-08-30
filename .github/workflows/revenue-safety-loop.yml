@@ -58,7 +58,7 @@ jobs:
   revenue-health:
     if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 18
     env:
       SITE: https://stratumpraxis.com
       WORKER: https://ai-consultant-verify.practicalaireport.workers.dev
@@ -120,12 +120,37 @@ jobs:
             failures=$((failures + 1))
           }
 
+          check_stripe_link() {
+            local url="$1"
+            local code
+            code="$(curl --connect-timeout 8 --max-time 12 -sS -o /tmp/stripe-body.txt -w '%{http_code}' \
+              -A 'Mozilla/5.0 (compatible; StratumRevenueSafetyLoop/1.0)' -L "$url" || printf '000')"
+            if [[ "$code" =~ ^(2|3)[0-9][0-9]$ ]]; then
+              if grep -qiE 'no longer (active|accepting payments)|link has expired|page not found' /tmp/stripe-body.txt 2>/dev/null; then
+                log "FAIL | Stripe link inactive | $url | HTTP $code | page reports inactive/expired"
+                failures=$((failures + 1))
+              else
+                log "PASS | Stripe link reachable | $url | HTTP $code"
+              fi
+            else
+              log "FAIL | Stripe link unreachable | $url | HTTP $code"
+              failures=$((failures + 1))
+            fi
+          }
+
           log "Revenue Safety Loop | $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
           check_get 'Public homepage' "$SITE/" '^(2|3)[0-9][0-9]$'
           check_get 'Systems Library' "$SITE/systems/" '^(2|3)[0-9][0-9]$'
           check_get 'Cross-Agent protected delivery' "$WORKER/cross-agent-kit/workspace" '^401$'
           check_post 'Cross-Agent invalid-login guard' "$WORKER/cross-agent-kit/login" '{"session_id":"invalid","email":"qa@example.com","offer":"cross_personal"}' '^400$'
           check_post 'Stripe webhook signature/config guard' "$WORKER/stripe/webhook" '{}' '^400$'
+
+          log "Checking every distinct buy.stripe.com payment link referenced in tracked HTML (single attempt each, read-only GET)"
+          mapfile -t stripe_links < <(grep -rhoE 'https://buy\.stripe\.com/[A-Za-z0-9]+' --include='*.html' . | sort -u)
+          log "Found ${#stripe_links[@]} distinct Stripe payment links to check"
+          for link in "${stripe_links[@]}"; do
+            check_stripe_link "$link"
+          done
 
           cp "$REPORT" revenue-health-report.txt
           log "TOTAL_FAILURES=$failures"
