@@ -1,0 +1,13 @@
+[
+  {
+    "id": "aca-02",
+    "active": true,
+    "services": [
+      "bluesky",
+      "threads",
+      "linkedin"
+    ],
+    "text": "Give every AI agent an authority ceiling: what it may read, recommend, execute, and when a human must step in. Audit that boundary before deployment.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca02"
+  }
+]
