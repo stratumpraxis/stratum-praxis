@@ -1,0 +1,23 @@
+[
+  {
+    "id": "aca-01",
+    "active": true,
+    "services": ["bluesky", "threads", "linkedin"],
+    "text": "AI agent risk often starts with authority mismatch: the job is narrow, but the agent can read, decide or act far beyond it. Audit intent against capability before production.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca01"
+  },
+  {
+    "id": "aca-02",
+    "active": true,
+    "services": ["bluesky", "threads", "linkedin"],
+    "text": "Give every AI agent an authority ceiling: what it may read, recommend, execute, and when a human must step in. Audit that boundary before deployment.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca02"
+  },
+  {
+    "id": "aca-03",
+    "active": true,
+    "services": ["bluesky", "threads", "linkedin"],
+    "text": "“Completed” is not evidence. Production agents need verifiable proof: status, IDs, URLs, logs, or test results. Audit whether that proof actually exists.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca03"
+  }
+]
