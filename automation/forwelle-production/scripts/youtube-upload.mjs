@@ -20,9 +20,9 @@ if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh
 
 const metadata = {
   snippet: {
-    title: 'The AI Agent Rule Nobody Talks About',
-    description: 'AI agents need more than capability. They need boundaries.\n\nBefore an agent runs, define what it can touch, when a human must approve, and exactly when it must stop.\n\n#AI #AIAgents #Automation #AgenticAI #Forwelle',
-    tags: ['AI', 'AI agents', 'automation', 'agentic AI', 'human in the loop', 'AI safety', 'Forwelle'],
+    title: 'Human Approval Everywhere Is a Bad AI Safety Strategy',
+    description: 'More approval prompts do not automatically mean more control.\n\nA stronger pattern is selective human gates: let low-risk actions run, and require human approval for money, publishing, permissions, deletion, and irreversible changes.\n\n#AI #AIAgents #Automation #AgenticAI #Forwelle',
+    tags: ['AI', 'AI agents', 'automation', 'agentic AI', 'human in the loop', 'approval fatigue', 'AI safety', 'Forwelle'],
     categoryId: '28',
   },
   status: {
