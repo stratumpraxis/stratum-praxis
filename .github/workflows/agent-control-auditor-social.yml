@@ -6,6 +6,7 @@ on:
     paths:
       - 'distribution/agent-control-auditor-queue.json'
       - 'distribution/triple-review.mjs'
+      - 'distribution/social-writer.mjs'
       - '.github/workflows/agent-control-auditor-social.yml'
   schedule:
     - cron: '47 2 * * *'
@@ -17,30 +18,39 @@ on:
         default: '0'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: agent-control-auditor-social
   cancel-in-progress: false
 
 jobs:
-  review-and-distribute:
+  write-review-distribute:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
 
-      - name: Review 1-3 — factual, safety, quality
+      - name: Research + write + three AI reviews
         env:
-          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          BLOGGER_FREE_MODEL: ${{ vars.BLOGGER_FREE_MODEL || '@cf/google/gemma-4-26b-a4b-it' }}
+        run: node distribution/social-writer.mjs
+
+      - name: Deterministic review 1-3 — factual, safety, quality
+        env:
+          BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
         run: node distribution/triple-review.mjs
 
       - name: Existing distribution safety audit
         env:
-          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
+          BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
           MAX_SERVICES_PER_ITEM: '3'
           REQUIRE_UTM: '1'
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
@@ -50,7 +60,21 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
-          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
-          BUFFER_SELECT_MODE: daily
+          BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
+          BUFFER_SELECT_MODE: first
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
+
+      - name: Persist social writer state
+        if: success()
+        shell: bash
+        run: |
+          if git diff --quiet -- distribution/agent-control-auditor-generated-queue.json distribution/agent-control-auditor-social-state.json; then
+            echo 'No social state changes'
+            exit 0
+          fi
+          git config user.name 'stratum-social-writer-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add distribution/agent-control-auditor-generated-queue.json distribution/agent-control-auditor-social-state.json
+          git commit -m 'chore(distribution): persist reviewed social output [skip social]'
+          git push
