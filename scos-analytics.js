@@ -174,6 +174,32 @@
     });
   }
 
+  function alignPrimaryRevenueCTA() {
+    const onHomepage = location.pathname === '/' || location.pathname === '/index.html';
+    if (!onHomepage) return;
+
+    const destination = '/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=homepage&utm_campaign=cross_agent_personal&utm_content=hero_primary';
+    const heroPrimary = document.querySelector('.hero .button-primary');
+    if (heroPrimary) {
+      heroPrimary.href = destination;
+      heroPrimary.textContent = 'Cross-Agent Operating Kit — Personal · $69';
+      heroPrimary.dataset.analyticsId = 'cross_agent_personal_home_hero';
+      heroPrimary.dataset.product = 'cross_agent_personal';
+      heroPrimary.setAttribute('data-primary-cta', 'true');
+    }
+
+    const nav = document.querySelector('#site-nav');
+    if (nav && !nav.querySelector('[data-cross-agent-primary]')) {
+      const link = document.createElement('a');
+      link.href = destination.replace('hero_primary', 'nav');
+      link.textContent = '$69 Cross-Agent Kit';
+      link.dataset.crossAgentPrimary = 'true';
+      link.dataset.analyticsId = 'cross_agent_personal_home_nav';
+      link.dataset.product = 'cross_agent_personal';
+      nav.insertBefore(link, nav.firstChild);
+    }
+  }
+
   function externalCategory(host) {
     host = host.replace(/^www\./,'');
     if (CHECKOUT_HOSTS.has(host)) return 'checkout';
@@ -188,13 +214,14 @@
     if (document.getElementById('return-gate-entry')) return;
     const english = isEnglishPage();
     const onReturnGate = location.pathname.startsWith('/return-gate');
+    const onCrossAgent = location.pathname === '/cross-agent-operating-kit.html';
     const returnPath = english ? '/return-gate/en/' : '/return-gate/';
     const contentPath = english ? '/guides/' : '/folio-junction/';
     const contentLabel = english ? 'Field Guides' : 'Folio Junction';
 
     const wrap = document.createElement('div');
     wrap.id = 'return-gate-entry';
-    wrap.setAttribute('aria-label', english ? 'Return Gate network' : 'Return Gate交通網');
+    wrap.setAttribute('aria-label', english ? 'Stratum Praxis network' : 'Stratum Praxis交通網');
     wrap.style.cssText = "max-width:1180px;margin:28px auto 18px;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap;font:13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
 
     function addLink(href, text, analyticsId, primary) {
@@ -203,7 +230,7 @@
       link.href = href;
       link.textContent = text;
       link.dataset.analyticsId = analyticsId;
-      if (analyticsId === 'return_gate_growth_os') link.setAttribute('data-primary-cta', 'true');
+      if (primary) link.setAttribute('data-primary-cta', 'true');
       link.style.cssText = primary
         ? 'display:inline-block;border:1px solid rgba(190,205,225,.65);border-radius:999px;padding:9px 13px;color:#080b10;text-decoration:none;background:#f5f7fb;font-weight:850'
         : 'display:inline-block;border:1px solid rgba(127,150,180,.4);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.5)';
@@ -214,8 +241,9 @@
       wrap.appendChild(link);
     }
 
-    if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', true);
-    if (onReturnGate) addLink('/return-gate-growth-os.html', english ? 'Build your own Return Gate · $24' : '再訪導線を作る · Growth OS $24', 'return_gate_growth_os', true);
+    if (!onCrossAgent) addLink('/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=network&utm_campaign=cross_agent_personal&utm_content=network_primary', english ? 'Cross-Agent Operating Kit · Personal $69' : 'Cross-Agent Operating Kit · Personal $69', 'cross_agent_personal_network', true);
+    if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', false);
+    if (onReturnGate) addLink('/return-gate-growth-os.html', english ? 'Build your own Return Gate · $24' : '再訪導線を作る · Growth OS $24', 'return_gate_growth_os', false);
     addLink('/passage-hub/', english ? 'Route map' : '路線図', 'passage_map_entry', false);
     addLink(contentPath, contentLabel, 'content_hub_entry', false);
     addLink('https://www.youtube.com/@forwelle?utm_source=stratumpraxis&utm_medium=network&utm_campaign=return_gate_network', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
@@ -238,7 +266,7 @@
     });
   }
 
-  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
+  function ready() { normalizeLanguageRoutes(); alignPrimaryRevenueCTA(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
