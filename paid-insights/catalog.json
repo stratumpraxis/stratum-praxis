@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "slug": "what-you-need-to-know-before-hiring-300-ai-agents",
+      "title": "What You Need to Know Before Hiring 300 AI Agents",
+      "language": "en",
+      "type": "premium_research",
+      "price": 29,
+      "currency": "USD",
+      "stripe_product_id": "prod_VAJ4awBr6QLtwi",
+      "stripe_price_id": "price_1U9ySQJMK7zFs997VqRQg394",
+      "payment_link": "https://buy.stripe.com/eVq9AUgfqdHt3Sg9ZV6Zy0X",
+      "status": "live"
+    }
+  ]
+}
