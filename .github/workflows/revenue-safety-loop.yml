@@ -1,0 +1,174 @@
+name: Revenue Safety Loop
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/revenue-safety-loop.yml'
+      - 'index.html'
+      - 'systems/**'
+      - 'worker/**'
+      - 'agent-control-auditor*'
+  schedule:
+    - cron: '17 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: revenue-safety-loop-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  safe-change-check:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate changed code and data
+        shell: bash
+        run: |
+          set -euo pipefail
+          git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.event.pull_request.head.sha }}" > /tmp/changed-files.txt
+          cat /tmp/changed-files.txt
+
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            case "$file" in
+              *.js|*.mjs|*.cjs)
+                node --check "$file"
+                ;;
+              *.json)
+                python -m json.tool "$file" >/dev/null
+                ;;
+            esac
+          done < /tmp/changed-files.txt
+
+          echo 'Safe-change syntax checks passed.'
+
+  revenue-health:
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SITE: https://stratumpraxis.com
+      WORKER: https://ai-consultant-verify.practicalaireport.workers.dev
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Check revenue path with bounded retries
+        id: health
+        shell: bash
+        run: |
+          set -u
+          REPORT="$RUNNER_TEMP/revenue-health-report.txt"
+          : > "$REPORT"
+          failures=0
+
+          log() { echo "$*" | tee -a "$REPORT"; }
+
+          get_code() {
+            local url="$1"
+            curl --connect-timeout 10 --max-time 25 -sS -o /tmp/health-body.txt -w '%{http_code}' "$url" || printf '000'
+          }
+
+          post_code() {
+            local url="$1" data="$2"
+            curl --connect-timeout 10 --max-time 25 -sS -o /tmp/health-body.txt -w '%{http_code}' \
+              -X POST "$url" -H 'Content-Type: application/json' --data "$data" || printf '000'
+          }
+
+          check_get() {
+            local label="$1" url="$2" expected="$3"
+            local code='000'
+            for attempt in 1 2; do
+              code="$(get_code "$url")"
+              if [[ "$code" =~ $expected ]]; then
+                log "PASS | $label | HTTP $code | attempt $attempt"
+                return 0
+              fi
+              log "RETRY | $label | HTTP $code | attempt $attempt/2"
+              [ "$attempt" -eq 1 ] && sleep 10
+            done
+            log "FAIL | $label | final HTTP $code"
+            failures=$((failures + 1))
+          }
+
+          check_post() {
+            local label="$1" url="$2" data="$3" expected="$4"
+            local code='000'
+            for attempt in 1 2; do
+              code="$(post_code "$url" "$data")"
+              if [[ "$code" =~ $expected ]]; then
+                log "PASS | $label | HTTP $code | attempt $attempt"
+                return 0
+              fi
+              log "RETRY | $label | HTTP $code | attempt $attempt/2"
+              [ "$attempt" -eq 1 ] && sleep 10
+            done
+            log "FAIL | $label | final HTTP $code"
+            failures=$((failures + 1))
+          }
+
+          log "Revenue Safety Loop | $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+          check_get 'Public homepage' "$SITE/" '^(2|3)[0-9][0-9]$'
+          check_get 'Systems Library' "$SITE/systems/" '^(2|3)[0-9][0-9]$'
+          check_get 'Cross-Agent protected delivery' "$WORKER/cross-agent-kit/workspace" '^401$'
+          check_post 'Cross-Agent invalid-login guard' "$WORKER/cross-agent-kit/login" '{"session_id":"invalid","email":"qa@example.com","offer":"cross_personal"}' '^400$'
+          check_post 'Stripe webhook signature/config guard' "$WORKER/stripe/webhook" '{}' '^400$'
+
+          cp "$REPORT" revenue-health-report.txt
+          log "TOTAL_FAILURES=$failures"
+          echo "failures=$failures" >> "$GITHUB_OUTPUT"
+
+          if [ "$failures" -gt 0 ]; then
+            exit 1
+          fi
+
+      - name: Upload evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-health-evidence-${{ github.run_id }}
+          path: revenue-health-report.txt
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Escalate only after final failure
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          title='[AUTO] Revenue path health check failed'
+          existing="$(gh issue list --repo "$GITHUB_REPOSITORY" --state open --search "$title in:title" --json number --jq '.[0].number // empty')"
+          if [ -n "$existing" ]; then
+            echo "Existing escalation issue #$existing remains open; not creating a duplicate."
+            exit 0
+          fi
+
+          cat > /tmp/issue.md <<EOF
+          The bounded Revenue Safety Loop failed after **2 attempts per check**.
+
+          Human review is required only for the remaining failed condition(s).
+
+          Evidence: $GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID
+
+          Guardrails:
+          - no destructive recovery was attempted
+          - no payment, price, refund, secret, or production mutation was performed
+          - retries stopped at the configured limit
+          EOF
+
+          gh issue create --repo "$GITHUB_REPOSITORY" --title "$title" --body-file /tmp/issue.md
