@@ -1,4 +1,48 @@
 {
   "version": 1,
-  "items": []
+  "items": [
+    {
+      "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
+      "candidateId": "feed:google-ai:signal",
+      "createdAt": "2026-08-30T19:21:15.022Z",
+      "recordedAt": "2026-08-30T19:22:34.096Z",
+      "title": "Evolve your marketing with new AI tools",
+      "source": {
+        "name": "blog.google — first-party source",
+        "url": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+        "factSource": true,
+        "verified": true,
+        "published": "Mon, 10 Aug 2026 14:30:00 +0000"
+      },
+      "outputFile": "media/forwelle/2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "metrics": {}
+    }
+  ]
 }

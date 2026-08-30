@@ -1,7 +1,31 @@
 {
-  "at": "2026-08-30T19:21:15.022Z",
-  "status": "PLANNED",
+  "at": "2026-08-30T19:22:34.096Z",
+  "status": "ATTEMPTED_OR_BLOCKED",
   "manifestId": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
-  "candidateId": "feed:google-ai:signal",
-  "usedAIEditor": false
+  "platforms": {
+    "youtube": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "tiktok": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "instagram": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    }
+  }
 }
