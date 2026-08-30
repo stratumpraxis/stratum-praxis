@@ -1,0 +1,12 @@
+{
+  "status": "explore",
+  "updated_at": "2026-08-30T03:25:00Z",
+  "reason": "No revenue_strike PostHog events observed yet; do not invent a winner.",
+  "weights": {
+    "pageview": 1,
+    "primary_cta_click": 4,
+    "checkout_click": 10,
+    "paid_purchase": 50
+  },
+  "variants": {}
+}
