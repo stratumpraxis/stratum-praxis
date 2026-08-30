@@ -51,4 +51,4 @@ console.log('channels_returned:', channelCount);
 console.log('locked:', lockedCount);
 console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
-// 2026-08-27: measured traffic run preflight; no posting.
+// 2026-08-31: Pinterest capability preflight; no posting.
