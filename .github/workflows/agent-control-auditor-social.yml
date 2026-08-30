@@ -1,5 +1,5 @@
 name: Agent Control Auditor Social
-# launch-marker: 2026-08-30-a
+# launch-marker: 2026-08-30-b
 
 on:
   push:
