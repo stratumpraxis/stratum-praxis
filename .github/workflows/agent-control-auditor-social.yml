@@ -1,0 +1,56 @@
+name: Agent Control Auditor Social
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/agent-control-auditor-queue.json'
+      - 'distribution/triple-review.mjs'
+      - '.github/workflows/agent-control-auditor-social.yml'
+  schedule:
+    - cron: '47 2 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run only'
+        required: false
+        default: '0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: agent-control-auditor-social
+  cancel-in-progress: false
+
+jobs:
+  review-and-distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Review 1-3 — factual, safety, quality
+        env:
+          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
+        run: node distribution/triple-review.mjs
+
+      - name: Existing distribution safety audit
+        env:
+          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
+          MAX_SERVICES_PER_ITEM: '3'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
+
+      - name: Publish one reviewed post through Buffer
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
+          BUFFER_QUEUE_FILE: agent-control-auditor-queue.json
+          BUFFER_SELECT_MODE: daily
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
+        run: node distribution/buffer-publisher.mjs
