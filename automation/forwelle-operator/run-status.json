@@ -1,7 +1,31 @@
 {
-  "at": "2026-08-30T23:05:05.315Z",
-  "status": "PLANNED",
+  "at": "2026-08-30T23:06:25.300Z",
+  "status": "ATTEMPTED_OR_BLOCKED",
   "manifestId": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
-  "candidateId": "feed:openai-news:signal",
-  "usedAIEditor": false
+  "platforms": {
+    "youtube": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "tiktok": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "instagram": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    }
+  }
 }

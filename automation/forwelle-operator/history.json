@@ -2,6 +2,49 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
+      "candidateId": "feed:openai-news:signal",
+      "createdAt": "2026-08-30T23:05:05.315Z",
+      "recordedAt": "2026-08-30T23:06:25.300Z",
+      "title": "Expanding OpenAI’s presence in Brazil",
+      "source": {
+        "name": "openai.com — first-party source",
+        "url": "https://openai.com/index/expanding-our-presence-in-brazil",
+        "factSource": true,
+        "verified": true,
+        "published": "Thu, 27 Aug 2026 03:00:00 GMT"
+      },
+      "outputFile": "media/forwelle/2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
       "candidateId": "feed:google-ai:signal",
       "createdAt": "2026-08-30T19:21:15.022Z",

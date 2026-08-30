@@ -1,12 +1,13 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "feed:openai-news:signal",
     "feed:google-ai:signal"
   ],
   "lastScoutAt": "2026-08-30T23:05:05.261Z",
   "lastRun": {
-    "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
-    "at": "2026-08-30T19:22:34.096Z",
+    "id": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
+    "at": "2026-08-30T23:06:25.300Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
