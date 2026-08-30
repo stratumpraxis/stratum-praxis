@@ -1,0 +1,21 @@
+{
+  "id": "pinterest-ai-workflow-checklist-v1",
+  "brand": "Stratum Praxis",
+  "active": true,
+  "format": "video_pin",
+  "title": "AI Workflow Checklist Before You Automate",
+  "description": "Before you automate an AI agent, define its scope, human approval gates, and stop conditions. Save this checklist for your next workflow. Build a portable operating layer across Claude Code, Codex, Cursor and future runtimes.",
+  "destinationUrl": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=pinterest&utm_medium=organic_video&utm_campaign=ai_workflow_checklist",
+  "videoUrl": "https://stratumpraxis.com/media/pinterest/ai-workflow-checklist-v1.mp4",
+  "coverUrl": "https://stratumpraxis.com/media/pinterest/ai-workflow-checklist-v1-cover.png",
+  "preferredBoard": "AI Workflows & Automation",
+  "product": "Cross-Agent Operating Kit — Personal",
+  "price": "$69",
+  "publishState": "pending_pinterest_channel_connection",
+  "safety": {
+    "originalCreative": true,
+    "copyrightSafeAudio": true,
+    "duplicateOfExistingVideo": false,
+    "requiresDestinationLinkVerification": true
+  }
+}
