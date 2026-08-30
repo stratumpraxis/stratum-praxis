@@ -1,0 +1,40 @@
+name: Forwelle Revenue Video Metrics
+
+on:
+  schedule:
+    - cron: '30 23 * * *' # 08:30 JST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: forwelle-revenue-video-metrics
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Collect due 24h and 72h snapshots
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node automation/forwelle-operator/scripts/metrics.mjs
+
+      - name: Persist metrics when changed
+        run: |
+          git config user.name "forwelle-metrics"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/history.json
+          git diff --cached --quiet || git commit -m "Update Forwelle 24h 72h metrics"
+          git pull --rebase origin main
+          git push
