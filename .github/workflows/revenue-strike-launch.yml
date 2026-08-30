@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - 'distribution/revenue-strike-queue.json'
+      - 'distribution/revenue-performance.json'
+      - 'distribution/revenue-winner-selector.mjs'
+      - '.github/workflows/revenue-strike-launch.yml'
   schedule:
     - cron: '37 1 * * *'
   workflow_dispatch:
@@ -28,9 +31,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Revenue queue safety audit
+      - name: Select revenue winners with exploration fallback
+        run: node distribution/revenue-winner-selector.mjs
+
+      - name: Selected revenue queue safety audit
         env:
-          BUFFER_QUEUE_FILE: revenue-strike-queue.json
+          BUFFER_QUEUE_FILE: revenue-strike-selected.json
           MAX_SERVICES_PER_ITEM: '1'
           REQUIRE_UTM: '1'
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
@@ -40,8 +46,8 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: linkedin
-          BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_SELECT_MODE: daily
+          BUFFER_QUEUE_FILE: revenue-strike-selected.json
+          BUFFER_SELECT_MODE: first
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
@@ -49,8 +55,8 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: threads
-          BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_SELECT_MODE: daily
+          BUFFER_QUEUE_FILE: revenue-strike-selected.json
+          BUFFER_SELECT_MODE: first
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
@@ -58,7 +64,7 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: bluesky
-          BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_SELECT_MODE: daily
+          BUFFER_QUEUE_FILE: revenue-strike-selected.json
+          BUFFER_SELECT_MODE: first
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
