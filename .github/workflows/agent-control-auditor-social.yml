@@ -1,5 +1,5 @@
 name: Agent Control Auditor Social
-# launch-marker: 2026-08-30-b
+# launch-marker: 2026-08-30-c
 
 on:
   push:
@@ -70,6 +70,7 @@ jobs:
           BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
           BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
@@ -83,7 +84,18 @@ jobs:
           fi
           git config user.name 'stratum-social-writer-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add distribution/agent-control-auditor-generated-queue.json
-          git add -f distribution/agent-control-auditor-social-state.json distribution/agent-control-auditor-fallback-state.json 2>/dev/null || true
+          if [ -f distribution/agent-control-auditor-generated-queue.json ]; then
+            git add distribution/agent-control-auditor-generated-queue.json
+          fi
+          if [ -f distribution/agent-control-auditor-social-state.json ]; then
+            git add -f distribution/agent-control-auditor-social-state.json
+          fi
+          if [ -f distribution/agent-control-auditor-fallback-state.json ]; then
+            git add -f distribution/agent-control-auditor-fallback-state.json
+          fi
+          if git diff --cached --quiet; then
+            echo 'No staged social state changes'
+            exit 0
+          fi
           git commit -m 'chore(distribution): persist reviewed social output [skip social]'
           git push
