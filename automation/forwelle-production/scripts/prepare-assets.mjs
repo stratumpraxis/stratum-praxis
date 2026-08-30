@@ -7,7 +7,7 @@ if (!speechifyKey) throw new Error('Missing SPEECHIFY_API_KEY');
 const publicDir = path.resolve('public');
 fs.mkdirSync(publicDir, {recursive: true});
 
-const script = `Most AI agents do not fail because they are stupid. They fail because nobody defines the stop condition. Before an agent runs, decide three things: what it can touch, when a human must approve, and exactly when it must stop. Autonomy without boundaries is not automation. It is uncontrolled execution. Build the guardrails first, then let the agent move fast.`;
+const script = `Human approval everywhere is not the same as control. When every tiny action needs a click, people stop thinking and start approving. The stronger pattern is selective human gates. Let low-risk actions run. Require approval for money, publishing, permissions, deletion, and irreversible changes. Good agent systems do not ask humans to watch everything. They ask humans to decide the few things that actually matter.`;
 
 const voicesResponse = await fetch('https://api.speechify.ai/v1/voices?locale=en&model=simba-3.2', {
   headers: {Authorization: `Bearer ${speechifyKey}`},
