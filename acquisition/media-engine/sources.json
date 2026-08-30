@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-28",
+  "updated_at": "2026-08-30",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -23,9 +23,9 @@
         "The reducible-spend calculator published on stratumpraxis.com is free and requires no signup."
       ],
       "restricted_claims": [
-        { "phrase": "our customers saved", "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null." },
-        { "phrase": "guaranteed savings", "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs." },
-        { "phrase": "the market has validated", "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis." }
+        {"phrase": "our customers saved", "safe_rewrite": "There is no customer outcome to report. revenue-os/metrics.json records verified_revenue null."},
+        {"phrase": "guaranteed savings", "safe_rewrite": "State that the calculator produces an estimate from the reader's own inputs."},
+        {"phrase": "the market has validated", "safe_rewrite": "No external money evidence supports an external-consensus claim for this thesis."}
       ],
       "personal_experience_claims": [],
       "evidence_refs": [
@@ -34,8 +34,8 @@
         "acquisition/signal-intelligence/candidates.json#sc-shadow_ai_spend_accountability_2026_08"
       ],
       "existing_product_routes": [
-        { "role": "PRIMARY", "asset_id": "ai-saas-waste-calculator", "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html", "cta": "Run the reducible-spend estimate" },
-        { "role": "PURCHASE_PATH", "asset_id": "ai-saas-spend-audit-checklist", "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html", "cta": null }
+        {"role": "PRIMARY", "asset_id": "ai-saas-waste-calculator", "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html", "cta": "Run the reducible-spend estimate"},
+        {"role": "PURCHASE_PATH", "asset_id": "ai-saas-spend-audit-checklist", "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html", "cta": null}
       ],
       "excerpt": "Teams are accumulating unbudgeted AI and SaaS subscriptions, and someone now has to justify the total on a quarterly cycle. The buyer wants a defensible number before the next renewal, not a general automation pitch.",
       "notes": "content_hash is a fixed placeholder digest because a candidate-derived source has no file on disk; lib/source.mjs only recomputes and enforces the hash for sources that name a source_file. The provenance guarantee for this record is the candidate store entry named in source_candidate_id, which lib/source.mjs verifies is promoted and unexpired on every load."
@@ -59,19 +59,18 @@
         "Rights, licensing and operator liability are given as reasons to avoid certain categories."
       ],
       "restricted_claims": [
-        { "phrase": "i built a site like this", "safe_rewrite": "The source argues a pattern; it does not record the operator building one of these services." },
-        { "phrase": "these companies told me", "safe_rewrite": "The examples are public services described from public information." }
+        {"phrase": "i built a site like this", "safe_rewrite": "The source argues a pattern; it does not record the operator building one of these services."},
+        {"phrase": "these companies told me", "safe_rewrite": "The examples are public services described from public information."}
       ],
       "personal_experience_claims": [],
       "evidence_refs": [
         "content/note-publish-queue/README.md defines the COMPLETE criteria this package meets",
         "content/note-publish-queue/2026-08-26-repeat-visit-sites-win.md"
       ],
-      "existing_product_routes": [],
       "excerpt": "Strong sites are not necessarily the ones with the most articles. Timetables, outage pages, fare checks and price changes create a reason to come back, and that recurring check is the asset.",
       "existing_product_routes": [
-        { "role": "PRIMARY", "asset_id": "systems-library", "url": "https://stratumpraxis.com/systems/", "cta": "See the systems built this way" },
-        { "role": "PURCHASE_PATH", "asset_id": "ai-workflow-operator-bundle", "url": "https://stratumpraxis.com/prompt-store/", "cta": "Get the operator bundle" }
+        {"role": "PRIMARY", "asset_id": "systems-library", "url": "https://stratumpraxis.com/systems/", "cta": "See the systems built this way"},
+        {"role": "PURCHASE_PATH", "asset_id": "ai-workflow-operator-bundle", "url": "https://stratumpraxis.com/prompt-store/", "cta": "Get the operator bundle"}
       ],
       "notes": "COMPLETE owner-approved package. The Japanese original is immutable; any derivation is a new record, never an edit of this one. Product routes added 2026-08-29: the source argues that durable properties come from repeatable structure rather than output volume, which is what the Systems Library catalogues and what the AI Workflow Operator Bundle sells. Neither route asserts a claim the source does not make."
     },
@@ -94,6 +93,41 @@
       "existing_product_routes": [],
       "excerpt": null,
       "notes": "Registered deliberately as DRAFT. It sits in content/note-drafts/, not in the publish queue, so it does not meet the COMPLETE criteria and is not derivable. It is here so the incomplete-source path is exercised against a real file rather than a synthetic one."
+    },
+    {
+      "source_id": "agent-company-control-owner-package",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "AI agent companies need control boundaries before they need more agents",
+      "language": "en",
+      "content_hash": "sha256:52306f9e228557ad9b8a82989481daeca1d8f0b1ae99b48d0c8fc792344f3056",
+      "source_file": "acquisition/media-engine/agent-company-control-source.md",
+      "source_url": "https://stratumpraxis.com/paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html",
+      "created_at": "2026-08-30T00:00:00Z",
+      "completed_at": "2026-08-30T00:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": ["founder", "ops_lead", "ai_builder", "smb_owner"],
+      "evidence_families": ["editorial_source", "owned_behavior"],
+      "allowed_claims": [
+        "Scaling AI-agent systems increases the number of decisions, permissions, handoffs, context boundaries and failure paths that must be governed.",
+        "Agent Contracts, explicit permission levels, Human Gates and Evidence Ledgers are useful operating controls.",
+        "Instructions should be separated from untrusted data and trust boundaries should be explicit.",
+        "Hierarchy, routing, segmented memory and context discipline can reduce uncontrolled context sharing.",
+        "A Company OS can be framed as Policy + Memory + Permissions + Routing + Evidence.",
+        "Scale/Kill rules can be used to decide which agents should expand, remain constrained or stop."
+      ],
+      "restricted_claims": [
+        {"phrase": "we run 300 agents", "safe_rewrite": "The article is a design framework; do not claim Stratum Praxis operates 300 agents."},
+        {"phrase": "guaranteed safety", "safe_rewrite": "Controls reduce ambiguity and operational risk; they do not eliminate risk."},
+        {"phrase": "our customers achieved", "safe_rewrite": "No customer outcome claim is supported by this source package."}
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": ["acquisition/media-engine/agent-company-control-source.md", "paid-insights/catalog.json"],
+      "existing_product_routes": [
+        {"role": "PRIMARY", "asset_id": "paid-insight-300-ai-agents", "url": "https://stratumpraxis.com/paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html", "cta": "Read the full operating framework"},
+        {"role": "SECONDARY", "asset_id": "agent-control-auditor", "url": "https://stratumpraxis.com/agent-control-auditor.html", "cta": "Audit your agent-control design"}
+      ],
+      "excerpt": "More agents do not merely add capacity. They multiply permissions, handoffs, context boundaries and failure paths. The operating question is therefore not how many agents a system can run, but how clearly it can constrain, observe and stop them.",
+      "notes": "Owner-approved derivative source package created from the premium research thesis without exposing paid article text. The autonomous writer may create standalone public articles from these claims and route a relevant CTA to the paid insight."
     }
   ]
 }
