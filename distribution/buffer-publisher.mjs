@@ -5,6 +5,7 @@ const queueFile = process.env.BUFFER_QUEUE_FILE || 'content-queue.json';
 const selectMode = process.env.BUFFER_SELECT_MODE || 'daily';
 const itemIndexRaw = process.env.BUFFER_ITEM_INDEX;
 const targetServices = (process.env.BUFFER_TARGET_SERVICES || 'bluesky,threads,linkedin').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
+const requireEligibleChannels = process.env.REQUIRE_ELIGIBLE_CHANNELS === '1';
 
 if (!key) {
   console.log('BUFFER_API_KEY is not configured. Safe no-op.');
@@ -46,7 +47,16 @@ const active = queue.filter(x => x.active !== false && Array.isArray(x.services)
 
 console.log('Queue file:', queueFile, 'select mode:', selectMode, 'item index:', itemIndexRaw ?? 'auto');
 console.log('Eligible channels:', channels.map(c=>`${c.service}:${c.displayName||c.name}`).join(', ') || 'none');
-if (!channels.length || !active.length) process.exit(0);
+if (!channels.length) {
+  const message = `No eligible Buffer channels for requested services: ${targetServices.join(', ') || 'none'}`;
+  if (requireEligibleChannels) throw new Error(message);
+  console.log(`${message}. Safe no-op.`);
+  process.exit(0);
+}
+if (!active.length) {
+  console.log('No active queue items. Safe no-op.');
+  process.exit(0);
+}
 
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
