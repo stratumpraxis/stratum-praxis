@@ -1,0 +1,18 @@
+{
+  "approved": true,
+  "outputFile": "media/forwelle/2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal.mp4",
+  "bytes": 6140684,
+  "durationSeconds": 30.0,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "dimensions": [
+    720,
+    1280
+  ],
+  "services": [
+    "youtube",
+    "tiktok",
+    "instagram"
+  ],
+  "rightsMode": "original-procedural"
+}

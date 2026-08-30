@@ -1,0 +1,139 @@
+{
+  "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
+  "createdAt": "2026-08-30T19:21:15.022Z",
+  "brandLane": "forwelle-en",
+  "platformVariant": "cross-platform-short",
+  "title": "Evolve your marketing with new AI tools",
+  "topic": "Evolve your marketing with new AI tools",
+  "language": "en",
+  "summary": "Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workflow.",
+  "voiceover": "A fresh signal from blog.google is getting attention: Evolve your marketing with new AI tools. Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workflow. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "feed:google-ai:signal",
+  "outputFile": "media/forwelle/2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal.mp4",
+  "scores": {
+    "freshness": 2,
+    "themeFit": 10,
+    "revenueFit": 8,
+    "engagement": 0,
+    "sourceTrust": 10,
+    "originalityOpportunity": 8,
+    "officialFeedBoost": 6,
+    "total": 44,
+    "max": 74
+  },
+  "sources": [
+    {
+      "name": "blog.google — first-party source",
+      "url": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+      "factSource": true,
+      "verified": true,
+      "published": "Mon, 10 Aug 2026 14:30:00 +0000"
+    }
+  ],
+  "thirdPartyAssets": [],
+  "originality": {
+    "creatorSignals": [
+      "original Forwelle editorial angle",
+      "original procedural motion graphics",
+      "original narration"
+    ],
+    "notReusedCompilation": true,
+    "notTemplateVariant": true
+  },
+  "safety": {
+    "approved": true,
+    "factsVerified": true,
+    "originalityVerified": true,
+    "realPersonLikeness": false,
+    "copyrightedMedia": false,
+    "categories": [
+      "ai",
+      "technology",
+      "future-of-work"
+    ],
+    "notes": "Autonomous lane uses first-party factual sources, original writing, original procedural visuals, synthetic narration and procedural audio only."
+  },
+  "scenes": [
+    {
+      "duration": 6,
+      "eyebrow": "NEW SIGNAL",
+      "motionTag": "WHY NOW",
+      "headline": "Evolve your\nmarketing with new\nAI tools",
+      "body": "A fresh first-party update from blog.google.",
+      "sourceLabel": "blog.google",
+      "background": "#050711",
+      "accent": "#7CFFDA"
+    },
+    {
+      "duration": 6,
+      "eyebrow": "WHAT CHANGED",
+      "motionTag": "THE SIGNAL",
+      "headline": "Look past the\nheadline.",
+      "body": "Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workfl…",
+      "sourceLabel": "blog.google",
+      "background": "#071421",
+      "accent": "#5BE7FF"
+    },
+    {
+      "duration": 6,
+      "eyebrow": "REAL QUESTION",
+      "motionTag": "WORKFLOW IMPACT",
+      "headline": "What becomes\npossible now?",
+      "body": "Measure the change in speed, quality, access or reliability — not just novelty.",
+      "sourceLabel": "Forwelle / original analysis",
+      "background": "#10102A",
+      "accent": "#B39CFF"
+    },
+    {
+      "duration": 6,
+      "eyebrow": "FILTER THE HYPE",
+      "motionTag": "PROOF > NOISE",
+      "headline": "A demo is not a\nhabit.",
+      "body": "The durable signal is repeatable use: something people can do better, faster or at lower friction.",
+      "sourceLabel": "Forwelle / original analysis",
+      "background": "#130A1D",
+      "accent": "#FF78D8"
+    },
+    {
+      "duration": 6,
+      "eyebrow": "BOTTOM LINE",
+      "motionTag": "TRACK THE SHIFT",
+      "headline": "Watch behavior,\nnot buzz.",
+      "body": "New tools matter when they change what people can reliably do next.",
+      "sourceLabel": "Forwelle",
+      "background": "#050811",
+      "accent": "#FFD166"
+    }
+  ],
+  "publish": {
+    "services": [
+      "youtube",
+      "tiktok",
+      "instagram"
+    ],
+    "mode": "shareNow",
+    "aiGeneratedLabel": true,
+    "title": "Evolve your marketing with new AI tools",
+    "caption": "Evolve your marketing with new AI tools Forwelle tracks practical shifts in AI, tools and how people work. Source: https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/ #AI #FutureOfWork #Technology #Forwelle",
+    "youtubePrivacy": "public",
+    "channelAllowlist": {
+      "youtube": [
+        "// Forwelle",
+        "Forwelle"
+      ],
+      "tiktok": [
+        "Forwelle",
+        "forwelle"
+      ],
+      "instagram": [
+        "Forwelle",
+        "forwelle"
+      ]
+    }
+  },
+  "narration": {
+    "file": "automation/forwelle-operator/narration.mp3",
+    "voiceId": "geffen_32",
+    "durationSeconds": 27.504
+  }
+}

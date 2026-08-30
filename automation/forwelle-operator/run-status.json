@@ -1,5 +1,7 @@
 {
-  "at": "2026-08-30T19:18:17.887Z",
-  "status": "NO_PUBLISHABLE_SIGNAL",
-  "reason": "No candidate had a verified first-party fact source."
+  "at": "2026-08-30T19:21:15.022Z",
+  "status": "PLANNED",
+  "manifestId": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
+  "candidateId": "feed:google-ai:signal",
+  "usedAIEditor": false
 }
