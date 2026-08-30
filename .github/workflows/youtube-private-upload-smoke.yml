@@ -1,0 +1,47 @@
+name: YouTube Private Upload Smoke
+
+on:
+  push:
+    paths:
+      - '.github/workflows/youtube-private-upload-smoke.yml'
+      - 'automation/remotion-smoke/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-and-upload-private:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: automation/remotion-smoke
+        run: npm install
+
+      - name: Prepare narration assets
+        working-directory: automation/remotion-smoke
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+          STABILITY_API_KEY: ${{ secrets.STABILITY_API_KEY }}
+        run: npm run assets
+
+      - name: Render smoke video
+        working-directory: automation/remotion-smoke
+        run: npm run render
+
+      - name: Upload private video to YouTube
+        working-directory: automation/remotion-smoke
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node scripts/youtube-private-upload.mjs out/stratum-smoke.mp4
