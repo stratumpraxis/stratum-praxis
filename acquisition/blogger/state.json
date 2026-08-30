@@ -10,9 +10,17 @@
       "output_id": "2026-08-29-repeat-visit-sites-win-owner-package-636a141c",
       "at": "2026-08-29T03:35:01.932Z",
       "status": "READY"
+    },
+    "agent-company-control-owner-package": {
+      "output_id": "2026-08-30-agent-company-control-owner-package-35afe35f",
+      "at": "2026-08-30T03:06:25.143Z",
+      "status": "READY",
+      "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
+      "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-08-29T17:32:37.176Z",
+  "last_run_at": "2026-08-30T03:06:25.143Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -29,11 +37,19 @@
       "state": "VERIFIED",
       "requested_at": "2026-08-29T03:35:02.218Z",
       "verified_at": "2026-08-29T15:09:36.229Z"
+    },
+    "2026-08-30-agent-company-control-owner-package-35afe35f": {
+      "output_id": "2026-08-30-agent-company-control-owner-package-35afe35f",
+      "title": "Agent Count Is the Wrong Scaling Metric",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/agent-count-is-the-wrong-scaling-metric-35afe35f.html",
+      "state": "PUBLISH_REQUESTED",
+      "requested_at": "2026-08-30T03:06:25.201Z"
     }
   },
-  "last_publish_pass_at": "2026-08-30T03:02:48.470Z",
+  "last_publish_pass_at": "2026-08-30T03:06:25.218Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
-    "repeat-visit-sites-win-owner-package": 1
+    "repeat-visit-sites-win-owner-package": 1,
+    "agent-company-control-owner-package": 1
   }
 }
