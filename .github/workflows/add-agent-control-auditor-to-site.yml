@@ -1,0 +1,64 @@
+name: Add Agent Control Auditor to site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/add-agent-control-auditor-to-site.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  patch-home:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Add Agent Control Auditor discovery links
+        shell: python
+        run: |
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          changed = False
+
+          nav = '        <a href="agent-control-auditor.html">Agent Control Auditor</a>\n'
+          if 'href="agent-control-auditor.html">Agent Control Auditor</a>' not in s:
+              anchor = '        <a href="#tools">Free Tools</a>\n'
+              if anchor not in s:
+                  raise SystemExit('navigation anchor not found')
+              s = s.replace(anchor, anchor + nav, 1)
+              changed = True
+
+          card = '''          <a class="resource-card" href="agent-control-auditor.html" data-track="home_to_agent_control_auditor"><span>Agent governance · Free audit → $29 Pro</span><h3>Agent Control Auditor</h3><p>Compare an agent’s intended job with the authority it actually has. Detect excess permissions, decision overreach, missing human gates, retry risk, evidence gaps, and trust-boundary problems before production.</p><strong>Audit an AI agent →</strong></a>\n'''
+          if 'data-track="home_to_agent_control_auditor"' not in s:
+              anchor = '          <a class="resource-card" href="ai-operations-standard.html"><span>Governance · Free self-assessment</span><h3>AI Operations Standard</h3><p>Score one AI-enabled workflow across ownership, business value, controls, evidence and recovery before deciding what to fix next.</p><strong>Score a workflow →</strong></a>\n'
+              if anchor not in s:
+                  raise SystemExit('resource-grid anchor not found')
+              s = s.replace(anchor, anchor + card, 1)
+              changed = True
+
+          if changed:
+              p.write_text(s, encoding='utf-8')
+              print('index.html updated')
+          else:
+              print('Agent Control Auditor already present')
+
+      - name: Commit site update
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- index.html; then
+            echo 'No site change required.'
+            exit 0
+          fi
+          git config user.name 'stratum-praxis-automation'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add index.html
+          git commit -m 'feat: surface Agent Control Auditor on homepage'
+          git push origin HEAD:main
