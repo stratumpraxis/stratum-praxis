@@ -4,20 +4,62 @@
     "active": true,
     "services": ["linkedin"],
     "text": "AI agent failures often start with authority that is broader than the job. Audit what the agent may read, decide, execute and escalate before production.",
-    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=aca_linkedin"
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=aca_linkedin_01"
+  },
+  {
+    "id": "revstrike-aca-02",
+    "active": true,
+    "services": ["linkedin"],
+    "text": "An agent contract should answer four questions before deployment: what it may access, what it may execute, where human approval is required, and what evidence proves completion.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=aca_linkedin_02"
+  },
+  {
+    "id": "revstrike-aca-03",
+    "active": true,
+    "services": ["linkedin"],
+    "text": "The risky gap in agent systems is often not model quality. It is permission design. Narrow the authority surface, define stop conditions, and verify the handoff before scaling.",
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=aca_linkedin_03"
   },
   {
     "id": "revstrike-saas-01",
     "active": true,
     "services": ["threads"],
     "text": "Before adding another AI tool, map overlap, ownership, human review and break-even. Start with the self-service decision layer, then escalate only if the stack is messy.",
-    "url": "https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=saas_threads"
+    "url": "https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=saas_threads_01"
+  },
+  {
+    "id": "revstrike-saas-02",
+    "active": true,
+    "services": ["threads"],
+    "text": "AI spend gets expensive when tools overlap and nobody owns the workflow. Put every tool against one measurable job, one owner and one keep-or-cut threshold.",
+    "url": "https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=saas_threads_02"
+  },
+  {
+    "id": "revstrike-saas-03",
+    "active": true,
+    "services": ["threads"],
+    "text": "A useful software review ends with a decision, not a prettier inventory. KEEP, REDUCE, CONSOLIDATE, REVIEW or CANCEL should be tied to workflow value and cost.",
+    "url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=saas_threads_03"
   },
   {
     "id": "revstrike-cross-01",
     "active": true,
     "services": ["bluesky"],
     "text": "Agent tooling changes fast. Brain, Policy, Skills and State should stay portable. Cross-Agent Operating Kit packages that operating layer with human and cost gates.",
-    "url": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_bluesky"
+    "url": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_bluesky_01"
+  },
+  {
+    "id": "revstrike-cross-02",
+    "active": true,
+    "services": ["bluesky"],
+    "text": "If changing agent runtimes means rebuilding policy, state and skills from scratch, the operating layer is too coupled. Portability should be designed before migration hurts.",
+    "url": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_bluesky_02"
+  },
+  {
+    "id": "revstrike-cross-03",
+    "active": true,
+    "services": ["bluesky"],
+    "text": "A durable agent stack separates the model from the operating contract: policy, skills, state, human gates and cost limits. Then tools can change without losing control.",
+    "url": "https://stratumpraxis.com/systems/?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_bluesky_03"
   }
 ]
