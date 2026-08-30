@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "scoutedAt": "2026-08-30T19:18:17.832Z",
+  "totalCandidates": 12,
+  "verifiedCandidates": 0,
+  "publishableCandidateId": null,
+  "candidates": [
+    {
+      "id": "hn:49499867",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Haiku R1/beta6 has been released",
+      "summary": "",
+      "url": "https://www.haiku-os.org/news/2026-08-26_haiku_r1_beta6",
+      "publishedAt": "2026-08-30T16:01:10.000Z",
+      "engagement": 186,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 5,
+        "revenueFit": 2,
+        "engagement": 7,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 34,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49499854",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Omarchy: Any User Process Can Escalate to Root",
+      "summary": "",
+      "url": "https://0xcc.io/posts/omarchy-root-creds/",
+      "publishedAt": "2026-08-30T15:59:49.000Z",
+      "engagement": 464,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 8,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 33,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49498978",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Europe's summer drought is so extreme that desertification is a growing threat",
+      "summary": "",
+      "url": "https://fortune.com/2026/08/29/europe-summer-drought-desertification-threat-rivers-fish/",
+      "publishedAt": "2026-08-30T14:29:25.000Z",
+      "engagement": 320,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 8,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 33,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49499394",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "European Commission Revives Push for Encryption Backdoors in ProtectEU Strategy",
+      "summary": "",
+      "url": "https://reclaimthenet.org/eu-protecteu-strategy-encryption-backdoor-law-enforcement",
+      "publishedAt": "2026-08-30T15:12:40.000Z",
+      "engagement": 292,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 7,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 32,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49496782",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Longest Straight Line Paths on Water or Land on the Earth (2018)",
+      "summary": "",
+      "url": "https://arxiv.org/abs/1804.07389",
+      "publishedAt": "2026-08-30T08:23:26.000Z",
+      "engagement": 227,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 8,
+        "themeFit": 5,
+        "revenueFit": 2,
+        "engagement": 7,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 32,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49499891",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Coordination Headwind: How Organizations Are Like Slime Molds",
+      "summary": "",
+      "url": "https://komoroske.com/slime-mold/",
+      "publishedAt": "2026-08-30T16:03:17.000Z",
+      "engagement": 87,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 6,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 31,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49498787",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "METR and Redwood Offer Holy %^ Postmortem of the HuggingFace Hack",
+      "summary": "",
+      "url": "https://thezvi.wordpress.com/2026/08/29/metr-and-redwood-offer-holy-postmortem-of-the-huggingface-hack/",
+      "publishedAt": "2026-08-30T14:06:54.000Z",
+      "engagement": 136,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 6,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 31,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49497810",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Hacking IKEA Furniture",
+      "summary": "",
+      "url": "https://greenlightning.eu/diy/hacking-ikea-furniture/",
+      "publishedAt": "2026-08-30T11:39:43.000Z",
+      "engagement": 317,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 8,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 8,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 31,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49494520",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Bug Blindness",
+      "summary": "",
+      "url": "https://danluu.com/bug-blind/",
+      "publishedAt": "2026-08-30T00:21:40.000Z",
+      "engagement": 604,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 8,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 8,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 31,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49491791",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Creepy Crawlies",
+      "summary": "",
+      "url": "https://people.kernel.org/monsieuricon/creepy-crawlies",
+      "publishedAt": "2026-08-29T17:49:01.000Z",
+      "engagement": 698,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 6,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 9,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 30,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49499095",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Zig: Pointer Stability for ArrayLists",
+      "summary": "",
+      "url": "https://ziglang.org/devlog/2026/#2026-08-27",
+      "publishedAt": "2026-08-30T14:41:53.000Z",
+      "engagement": 57,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 10,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 5,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 30,
+        "max": 68
+      }
+    },
+    {
+      "id": "hn:49496918",
+      "sourceType": "hacker-news",
+      "sourceName": "Hacker News signal",
+      "title": "Arbitrary code execution in QubesOS via copy-to-VM error reporting backchannel",
+      "summary": "",
+      "url": "https://www.qubes-os.org/news/2026/08/29/qsb-118/",
+      "publishedAt": "2026-08-30T08:51:39.000Z",
+      "engagement": 246,
+      "verified": false,
+      "verificationNote": "Trend signal only; not approved as a factual source.",
+      "scores": {
+        "freshness": 8,
+        "themeFit": 3,
+        "revenueFit": 2,
+        "engagement": 7,
+        "sourceTrust": 2,
+        "originalityOpportunity": 8,
+        "total": 30,
+        "max": 68
+      }
+    }
+  ]
+}
