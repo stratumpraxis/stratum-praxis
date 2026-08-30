@@ -4,7 +4,7 @@ const API = 'https://api.buffer.com';
 const key = process.env.BUFFER_API_KEY;
 const manifestFile = process.env.TREND_VIDEO_MANIFEST || 'trend-video-engine/current.json';
 const videoUrl = process.env.TREND_VIDEO_URL;
-const ledgerFile = 'trend-video-engine/publish-ledger.json';
+const ledgerFile = process.env.VIDEO_PUBLISH_LEDGER || 'trend-video-engine/publish-ledger.json';
 
 if (!key) {
   console.log('BUFFER_API_KEY is not configured. Safe no-op.');
@@ -23,6 +23,7 @@ const services = (publish.services || ['instagram', 'tiktok', 'youtube'])
 const mode = publish.mode === 'addToQueue' ? 'addToQueue' : 'shareNow';
 const title = String(publish.title || manifest.title || 'Trend signal').slice(0, 95);
 const caption = String(publish.caption || manifest.summary || title).trim();
+const channelAllowlist = publish.channelAllowlist || {};
 
 let ledger = { version: 1, items: {} };
 try { ledger = JSON.parse(await fs.readFile(ledgerFile, 'utf8')); } catch {}
@@ -32,6 +33,8 @@ ledger.items[manifest.id] ||= {};
 function q(s) { return JSON.stringify(String(s)); }
 function now() { return new Date().toISOString(); }
 async function saveLedger() {
+  const parts = ledgerFile.split('/');
+  if (parts.length > 1) await fs.mkdir(parts.slice(0, -1).join('/'), {recursive: true});
   await fs.writeFile(ledgerFile, JSON.stringify(ledger, null, 2) + '\n', 'utf8');
 }
 
@@ -58,6 +61,13 @@ function metadataFor(service) {
     return `metadata:{youtube:{title:${q(title)},categoryId:"28",privacy:${privacy},madeForKids:false,license:youtube,isAiGenerated:true,notifySubscribers:false,embeddable:true}},`;
   }
   return '';
+}
+
+function channelMatchesAllowlist(channel, service) {
+  const rules = Array.isArray(channelAllowlist?.[service]) ? channelAllowlist[service] : [];
+  if (!rules.length) return true;
+  const values = [channel.id, channel.name, channel.displayName].filter(Boolean).map(x => String(x).trim().toLowerCase());
+  return rules.some(rule => values.includes(String(rule).trim().toLowerCase()));
 }
 
 async function refreshPriorPost(orgId, channel, prior) {
@@ -97,7 +107,25 @@ if (!org) {
   process.exit(0);
 }
 const channelData = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
-const channels = (channelData.channels || []).filter(c => services.includes(String(c.service).toLowerCase()));
+const rawChannels = (channelData.channels || []).filter(c => services.includes(String(c.service).toLowerCase()));
+const channels = [];
+for (const service of services) {
+  const serviceChannels = rawChannels.filter(c => String(c.service).toLowerCase() === service);
+  const allowRules = Array.isArray(channelAllowlist?.[service]) ? channelAllowlist[service] : [];
+  const matched = serviceChannels.filter(c => channelMatchesAllowlist(c, service));
+  if (allowRules.length && matched.length !== 1) {
+    ledger.items[manifest.id][service] = {
+      status: 'blocked-channel-allowlist',
+      at: now(),
+      requestedAllowlist: allowRules,
+      available: serviceChannels.map(c => ({id:c.id,name:c.name,displayName:c.displayName}))
+    };
+    console.log(`Block ${service}: expected exactly one allowlisted channel, found ${matched.length}.`);
+    await saveLedger();
+    continue;
+  }
+  channels.push(...matched);
+}
 console.log('Eligible video channels:', channels.map(c => `${c.service}:${c.displayName || c.name}`).join(', ') || 'none');
 
 if (!channels.length) {
@@ -115,7 +143,6 @@ for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
   const prior = ledger.items[manifest.id][service];
 
-  // Once an external create was attempted, never create it again. Pending/sent states are verified read-only.
   const nonRetryStates = ['attempted', 'accepted', 'buffer', 'scheduled', 'sending', 'sent', 'unknown'];
   if (prior && nonRetryStates.includes(prior.status)) {
     if (['scheduled', 'sending', 'accepted', 'buffer', 'sent'].includes(prior.status) && prior.postId) {
@@ -126,7 +153,6 @@ for (const channel of channels) {
     continue;
   }
 
-  // Fail-safe idempotency marker. One external create attempt per manifest/service.
   ledger.items[manifest.id][service] = {
     status: 'attempted', at: now(), channelId: channel.id, videoUrl
   };
@@ -160,7 +186,6 @@ for (const channel of channels) {
       };
     }
   } catch (error) {
-    // Unknown external state: never auto-retry this manifest/service.
     ledger.items[manifest.id][service] = {
       ...ledger.items[manifest.id][service], status: 'unknown', at: now(), message: String(error)
     };
