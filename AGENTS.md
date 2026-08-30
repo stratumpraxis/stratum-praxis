@@ -136,3 +136,16 @@ Never classify `not connected to another system` as a defect by itself. Preserve
 - Keep Git history useful: small reversible commits, no destructive cleanup for convenience, no broad rewrites when a narrow append or new file is sufficient.
 - Parallel agents must not independently redefine the same durable mechanism. If a distinct mechanism is needed, give it a distinct name and file rather than silently changing the old one.
 - The default rule is: preserve what already works; extend beside it; replace only deliberately.
+
+## Claude Code operating layer
+
+`CLAUDE.md` at the repository root and the path-scoped rules in
+`.claude/rules/` (`stripe.md`, `deployment.md`, `attribution.md`,
+`publishing.md`) carry the execution discipline for Claude Code sessions:
+priority ordering, evidence requirements, HUMAN_GATE format, retry bounds,
+validation conditions, and reporting states.
+
+This file remains authoritative for repository-specific facts and guards —
+verified destinations, live prices, current revenue state, the Commerce
+connection guard, and the Data integrity and change-control guard. Where the
+two overlap, the specific fact recorded here wins.
