@@ -11,7 +11,13 @@
   "preferredBoard": "AI Workflows & Automation",
   "product": "Cross-Agent Operating Kit — Personal",
   "price": "$69",
-  "publishState": "pending_pinterest_channel_connection",
+  "publishState": "media_ready_pending_pinterest_channel_connection",
+  "render": {
+    "workflowRun": "33320090691",
+    "commit": "ad0058552a4d02a8a2a339aad5ba2abf048075c3",
+    "videoBytes": 3566999,
+    "coverBytes": 1292542
+  },
   "safety": {
     "originalCreative": true,
     "copyrightSafeAudio": true,
