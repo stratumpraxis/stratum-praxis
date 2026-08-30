@@ -1,0 +1,62 @@
+name: Revenue Strike Launch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/revenue-strike-queue.json'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run only'
+        required: false
+        default: '0'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: revenue-strike-launch
+  cancel-in-progress: false
+
+jobs:
+  launch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Revenue queue safety audit
+        env:
+          BUFFER_QUEUE_FILE: revenue-strike-queue.json
+          MAX_SERVICES_PER_ITEM: '1'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
+
+      - name: Agent Control Auditor -> LinkedIn
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: linkedin
+          BUFFER_QUEUE_FILE: revenue-strike-queue.json
+          BUFFER_ITEM_INDEX: '0'
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
+        run: node distribution/buffer-publisher.mjs
+
+      - name: AI Value / SaaS Spend -> Threads
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: threads
+          BUFFER_QUEUE_FILE: revenue-strike-queue.json
+          BUFFER_ITEM_INDEX: '1'
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
+        run: node distribution/buffer-publisher.mjs
+
+      - name: Cross-Agent Operating Kit -> Bluesky
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: bluesky
+          BUFFER_QUEUE_FILE: revenue-strike-queue.json
+          BUFFER_ITEM_INDEX: '2'
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
+        run: node distribution/buffer-publisher.mjs
