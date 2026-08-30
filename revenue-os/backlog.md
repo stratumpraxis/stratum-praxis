@@ -10,9 +10,11 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
   - `vector-note-ai-team-ig-20260827` (Buffer id `6a8ff2a9323198a35b118f6b` → note.com AI-team article): `status: sent`, sentAt `2026-08-29T13:47:08.639Z`, live post: https://www.instagram.com/p/DcoE_3oFqMQ/.
 - NEXT: pull PostHog evidence for `utm_content=ig_20260827_retry1` pageviews/CTA/checkout on `ai-saas-waste-calculator.html`, and any referral evidence for the note.com post, before calling either run MEASURED. Do not launch a further Instagram post for this campaign until that measurement is done — this is now a measurement gap, not a publishing gap.
 
-## P0 — first genuine purchase proof
+## P0 — first genuine purchase proof [checkout-completion gap, not a link/traffic problem]
 
 - Current Stripe evidence still has no verified genuine purchase. Keep the focus on existing live paths rather than catalog growth.
+- RULED OUT 2026-08-30T13:08Z (`revenue-safety-loop.yml` run 33313340497, PR #67): all 32 distinct `buy.stripe.com` payment links on the site return HTTP 200 and none report inactive/expired. Dead or misconfigured checkout links are not the explanation for `checkout_click: 17` vs `stripe_live_payment_intents: 0` (see `revenue-os/2026-08-29-revenue-activation.md` §8). This check now runs every 6h and will auto-escalate a GitHub issue if a link ever breaks — no need to re-verify link reachability manually.
+- What remains needs Stripe Dashboard or API read access (abandoned-session detail, payment-method decline reasons, currency/country blocks, or a price/line-item mismatch inside an actual Checkout Session) — see HUMAN REQUIRED below. No session so far has had this access; do not keep re-deriving the same "traffic vs conversion" hypothesis without it.
 - When the first legitimate purchase appears, verify the full chain: completed payment → correct buyer-only delivery → activation / first use. Do not use a self-purchase or synthetic transaction as market validation.
 
 ## P1 — market-signal LP strengthening (2026-08-27)
@@ -40,6 +42,7 @@ This is a revenue-priority recovery queue, not a general to-do list. Re-rank onl
 
 ## HUMAN REQUIRED — owner-only, not agent retry work
 
+- Stripe Dashboard checkout-completion diagnosis: `checkout_click: 17` vs `stripe_live_payment_intents: 0` over 30 days, and dead/expired payment links are now ruled out (all 32 return HTTP 200, see P0 above). The owner (or a session with Stripe Dashboard/API read access) needs to check the abandoned/incomplete Checkout Sessions for the actual reason — payment-method decline, currency/country restriction, or a price/line-item mismatch. No agent session so far has had this access; do not keep re-diagnosing this from the site side without it.
 - Microsoft Store AI Automation ROI Planner: as of 2026-08-27, manifest/service-worker/icon defects are fixed and verified locally (PWABuilder manifest validation 0/15 failed, SW precache confirmed, real desktop/mobile screenshots captured — see `microsoft-ai-roi-planner/STORE_SUBMISSION.md`). Still requires Partner Center account / identity steps (MFA/identity-verification), product identity / reservation, PWABuilder package generation against the merged production URL, package upload and final submission. Keep this as a bounded manual lane, not an automated retry loop.
 
 ## Resolved blockers — do not reopen without new evidence
