@@ -51,4 +51,4 @@ console.log('channels_returned:', channelCount);
 console.log('locked:', lockedCount);
 console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
-// 2026-08-31: Pinterest publish preflight recheck; no posting.
+// 2026-08-31: user confirmed Pinterest connection complete; final publish preflight.
