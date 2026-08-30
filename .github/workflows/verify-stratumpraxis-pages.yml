@@ -32,6 +32,8 @@ on:
       - 'ai-council-builder-access.html'
       - 'ai-council-builder-ja.html'
       - 'ai-council-builder-ja-access.html'
+      - 'agent-control-auditor.html'
+      - 'agent-control-auditor.mjs'
       - 'sitemap.xml'
       - 'scos-analytics.js'
   workflow_dispatch:
@@ -100,6 +102,7 @@ jobs:
             'https://stratumpraxis.com/ai-council-builder.html'
             'https://stratumpraxis.com/ai-council-builder-access.html'
             'https://stratumpraxis.com/ai-council-builder-ja-access.html'
+            'https://stratumpraxis.com/agent-control-auditor.html'
             'https://stratumpraxis.com/sitemap.xml'
           )
           for url in "${urls[@]}"; do
@@ -135,3 +138,7 @@ jobs:
           done
 
           echo 'All Stratum Praxis HTTPS, Prompt Systems and Return Gate checks passed.'
+
+          wait_for_contains 'https://stratumpraxis.com/agent-control-auditor.html' \
+            'What do you want this agent to accomplish?' \
+            'https://buy.stripe.com/cNiaEY3sEgTF60o6NJ6Zy0W'

@@ -70,3 +70,11 @@ jobs:
             exit 1
           fi
           echo "Stripe webhook rejects unsigned payload: $code"
+
+          code="$(curl -sS -o /tmp/auditor-status.txt -w '%{http_code}' "$BASE/agent-control-auditor/status")"
+          if [ "$code" != '401' ]; then
+            echo "Expected 401 for unpaid Agent Control Auditor Pro, got $code"
+            cat /tmp/auditor-status.txt
+            exit 1
+          fi
+          echo "Agent Control Auditor unpaid guard OK: 401"

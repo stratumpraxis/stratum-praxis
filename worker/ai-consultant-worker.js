@@ -63,7 +63,8 @@ function offers(env) {
     report:{ priceId:env.REPORT_PRICE_ID,paymentLinkId:env.REPORT_PAYMENT_LINK_ID,amount:1980,currency:'jpy' },
     kit:{ priceId:env.KIT_PRICE_ID,paymentLinkId:env.KIT_PAYMENT_LINK_ID,amount:4980,currency:'jpy' },
     scos:{ priceId:env.SCOS_PRICE_ID,paymentLinkId:env.SCOS_PAYMENT_LINK_ID,amount:4900,currency:'usd' },
-    risk:{ priceId:'price_1U7bQsJMK7zFs997Zu1uR7Gd',paymentLinkId:'plink_1U7bR1JMK7zFs997fN8WB7rG',amount:3900,currency:'usd' }
+    risk:{ priceId:'price_1U7bQsJMK7zFs997Zu1uR7Gd',paymentLinkId:'plink_1U7bR1JMK7zFs997fN8WB7rG',amount:3900,currency:'usd' },
+    auditor:{ productId:'prod_VAI4WrfYir3Fxg',priceId:'price_1U9xU8JMK7zFs997YNmhqYRe',paymentLinkId:'plink_1U9xUXJMK7zFs9972gxwlWuN',amount:2900,currency:'usd' }
   };
 }
 async function getSession(env, sid) {
@@ -74,6 +75,7 @@ function paidFor(s, expected) {
   const li = s.line_items?.data || [];
   return s.payment_status === 'paid' && s.mode === 'payment' && li.length === 1 &&
     li[0]?.price?.id === expected.priceId && Number(li[0]?.quantity||0) === 1 &&
+    (!expected.productId || li[0]?.price?.product === expected.productId) &&
     Number(s.amount_total) === expected.amount && String(s.currency||'').toLowerCase() === expected.currency &&
     s.payment_link === expected.paymentLinkId;
 }
@@ -146,6 +148,21 @@ export default {
         const s = await getSession(env,p.sid); const exp = offers(env).risk; if (!paidFor(s,exp)) return new Response('Purchase could not be verified.',{status:402,headers:{'Content-Type':'text/plain; charset=utf-8','Cache-Control':'no-store'}});
         const tracked = await markActivated(env,s,'risk'); if (tracked) await capturePostHog(env,s.id,'activation','ai_agent_risk_cost_audit',{activation_source:'secure_workspace_v1'});
         return new Response(riskWorkspaceHtml(),{status:200,headers:{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-store, private','X-Robots-Tag':'noindex, nofollow, noarchive','Referrer-Policy':'no-referrer','X-Risk-Activation-Tracked':tracked?'1':'0'}});
+      }
+      if (request.method === 'POST' && url.pathname === '/agent-control-auditor/login') {
+        const body = await request.json(); const sid = String(body.session_id||''); const email = String(body.email||'').trim().toLowerCase();
+        if (!sid.startsWith('cs_') || !email) return json({error:'Session ID and purchase email are required'},400,cors);
+        const exp = offers(env).auditor; const s = await getSession(env,sid); if (!paidFor(s,exp)) return json({error:'Agent Control Auditor Pro payment was not confirmed'},402,cors);
+        const paidEmail = String(s.customer_details?.email || s.customer_email || '').trim().toLowerCase(); if (!paidEmail || paidEmail !== email) return json({error:'Purchase email does not match'},403,cors);
+        await capturePostHog(env,s.id,'revenue_verified','agent_control_auditor_pro',{amount_total:s.amount_total,currency:s.currency});
+        const token = await signToken(env.STRIPE_SECRET_KEY,s.id,'auditor');
+        return json({authorized:true,access_url:`https://stratumpraxis.com/agent-control-auditor.html?pro_token=${encodeURIComponent(token)}`},200,cors);
+      }
+      if (request.method === 'GET' && url.pathname === '/agent-control-auditor/status') {
+        const p = await verifyToken(env.STRIPE_SECRET_KEY,url.searchParams.get('token')); if (!p || p.product !== 'auditor') return json({authorized:false,error:'Access token is invalid or expired'},401,cors);
+        const s = await getSession(env,p.sid); const exp = offers(env).auditor; if (!paidFor(s,exp)) return json({authorized:false,error:'Purchase could not be verified'},402,cors);
+        const tracked = await markActivated(env,s,'auditor'); if (tracked) await capturePostHog(env,s.id,'activation','agent_control_auditor_pro',{activation_source:'secure_workspace_v1'});
+        return json({authorized:true,tier:'pro',product_key:'agent-control-auditor-pro'},200,cors);
       }
       return json({error:'Not found'},404,cors);
     } catch (e) { return json({error:'Verification error'},500,cors); }
