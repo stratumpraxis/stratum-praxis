@@ -9,6 +9,7 @@ on:
     paths:
       - 'acquisition/media-engine/sources.json'
       - 'acquisition/blogger/free-runner.mjs'
+      - 'acquisition/blogger/local-fallback.mjs'
       - 'acquisition/blogger/owned-publisher.mjs'
       - '.github/workflows/autonomous-blogger.yml'
 
@@ -38,6 +39,14 @@ jobs:
         run: |
           set -o pipefail
           node acquisition/blogger/free-runner.mjs 2>&1 | tee acquisition/blogger/last-run.log
+      - name: Use zero-cost evidence fallback when Workers AI is unavailable
+        if: always()
+        run: |
+          if grep -Eq 'BLOGGER_STOP WORKERS_AI_ERROR|BLOGGER_BLOCKED|FREE_TIER_STOP' acquisition/blogger/last-run.log; then
+            node acquisition/blogger/local-fallback.mjs 2>&1 | tee acquisition/blogger/last-run.log
+          else
+            echo 'Workers AI generation did not require fallback'
+          fi
       - name: Route READY output to owned Signal site
         if: always()
         run: node acquisition/blogger/owned-publisher.mjs
