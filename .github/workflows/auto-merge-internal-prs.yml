@@ -1,0 +1,66 @@
+name: Auto-merge internal PRs
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+  checks: read
+  statuses: read
+
+concurrency:
+  group: auto-merge-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  auto-merge:
+    if: >-
+      github.event.pull_request.draft == false &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.user.login == 'stratumpraxis'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Wait for other PR checks
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 40); do
+            runs="$(gh api "repos/$REPO/commits/$HEAD_SHA/check-runs" --jq '[.check_runs[] | select(.name != "auto-merge") | {name,status,conclusion}]')"
+            statuses="$(gh api "repos/$REPO/commits/$HEAD_SHA/status" --jq '[.statuses[] | {context,state}]')"
+
+            failed="$(jq '[.[] | select((.conclusion // "") == "failure" or (.conclusion // "") == "cancelled" or (.conclusion // "") == "timed_out" or (.conclusion // "") == "action_required")] | length' <<<"$runs")"
+            pending="$(jq '[.[] | select(.status != "completed")] | length' <<<"$runs")"
+            status_failed="$(jq '[.[] | select(.state == "failure" or .state == "error")] | length' <<<"$statuses")"
+            status_pending="$(jq '[.[] | select(.state == "pending")] | length' <<<"$statuses")"
+
+            if [[ "$failed" -gt 0 || "$status_failed" -gt 0 ]]; then
+              echo "A PR check failed; refusing automatic merge."
+              exit 1
+            fi
+
+            if [[ "$pending" -eq 0 && "$status_pending" -eq 0 ]]; then
+              echo "All other reported checks are clear."
+              exit 0
+            fi
+
+            echo "Waiting for checks ($attempt/40)..."
+            sleep 15
+          done
+          echo "Timed out waiting for PR checks; refusing automatic merge."
+          exit 1
+
+      - name: Merge internal owner PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh pr merge "$PR_URL" --squash --delete-branch
