@@ -1,31 +1,7 @@
 {
-  "at": "2026-08-30T19:22:34.096Z",
-  "status": "ATTEMPTED_OR_BLOCKED",
-  "manifestId": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
-  "platforms": {
-    "youtube": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "tiktok": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "instagram": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    }
-  }
+  "at": "2026-08-30T23:05:05.315Z",
+  "status": "PLANNED",
+  "manifestId": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
+  "candidateId": "feed:openai-news:signal",
+  "usedAIEditor": false
 }

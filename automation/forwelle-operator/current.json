@@ -1,33 +1,33 @@
 {
-  "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
-  "createdAt": "2026-08-30T19:21:15.022Z",
+  "id": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
+  "createdAt": "2026-08-30T23:05:05.315Z",
   "brandLane": "forwelle-en",
   "platformVariant": "cross-platform-short",
-  "title": "Evolve your marketing with new AI tools",
-  "topic": "Evolve your marketing with new AI tools",
+  "title": "Expanding OpenAI’s presence in Brazil",
+  "topic": "Expanding OpenAI’s presence in Brazil",
   "language": "en",
-  "summary": "Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workflow.",
-  "voiceover": "A fresh signal from blog.google is getting attention: Evolve your marketing with new AI tools. Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workflow. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
-  "sourceCandidateId": "feed:google-ai:signal",
-  "outputFile": "media/forwelle/2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal.mp4",
+  "summary": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country.",
+  "voiceover": "A fresh signal from openai.com is getting attention: Expanding OpenAI’s presence in Brazil. OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "feed:openai-news:signal",
+  "outputFile": "media/forwelle/2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal.mp4",
   "scores": {
-    "freshness": 2,
-    "themeFit": 10,
-    "revenueFit": 8,
+    "freshness": 4,
+    "themeFit": 7,
+    "revenueFit": 6,
     "engagement": 0,
     "sourceTrust": 10,
     "originalityOpportunity": 8,
     "officialFeedBoost": 6,
-    "total": 44,
+    "total": 41,
     "max": 74
   },
   "sources": [
     {
-      "name": "blog.google — first-party source",
-      "url": "https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/",
+      "name": "openai.com — first-party source",
+      "url": "https://openai.com/index/expanding-our-presence-in-brazil",
       "factSource": true,
       "verified": true,
-      "published": "Mon, 10 Aug 2026 14:30:00 +0000"
+      "published": "Thu, 27 Aug 2026 03:00:00 GMT"
     }
   ],
   "thirdPartyAssets": [],
@@ -58,9 +58,9 @@
       "duration": 6,
       "eyebrow": "NEW SIGNAL",
       "motionTag": "WHY NOW",
-      "headline": "Evolve your\nmarketing with new\nAI tools",
-      "body": "A fresh first-party update from blog.google.",
-      "sourceLabel": "blog.google",
+      "headline": "Expanding OpenAI’s\npresence in Brazil",
+      "body": "A fresh first-party update from openai.com.",
+      "sourceLabel": "openai.com",
       "background": "#050711",
       "accent": "#7CFFDA"
     },
@@ -69,8 +69,8 @@
       "eyebrow": "WHAT CHANGED",
       "motionTag": "THE SIGNAL",
       "headline": "Look past the\nheadline.",
-      "body": "Learn how new AI and agentic experiences across Google Ads and Google Analytics can simplify your marketing workfl…",
-      "sourceLabel": "blog.google",
+      "body": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to s…",
+      "sourceLabel": "openai.com",
       "background": "#071421",
       "accent": "#5BE7FF"
     },
@@ -113,8 +113,8 @@
     ],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Evolve your marketing with new AI tools",
-    "caption": "Evolve your marketing with new AI tools Forwelle tracks practical shifts in AI, tools and how people work. Source: https://blog.google/products/ads-commerce/google-ads-analytics-ai-updates/ #AI #FutureOfWork #Technology #Forwelle",
+    "title": "Expanding OpenAI’s presence in Brazil",
+    "caption": "Expanding OpenAI’s presence in Brazil Forwelle tracks practical shifts in AI, tools and how people work. Source: https://openai.com/index/expanding-our-presence-in-brazil #AI #FutureOfWork #Technology #Forwelle",
     "youtubePrivacy": "public",
     "channelAllowlist": {
       "youtube": [
@@ -134,6 +134,6 @@
   "narration": {
     "file": "automation/forwelle-operator/narration.mp3",
     "voiceId": "geffen_32",
-    "durationSeconds": 27.504
+    "durationSeconds": 27.288
   }
 }
