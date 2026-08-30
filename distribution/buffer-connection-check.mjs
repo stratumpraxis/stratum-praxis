@@ -34,13 +34,15 @@ let channelCount = 0;
 let lockedCount = 0;
 let disconnectedCount = 0;
 const services = new Set();
+const pinterestChannels = [];
 for (const org of orgs) {
-  const data = await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){service isLocked isDisconnected isQueuePaused} }`);
+  const data = await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){id service isLocked isDisconnected isQueuePaused} }`);
   for (const channel of data.channels || []) {
     channelCount += 1;
     if (channel.isLocked) lockedCount += 1;
     if (channel.isDisconnected) disconnectedCount += 1;
     if (channel.service) services.add(String(channel.service).toLowerCase());
+    if (String(channel.service).toLowerCase() === 'pinterest' && !channel.isLocked && !channel.isDisconnected) pinterestChannels.push(channel);
   }
 }
 
@@ -51,4 +53,11 @@ console.log('channels_returned:', channelCount);
 console.log('locked:', lockedCount);
 console.log('disconnected:', disconnectedCount);
 console.log('services:', [...services].sort().join(', ') || 'none');
-// 2026-08-31: user confirmed Pinterest connection complete; final publish preflight.
+
+for (const channel of pinterestChannels) {
+  const detail = await gql(`query { channel(input:{id:${JSON.stringify(channel.id)}}){id service metadata { ... on PinterestMetadata { boards { serviceId name url } } } } }`);
+  const boards = detail.channel?.metadata?.boards || [];
+  console.log('PINTEREST_CHANNEL_ID:', channel.id);
+  console.log('PINTEREST_BOARDS:', JSON.stringify(boards));
+}
+// 2026-08-31: inspect connected Pinterest boards before first publish.
