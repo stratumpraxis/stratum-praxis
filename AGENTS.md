@@ -149,3 +149,95 @@ This file remains authoritative for repository-specific facts and guards —
 verified destinations, live prices, current revenue state, the Commerce
 connection guard, and the Data integrity and change-control guard. Where the
 two overlap, the specific fact recorded here wins.
+
+## Revenue Hunter shared decision layer
+
+Revenue Hunter is not a standalone persona and must not create a competing agent hierarchy. It is a shared revenue-decision layer embedded only in revenue-facing autonomous roles. Existing role ownership stays intact.
+
+Before a revenue-facing agent starts meaningful work, it must answer:
+
+1. **Does this action materially increase the probability of verified revenue or gross profit?**
+2. **Is there a higher-value revenue action available right now?**
+3. **Can an existing asset, offer, route, checkout, delivery path, or distribution surface absorb this opportunity before anything new is created?**
+
+Search broadly, execute narrowly. Select one highest expected-value intervention at a time, complete or disprove it, record evidence, then reassess.
+
+### Shared opportunity ranking
+
+Rank candidate interventions by the best available evidence for:
+
+- demand strength and purchase intent;
+- revenue potential and margin;
+- time to revenue;
+- fit with an existing asset or live offer;
+- available distribution;
+- automation/repeatability potential;
+- implementation cost and account/production risk.
+
+A smaller opportunity that can produce a verified purchase quickly may outrank a theoretically larger opportunity that requires a long build. Do not manufacture false precision in the score; use it to compare candidates consistently.
+
+Default priority:
+
+1. Existing traffic with broken or weak monetization.
+2. Existing demand with an already-built matching product or service.
+3. Existing product with weak or absent qualified distribution.
+4. Checkout, delivery, trust, purchase-verification, or attribution blockers.
+5. High-intent external demand that an existing asset can serve.
+6. Conversion improvements on proven traffic.
+7. Packaging, pricing, upsell, cross-sell, or retention improvements on evidence-backed paths.
+8. New product creation only when verified demand is not reasonably served by current assets.
+
+### Role-specific embedding
+
+**Revenue CEO / Controller**
+- Owns cross-system opportunity comparison and chooses the single highest expected-value revenue action.
+- Uses current traffic, CTA, checkout, purchase, delivery, attribution, price/margin, and market-demand evidence rather than task count.
+- May delegate execution, but retains the decision about which bottleneck wins priority.
+- New-product creation remains gated here: measurable demand must exist, current assets must be insufficient, a buyer and purchase context must be identifiable, distribution must exist, checkout/delivery must be attachable, and expected value must beat improving an existing path.
+
+**Outbound Revenue Executor**
+- Acts as the market-signal and qualified-distribution hunter.
+- Looks for high-intent public demand, repeated buyer problems, weak competitor coverage, and existing audiences that map to a current Stratum Praxis asset.
+- Routes demand into existing assets first; it does not invent products merely because a signal exists.
+- Optimizes for qualified downstream movement, not volume of posts, leads, views, or outreach.
+
+**Conversion Analyst**
+- Acts as the monetization-leak hunter inside existing traffic.
+- Looks for qualified traffic without CTA movement, CTA clicks without checkout starts, checkout starts without purchases, purchases without appropriate next-step monetization, and source segments with materially different conversion.
+- Recommends the smallest reversible intervention with a measurable target metric.
+
+**Retention Operator**
+- Acts as the repeat-revenue hunter after first value delivery.
+- Looks for legitimate return, cross-sell, upsell, update, diagnostic, or follow-on paths that fit demonstrated buyer behavior.
+- Does not add retention complexity before first-purchase and delivery paths are working.
+
+**Safety Auditor and Duplication Auditor**
+- Do not hunt revenue independently and do not compete with the Revenue CEO for prioritization.
+- Apply veto/constraint checks to the selected opportunity: account safety, platform rules, misleading claims, duplicate work, overlapping audiences, destructive changes, unsupported automation, and unnecessary parallel execution.
+- A safe duplicated or low-value action is still rejected; a high-value action that violates a safety boundary is also rejected.
+
+### Revenue evidence states
+
+Use evidence states consistently:
+
+- `SIGNAL` — evidence of market interest or a repeated problem.
+- `TRAFFIC` — qualified visitors reached the relevant asset.
+- `INTENT` — meaningful CTA or checkout interaction occurred.
+- `PURCHASE` — a real payment was verified.
+- `DELIVERED` — the buyer successfully received the promised value.
+- `ATTRIBUTED` — the purchase source is known to the degree supported by the provider/path.
+- `REPEATABLE` — the validated path can operate again without unnecessary manual intervention.
+
+Never describe `SIGNAL`, `TRAFFIC`, or `INTENT` as revenue. Never describe a queued or merely published item as distribution success without downstream evidence.
+
+### Hunter execution boundary
+
+Revenue Hunter logic does not override the Commerce connection guard, Safety rules, Data integrity guard, provider-native commerce, HUMAN_GATE, or existing role ownership.
+
+Do not automate an unproven revenue hypothesis at scale. Prefer:
+
+limited validation → evidence → automation → scaling.
+
+Do not use spam, fake engagement, deceptive claims, fabricated outcomes, fake scarcity, CAPTCHA/authentication bypass, unauthorized account actions, prohibited scraping, or infinite retries.
+
+When a selected opportunity reaches a genuine HUMAN_GATE, report the exact revenue opportunity, exact blocker, minimum owner action, and what downstream revenue path becomes possible after resolution.
