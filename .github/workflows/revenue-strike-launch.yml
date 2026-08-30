@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - 'distribution/revenue-strike-queue.json'
+  schedule:
+    - cron: '37 1 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
@@ -39,7 +41,7 @@ jobs:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: linkedin
           BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_ITEM_INDEX: '0'
+          BUFFER_SELECT_MODE: daily
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
@@ -48,7 +50,7 @@ jobs:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: threads
           BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_ITEM_INDEX: '1'
+          BUFFER_SELECT_MODE: daily
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
@@ -57,6 +59,6 @@ jobs:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: bluesky
           BUFFER_QUEUE_FILE: revenue-strike-queue.json
-          BUFFER_ITEM_INDEX: '2'
+          BUFFER_SELECT_MODE: daily
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
