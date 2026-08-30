@@ -65,7 +65,9 @@
       "buffer_post_id": "6a902d26821a598e398e4c51",
       "buffer_status_at_creation": "scheduled",
       "dueAt": "2026-08-30T12:14:00.000Z",
-      "note": "Same approved text/URL/image as the original; Buffer accepted it with no image error this time, confirming the corrupted-PNG fix resolved the root cause. utm_content changed to ig_20260827_retry1 so it is separable from the failed original in analytics. Re-check status with distribution/buffer-post-status.mjs after 2026-08-30T12:14Z, then verify social_utm_pageviews / calculator / CTA / checkout events before declaring this run complete."
+      "note": "Same approved text/URL/image as the original; Buffer accepted it with no image error this time, confirming the corrupted-PNG fix resolved the root cause. utm_content changed to ig_20260827_retry1 so it is separable from the failed original in analytics.",
+      "status": "PUBLISHED — verified 2026-08-30T13:01Z via distribution/buffer-post-status.mjs (GitHub Actions run 33313034773): status=\"sent\", sentAt=\"2026-08-30T12:14:08.933Z\", externalLink=\"https://www.instagram.com/p/DcqfJlkFnsV/\".",
+      "traffic_conversion_evidence": "PENDING/UNVERIFIED — no PostHog access in this session. social_utm_pageviews_after_publish, calculator_events_after_publish, cta/checkout events for utm_content=ig_20260827_retry1 still need to be pulled from PostHog before this run can be called MEASURED."
     }
   },
   "second_distribution_run_2026_08_27": {
@@ -74,10 +76,11 @@
     "destination": "https://note.com/deft_eel6718/n/ncaff8351e529",
     "buffer_channel": "instagram:praxisstratum",
     "buffer_post_id": "6a8ff2a9323198a35b118f6b",
-    "buffer_status": "scheduled",
+    "buffer_status": "PUBLISHED — verified 2026-08-30T13:01Z via distribution/buffer-post-status.mjs (GitHub Actions run 33313034773): status=\"sent\", sentAt=\"2026-08-29T13:47:08.639Z\", externalLink=\"https://www.instagram.com/p/DcoE_3oFqMQ/\".",
     "scheduled_at_utc": "2026-08-29T13:47:00Z",
-    "verified_at": "2026-08-27T12:23Z via distribution/buffer-post-status.mjs, GitHub Actions run 33071594665",
-    "note": "Uses the same image file (distribution/ai-saas-cost-instagram-20260827.png) that was corrupted and is now fixed on main as of commit 11ae9be22f91675ddf302182864c935ec3647a77 — this fix landed before this post's dueAt, so it should publish normally. Re-check status after 2026-08-29T13:47:00Z."
+    "verified_at": "2026-08-30T13:01Z via distribution/buffer-post-status.mjs, GitHub Actions run 33313034773",
+    "traffic_conversion_evidence": "PENDING/UNVERIFIED — no PostHog access in this session. Real click-through to note.com and any downstream event on the note page (outside this repo's own analytics) still needs to be checked before this run can be called MEASURED.",
+    "note": "Uses the same image file (distribution/ai-saas-cost-instagram-20260827.png) that was corrupted and is now fixed on main as of commit 11ae9be22f91675ddf302182864c935ec3647a77 — the fix landed before this post's dueAt, and it published cleanly, confirming no image error recurred."
   },
   "og_metadata_fix_2026_08_27": {
     "finding": "Sitewide, 0 of 76 Production pages had og:image or twitter:card; every external share of any page rendered a blank/generic link preview.",
@@ -132,6 +135,6 @@
       "what_to_check_next": "Once real traffic arrives, compare primary_cta_click rate on ai-saas-waste-calculator.html pre- vs post-2026-08-27 using the existing PostHog funnel_view/primary_cta_click events (already instrumented, no new events added). Do not assume improvement without this evidence."
     }
   },
-  "current_primary_bottleneck": "Qualified external traffic remains the primary measured bottleneck, and the one confirmed outbound distribution attempt this campaign (Instagram, ai_saas_cost_review) failed at publish time before reaching anyone. Every currently active sellable offer now has a shared external-acquisition entry from the public GitHub README through the tracked product router, but real external visits and purchases still need observation. Prioritize proving traffic and conversion on this route before expanding the catalog.",
+  "current_primary_bottleneck": "UPDATED 2026-08-30T13:01Z: both pending Instagram posts are now confirmed PUBLISHED (ai_saas_cost_review retry -> https://www.instagram.com/p/DcqfJlkFnsV/, sent 2026-08-30T12:14Z; vector-note-ai-team -> https://www.instagram.com/p/DcoE_3oFqMQ/, sent 2026-08-29T13:47Z) — the corrupted-PNG distribution blocker is fully closed, DISTRIBUTED state reached for both. The bottleneck has moved one stage down the funnel: neither post's traffic/CTA/checkout impact has been measured yet (no PostHog access in this session), and there is still zero verified genuine Stripe purchase anywhere in the business. Prioritize pulling PostHog evidence for utm_content=ig_20260827_retry1 and the note.com referral before running any further distribution for this campaign, and keep first-purchase proof as the standing P0.",
   "next_review_rule": "Update only from observed analytics, store, payment, or deployment evidence; never invent zeros or success states. Separate route-created, deployed, visited, clicked, checkout-started, purchased, delivered and activated states."
 }

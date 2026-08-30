@@ -2,12 +2,13 @@
 
 This is a revenue-priority recovery queue, not a general to-do list. Re-rank only when new verified evidence appears.
 
-## P0 — recover the live distribution run
+## P0 — recover the live distribution run [DISTRIBUTED, not yet MEASURED]
 
-- VERIFIED 2026-08-27T12:23Z (`distribution/buffer-post-status.mjs`, GitHub Actions run 33071594665): the Instagram AI/SaaS cost-review post (Buffer id `6a8f23f6b2db23b19c501243`, due 2026-08-27T01:27:00Z) is `status: error`, `sentAt: null`, `externalLink: null`. It never reached anyone. Root cause: it referenced the corrupted `distribution/ai-saas-cost-instagram-20260827.png` before that file was fixed (fix merged in `11ae9be22f91675ddf302182864c935ec3647a77`, after this post's dueAt had already passed). This run is now classified FAILED per the rule below — a deliberate single re-launch of the `ai_saas_cost_review` campaign (not a blind retry) is unblocked, but has not been done yet. See `revenue-os/metrics.json` `first_distribution_run_2026_08_27`.
-- A second, unrelated Instagram post (`vector-note-ai-team-ig-20260827`, Buffer id `6a8ff2a9323198a35b118f6b`, due 2026-08-29T13:47:00Z) is currently `status: scheduled` and uses the now-fixed image, so it should publish normally — re-check status after its due time (see `second_distribution_run_2026_08_27`).
-- Do not create another Instagram launch payload for a given campaign until that specific run is classified as PUBLISHED and MEASURED or is shown to have failed (as above).
-- RETRY LAUNCHED 2026-08-27T12:27Z (commit `e2fd58485e81f06aed400cdb93213229aeaea20a`, workflow run 33071919211): re-queued the same approved `ai_saas_cost_review` creative as Buffer post `6a902d26821a598e398e4c51`, accepted with `status: scheduled` and no image error — confirms the corrupted-PNG root cause is fixed. `dueAt` 2026-08-30T12:14:00Z. Re-check with `distribution/buffer-post-status.mjs` after that time; do not queue a further retry for this campaign until this one is confirmed sent or failed.
+- CLOSED 2026-08-27: the original Instagram AI/SaaS cost-review post (Buffer id `6a8f23f6b2db23b19c501243`) failed (`status: error`, corrupted-image root cause). Do not reopen or re-retry that specific post id — it is superseded by the retry below.
+- PUBLISHED — verified 2026-08-30T13:01Z (`distribution/buffer-post-status.mjs`, GitHub Actions run 33313034773):
+  - `ai-saas-cost-ig-20260827-retry1` (Buffer id `6a902d26821a598e398e4c51`, utm_content=`ig_20260827_retry1` → `ai-saas-waste-calculator.html`): `status: sent`, sentAt `2026-08-30T12:14:08.933Z`, live post: https://www.instagram.com/p/DcqfJlkFnsV/. Confirms the corrupted-PNG fix (PR #34) fully resolved the original failure.
+  - `vector-note-ai-team-ig-20260827` (Buffer id `6a8ff2a9323198a35b118f6b` → note.com AI-team article): `status: sent`, sentAt `2026-08-29T13:47:08.639Z`, live post: https://www.instagram.com/p/DcoE_3oFqMQ/.
+- NEXT: pull PostHog evidence for `utm_content=ig_20260827_retry1` pageviews/CTA/checkout on `ai-saas-waste-calculator.html`, and any referral evidence for the note.com post, before calling either run MEASURED. Do not launch a further Instagram post for this campaign until that measurement is done — this is now a measurement gap, not a publishing gap.
 
 ## P0 — first genuine purchase proof
 
