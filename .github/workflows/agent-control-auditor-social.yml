@@ -7,6 +7,7 @@ on:
       - 'distribution/agent-control-auditor-queue.json'
       - 'distribution/triple-review.mjs'
       - 'distribution/social-writer.mjs'
+      - 'distribution/fallback-selector.mjs'
       - '.github/workflows/agent-control-auditor-social.yml'
   schedule:
     - cron: '47 2 * * *'
@@ -37,11 +38,17 @@ jobs:
           node-version: '22'
 
       - name: Research + write + three AI reviews
+        id: writer
+        continue-on-error: true
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_WORKERS_AI_TOKEN }}
           BLOGGER_FREE_MODEL: ${{ vars.BLOGGER_FREE_MODEL || '@cf/google/gemma-4-26b-a4b-it' }}
         run: node distribution/social-writer.mjs
+
+      - name: Graceful fallback to pre-reviewed queue
+        if: steps.writer.outcome == 'failure'
+        run: node distribution/fallback-selector.mjs
 
       - name: Deterministic review 1-3 — factual, safety, quality
         env:
@@ -69,12 +76,13 @@ jobs:
         if: success()
         shell: bash
         run: |
-          if git diff --quiet -- distribution/agent-control-auditor-generated-queue.json distribution/agent-control-auditor-social-state.json; then
+          if git diff --quiet -- distribution/agent-control-auditor-generated-queue.json distribution/agent-control-auditor-social-state.json distribution/agent-control-auditor-fallback-state.json; then
             echo 'No social state changes'
             exit 0
           fi
           git config user.name 'stratum-social-writer-bot'
           git config user.email 'actions@users.noreply.github.com'
-          git add distribution/agent-control-auditor-generated-queue.json distribution/agent-control-auditor-social-state.json
+          git add distribution/agent-control-auditor-generated-queue.json
+          git add -f distribution/agent-control-auditor-social-state.json distribution/agent-control-auditor-fallback-state.json 2>/dev/null || true
           git commit -m 'chore(distribution): persist reviewed social output [skip social]'
           git push
