@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -115,7 +116,8 @@ def main():
         'services': services,
         'rightsMode': 'original-procedural' if not manifest.get('thirdPartyAssets') else 'licensed-third-party',
     }
-    report_path = Path('trend-video-engine/last-qa.json')
+    report_path = Path(os.environ.get('TREND_VIDEO_QA_OUTPUT', 'trend-video-engine/last-qa.json'))
+    report_path.parent.mkdir(parents=True, exist_ok=True)
     report_path.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     print('QA PASS')
     print(json.dumps(report, ensure_ascii=False, indent=2))
