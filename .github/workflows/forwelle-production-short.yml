@@ -3,8 +3,7 @@ name: Forwelle Production Short
 on:
   push:
     paths:
-      - '.github/workflows/forwelle-production-short.yml'
-      - 'automation/forwelle-production/**'
+      - 'automation/forwelle-production/run.trigger'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +20,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24'
 
       - name: Install dependencies
         working-directory: automation/forwelle-production
