@@ -7,7 +7,7 @@ if (!speechifyKey) throw new Error('Missing SPEECHIFY_API_KEY');
 const publicDir = path.resolve('public');
 fs.mkdirSync(publicDir, {recursive: true});
 
-const script = `Human approval everywhere is not the same as control. When every tiny action needs a click, people stop thinking and start approving. The stronger pattern is selective human gates. Let low-risk actions run. Require approval for money, publishing, permissions, deletion, and irreversible changes. Good agent systems do not ask humans to watch everything. They ask humans to decide the few things that actually matter.`;
+const script = `The next AI security problem may be hiding in a web page. An agent reads a page. The page contains instructions you never gave. If the agent also has tools, data, or permission to act, that hidden prompt can turn content into a command. The fix is not to trust the model harder. Separate untrusted content from authority. Limit tool permissions. Put confirmation at consequential actions. An AI agent should read the web. It should not obey the web.`;
 
 const voicesResponse = await fetch('https://api.speechify.ai/v1/voices?locale=en&model=simba-3.2', {
   headers: {Authorization: `Bearer ${speechifyKey}`},
