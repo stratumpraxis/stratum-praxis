@@ -1,5 +1,5 @@
 {
-  "version": 1,
+  "version": 2,
   "brand": "Forwelle",
   "phase": 1,
   "schedule": {
@@ -10,14 +10,20 @@
     "autoEscalateToTwoPerDay": false
   },
   "scout": {
+    "officialFeeds": [
+      {"name": "OpenAI News", "url": "https://openai.com/news/rss.xml", "domain": "openai.com", "limit": 8},
+      {"name": "Google AI", "url": "https://blog.google/technology/ai/rss/", "domain": "blog.google", "limit": 8},
+      {"name": "GitHub AI & ML", "url": "https://github.blog/ai-and-ml/feed/", "domain": "github.blog", "limit": 8},
+      {"name": "Cloudflare Blog", "url": "https://blog.cloudflare.com/rss/", "domain": "blog.cloudflare.com", "limit": 8}
+    ],
     "hackerNews": true,
     "hackerNewsLimit": 24,
     "blueskyQueries": ["AI agents", "AI automation", "creator tools", "future of work"],
     "blueskyLimit": 12,
-    "maxCandidates": 20,
+    "maxCandidates": 24,
     "minCandidateScore": 30,
-    "themeTerms": ["ai", "agent", "automation", "creator", "video", "workflow", "tool", "future", "work", "productivity", "software", "robot"],
-    "revenueTerms": ["business", "creator", "workflow", "productivity", "tool", "automation", "launch", "revenue", "commerce", "work"]
+    "themeTerms": ["ai", "agent", "automation", "creator", "video", "workflow", "tool", "future", "work", "productivity", "software", "robot", "model", "developer"],
+    "revenueTerms": ["business", "creator", "workflow", "productivity", "tool", "automation", "launch", "revenue", "commerce", "work", "developer"]
   },
   "editor": {
     "model": "openai/gpt-4.1-mini",
@@ -36,6 +42,6 @@
   },
   "safety": {
     "blockedTerms": ["election", "president", "war", "killed", "murder", "suicide", "child", "minor", "celebrity", "diagnosis", "treatment", "investment advice", "stock pick", "crypto signal"],
-    "trustedFactDomains": ["openai.com", "anthropic.com", "blog.google", "deepmind.google", "github.blog", "about.fb.com", "meta.com", "microsoft.com", "nvidia.com", "huggingface.co", "cloudflare.com", "vercel.com", "apple.com"]
+    "trustedFactDomains": ["openai.com", "anthropic.com", "blog.google", "deepmind.google", "github.blog", "about.fb.com", "meta.com", "microsoft.com", "nvidia.com", "huggingface.co", "cloudflare.com", "blog.cloudflare.com", "vercel.com", "apple.com"]
   }
 }
