@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "brand": "Forwelle",
+  "phase": 1,
+  "schedule": {
+    "timezone": "Asia/Tokyo",
+    "primaryPublishLocal": "08:00",
+    "dailyMaxOriginals": 1,
+    "phase1Days": 14,
+    "autoEscalateToTwoPerDay": false
+  },
+  "scout": {
+    "hackerNews": true,
+    "hackerNewsLimit": 24,
+    "blueskyQueries": ["AI agents", "AI automation", "creator tools", "future of work"],
+    "blueskyLimit": 12,
+    "maxCandidates": 20,
+    "minCandidateScore": 30,
+    "themeTerms": ["ai", "agent", "automation", "creator", "video", "workflow", "tool", "future", "work", "productivity", "software", "robot"],
+    "revenueTerms": ["business", "creator", "workflow", "productivity", "tool", "automation", "launch", "revenue", "commerce", "work"]
+  },
+  "editor": {
+    "model": "openai/gpt-4.1-mini",
+    "targetVoiceoverWords": [80, 115],
+    "targetDurationSeconds": [32, 52],
+    "sceneCount": 5
+  },
+  "publish": {
+    "services": ["youtube", "tiktok", "instagram"],
+    "mode": "shareNow",
+    "channelAllowlist": {
+      "youtube": ["// Forwelle", "Forwelle"],
+      "tiktok": ["Forwelle", "forwelle"],
+      "instagram": ["Forwelle", "forwelle"]
+    }
+  },
+  "safety": {
+    "blockedTerms": ["election", "president", "war", "killed", "murder", "suicide", "child", "minor", "celebrity", "diagnosis", "treatment", "investment advice", "stock pick", "crypto signal"],
+    "trustedFactDomains": ["openai.com", "anthropic.com", "blog.google", "deepmind.google", "github.blog", "about.fb.com", "meta.com", "microsoft.com", "nvidia.com", "huggingface.co", "cloudflare.com", "vercel.com", "apple.com"]
+  }
+}
