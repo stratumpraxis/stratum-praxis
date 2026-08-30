@@ -20,9 +20,9 @@ if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh
 
 const metadata = {
   snippet: {
-    title: 'Human Approval Everywhere Is a Bad AI Safety Strategy',
-    description: 'More approval prompts do not automatically mean more control.\n\nA stronger pattern is selective human gates: let low-risk actions run, and require human approval for money, publishing, permissions, deletion, and irreversible changes.\n\n#AI #AIAgents #Automation #AgenticAI #Forwelle',
-    tags: ['AI', 'AI agents', 'automation', 'agentic AI', 'human in the loop', 'approval fatigue', 'AI safety', 'Forwelle'],
+    title: 'The Web Page Your AI Agent Reads Can Attack It',
+    description: 'Prompt injection turns untrusted content into attempted instructions for an AI agent. The risk gets more serious when the agent also has tools, data, or permission to act.\n\nSeparate content from authority. Limit tool permissions. Gate consequential actions.\n\n#AI #AIAgents #PromptInjection #AISecurity #AgenticAI #Forwelle',
+    tags: ['AI', 'AI agents', 'prompt injection', 'AI security', 'agentic AI', 'tool permissions', 'human in the loop', 'Forwelle'],
     categoryId: '28',
   },
   status: {
