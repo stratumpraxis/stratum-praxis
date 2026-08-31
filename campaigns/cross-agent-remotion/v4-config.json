@@ -1,6 +1,6 @@
 {
-  "version": "v4-pass-10-final",
-  "sceneFrames": [72, 147, 162, 180, 252],
+  "version": "v4-pass-11-audio-tail",
+  "sceneFrames": [72, 147, 162, 180, 270],
   "safeTop": 112,
   "safeBottom": 182,
   "hookSize": 84,
