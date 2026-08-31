@@ -1,0 +1,23 @@
+name: Vector Visual QA Artifact
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/vector-visual-qa-artifact.yml'
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify QA frames exist
+        run: |
+          test "$(find campaigns/vector-faceless-truth-remotion/output/qa-stills -name 'frame-*.png' | wc -l)" -eq 8
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vector-visual-qa-v2
+          path: campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-*.png
+          if-no-files-found: error
+          retention-days: 2
