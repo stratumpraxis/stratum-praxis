@@ -5,6 +5,7 @@ on:
     paths:
       - 'campaigns/cross-agent-remotion/src/index.jsx'
       - 'campaigns/cross-agent-remotion/narrate.mjs'
+      - 'campaigns/cross-agent-remotion/music.mjs'
       - 'campaigns/cross-agent-remotion/package.json'
       - 'campaigns/cross-agent-remotion/package-lock.json'
       - 'campaigns/cross-agent-remotion/visual-manifest.json'
@@ -15,7 +16,7 @@ on:
   workflow_dispatch:
     inputs:
       allow_paid_seedance:
-        description: 'Explicitly allow paid Seedance 2.5 generation for the cinematic hook'
+        description: 'Explicitly allow paid Seedance 2.5 generation for an optional cinematic hook'
         required: true
         default: false
         type: boolean
@@ -53,7 +54,7 @@ jobs:
           console.log('TECHNIQUES=' + techniques.map(x => x.name).join(' | '));
           NODE
 
-      - name: Seedance 2.5 cinematic hook — safe paid gate
+      - name: Seedance 2.5 optional cinematic insert — paid gate
         env:
           VISUAL_PLAN: campaigns/cross-agent-remotion/visual-plan.json
           LAS_API_KEY: ${{ secrets.LAS_API_KEY }}
@@ -64,17 +65,33 @@ jobs:
 
       - name: Install ffmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: Install Remotion project
         working-directory: campaigns/cross-agent-remotion
         run: npm install
-      - name: Generate narration
+
+      - name: Generate English narration
         working-directory: campaigns/cross-agent-remotion
         env:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
         run: node narrate.mjs
+
+      - name: Generate original commercial-safe BGM
+        working-directory: campaigns/cross-agent-remotion
+        run: node music.mjs
+
+      - name: Audio QA
+        working-directory: campaigns/cross-agent-remotion
+        run: |
+          test -s public/narration.mp3
+          test -s public/bgm.wav
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 public/narration.mp3
+          ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 public/bgm.wav
+
       - name: Render 1080x1920 Remotion master
         working-directory: campaigns/cross-agent-remotion
         run: mkdir -p output && npm run render
+
       - name: Technical QA
         run: |
           f='campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4'
@@ -82,32 +99,32 @@ jobs:
           ffprobe -v error -show_entries stream=width,height,codec_name -show_entries format=duration -of json "$f" | tee campaigns/cross-agent-remotion/output/qa.json
           node - <<'NODE'
           const fs = require('fs');
-          const state = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/src/generated-assets.json','utf8'));
-          console.log('SEEDANCE_HOOK=' + (state.seedanceHook?.enabled ? 'ENABLED' : 'FALLBACK_REMOTION'));
+          const q = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/output/qa.json','utf8'));
+          const video = q.streams.find(s => s.width && s.height);
+          const audio = q.streams.find(s => s.codec_name === 'aac');
+          const duration = Number(q.format.duration);
+          if (!video || video.width !== 1080 || video.height !== 1920) throw new Error('Unexpected render dimensions');
+          if (!audio) throw new Error('AAC audio missing');
+          if (duration < 33.5 || duration > 34.5) throw new Error(`Unexpected duration ${duration}`);
+          console.log('MASTER_QA=PASS');
           NODE
 
-      - name: Publish rendered asset and visual plan into repository safely
+      - name: Publish rendered asset and evidence safely
         run: |
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
           persist=/tmp/cross-agent-render-persist
           rm -rf "$persist"
           mkdir -p "$persist"
           files=(
             campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4
             campaigns/cross-agent-remotion/output/qa.json
+            campaigns/cross-agent-remotion/output-script.json
             campaigns/cross-agent-remotion/visual-plan.json
             campaigns/cross-agent-remotion/src/generated-assets.json
           )
-          if [ -f campaigns/cross-agent-remotion/public/seedance-hook.mp4 ]; then
-            files+=(campaigns/cross-agent-remotion/public/seedance-hook.mp4)
-          fi
           cp --parents "${files[@]}" "$persist"
-
-          # Bounded retry: preserve unrelated concurrent commits while replacing only
-          # this workflow's generated assets. No rebase of binary MP4 files.
           for attempt in 1 2 3; do
             echo "PERSIST_ATTEMPT=$attempt"
             git fetch origin main
@@ -118,13 +135,12 @@ jobs:
               echo 'No generated asset changes to publish.'
               exit 0
             fi
-            git commit -m "Render Cross-Agent video with visual director"
+            git commit -m "Render Cross-Agent cinematic product video"
             if git push origin HEAD:main; then
               echo 'RENDER_ASSETS_PUBLISHED=1'
               exit 0
             fi
-            echo 'Concurrent update detected; refreshing once within bounded retry policy.'
+            echo 'Concurrent update detected; refreshing within bounded retry policy.'
           done
-
           echo 'Could not publish generated assets after 3 bounded attempts.' >&2
           exit 1
