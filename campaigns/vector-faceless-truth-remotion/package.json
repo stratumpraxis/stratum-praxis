@@ -2,7 +2,7 @@
   "name": "vector-faceless-truth-remotion",
   "private": true,
   "scripts": {
-    "render": "remotion render src/index.jsx VectorFacelessTruth output/vector-faceless-ai-tiktok-truth.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p"
+    "render": "remotion render src/index-v2.jsx VectorFacelessTruth output/vector-faceless-ai-tiktok-truth.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p"
   },
   "dependencies": {
     "@remotion/cli": "4.0.506",
