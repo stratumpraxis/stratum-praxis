@@ -41,7 +41,8 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/' \
             'Cross-Agent Operating Kit — Personal · $69' \
             'route_id=owned_home_hero_cross_agent_personal_20260831' \
-            'route_id=owned_home_nav_cross_agent_personal_20260831'
+            'route_id=owned_home_nav_cross_agent_personal_20260831' \
+            '/cross-agent-attribution.js'
 
           wait_for_contains 'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html' \
             'Recommended starting point · Portable across runtimes' \
@@ -51,6 +52,13 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/cross-agent-operating-kit.html' \
             'Cross-Agent Operating Kit' \
             '$69' \
-            'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T'
+            'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T' \
+            '/cross-agent-attribution.js'
 
-          echo 'PUBLIC_REVENUE_ROUTE_VERIFIED'
+          wait_for_contains 'https://stratumpraxis.com/cross-agent-attribution.js' \
+            'client_reference_id' \
+            'sp_funnel_attribution_v2' \
+            'owned_home_hero_cross_agent_personal_20260831' \
+            'owned_home_nav_cross_agent_personal_20260831'
+
+          echo 'PUBLIC_REVENUE_ROUTE_AND_ATTRIBUTION_VERIFIED'
