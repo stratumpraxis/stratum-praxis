@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-05-motion",
+  "version": "v4-pass-06-pattern-interrupt",
   "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
@@ -8,8 +8,8 @@
   "hookLine2": "THEY'RE DRIFTING.",
   "hookBody": "The dangerous part: each agent can still look correct.",
   "motionIntensity": 2.4,
-  "patternInterrupt": false,
-  "highlightFailure": 1,
+  "patternInterrupt": true,
+  "highlightFailure": 3,
   "proofLine": "Cross-Agent Operating Kit turns scattered agent rules into one portable operating contract.",
   "failureCards": [
     {"label":"OWNERSHIP","text":"Who owns the final action?"},
