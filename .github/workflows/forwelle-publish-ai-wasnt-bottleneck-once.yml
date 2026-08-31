@@ -1,0 +1,112 @@
+name: Forwelle Publish AI Wasnt the Bottleneck Once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/forwelle-publish-ai-wasnt-bottleneck-once.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish-once:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      VIDEO_URL: https://resource2.heygen.ai/aws_pacific/avatar_tmp/a97602ecc435417ab1b776674e7db173/ve6f960ed0ea04f888ef85598f4165eff/caption_b068548938e3451db425862bfa61225b.mp4
+      TARGET_TITLE: "AI Wasn’t the Bottleneck — The Workflow Was #Shorts"
+    steps:
+      - name: Verify Forwelle channel, avoid duplicates, and publish
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          cat > /tmp/publish.mjs <<'EOF'
+          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','VIDEO_URL','TARGET_TITLE'];
+          for (const name of required) if (!process.env[name]) throw new Error(`Missing ${name}`);
+
+          const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: {'content-type':'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({
+              client_id: process.env.YOUTUBE_CLIENT_ID,
+              client_secret: process.env.YOUTUBE_CLIENT_SECRET,
+              refresh_token: process.env.YOUTUBE_REFRESH_TOKEN,
+              grant_type: 'refresh_token',
+            }),
+          });
+          const tokenJson = await tokenResponse.json();
+          if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh failed: ${tokenJson.error || tokenResponse.status}`);
+          const auth = {authorization:`Bearer ${tokenJson.access_token}`};
+
+          const channelResponse = await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', {headers:auth});
+          const channelJson = await channelResponse.json();
+          if (!channelResponse.ok || !channelJson.items?.length) throw new Error('Could not resolve authenticated YouTube channel');
+          const channel = channelJson.items[0];
+          const channelTitle = channel.snippet?.title || '';
+          console.log(`AUTHENTICATED_CHANNEL=${channelTitle}`);
+          console.log(`AUTHENTICATED_CHANNEL_ID=${channel.id}`);
+          if (!channelTitle.toLowerCase().includes('forwelle')) throw new Error(`Safety stop: authenticated channel is not Forwelle (${channelTitle})`);
+
+          const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
+          searchUrl.searchParams.set('part','snippet');
+          searchUrl.searchParams.set('forMine','true');
+          searchUrl.searchParams.set('type','video');
+          searchUrl.searchParams.set('maxResults','25');
+          searchUrl.searchParams.set('q',process.env.TARGET_TITLE);
+          const searchResponse = await fetch(searchUrl, {headers:auth});
+          const searchJson = await searchResponse.json();
+          if (!searchResponse.ok) throw new Error(`Duplicate check failed: ${searchJson?.error?.message || searchResponse.status}`);
+          const duplicate = (searchJson.items || []).find(x => x.snippet?.title === process.env.TARGET_TITLE);
+          if (duplicate?.id?.videoId) {
+            console.log('DUPLICATE_GUARD=EXISTING_VIDEO_FOUND');
+            console.log(`YOUTUBE_VIDEO_ID=${duplicate.id.videoId}`);
+            console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${duplicate.id.videoId}`);
+            process.exit(0);
+          }
+
+          const sourceResponse = await fetch(process.env.VIDEO_URL);
+          if (!sourceResponse.ok) throw new Error(`Video download failed: ${sourceResponse.status}`);
+          const video = Buffer.from(await sourceResponse.arrayBuffer());
+          if (video.length < 100000) throw new Error(`Video payload too small: ${video.length}`);
+          console.log(`VIDEO_BYTES=${video.length}`);
+
+          const metadata = {
+            snippet: {
+              title: process.env.TARGET_TITLE,
+              description: "More AI tools don't automatically make work faster. The bottleneck is often workflow design: roles, handoffs, permissions, and human gates.\n\nForwelle explores practical AI systems and automation.\n\n#AI #Automation #AIAgents #Shorts",
+              categoryId: '28',
+              tags: ['AI','Automation','AI Agents','Workflow','Forwelle','Shorts'],
+              defaultLanguage: 'en',
+            },
+            status: {
+              privacyStatus: 'public',
+              selfDeclaredMadeForKids: false,
+            },
+          };
+
+          const boundary = `forwelle_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+          const prefix = Buffer.from(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: video/mp4\r\n\r\n`);
+          const suffix = Buffer.from(`\r\n--${boundary}--\r\n`);
+          const body = Buffer.concat([prefix, video, suffix]);
+          const uploadResponse = await fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status&uploadType=multipart', {
+            method:'POST',
+            headers:{...auth,'content-type':`multipart/related; boundary=${boundary}`,'content-length':String(body.length)},
+            body,
+          });
+          const uploadJson = await uploadResponse.json();
+          if (!uploadResponse.ok || !uploadJson.id) throw new Error(`YouTube upload failed: ${uploadJson?.error?.errors?.[0]?.reason || uploadJson?.error?.message || uploadResponse.status}`);
+
+          const verifyResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,status&id=${uploadJson.id}`, {headers:auth});
+          const verifyJson = await verifyResponse.json();
+          if (!verifyResponse.ok || !verifyJson.items?.length) throw new Error('Upload completed but verification failed');
+          const uploaded = verifyJson.items[0];
+          console.log(`YOUTUBE_VIDEO_ID=${uploaded.id}`);
+          console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${uploaded.id}`);
+          console.log(`VERIFIED_TITLE=${uploaded.snippet?.title || ''}`);
+          console.log(`PRIVACY_STATUS=${uploaded.status?.privacyStatus || ''}`);
+          if (uploaded.status?.privacyStatus !== 'public') throw new Error(`Upload exists but is not public: ${uploaded.status?.privacyStatus}`);
+          EOF
+          node /tmp/publish.mjs
