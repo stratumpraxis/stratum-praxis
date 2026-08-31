@@ -1,4 +1,3 @@
-# execution closeout 2026-09-01
 name: Forwelle Publish AI Wasnt the Bottleneck Once
 
 on:
@@ -17,15 +16,17 @@ jobs:
     env:
       VIDEO_URL: https://resource2.heygen.ai/aws_pacific/avatar_tmp/a97602ecc435417ab1b776674e7db173/ve6f960ed0ea04f888ef85598f4165eff/caption_b068548938e3451db425862bfa61225b.mp4
       TARGET_TITLE: "AI Wasn’t the Bottleneck — The Workflow Was #Shorts"
+      EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+      KNOWN_FORWELLE_PRIVATE_VIDEO_ID: 0SO0uIn3aIg
     steps:
-      - name: Verify Forwelle channel, avoid duplicates, and publish
+      - name: Validate destination, upload private, then publish
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
         run: |
           cat > /tmp/publish.mjs <<'EOF'
-          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','VIDEO_URL','TARGET_TITLE'];
+          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','VIDEO_URL','TARGET_TITLE','EXPECTED_CHANNEL_ID','KNOWN_FORWELLE_PRIVATE_VIDEO_ID'];
           for (const name of required) if (!process.env[name]) throw new Error(`Missing ${name}`);
 
           const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
@@ -42,30 +43,21 @@ jobs:
           if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh failed: ${tokenJson.error || tokenResponse.status}`);
           const auth = {authorization:`Bearer ${tokenJson.access_token}`};
 
-          const channelResponse = await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true', {headers:auth});
-          const channelJson = await channelResponse.json();
-          if (!channelResponse.ok || !channelJson.items?.length) throw new Error('Could not resolve authenticated YouTube channel');
-          const channel = channelJson.items[0];
-          const channelTitle = channel.snippet?.title || '';
-          console.log(`AUTHENTICATED_CHANNEL=${channelTitle}`);
-          console.log(`AUTHENTICATED_CHANNEL_ID=${channel.id}`);
-          if (!channelTitle.toLowerCase().includes('forwelle')) throw new Error(`Safety stop: authenticated channel is not Forwelle (${channelTitle})`);
-
-          const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search');
-          searchUrl.searchParams.set('part','snippet');
-          searchUrl.searchParams.set('forMine','true');
-          searchUrl.searchParams.set('type','video');
-          searchUrl.searchParams.set('maxResults','25');
-          searchUrl.searchParams.set('q',process.env.TARGET_TITLE);
-          const searchResponse = await fetch(searchUrl, {headers:auth});
-          const searchJson = await searchResponse.json();
-          if (!searchResponse.ok) throw new Error(`Duplicate check failed: ${searchJson?.error?.message || searchResponse.status}`);
-          const duplicate = (searchJson.items || []).find(x => x.snippet?.title === process.env.TARGET_TITLE);
-          if (duplicate?.id?.videoId) {
-            console.log('DUPLICATE_GUARD=EXISTING_VIDEO_FOUND');
-            console.log(`YOUTUBE_VIDEO_ID=${duplicate.id.videoId}`);
-            console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${duplicate.id.videoId}`);
-            process.exit(0);
+          // Fail closed before any new upload: inspect a private video that was successfully
+          // uploaded by the established Forwelle production workflow using these same secrets.
+          const probeUrl = new URL('https://www.googleapis.com/youtube/v3/videos');
+          probeUrl.searchParams.set('part','snippet,status');
+          probeUrl.searchParams.set('id',process.env.KNOWN_FORWELLE_PRIVATE_VIDEO_ID);
+          const probeResponse = await fetch(probeUrl, {headers: auth});
+          const probeJson = await probeResponse.json();
+          if (!probeResponse.ok || !probeJson.items?.length) {
+            throw new Error(`Destination validation failed before upload: ${probeJson?.error?.message || probeResponse.status}`);
+          }
+          const probe = probeJson.items[0];
+          console.log(`DESTINATION_CHANNEL_ID=${probe.snippet?.channelId || ''}`);
+          console.log(`DESTINATION_PROBE_TITLE=${probe.snippet?.title || ''}`);
+          if (probe.snippet?.channelId !== process.env.EXPECTED_CHANNEL_ID) {
+            throw new Error(`Safety stop: destination channel mismatch (${probe.snippet?.channelId || 'unknown'})`);
           }
 
           const sourceResponse = await fetch(process.env.VIDEO_URL);
@@ -83,8 +75,9 @@ jobs:
               defaultLanguage: 'en',
             },
             status: {
-              privacyStatus: 'public',
+              privacyStatus: 'private',
               selfDeclaredMadeForKids: false,
+              containsSyntheticMedia: true,
             },
           };
 
@@ -98,16 +91,44 @@ jobs:
             body,
           });
           const uploadJson = await uploadResponse.json();
-          if (!uploadResponse.ok || !uploadJson.id) throw new Error(`YouTube upload failed: ${uploadJson?.error?.errors?.[0]?.reason || uploadJson?.error?.message || uploadResponse.status}`);
+          if (!uploadResponse.ok || !uploadJson.id) throw new Error(`YouTube private upload failed: ${uploadJson?.error?.errors?.[0]?.reason || uploadJson?.error?.message || uploadResponse.status}`);
+          console.log(`PRIVATE_UPLOAD_VIDEO_ID=${uploadJson.id}`);
+          console.log(`PRIVATE_UPLOAD_CHANNEL_ID=${uploadJson.snippet?.channelId || ''}`);
+          if (uploadJson.snippet?.channelId !== process.env.EXPECTED_CHANNEL_ID) {
+            throw new Error(`Safety stop: uploaded video landed on unexpected channel (${uploadJson.snippet?.channelId || 'unknown'}); left private`);
+          }
 
-          const verifyResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,status&id=${uploadJson.id}`, {headers:auth});
+          const publishBody = {
+            id: uploadJson.id,
+            status: {
+              privacyStatus: 'public',
+              selfDeclaredMadeForKids: false,
+              containsSyntheticMedia: true,
+            },
+          };
+          const publishResponse = await fetch('https://www.googleapis.com/youtube/v3/videos?part=status', {
+            method:'PUT',
+            headers:{...auth,'content-type':'application/json'},
+            body:JSON.stringify(publishBody),
+          });
+          const publishJson = await publishResponse.json();
+          if (!publishResponse.ok || publishJson.status?.privacyStatus !== 'public') {
+            throw new Error(`Public status update failed: ${publishJson?.error?.errors?.[0]?.reason || publishJson?.error?.message || publishResponse.status}`);
+          }
+
+          const verifyUrl = new URL('https://www.googleapis.com/youtube/v3/videos');
+          verifyUrl.searchParams.set('part','snippet,status');
+          verifyUrl.searchParams.set('id',uploadJson.id);
+          const verifyResponse = await fetch(verifyUrl, {headers:auth});
           const verifyJson = await verifyResponse.json();
-          if (!verifyResponse.ok || !verifyJson.items?.length) throw new Error('Upload completed but verification failed');
+          if (!verifyResponse.ok || !verifyJson.items?.length) throw new Error('Publication verification failed');
           const uploaded = verifyJson.items[0];
           console.log(`YOUTUBE_VIDEO_ID=${uploaded.id}`);
           console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${uploaded.id}`);
           console.log(`VERIFIED_TITLE=${uploaded.snippet?.title || ''}`);
+          console.log(`VERIFIED_CHANNEL_ID=${uploaded.snippet?.channelId || ''}`);
           console.log(`PRIVACY_STATUS=${uploaded.status?.privacyStatus || ''}`);
+          if (uploaded.snippet?.channelId !== process.env.EXPECTED_CHANNEL_ID) throw new Error('Post-publication channel mismatch');
           if (uploaded.status?.privacyStatus !== 'public') throw new Error(`Upload exists but is not public: ${uploaded.status?.privacyStatus}`);
           EOF
           node /tmp/publish.mjs
