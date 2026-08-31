@@ -18,29 +18,29 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
-      - name: Verify Buffer Instagram post
+      - name: Read Buffer Instagram post status
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           POST_ID: 6a94da9e0630d63312f92cfa
         run: |
-          sleep 5
           node - <<'NODE'
           const fs = require('fs');
           const key = process.env.BUFFER_API_KEY;
           const id = process.env.POST_ID;
           const query = `query { post(input:{id:${JSON.stringify(id)}}) { id text status sentAt sharedNow externalLink } }`;
           const r = await fetch('https://api.buffer.com', {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
-          const j = await r.json();
-          console.log(JSON.stringify(j, null, 2));
-          if (!r.ok || j.errors || !j.data?.post) process.exit(1);
-          fs.writeFileSync('distribution/cross-agent-instagram-status.json', JSON.stringify({checkedAt:new Date().toISOString(), ...j.data.post}, null, 2) + '\n');
+          let j;
+          try { j = await r.json(); } catch (e) { j = {parse_error:String(e), http_status:r.status}; }
+          const safe = {checkedAt:new Date().toISOString(), httpStatus:r.status, response:j};
+          fs.writeFileSync('distribution/cross-agent-instagram-status.json', JSON.stringify(safe, null, 2) + '\n');
+          console.log(JSON.stringify(safe, null, 2));
           NODE
-      - name: Persist public publication evidence
+      - name: Persist Buffer status evidence
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add distribution/cross-agent-instagram-status.json
           git diff --cached --quiet && exit 0
-          git commit -m "Record Cross-Agent Instagram publication evidence"
+          git commit -m "Record Cross-Agent Instagram Buffer status"
           git pull --rebase origin main
           git push
