@@ -1,8 +1,8 @@
 {
-  "version": "v4-pass-01-hook",
+  "version": "v4-pass-02-safe-zones",
   "sceneFrames": [90, 165, 165, 195, 225],
-  "safeTop": 78,
-  "safeBottom": 112,
+  "safeTop": 112,
+  "safeBottom": 182,
   "hookSize": 88,
   "hookLine1": "YOUR AGENTS AREN'T ALIGNED.",
   "hookLine2": "THEY'RE DRIFTING.",
