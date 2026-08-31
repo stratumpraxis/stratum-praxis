@@ -1,0 +1,146 @@
+# Matsuyashop 30-meal — Rakuten Affiliate FIRST TEST
+
+Date: 2026-09-01 JST
+Owner lane: Product-First Affiliate Video Lane
+Primary objective: maximize Actual Gross Profit / Video
+Decision state: HUMAN_GATE — one credentialed affiliate-link step remains before publishing
+
+## 1. Top candidate
+
+Product: 松屋 公式 新牛めしの具（プレミアム仕様）30食セット
+Seller/surface: 松屋フードコート店 / 楽天市場
+Public product URL: https://item.rakuten.co.jp/matsuyafoods/us30/
+Primary distribution target: existing Vector Praxis TikTok account (no new SNS/account)
+Monetization route: Rakuten Affiliate → Rakuten Market product page
+
+Reason for route choice: use the standard Rakuten food affiliate route instead of unverified TikTok Shop commission claims. Rakuten's published standard genre rate for 食品 is 4%; Rakuten also lists TikTok among recognized SNS. Account-specific link creation still requires authenticated user state.
+
+## 2. Reality Gate
+
+| Gate | State | Evidence / rule |
+|---|---|---|
+| Product exists now | PASS | Current Rakuten product page exists and is indexed as the official Matsuyashop 30-meal premium set. |
+| Seller reliability | PASS | Seller is 松屋フードコート店 / Matsuyashop official surface. |
+| Current price | PASS_WITH_VOLATILITY | Public indexed product title shows ¥6,880 for 30 meals (¥230/meal), page updated 2026-08-30. Re-check at link-generation/publish time; do not hard-code price into creative. |
+| Stock / purchasability | PASS_WITH_VOLATILITY | Current product page is live and not marked sold out in retrieved public evidence. Re-check immediately before publish. |
+| Affiliate base rate | PASS | Rakuten official guideline: 食品 = 4% standard genre rate. |
+| Tracking window | PASS | Rakuten official rule: click → cart within 24h, purchase completed within 89 days. |
+| Affiliate account / site registration | HUMAN_GATE | User-specific Rakuten ID + registered media status is not verifiable from public data. |
+| Product-specific affiliate link | HUMAN_GATE | Must be generated while authenticated; do not invent an affiliate URL. |
+| Restricted product risk | PASS | Ordinary frozen food; no regulated-product issue identified. |
+| Claims / safety risk | PASS_WITH_CONSTRAINTS | Use only product-page facts. No health, savings, ranking, scarcity, or price claim unless verified at publish time. |
+| AI-generated video compatibility | PASS_WITH_CONSTRAINTS | Generic/self-created visuals are safe. Use product imagery only when rights/affiliate tool usage permits; do not scrape or re-upload arbitrary product images. |
+| Commercial disclosure | REQUIRED | Clearly disclose affiliate advertising (e.g. PR / アフィリエイト広告を利用しています) in the publish surface. |
+
+## 3. Revenue Forecast
+
+Reference selling price for the current public snapshot: ¥6,880.
+Standard food affiliate rate: 4%.
+
+- Expected gross affiliate revenue / 1 attributed sale: ¥275.20
+- 4 attributed sales: ¥1,100.80
+- 10 attributed sales: ¥2,752.00
+
+These are forecast commissions, NOT verified revenue and NOT gross profit.
+
+Actual Gross Profit / Video = verified affiliate commission - actual video production cost - paid promotion cost - sample/purchase cost.
+
+No sample purchase is authorized in this cycle. No cost is assumed or fabricated.
+
+## 4. Confidence Grade
+
+Confidence: B / FIRST-TEST CANDIDATE
+
+Why not A:
+- authenticated Rakuten affiliate state is unverified;
+- the product-specific affiliate URL does not yet exist in the ledger;
+- price/stock are dynamic.
+
+What upgrades this to A-/FIRST TEST READY:
+1. Open Rakuten Affiliate while authenticated.
+2. Register/confirm the exact existing Vector Praxis TikTok media if required.
+3. Create the affiliate link for `https://item.rakuten.co.jp/matsuyafoods/us30/`.
+4. Confirm the link-creation page shows 食品 / 4% (or record the actual displayed special rate if different).
+5. Copy the generated short/product affiliate URL into the Revenue Link Ledger.
+
+## 5. Creative Angle selected
+
+Angle: `冷凍庫に30食。忙しい日の「何食べる？」を約3分で終わらせる。`
+
+Why this angle:
+- product-first, not generic AI content;
+- communicates concrete use case without relying on a temporary sale price;
+- uses verifiable product facts: frozen, 30-meal set, microwave preparation;
+- avoids health/financial claims.
+
+## 6. Video build spec — FIRST TEST v1
+
+Format: 9:16 short video, 18–24 seconds
+Style: fast product/use-case motion graphics; no fake testimonial, no fake unboxing, no claim of personal use
+
+### Shot / copy sequence
+
+0–2s — HOOK
+`「今日なに食べる？」を毎回考えるの、地味に重い。`
+
+2–6s — PRODUCT
+`冷凍庫に、松屋の牛めし30食。`
+
+6–11s — USE CASE
+`食べたい時にレンジ約3分。ごはんにのせて1食完成。`
+
+11–16s — VALUE
+`買い置きできるから、忙しい日・在宅・夜食の選択肢になる。`
+
+16–21s — CTA
+`松屋公式の30食セット。現在の価格・内容はリンク先で確認。`
+
+21–24s — DISCLOSURE
+`※アフィリエイト広告を利用しています`
+
+### Creative constraints
+
+- Do not say `1食210円`, `最安`, `半額`, `今だけ`, or any discount percentage unless re-verified immediately before publication.
+- Do not say `おすすめ`, `食べてみた`, `おいしかった`, or imply first-hand experience unless actually true.
+- Do not use fake Matsuyashop packaging generated by AI.
+- If no authorized official product image is available, show neutral frozen-meal / rice-bowl / freezer motion graphics and product name as text only.
+
+## 7. Publish copy draft
+
+`冷凍庫に30食。忙しい日の「何食べる？」を減らす、松屋の冷凍牛めし。レンジ調理できる30食セットです。現在の価格・セット内容はリンク先で確認してください。※アフィリエイト広告を利用しています #松屋 #牛めし #冷凍食品 #時短ごはん`
+
+CTA destination: BLOCKED until authenticated Rakuten affiliate URL is generated.
+
+## 8. Measurement contract
+
+T0 after public URL verification:
+- save public video URL
+- save exact affiliate URL
+- save product price shown at publish time
+- save rate shown at link creation
+
+24h / 72h / 7d:
+- views
+- profile / description link clicks where platform data is available
+- Rakuten clicks
+- orders
+- attributed sales amount
+- affiliate commission
+- actual production cost
+- Actual Gross Profit / Video
+
+Decision:
+- SCALE: verified positive gross profit and repeatable conversion signal
+- ITERATE: clicks exist, no sale → creative/offer handoff issue
+- STOP/RESELECT: no meaningful click signal after sufficient impressions or route becomes ineligible
+- NEVER label success from views alone
+
+## 9. Current blocker — minimal HUMAN_GATE
+
+Required authenticated output only:
+
+`RAKUTEN_AFFILIATE_URL = <generated URL>`
+`DISPLAYED_RATE = <rate shown by Rakuten>`
+`MEDIA_REGISTERED = YES/NO`
+
+Until these exist: do not publish, do not claim expected commission as actual revenue, and do not mark FIRST TEST complete.
