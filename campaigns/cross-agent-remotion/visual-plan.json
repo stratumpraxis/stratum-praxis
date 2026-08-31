@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-31T01:50:46.431Z",
+  "manifest": {
+    "id": "cross-agent-operating-kit-personal-visual-v2",
+    "title": "Cross-Agent Operating Kit — Personal",
+    "brandLane": "stratum-en",
+    "language": "en"
+  },
+  "visualDirector": {
+    "referenceLibrary": {
+      "name": "EYECANDY Visual Technique Library",
+      "url": "https://eyecannndy.com/",
+      "rightsRule": "Technique names and visual-language references only. Do not copy or redistribute third-party clips, GIFs, frames, or artwork."
+    },
+    "selectedTechniques": [
+      {
+        "id": "floating-ui",
+        "name": "Floating UI",
+        "url": "https://eyecannndy.com/technique/floating-ui",
+        "tags": [
+          "ai",
+          "software",
+          "workflow",
+          "operations",
+          "data"
+        ],
+        "guidance": "Layer interface-like objects in depth so the viewer reads a system rather than a static slide."
+      },
+      {
+        "id": "central-framing",
+        "name": "Central Framing",
+        "url": "https://eyecannndy.com/technique/central-framing",
+        "tags": [
+          "product",
+          "cta",
+          "clarity",
+          "ui"
+        ],
+        "guidance": "Keep the primary subject or product mechanism locked near center while secondary motion creates depth."
+      },
+      {
+        "id": "crash-cut",
+        "name": "Crash Cut",
+        "url": "https://eyecannndy.com/technique/crash-cut",
+        "tags": [
+          "hook",
+          "contrast",
+          "problem-solution",
+          "retention"
+        ],
+        "guidance": "Cut abruptly between two strongly contrasting visual states to create a clean attention reset."
+      },
+      {
+        "id": "close-up",
+        "name": "Close-Up",
+        "url": "https://eyecannndy.com/technique/close-up",
+        "tags": [
+          "hook",
+          "detail",
+          "product",
+          "proof"
+        ],
+        "guidance": "Open tight on one decisive visual detail, then reveal the larger system."
+      }
+    ],
+    "usageRule": "Borrow technique vocabulary and shot logic only. Never download/reuse EYECANDY example footage unless separate commercial rights are verified.",
+    "pacing": {
+      "hook": "0-4s: generated cinematic motion hook",
+      "explanation": "4s onward: Remotion/Canva-derived authored UI, typography and diagrams",
+      "transitions": "Use one deliberate technique change per major idea; avoid random motion for its own sake."
+    }
+  },
+  "seedance25": {
+    "provider": "BytePlus ModelArk API",
+    "model": "dreamina-seedance-2-5-260628",
+    "commercialModeOnly": true,
+    "playgroundDisallowedForPublishedAssets": true,
+    "paidGenerationRequiresExplicitOptIn": true,
+    "durationSeconds": 4,
+    "resolution": "720p",
+    "ratio": "9:16",
+    "generateAudio": false,
+    "prompt": "9:16 premium cinematic motion-design hook, 4 seconds, silent video, no captions and no readable text. Visualize the core idea of Cross-Agent Operating Kit — Personal as an original abstract operational system rather than a literal app screenshot. Camera language: Floating UI for the opening, Central Framing for depth and reveal, then a restrained Crash Cut transition. Start with multiple independent interface nodes drifting out of alignment, then converge into one clean central policy/control layer. Near-black environment, silver-white structures, restrained cool-blue light, subtle depth, physically plausible camera movement, premium B2B technology advertising finish. No people, no faces, no celebrity likeness, no logos, no third-party brand marks, no copyrighted characters, no watermarks, no generated typography, no flashing or strobing.",
+    "fallback": "If paid generation is not explicitly enabled or API credentials are unavailable, keep the authored Remotion hook. Publication must not be blocked."
+  },
+  "remotionIntegration": {
+    "role": "Use Seedance only as a short cinematic hook/background layer. Keep facts, claims, pricing, CTA and readable text in authored Remotion/Canva layers.",
+    "targetAsset": "campaigns/cross-agent-remotion/public/seedance-hook.mp4"
+  }
+}
