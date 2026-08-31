@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "assets": "node scripts/prepare-assets.mjs",
-    "render": "remotion render src/index.jsx ForwelleShort out/forwelle-agent-stop-condition.mp4 --codec=h264"
+    "render": "remotion render src/index.jsx ForwelleShort out/forwelle-agent-stop-condition.mp4 --codec=h264",
+    "qa": "node scripts/qa-production.mjs out/forwelle-agent-stop-condition.mp4",
+    "build:production": "npm run assets && npm run render && npm run qa"
   },
   "dependencies": {
     "@remotion/cli": "4.0.506",
