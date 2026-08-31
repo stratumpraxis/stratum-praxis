@@ -1,0 +1,45 @@
+name: YouTube Scope Diagnostic Once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/youtube-scope-diagnostic-once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Diagnose scopes and channel lookup
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          cat > /tmp/diag.mjs <<'EOF'
+          const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+            method:'POST', headers:{'content-type':'application/x-www-form-urlencoded'},
+            body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})
+          });
+          const tokenJson = await tokenResponse.json();
+          if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh failed: ${tokenJson.error || tokenResponse.status}`);
+          const auth={authorization:`Bearer ${tokenJson.access_token}`};
+          const infoResponse=await fetch(`https://oauth2.googleapis.com/tokeninfo?access_token=${encodeURIComponent(tokenJson.access_token)}`);
+          const info=await infoResponse.json();
+          console.log(`TOKENINFO_STATUS=${infoResponse.status}`);
+          console.log(`SCOPES=${info.scope || ''}`);
+          const channelResponse=await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet&mine=true',{headers:auth});
+          const channelJson=await channelResponse.json();
+          console.log(`CHANNEL_STATUS=${channelResponse.status}`);
+          console.log(`CHANNEL_ERROR_REASON=${channelJson?.error?.errors?.[0]?.reason || ''}`);
+          console.log(`CHANNEL_ERROR_MESSAGE=${channelJson?.error?.message || ''}`);
+          console.log(`CHANNEL_ITEM_COUNT=${channelJson?.items?.length || 0}`);
+          if (channelJson?.items?.[0]) {
+            console.log(`CHANNEL_TITLE=${channelJson.items[0].snippet?.title || ''}`);
+            console.log(`CHANNEL_ID=${channelJson.items[0].id || ''}`);
+          }
+          EOF
+          node /tmp/diag.mjs
