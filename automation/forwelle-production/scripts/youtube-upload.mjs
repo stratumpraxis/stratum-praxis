@@ -20,14 +20,15 @@ if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh
 
 const metadata = {
   snippet: {
-    title: 'The Web Page Your AI Agent Reads Can Attack It',
-    description: 'Prompt injection turns untrusted content into attempted instructions for an AI agent. The risk gets more serious when the agent also has tools, data, or permission to act.\n\nSeparate content from authority. Limit tool permissions. Gate consequential actions.\n\n#AI #AIAgents #PromptInjection #AISecurity #AgenticAI #Forwelle',
-    tags: ['AI', 'AI agents', 'prompt injection', 'AI security', 'agentic AI', 'tool permissions', 'human in the loop', 'Forwelle'],
+    title: 'AI Agents Are Leaving the Screen',
+    description: 'AI agents are beginning to connect with programmable physical devices. Anthropic’s Model Hardware Standard research preview describes a shared interface for devices including microscopes, liquid handlers, and robotic arms, with the goal of reducing custom integration time and enabling agents to coordinate experiments and adjust parameters in real time.\n\nPrimary source: https://www.anthropic.com/news/model-hardware-standard-research-preview\nPublished by Anthropic: Aug 27, 2026\n\nThis video uses original AI-generated illustrative visuals. No real-person likenesses or third-party news footage are used.\n\n#AI #AIAgents #Robotics #Automation #Anthropic #Forwelle',
+    tags: ['AI', 'AI agents', 'physical AI', 'robotics', 'automation', 'Model Hardware Standard', 'MHS', 'Anthropic', 'laboratory automation', 'Forwelle'],
     categoryId: '28',
   },
   status: {
     privacyStatus: 'private',
     selfDeclaredMadeForKids: false,
+    containsSyntheticMedia: true,
   },
 };
 
@@ -54,3 +55,4 @@ if (!uploadResponse.ok || !uploadJson.id) {
 console.log(`YOUTUBE_VIDEO_ID=${uploadJson.id}`);
 console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${uploadJson.id}`);
 console.log(`PRIVACY_STATUS=${uploadJson.status?.privacyStatus || 'private'}`);
+console.log(`SYNTHETIC_MEDIA_DISCLOSED=${uploadJson.status?.containsSyntheticMedia ?? true}`);
