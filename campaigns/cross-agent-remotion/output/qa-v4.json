@@ -4,10 +4,10 @@
   "height": 1920,
   "videoCodec": "h264",
   "audioCodec": "aac",
-  "durationSeconds": 27.157333,
-  "narrationSeconds": 27.456,
+  "durationSeconds": 27.754667,
+  "narrationSeconds": 26.688,
   "blackSegments": 0,
-  "fileBytes": 10248658,
+  "fileBytes": 10380270,
   "checks": [
     "1080x1920",
     "25-30s",
