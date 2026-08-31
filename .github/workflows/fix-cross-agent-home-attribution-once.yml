@@ -83,3 +83,5 @@ jobs:
           git commit -m "Preserve Cross-Agent home route attribution at runtime"
           git pull --rebase origin main
           git push
+
+# one-shot trigger refresh: 2026-08-31
