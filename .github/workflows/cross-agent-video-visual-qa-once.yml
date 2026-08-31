@@ -1,0 +1,61 @@
+name: Cross-Agent Video Visual QA Once
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cross-agent-video-visual-qa-once.yml'
+permissions:
+  contents: write
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Extract representative frames and audio stats
+        run: |
+          set -euo pipefail
+          src='campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4'
+          test -s "$src"
+          mkdir -p /tmp/cross-agent-qa
+          times=(1.8 6.5 12 18 24 30.5)
+          i=1
+          for t in "${times[@]}"; do
+            ffmpeg -hide_banner -loglevel error -ss "$t" -i "$src" -frames:v 1 -vf 'scale=540:960:force_original_aspect_ratio=decrease,pad=540:960:(ow-iw)/2:(oh-ih)/2:black' -q:v 2 "/tmp/cross-agent-qa/f${i}.jpg"
+            i=$((i+1))
+          done
+          ffmpeg -hide_banner -loglevel error \
+            -i /tmp/cross-agent-qa/f1.jpg -i /tmp/cross-agent-qa/f2.jpg \
+            -i /tmp/cross-agent-qa/f3.jpg -i /tmp/cross-agent-qa/f4.jpg \
+            -i /tmp/cross-agent-qa/f5.jpg -i /tmp/cross-agent-qa/f6.jpg \
+            -filter_complex '[0:v][1:v]hstack=inputs=2[r1];[2:v][3:v]hstack=inputs=2[r2];[4:v][5:v]hstack=inputs=2[r3];[r1][r2][r3]vstack=inputs=3[out]' \
+            -map '[out]' -frames:v 1 -q:v 3 /tmp/cross-agent-qa/contact-sheet.jpg
+          mkdir -p campaigns/cross-agent-remotion/output
+          base64 -w0 /tmp/cross-agent-qa/contact-sheet.jpg > campaigns/cross-agent-remotion/output/visual-qa-contact-sheet.b64
+          (ffmpeg -hide_banner -i "$src" -af volumedetect -f null - 2>&1 || true) | grep -E 'mean_volume|max_volume|Duration' > campaigns/cross-agent-remotion/output/audio-qa.txt
+          printf '%s\n' '1.8s | 6.5s | 12.0s | 18.0s | 24.0s | 30.5s' > campaigns/cross-agent-remotion/output/visual-qa-times.txt
+      - name: Persist QA evidence safely
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          persist=/tmp/visual-qa-persist
+          rm -rf "$persist" && mkdir -p "$persist"
+          files=(
+            campaigns/cross-agent-remotion/output/visual-qa-contact-sheet.b64
+            campaigns/cross-agent-remotion/output/audio-qa.txt
+            campaigns/cross-agent-remotion/output/visual-qa-times.txt
+          )
+          cp --parents "${files[@]}" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "${files[@]}"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Record Cross-Agent visual QA evidence'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
