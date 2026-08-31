@@ -43,18 +43,15 @@ jobs:
 
       - name: Generate Japanese narration
         working-directory: campaigns/structureflow-note-ad
-        env:
-          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
         run: node narrate.mjs
 
       - name: Source audio QA
         working-directory: campaigns/structureflow-note-ad
         run: |
+          set -euo pipefail
           test -s public/narration.mp3
           test -s public/bgm.wav
-          echo 'NARRATION:'
           ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 public/narration.mp3
-          echo 'BGM:'
           ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1 public/bgm.wav
 
       - name: Render 1080x1920 Remotion master
@@ -67,24 +64,36 @@ jobs:
           set -euo pipefail
           f='output/structureflow-ai-quality-teaser.mp4'
           test -s "$f"
-          ffprobe -v error -show_entries stream=width,height,codec_name,codec_type -show_entries format=duration -of json "$f" | tee output/qa.json
-          duration=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$f")
-          python - "$duration" <<'PY'
-          import sys
-          d=float(sys.argv[1])
-          assert 47.5 <= d <= 48.5, f'Unexpected duration: {d}'
-          print(f'DURATION_QA=PASS ({d:.3f}s)')
+          ffprobe -v error -show_streams -show_format -of json "$f" > output/qa.json
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          p = Path('output/qa.json')
+          data = json.loads(p.read_text())
+          streams = data.get('streams', [])
+          fmt = data.get('format', {})
+          video = next((s for s in streams if s.get('codec_type') == 'video'), None)
+          audio = next((s for s in streams if s.get('codec_type') == 'audio'), None)
+          assert video is not None, 'Missing video stream'
+          assert audio is not None, 'Missing audio stream'
+          width = int(video.get('width', 0))
+          height = int(video.get('height', 0))
+          assert (width, height) == (1080, 1920), f'Unexpected dimensions: {width}x{height}'
+          duration = float(fmt.get('duration') or video.get('duration') or 0)
+          assert 47.5 <= duration <= 48.5, f'Unexpected duration: {duration}'
+          assert video.get('codec_name') in {'h264', 'avc1'}, f"Unexpected video codec: {video.get('codec_name')}"
+          assert audio.get('codec_name'), 'Missing audio codec'
+          print(f'DIMENSION_QA=PASS ({width}x{height})')
+          print(f'DURATION_QA=PASS ({duration:.3f}s)')
+          print(f"VIDEO_QA=PASS ({video.get('codec_name')})")
+          print(f"AUDIO_QA=PASS ({audio.get('codec_name')})")
           PY
-          video_dims=$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$f")
-          test "$video_dims" = '1080x1920'
-          echo 'DIMENSION_QA=PASS'
-          audio_codec=$(ffprobe -v error -select_streams a:0 -show_entries stream=codec_name -of csv=p=0 "$f")
-          test -n "$audio_codec"
-          echo "AUDIO_QA=PASS ($audio_codec)"
 
       - name: Render visual QA frames
         working-directory: campaigns/structureflow-note-ad
         run: |
+          set -euo pipefail
           ffmpeg -y -ss 00:00:05 -i output/structureflow-ai-quality-teaser.mp4 -frames:v 1 -q:v 2 output/preview-hook.jpg >/dev/null 2>&1
           ffmpeg -y -ss 00:00:23 -i output/structureflow-ai-quality-teaser.mp4 -frames:v 1 -q:v 2 output/preview-middle.jpg >/dev/null 2>&1
           ffmpeg -y -ss 00:00:43 -i output/structureflow-ai-quality-teaser.mp4 -frames:v 1 -q:v 2 output/preview-cta.jpg >/dev/null 2>&1
