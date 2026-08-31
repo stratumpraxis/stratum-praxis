@@ -6,7 +6,7 @@ export const SAFE_AREA = Object.freeze({
 });
 
 export const TELOP_RULES = Object.freeze({
-  preset: 'forwelle-editorial-v1',
+  preset: 'forwelle-editorial-v2',
   maxTitleLines: 3,
   maxCharsPerTitleLine: 26,
   minTitleLines: 1,
@@ -18,30 +18,37 @@ export const TELOP_RULES = Object.freeze({
 export const TELOP_COPY = Object.freeze({
   hook: {
     role: 'hook',
-    eyebrow: 'FORWELLE / SECURITY',
-    counter: '01 / 04',
-    lines: ['THE PAGE YOUR', 'AI READS CAN', 'BECOME THE ATTACK.'],
-    accentLine: 2,
-  },
-  flow: {
-    role: 'explain',
-    eyebrow: 'ATTACK PATH',
-    counter: '02 / 04',
-    lines: ['CONTENT IS NOT', 'AUTHORITY.'],
+    eyebrow: 'FORWELLE / AI AGENTS',
+    counter: '01 / 05',
+    lines: ['AI AGENTS ARE LEAVING', 'THE SCREEN.'],
     accentLine: 1,
   },
-  boundary: {
-    role: 'control',
-    eyebrow: 'PERMISSION BOUNDARY',
-    counter: '03 / 04',
-    lines: ["DON'T TRUST HARDER.", 'LIMIT WHAT CAN HAPPEN.'],
+  devices: {
+    role: 'evidence',
+    eyebrow: 'PHYSICAL AI',
+    counter: '02 / 05',
+    lines: ['NOW THEY CAN OPERATE', 'PHYSICAL DEVICES.'],
+    accentLine: 1,
+  },
+  speed: {
+    role: 'impact',
+    eyebrow: 'INTEGRATION SHIFT',
+    counter: '03 / 05',
+    lines: ['WEEKS OF INTEGRATION', 'CAN DROP TO HOURS.'],
+    accentLine: 1,
+  },
+  realtime: {
+    role: 'capability',
+    eyebrow: 'REAL-TIME CONTROL',
+    counter: '04 / 05',
+    lines: ['AGENTS CAN ADJUST', 'EXPERIMENTS IN REAL TIME.'],
     accentLine: 1,
   },
   end: {
     role: 'takeaway',
-    eyebrow: 'FORWELLE // AGENT SECURITY',
-    counter: '04 / 04',
-    lines: ['READ THE WEB.', "DON'T OBEY THE WEB."],
+    eyebrow: 'SOURCE / ANTHROPIC',
+    counter: '05 / 05',
+    lines: ['THE NEXT AI INTERFACE', 'MAY BE THE PHYSICAL WORLD.'],
     accentLine: 1,
   },
 });
