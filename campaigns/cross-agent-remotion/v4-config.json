@@ -1,13 +1,13 @@
 {
-  "version": "v4-pass-09-audio",
-  "sceneFrames": [78, 150, 165, 180, 240],
+  "version": "v4-pass-10-final",
+  "sceneFrames": [72, 147, 162, 180, 252],
   "safeTop": 112,
   "safeBottom": 182,
-  "hookSize": 88,
-  "hookLine1": "YOUR AGENTS AREN'T ALIGNED.",
-  "hookLine2": "THEY'RE DRIFTING.",
-  "hookBody": "The dangerous part: each agent can still look correct.",
-  "motionIntensity": 2.4,
+  "hookSize": 84,
+  "hookLine1": "YOUR AGENTS CAN ALL BE RIGHT.",
+  "hookLine2": "THE SYSTEM CAN STILL FAIL.",
+  "hookBody": "Because permissions, gates and stop rules can disagree between agents.",
+  "motionIntensity": 2.2,
   "patternInterrupt": true,
   "highlightFailure": 3,
   "proofLine": "A master policy defines the operating truth; adapters translate it into agent-specific boundaries.",
@@ -22,8 +22,8 @@
   "features": ["Master AGENTS.md policy","Claude / Codex / Cursor adapters","Policy conflict checks","Human Gate Matrix","Budget + token + quota guards"],
   "ctaHeadline": "ONE OPERATING LAYER. BEFORE ANOTHER AGENT.",
   "ctaBody": "Master policy · agent adapters · conflict checks · human gates · budget guards. Personal · $69.",
-  "ctaPulse": 0.004,
+  "ctaPulse": 0.0035,
   "bgmVolume": 0.095,
   "narrationVolume": 1.04,
-  "colors": {"bg":"#02050a","bg2":"#07101c","silver":"#e0e7f0","white":"#fbfdff","muted":"#b1bfd0","blue":"#72b3ff","red":"#ff716d","card":"rgba(7,15,26,.95)","border":"rgba(151,184,225,.38)"}
+  "colors": {"bg":"#010409","bg2":"#07101c","silver":"#e3eaf2","white":"#ffffff","muted":"#b5c3d3","blue":"#78b7ff","red":"#ff746f","card":"rgba(7,15,26,.96)","border":"rgba(158,190,230,.40)"}
 }
