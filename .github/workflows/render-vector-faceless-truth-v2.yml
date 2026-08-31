@@ -1,0 +1,129 @@
+name: Render Vector Faceless AI Truth V2
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/render-vector-faceless-truth-v2.yml'
+      - 'campaigns/vector-faceless-truth-remotion/src/index-v2.jsx'
+      - 'campaigns/vector-faceless-truth-remotion/package.json'
+      - 'campaigns/vector-faceless-truth-remotion/music.mjs'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: render-vector-faceless-truth-v2
+  cancel-in-progress: false
+
+jobs:
+  render-and-qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install media and Japanese fonts
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+
+      - name: Download approved Japanese narration
+        working-directory: campaigns/vector-faceless-truth-remotion
+        env:
+          NARRATION_URL: 'https://resource2.heygen.ai/text_to_speech/a97602ecc435417ab1b776674e7db173/662e1397965c484e8f65fa58c77effde/id=b265d91d-a4b7-4780-8f94-590b5ec17d6b.wav'
+        run: |
+          mkdir -p public output/qa-stills
+          curl --fail --silent --show-error --location "$NARRATION_URL" -o public/narration.wav
+          test -s public/narration.wav
+
+      - name: Install Remotion project
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: npm install
+
+      - name: Generate selected original BGM v3
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: node music.mjs
+
+      - name: Audio QA
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          def d(p):
+              return float(subprocess.check_output(['ffprobe','-v','error','-show_entries','format=duration','-of','default=noprint_wrappers=1:nokey=1',p]).decode())
+          n=d('public/narration.wav'); b=d('public/bgm.wav')
+          print('NARRATION_DURATION=',n); print('BGM_DURATION=',b)
+          assert 91.5 <= n <= 93.5
+          assert 93.5 <= b <= 94.5
+          print('AUDIO_QA=PASS')
+          PY
+
+      - name: Render 1080x1920 master v2
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: npm run render
+
+      - name: Technical QA
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: |
+          f='output/vector-faceless-ai-tiktok-truth.mp4'
+          test -s "$f"
+          ffprobe -v error -show_entries stream=width,height,codec_name -show_entries format=duration -of json "$f" | tee output/qa.json
+          python3 - <<'PY'
+          import json
+          q=json.load(open('output/qa.json'))
+          v=next((s for s in q['streams'] if s.get('width')),None)
+          a=next((s for s in q['streams'] if s.get('codec_name')=='aac'),None)
+          d=float(q['format']['duration'])
+          assert v and v['width']==1080 and v['height']==1920
+          assert a
+          assert 93.5 <= d <= 94.5
+          print('MASTER_QA=PASS')
+          PY
+
+      - name: Extract visual QA frames
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: |
+          rm -rf output/qa-stills && mkdir -p output/qa-stills
+          times=(3 14 28 46 58 70 82 91)
+          i=1
+          for t in "${times[@]}"; do
+            ffmpeg -y -loglevel error -ss "$t" -i output/vector-faceless-ai-tiktok-truth.mp4 -frames:v 1 "output/qa-stills/frame-$(printf '%02d' "$i").png"
+            i=$((i+1))
+          done
+          test "$(find output/qa-stills -name 'frame-*.png' | wc -l)" -eq 8
+
+      - name: Persist render v2 and evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          persist=/tmp/vector-v2
+          rm -rf "$persist" && mkdir -p "$persist"
+          files=(
+            campaigns/vector-faceless-truth-remotion/output/vector-faceless-ai-tiktok-truth.mp4
+            campaigns/vector-faceless-truth-remotion/output/qa.json
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-01.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-02.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-03.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-04.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-05.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-06.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-07.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills/frame-08.png
+          )
+          cp --parents "${files[@]}" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "${files[@]}"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Render Vector faceless AI truth video v2'
+            if git push origin HEAD:main; then echo 'VECTOR_V2_PUBLISHED=1'; exit 0; fi
+          done
+          exit 1
