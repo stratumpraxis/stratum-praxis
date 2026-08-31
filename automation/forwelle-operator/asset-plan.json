@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "generatedAt": "2026-08-31T02:50:00.000Z",
+  "rendererPolicy": "Remotion remains the preferred final-composition layer; candidate assets must pass rights/quality promotion before use.",
+  "providers": {
+    "moneyPrinterTurbo": {
+      "status": "SKIPPED_NOT_CONFIGURED",
+      "candidateOnly": true,
+      "promotedToPublication": false,
+      "provider": "MoneyPrinterTurbo",
+      "reason": "Integration is active. Set MONEYPRINTERTURBO_BASE_URL to activate remote candidate generation; the existing render lane continues safely without it."
+    }
+  }
+}
