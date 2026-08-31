@@ -1,6 +1,6 @@
 {
-  "version": "v4-pass-02-safe-zones",
-  "sceneFrames": [90, 165, 165, 195, 225],
+  "version": "v4-pass-03-pacing",
+  "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
   "hookSize": 88,
