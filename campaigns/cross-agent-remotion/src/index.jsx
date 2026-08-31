@@ -37,7 +37,7 @@ const Fade = ({children, from = 0, duration = 14, dy = 24, style = {}}) => {
     <div
       style={{
         opacity: interpolate(frame, [from, from + duration], [0, 1], {...clamp, easing: Easing.bezier(.16, 1, .3, 1)}),
-        translate: interpolate(frame, [from, from + duration], [`0 ${dy}px`, '0 0px'], {...clamp, easing: Easing.bezier(.16, 1, .3, 1)}),
+        translate: `0px ${interpolate(frame, [from, from + duration], [dy, 0], {...clamp, easing: Easing.bezier(.16, 1, .3, 1)})}px`,
         ...style,
       }}
     >
