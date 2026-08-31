@@ -1,0 +1,18 @@
+{
+  "status": "PASS",
+  "width": 1080,
+  "height": 1920,
+  "videoCodec": "h264",
+  "audioCodec": "aac",
+  "durationSeconds": 27.157333,
+  "narrationSeconds": 27.456,
+  "blackSegments": 0,
+  "fileBytes": 10248658,
+  "checks": [
+    "1080x1920",
+    "25-30s",
+    "audio-present",
+    "narration-fits",
+    "no-long-black-segment"
+  ]
+}
