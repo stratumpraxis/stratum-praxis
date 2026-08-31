@@ -1,0 +1,21 @@
+{
+  "campaign": "cross-agent-permission-drift-v4",
+  "purpose": "Reusable quality memory for future Stratum Praxis vertical videos",
+  "passes": [
+    {"pass":1,"change":"First-second contradiction hook","rule":"Lead with a system-level contradiction, not a feature list."},
+    {"pass":2,"change":"Instagram safe zones","rule":"Keep persistent brand/footer text away from top and bottom UI zones."},
+    {"pass":3,"change":"Pacing","rule":"Short hook, fast problem setup, longest hold on CTA."},
+    {"pass":4,"change":"Contrast","rule":"Use near-black background, bright silver body copy, one blue accent and one warning red."},
+    {"pass":5,"change":"Motion restraint","rule":"Prefer low-amplitude drift over constant large motion for premium B2B visual tone."},
+    {"pass":6,"change":"Pattern interrupt","rule":"Use one brief red conflict flash in the middle rather than repeated effects."},
+    {"pass":7,"change":"Concrete proof","rule":"Name actual operating artifacts such as master policy, adapters, conflict checks and human gates."},
+    {"pass":8,"change":"CTA simplification","rule":"End with one short promise, visible price, direct product path and no competing action."},
+    {"pass":9,"change":"Audio hierarchy","rule":"Narration must dominate; BGM remains below speech and supports transitions only."},
+    {"pass":10,"change":"Final hook/end hold","rule":"Prefer 'individually right / system still fails' framing and preserve a long readable final hold."}
+  ],
+  "reuse_gate": {
+    "must_keep": ["hook-under-1.5s","single-core-idea","1080x1920","audible-narration","clear-price-and-CTA","AI-narration-disclosure"],
+    "avoid": ["same-opening-copy-on-consecutive-posts","dense-feature-dumps-in-first-5s","excessive-motion","multiple-competing-CTAs","reposting-before-verification"]
+  },
+  "learning_policy": "After each published video, compare real reach/retention/click signals before promoting a pattern from candidate to default. Do not infer wins from one post."
+}
