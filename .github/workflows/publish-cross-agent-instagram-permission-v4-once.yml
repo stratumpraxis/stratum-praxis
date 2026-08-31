@@ -1,0 +1,91 @@
+name: Publish Cross-Agent Permission Drift v4 Instagram Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/cross-agent-instagram-permission-v4.trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-agent-instagram-permission-v4-20260831
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Require QA-passed final MP4
+        run: |
+          set -euo pipefail
+          test -s campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4
+          node -e "const q=require('./campaigns/cross-agent-remotion/output/qa-v4.json'); if(q.status!=='PASS') process.exit(1); console.log(q)"
+      - name: Publish final v4 to Stratum Praxis Instagram only
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: distribution/cross-agent-instagram-permission-v4.json
+          TREND_VIDEO_URL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4
+          VIDEO_PUBLISH_LEDGER: /tmp/cross-agent-instagram-permission-v4-ledger.json
+        run: node distribution/buffer-video-publisher.mjs
+      - name: Read-only verify exact created Instagram post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          const ledger=JSON.parse(fs.readFileSync('/tmp/cross-agent-instagram-permission-v4-ledger.json','utf8'));
+          const item=ledger.items?.['cross-agent-instagram-permission-drift-v4-20260831']?.instagram;
+          if(!item?.postId) throw new Error(`No created Instagram post ID in ledger: ${JSON.stringify(item)}`);
+          const API='https://api.buffer.com';
+          const q=s=>JSON.stringify(String(s));
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer org');
+          const channels=await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service} }`);
+          const target=(channels.channels||[]).find(c=>String(c.service).toLowerCase()==='instagram'&&c.id==='6a8e5b5accaf649a671a0cd9');
+          if(!target) throw new Error('Exact Stratum Praxis Instagram channel unavailable');
+          let found=null;
+          for(let attempt=0;attempt<5;attempt++){
+            const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(target.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+            found=posts.find(p=>p.id===item.postId)||null;
+            if(found?.status==='sent'&&found?.externalLink) break;
+            if(attempt<4) await new Promise(r=>setTimeout(r,10000));
+          }
+          if(!found) throw new Error('Created Instagram post not found in bounded read-only verification');
+          const evidence={campaign:'cross-agent-instagram-permission-drift-v4-20260831',platform:'instagram',channelId:target.id,channel:target.displayName||target.name,bufferPostId:found.id,status:found.status||null,sentAt:found.sentAt||null,externalLink:found.externalLink||null,checkedAt:new Date().toISOString(),productUrl:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=instagram&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v4&route_id=instagram_cross_agent_permission_v4_20260831'};
+          fs.writeFileSync('distribution/cross-agent-instagram-permission-v4-status.json',JSON.stringify(evidence,null,2)+'\n');
+          console.log(JSON.stringify(evidence,null,2));
+          if(evidence.status!=='sent'||!evidence.externalLink) process.exit(2);
+          NODE
+      - name: Persist publication evidence safely
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          persist=/tmp/igv4persist
+          rm -rf "$persist" && mkdir -p "$persist"
+          file=distribution/cross-agent-instagram-permission-v4-status.json
+          cp --parents "$file" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "$file"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Record Cross-Agent permission drift v4 Instagram publication'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
