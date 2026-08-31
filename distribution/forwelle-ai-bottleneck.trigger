@@ -1,1 +1,1 @@
-close pending Forwelle publication 2026-09-01T02:xx+09:00
+close pending Forwelle publication 2026-09-01 destination-validated private-first rerun 2
