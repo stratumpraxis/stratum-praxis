@@ -1,0 +1,18 @@
+{
+  "campaign": "cross-agent-instagram-20260831-cinematic-v3",
+  "platform": "instagram",
+  "channelId": "6a8e5b5accaf649a671a0cd9",
+  "channel": "praxisstratum",
+  "bufferPostId": "6a94f0645ff58b53ab1d6451",
+  "status": "sent",
+  "sentAt": "2026-08-31T03:10:23.321Z",
+  "externalLink": "https://www.instagram.com/reel/DcsFn65jih6/",
+  "video": "campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4",
+  "videoQa": {
+    "width": 1080,
+    "height": 1920,
+    "durationSeconds": 34.048,
+    "videoCodec": "h264",
+    "audioCodec": "aac"
+  }
+}
