@@ -1,0 +1,120 @@
+name: Render Cross-Agent Permission Drift v4 Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/cross-agent-v4-render.trigger'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-agent-permission-v4-render
+  cancel-in-progress: false
+
+jobs:
+  render:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Install Remotion dependencies
+        working-directory: campaigns/cross-agent-remotion
+        run: npm install --no-audit --no-fund
+      - name: Generate final narration and original BGM
+        working-directory: campaigns/cross-agent-remotion
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+        run: |
+          node narrate-v4.mjs
+          node music.mjs
+      - name: Render final v4 MP4
+        working-directory: campaigns/cross-agent-remotion
+        run: npx remotion render src/permission-drift-v4.jsx CrossAgentPermissionDriftV4 output/cross-agent-permission-drift-v4.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p
+      - name: Technical and representative-frame QA
+        working-directory: campaigns/cross-agent-remotion
+        run: |
+          set -euo pipefail
+          src='output/cross-agent-permission-drift-v4.mp4'
+          test -s "$src"
+          mkdir -p /tmp/v4qa
+          ffprobe -v error -show_streams -show_format -of json "$src" > output/ffprobe-v4.json
+          ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 public/narration-v4.mp3 > output/narration-duration-v4.txt
+          (ffmpeg -hide_banner -i "$src" -af volumedetect -f null - 2>&1 || true) | grep -E 'mean_volume|max_volume|Duration' > output/audio-qa-v4.txt
+          (ffmpeg -hide_banner -i "$src" -vf 'blackdetect=d=0.35:pic_th=0.98' -an -f null - 2>&1 || true) | grep 'black_start' > output/blackdetect-v4.txt || true
+          times=(1.0 4.6 9.4 14.8 20.3 25.6)
+          i=1
+          for t in "${times[@]}"; do
+            ffmpeg -hide_banner -loglevel error -ss "$t" -i "$src" -frames:v 1 -vf 'scale=360:640:force_original_aspect_ratio=decrease,pad=360:640:(ow-iw)/2:(oh-ih)/2:black' -q:v 2 "/tmp/v4qa/f${i}.jpg"
+            i=$((i+1))
+          done
+          ffmpeg -hide_banner -loglevel error \
+            -i /tmp/v4qa/f1.jpg -i /tmp/v4qa/f2.jpg -i /tmp/v4qa/f3.jpg \
+            -i /tmp/v4qa/f4.jpg -i /tmp/v4qa/f5.jpg -i /tmp/v4qa/f6.jpg \
+            -filter_complex '[0:v][1:v][2:v]hstack=inputs=3[r1];[3:v][4:v][5:v]hstack=inputs=3[r2];[r1][r2]vstack=inputs=2[out]' \
+            -map '[out]' -frames:v 1 -q:v 3 /tmp/v4qa/contact-sheet.jpg
+          base64 -w0 /tmp/v4qa/contact-sheet.jpg > output/visual-qa-v4-contact-sheet.b64
+          node - <<'NODE'
+          const fs=require('fs');
+          const p=JSON.parse(fs.readFileSync('output/ffprobe-v4.json','utf8'));
+          const v=p.streams.find(s=>s.codec_type==='video');
+          const a=p.streams.find(s=>s.codec_type==='audio');
+          const duration=Number(p.format.duration||0);
+          const narration=Number(fs.readFileSync('output/narration-duration-v4.txt','utf8').trim()||0);
+          const black=fs.readFileSync('output/blackdetect-v4.txt','utf8').trim().split(/\n/).filter(Boolean);
+          const qa={status:(v?.width===1080&&v?.height===1920&&duration>25&&duration<30&&a&&narration<=duration+0.5&&black.length===0)?'PASS':'FAIL',width:v?.width,height:v?.height,videoCodec:v?.codec_name,audioCodec:a?.codec_name||null,durationSeconds:duration,narrationSeconds:narration,blackSegments:black.length,fileBytes:Number(p.format.size||0),checks:['1080x1920','25-30s','audio-present','narration-fits','no-long-black-segment']};
+          fs.writeFileSync('output/qa-v4.json',JSON.stringify(qa,null,2)+'\n');
+          console.log(JSON.stringify(qa,null,2));
+          if(qa.status!=='PASS') process.exit(1);
+          NODE
+      - name: Upload v4 QA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-agent-permission-drift-v4-qa
+          path: |
+            campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4
+            campaigns/cross-agent-remotion/output/qa-v4.json
+            campaigns/cross-agent-remotion/output/audio-qa-v4.txt
+            campaigns/cross-agent-remotion/output/ffprobe-v4.json
+            /tmp/v4qa/contact-sheet.jpg
+            /tmp/v4qa/f1.jpg
+            /tmp/v4qa/f2.jpg
+            /tmp/v4qa/f3.jpg
+            /tmp/v4qa/f4.jpg
+            /tmp/v4qa/f5.jpg
+            /tmp/v4qa/f6.jpg
+          retention-days: 3
+      - name: Persist final render and QA evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          persist=/tmp/v4persist
+          rm -rf "$persist" && mkdir -p "$persist"
+          files=(
+            campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4
+            campaigns/cross-agent-remotion/output/qa-v4.json
+            campaigns/cross-agent-remotion/output/audio-qa-v4.txt
+            campaigns/cross-agent-remotion/output/ffprobe-v4.json
+            campaigns/cross-agent-remotion/output/narration-duration-v4.txt
+            campaigns/cross-agent-remotion/output/blackdetect-v4.txt
+            campaigns/cross-agent-remotion/output/visual-qa-v4-contact-sheet.b64
+            campaigns/cross-agent-remotion/output-script-v4.json
+          )
+          cp --parents "${files[@]}" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "${files[@]}"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Render and QA Cross-Agent permission drift v4'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
