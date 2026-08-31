@@ -5,6 +5,8 @@ import path from 'node:path';
 const ROOT = path.resolve('automation/forwelle-operator');
 const config = JSON.parse(await fs.readFile(path.join(ROOT, 'config.json'), 'utf8'));
 const scout = JSON.parse(await fs.readFile(path.join(ROOT, 'scout-latest.json'), 'utf8'));
+let winningPatterns = {status:'BUILDING_DATASET',sampleCount:0,targetCount:config.learning?.winningVideoTargetCount || 10,editorialBrief:''};
+try { winningPatterns = JSON.parse(await fs.readFile(path.join(ROOT, 'winning-patterns.json'), 'utf8')); } catch {}
 const selected = scout.candidates?.find(c => c.id === scout.publishableCandidateId) || null;
 
 function output(name, value) {
@@ -18,6 +20,19 @@ function splitHeadline(v, maxLine = 18) {
   for (const w of words) { const t = cur ? `${cur} ${w}` : w; if (t.length <= maxLine) cur = t; else { if (cur) lines.push(cur); cur = w; } }
   if (cur) lines.push(cur); return lines.slice(0, 3).join('\n');
 }
+function inferHookType(text) {
+  const t = clean(text, 160).toLowerCase();
+  if (t.includes('?')) return 'question';
+  if (/^(how|how to)\b/.test(t)) return 'how-to';
+  if (/^why\b/.test(t)) return 'why';
+  if (/\b(stop|don\'t|not |instead|wrong)\b/.test(t)) return 'contrarian';
+  if (/\b(new|just|launch|released|update|now)\b/.test(t)) return 'new-signal';
+  if (/^\d+\b/.test(t)) return 'numbered';
+  return 'concrete-change';
+}
+const minPatternSamples = Number(config.learning?.minSamplesForPatternAnalysis || 3);
+const patternEvidenceActive = Number(winningPatterns.sampleCount || 0) >= minPatternSamples && clean(winningPatterns.editorialBrief, 700).length > 0;
+const patternBrief = patternEvidenceActive ? clean(winningPatterns.editorialBrief, 700) : '';
 
 if (!selected) {
   const status = {at: new Date().toISOString(), status: 'NO_PUBLISHABLE_SIGNAL', reason: 'No candidate had a verified first-party fact source.'};
@@ -51,7 +66,10 @@ async function editWithOpenRouter() {
   const key = process.env.OPENROUTER_API_KEY;
   if (!key) return null;
   const model = process.env.FORWELLE_EDITOR_MODEL || config.editor?.model || 'openai/gpt-4.1-mini';
-  const prompt = `You are the editorial planner for Forwelle, an English short-video brand about useful shifts in AI, tools, creators and the future of work.\n\nCreate ONE original vertical short from the verified first-party source below. Do not copy source wording. Do not add facts that are not supported by the supplied title/summary. No predictions stated as facts. No financial, medical, political, legal, tragedy or celebrity material. Avoid hype and absolute claims.\n\nSOURCE TITLE: ${selected.title}\nSOURCE SUMMARY: ${selected.summary || '(none supplied; use only the title as fact)'}\nSOURCE URL: ${selected.url}\nSOURCE DOMAIN: ${sourceHost}\nOPTIONAL USER ANGLE: ${selected.angle || '(none)'}\n\nReturn only strict JSON with keys: title, summary, voiceover, caption, scenes. voiceover must be 80-115 words, natural spoken English. scenes must contain exactly 5 objects with eyebrow, motionTag, headline, body, sourceLabel. Each headline <= 42 characters. Each body <= 120 characters. The piece must add original analysis rather than restating the source. The final scene should have a memorable non-salesy takeaway. Caption <= 500 characters and include the source URL plus 3-5 relevant hashtags.`;
+  const learningBlock = patternEvidenceActive
+    ? `\nSTRUCTURAL LEARNING BRIEF FROM MEASURED/CURATED SHORTS:\n${patternBrief}\nUse this only as a testable structural prior. Do not copy wording, footage, story concepts, creator identity, branding or protected expression. The verified source and original Forwelle analysis remain primary.\n`
+    : '\nSTRUCTURAL LEARNING: empirical sample count is still too small. Do not infer a winning pattern; use conservative original editorial judgment.\n';
+  const prompt = `You are the editorial planner for Forwelle, an English short-video brand about useful shifts in AI, tools, creators and the future of work.\n\nCreate ONE original vertical short from the verified first-party source below. Do not copy source wording. Do not add facts that are not supported by the supplied title/summary. No predictions stated as facts. No financial, medical, political, legal, tragedy or celebrity material. Avoid hype and absolute claims.${learningBlock}\nSOURCE TITLE: ${selected.title}\nSOURCE SUMMARY: ${selected.summary || '(none supplied; use only the title as fact)'}\nSOURCE URL: ${selected.url}\nSOURCE DOMAIN: ${sourceHost}\nOPTIONAL USER ANGLE: ${selected.angle || '(none)'}\n\nReturn only strict JSON with keys: title, summary, voiceover, caption, scenes. voiceover must be 80-115 words, natural spoken English. scenes must contain exactly 5 objects with eyebrow, motionTag, headline, body, sourceLabel. Each headline <= 42 characters. Each body <= 120 characters. The piece must add original analysis rather than restating the source. The final scene should have a memorable non-salesy takeaway. Caption <= 500 characters and include the source URL plus 3-5 relevant hashtags.`;
   const r = await fetch('https://openrouter.ai/api/v1/chat/completions', {
     method: 'POST',
     headers: {'Authorization': `Bearer ${key}`, 'Content-Type': 'application/json', 'HTTP-Referer': 'https://github.com/stratumpraxis/stratum-praxis', 'X-Title': 'Forwelle Revenue Video Operator'},
@@ -91,6 +109,7 @@ const scenes = editorial.scenes.slice(0, 5).map((s, i) => ({
   sourceLabel: shorten(s.sourceLabel || (i < 2 ? sourceHost : 'Forwelle / original analysis'), 48),
   background: palette[i][0], accent: palette[i][1]
 }));
+const initialDuration = scenes.reduce((n,s)=>n+Number(s.duration||0),0);
 const manifest = {
   id, createdAt: now.toISOString(), brandLane: 'forwelle-en', platformVariant: 'cross-platform-short',
   title: shorten(editorial.title, 95), topic: selected.title, language: 'en',
@@ -100,8 +119,31 @@ const manifest = {
   scores: selected.scores,
   sources: [{name: `${sourceHost} — first-party source`, url: selected.url, factSource: true, verified: true, published: selected.publishedAt || null}],
   thirdPartyAssets: [],
+  assetCandidates: {},
+  strategy: {
+    winningPatternLearning: {
+      status: winningPatterns.status || 'BUILDING_DATASET',
+      sampleCount: Number(winningPatterns.sampleCount || 0),
+      targetCount: Number(winningPatterns.targetCount || config.learning?.winningVideoTargetCount || 10),
+      briefUsed: patternEvidenceActive,
+      editorialBrief: patternEvidenceActive ? patternBrief : null
+    },
+    rendering: {
+      preferredFinalComposer: config.rendering?.preferredFinalComposer || 'remotion',
+      currentOperatorRenderer: config.rendering?.currentOperatorRenderer || 'procedural'
+    }
+  },
+  structureProfile: {
+    hookType: inferHookType(editorial.scenes?.[0]?.headline || editorial.title),
+    hookText: clean(editorial.scenes?.[0]?.headline || editorial.title, 120),
+    pacing: 'five-scene-progressive',
+    ctaType: 'non-salesy-takeaway',
+    visualStyle: 'procedural-motion',
+    sceneCount: scenes.length,
+    durationSeconds: initialDuration
+  },
   originality: {creatorSignals: ['original Forwelle editorial angle', 'original procedural motion graphics', 'original narration'], notReusedCompilation: true, notTemplateVariant: true},
-  safety: {approved: true, factsVerified: true, originalityVerified: true, realPersonLikeness: false, copyrightedMedia: false, categories: ['ai', 'technology', 'future-of-work'], notes: 'Autonomous lane uses first-party factual sources, original writing, original procedural visuals, synthetic narration and procedural audio only.'},
+  safety: {approved: true, factsVerified: true, originalityVerified: true, realPersonLikeness: false, copyrightedMedia: false, categories: ['ai', 'technology', 'future-of-work'], notes: 'Autonomous lane uses first-party factual sources, original writing, original procedural visuals, synthetic narration and procedural audio only. Candidate third-party assets remain outside publication until provenance is verified.'},
   scenes,
   publish: {
     services: config.publish?.services || ['youtube', 'tiktok', 'instagram'],
@@ -111,7 +153,7 @@ const manifest = {
   }
 };
 await fs.writeFile(path.join(ROOT, 'current.json'), JSON.stringify(manifest, null, 2) + '\n');
-await fs.writeFile(path.join(ROOT, 'run-status.json'), JSON.stringify({at: now.toISOString(), status: 'PLANNED', manifestId: id, candidateId: selected.id, usedAIEditor}, null, 2) + '\n');
+await fs.writeFile(path.join(ROOT, 'run-status.json'), JSON.stringify({at: now.toISOString(), status: 'PLANNED', manifestId: id, candidateId: selected.id, usedAIEditor, winningPatternSamples: winningPatterns.sampleCount || 0, winningPatternBriefUsed: patternEvidenceActive}, null, 2) + '\n');
 output('publish', 'true');
 output('manifest_id', id);
-console.log(JSON.stringify({publish: true, id, source: selected.url, usedAIEditor}, null, 2));
+console.log(JSON.stringify({publish: true, id, source: selected.url, usedAIEditor, winningPatternSamples: winningPatterns.sampleCount || 0, winningPatternBriefUsed: patternEvidenceActive}, null, 2));
