@@ -1,0 +1,22 @@
+{
+  "version": 1,
+  "source": {
+    "name": "EYECANDY Visual Technique Library",
+    "url": "https://eyecannndy.com/",
+    "usage": "Technique names and visual-language references only. Do not copy or redistribute third-party clips, GIFs, frames, or artwork."
+  },
+  "techniques": [
+    {"id":"central-framing","name":"Central Framing","url":"https://eyecannndy.com/technique/central-framing","tags":["product","cta","clarity","ui"],"guidance":"Keep the primary subject or product mechanism locked near center while secondary motion creates depth."},
+    {"id":"close-up","name":"Close-Up","url":"https://eyecannndy.com/technique/close-up","tags":["hook","detail","product","proof"],"guidance":"Open tight on one decisive visual detail, then reveal the larger system."},
+    {"id":"dolly","name":"Dolly","url":"https://eyecannndy.com/technique/dolly","tags":["hook","depth","premium","reveal"],"guidance":"Use a controlled push-in or pull-back to create dimensionality without frantic motion."},
+    {"id":"dolly-zoom","name":"Dolly Zoom","url":"https://eyecannndy.com/technique/dolly-zoom","tags":["tension","problem","surprise"],"guidance":"Use sparingly to visualize a sudden change in perceived scale or risk."},
+    {"id":"crash-cut","name":"Crash Cut","url":"https://eyecannndy.com/technique/crash-cut","tags":["hook","contrast","problem-solution","retention"],"guidance":"Cut abruptly between two strongly contrasting visual states to create a clean attention reset."},
+    {"id":"flash-cut","name":"Flash Cut","url":"https://eyecannndy.com/technique/flash-cut","tags":["pace","retention","comparison"],"guidance":"Use a very brief insert for one idea or comparison; avoid flashing brightness or eye-strain effects."},
+    {"id":"floating-ui","name":"Floating UI","url":"https://eyecannndy.com/technique/floating-ui","tags":["ai","software","workflow","operations","data"],"guidance":"Layer interface-like objects in depth so the viewer reads a system rather than a static slide."},
+    {"id":"fixed-cam","name":"Fixed Cam","url":"https://eyecannndy.com/technique/fixed-cam","tags":["proof","demo","before-after","clarity"],"guidance":"Hold the camera stable while the subject changes, making before/after or state transitions easy to compare."},
+    {"id":"first-person","name":"First-Person","url":"https://eyecannndy.com/technique/first-person","tags":["workflow","demo","experience","tutorial"],"guidance":"Stage the scene from the operator's perspective when the viewer should feel the workflow rather than observe it."},
+    {"id":"camera-roll","name":"Camera Roll","url":"https://eyecannndy.com/technique/camera-roll","tags":["transition","energy","surprise"],"guidance":"Rotate the scene as a transition accent only; do not use repeated rolling motion that harms legibility."},
+    {"id":"dutch-angle","name":"Dutch Angle","url":"https://eyecannndy.com/technique/dutch-angle","tags":["problem","instability","risk"],"guidance":"Introduce a slight tilt to communicate instability, then level the frame when the solution appears."},
+    {"id":"fisheye","name":"Fisheye","url":"https://eyecannndy.com/technique/fisheye","tags":["experimental","hook","scale"],"guidance":"Use only for a deliberate exaggerated hook; avoid on trust-sensitive product explanation scenes."}
+  ]
+}
