@@ -1,1 +1,1 @@
-verify cross-agent instagram 2026-08-31 rerun 2
+verify cross-agent instagram 2026-08-31 raw status rerun 3
