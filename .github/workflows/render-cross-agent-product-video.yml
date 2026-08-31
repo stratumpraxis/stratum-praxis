@@ -4,8 +4,17 @@ on:
     branches: [main]
     paths:
       - 'campaigns/cross-agent-remotion/**'
+      - 'trend-video-engine/visual-technique-library.json'
+      - 'trend-video-engine/visual-director.mjs'
+      - 'trend-video-engine/seedance25-generate.mjs'
       - '.github/workflows/render-cross-agent-product-video.yml'
   workflow_dispatch:
+    inputs:
+      allow_paid_seedance:
+        description: 'Explicitly allow paid Seedance 2.5 generation for the cinematic hook'
+        required: true
+        default: false
+        type: boolean
 permissions:
   contents: write
 concurrency:
@@ -14,12 +23,41 @@ concurrency:
 jobs:
   render:
     runs-on: ubuntu-latest
-    timeout-minutes: 25
+    timeout-minutes: 35
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Visual Director — select camera language and Seedance shot
+        env:
+          VIDEO_MANIFEST: campaigns/cross-agent-remotion/visual-manifest.json
+          VISUAL_PLAN: campaigns/cross-agent-remotion/visual-plan.json
+        run: node trend-video-engine/visual-director.mjs
+
+      - name: Visual direction QA
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const p = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/visual-plan.json','utf8'));
+          const techniques = p.visualDirector?.selectedTechniques || [];
+          if (techniques.length < 3) throw new Error('Need at least 3 selected visual techniques');
+          if (!p.seedance25?.prompt?.includes('no readable text')) throw new Error('Generated typography guard missing');
+          if (p.seedance25?.generateAudio !== false) throw new Error('Generated hook must be silent; authored narration remains separate');
+          console.log('VISUAL_QA=PASS');
+          console.log('TECHNIQUES=' + techniques.map(x => x.name).join(' | '));
+          NODE
+
+      - name: Seedance 2.5 cinematic hook — safe paid gate
+        env:
+          VISUAL_PLAN: campaigns/cross-agent-remotion/visual-plan.json
+          LAS_API_KEY: ${{ secrets.LAS_API_KEY }}
+          SEEDANCE_ALLOW_PAID: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_paid_seedance && '1' || '0' }}
+          SEEDANCE_OUTPUT: campaigns/cross-agent-remotion/public/seedance-hook.mp4
+          SEEDANCE_ASSET_STATE: campaigns/cross-agent-remotion/src/generated-assets.json
+        run: node trend-video-engine/seedance25-generate.mjs
+
       - name: Install ffmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
       - name: Install Remotion project
@@ -38,12 +76,23 @@ jobs:
           f='campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4'
           test -s "$f"
           ffprobe -v error -show_entries stream=width,height,codec_name -show_entries format=duration -of json "$f" | tee campaigns/cross-agent-remotion/output/qa.json
-      - name: Publish rendered asset into repository
+          node - <<'NODE'
+          const fs = require('fs');
+          const state = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/src/generated-assets.json','utf8'));
+          console.log('SEEDANCE_HOOK=' + (state.seedanceHook?.enabled ? 'ENABLED' : 'FALLBACK_REMOTION'));
+          NODE
+      - name: Publish rendered asset and visual plan into repository
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4 campaigns/cross-agent-remotion/output/qa.json
+          git add campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4 \
+                  campaigns/cross-agent-remotion/output/qa.json \
+                  campaigns/cross-agent-remotion/visual-plan.json \
+                  campaigns/cross-agent-remotion/src/generated-assets.json
+          if [ -f campaigns/cross-agent-remotion/public/seedance-hook.mp4 ]; then
+            git add campaigns/cross-agent-remotion/public/seedance-hook.mp4
+          fi
           git diff --cached --quiet && exit 0
-          git commit -m "Render Cross-Agent Operating Kit product video"
+          git commit -m "Render Cross-Agent video with visual director"
           git pull --rebase origin main
           git push
