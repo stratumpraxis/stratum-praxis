@@ -1,36 +1,67 @@
 {
-  "id": "2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal",
-  "createdAt": "2026-08-30T23:05:05.315Z",
+  "id": "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal",
+  "createdAt": "2026-08-31T23:04:41.845Z",
   "brandLane": "forwelle-en",
   "platformVariant": "cross-platform-short",
-  "title": "Expanding OpenAI’s presence in Brazil",
-  "topic": "Expanding OpenAI’s presence in Brazil",
+  "title": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
+  "topic": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
   "language": "en",
-  "summary": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country.",
-  "voiceover": "A fresh signal from openai.com is getting attention: Expanding OpenAI’s presence in Brazil. OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to support AI adoption across the country. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
-  "sourceCandidateId": "feed:openai-news:signal",
-  "outputFile": "media/forwelle/2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal.mp4",
+  "summary": "Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with cheap proxies and retooling. Cloudflare's new Adaptive Intelligence engine flips this dynamic by autonomously learning from the meta-signals of live traffic and deploying disposable rules, making automated attacks too expensive to sustain.",
+  "voiceover": "A fresh signal from blog.cloudflare.com is getting attention: Introducing Adaptive Intelligence: Undermining the economics of every bot attack. Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with cheap proxies and retooling. Cloudflare's new Adaptive Intelligence engine flips this… The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "feed:cloudflare-blog:signal",
+  "outputFile": "media/forwelle/2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal.mp4",
   "scores": {
-    "freshness": 4,
+    "freshness": 8,
     "themeFit": 7,
-    "revenueFit": 6,
+    "revenueFit": 4,
     "engagement": 0,
     "sourceTrust": 10,
     "originalityOpportunity": 8,
     "officialFeedBoost": 6,
-    "total": 41,
+    "total": 43,
     "max": 74
   },
   "sources": [
     {
-      "name": "openai.com — first-party source",
-      "url": "https://openai.com/index/expanding-our-presence-in-brazil",
+      "name": "blog.cloudflare.com — first-party source",
+      "url": "https://blog.cloudflare.com/introducing-adaptive-intelligence/",
       "factSource": true,
       "verified": true,
-      "published": "Thu, 27 Aug 2026 03:00:00 GMT"
+      "published": "Mon, 31 Aug 2026 12:59:00 GMT"
     }
   ],
   "thirdPartyAssets": [],
+  "assetCandidates": {
+    "moneyPrinterTurbo": {
+      "status": "SKIPPED_NOT_CONFIGURED",
+      "candidateOnly": true,
+      "promotedToPublication": false,
+      "provider": "MoneyPrinterTurbo",
+      "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+    }
+  },
+  "strategy": {
+    "winningPatternLearning": {
+      "status": "BUILDING_DATASET",
+      "sampleCount": 0,
+      "targetCount": 10,
+      "briefUsed": false,
+      "editorialBrief": null
+    },
+    "rendering": {
+      "preferredFinalComposer": "remotion",
+      "currentOperatorRenderer": "procedural"
+    }
+  },
+  "structureProfile": {
+    "hookType": "concrete-change",
+    "hookText": "Introducing Adaptive Intelligence:",
+    "pacing": "five-scene-progressive",
+    "ctaType": "non-salesy-takeaway",
+    "visualStyle": "procedural-motion",
+    "sceneCount": 5,
+    "durationSeconds": 40
+  },
   "originality": {
     "creatorSignals": [
       "original Forwelle editorial angle",
@@ -51,31 +82,31 @@
       "technology",
       "future-of-work"
     ],
-    "notes": "Autonomous lane uses first-party factual sources, original writing, original procedural visuals, synthetic narration and procedural audio only."
+    "notes": "Autonomous lane uses first-party factual sources, original writing, original procedural visuals, synthetic narration and procedural audio only. Candidate third-party assets remain outside publication until provenance is verified."
   },
   "scenes": [
     {
-      "duration": 6,
+      "duration": 6.91,
       "eyebrow": "NEW SIGNAL",
       "motionTag": "WHY NOW",
-      "headline": "Expanding OpenAI’s\npresence in Brazil",
-      "body": "A fresh first-party update from openai.com.",
-      "sourceLabel": "openai.com",
+      "headline": "Introducing\nAdaptive\nIntelligence:",
+      "body": "A fresh first-party update from blog.cloudflare.com.",
+      "sourceLabel": "blog.cloudflare.com",
       "background": "#050711",
       "accent": "#7CFFDA"
     },
     {
-      "duration": 6,
+      "duration": 6.91,
       "eyebrow": "WHAT CHANGED",
       "motionTag": "THE SIGNAL",
       "headline": "Look past the\nheadline.",
-      "body": "OpenAI is expanding its presence in Brazil, deepening engagement with developers, businesses, and communities to s…",
-      "sourceLabel": "openai.com",
+      "body": "Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with c…",
+      "sourceLabel": "blog.cloudflare.com",
       "background": "#071421",
       "accent": "#5BE7FF"
     },
     {
-      "duration": 6,
+      "duration": 6.91,
       "eyebrow": "REAL QUESTION",
       "motionTag": "WORKFLOW IMPACT",
       "headline": "What becomes\npossible now?",
@@ -85,7 +116,7 @@
       "accent": "#B39CFF"
     },
     {
-      "duration": 6,
+      "duration": 6.91,
       "eyebrow": "FILTER THE HYPE",
       "motionTag": "PROOF > NOISE",
       "headline": "A demo is not a\nhabit.",
@@ -95,7 +126,7 @@
       "accent": "#FF78D8"
     },
     {
-      "duration": 6,
+      "duration": 6.91,
       "eyebrow": "BOTTOM LINE",
       "motionTag": "TRACK THE SHIFT",
       "headline": "Watch behavior,\nnot buzz.",
@@ -113,8 +144,8 @@
     ],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Expanding OpenAI’s presence in Brazil",
-    "caption": "Expanding OpenAI’s presence in Brazil Forwelle tracks practical shifts in AI, tools and how people work. Source: https://openai.com/index/expanding-our-presence-in-brazil #AI #FutureOfWork #Technology #Forwelle",
+    "title": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
+    "caption": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack Forwelle tracks practical shifts in AI, tools and how people work. Source: https://blog.cloudflare.com/introducing-adaptive-intelligence/ #AI #FutureOfWork #Technology #Forwelle",
     "youtubePrivacy": "public",
     "channelAllowlist": {
       "youtube": [
@@ -134,6 +165,6 @@
   "narration": {
     "file": "automation/forwelle-operator/narration.mp3",
     "voiceId": "geffen_32",
-    "durationSeconds": 27.288
+    "durationSeconds": 32.952
   }
 }

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": null,
+  "generatedAt": "2026-08-31T23:04:41.797Z",
   "status": "BUILDING_DATASET",
   "sampleCount": 0,
   "targetCount": 10,
@@ -16,5 +16,6 @@
     "durationBuckets": []
   },
   "editorialBrief": "No empirical winning-video pattern is active yet. Keep the current conservative editorial defaults until measured or curated samples are available.",
+  "aiAnalysisUsed": false,
   "evidenceItems": []
 }
