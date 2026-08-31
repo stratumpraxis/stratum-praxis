@@ -37,6 +37,9 @@ const item = {
   outputFile: manifest.outputFile,
   state: stateLabel,
   platforms,
+  structureProfile: manifest.structureProfile || null,
+  strategy: manifest.strategy || null,
+  assetCandidates: manifest.assetCandidates || {},
   metrics: {}
 };
 const idx = history.items.findIndex(x => x.id === item.id);
@@ -50,5 +53,5 @@ if (manifest.sourceCandidateId) {
 state.lastRun = {id: manifest.id, at: item.recordedAt, state: stateLabel};
 await fs.writeFile(path.join(ROOT, 'history.json'), JSON.stringify(history, null, 2) + '\n');
 await fs.writeFile(path.join(ROOT, 'state.json'), JSON.stringify(state, null, 2) + '\n');
-await fs.writeFile(path.join(ROOT, 'run-status.json'), JSON.stringify({at:item.recordedAt,status:stateLabel,manifestId:manifest.id,platforms}, null, 2) + '\n');
-console.log(JSON.stringify({id: manifest.id, state: stateLabel, platforms}, null, 2));
+await fs.writeFile(path.join(ROOT, 'run-status.json'), JSON.stringify({at:item.recordedAt,status:stateLabel,manifestId:manifest.id,platforms,structureProfile:item.structureProfile,winningPatternLearning:item.strategy?.winningPatternLearning || null}, null, 2) + '\n');
+console.log(JSON.stringify({id: manifest.id, state: stateLabel, platforms, structureProfile:item.structureProfile}, null, 2));
