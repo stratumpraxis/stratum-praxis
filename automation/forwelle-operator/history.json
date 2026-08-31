@@ -116,7 +116,20 @@
           "message": null
         }
       },
-      "metrics": {}
+      "metrics": {
+        "24h": {
+          "capturedAt": "2026-08-31T23:37:14.147Z",
+          "youtube": {
+            "status": "NO_PUBLISHED_URL"
+          },
+          "instagram": {
+            "status": "ADAPTER_NOT_CONFIGURED"
+          },
+          "tiktok": {
+            "status": "ADAPTER_NOT_CONFIGURED"
+          }
+        }
+      }
     },
     {
       "id": "2026-08-30-evolve-your-marketing-with-new-ai-tools-d-google-ai-signal",
@@ -159,7 +172,20 @@
           "message": null
         }
       },
-      "metrics": {}
+      "metrics": {
+        "24h": {
+          "capturedAt": "2026-08-31T23:37:14.147Z",
+          "youtube": {
+            "status": "NO_PUBLISHED_URL"
+          },
+          "instagram": {
+            "status": "ADAPTER_NOT_CONFIGURED"
+          },
+          "tiktok": {
+            "status": "ADAPTER_NOT_CONFIGURED"
+          }
+        }
+      }
     }
   ]
 }
