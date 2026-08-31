@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-04-contrast",
+  "version": "v4-pass-05-motion",
   "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
@@ -7,7 +7,7 @@
   "hookLine1": "YOUR AGENTS AREN'T ALIGNED.",
   "hookLine2": "THEY'RE DRIFTING.",
   "hookBody": "The dangerous part: each agent can still look correct.",
-  "motionIntensity": 4,
+  "motionIntensity": 2.4,
   "patternInterrupt": false,
   "highlightFailure": 1,
   "proofLine": "Cross-Agent Operating Kit turns scattered agent rules into one portable operating contract.",
@@ -22,7 +22,7 @@
   "features": ["Master policy","Agent-specific adapters","Conflict checks","Human Gate Matrix","Budget + quota guards"],
   "ctaHeadline": "CONTROL THE STACK BEFORE THE STACK CONTROLS THE WORK.",
   "ctaBody": "One purchaser · own projects · full v1.0 control kit · verified buyer workspace.",
-  "ctaPulse": 0.006,
+  "ctaPulse": 0.004,
   "bgmVolume": 0.13,
   "narrationVolume": 1,
   "colors": {"bg":"#02050a","bg2":"#07101c","silver":"#e0e7f0","white":"#fbfdff","muted":"#b1bfd0","blue":"#72b3ff","red":"#ff716d","card":"rgba(7,15,26,.95)","border":"rgba(151,184,225,.38)"}
