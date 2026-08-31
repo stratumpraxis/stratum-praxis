@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-07-proof",
+  "version": "v4-pass-08-cta",
   "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
@@ -20,8 +20,8 @@
     {"label":"CONFLICTS","text":"Which policy wins?"}
   ],
   "features": ["Master AGENTS.md policy","Claude / Codex / Cursor adapters","Policy conflict checks","Human Gate Matrix","Budget + token + quota guards"],
-  "ctaHeadline": "CONTROL THE STACK BEFORE THE STACK CONTROLS THE WORK.",
-  "ctaBody": "One purchaser · own projects · full v1.0 control kit · verified buyer workspace.",
+  "ctaHeadline": "ONE OPERATING LAYER. BEFORE ANOTHER AGENT.",
+  "ctaBody": "Master policy · agent adapters · conflict checks · human gates · budget guards. Personal · $69.",
   "ctaPulse": 0.004,
   "bgmVolume": 0.13,
   "narrationVolume": 1,
