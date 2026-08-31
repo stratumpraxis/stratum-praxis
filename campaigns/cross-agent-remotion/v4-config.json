@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-06-pattern-interrupt",
+  "version": "v4-pass-07-proof",
   "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
@@ -10,7 +10,7 @@
   "motionIntensity": 2.4,
   "patternInterrupt": true,
   "highlightFailure": 3,
-  "proofLine": "Cross-Agent Operating Kit turns scattered agent rules into one portable operating contract.",
+  "proofLine": "A master policy defines the operating truth; adapters translate it into agent-specific boundaries.",
   "failureCards": [
     {"label":"OWNERSHIP","text":"Who owns the final action?"},
     {"label":"PERMISSIONS","text":"What may each agent change?"},
@@ -19,7 +19,7 @@
     {"label":"BUDGET","text":"Who controls token spend?"},
     {"label":"CONFLICTS","text":"Which policy wins?"}
   ],
-  "features": ["Master policy","Agent-specific adapters","Conflict checks","Human Gate Matrix","Budget + quota guards"],
+  "features": ["Master AGENTS.md policy","Claude / Codex / Cursor adapters","Policy conflict checks","Human Gate Matrix","Budget + token + quota guards"],
   "ctaHeadline": "CONTROL THE STACK BEFORE THE STACK CONTROLS THE WORK.",
   "ctaBody": "One purchaser · own projects · full v1.0 control kit · verified buyer workspace.",
   "ctaPulse": 0.004,
