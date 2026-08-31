@@ -1,0 +1,45 @@
+{
+  "version": "v4-baseline",
+  "sceneFrames": [90, 165, 165, 195, 225],
+  "safeTop": 78,
+  "safeBottom": 112,
+  "hookSize": 82,
+  "hookLine1": "YOUR AGENTS DON'T",
+  "hookLine2": "SHARE THE SAME RULES.",
+  "hookBody": "Permission drift grows quietly across a multi-agent stack.",
+  "motionIntensity": 4,
+  "patternInterrupt": false,
+  "highlightFailure": 1,
+  "proofLine": "Cross-Agent Operating Kit turns scattered agent rules into one portable operating contract.",
+  "failureCards": [
+    {"label":"OWNERSHIP","text":"Who owns the final action?"},
+    {"label":"PERMISSIONS","text":"What may each agent change?"},
+    {"label":"HUMAN GATES","text":"Where must a person approve?"},
+    {"label":"STOP RULES","text":"When must automation halt?"},
+    {"label":"BUDGET","text":"Who controls token spend?"},
+    {"label":"CONFLICTS","text":"Which policy wins?"}
+  ],
+  "features": [
+    "Master policy",
+    "Agent-specific adapters",
+    "Conflict checks",
+    "Human Gate Matrix",
+    "Budget + quota guards"
+  ],
+  "ctaHeadline": "CONTROL THE STACK BEFORE THE STACK CONTROLS THE WORK.",
+  "ctaBody": "One purchaser · own projects · full v1.0 control kit · verified buyer workspace.",
+  "ctaPulse": 0.006,
+  "bgmVolume": 0.13,
+  "narrationVolume": 1,
+  "colors": {
+    "bg":"#03070c",
+    "bg2":"#07111f",
+    "silver":"#d6deea",
+    "white":"#f4f7fb",
+    "muted":"#9aabc0",
+    "blue":"#68aaff",
+    "red":"#ff6965",
+    "card":"rgba(8,17,29,.92)",
+    "border":"rgba(118,159,209,.32)"
+  }
+}
