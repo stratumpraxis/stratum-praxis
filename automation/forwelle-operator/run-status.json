@@ -1,9 +1,47 @@
 {
-  "at": "2026-08-31T23:04:41.845Z",
-  "status": "PLANNED",
+  "at": "2026-08-31T23:06:06.958Z",
+  "status": "ATTEMPTED_OR_BLOCKED",
   "manifestId": "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal",
-  "candidateId": "feed:cloudflare-blog:signal",
-  "usedAIEditor": false,
-  "winningPatternSamples": 0,
-  "winningPatternBriefUsed": false
+  "platforms": {
+    "youtube": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "tiktok": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "instagram": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    }
+  },
+  "structureProfile": {
+    "hookType": "concrete-change",
+    "hookText": "Introducing Adaptive Intelligence:",
+    "pacing": "five-scene-progressive",
+    "ctaType": "non-salesy-takeaway",
+    "visualStyle": "procedural-motion",
+    "sceneCount": 5,
+    "durationSeconds": 40
+  },
+  "winningPatternLearning": {
+    "status": "BUILDING_DATASET",
+    "sampleCount": 0,
+    "targetCount": 10,
+    "briefUsed": false,
+    "editorialBrief": null
+  }
 }

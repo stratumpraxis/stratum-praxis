@@ -102,6 +102,57 @@
         ],
         "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/forwelle/2026-08-30-expanding-openai-s-presence-in-brazil-openai-news-signal.mp4"
       }
+    },
+    "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal": {
+      "youtube": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-08-31T23:06:06.914Z",
+        "requestedAllowlist": [
+          "// Forwelle",
+          "Forwelle"
+        ],
+        "available": []
+      },
+      "tiktok": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-08-31T23:06:06.915Z",
+        "requestedAllowlist": [
+          "Forwelle",
+          "forwelle"
+        ],
+        "available": [
+          {
+            "id": "6a8e5d28ccaf649a671a13e7",
+            "name": "stratumpraxis",
+            "displayName": "stratumpraxis"
+          }
+        ]
+      },
+      "instagram": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-08-31T23:06:06.916Z",
+        "requestedAllowlist": [
+          "Forwelle",
+          "forwelle"
+        ],
+        "available": [
+          {
+            "id": "6a8e5b5accaf649a671a0cd9",
+            "name": "praxisstratum",
+            "displayName": "praxisstratum"
+          }
+        ]
+      },
+      "_state": {
+        "status": "blocked-no-eligible-channel",
+        "at": "2026-08-31T23:06:06.917Z",
+        "requestedServices": [
+          "youtube",
+          "tiktok",
+          "instagram"
+        ],
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/forwelle/2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal.mp4"
+      }
     }
   }
 }
