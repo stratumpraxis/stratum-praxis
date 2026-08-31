@@ -1,0 +1,109 @@
+name: Render Vector Faceless AI Truth V3
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/render-vector-faceless-truth-v3.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  final-polish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+          cd campaigns/vector-faceless-truth-remotion && npm install
+      - name: Build visual pass 3 from inspected pass 2
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: |
+          cp src/index-v2.jsx src/index-v3.jsx
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('src/index-v3.jsx')
+          s=p.read_text()
+          old="""    <Fade from={126}><div style={{position: 'absolute', left: 64, top: 1290, fontSize: 23, color: C.cyan}}>note.com/deft_eel6718</div></Fade>\n    <Subtitle>AI副業の「道具」ではなく、売れるまでの構造を検証する。</Subtitle>"""
+          new="""    <Fade from={126}>\n      <div style={{position: 'absolute', left: 64, top: 1260, width: 880, height: 110, borderRadius: 24, border: `1px solid ${C.cyan}45`, background: 'rgba(6,27,35,.78)', display: 'flex', alignItems: 'center', padding: '0 28px', gap: 22}}>\n        <div style={{fontSize: 20, color: C.mid, letterSpacing: 2}}>続きは</div>\n        <div><div style={{fontSize: 27, fontWeight: 900}}>Vector Praxis</div><div style={{fontSize: 20, color: C.cyan, marginTop: 4}}>note.com/deft_eel6718</div></div>\n      </div>\n    </Fade>\n    <Subtitle>AI副業の「道具」ではなく、売れるまでの構造を検証する。</Subtitle>"""
+          if old not in s: raise SystemExit('Vector CTA patch target not found')
+          s=s.replace(old,new)
+          old2="""    <Fade from={38}><div style={{position: 'absolute', left: 64, top: 900, width: 880, textAlign: 'center', fontSize: 22, color: C.mid}}>AI副業・自動化・収益構造を日本語で検証</div></Fade>\n  </Shell>"""
+          new2="""    <Fade from={38}><div style={{position: 'absolute', left: 64, top: 900, width: 880, textAlign: 'center', fontSize: 22, color: C.mid}}>AI副業・自動化・収益構造を日本語で検証</div></Fade>\n    <Fade from={48}>\n      <div style={{position: 'absolute', left: 205, top: 1035, width: 670, height: 100, borderRadius: 50, border: `1px solid ${C.cyan}50`, background: 'rgba(7,29,38,.80)', display: 'grid', placeItems: 'center', fontSize: 25, fontWeight: 900, color: C.white, boxShadow: `0 0 34px ${C.cyan}18`}}>続きは Vector Praxis / note</div>\n    </Fade>\n  </Shell>"""
+          if old2 not in s: raise SystemExit('Final CTA patch target not found')
+          s=s.replace(old2,new2)
+          p.write_text(s)
+          print('VISUAL_PASS_3_PATCH=PASS')
+          PY
+      - name: Download final narration and generate BGM v3
+        working-directory: campaigns/vector-faceless-truth-remotion
+        env:
+          NARRATION_URL: 'https://resource2.heygen.ai/text_to_speech/a97602ecc435417ab1b776674e7db173/662e1397965c484e8f65fa58c77effde/id=b265d91d-a4b7-4780-8f94-590b5ec17d6b.wav'
+        run: |
+          mkdir -p public output/qa-stills-v3
+          curl --fail --silent --show-error --location "$NARRATION_URL" -o public/narration.wav
+          node music.mjs
+      - name: Render final v3
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: npx remotion render src/index-v3.jsx VectorFacelessTruth output/vector-faceless-ai-tiktok-truth-v3.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p
+      - name: Final technical and frame QA
+        working-directory: campaigns/vector-faceless-truth-remotion
+        run: |
+          f='output/vector-faceless-ai-tiktok-truth-v3.mp4'
+          ffprobe -v error -show_entries stream=width,height,codec_name -show_entries format=duration -of json "$f" | tee output/qa-v3.json
+          python3 - <<'PY'
+          import json
+          q=json.load(open('output/qa-v3.json'))
+          v=next((s for s in q['streams'] if s.get('width')),None)
+          a=next((s for s in q['streams'] if s.get('codec_name')=='aac'),None)
+          d=float(q['format']['duration'])
+          assert v and v['width']==1080 and v['height']==1920
+          assert a and 93.5 <= d <= 94.5
+          print('FINAL_TECH_QA=PASS')
+          PY
+          rm -rf output/qa-stills-v3 && mkdir -p output/qa-stills-v3
+          times=(3 14 28 46 58 70 82 91)
+          i=1
+          for t in "${times[@]}"; do
+            ffmpeg -y -loglevel error -ss "$t" -i "$f" -frames:v 1 "output/qa-stills-v3/frame-$(printf '%02d' "$i").png"
+            i=$((i+1))
+          done
+      - name: Persist final master and QA
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          persist=/tmp/vector-v3
+          rm -rf "$persist" && mkdir -p "$persist"
+          files=(
+            campaigns/vector-faceless-truth-remotion/src/index-v3.jsx
+            campaigns/vector-faceless-truth-remotion/output/vector-faceless-ai-tiktok-truth-v3.mp4
+            campaigns/vector-faceless-truth-remotion/output/qa-v3.json
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-01.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-02.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-03.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-04.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-05.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-06.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-07.png
+            campaigns/vector-faceless-truth-remotion/output/qa-stills-v3/frame-08.png
+          )
+          cp --parents "${files[@]}" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "${files[@]}"
+            git diff --cached --quiet && exit 0
+            git commit -m 'Render final Vector faceless AI truth video v3'
+            if git push origin HEAD:main; then echo 'VECTOR_FINAL_V3_PUBLISHED=1'; exit 0; fi
+          done
+          exit 1
