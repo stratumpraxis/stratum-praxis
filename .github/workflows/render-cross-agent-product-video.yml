@@ -3,7 +3,11 @@ on:
   push:
     branches: [main]
     paths:
-      - 'campaigns/cross-agent-remotion/**'
+      - 'campaigns/cross-agent-remotion/src/index.jsx'
+      - 'campaigns/cross-agent-remotion/narrate.mjs'
+      - 'campaigns/cross-agent-remotion/package.json'
+      - 'campaigns/cross-agent-remotion/package-lock.json'
+      - 'campaigns/cross-agent-remotion/visual-manifest.json'
       - 'trend-video-engine/visual-technique-library.json'
       - 'trend-video-engine/visual-director.mjs'
       - 'trend-video-engine/seedance25-generate.mjs'
@@ -81,18 +85,46 @@ jobs:
           const state = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/src/generated-assets.json','utf8'));
           console.log('SEEDANCE_HOOK=' + (state.seedanceHook?.enabled ? 'ENABLED' : 'FALLBACK_REMOTION'));
           NODE
-      - name: Publish rendered asset and visual plan into repository
+
+      - name: Publish rendered asset and visual plan into repository safely
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4 \
-                  campaigns/cross-agent-remotion/output/qa.json \
-                  campaigns/cross-agent-remotion/visual-plan.json \
-                  campaigns/cross-agent-remotion/src/generated-assets.json
+
+          persist=/tmp/cross-agent-render-persist
+          rm -rf "$persist"
+          mkdir -p "$persist"
+          files=(
+            campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4
+            campaigns/cross-agent-remotion/output/qa.json
+            campaigns/cross-agent-remotion/visual-plan.json
+            campaigns/cross-agent-remotion/src/generated-assets.json
+          )
           if [ -f campaigns/cross-agent-remotion/public/seedance-hook.mp4 ]; then
-            git add campaigns/cross-agent-remotion/public/seedance-hook.mp4
+            files+=(campaigns/cross-agent-remotion/public/seedance-hook.mp4)
           fi
-          git diff --cached --quiet && exit 0
-          git commit -m "Render Cross-Agent video with visual director"
-          git pull --rebase origin main
-          git push
+          cp --parents "${files[@]}" "$persist"
+
+          # Bounded retry: preserve unrelated concurrent commits while replacing only
+          # this workflow's generated assets. No rebase of binary MP4 files.
+          for attempt in 1 2 3; do
+            echo "PERSIST_ATTEMPT=$attempt"
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "${files[@]}"
+            if git diff --cached --quiet; then
+              echo 'No generated asset changes to publish.'
+              exit 0
+            fi
+            git commit -m "Render Cross-Agent video with visual director"
+            if git push origin HEAD:main; then
+              echo 'RENDER_ASSETS_PUBLISHED=1'
+              exit 0
+            fi
+            echo 'Concurrent update detected; refreshing once within bounded retry policy.'
+          done
+
+          echo 'Could not publish generated assets after 3 bounded attempts.' >&2
+          exit 1
