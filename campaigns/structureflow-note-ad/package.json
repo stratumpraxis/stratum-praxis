@@ -1,0 +1,14 @@
+{
+  "name": "structureflow-note-ad",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.jsx StructureflowNoteAd output/structureflow-ai-quality-teaser.mp4 --codec=h264 --crf=17 --pixel-format=yuv420p"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.506",
+    "remotion": "4.0.506",
+    "@remotion/media": "4.0.506",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}
