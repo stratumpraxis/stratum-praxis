@@ -1,0 +1,72 @@
+name: Verify Cross-Agent Permission Drift v4 Instagram Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-cross-agent-instagram-permission-v4-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only verify exact Instagram post until sent
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          const API='https://api.buffer.com';
+          const POST_ID='6a94fd065ff58b53ab1e482e';
+          const CHANNEL_ID='6a8e5b5accaf649a671a0cd9';
+          const q=s=>JSON.stringify(String(s));
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer org');
+          let found=null;
+          for(let attempt=1;attempt<=8;attempt++){
+            const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(CHANNEL_ID)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+            found=posts.find(p=>p.id===POST_ID)||null;
+            console.log(JSON.stringify({attempt,found},null,2));
+            if(found?.status==='sent'&&found?.externalLink) break;
+            if(attempt<8) await new Promise(r=>setTimeout(r,15000));
+          }
+          if(!found) throw new Error('Exact created Instagram post not found');
+          const evidence={campaign:'cross-agent-instagram-permission-drift-v4-20260831',platform:'instagram',channelId:CHANNEL_ID,channel:'praxisstratum',bufferPostId:POST_ID,status:found.status||null,sentAt:found.sentAt||null,externalLink:found.externalLink||null,checkedAt:new Date().toISOString(),productUrl:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=instagram&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v4&route_id=instagram_cross_agent_permission_v4_20260831'};
+          fs.writeFileSync('distribution/cross-agent-instagram-permission-v4-status.json',JSON.stringify(evidence,null,2)+'\n');
+          console.log(JSON.stringify(evidence,null,2));
+          if(evidence.status!=='sent'||!evidence.externalLink) process.exit(2);
+          NODE
+      - name: Persist publication evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          file=distribution/cross-agent-instagram-permission-v4-status.json
+          persist=/tmp/igv4verify
+          rm -rf "$persist" && mkdir -p "$persist"
+          cp --parents "$file" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "$file"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'Record verified Cross-Agent permission drift v4 Instagram publication'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
