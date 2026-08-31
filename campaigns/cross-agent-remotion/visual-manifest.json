@@ -1,0 +1,17 @@
+{
+  "id": "cross-agent-operating-kit-personal-visual-v2",
+  "brandLane": "stratum-en",
+  "platformVariant": "vertical-social-product-reel",
+  "title": "Cross-Agent Operating Kit — Personal",
+  "topic": "A practical operating layer for multi-agent AI stacks: roles, permissions, human gates, stop rules, budget controls, policy conflict handling and migration readiness.",
+  "language": "en",
+  "summary": "Premium product video for a $69 operating kit. The visual hook should show agent sprawl becoming coordinated through one control layer without relying on third-party logos, people, or stock footage.",
+  "scenes": [
+    {"headline":"More agents ≠ more control","body":"Multiple independent AI nodes drift out of alignment."},
+    {"headline":"The failure isn't the model","body":"Roles, permissions, gates, budgets and stop rules conflict."},
+    {"headline":"One policy. Multiple agents.","body":"A shared operating contract coordinates the stack."},
+    {"headline":"Built for real operations","body":"Policy, adapters, checks, gates, budget and migration score."},
+    {"headline":"Personal · $69","body":"Clear authored CTA in Remotion, never generated into the Seedance footage."}
+  ],
+  "publish":{"services":["instagram","bluesky"]}
+}
