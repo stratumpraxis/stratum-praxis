@@ -1,0 +1,22 @@
+name: Buffer Channel Audit Once
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/buffer-channel-audit.mjs'
+      - '.github/workflows/buffer-channel-audit-once.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read Buffer channels
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: node distribution/buffer-channel-audit.mjs
