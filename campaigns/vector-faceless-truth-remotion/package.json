@@ -1,0 +1,14 @@
+{
+  "name": "vector-faceless-truth-remotion",
+  "private": true,
+  "scripts": {
+    "render": "remotion render src/index.jsx VectorFacelessTruth output/vector-faceless-ai-tiktok-truth.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p"
+  },
+  "dependencies": {
+    "@remotion/cli": "4.0.506",
+    "@remotion/media": "4.0.506",
+    "remotion": "4.0.506",
+    "react": "19.1.0",
+    "react-dom": "19.1.0"
+  }
+}
