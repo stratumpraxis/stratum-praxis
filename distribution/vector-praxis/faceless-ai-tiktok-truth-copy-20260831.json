@@ -1,0 +1,57 @@
+{
+  "campaign": "vector-faceless-ai-tiktok-truth-20260831",
+  "brand": "Vector Praxis",
+  "destination": "https://note.com/deft_eel6718/n/n2bfe0946a903",
+  "copy_revisions": [
+    {
+      "revision": 1,
+      "reason": "検索語を広く含めた初稿。キーワード過多のため不採用。",
+      "text": "顔出しなしAI×TikTokは本当にほぼ作業なしで収益化できるのか。AI動画制作、AI音声、画像生成、字幕、BGM、SNS自動投稿まで、2026年は多くの工程を自動化できます。ただし自動投稿と自動収益は別物。TikTok運用、Creator Rewards、AI副業、SNS収益化の条件を整理します。 #AI副業 #TikTok副業 #AI動画 #AI収益 #SNS自動化 #AI自動化 #動画副業 #生成AI #副業 #収益化"
+    },
+    {
+      "revision": 2,
+      "reason": "断定を削り、クリック目的の煽りを抑制。検索意図を『真相・仕組み』に寄せた。",
+      "text": "顔出しなしAI×TikTokは、本当に『ほぼ作業なしで収益化』できるのか。台本・音声・映像・投稿はかなり自動化できます。でも、自動投稿と自動収益は別物です。TikTok Creator Rewardsでは高品質・オリジナル・1分以上の動画が基本。AI生成コンテンツは透明性のある開示も重要です。AI副業をツールではなく、制作→流入→販売→改善の構造から検証します。 #AI副業 #AI動画 #TikTok運用 #SNS自動化 #生成AI #VectorPraxis"
+    },
+    {
+      "revision": 3,
+      "selected": true,
+      "reason": "SEO・可読性・責任回避・Vector導線のバランスを最終調整。",
+      "text": "顔出しなしAI×TikTokは、本当に『ほぼ作業なしで収益化』できるのか。\n\n台本・日本語音声・映像・字幕・BGM・投稿まで、自動化できる工程は増えています。けれど、自動投稿と自動収益は別物です。\n\nTikTok Creator Rewardsの対象動画は、高品質・オリジナル・1分以上が基本。AI生成コンテンツは適切な開示も重要です。条件や提供地域は変更される可能性があります。\n\nAIは“稼ぐ魔法”ではなく制作装置。収益は、制作 → 流入 → 販売 → 改善のループで考える。\n\n続き：Vector Praxis『AI副業完全実装マニュアル スマホで作るAI収益システム』\nhttps://note.com/deft_eel6718/n/n2bfe0946a903\n\nAI生成音声・オリジナルモーショングラフィックを使用。\n\n#AI副業 #AI動画 #TikTok運用 #SNS自動化 #生成AI #VectorPraxis"
+    }
+  ],
+  "safety_reviews": [
+    {
+      "pass": 1,
+      "focus": "claims_and_monetization",
+      "result": "PASS",
+      "checks": [
+        "収益・再生数・成功を保証しない",
+        "『ほぼ作業なしで収益化』は検証対象の引用表現としてのみ使用",
+        "Creator Rewardsの条件は公式情報ベースかつ変更可能性を明記"
+      ]
+    },
+    {
+      "pass": 2,
+      "focus": "rights_originality_privacy",
+      "result": "PASS",
+      "checks": [
+        "第三者X投稿のスクリーンショットを映像へ転載しない",
+        "実在人物の顔・声・ロゴを使用しない",
+        "映像はオリジナルのRemotionモーショングラフィック",
+        "BGMはローカル生成したオリジナル音源"
+      ]
+    },
+    {
+      "pass": 3,
+      "focus": "platform_distribution_brand",
+      "result": "PASS_WITH_PUBLISH_GATE",
+      "checks": [
+        "AI生成音声を明示",
+        "短時間の重複投稿を禁止",
+        "Vector PraxisコンテンツをStratum Praxis TikTokへ誤配信しない",
+        "Vector専用TikTok publisher認証が確認できるまで公開しない"
+      ]
+    }
+  ]
+}
