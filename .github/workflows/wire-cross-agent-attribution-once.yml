@@ -1,0 +1,60 @@
+name: Wire Cross-Agent Attribution Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/wire-cross-agent-attribution-once.yml'
+      - 'cross-agent-attribution.js'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: wire-cross-agent-attribution-once
+  cancel-in-progress: false
+
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load attribution patch after base analytics
+        shell: python
+        run: |
+          from pathlib import Path
+
+          targets = {
+              Path('index.html'): '<script src="/scos-analytics.js" defer></script>',
+              Path('cross-agent-operating-kit.html'): '<script defer src="/scos-analytics.js"></script>',
+          }
+          patch = '<script defer src="/cross-agent-attribution.js"></script>'
+          for path, anchor in targets.items():
+              s = path.read_text(encoding='utf-8')
+              if patch in s:
+                  continue
+              if anchor not in s:
+                  raise SystemExit(f'Analytics anchor missing in {path}')
+              s = s.replace(anchor, anchor + '\n  ' + patch, 1)
+              path.write_text(s, encoding='utf-8')
+
+      - name: Verify wiring
+        run: |
+          set -euo pipefail
+          grep -Fq '/cross-agent-attribution.js' index.html
+          grep -Fq '/cross-agent-attribution.js' cross-agent-operating-kit.html
+          grep -Fq 'client_reference_id' cross-agent-attribution.js
+          grep -Fq 'owned_home_hero_cross_agent_personal_20260831' cross-agent-attribution.js
+          grep -Fq 'owned_home_nav_cross_agent_personal_20260831' cross-agent-attribution.js
+
+      - name: Persist wiring
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html cross-agent-operating-kit.html
+          git diff --cached --quiet && exit 0
+          git commit -m "Wire Cross-Agent route attribution into live funnel"
+          git pull --rebase origin main
+          git push
