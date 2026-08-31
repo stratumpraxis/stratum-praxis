@@ -4,7 +4,7 @@ name: Forwelle Publish AI Wasnt the Bottleneck Once
 on:
   push:
     paths:
-      - '.github/workflows/forwelle-publish-ai-wasnt-bottleneck-once.yml'
+      - 'distribution/forwelle-ai-bottleneck.trigger'
   workflow_dispatch:
 
 permissions:
