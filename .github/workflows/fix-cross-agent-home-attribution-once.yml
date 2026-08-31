@@ -1,0 +1,85 @@
+name: Fix Cross-Agent Home Attribution Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-cross-agent-home-attribution-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-cross-agent-home-attribution-once
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Preserve exact home route attribution at runtime
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('scos-analytics.js')
+          s = path.read_text(encoding='utf-8')
+          start_marker = '  function alignPrimaryRevenueCTA() {'
+          end_marker = '\n  function externalCategory'
+          start = s.find(start_marker)
+          end = s.find(end_marker, start)
+          if start < 0 or end < 0:
+              raise SystemExit('alignPrimaryRevenueCTA block not found')
+
+          block = '''  function alignPrimaryRevenueCTA() {
+    const onHomepage = location.pathname === '/' || location.pathname === '/index.html';
+    if (!onHomepage) return;
+
+    const heroDestination = '/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=owned_web&utm_campaign=cross_agent_personal&utm_content=home_hero&route_id=owned_home_hero_cross_agent_personal_20260831';
+    const navDestination = '/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=owned_web&utm_campaign=cross_agent_personal&utm_content=home_nav&route_id=owned_home_nav_cross_agent_personal_20260831';
+    const heroPrimary = document.querySelector('.hero .button-primary');
+    if (heroPrimary) {
+      heroPrimary.href = heroDestination;
+      heroPrimary.textContent = 'Cross-Agent Operating Kit — Personal · $69';
+      heroPrimary.dataset.analyticsId = 'cross_agent_personal_home_hero';
+      heroPrimary.dataset.product = 'cross_agent_personal';
+      heroPrimary.setAttribute('data-primary-cta', 'true');
+    }
+
+    const nav = document.querySelector('#site-nav');
+    if (nav) {
+      let link = nav.querySelector('[data-cross-agent-primary], a[href*="cross-agent-operating-kit.html"]');
+      const isNew = !link;
+      if (!link) link = document.createElement('a');
+      link.href = navDestination;
+      link.textContent = 'Cross-Agent Kit · $69';
+      link.dataset.crossAgentPrimary = 'true';
+      link.dataset.analyticsId = 'cross_agent_personal_home_nav';
+      link.dataset.product = 'cross_agent_personal';
+      if (isNew) nav.insertBefore(link, nav.firstChild);
+    }
+  }
+'''
+          s = s[:start] + block + s[end:]
+          path.write_text(s, encoding='utf-8')
+
+      - name: Verify runtime attribution fix
+        run: |
+          set -euo pipefail
+          grep -Fq 'route_id=owned_home_hero_cross_agent_personal_20260831' scos-analytics.js
+          grep -Fq 'route_id=owned_home_nav_cross_agent_personal_20260831' scos-analytics.js
+          grep -Fq 'a[href*="cross-agent-operating-kit.html"]' scos-analytics.js
+          test "$(grep -Fo 'route_id=owned_home_hero_cross_agent_personal_20260831' scos-analytics.js | wc -l)" -eq 1
+
+      - name: Persist attribution fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scos-analytics.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Preserve Cross-Agent home route attribution at runtime"
+          git pull --rebase origin main
+          git push
