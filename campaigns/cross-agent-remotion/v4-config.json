@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-08-cta",
+  "version": "v4-pass-09-audio",
   "sceneFrames": [78, 150, 165, 180, 240],
   "safeTop": 112,
   "safeBottom": 182,
@@ -23,7 +23,7 @@
   "ctaHeadline": "ONE OPERATING LAYER. BEFORE ANOTHER AGENT.",
   "ctaBody": "Master policy · agent adapters · conflict checks · human gates · budget guards. Personal · $69.",
   "ctaPulse": 0.004,
-  "bgmVolume": 0.13,
-  "narrationVolume": 1,
+  "bgmVolume": 0.095,
+  "narrationVolume": 1.04,
   "colors": {"bg":"#02050a","bg2":"#07101c","silver":"#e0e7f0","white":"#fbfdff","muted":"#b1bfd0","blue":"#72b3ff","red":"#ff716d","card":"rgba(7,15,26,.95)","border":"rgba(151,184,225,.38)"}
 }
