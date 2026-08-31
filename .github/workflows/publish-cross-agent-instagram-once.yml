@@ -1,0 +1,27 @@
+name: Publish Cross-Agent Instagram Once
+
+on:
+  push:
+    paths:
+      - 'distribution/cross-agent-instagram-20260831.trigger'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cross-agent-instagram-20260831
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish Cross-Agent Operating Kit Reel to Stratum Praxis Instagram
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: distribution/cross-agent-instagram-20260831.json
+          TREND_VIDEO_URL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4
+          VIDEO_PUBLISH_LEDGER: /tmp/cross-agent-instagram-ledger.json
+        run: node distribution/buffer-video-publisher.mjs
