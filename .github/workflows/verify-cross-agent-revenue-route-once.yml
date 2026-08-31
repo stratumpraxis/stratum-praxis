@@ -1,0 +1,56 @@
+name: Verify Cross-Agent Revenue Route Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-cross-agent-revenue-route-once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public owned-web revenue route
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          wait_for_contains() {
+            local url="$1"; shift
+            for attempt in $(seq 1 12); do
+              body="$(curl --fail --silent --show-error --location --max-time 20 "$url" || true)"
+              ok=1
+              for needle in "$@"; do
+                grep -F "$needle" <<<"$body" >/dev/null || ok=0
+              done
+              if [[ "$ok" == "1" ]]; then
+                echo "VERIFIED: $url"
+                return 0
+              fi
+              echo "Waiting for public content ($attempt/12): $url"
+              sleep 5
+            done
+            echo "Public content verification failed: $url" >&2
+            return 1
+          }
+
+          wait_for_contains 'https://stratumpraxis.com/' \
+            'Cross-Agent Operating Kit — Personal · $69' \
+            'route_id=owned_home_hero_cross_agent_personal_20260831' \
+            'route_id=owned_home_nav_cross_agent_personal_20260831'
+
+          wait_for_contains 'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html' \
+            'Recommended starting point · Portable across runtimes' \
+            'View the Cross-Agent Operating Kit — $69' \
+            'route_id=owned_governance_cross_agent_personal_20260831'
+
+          wait_for_contains 'https://stratumpraxis.com/cross-agent-operating-kit.html' \
+            'Cross-Agent Operating Kit' \
+            '$69' \
+            'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T'
+
+          echo 'PUBLIC_REVENUE_ROUTE_VERIFIED'
