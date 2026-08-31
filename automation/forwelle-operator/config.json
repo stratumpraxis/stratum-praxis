@@ -1,5 +1,5 @@
 {
-  "version": 2,
+  "version": 3,
   "brand": "Forwelle",
   "phase": 1,
   "schedule": {
@@ -30,6 +30,32 @@
     "targetVoiceoverWords": [80, 115],
     "targetDurationSeconds": [32, 52],
     "sceneCount": 5
+  },
+  "learning": {
+    "winningVideoTargetCount": 10,
+    "minSamplesForPatternAnalysis": 3,
+    "model": "openai/gpt-4.1-mini",
+    "policy": "Learn repeatable structure only. Never copy wording, footage, branding, identity or protected creative expression from reference videos. Own 24h/72h performance data is preferred whenever available."
+  },
+  "assetProviders": {
+    "moneyPrinterTurbo": {
+      "enabled": true,
+      "required": false,
+      "candidateOnly": true,
+      "baseUrl": "",
+      "videoSource": "pexels",
+      "clipDurationSeconds": 4,
+      "pollMs": 6000,
+      "maxPolls": 20,
+      "requestTimeoutMs": 20000,
+      "downloadTimeoutMs": 60000,
+      "maxCandidateBytes": 120000000
+    }
+  },
+  "rendering": {
+    "preferredFinalComposer": "remotion",
+    "currentOperatorRenderer": "procedural",
+    "replacementPolicy": "Do not remove Remotion unless a tested full replacement is superior across quality, automation, repeatability and maintainability. New generators should enter as complementary asset providers first."
   },
   "publish": {
     "services": ["youtube", "tiktok", "instagram"],
