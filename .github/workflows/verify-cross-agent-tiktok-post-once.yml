@@ -1,0 +1,81 @@
+name: Verify Cross-Agent TikTok Post Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-cross-agent-tiktok-post-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: verify-cross-agent-tiktok-post-20260831
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read-only verify exact Buffer TikTok post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const API='https://api.buffer.com';
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          const q=s=>JSON.stringify(String(s));
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const targetChannelId='6a8e5d28ccaf649a671a13e7';
+          const targetPostId='6a94f42da84cfe421e2c4d92';
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer org');
+          const channels=await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service} }`);
+          const target=(channels.channels||[]).find(c=>c.id===targetChannelId && String(c.service).toLowerCase()==='tiktok');
+          if(!target) throw new Error('Exact Stratum Praxis TikTok channel unavailable');
+          let found=null;
+          for(let attempt=0;attempt<3 && !found;attempt++){
+            const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(target.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+            found=posts.find(p=>p.id===targetPostId);
+            if(!found && attempt<2) await new Promise(r=>setTimeout(r,10000));
+          }
+          if(!found) throw new Error('Exact TikTok post not found after bounded read-only verification');
+          const evidence={
+            campaign:'cross-agent-tiktok-20260831-cinematic-v3',
+            platform:'tiktok',
+            channelId:target.id,
+            channel:target.displayName||target.name,
+            bufferPostId:found.id,
+            status:found.status||null,
+            sentAt:found.sentAt||null,
+            externalLink:found.externalLink||null,
+            checkedAt:new Date().toISOString(),
+            productUrl:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=tiktok&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=cinematic_v3&route_id=tiktok_cross_agent_personal_20260831'
+          };
+          fs.writeFileSync('distribution/cross-agent-tiktok-v3-status.json',JSON.stringify(evidence,null,2)+'\n');
+          console.log(JSON.stringify(evidence,null,2));
+          NODE
+
+      - name: Persist verification evidence
+        run: |
+          git config user.name 'stratumpraxis'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add distribution/cross-agent-tiktok-v3-status.json
+          if git diff --cached --quiet; then
+            echo 'No evidence change to commit.'
+          else
+            git commit -m 'Record verified Cross-Agent TikTok publication'
+            git push
+          fi
