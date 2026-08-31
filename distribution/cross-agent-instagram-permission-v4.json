@@ -1,0 +1,14 @@
+{
+  "id": "cross-agent-instagram-permission-drift-v4-20260831",
+  "title": "Cross-Agent Operating Kit — Permission Drift",
+  "summary": "Your agents can all be right — and the system can still fail.",
+  "publish": {
+    "services": ["instagram"],
+    "mode": "shareNow",
+    "title": "Cross-Agent Operating Kit — Permission Drift",
+    "caption": "Your agents can all be right — and the system can still fail.\n\nPermissions, human gates, budgets, and stop rules can disagree across a multi-agent stack.\n\nCross-Agent Operating Kit — Personal · $69\nMaster policy · agent adapters · conflict checks · Human Gate Matrix · budget + quota guards.\n\nhttps://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=instagram&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v4&route_id=instagram_cross_agent_permission_v4_20260831\n\nAI-generated narration.\n\n#AIAgents #MultiAgentSystems #AIAutomation #AIWorkflow #AIGovernance",
+    "channelAllowlist": {
+      "instagram": ["6a8e5b5accaf649a671a0cd9", "praxisstratum", "@praxisstratum"]
+    }
+  }
+}
