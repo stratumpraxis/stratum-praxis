@@ -6,25 +6,41 @@ on:
       - 'distribution/cross-agent-instagram-verify-20260831.trigger'
 
 permissions:
-  contents: read
+  contents: write
+
+concurrency:
+  group: verify-cross-agent-instagram-20260831
+  cancel-in-progress: false
 
 jobs:
   verify:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
+      - uses: actions/checkout@v4
       - name: Verify Buffer Instagram post
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           POST_ID: 6a94da9e0630d63312f92cfa
         run: |
-          sleep 20
+          sleep 5
           node - <<'NODE'
+          const fs = require('fs');
           const key = process.env.BUFFER_API_KEY;
           const id = process.env.POST_ID;
           const query = `query { post(input:{id:${JSON.stringify(id)}}) { id text status sentAt sharedNow externalLink } }`;
           const r = await fetch('https://api.buffer.com', {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
           const j = await r.json();
           console.log(JSON.stringify(j, null, 2));
-          if (!r.ok || j.errors) process.exit(1);
+          if (!r.ok || j.errors || !j.data?.post) process.exit(1);
+          fs.writeFileSync('distribution/cross-agent-instagram-status.json', JSON.stringify({checkedAt:new Date().toISOString(), ...j.data.post}, null, 2) + '\n');
           NODE
+      - name: Persist public publication evidence
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add distribution/cross-agent-instagram-status.json
+          git diff --cached --quiet && exit 0
+          git commit -m "Record Cross-Agent Instagram publication evidence"
+          git pull --rebase origin main
+          git push
