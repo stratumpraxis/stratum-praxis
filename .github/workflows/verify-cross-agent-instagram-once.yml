@@ -25,15 +25,17 @@ jobs:
         run: |
           node - <<'NODE'
           const fs = require('fs');
-          const key = process.env.BUFFER_API_KEY;
-          const id = process.env.POST_ID;
-          const query = `query { post(input:{id:${JSON.stringify(id)}}) { id text status sentAt sharedNow externalLink } }`;
-          const r = await fetch('https://api.buffer.com', {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
-          let j;
-          try { j = await r.json(); } catch (e) { j = {parse_error:String(e), http_status:r.status}; }
-          const safe = {checkedAt:new Date().toISOString(), httpStatus:r.status, response:j};
-          fs.writeFileSync('distribution/cross-agent-instagram-status.json', JSON.stringify(safe, null, 2) + '\n');
-          console.log(JSON.stringify(safe, null, 2));
+          (async () => {
+            const key = process.env.BUFFER_API_KEY;
+            const id = process.env.POST_ID;
+            const query = `query { post(input:{id:${JSON.stringify(id)}}) { id text status sentAt sharedNow externalLink } }`;
+            const r = await fetch('https://api.buffer.com', {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
+            let j;
+            try { j = await r.json(); } catch (e) { j = {parse_error:String(e), http_status:r.status}; }
+            const safe = {checkedAt:new Date().toISOString(), httpStatus:r.status, response:j};
+            fs.writeFileSync('distribution/cross-agent-instagram-status.json', JSON.stringify(safe, null, 2) + '\n');
+            console.log(JSON.stringify(safe, null, 2));
+          })().catch((e) => { console.error(e); process.exit(1); });
           NODE
       - name: Persist Buffer status evidence
         run: |
