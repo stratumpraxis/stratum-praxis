@@ -36,6 +36,20 @@ jobs:
           base64 -w0 /tmp/cross-agent-qa/contact-sheet.jpg > campaigns/cross-agent-remotion/output/visual-qa-contact-sheet.b64
           (ffmpeg -hide_banner -i "$src" -af volumedetect -f null - 2>&1 || true) | grep -E 'mean_volume|max_volume|Duration' > campaigns/cross-agent-remotion/output/audio-qa.txt
           printf '%s\n' '1.8s | 6.5s | 12.0s | 18.0s | 24.0s | 30.5s' > campaigns/cross-agent-remotion/output/visual-qa-times.txt
+      - name: Upload MP4 and visual QA frames
+        uses: actions/upload-artifact@v4
+        with:
+          name: cross-agent-cinematic-v3-qa
+          path: |
+            campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4
+            /tmp/cross-agent-qa/f1.jpg
+            /tmp/cross-agent-qa/f2.jpg
+            /tmp/cross-agent-qa/f3.jpg
+            /tmp/cross-agent-qa/f4.jpg
+            /tmp/cross-agent-qa/f5.jpg
+            /tmp/cross-agent-qa/f6.jpg
+            /tmp/cross-agent-qa/contact-sheet.jpg
+          retention-days: 3
       - name: Persist QA evidence safely
         run: |
           set -euo pipefail
