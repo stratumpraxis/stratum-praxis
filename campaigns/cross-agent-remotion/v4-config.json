@@ -1,9 +1,9 @@
 {
-  "version": "v4-pass-11-audio-tail",
+  "version": "v4-pass-12-opening-readability",
   "sceneFrames": [72, 147, 162, 180, 270],
   "safeTop": 112,
   "safeBottom": 182,
-  "hookSize": 84,
+  "hookSize": 68,
   "hookLine1": "YOUR AGENTS CAN ALL BE RIGHT.",
   "hookLine2": "THE SYSTEM CAN STILL FAIL.",
   "hookBody": "Because permissions, gates and stop rules can disagree between agents.",
