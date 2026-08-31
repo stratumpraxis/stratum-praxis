@@ -1,0 +1,41 @@
+name: Audit Cross-Agent v3 Buffer Once
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/audit-cross-agent-v3-buffer-once.yml'
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Read-only check for cinematic v3 Instagram post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node - <<'NODE'
+          const key = process.env.BUFFER_API_KEY;
+          if (!key) throw new Error('BUFFER_API_KEY missing');
+          const API = 'https://api.buffer.com';
+          const q = (s) => JSON.stringify(String(s));
+          async function gql(query) {
+            const r = await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j = await r.json();
+            if(!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+            return j.data;
+          }
+          const acct = await gql('query { account { organizations { id name } } }');
+          const org = acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer org');
+          const ch = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service} }`);
+          const ig = (ch.channels||[]).find(c => String(c.service).toLowerCase()==='instagram' && [c.id,c.name,c.displayName].map(x=>String(x||'').toLowerCase()).some(x=>['6a8e5b5accaf649a671a0cd9','praxisstratum','@praxisstratum'].includes(x)));
+          if(!ig) throw new Error('Target Instagram channel not found');
+          const data = await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(ig.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+          const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+          const needle='More agents don’t automatically create more control.';
+          const found=posts.find(p=>String(p.text||'').includes(needle));
+          console.log(JSON.stringify({AUDIT:'CROSS_AGENT_V3',target:{id:ig.id,name:ig.name,displayName:ig.displayName},found:found||null,recent:posts.slice(0,5)},null,2));
+          NODE
