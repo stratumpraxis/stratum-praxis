@@ -26,11 +26,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
 
-      - name: Render original vertical video
-        run: python3 trend-video-engine/render.py trend-video-engine/current.json
-
-      - name: Fail-closed safety and technical QA
-        run: python3 trend-video-engine/qa.py trend-video-engine/current.json
+      - name: Build fail-closed video pipeline — preflight, render, QA
+        run: python3 trend-video-engine/pipeline.py trend-video-engine/current.json
 
       - name: Distribution provider and duplicate-path safety audit
         env:
@@ -44,7 +41,7 @@ jobs:
           OUTPUT="$(python3 -c "import json;print(json.load(open('trend-video-engine/current.json'))['outputFile'])")"
           git config user.name "stratum-trend-video-bot"
           git config user.email "stratumpraxis@gmail.com"
-          git add "$OUTPUT" trend-video-engine/last-qa.json
+          git add "$OUTPUT" trend-video-engine/last-qa.json trend-video-engine/last-pipeline.json
           git diff --cached --quiet || git commit -m "Render approved trend video"
           git pull --rebase origin main
           git push
