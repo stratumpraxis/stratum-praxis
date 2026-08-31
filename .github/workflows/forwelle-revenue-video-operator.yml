@@ -36,6 +36,11 @@ jobs:
       - name: Source Scout
         run: node automation/forwelle-operator/scripts/source-scout.mjs
 
+      - name: Extract winning-video structure evidence
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+        run: node automation/forwelle-operator/scripts/extract-winning-patterns.mjs
+
       - name: Select signal and build original editorial plan
         id: plan
         env:
@@ -47,7 +52,7 @@ jobs:
         run: |
           git config user.name "forwelle-operator"
           git config user.email "forwelle.media@gmail.com"
-          git add automation/forwelle-operator/scout-latest.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json
+          git add automation/forwelle-operator/scout-latest.json automation/forwelle-operator/winning-patterns.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json
           git diff --cached --quiet || git commit -m "Record Forwelle scout no-publish state"
           git pull --rebase origin main
           git push
@@ -57,6 +62,13 @@ jobs:
         env:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
         run: node automation/forwelle-operator/scripts/narrate.mjs
+
+      - name: Generate optional MoneyPrinterTurbo candidate material
+        if: steps.plan.outputs.publish == 'true'
+        env:
+          MONEYPRINTERTURBO_BASE_URL: ${{ secrets.MONEYPRINTERTURBO_BASE_URL }}
+          MONEYPRINTERTURBO_API_KEY: ${{ secrets.MONEYPRINTERTURBO_API_KEY }}
+        run: node automation/forwelle-operator/scripts/moneyprinter-candidate.mjs
 
       - name: Render original procedural vertical video
         if: steps.plan.outputs.publish == 'true'
@@ -86,7 +98,7 @@ jobs:
           OUTPUT="$(node -e "console.log(require('./automation/forwelle-operator/current.json').outputFile)")"
           git config user.name "forwelle-operator"
           git config user.email "forwelle.media@gmail.com"
-          git add "$OUTPUT" automation/forwelle-operator/current.json automation/forwelle-operator/scout-latest.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json automation/forwelle-operator/last-qa.json
+          git add "$OUTPUT" automation/forwelle-operator/current.json automation/forwelle-operator/scout-latest.json automation/forwelle-operator/winning-patterns.json automation/forwelle-operator/asset-plan.json automation/forwelle-operator/state.json automation/forwelle-operator/run-status.json automation/forwelle-operator/last-qa.json
           git diff --cached --quiet || git commit -m "Render approved Forwelle short"
           git pull --rebase origin main
           git push
