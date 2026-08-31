@@ -1,0 +1,75 @@
+name: Visual Director + Seedance 2.5
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'campaigns/cross-agent-remotion/visual-manifest.json'
+      - 'trend-video-engine/visual-technique-library.json'
+      - 'trend-video-engine/visual-director.mjs'
+      - 'trend-video-engine/seedance25-generate.mjs'
+      - '.github/workflows/visual-director-seedance25.yml'
+  workflow_dispatch:
+    inputs:
+      allow_paid_seedance:
+        description: 'Explicitly allow a paid Seedance 2.5 generation for the 4s hook'
+        required: true
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+concurrency:
+  group: visual-director-seedance25-cross-agent
+  cancel-in-progress: false
+
+jobs:
+  direct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Select camera language and build shot plan
+        env:
+          VIDEO_MANIFEST: campaigns/cross-agent-remotion/visual-manifest.json
+          VISUAL_PLAN: campaigns/cross-agent-remotion/visual-plan.json
+        run: node trend-video-engine/visual-director.mjs
+
+      - name: Visual plan QA
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const p = JSON.parse(fs.readFileSync('campaigns/cross-agent-remotion/visual-plan.json','utf8'));
+          if ((p.visualDirector?.selectedTechniques || []).length < 3) throw new Error('Need at least 3 selected visual techniques');
+          if (!p.seedance25?.prompt?.includes('no readable text')) throw new Error('Generated-video typography guard missing');
+          if (p.seedance25?.generateAudio !== false) throw new Error('Seedance hook must remain silent; narration is authored separately');
+          console.log('VISUAL_QA=PASS');
+          console.log('TECHNIQUES=' + p.visualDirector.selectedTechniques.map(x => x.name).join(' | '));
+          NODE
+
+      - name: Generate Seedance hook only when paid execution is explicitly authorized
+        env:
+          VISUAL_PLAN: campaigns/cross-agent-remotion/visual-plan.json
+          LAS_API_KEY: ${{ secrets.LAS_API_KEY }}
+          SEEDANCE_ALLOW_PAID: ${{ github.event_name == 'workflow_dispatch' && inputs.allow_paid_seedance && '1' || '0' }}
+          SEEDANCE_OUTPUT: campaigns/cross-agent-remotion/public/seedance-hook.mp4
+          SEEDANCE_ASSET_STATE: campaigns/cross-agent-remotion/src/generated-assets.json
+        run: node trend-video-engine/seedance25-generate.mjs
+
+      - name: Persist visual plan and generated asset state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add campaigns/cross-agent-remotion/visual-plan.json campaigns/cross-agent-remotion/src/generated-assets.json
+          if [ -f campaigns/cross-agent-remotion/public/seedance-hook.mp4 ]; then
+            git add campaigns/cross-agent-remotion/public/seedance-hook.mp4
+          fi
+          git diff --cached --quiet && exit 0
+          git commit -m "Update Cross-Agent visual direction assets"
+          git pull --rebase origin main
+          git push
