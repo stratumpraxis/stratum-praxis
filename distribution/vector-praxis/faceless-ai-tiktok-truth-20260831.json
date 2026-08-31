@@ -1,0 +1,29 @@
+{
+  "id": "vector-faceless-ai-tiktok-truth-20260831",
+  "brand": "Vector Praxis",
+  "language": "ja-JP",
+  "title": "顔出しなしAI×TikTok、本当にほぼ作業なしで収益化できるのか",
+  "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/vector-faceless-truth-remotion/output/vector-faceless-ai-tiktok-truth.mp4",
+  "destinationUrl": "https://note.com/deft_eel6718/n/n2bfe0946a903",
+  "publish": {
+    "requestedService": "tiktok",
+    "mode": "shareNow",
+    "brandIsolationRequired": true,
+    "allowedBrand": "Vector Praxis",
+    "forbiddenChannels": [
+      "6a8e5d28ccaf649a671a13e7",
+      "@stratumpraxis",
+      "stratumpraxis"
+    ],
+    "status": "HUMAN_GATE_VECTOR_TIKTOK_CONNECTION_REQUIRED"
+  },
+  "disclosure": "AI生成音声・オリジナルモーショングラフィックを使用。",
+  "safety": {
+    "noIncomeGuarantee": true,
+    "noViewGuarantee": true,
+    "noThirdPartyScreenshots": true,
+    "noRealPersonVoiceOrFace": true,
+    "noDuplicatePublish": true,
+    "doNotRouteThroughStratumTikTok": true
+  }
+}
