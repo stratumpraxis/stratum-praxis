@@ -26,17 +26,13 @@ jobs:
         working-directory: automation/forwelle-production
         run: npm install
 
-      - name: Generate English narration
+      - name: Build production Short — assets, render, fail-closed QA
         working-directory: automation/forwelle-production
         env:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
-        run: npm run assets
+        run: npm run build:production
 
-      - name: Render Forwelle Short
-        working-directory: automation/forwelle-production
-        run: npm run render
-
-      - name: Upload production-ready Short to YouTube as private
+      - name: Upload QA-approved Short to YouTube as private
         working-directory: automation/forwelle-production
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
