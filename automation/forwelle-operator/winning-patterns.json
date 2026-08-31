@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "generatedAt": null,
+  "status": "BUILDING_DATASET",
+  "sampleCount": 0,
+  "targetCount": 10,
+  "sourceMix": {
+    "manualExternal": 0,
+    "ownMeasured": 0
+  },
+  "topPatterns": {
+    "hookTypes": [],
+    "pacing": [],
+    "ctaTypes": [],
+    "visualStyles": [],
+    "durationBuckets": []
+  },
+  "editorialBrief": "No empirical winning-video pattern is active yet. Keep the current conservative editorial defaults until measured or curated samples are available.",
+  "evidenceItems": []
+}
