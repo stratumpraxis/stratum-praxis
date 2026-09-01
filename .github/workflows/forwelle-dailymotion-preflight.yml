@@ -1,0 +1,109 @@
+name: Forwelle Dailymotion Brand-Safe Preflight
+
+on:
+  push:
+    branches: [forwelle-selfdrive-proof-20260902]
+    paths:
+      - '.github/triggers/forwelle-dailymotion-preflight.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Probe Dailymotion credentials and target profile without publishing
+        env:
+          DAILYMOTION_CLIENT_ID: ${{ secrets.DAILYMOTION_CLIENT_ID }}
+          DAILYMOTION_CLIENT_SECRET: ${{ secrets.DAILYMOTION_CLIENT_SECRET }}
+          DAILYMOTION_PROFILE_ID: ${{ secrets.DAILYMOTION_PROFILE_ID }}
+        run: |
+          set -euo pipefail
+          mkdir -p automation/forwelle-operator
+          python <<'PY'
+          import datetime, hashlib, json, os, urllib.parse, urllib.request, urllib.error
+
+          client_id=os.getenv('DAILYMOTION_CLIENT_ID','')
+          client_secret=os.getenv('DAILYMOTION_CLIENT_SECRET','')
+          profile_id=os.getenv('DAILYMOTION_PROFILE_ID','')
+          out={
+            'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+            'method':'dailymotion-api-v2-readonly-preflight',
+            'secretsPresent':{
+              'clientId':bool(client_id),
+              'clientSecret':bool(client_secret),
+              'profileId':bool(profile_id),
+            },
+            'profileIdHash': hashlib.sha256(profile_id.encode()).hexdigest()[:12] if profile_id else None,
+            'token':{}, 'profileProbe':{}
+          }
+          if not all([client_id,client_secret,profile_id]):
+            out['decision']='BLOCKED_MISSING_CREDENTIALS'
+          else:
+            data=urllib.parse.urlencode({
+              'grant_type':'client_credentials',
+              'client_id':client_id,
+              'client_secret':client_secret,
+              'scope':'video.manage'
+            }).encode()
+            req=urllib.request.Request('https://oauth2.dailymotion.com/v2/token',data=data,method='POST')
+            try:
+              with urllib.request.urlopen(req,timeout=30) as r:
+                payload=json.loads(r.read().decode())
+                token=payload.get('access_token')
+                out['token']={'http':r.status,'status':'ok' if token else 'missing_access_token'}
+            except urllib.error.HTTPError as e:
+              token=None
+              out['token']={'http':e.code,'status':'error','body':e.read().decode(errors='replace')[:500]}
+            if token:
+              paths=[f'https://api.dailymotion.com/v2/profiles/{profile_id}', f'https://api.dailymotion.com/v2/profile/{profile_id}']
+              probes=[]
+              for url in paths:
+                q=urllib.request.Request(url,headers={'Authorization':f'Bearer {token}','Accept':'application/json'})
+                try:
+                  with urllib.request.urlopen(q,timeout=30) as r:
+                    body=json.loads(r.read().decode() or '{}')
+                    probes.append({
+                      'endpointShape':url.split('/v2/')[-1].split('/')[0],
+                      'http':r.status,
+                      'publicIdentity':{
+                        k:body.get(k) for k in ['name','title','username','screenname','url','status'] if k in body
+                      },
+                      'keys':sorted(list(body.keys()))[:30]
+                    })
+                except urllib.error.HTTPError as e:
+                  probes.append({'endpointShape':url.split('/v2/')[-1].split('/')[0],'http':e.code,'error':e.read().decode(errors='replace')[:500]})
+              out['profileProbe']={'attempts':probes}
+              identities=[]
+              for p in probes:
+                identities.extend(str(v).lower() for v in p.get('publicIdentity',{}).values() if v is not None)
+              if any('forwelle' in x for x in identities):
+                out['decision']='FORWELLE_IDENTITY_CONFIRMED'
+              elif any(p.get('http')==200 for p in probes):
+                out['decision']='PROFILE_REACHABLE_IDENTITY_NOT_CONFIRMED'
+              else:
+                out['decision']='PROFILE_NOT_READABLE'
+          path='automation/forwelle-operator/dailymotion-preflight-20260902.json'
+          with open(path,'w',encoding='utf-8') as f:
+            json.dump(out,f,ensure_ascii=False,indent=2); f.write('\n')
+          print(json.dumps(out,ensure_ascii=False,indent=2))
+          PY
+      - name: Persist preflight evidence
+        run: |
+          set -euo pipefail
+          BRANCH='forwelle-selfdrive-proof-20260902'
+          git config user.name 'forwelle-distribution'
+          git config user.email 'forwelle.media@gmail.com'
+          git add automation/forwelle-operator/dailymotion-preflight-20260902.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Record Forwelle Dailymotion preflight evidence'
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && exit 0
+            sleep $((attempt * 2))
+          done
+          exit 1
