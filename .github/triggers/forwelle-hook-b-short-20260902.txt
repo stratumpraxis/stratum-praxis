@@ -1,0 +1,7 @@
+run=2026-09-02T05:36:00+09:00
+brand=Forwelle
+experiment=hook-b
+baseline_variant_a_video=SJJxnyC3ufc
+baseline_variant_a_views=0
+changed_variable=hook
+expected_channel=UCw9wnPzccaPba5rLKWyL6nQ
