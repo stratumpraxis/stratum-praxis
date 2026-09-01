@@ -32,6 +32,23 @@
     });
   }
 
+  function addCheckoutReassurance() {
+    if (location.pathname !== '/cross-agent-operating-kit.html') return;
+    const actions = document.querySelector('.hero .actions');
+    if (!actions || document.getElementById('cross-agent-checkout-reassurance')) return;
+
+    const note = document.createElement('div');
+    note.id = 'cross-agent-checkout-reassurance';
+    note.setAttribute('role', 'note');
+    note.textContent = 'One-time $69 · No subscription · Secure Stripe checkout · Buyer access after verified payment';
+    note.style.marginTop = '12px';
+    note.style.fontSize = '13px';
+    note.style.lineHeight = '1.5';
+    note.style.color = '#aeb8c8';
+    note.style.letterSpacing = '0.01em';
+    actions.insertAdjacentElement('afterend', note);
+  }
+
   function alignProductPagePrimaryCheckout() {
     if (location.pathname !== '/cross-agent-operating-kit.html') return;
 
@@ -56,6 +73,8 @@
       item.link.dataset.product = 'cross_agent_personal';
       item.link.setAttribute('data-primary-cta', 'true');
     });
+
+    addCheckoutReassurance();
   }
 
   function alignHomepageRoutes() {
