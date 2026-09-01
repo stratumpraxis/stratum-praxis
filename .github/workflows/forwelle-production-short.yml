@@ -35,11 +35,11 @@ jobs:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
         run: npm run build:production
 
-      - name: Publish QA-approved Short to YouTube
+      - name: Upload QA-approved Short to YouTube as private
         working-directory: automation/forwelle-production
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-          YOUTUBE_PRIVACY_STATUS: public
+          YOUTUBE_PRIVACY_STATUS: private
         run: node scripts/youtube-upload.mjs out/forwelle-chatgpt-ads-1b.mp4
