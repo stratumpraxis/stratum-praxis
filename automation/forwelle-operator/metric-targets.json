@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "items": [
+    {
+      "id": "hugging-face-agent-incident-v2",
+      "videoId": "B-nSx6zkExM",
+      "url": "https://www.youtube.com/watch?v=B-nSx6zkExM",
+      "status": "ACTIVE",
+      "goal": "qualified_views_and_subscribers",
+      "baseline": {
+        "date": "2026-09-02",
+        "views": 247,
+        "likes": 1,
+        "comments": 0,
+        "source": "creator-observed YouTube screenshot"
+      },
+      "notes": "Existing public Forwelle asset selected before new production. Measure first; reuse the large-number + abnormal-event + hidden-structure pattern only if follow-up data supports it."
+    }
+  ]
+}
