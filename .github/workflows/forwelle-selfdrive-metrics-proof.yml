@@ -1,0 +1,88 @@
+name: Forwelle Selfdrive Metrics Proof
+
+on:
+  push:
+    branches: [forwelle-selfdrive-proof-20260902]
+    paths:
+      - '.github/triggers/forwelle-selfdrive-metrics-proof.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Collect public YouTube metrics
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -q yt-dlp
+          mkdir -p automation/forwelle-operator
+          python <<'PY'
+          import datetime, json, subprocess
+
+          urls = [
+              'https://www.youtube.com/watch?v=rPYeG1LYgRg',
+              'https://www.youtube.com/watch?v=7rFKNKHAfXQ',
+          ]
+          videos = []
+          for url in urls:
+              proc = subprocess.run(
+                  ['python','-m','yt_dlp','--dump-single-json','--no-warnings','--skip-download',url],
+                  text=True, capture_output=True,
+              )
+              if proc.returncode != 0:
+                  videos.append({'url': url, 'status': 'error', 'error': proc.stderr[-1200:]})
+                  continue
+              v = json.loads(proc.stdout)
+              videos.append({
+                  'status': 'ok',
+                  'videoId': v.get('id'),
+                  'title': v.get('title'),
+                  'views': v.get('view_count'),
+                  'likes': v.get('like_count'),
+                  'comments': v.get('comment_count'),
+                  'durationSeconds': v.get('duration'),
+                  'channel': v.get('channel'),
+                  'channelId': v.get('channel_id'),
+                  'uploadDate': v.get('upload_date'),
+                  'url': v.get('webpage_url') or url,
+              })
+
+          result = {
+              'capturedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'method': 'public-web-yt-dlp',
+              'videos': videos,
+          }
+          out = 'automation/forwelle-operator/selfdrive-live-metrics-20260902.json'
+          with open(out, 'w', encoding='utf-8') as f:
+              json.dump(result, f, ensure_ascii=False, indent=2)
+              f.write('\n')
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          PY
+
+      - name: Persist measured evidence to the same branch
+        run: |
+          set -euo pipefail
+          BRANCH='forwelle-selfdrive-proof-20260902'
+          git config user.name 'forwelle-metrics'
+          git config user.email 'forwelle.media@gmail.com'
+          git add automation/forwelle-operator/selfdrive-live-metrics-20260902.json
+          if git diff --cached --quiet; then
+            echo 'No metric change to persist'
+            exit 0
+          fi
+          git commit -m 'Record Forwelle self-driving live metrics'
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && exit 0
+            sleep $((attempt * 2))
+          done
+          echo 'Failed to persist metrics after retries'
+          exit 1
