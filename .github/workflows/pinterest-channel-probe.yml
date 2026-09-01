@@ -15,33 +15,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Query Pinterest channel metadata
-        id: query
-        continue-on-error: true
+      - name: Discover Pinterest channels and boards
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
         run: |
-          set -u
+          set -euo pipefail
           mkdir -p distribution
-          cat > /tmp/query.json <<'JSON'
-          {
-            "query": "query GetChannelWithSubprofiles { channel(input: { id: \"6917fc832230dbae01fb7f0a\" }) { id name service metadata { ... on PinterestMetadata { boards { serviceId name url } } } } }"
+          node <<'NODE'
+          const fs = require('fs');
+          const API = 'https://api.buffer.com';
+          const key = process.env.BUFFER_API_KEY;
+          async function gql(query) {
+            const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
+            const j = await r.json();
+            if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+            return j.data;
           }
-          JSON
-          curl -sS https://api.buffer.com \
-            -H "Authorization: Bearer ${BUFFER_API_KEY}" \
-            -H "Content-Type: application/json" \
-            --data-binary @/tmp/query.json \
-            | tee distribution/pinterest-channel-probe.json
-      - name: Validate response
-        continue-on-error: true
-        run: |
-          node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('distribution/pinterest-channel-probe.json','utf8'));console.log(JSON.stringify(j,null,2));if(j.errors||!j.data?.channel)process.exit(1)"
+          const q = s => JSON.stringify(String(s));
+          const acct = await gql('query { account { organizations { id name } } }');
+          const org = acct.account?.organizations?.[0];
+          if (!org) throw new Error('No Buffer organization found');
+          const data = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
+          const pins = (data.channels || []).filter(c => String(c.service).toLowerCase() === 'pinterest');
+          const out = {organization:org, pinterestChannels:[]};
+          for (const c of pins) {
+            const detail = await gql(`query { channel(input:{id:${q(c.id)}}) { id name displayName service isQueuePaused metadata { ... on PinterestMetadata { boards { id serviceId name url description } } } } }`);
+            out.pinterestChannels.push(detail.channel);
+          }
+          fs.writeFileSync('distribution/pinterest-channel-probe.json', JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify(out,null,2));
+          if (!out.pinterestChannels.length) process.exit(2);
+          NODE
       - name: Commit probe evidence
         if: always()
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add distribution/pinterest-channel-probe.json
-          git commit -m "evidence: capture Pinterest board metadata" || exit 0
+          git commit -m "evidence: capture current Pinterest channel metadata" || exit 0
           git push
