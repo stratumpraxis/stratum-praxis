@@ -19,6 +19,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Patch analytics identity continuity
         run: python scripts/fix_posthog_identity_continuity.py
@@ -33,12 +35,23 @@ jobs:
             exit 1
           fi
 
-      - name: Persist fix
+      - name: Persist fix despite concurrent main updates
         run: |
+          set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add scos-analytics.js
           git diff --cached --quiet && exit 0
           git commit -m "Fix PostHog identity continuity across funnel events"
-          git pull --rebase origin main
-          git push
+
+          for attempt in 1 2 3 4 5; do
+            git fetch origin main
+            git rebase origin/main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            echo "push race on attempt ${attempt}; retrying"
+            sleep 2
+          done
+          echo 'failed to persist identity fix after retries'
+          exit 1
