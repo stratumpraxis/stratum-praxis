@@ -1,0 +1,83 @@
+name: Forwelle Owned Distribution Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-owned-distribution-20260902.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  route-and-deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Route sitewide Forwelle CTA to current higher-view video
+        shell: bash
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          from pathlib import Path
+          p=Path('scos-analytics.js')
+          s=p.read_text(encoding='utf-8')
+          old="addLink('https://www.youtube.com/@forwelle?utm_source=stratumpraxis&utm_medium=network&utm_campaign=return_gate_network', 'YouTube · Forwelle ↗', 'forwelle_entry', false);"
+          new="addLink('https://www.youtube.com/watch?v=rPYeG1LYgRg', \"Why AI Isn't Making You Money ↗\", 'forwelle_entry', false);"
+          if old not in s:
+              raise SystemExit('Expected Forwelle route not found; fail closed')
+          if s.count(old) != 1:
+              raise SystemExit(f'Expected exactly one Forwelle route, found {s.count(old)}')
+          p.write_text(s.replace(old,new),encoding='utf-8')
+          PY
+          grep -F "https://www.youtube.com/watch?v=rPYeG1LYgRg" scos-analytics.js
+
+      - name: Persist controlled distribution change
+        run: |
+          set -euo pipefail
+          git config user.name "forwelle-performance"
+          git config user.email "forwelle.media@gmail.com"
+          git add scos-analytics.js
+          git diff --cached --quiet && { echo 'No change produced'; exit 1; }
+          git commit -m "Route sitewide Forwelle CTA to measured video"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Prepare static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'worker' \
+            --exclude 'node_modules' \
+            --exclude 'revenue-os' \
+            --exclude 'CNAME'
+
+      - name: Deploy changed route
+        working-directory: _site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main
+
+      - name: Verify public route and script
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://stratum-praxis-site.pages.dev'
+          code="$(curl -L -sS -o /tmp/home.html -w '%{http_code}' "$BASE/")"
+          test "$code" = '200'
+          code="$(curl -L -sS -o /tmp/scos.js -w '%{http_code}' "$BASE/scos-analytics.js")"
+          test "$code" = '200'
+          grep -F 'https://www.youtube.com/watch?v=rPYeG1LYgRg' /tmp/scos.js
+          grep -F "Why AI Isn't Making You Money" /tmp/scos.js
+          echo "PUBLIC_VERIFY homepage=200 analytics=200 winner_route=present"
