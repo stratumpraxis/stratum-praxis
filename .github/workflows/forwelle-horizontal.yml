@@ -1,0 +1,54 @@
+name: Forwelle Horizontal AI ROI
+
+on:
+  push:
+    paths:
+      - 'automation/forwelle-production/horizontal.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  render-and-upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Install dependencies
+        working-directory: automation/forwelle-production
+        run: npm install
+
+      - name: Install ffmpeg for technical QA
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      - name: Generate English narration, render 16x9 master, and run fail-closed QA
+        working-directory: automation/forwelle-production
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+        run: npm run build:horizontal
+
+      - name: Save rendered video artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-ai-roi-horizontal
+          path: |
+            automation/forwelle-production/out/forwelle-ai-roi-horizontal.mp4
+            automation/forwelle-production/out/qa-horizontal-report.json
+          retention-days: 7
+
+      - name: Upload QA-approved horizontal video to YouTube as private
+        working-directory: automation/forwelle-production
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_PRIVACY_STATUS: private
+        run: node scripts/youtube-upload-horizontal.mjs out/forwelle-ai-roi-horizontal.mp4
