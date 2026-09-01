@@ -1,0 +1,43 @@
+name: Pinterest Channel Probe
+
+on:
+  push:
+    branches:
+      - ops/pinterest-revenue-lane-20260902
+    paths:
+      - .github/triggers/pinterest-channel-probe.txt
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Query Pinterest channel metadata
+        env:
+          BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
+          PINTEREST_CHANNEL_ID: 6917fc832230dbae01fb7f0a
+        run: |
+          set -euo pipefail
+          mkdir -p distribution
+          cat > /tmp/query.json <<'JSON'
+          {
+            "query": "query GetPinterestChannel($id: ChannelId!) { channel(input: { id: $id }) { id name service metadata { ... on PinterestMetadata { boards { serviceId name } } } } }",
+            "variables": {"id": "6917fc832230dbae01fb7f0a"}
+          }
+          JSON
+          curl --fail-with-body -sS https://api.buffer.com \
+            -H "Authorization: Bearer ${BUFFER_ACCESS_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data-binary @/tmp/query.json \
+            | tee distribution/pinterest-channel-probe.json
+          node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('distribution/pinterest-channel-probe.json','utf8'));if(j.errors||!j.data?.channel)process.exit(1);console.log(JSON.stringify(j.data.channel,null,2))"
+      - name: Commit probe evidence
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add distribution/pinterest-channel-probe.json
+          git commit -m "evidence: capture Pinterest board metadata" || exit 0
+          git push
