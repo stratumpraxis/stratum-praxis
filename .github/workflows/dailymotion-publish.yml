@@ -1,0 +1,103 @@
+name: Dailymotion Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      video_url:
+        description: Public HTTPS URL to the MP4 that should be downloaded and published
+        required: true
+        type: string
+      title:
+        description: Dailymotion title
+        required: true
+        default: AI Isn’t the Bottleneck — Your Workflow Is
+        type: string
+      description:
+        description: Video description
+        required: false
+        default: Stratum Praxis explains why more AI output does not automatically create more profit when review, approval, decision, and execution remain constrained. https://stratumpraxis.com/
+        type: string
+      visibility:
+        description: Publication visibility
+        required: true
+        default: public
+        type: choice
+        options:
+          - public
+          - private
+      category:
+        description: Dailymotion category
+        required: true
+        default: tech
+        type: choice
+        options:
+          - tech
+          - school
+          - news
+          - lifestyle
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate configured secrets
+        env:
+          CLIENT_ID: ${{ secrets.DAILYMOTION_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.DAILYMOTION_CLIENT_SECRET }}
+          PROFILE_ID: ${{ secrets.DAILYMOTION_PROFILE_ID }}
+        run: |
+          set -euo pipefail
+          test -n "$CLIENT_ID" || { echo 'Missing DAILYMOTION_CLIENT_ID'; exit 1; }
+          test -n "$CLIENT_SECRET" || { echo 'Missing DAILYMOTION_CLIENT_SECRET'; exit 1; }
+          test -n "$PROFILE_ID" || { echo 'Missing DAILYMOTION_PROFILE_ID'; exit 1; }
+
+      - name: Download source MP4
+        env:
+          VIDEO_URL: ${{ inputs.video_url }}
+        run: |
+          set -euo pipefail
+          case "$VIDEO_URL" in
+            https://*) ;;
+            *) echo 'video_url must use HTTPS'; exit 1 ;;
+          esac
+          curl --fail --location --retry 3 --retry-all-errors \
+            --max-time 900 "$VIDEO_URL" -o /tmp/stratum-dailymotion.mp4
+          test -s /tmp/stratum-dailymotion.mp4
+
+      - name: Install publisher dependency
+        run: python -m pip install --disable-pip-version-check requests
+
+      - name: Verify source media
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq ffmpeg
+          ffprobe -v error -show_entries stream=codec_type,codec_name,width,height,duration \
+            -of json /tmp/stratum-dailymotion.mp4
+
+      - name: Publish to Dailymotion API v2
+        env:
+          DAILYMOTION_CLIENT_ID: ${{ secrets.DAILYMOTION_CLIENT_ID }}
+          DAILYMOTION_CLIENT_SECRET: ${{ secrets.DAILYMOTION_CLIENT_SECRET }}
+          DAILYMOTION_PROFILE_ID: ${{ secrets.DAILYMOTION_PROFILE_ID }}
+        run: |
+          python scripts/dailymotion_publish.py \
+            --file /tmp/stratum-dailymotion.mp4 \
+            --title "${{ inputs.title }}" \
+            --description "${{ inputs.description }}" \
+            --category "${{ inputs.category }}" \
+            --visibility "${{ inputs.visibility }}" \
+            --tags 'Stratum Praxis,AI,automation,workflow,business operations,revenue systems' \
+            --is-ai-altered | tee /tmp/dailymotion-publish-result.json
+
+      - name: Store publish evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: dailymotion-publish-evidence
+          path: /tmp/dailymotion-publish-result.json
+          retention-days: 7
