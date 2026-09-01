@@ -1,0 +1,5 @@
+run=2026-09-02T05:35:00+09:00
+objective=move-current-higher-view-video-into-sitewide-owned-traffic-route
+baseline_video_views=4
+baseline_sitewide_forwelle_clicks_30d=0
+baseline_homepage_views_30d=31
