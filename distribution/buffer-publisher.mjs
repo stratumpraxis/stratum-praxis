@@ -64,12 +64,7 @@ for (const channel of channels) {
   if (!candidates.length) continue;
 
   const item = selectItem(candidates);
-  const text = `${item.text}\n\n${item.url}`.trim();
-
-  if (dryRun) {
-    console.log(`[DRY RUN] ${service} / ${item.id} -> ${text}`);
-    continue;
-  }
+  const text = service === 'pinterest' ? String(item.text || '').trim() : `${item.text}\n\n${item.url}`.trim();
 
   if (service === 'pinterest' && !item.imageUrl) {
     console.log(`Skip Pinterest item ${item.id}: no approved imageUrl`);
@@ -78,9 +73,29 @@ for (const channel of channels) {
 
   let assets = '';
   if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
-  const metadata = service === 'instagram'
-    ? 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},'
-    : '';
+
+  let metadata = '';
+  if (service === 'instagram') {
+    metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
+  }
+  if (service === 'pinterest') {
+    const detail = await gql(`query GetChannelWithSubprofiles { channel(input:{id:${q(channel.id)}}) { metadata { ... on PinterestMetadata { boards { serviceId name url } } } } }`);
+    const boards = detail.channel?.metadata?.boards || [];
+    let board = null;
+    if (item.boardServiceId) board = boards.find(b => String(b.serviceId) === String(item.boardServiceId));
+    if (!board && item.boardName) board = boards.find(b => String(b.name).toLowerCase() === String(item.boardName).toLowerCase());
+    if (!board) board = boards[0];
+    if (!board?.serviceId) throw new Error(`Pinterest channel ${channel.id} has no usable board`);
+    const title = String(item.title || item.text || 'Stratum Praxis').trim().slice(0,100);
+    metadata = `metadata:{pinterest:{boardServiceId:${q(board.serviceId)},title:${q(title)},url:${q(item.url)}}},`;
+    console.log(`Pinterest board: ${board.name} (${board.serviceId})`);
+  }
+
+  if (dryRun) {
+    console.log(`[DRY RUN] ${service} / ${item.id} -> ${text}`);
+    continue;
+  }
+
   const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:addToQueue,${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
