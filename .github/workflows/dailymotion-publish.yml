@@ -85,13 +85,18 @@ jobs:
           DAILYMOTION_CLIENT_ID: ${{ secrets.DAILYMOTION_CLIENT_ID }}
           DAILYMOTION_CLIENT_SECRET: ${{ secrets.DAILYMOTION_CLIENT_SECRET }}
           DAILYMOTION_PROFILE_ID: ${{ secrets.DAILYMOTION_PROFILE_ID }}
+          DM_TITLE: ${{ inputs.title }}
+          DM_DESCRIPTION: ${{ inputs.description }}
+          DM_CATEGORY: ${{ inputs.category }}
+          DM_VISIBILITY: ${{ inputs.visibility }}
         run: |
+          set -euo pipefail
           python scripts/dailymotion_publish.py \
             --file /tmp/stratum-dailymotion.mp4 \
-            --title "${{ inputs.title }}" \
-            --description "${{ inputs.description }}" \
-            --category "${{ inputs.category }}" \
-            --visibility "${{ inputs.visibility }}" \
+            --title "$DM_TITLE" \
+            --description "$DM_DESCRIPTION" \
+            --category "$DM_CATEGORY" \
+            --visibility "$DM_VISIBILITY" \
             --tags 'Stratum Praxis,AI,automation,workflow,business operations,revenue systems' \
             --is-ai-altered | tee /tmp/dailymotion-publish-result.json
 
