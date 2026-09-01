@@ -1,0 +1,4 @@
+run=2026-09-02T05:25:00+09:00
+video_id=SJJxnyC3ufc
+brand=Forwelle
+purpose=public-watch-view-count
