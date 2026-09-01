@@ -1,0 +1,6 @@
+run=2026-09-02T06:00:00+09:00
+objective=increase-exposure-for-current-higher-view-forwelle-topic
+source_video=https://www.youtube.com/watch?v=rPYeG1LYgRg
+baseline_youtube_views=4
+distribution=instagram,tiktok
+rights=original-typography-no-third-party-audio-or-footage
