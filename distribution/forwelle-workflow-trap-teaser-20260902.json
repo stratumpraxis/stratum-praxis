@@ -1,0 +1,15 @@
+{
+  "id": "forwelle-workflow-trap-teaser-20260902-v1",
+  "title": "Why AI Isn't Making You Money",
+  "summary": "AI can multiply output without multiplying revenue. The bottleneck is often the workflow around the model: handoffs, human gates, and decisions. Full breakdown on YouTube: @forwelle — Why AI Isn't Making You Money (The Workflow Trap).",
+  "publish": {
+    "services": ["instagram", "tiktok"],
+    "mode": "shareNow",
+    "title": "Why AI Isn't Making You Money",
+    "caption": "AI can multiply output without multiplying revenue. The hidden bottleneck is often the workflow around the model: handoffs, human gates, and decisions.\n\nFull breakdown on YouTube: @forwelle\nhttps://youtu.be/rPYeG1LYgRg\n\n#AI #AIAutomation #Workflow #Productivity",
+    "channelAllowlist": {
+      "instagram": ["6a8e5b5accaf649a671a0cd9", "praxisstratum", "@praxisstratum"],
+      "tiktok": ["6a8e5d28ccaf649a671a13e7", "stratumpraxis", "@stratumpraxis"]
+    }
+  }
+}
