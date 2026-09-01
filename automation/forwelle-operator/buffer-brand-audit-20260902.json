@@ -1,0 +1,32 @@
+{
+  "capturedAt": "2026-09-01T20:15:22.966Z",
+  "method": "buffer-readonly-brand-audit",
+  "keyPresent": true,
+  "organizations": [
+    {
+      "name": "My Organization",
+      "channels": [
+        {
+          "name": "vectorpraxis",
+          "displayName": "vectorpraxis",
+          "service": "pinterest",
+          "isQueuePaused": false
+        },
+        {
+          "name": "stratumpraxis",
+          "displayName": "stratumpraxis",
+          "service": "tiktok",
+          "isQueuePaused": false
+        },
+        {
+          "name": "praxisstratum",
+          "displayName": "praxisstratum",
+          "service": "instagram",
+          "isQueuePaused": false
+        }
+      ]
+    }
+  ],
+  "decision": "NO_FORWELLE_CHANNEL_AVAILABLE",
+  "forwelleChannels": []
+}
