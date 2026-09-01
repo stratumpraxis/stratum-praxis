@@ -1,0 +1,50 @@
+name: Forwelle Public Metrics Snapshot 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-public-metrics-snapshot-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Read public RSS metrics for current Forwelle videos
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import urllib.request, xml.etree.ElementTree as ET
+          channel='UCw9wnPzccaPba5rLKWyL6nQ'
+          targets=['SJJxnyC3ufc','rPYeG1LYgRg','7rFKNKHAfXQ']
+          req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwellePublicMetrics/1.0'})
+          data=urllib.request.urlopen(req,timeout=30).read()
+          root=ET.fromstring(data)
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          found={}
+          for e in root.findall('atom:entry',ns):
+              vid=e.findtext('yt:videoId',default='',namespaces=ns)
+              if vid not in targets: continue
+              stat=e.find('media:group/media:community/media:statistics',ns)
+              rating=e.find('media:group/media:community/media:starRating',ns)
+              found[vid]={
+                  'title':e.findtext('atom:title',default='',namespaces=ns),
+                  'views':stat.attrib.get('views') if stat is not None else None,
+                  'ratingCount':rating.attrib.get('count') if rating is not None else None,
+                  'published':e.findtext('atom:published',default='',namespaces=ns),
+              }
+          print(f'RSS_BYTES={len(data)}')
+          print(f'RSS_FOUND_COUNT={len(found)}')
+          for vid in targets:
+              row=found.get(vid)
+              if row:
+                  print(f'METRIC video={vid} views={row["views"]} ratingCount={row["ratingCount"]} title={row["title"]}')
+              else:
+                  print(f'METRIC video={vid} MISSING_FROM_RSS')
+          print('SNAPSHOT=PASS')
+          PY
