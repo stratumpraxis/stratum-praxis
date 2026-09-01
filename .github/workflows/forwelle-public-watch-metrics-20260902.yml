@@ -1,0 +1,56 @@
+name: Forwelle Public Watch Metrics 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-public-watch-metrics-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      VIDEO_ID: SJJxnyC3ufc
+      EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+    steps:
+      - name: Fetch public watch page and extract current public metrics
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL="https://www.youtube.com/watch?v=${VIDEO_ID}"
+          code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/watch.html -w '%{http_code}' "$URL")"
+          echo "PUBLIC_WATCH_HTTP=$code"
+          test "$code" = '200'
+          python3 <<'PY'
+          import os,re,html
+          raw=open('/tmp/watch.html','r',encoding='utf-8',errors='ignore').read()
+          vid=os.environ['VIDEO_ID']; expected=os.environ['EXPECTED_CHANNEL_ID']
+          print(f'PUBLIC_VIDEO_URL=https://www.youtube.com/watch?v={vid}')
+          print(f'HTML_BYTES={len(raw)}')
+          if vid not in raw:
+              raise SystemExit('VIDEO_ID_NOT_FOUND_IN_PUBLIC_HTML')
+          if expected not in raw:
+              raise SystemExit('EXPECTED_CHANNEL_NOT_FOUND_IN_PUBLIC_HTML')
+          idx=raw.find('"videoDetails"')
+          if idx < 0:
+              raise SystemExit('VIDEO_DETAILS_NOT_FOUND')
+          window=raw[idx:idx+50000]
+          m=re.search(r'"viewCount":"(\d+)"',window)
+          if not m:
+              raise SystemExit('PUBLIC_VIEW_COUNT_NOT_FOUND')
+          title=re.search(r'"title":"((?:\\.|[^"\\])*)"',window)
+          channel=re.search(r'"channelId":"([^"]+)"',window)
+          print(f'PUBLIC_VIEW_COUNT={m.group(1)}')
+          if title:
+              t=bytes(title.group(1),'utf-8').decode('unicode_escape',errors='replace')
+              print(f'PUBLIC_TITLE={t}')
+          if channel:
+              print(f'PUBLIC_CHANNEL_ID={channel.group(1)}')
+              if channel.group(1)!=expected:
+                  raise SystemExit('PUBLIC_CHANNEL_MISMATCH')
+          print('PUBLIC_METRIC_PROBE=PASS')
+          PY
