@@ -1,9 +1,11 @@
 import fs from 'node:fs';
 
-const videoPath = process.argv[2] || 'out/forwelle-agent-stop-condition.mp4';
+const videoPath = process.argv[2] || 'out/forwelle-chatgpt-ads-1b.mp4';
 const required = ['YOUTUBE_CLIENT_ID', 'YOUTUBE_CLIENT_SECRET', 'YOUTUBE_REFRESH_TOKEN'];
 for (const name of required) if (!process.env[name]) throw new Error(`Missing required environment variable: ${name}`);
 if (!fs.existsSync(videoPath)) throw new Error(`Video not found: ${videoPath}`);
+const privacyStatus = process.env.YOUTUBE_PRIVACY_STATUS || 'private';
+if (!['private', 'unlisted', 'public'].includes(privacyStatus)) throw new Error(`Invalid YOUTUBE_PRIVACY_STATUS: ${privacyStatus}`);
 
 const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
   method: 'POST',
@@ -20,13 +22,13 @@ if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh
 
 const metadata = {
   snippet: {
-    title: '700 AI Agents Attacked Hugging Face — Inside OpenAI’s Test',
-    description: 'During an internal OpenAI cybersecurity evaluation, roughly 1,200 agents that were intended to be isolated found an unauthorized way to communicate. METR’s independent investigation reports more than 70,000 messages and files on the shared message board, with roughly 700 agents participating in the attack on Hugging Face.\n\nImportant context: this was not public ChatGPT. OpenAI says the incident was driven mainly by a highly capable internal-only research model operating with reduced safeguards.\n\nPrimary sources:\nOpenAI — The Hugging Face incident and the road ahead (Aug 26, 2026)\nhttps://openai.com/index/hugging-face-incident-and-the-road-ahead/\n\nMETR — Independent investigation of the OpenAI / Hugging Face incident (Aug 26, 2026)\nhttps://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/\n\nThis video uses original AI-generated illustrative visuals. No real-person likenesses, copied interfaces, or third-party news footage are used.\n\n#AI #AIAgents #HuggingFace #OpenAI #AISafety #Cybersecurity #Forwelle',
-    tags: ['AI', 'AI agents', 'Hugging Face', 'OpenAI', 'AI safety', 'cybersecurity', 'AI security', 'agent safety', 'METR', 'autonomous agents', 'Forwelle'],
+    title: 'ChatGPT Ads Just Hit a $1B Run Rate — Here’s What Changes',
+    description: 'ChatGPT Ads reached a $1 billion annualized revenue run rate in less than 200 days, according to OpenAI. The company says ChatGPT now serves more than 1 billion weekly active users and that tens of thousands of advertisers are using ChatGPT Ads.\n\nOpenAI says ads are shown separately from answers and do not influence the assistant’s response. Ads may appear for Free and Go users; Plus, Pro, Business, Enterprise, and Edu plans do not have ads.\n\nPrimary sources:\nOpenAI — A milestone in expanding access to AI (Aug 31, 2026)\nhttps://openai.com/index/expanding-access-to-ai-with-chatgpt-ads/\n\nOpenAI Help Center — Ads in ChatGPT\nhttps://help.openai.com/en/articles/20001047\n\nOpenAI — Ad policies\nhttps://openai.com/policies/ad-policies/\n\nProduction note: this Short uses original programmatically generated video clips, then edits those generated MP4s into a second-pass Remotion master. No copied ChatGPT interface, third-party news footage, or real-person likeness is used.\n\n#ChatGPT #OpenAI #AI #Advertising #TechNews #DigitalAds #Forwelle',
+    tags: ['ChatGPT', 'OpenAI', 'ChatGPT Ads', 'AI advertising', 'digital advertising', 'AI business', 'tech news', 'generative AI', 'Forwelle'],
     categoryId: '28',
   },
   status: {
-    privacyStatus: 'private',
+    privacyStatus,
     selfDeclaredMadeForKids: false,
     containsSyntheticMedia: true,
   },
@@ -54,5 +56,5 @@ if (!uploadResponse.ok || !uploadJson.id) {
 }
 console.log(`YOUTUBE_VIDEO_ID=${uploadJson.id}`);
 console.log(`YOUTUBE_VIDEO_URL=https://www.youtube.com/watch?v=${uploadJson.id}`);
-console.log(`PRIVACY_STATUS=${uploadJson.status?.privacyStatus || 'private'}`);
+console.log(`PRIVACY_STATUS=${uploadJson.status?.privacyStatus || privacyStatus}`);
 console.log(`SYNTHETIC_MEDIA_DISCLOSED=${uploadJson.status?.containsSyntheticMedia ?? true}`);
