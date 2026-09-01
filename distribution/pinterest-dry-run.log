@@ -1,0 +1,11 @@
+Queue file: pinterest-queue.json select mode: first item index: auto
+Eligible channels: pinterest:vectorpraxis
+file:///home/runner/work/stratum-praxis/stratum-praxis/distribution/buffer-publisher.mjs:88
+    if (!board?.serviceId) throw new Error(`Pinterest channel ${channel.id} has no usable board`);
+                                 ^
+
+Error: Pinterest channel 6a9458c4065799be46553879 has no usable board
+    at file:///home/runner/work/stratum-praxis/stratum-praxis/distribution/buffer-publisher.mjs:88:34
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+
+Node.js v22.23.2
