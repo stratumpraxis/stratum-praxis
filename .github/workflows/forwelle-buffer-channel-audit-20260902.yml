@@ -1,0 +1,52 @@
+name: Forwelle Buffer Channel Audit 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-buffer-channel-audit-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Read Buffer channels without publishing
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'EOF'
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          async function gql(query){
+            const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'content-type':'application/json','authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer organization');
+          console.log(`BUFFER_ORG_ID=${org.id}`);
+          console.log(`BUFFER_ORG_NAME=${org.name}`);
+          const data=await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){id name displayName service isQueuePaused isLocked} }`);
+          const channels=data.channels||[];
+          console.log(`BUFFER_CHANNEL_COUNT=${channels.length}`);
+          for(const c of channels){
+            console.log(`CHANNEL service=${c.service} id=${c.id} name=${c.name||''} displayName=${c.displayName||''} locked=${c.isLocked} paused=${c.isQueuePaused}`);
+          }
+          const yt=channels.filter(c=>String(c.service).toLowerCase()==='youtube');
+          console.log(`YOUTUBE_CHANNEL_COUNT=${yt.length}`);
+          for(const c of yt){
+            console.log(`YOUTUBE_CANDIDATE id=${c.id} name=${c.name||''} displayName=${c.displayName||''} locked=${c.isLocked} paused=${c.isQueuePaused}`);
+          }
+          EOF
