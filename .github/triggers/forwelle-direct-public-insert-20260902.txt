@@ -1,0 +1,9 @@
+run=2026-09-02T05:20:00+09:00
+brand=Forwelle
+objective=public-short-with-real-url-and-rss-view
+expected_channel=UCw9wnPzccaPba5rLKWyL6nQ
+credential_brand_proof_run=33554012030
+credential_brand_proof_private_video=-ReIsp0mDE4
+baseline_long_video=https://www.youtube.com/watch?v=rPYeG1LYgRg
+baseline_long_views=4
+retry_limit=1
