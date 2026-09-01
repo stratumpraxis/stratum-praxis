@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "assets": "node scripts/prepare-assets.mjs",
-    "render": "remotion render src/index.jsx ForwelleShort out/forwelle-agent-stop-condition.mp4 --codec=h264",
-    "qa": "node scripts/qa-production.mjs out/forwelle-agent-stop-condition.mp4",
-    "build:production": "npm run assets && npm run render && npm run qa"
+    "render:clips": "mkdir -p public/generated out && remotion render src/index.jsx ClipMoney public/generated/clip-money.mp4 --codec=h264 && remotion render src/index.jsx ClipIntent public/generated/clip-intent.mp4 --codec=h264 && remotion render src/index.jsx ClipScale public/generated/clip-scale.mp4 --codec=h264",
+    "render": "remotion render src/index.jsx ForwelleShort out/forwelle-chatgpt-ads-1b.mp4 --codec=h264",
+    "qa": "node scripts/qa-production.mjs out/forwelle-chatgpt-ads-1b.mp4",
+    "build:production": "npm run assets && npm run render:clips && npm run render && npm run qa"
   },
   "dependencies": {
     "@remotion/cli": "4.0.506",
