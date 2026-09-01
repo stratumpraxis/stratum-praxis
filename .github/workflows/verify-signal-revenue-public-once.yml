@@ -1,0 +1,38 @@
+name: Verify Signal Revenue Bridge Public Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-signal-revenue-public-once.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify live public URL and revenue CTAs
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://stratumpraxis.com/signal/'
+          body=/tmp/signal.html
+          ok=0
+          for attempt in 1 2 3 4 5 6; do
+            code=$(curl -L --fail-with-body -sS -o "$body" -w '%{http_code}' "$url" || true)
+            if [ "$code" = '200' ] && grep -q 'Revenue Router $29' "$body" && grep -q 'Workflow Audit $499' "$body" && grep -q "signal_owned_revenue" "$body"; then
+              ok=1
+              break
+            fi
+            sleep 8
+          done
+          test "$ok" = '1'
+          echo "PUBLIC_URL=$url"
+          echo 'HTTP=200'
+          echo 'REVENUE_ROUTER_CTA=present'
+          echo 'WORKFLOW_AUDIT_CTA=present'
+          echo 'ANALYTICS_HOOK=present'
