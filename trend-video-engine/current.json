@@ -1,14 +1,14 @@
 {
-  "id": "2026-08-27-physical-ai-control-instagram-v6",
-  "createdAt": "2026-08-27T20:20:00+09:00",
+  "id": "2026-08-27-physical-ai-control-tiktok-v6b",
+  "createdAt": "2026-09-01T15:23:00+09:00",
   "brandLane": "stratum-en",
-  "platformVariant": "instagram-reel-discovery",
+  "platformVariant": "tiktok-growth",
   "title": "AI Agents Are Leaving the Screen",
   "topic": "Anthropic's Model Hardware Standard research preview shows AI agents moving from software-only workflows toward controlled interaction with programmable physical equipment",
   "language": "en",
   "summary": "A short original explainer on why physical AI makes permissions, limits and stop conditions more important, not less.",
   "outputFile": "media/trend-videos/2026-08-27-physical-ai-control-instagram-v6.mp4",
-  "scores": {"freshness":10,"businessDemand":9,"crossPlatformPotential":9,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":9,"total":57,"max":60},
+  "scores": {"freshness":8,"businessDemand":9,"crossPlatformPotential":9,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":9,"total":55,"max":60},
   "sources": [
     {"name":"Model Hardware Standard — official project site","url":"https://modelhardwarestandard.com/","factSource":true,"verified":true,"published":"2026-08-27"},
     {"name":"Anthropic — UST is bringing Claude to physical AI","url":"https://www.anthropic.com/news/ust-claude","factSource":true,"verified":true,"published":"2026-07-09"}
@@ -40,10 +40,10 @@
     {"duration":4.5,"eyebrow":"BOTTOM LINE","motionTag":"AUTONOMY WITH BOUNDS","headline":"Physical AI raises\nthe cost of ambiguity.","body":"Build the boundary before you scale the autonomy.","sourceLabel":"Stratum Praxis / original takeaway","background":"#050811","accent":"#FFD166"}
   ],
   "publish": {
-    "services":["instagram"],
+    "services":["tiktok"],
     "mode":"shareNow",
     "aiGeneratedLabel":true,
     "title":"AI Agents Are Leaving the Screen",
-    "caption":"AI agents are moving beyond software-only workflows. Anthropic's new Model Hardware Standard research preview is designed to connect agents with programmable physical equipment.\n\nThe operational takeaway is bigger than the hardware: capability, permission and stop conditions have to be designed separately.\n\nPractical control framework: https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=instagram&utm_medium=social&utm_campaign=physical-ai-control-20260827\n\n#AI #AIAgents #PhysicalAI #Automation #AgentOps"
+    "caption":"AI agents are moving beyond software-only workflows. Anthropic's Model Hardware Standard research preview is designed to connect agents with programmable physical equipment.\n\nThe operational takeaway: capability, permission and stop conditions have to be designed separately.\n\n#AI #AIAgents #PhysicalAI #Automation #AgentOps"
   }
 }
