@@ -1,0 +1,4 @@
+run=2026-09-02T07:38:00+09:00
+purpose=measure-hook-a-vs-hook-b-after-two-hours
+hook_a=SJJxnyC3ufc
+hook_b=_NEHx1nJEbA
