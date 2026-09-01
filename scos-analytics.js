@@ -246,7 +246,7 @@
     if (onReturnGate) addLink('/return-gate-growth-os.html', english ? 'Build your own Return Gate · $24' : '再訪導線を作る · Growth OS $24', 'return_gate_growth_os', false);
     addLink('/passage-hub/', english ? 'Route map' : '路線図', 'passage_map_entry', false);
     addLink(contentPath, contentLabel, 'content_hub_entry', false);
-    addLink('https://www.youtube.com/@forwelle?utm_source=stratumpraxis&utm_medium=network&utm_campaign=return_gate_network', 'YouTube · Forwelle ↗', 'forwelle_entry', false);
+    addLink('https://www.youtube.com/watch?v=rPYeG1LYgRg', "Why AI Isn't Making You Money ↗", 'forwelle_entry', false);
 
     if (wrap.children.length) document.body.appendChild(wrap);
   }
