@@ -1,0 +1,147 @@
+name: Forwelle Stratum Teaser Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-stratum-teaser-20260902.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  render-publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Render rights-safe 9x16 teaser
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -q pillow
+          command -v ffmpeg >/dev/null || { sudo apt-get update -qq && sudo apt-get install -y ffmpeg; }
+          mkdir -p media/forwelle/teaser-20260902 /tmp/forwelle-teaser
+          python <<'PY'
+          from PIL import Image, ImageDraw, ImageFont
+          from pathlib import Path
+          import textwrap
+          W,H=1080,1920
+          BG=(8,10,14)
+          FG=(232,234,238)
+          MUTED=(168,173,181)
+          font_bold='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          font_reg='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          slides=[
+            ("AI ISN'T\nMAKING YOU MONEY", "The output is faster. Revenue isn't."),
+            ("THE BOTTLENECK\nIS THE WORKFLOW", "Handoffs. Human gates. Decisions."),
+            ("FULL BREAKDOWN", "YouTube  →  @forwelle\nWhy AI Isn't Making You Money")
+          ]
+          out=Path('/tmp/forwelle-teaser')
+          for i,(headline,sub) in enumerate(slides,1):
+              im=Image.new('RGB',(W,H),BG)
+              d=ImageDraw.Draw(im)
+              d.rounded_rectangle((72,92,310,150),radius=28,fill=(34,38,46))
+              label=ImageFont.truetype(font_bold,28)
+              d.text((98,108),'FORWELLE',font=label,fill=MUTED)
+              hf=ImageFont.truetype(font_bold,92 if i<3 else 106)
+              sf=ImageFont.truetype(font_reg,42)
+              lines=headline.split('\n')
+              y=580 if i<3 else 650
+              for line in lines:
+                  box=d.textbbox((0,0),line,font=hf)
+                  tw=box[2]-box[0]
+                  d.text(((W-tw)/2,y),line,font=hf,fill=FG)
+                  y+=122
+              y+=65
+              for line in sub.split('\n'):
+                  box=d.textbbox((0,0),line,font=sf)
+                  tw=box[2]-box[0]
+                  d.text(((W-tw)/2,y),line,font=sf,fill=MUTED)
+                  y+=62
+              d.line((150,1550,930,1550),fill=(65,70,80),width=2)
+              foot=ImageFont.truetype(font_reg,28)
+              footer='Performance Media · measured route'
+              box=d.textbbox((0,0),footer,font=foot)
+              d.text(((W-(box[2]-box[0]))/2,1600),footer,font=foot,fill=(112,118,128))
+              im.save(out/f'slide{i}.png',quality=95)
+          PY
+          ffmpeg -hide_banner -loglevel error -y \
+            -loop 1 -t 3 -i /tmp/forwelle-teaser/slide1.png \
+            -loop 1 -t 3 -i /tmp/forwelle-teaser/slide2.png \
+            -loop 1 -t 3 -i /tmp/forwelle-teaser/slide3.png \
+            -filter_complex "[0:v]fps=30,format=yuv420p[v0];[1:v]fps=30,format=yuv420p[v1];[2:v]fps=30,format=yuv420p[v2];[v0][v1][v2]concat=n=3:v=1:a=0[out]" \
+            -map '[out]' -c:v libx264 -pix_fmt yuv420p -movflags +faststart \
+            media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4
+          ffprobe -v error -show_entries format=duration,size -of json media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4
+
+      - name: Rights and technical QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE='media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4'
+          test -s "$FILE"
+          ffprobe -v error -select_streams v:0 -show_entries stream=width,height,codec_name,pix_fmt -of json "$FILE" | tee /tmp/video-qa.json
+          grep -q '1080' /tmp/video-qa.json
+          grep -q '1920' /tmp/video-qa.json
+          echo 'RIGHTS_QA=PASS original typography only; no third-party footage, music, voice, logo, or likeness.'
+
+      - name: Persist rendered asset before distribution
+        run: |
+          set -euo pipefail
+          git config user.name "forwelle-performance"
+          git config user.email "forwelle.media@gmail.com"
+          git add media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4
+          git diff --cached --quiet && { echo 'Rendered asset unchanged'; exit 1; }
+          git commit -m "Add Forwelle measured-route teaser"
+          git pull --rebase origin main
+          git push origin main
+
+      - name: Deploy teaser to public media URL
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ --exclude '.git' --exclude '.github' --exclude '_site' --exclude 'worker' --exclude 'node_modules' --exclude 'revenue-os' --exclude 'CNAME'
+          cd _site
+          npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main
+
+      - name: Verify public media URL
+        shell: bash
+        run: |
+          set -euo pipefail
+          URL='https://stratum-praxis-site.pages.dev/media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4'
+          code="$(curl -L -sS -o /tmp/teaser.mp4 -w '%{http_code}' "$URL")"
+          test "$code" = '200'
+          test -s /tmp/teaser.mp4
+          echo "PUBLIC_MEDIA_OK $URL HTTP=$code bytes=$(wc -c </tmp/teaser.mp4)"
+
+      - name: Publish adapted teaser through existing Buffer channels
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: distribution/forwelle-workflow-trap-teaser-20260902.json
+          TREND_VIDEO_URL: https://stratum-praxis-site.pages.dev/media/forwelle/teaser-20260902/workflow-trap-teaser-v1.mp4
+          VIDEO_PUBLISH_LEDGER: distribution/forwelle-workflow-trap-teaser-publish-ledger.json
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Persist real Buffer post evidence
+        run: |
+          set -euo pipefail
+          git add distribution/forwelle-workflow-trap-teaser-publish-ledger.json
+          git diff --cached --quiet && { echo 'No Buffer ledger change; fail closed'; exit 1; }
+          git commit -m "Record Forwelle teaser distribution evidence"
+          git pull --rebase origin main
+          git push origin main
