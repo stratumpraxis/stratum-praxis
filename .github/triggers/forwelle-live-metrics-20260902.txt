@@ -1,3 +1,3 @@
-run=2026-09-02T04:45:00+09:00
-purpose=collect-current-public-youtube-metrics
+run=2026-09-02T04:50:00+09:00
+purpose=collect-current-public-youtube-metrics-retry
 video_ids=rPYeG1LYgRg,7rFKNKHAfXQ
