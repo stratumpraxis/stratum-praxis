@@ -1,135 +1,213 @@
 import React from 'react';
-import {AbsoluteFill, Composition, Img, interpolate, registerRoot, Sequence, staticFile, useCurrentFrame} from 'remotion';
+import {
+  AbsoluteFill,
+  Composition,
+  interpolate,
+  OffthreadVideo,
+  registerRoot,
+  Sequence,
+  staticFile,
+  useCurrentFrame,
+} from 'remotion';
 import {Audio} from '@remotion/media';
 import {MetaBar, TelopHeadline, safeFrameStyle} from './telop.jsx';
 import {TELOP_COPY} from './telop-spec.mjs';
 
-const navy = '#06121d';
-const cyan = '#7ce8e1';
-const ice = '#dff8f5';
-const red = '#ff6157';
-const gold = '#ffc857';
-const ink = '#102433';
+const BG = '#050a10';
+const PANEL = '#0b141ddd';
+const CYAN = '#7ce8e1';
+const SILVER = '#d8e2e8';
+const GOLD = '#ffc857';
+const RED = '#ff655f';
 const clamp = {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'};
 const fade = (frame, a, b) => interpolate(frame, [a, b], [0, 1], clamp);
+const pct = (frame, a, b) => interpolate(frame, [a, b], [0, 1], clamp);
 
-const GeneratedBackdrop = ({src, direction = 1, dark = 0.42, zoom = 1.14}) => {
+const Grid = ({opacity = 0.14}) => <AbsoluteFill style={{
+  opacity,
+  backgroundImage: 'linear-gradient(rgba(124,232,225,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(124,232,225,.18) 1px, transparent 1px)',
+  backgroundSize: '72px 72px',
+  maskImage: 'linear-gradient(to bottom, transparent 0%, black 18%, black 75%, transparent 100%)',
+}}/>;
+
+const Glow = ({x, y, size = 480, color = CYAN, opacity = 0.16}) => <div style={{
+  position: 'absolute', left: x, top: y, width: size, height: size, borderRadius: '50%',
+  background: color, opacity, filter: 'blur(120px)',
+}}/>;
+
+const ChatBubble = ({x, y, width, delay, direction = 1, accent = CYAN}) => {
   const frame = useCurrentFrame();
-  return <AbsoluteFill style={{overflow: 'hidden', backgroundColor: navy}}>
-    <Img src={staticFile(src)} style={{width: '100%', height: '100%', objectFit: 'cover', scale: interpolate(frame, [0, 210], [1.025, zoom], clamp), translate: `${interpolate(frame, [0, 210], [direction * -22, direction * 24], clamp)}px ${interpolate(frame, [0, 210], [14, -22], clamp)}px`}}/>
-    <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(4,12,20,${dark + 0.08}) 0%, rgba(4,12,20,0.08) 42%, rgba(4,12,20,${dark + 0.28}) 100%)`}}/>
-    <AbsoluteFill style={{background: 'radial-gradient(circle at 50% 42%, transparent 0%, rgba(2,8,14,0.10) 45%, rgba(2,8,14,0.76) 100%)'}}/>
+  const p = fade(frame, delay, delay + 18);
+  const dx = interpolate(frame, [delay, delay + 38], [direction * 90, 0], clamp);
+  return <div style={{
+    position: 'absolute', left: x, top: y, width, height: 116, padding: '20px 24px', borderRadius: 28,
+    background: '#0d1823ee', border: `1px solid ${accent}55`, boxShadow: `0 22px 70px #0009`,
+    opacity: p, transform: `translateX(${dx}px)`,
+  }}>
+    <div style={{height: 9, width: '42%', borderRadius: 8, background: `${accent}bb`, marginBottom: 15}}/>
+    <div style={{height: 8, width: '84%', borderRadius: 8, background: '#dce7ec55', marginBottom: 11}}/>
+    <div style={{height: 8, width: '64%', borderRadius: 8, background: '#dce7ec3f'}}/>
+  </div>;
+};
+
+const ClipMoney = () => {
+  const frame = useCurrentFrame();
+  const amount = interpolate(frame, [14, 182], [0, 1], clamp);
+  const ring = interpolate(frame, [0, 210], [0, 360], clamp);
+  return <AbsoluteFill style={{background: 'radial-gradient(circle at 62% 25%, #123246 0%, #07111b 38%, #03070c 100%)', overflow: 'hidden'}}>
+    <Grid/>
+    <Glow x={560} y={-80} color={CYAN}/><Glow x={-180} y={900} color={GOLD} opacity={0.10}/>
+    <ChatBubble x={90} y={250} width={640} delay={5}/>
+    <ChatBubble x={330} y={410} width={650} delay={30} direction={-1} accent={GOLD}/>
+    <ChatBubble x={120} y={570} width={720} delay={57}/>
+    <div style={{position: 'absolute', left: 105, right: 105, bottom: 300, padding: '34px 38px', borderRadius: 32, background: '#07111be8', border: '1px solid #ffffff24', boxShadow: '0 26px 90px #000b'}}>
+      <div style={{fontSize: 22, letterSpacing: 4, color: SILVER}}>ANNUALIZED AD RUN RATE</div>
+      <div style={{fontSize: 112, lineHeight: 1, fontWeight: 950, color: '#fff', marginTop: 16}}>${amount.toFixed(2)}B</div>
+      <div style={{marginTop: 25, height: 8, borderRadius: 8, background: '#ffffff18', overflow: 'hidden'}}><div style={{height: '100%', width: `${amount * 100}%`, background: `linear-gradient(90deg, ${CYAN}, ${GOLD})`}}/></div>
+    </div>
+    <div style={{position: 'absolute', right: 88, top: 112, width: 170, height: 170, borderRadius: '50%', border: `2px solid ${CYAN}55`, transform: `rotate(${ring}deg)`}}><div style={{position: 'absolute', left: 76, top: -8, width: 15, height: 15, borderRadius: '50%', background: CYAN, boxShadow: `0 0 28px ${CYAN}`}}/></div>
   </AbsoluteFill>;
 };
 
-const LightSweep = ({color = cyan, delay = 0}) => {
+const ClipIntent = () => {
   const frame = useCurrentFrame();
-  const x = interpolate(frame, [delay, delay + 40], [-360, 1380], clamp);
-  return <div style={{position: 'absolute', top: -200, left: x, width: 190, height: 2400, rotate: '14deg', background: `linear-gradient(90deg, transparent, ${color}24, transparent)`, filter: 'blur(12px)'}}/>;
+  const steps = ['ASK', 'COMPARE', 'CHOOSE', 'BUY'];
+  const progress = interpolate(frame, [18, 185], [0, 1], clamp);
+  return <AbsoluteFill style={{background: 'linear-gradient(155deg, #040910 0%, #0a1d28 48%, #071018 100%)', overflow: 'hidden'}}>
+    <Grid opacity={0.11}/><Glow x={-120} y={220}/><Glow x={700} y={980} color={GOLD} opacity={0.08}/>
+    <div style={{position: 'absolute', left: 120, top: 300, bottom: 330, width: 5, background: '#ffffff17', borderRadius: 5}}>
+      <div style={{height: `${progress * 100}%`, width: '100%', background: CYAN, boxShadow: `0 0 22px ${CYAN}`}}/>
+    </div>
+    {steps.map((label, i) => {
+      const y = 280 + i * 260;
+      const local = fade(frame, 18 + i * 35, 34 + i * 35);
+      const active = Math.max(0, Math.min(1, progress * 4 - i));
+      return <div key={label} style={{position: 'absolute', left: 82, right: 90, top: y, display: 'grid', gridTemplateColumns: '86px 1fr', gap: 26, alignItems: 'center', opacity: local}}>
+        <div style={{width: 82, height: 82, borderRadius: '50%', display: 'grid', placeItems: 'center', background: active > .35 ? CYAN : '#0b1720', color: active > .35 ? '#061016' : SILVER, border: `2px solid ${CYAN}88`, fontWeight: 950, fontSize: 24}}>{i + 1}</div>
+        <div style={{padding: '27px 31px', borderRadius: 25, background: '#08131ddd', border: '1px solid #ffffff28', fontSize: 42, fontWeight: 900, color: '#fff', letterSpacing: 3}}>{label}</div>
+      </div>;
+    })}
+    <div style={{position: 'absolute', right: 85, bottom: 155, padding: '19px 26px', borderRadius: 18, background: '#241b08e8', border: `1px solid ${GOLD}aa`, color: GOLD, fontSize: 25, fontWeight: 900, letterSpacing: 2}}>SPONSORED / CLEARLY LABELED</div>
+  </AbsoluteFill>;
 };
 
-const CaptionLayer = ({spec, accent = cyan}) => {
+const ClipScale = () => {
   const frame = useCurrentFrame();
-  return <div style={{position: 'relative', zIndex: 5, opacity: fade(frame, 5, 20)}}>
-    <MetaBar spec={spec} color={ice}/>
+  const orbit = interpolate(frame, [0, 210], [0, 330], clamp);
+  const nodes = Array.from({length: 22}, (_, i) => ({
+    a: (i / 22) * Math.PI * 2,
+    r: 220 + (i % 4) * 42,
+    s: 11 + (i % 3) * 5,
+  }));
+  return <AbsoluteFill style={{background: 'radial-gradient(circle at 50% 48%, #153243 0%, #08121a 40%, #03070b 78%)', overflow: 'hidden'}}>
+    <Grid opacity={0.08}/><Glow x={320} y={520} size={600} opacity={0.12}/>
+    <div style={{position: 'absolute', left: 140, top: 410, width: 800, height: 800, borderRadius: '50%', border: '2px solid #ffffff16', transform: `rotate(${orbit * 0.12}deg)`}}/>
+    <div style={{position: 'absolute', left: 225, top: 495, width: 630, height: 630, borderRadius: '50%', border: `2px solid ${CYAN}55`, boxShadow: `inset 0 0 80px ${CYAN}12`}}/>
+    {nodes.map((n, i) => {
+      const a = n.a + orbit * Math.PI / 180 * (i % 2 ? 0.0025 : -0.002);
+      const cx = 540 + Math.cos(a) * n.r;
+      const cy = 810 + Math.sin(a) * n.r * 0.72;
+      const p = fade(frame, 10 + i * 4, 24 + i * 4);
+      return <div key={i} style={{position: 'absolute', left: cx - n.s / 2, top: cy - n.s / 2, width: n.s, height: n.s, borderRadius: '50%', background: i % 5 === 0 ? GOLD : CYAN, opacity: p, boxShadow: `0 0 26px ${i % 5 === 0 ? GOLD : CYAN}`}}/>;
+    })}
+    <div style={{position: 'absolute', left: 110, right: 110, top: 680, textAlign: 'center'}}>
+      <div style={{fontSize: 108, fontWeight: 950, color: '#fff'}}>1B+</div>
+      <div style={{fontSize: 28, fontWeight: 800, letterSpacing: 5, color: SILVER}}>WEEKLY ACTIVE USERS</div>
+    </div>
+  </AbsoluteFill>;
+};
+
+const CaptionLayer = ({spec, accent = CYAN}) => {
+  const frame = useCurrentFrame();
+  return <div style={{position: 'relative', zIndex: 8, opacity: fade(frame, 4, 17)}}>
+    <MetaBar spec={spec} color={SILVER}/>
     <TelopHeadline spec={spec} color="#fff" accent={accent} marginTop={42} maxWidth={950}/>
   </div>;
 };
 
-const CountCard = ({label, value, color = cyan, delay = 20}) => {
+const GeneratedVideoBackdrop = ({src, zoom = 1.04, x = 0, dark = 0.18}) => {
+  const frame = useCurrentFrame();
+  const scale = interpolate(frame, [0, 210], [1, zoom], clamp);
+  const shift = interpolate(frame, [0, 210], [0, x], clamp);
+  return <AbsoluteFill style={{overflow: 'hidden', background: BG}}>
+    <OffthreadVideo src={staticFile(src)} muted style={{width: '100%', height: '100%', objectFit: 'cover', transform: `scale(${scale}) translateX(${shift}px)`}}/>
+    <AbsoluteFill style={{background: `linear-gradient(180deg, rgba(3,7,12,${dark + 0.12}) 0%, rgba(3,7,12,0.02) 45%, rgba(3,7,12,${dark + 0.38}) 100%)`}}/>
+  </AbsoluteFill>;
+};
+
+const FactCard = ({label, value, accent = CYAN, delay = 16}) => {
   const frame = useCurrentFrame();
   const p = fade(frame, delay, delay + 16);
-  const rise = interpolate(frame, [delay, delay + 20], [28, 0], clamp);
-  return <div style={{opacity: p, transform: `translateY(${rise}px)`, padding: '25px 28px', borderRadius: 24, background: '#06121dde', border: `1px solid ${color}88`, backdropFilter: 'blur(14px)'}}>
-    <div style={{fontSize: 19, letterSpacing: 3, color: '#b8cbd4'}}>{label}</div>
-    <div style={{fontSize: 54, fontWeight: 950, color, marginTop: 7}}>{value}</div>
+  return <div style={{opacity: p, padding: '23px 27px', borderRadius: 22, background: PANEL, border: `1px solid ${accent}66`, backdropFilter: 'blur(12px)'}}>
+    <div style={{fontSize: 18, letterSpacing: 3, color: SILVER}}>{label}</div>
+    <div style={{fontSize: 46, fontWeight: 950, color: accent, marginTop: 7}}>{value}</div>
   </div>;
 };
 
-const Hook = () => {
-  const frame = useCurrentFrame();
-  const glow = 14 + Math.abs(Math.sin(frame / 10)) * 18;
-  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: navy})}>
-    <GeneratedBackdrop src="scene-1.png" direction={1} dark={0.40} zoom={1.18}/>
-    <LightSweep delay={16}/>
-    <CaptionLayer spec={TELOP_COPY.hook}/>
-    <div style={{position: 'absolute', left: 70, right: 70, bottom: 230, display: 'flex', gap: 18, alignItems: 'center', color: ice, fontSize: 24, letterSpacing: 2.5}}>
-      <span style={{width: 13, height: 13, borderRadius: '50%', background: red, boxShadow: `0 0 ${glow}px ${red}`}}/>
-      SUPPOSED TO BE ISOLATED
-    </div>
-  </AbsoluteFill>;
-};
-
-const Network = () => {
-  const frame = useCurrentFrame();
-  const trace = interpolate(frame, [30, 165], [0, 760], clamp);
-  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: navy})}>
-    <GeneratedBackdrop src="scene-2.png" direction={-1} dark={0.38} zoom={1.17}/>
-    <CaptionLayer spec={TELOP_COPY.network} accent={gold}/>
-    <div style={{position: 'absolute', left: 78, right: 78, bottom: 220, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16}}>
-      <CountCard label="AGENTS" value="~1,200" color={cyan} delay={26}/>
-      <CountCard label="MESSAGES + FILES" value=">70K" color={gold} delay={50}/>
-    </div>
-    <div style={{position: 'absolute', left: 105, bottom: 475, width: 760, height: 5, borderRadius: 10, background: '#294655', overflow: 'hidden'}}><div style={{width: trace, height: '100%', background: cyan, boxShadow: `0 0 20px ${cyan}`}}/></div>
-  </AbsoluteFill>;
-};
-
-const Attack = () => {
-  const frame = useCurrentFrame();
-  const p = fade(frame, 35, 56);
-  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: navy})}>
-    <GeneratedBackdrop src="scene-3.png" direction={1} dark={0.45} zoom={1.16}/>
-    <LightSweep color={red} delay={72}/>
-    <CaptionLayer spec={TELOP_COPY.attack} accent={red}/>
-    <div style={{position: 'absolute', left: 78, right: 78, bottom: 225, padding: '29px 31px', borderRadius: 25, background: '#220e12d9', border: `1px solid ${red}99`, opacity: p}}>
-      <div style={{fontSize: 21, letterSpacing: 3, color: '#f1c9cc'}}>METR FINDING</div>
-      <div style={{fontSize: 58, fontWeight: 950, color: '#fff', marginTop: 8}}><span style={{color: red}}>~700</span> AGENTS</div>
-      <div style={{fontSize: 25, color: '#e8dadd', marginTop: 8}}>participated in the Hugging Face attack</div>
-    </div>
-  </AbsoluteFill>;
-};
-
-const Context = () => {
-  const frame = useCurrentFrame();
-  const card = fade(frame, 20, 42);
-  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: navy})}>
-    <GeneratedBackdrop src="scene-4.png" direction={-1} dark={0.49} zoom={1.15}/>
-    <CaptionLayer spec={TELOP_COPY.context} accent={gold}/>
-    <div style={{position: 'absolute', left: 80, right: 80, bottom: 222, display: 'flex', flexDirection: 'column', gap: 13, opacity: card}}>
-      {[
-        ['INTERNAL-ONLY', 'research model'],
-        ['REDUCED', 'safeguards'],
-        ['CYBERSECURITY', 'evaluation'],
-      ].map(([a,b],i) => <div key={a} style={{display: 'grid', gridTemplateColumns: '250px 1fr', padding: '19px 24px', borderRadius: 19, background: '#06121ddd', border: '1px solid #ffffff3d', fontSize: 25}}><b style={{color: i === 1 ? gold : cyan}}>{a}</b><span>{b}</span></div>)}
-    </div>
-    <LightSweep color={gold} delay={118}/>
-  </AbsoluteFill>;
-};
-
-const End = () => {
-  const frame = useCurrentFrame();
-  const lock = interpolate(frame, [35, 150], [0.25, 1], clamp);
-  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: navy})}>
-    <GeneratedBackdrop src="scene-4.png" direction={1} dark={0.55} zoom={1.10}/>
-    <AbsoluteFill style={{background: `linear-gradient(0deg, rgba(6,18,29,0.95) 0%, rgba(6,18,29,0.30) 55%, rgba(6,18,29,${0.46 + lock * 0.16}) 100%)`}}/>
-    <CaptionLayer spec={TELOP_COPY.end}/>
-    <div style={{position: 'absolute', left: 76, right: 76, bottom: 270, padding: '23px 27px', borderRadius: 22, background: '#06121de8', border: '1px solid #ffffff40', fontSize: 22, lineHeight: 1.5, color: '#d9e8ed'}}>
-      <div style={{fontWeight: 950, color: cyan, letterSpacing: 2}}>SOURCES</div>
-      OpenAI — Aug 26, 2026<br/>METR independent investigation — Aug 26, 2026
-    </div>
-    <div style={{position: 'absolute', left: 76, right: 76, bottom: 205, fontSize: 18, letterSpacing: 2.2, color: '#afc3cc'}}>INTERNAL EVALUATION ≠ PUBLIC CHATGPT</div>
-  </AbsoluteFill>;
-};
-
-const Short = () => <AbsoluteFill>
-  <Sequence from={0} durationInFrames={165}><Hook/></Sequence>
-  <Sequence from={165} durationInFrames={210}><Network/></Sequence>
-  <Sequence from={375} durationInFrames={210}><Attack/></Sequence>
-  <Sequence from={585} durationInFrames={210}><Context/></Sequence>
-  <Sequence from={795} durationInFrames={255}><End/></Sequence>
-  <Audio src={staticFile('ambient-bed.wav')} volume={0.14}/>
-  <Audio src={staticFile('narration.mp3')} volume={1}/>
+const Hook = () => <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: BG})}>
+  <GeneratedVideoBackdrop src="generated/clip-money.mp4" zoom={1.08}/>
+  <CaptionLayer spec={TELOP_COPY.hook} accent={GOLD}/>
+  <div style={{position: 'absolute', left: 76, right: 76, bottom: 215, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 15}}>
+    <FactCard label="REACHED IN" value="< 200 DAYS" accent={CYAN}/>
+    <FactCard label="RUN RATE" value="$1B / YEAR" accent={GOLD} delay={28}/>
+  </div>
 </AbsoluteFill>;
 
-const Root = () => <Composition id="ForwelleShort" component={Short} durationInFrames={1050} fps={30} width={1080} height={1920}/>;
+const ScaleScene = () => <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: BG})}>
+  <GeneratedVideoBackdrop src="generated/clip-scale.mp4" zoom={1.05} x={-8}/>
+  <CaptionLayer spec={TELOP_COPY.scale}/>
+  <div style={{position: 'absolute', left: 76, right: 76, bottom: 215, padding: '24px 28px', borderRadius: 23, background: PANEL, border: '1px solid #ffffff2d', fontSize: 24, color: '#dbe8ed', lineHeight: 1.45}}>
+    OpenAI: more than <b style={{color: CYAN}}>1 billion weekly active users</b> and <b style={{color: GOLD}}>tens of thousands of advertisers</b>.
+  </div>
+</AbsoluteFill>;
+
+const IntentScene = () => <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: BG})}>
+  <GeneratedVideoBackdrop src="generated/clip-intent.mp4" zoom={1.03}/>
+  <CaptionLayer spec={TELOP_COPY.intent} accent={GOLD}/>
+  <div style={{position: 'absolute', left: 77, right: 77, bottom: 210, display: 'flex', gap: 13}}>
+    {['EXPLORE', 'COMPARE', 'DECIDE'].map((x, i) => <div key={x} style={{flex: 1, padding: '18px 10px', textAlign: 'center', borderRadius: 16, background: '#08131de8', border: `1px solid ${i === 2 ? GOLD : CYAN}55`, color: i === 2 ? GOLD : SILVER, fontWeight: 900, letterSpacing: 1.5, fontSize: 19}}>{x}</div>)}
+  </div>
+</AbsoluteFill>;
+
+const TrustScene = () => {
+  const frame = useCurrentFrame();
+  const split = pct(frame, 22, 72);
+  return <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: BG})}>
+    <GeneratedVideoBackdrop src="generated/clip-intent.mp4" zoom={1.07} x={10} dark={0.27}/>
+    <CaptionLayer spec={TELOP_COPY.trust} accent={CYAN}/>
+    <div style={{position: 'absolute', left: 78, right: 78, bottom: 225, display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16}}>
+      <div style={{padding: '28px', borderRadius: 24, background: '#07151ce8', border: `1px solid ${CYAN}77`, transform: `translateY(${(1-split)*24}px)`, opacity: split}}><div style={{color: CYAN, fontSize: 22, letterSpacing: 3}}>ANSWER</div><div style={{fontSize: 29, color: '#fff', marginTop: 10, fontWeight: 850}}>Independent response</div></div>
+      <div style={{padding: '28px', borderRadius: 24, background: '#201907e8', border: `1px solid ${GOLD}77`, transform: `translateY(${(1-split)*24}px)`, opacity: split}}><div style={{color: GOLD, fontSize: 22, letterSpacing: 3}}>SPONSORED</div><div style={{fontSize: 29, color: '#fff', marginTop: 10, fontWeight: 850}}>Separate ad unit</div></div>
+    </div>
+  </AbsoluteFill>;
+};
+
+const End = () => <AbsoluteFill style={safeFrameStyle({color: '#fff', backgroundColor: BG})}>
+  <GeneratedVideoBackdrop src="generated/clip-money.mp4" zoom={1.03} x={-10} dark={0.36}/>
+  <CaptionLayer spec={TELOP_COPY.end} accent={GOLD}/>
+  <div style={{position: 'absolute', left: 76, right: 76, bottom: 255, padding: '24px 28px', borderRadius: 22, background: '#061019ed', border: '1px solid #ffffff38', fontSize: 21, lineHeight: 1.5, color: '#d9e6eb'}}>
+    <div style={{fontWeight: 950, color: CYAN, letterSpacing: 2, marginBottom: 7}}>SOURCES / AUG 31, 2026</div>
+    OpenAI — A milestone in expanding access to AI<br/>OpenAI — Ads in ChatGPT / Ad Policies
+  </div>
+  <div style={{position: 'absolute', left: 76, right: 76, bottom: 190, fontSize: 18, letterSpacing: 2.1, color: SILVER}}>FREE + GO MAY SEE ADS · PAID PLANS LISTED BY OPENAI DO NOT</div>
+</AbsoluteFill>;
+
+const Short = () => <AbsoluteFill>
+  <Sequence from={0} durationInFrames={180}><Hook/></Sequence>
+  <Sequence from={180} durationInFrames={210}><ScaleScene/></Sequence>
+  <Sequence from={390} durationInFrames={210}><IntentScene/></Sequence>
+  <Sequence from={600} durationInFrames={210}><TrustScene/></Sequence>
+  <Sequence from={810} durationInFrames={240}><End/></Sequence>
+  <Audio src={staticFile('ambient-bed.wav')} volume={0.13}/>
+  <Audio src={staticFile('narration.mp3')} volume={1}/>
+  {[0, 180, 390, 600, 810].map((f) => <Sequence key={f} from={f} durationInFrames={20}><Audio src={staticFile(f === 0 ? 'impact.wav' : 'whoosh.wav')} volume={f === 0 ? 0.34 : 0.22}/></Sequence>)}
+</AbsoluteFill>;
+
+const Root = () => <>
+  <Composition id="ClipMoney" component={ClipMoney} durationInFrames={210} fps={30} width={1080} height={1920}/>
+  <Composition id="ClipIntent" component={ClipIntent} durationInFrames={210} fps={30} width={1080} height={1920}/>
+  <Composition id="ClipScale" component={ClipScale} durationInFrames={210} fps={30} width={1080} height={1920}/>
+  <Composition id="ForwelleShort" component={Short} durationInFrames={1050} fps={30} width={1080} height={1920}/>
+</>;
+
 registerRoot(Root);
