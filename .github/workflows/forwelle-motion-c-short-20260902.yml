@@ -1,0 +1,127 @@
+name: Forwelle Motion C Short 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-motion-c-short-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+      TARGET_TITLE: "AI Isn't Making You Money — The Workflow Trap (Motion Cut) #Shorts"
+      FULL_VIDEO_URL: https://www.youtube.com/watch?v=rPYeG1LYgRg
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Render motion-only variant from winning Hook A
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg
+          fi
+          mkdir -p /tmp/forwelle-c
+          FONT='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          REG='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          ffmpeg -hide_banner -loglevel error -y \
+            -f lavfi -i 'color=c=0x080a0e:s=1080x1920:d=7:r=30' \
+            -vf "drawbox=x='80+40*sin(t*3)':y=120:w=180:h=8:color=0xb7bcc5@0.7:t=fill,drawbox=x='820-50*sin(t*2.4)':y=1760:w=180:h=8:color=0xb7bcc5@0.45:t=fill,drawtext=fontfile=${FONT}:text='FORWELLE':fontcolor=0xa8adb5:fontsize=32:x=84:y=110,drawtext=fontfile=${FONT}:text='AI ISN\x27T':fontcolor=0xe8eaee:fontsize=120:x='(w-text_w)/2+90*exp(-5*t)*cos(12*t)':y=610:enable='between(t,0,2.15)',drawtext=fontfile=${FONT}:text='MAKING YOU MONEY':fontcolor=0xe8eaee:fontsize=92:x='(w-text_w)/2-90*exp(-5*t)*cos(12*t)':y=760:enable='between(t,0,2.15)',drawtext=fontfile=${REG}:text='The output is faster. Revenue isn\x27t.':fontcolor=0xa8adb5:fontsize=40:x=(w-text_w)/2:y='980+18*sin(t*4)':enable='between(t,0.25,2.15)',drawtext=fontfile=${FONT}:text='THE BOTTLENECK':fontcolor=0xe8eaee:fontsize=92:x='(w-text_w)/2+80*exp(-5*(t-2.2))*cos(12*(t-2.2))':y=650:enable='between(t,2.2,4.45)',drawtext=fontfile=${FONT}:text='IS THE WORKFLOW':fontcolor=0xe8eaee:fontsize=88:x='(w-text_w)/2-80*exp(-5*(t-2.2))*cos(12*(t-2.2))':y=800:enable='between(t,2.2,4.45)',drawtext=fontfile=${REG}:text='Handoffs · human gates · decisions':fontcolor=0xa8adb5:fontsize=38:x=(w-text_w)/2:y='1000+16*sin((t-2.2)*4)':enable='between(t,2.45,4.45)',drawtext=fontfile=${FONT}:text='FULL BREAKDOWN':fontcolor=0xe8eaee:fontsize=102:x='(w-text_w)/2+70*exp(-5*(t-4.5))*cos(12*(t-4.5))':y=700:enable='between(t,4.5,7)',drawtext=fontfile=${REG}:text='YouTube → @forwelle':fontcolor=0xa8adb5:fontsize=44:x=(w-text_w)/2:y='920+14*sin((t-4.5)*4)':enable='between(t,4.7,7)',drawtext=fontfile=${REG}:text='Why AI Isn\x27t Making You Money':fontcolor=0x8b919b:fontsize=32:x=(w-text_w)/2:y=1040:enable='between(t,4.9,7)'" \
+            -c:v libx264 -pix_fmt yuv420p -movflags +faststart /tmp/forwelle-c/motion-c.mp4
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,pix_fmt -of json /tmp/forwelle-c/motion-c.mp4
+
+      - name: Rights and technical QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=/tmp/forwelle-c/motion-c.mp4
+          test -s "$FILE"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 "$FILE")" = '1080'
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=nw=1:nk=1 "$FILE")" = '1920'
+          duration="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$FILE")"
+          python3 - <<PY
+          d=float('$duration')
+          assert 6.9 <= d <= 7.1, d
+          PY
+          echo 'RIGHTS_QA=PASS original kinetic typography only; no third-party footage, music, voice, logo, or likeness'
+          echo 'TEST_VARIABLE=MOTION_ONLY; message family preserved from Hook A'
+
+      - name: Publish Motion C to proven Forwelle channel
+        id: publish
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/publish-c.mjs <<'EOF'
+          import fs from 'node:fs';
+          const channel=process.env.EXPECTED_CHANNEL_ID, title=process.env.TARGET_TITLE;
+          const feed=await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channel}`,{headers:{'user-agent':'Mozilla/5.0'}});
+          if(feed.ok){
+            const xml=await feed.text();
+            for(const entry of (xml.match(/<entry>[\s\S]*?<\/entry>/g)||[])){
+              if(!entry.includes(`<title>${title}</title>`)) continue;
+              const id=entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1];
+              if(id){
+                const url=`https://www.youtube.com/watch?v=${id}`;
+                console.log(`DUPLICATE_PUBLIC_FOUND=${id}`);
+                fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${id}\nvideo_url=${url}\nmode=existing\n`);
+                process.exit(0);
+              }
+            }
+          }
+          const t=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})});
+          const tj=await t.json(); if(!t.ok||!tj.access_token) throw new Error(`OAuth refresh failed: ${tj.error||t.status}`);
+          const auth={authorization:`Bearer ${tj.access_token}`};
+          const video=fs.readFileSync('/tmp/forwelle-c/motion-c.mp4');
+          const metadata={snippet:{title,description:`AI can multiply output without multiplying revenue. The bottleneck is often the workflow around the model: handoffs, human gates, and decisions.\n\nFull breakdown: ${process.env.FULL_VIDEO_URL}\n\n#AI #Automation #Workflow #Shorts`,categoryId:'28',tags:['AI','Automation','Workflow','Forwelle','Shorts'],defaultLanguage:'en'},status:{privacyStatus:'public',selfDeclaredMadeForKids:false}};
+          const boundary=`forwelle_c_${Date.now()}`;
+          const body=Buffer.concat([Buffer.from(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: video/mp4\r\n\r\n`),video,Buffer.from(`\r\n--${boundary}--\r\n`)]);
+          const r=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status&uploadType=multipart',{method:'POST',headers:{...auth,'content-type':`multipart/related; boundary=${boundary}`,'content-length':String(body.length)},body});
+          const j=await r.json(); if(!r.ok||!j.id) throw new Error(`Upload failed: ${j?.error?.message||r.status}`);
+          console.log(`VIDEO_ID=${j.id}`); console.log(`CHANNEL_ID=${j.snippet?.channelId||''}`); console.log(`PRIVACY=${j.status?.privacyStatus||''}`);
+          if(j.snippet?.channelId!==channel) throw new Error(`BRAND_GATE_FAIL channel=${j.snippet?.channelId||''}`);
+          if(j.status?.privacyStatus!=='public') throw new Error(`NOT_PUBLIC status=${j.status?.privacyStatus||''}`);
+          const url=`https://www.youtube.com/watch?v=${j.id}`;
+          console.log(`PUBLIC_URL=${url}`); console.log('BRAND_GATE=PASS_FORWELLE');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${j.id}\nvideo_url=${url}\nmode=created\n`);
+          EOF
+          node /tmp/publish-c.mjs
+
+      - name: Verify public URL and initial RSS metric
+        shell: bash
+        env:
+          VIDEO_ID: ${{ steps.publish.outputs.video_id }}
+          VIDEO_URL: ${{ steps.publish.outputs.video_url }}
+        run: |
+          set -euo pipefail
+          code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/c.html -w '%{http_code}' "$VIDEO_URL")"
+          echo "PUBLIC_HTTP=$code"
+          test "$code" = '200'
+          echo "PUBLIC_URL_VERIFIED=$VIDEO_URL"
+          python3 <<'PY'
+          import os,urllib.request,xml.etree.ElementTree as ET
+          vid=os.environ['VIDEO_ID']; channel='UCw9wnPzccaPba5rLKWyL6nQ'
+          req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwelleMotionMetrics/1.0'})
+          root=ET.fromstring(urllib.request.urlopen(req,timeout=30).read())
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          for e in root.findall('atom:entry',ns):
+              if e.findtext('yt:videoId',default='',namespaces=ns)!=vid: continue
+              stat=e.find('media:group/media:community/media:statistics',ns)
+              print('INITIAL_RSS_VIEW_COUNT='+(stat.attrib.get('views','UNAVAILABLE') if stat is not None else 'UNAVAILABLE'))
+              print('RSS_FOUND=YES')
+              break
+          else:
+              print('RSS_FOUND=NO_PROPAGATION_YET')
+          PY
