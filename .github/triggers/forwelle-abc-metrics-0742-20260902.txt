@@ -1,5 +1,5 @@
-run=2026-09-02T07:43:00+09:00
-purpose=measure-motion-c-vs-hook-a-vs-hook-b
+run=2026-09-02T07:44:00+09:00
+purpose=retry-abc-metrics-after-workflow-registration
 motion_c=oFaUQEmcaKs
 hook_a=SJJxnyC3ufc
 hook_b=_NEHx1nJEbA
