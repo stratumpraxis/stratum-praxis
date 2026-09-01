@@ -1,0 +1,76 @@
+name: Forwelle Public Performance Loop
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Measure recent public Forwelle videos without OAuth
+        run: |
+          set -euo pipefail
+          mkdir -p performance-evidence
+          python <<'PY'
+          import datetime, json, urllib.request, xml.etree.ElementTree as ET
+          channel_id='UCw9wnPzccaPba5rLKWyL6nQ'
+          req=urllib.request.Request(
+              f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}',
+              headers={'User-Agent':'Mozilla/5.0 ForwellePerformanceLoop/1.0'})
+          with urllib.request.urlopen(req,timeout=30) as r: xml=r.read()
+          root=ET.fromstring(xml)
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          now=datetime.datetime.now(datetime.timezone.utc)
+          rows=[]
+          for e in root.findall('atom:entry',ns):
+              vid=e.findtext('yt:videoId',default='',namespaces=ns)
+              stat=e.find('media:group/media:community/media:statistics',ns)
+              rating=e.find('media:group/media:community/media:starRating',ns)
+              published=e.findtext('atom:published',default='',namespaces=ns)
+              views=int(stat.attrib.get('views','0')) if stat is not None else None
+              try:
+                  pub=datetime.datetime.fromisoformat(published.replace('Z','+00:00'))
+                  age_h=max((now-pub).total_seconds()/3600,0.01)
+                  vph=round(views/age_h,2) if views is not None else None
+              except Exception: vph=None
+              rows.append({
+                'videoId':vid,
+                'title':e.findtext('atom:title',default='',namespaces=ns),
+                'publishedAt':published,
+                'views':views,
+                'ratingCount':int(rating.attrib.get('count','0')) if rating is not None else None,
+                'viewsPerHourApprox':vph,
+                'url':f'https://www.youtube.com/watch?v={vid}'})
+          rows.sort(key=lambda x:(x['views'] if x['views'] is not None else -1),reverse=True)
+          result={'capturedAt':now.isoformat(),'source':'youtube-public-rss','channelId':channel_id,'count':len(rows),'winner':rows[0] if rows else None,'videos':rows}
+          with open('performance-evidence/forwelle-public-performance.json','w',encoding='utf-8') as f:
+              json.dump(result,f,ensure_ascii=False,indent=2); f.write('\n')
+          print(json.dumps(result,ensure_ascii=False,indent=2))
+          if not rows: raise SystemExit('No public feed entries returned')
+          PY
+      - name: Publish human-readable run summary
+        run: |
+          python <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          d=json.load(open('performance-evidence/forwelle-public-performance.json'))
+          w=d['winner']
+          print('# Forwelle public performance')
+          print(f"- Captured: {d['capturedAt']}")
+          print(f"- Recent feed videos: {d['count']}")
+          print(f"- Winner: **{w['title']}**")
+          print(f"- Views: **{w['views']}**")
+          print(f"- Approx VPH: **{w['viewsPerHourApprox']}**")
+          print(f"- URL: {w['url']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-public-performance
+          path: performance-evidence/forwelle-public-performance.json
+          retention-days: 30
