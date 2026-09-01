@@ -1,0 +1,2 @@
+run=2026-09-02T05:12:00+09:00
+purpose=rank-current-forwelle-videos-by-public-view-signal
