@@ -1,4 +1,4 @@
-run=2026-09-02T07:40:00+09:00
-purpose=publish-motion-only-variant-c-after-hook-a-win
+run=2026-09-02T07:41:00+09:00
+purpose=retry-trigger-after-workflow-registration
 baseline_hook_a=SJJxnyC3ufc
 baseline_hook_b=_NEHx1nJEbA
