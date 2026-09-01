@@ -1,0 +1,74 @@
+name: Forwelle Live Metrics Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-live-metrics-20260902.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Collect current YouTube statistics
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
+          if (!required.every(k => process.env[k])) throw new Error('YouTube auth is not configured');
+          const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+            method:'POST',
+            headers:{'content-type':'application/x-www-form-urlencoded'},
+            body:new URLSearchParams({
+              client_id:process.env.YOUTUBE_CLIENT_ID,
+              client_secret:process.env.YOUTUBE_CLIENT_SECRET,
+              refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,
+              grant_type:'refresh_token'
+            })
+          });
+          const tokenJson = await tokenRes.json();
+          if (!tokenRes.ok || !tokenJson.access_token) throw new Error(`YouTube token refresh failed: ${tokenJson.error || tokenRes.status}`);
+          const ids = ['rPYeG1LYgRg','7rFKNKHAfXQ'];
+          const url = new URL('https://www.googleapis.com/youtube/v3/videos');
+          url.searchParams.set('part','statistics,snippet,contentDetails');
+          url.searchParams.set('id',ids.join(','));
+          const r = await fetch(url, {headers:{authorization:`Bearer ${tokenJson.access_token}`}});
+          const j = await r.json();
+          if (!r.ok) throw new Error(j?.error?.message || `YouTube API ${r.status}`);
+          const result = {
+            capturedAt:new Date().toISOString(),
+            channelId:'UCw9wnPzccaPba5rLKWyL6nQ',
+            videos:(j.items || []).map(v => ({
+              videoId:v.id,
+              title:v.snippet?.title || null,
+              publishedAt:v.snippet?.publishedAt || null,
+              duration:v.contentDetails?.duration || null,
+              views:Number(v.statistics?.viewCount || 0),
+              likes:Number(v.statistics?.likeCount || 0),
+              comments:Number(v.statistics?.commentCount || 0),
+              url:`https://www.youtube.com/watch?v=${v.id}`
+            }))
+          };
+          fs.writeFileSync('automation/forwelle-operator/live-metrics-20260902.json', JSON.stringify(result, null, 2) + '\n');
+          console.log(JSON.stringify(result, null, 2));
+          NODE
+      - name: Persist evidence
+        run: |
+          git config user.name "forwelle-metrics"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/live-metrics-20260902.json
+          git diff --cached --quiet || git commit -m "Record Forwelle live video metrics"
+          git pull --rebase origin main
+          git push
