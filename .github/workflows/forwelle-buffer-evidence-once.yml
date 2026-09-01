@@ -1,0 +1,64 @@
+name: Forwelle Buffer Evidence Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-buffer-evidence-20260902.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Query Buffer historical Forwelle post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const key = process.env.BUFFER_API_KEY;
+          if (!key) throw new Error('BUFFER_API_KEY missing');
+          const API = 'https://api.buffer.com';
+          async function gql(query) {
+            const r = await fetch(API,{method:'POST',headers:{'content-type':'application/json','authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j = await r.json();
+            if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+            return j.data;
+          }
+          const postId = '6a8ec67b8cd7131cf2749041';
+          const channelId = '6a8e5c44ccaf649a671a1092';
+          let schema = null;
+          try {
+            schema = await gql(`query { __type(name:"Post") { fields { name type { kind name ofType { kind name } } } } }`);
+          } catch (e) {
+            schema = {error:String(e)};
+          }
+          const fieldNames = schema?.__type?.fields?.map(f=>f.name) || [];
+          const wanted = ['id','status','dueAt','sentAt','sharedNow','externalLink','text','createdAt','updatedAt','service','channelId','metadata','statistics','stats','metrics','analytics','engagement','impressions','views','clicks','reactions','comments','likes','shares'];
+          const scalarFields = (schema?.__type?.fields || []).filter(f => wanted.includes(f.name) && ['SCALAR','ENUM'].includes(f.type?.kind)).map(f=>f.name);
+          const guaranteed = ['id','status','dueAt','sentAt','sharedNow','externalLink'];
+          const selection = [...new Set([...guaranteed,...scalarFields])].join(' ');
+          let post = null;
+          let postError = null;
+          try { post = (await gql(`query { post(input:{id:${JSON.stringify(postId)}}) { ${selection} } }`)).post; }
+          catch(e) { postError=String(e); }
+          const result = {capturedAt:new Date().toISOString(),source:'buffer',channelId,postId,post,postError,postFieldNames:fieldNames};
+          fs.writeFileSync('automation/forwelle-operator/buffer-evidence-20260902.json',JSON.stringify(result,null,2)+'\n');
+          console.log(JSON.stringify(result,null,2));
+          NODE
+      - name: Persist evidence
+        run: |
+          git config user.name "forwelle-evidence"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/buffer-evidence-20260902.json
+          git diff --cached --quiet || git commit -m "Record Forwelle Buffer evidence"
+          git pull --rebase origin main
+          git push
