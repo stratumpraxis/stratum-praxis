@@ -1,0 +1,68 @@
+name: Forwelle Title Test Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-title-test-20260902.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  update-title:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Change one creative variable and verify
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          VIDEO_ID: 7rFKNKHAfXQ
+          EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+          NEW_TITLE: "Why AI Isn't Making You Money (The Hidden Bottleneck)"
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const reqd=['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','VIDEO_ID','EXPECTED_CHANNEL_ID','NEW_TITLE'];
+          if(!reqd.every(k=>process.env[k])) throw new Error('Required config missing');
+          const tokenR=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})});
+          const tokenJ=await tokenR.json();
+          if(!tokenR.ok||!tokenJ.access_token) throw new Error(`OAuth refresh failed: ${tokenJ.error||tokenR.status}`);
+          const auth={authorization:`Bearer ${tokenJ.access_token}`};
+          const getUrl=new URL('https://www.googleapis.com/youtube/v3/videos');
+          getUrl.searchParams.set('part','snippet,status');
+          getUrl.searchParams.set('id',process.env.VIDEO_ID);
+          const beforeR=await fetch(getUrl,{headers:auth});
+          const beforeJ=await beforeR.json();
+          if(!beforeR.ok||!beforeJ.items?.length) throw new Error(`Read before update failed: ${beforeJ?.error?.message||beforeR.status}`);
+          const before=beforeJ.items[0];
+          if(before.snippet?.channelId!==process.env.EXPECTED_CHANNEL_ID) throw new Error(`Channel mismatch: ${before.snippet?.channelId||'unknown'}`);
+          if(before.status?.privacyStatus!=='public') throw new Error(`Video not public: ${before.status?.privacyStatus||'unknown'}`);
+          const updateBody={id:process.env.VIDEO_ID,snippet:{title:process.env.NEW_TITLE,description:before.snippet.description||'',categoryId:before.snippet.categoryId||'28',tags:before.snippet.tags||[],defaultLanguage:before.snippet.defaultLanguage||undefined,defaultAudioLanguage:before.snippet.defaultAudioLanguage||undefined}};
+          Object.keys(updateBody.snippet).forEach(k=>updateBody.snippet[k]===undefined&&delete updateBody.snippet[k]);
+          const updateR=await fetch('https://www.googleapis.com/youtube/v3/videos?part=snippet',{method:'PUT',headers:{...auth,'content-type':'application/json'},body:JSON.stringify(updateBody)});
+          const updateJ=await updateR.json();
+          if(!updateR.ok) throw new Error(`Title update failed: ${updateJ?.error?.message||updateR.status}`);
+          const afterR=await fetch(getUrl,{headers:auth});
+          const afterJ=await afterR.json();
+          if(!afterR.ok||!afterJ.items?.length) throw new Error(`Read after update failed: ${afterJ?.error?.message||afterR.status}`);
+          const after=afterJ.items[0];
+          if(after.snippet?.title!==process.env.NEW_TITLE) throw new Error(`Title verification mismatch: ${after.snippet?.title||''}`);
+          const result={changedAt:new Date().toISOString(),videoId:process.env.VIDEO_ID,url:`https://www.youtube.com/watch?v=${process.env.VIDEO_ID}`,variable:'title',before:{title:before.snippet?.title||null,privacy:before.status?.privacyStatus||null},after:{title:after.snippet?.title||null,privacy:after.status?.privacyStatus||null},hypothesis:'The Why-question framing used by the current higher-view video may improve discovery/click propensity while leaving the video itself unchanged.'};
+          fs.writeFileSync('automation/forwelle-operator/title-test-20260902.json',JSON.stringify(result,null,2)+'\n');
+          console.log(JSON.stringify(result,null,2));
+          NODE
+      - name: Persist title test evidence
+        run: |
+          git config user.name "forwelle-performance"
+          git config user.email "forwelle.media@gmail.com"
+          git add automation/forwelle-operator/title-test-20260902.json
+          git diff --cached --quiet || git commit -m "Record Forwelle title test"
+          git pull --rebase origin main
+          git push
