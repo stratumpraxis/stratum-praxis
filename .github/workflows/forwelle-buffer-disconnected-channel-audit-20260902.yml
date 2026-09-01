@@ -1,0 +1,45 @@
+name: Forwelle Buffer Disconnected Channel Audit 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-buffer-disconnected-channel-audit-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      FORWELLE_BUFFER_CHANNEL_ID: 6a8e5c44ccaf649a671a1092
+      EXPECTED_YOUTUBE_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Inspect removed Forwelle Buffer channel by exact ID
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'EOF'
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          const query=`query GetChannel($id: ChannelId!) { channel(input:{id:$id}) { id name displayName service serviceId externalLink descriptor isDisconnected isLocked isQueuePaused allowedActions scopes organizationId updatedAt } }`;
+          const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'content-type':'application/json','authorization':`Bearer ${key}`},body:JSON.stringify({query,variables:{id:process.env.FORWELLE_BUFFER_CHANNEL_ID}})});
+          const j=await r.json();
+          console.log(`HTTP=${r.status}`);
+          if(j.errors) console.log('GRAPHQL_ERRORS='+JSON.stringify(j.errors));
+          const c=j.data?.channel;
+          if(!c){ console.log('CHANNEL_FOUND=NO'); process.exit(0); }
+          console.log('CHANNEL_FOUND=YES');
+          for(const k of ['id','name','displayName','service','serviceId','externalLink','descriptor','isDisconnected','isLocked','isQueuePaused','organizationId','updatedAt']) console.log(`${k.toUpperCase()}=${c[k]??''}`);
+          console.log('ALLOWED_ACTIONS='+JSON.stringify(c.allowedActions||[]));
+          console.log('SCOPES='+JSON.stringify(c.scopes||[]));
+          console.log('SERVICE_ID_MATCH_EXPECTED='+(c.serviceId===process.env.EXPECTED_YOUTUBE_CHANNEL_ID));
+          console.log('RECONNECT_ACTION_AVAILABLE='+((c.allowedActions||[]).includes('reconnectChannel')));
+          EOF
