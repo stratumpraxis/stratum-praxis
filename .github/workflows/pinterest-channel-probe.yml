@@ -16,25 +16,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Query Pinterest channel metadata
+        id: query
+        continue-on-error: true
         env:
           BUFFER_ACCESS_TOKEN: ${{ secrets.BUFFER_ACCESS_TOKEN }}
-          PINTEREST_CHANNEL_ID: 6917fc832230dbae01fb7f0a
         run: |
-          set -euo pipefail
+          set -u
           mkdir -p distribution
           cat > /tmp/query.json <<'JSON'
           {
-            "query": "query GetPinterestChannel($id: ChannelId!) { channel(input: { id: $id }) { id name service metadata { ... on PinterestMetadata { boards { serviceId name } } } } }",
-            "variables": {"id": "6917fc832230dbae01fb7f0a"}
+            "query": "query GetChannelWithSubprofiles { channel(input: { id: \"6917fc832230dbae01fb7f0a\" }) { id name service metadata { ... on PinterestMetadata { boards { serviceId name url } } } } }"
           }
           JSON
-          curl --fail-with-body -sS https://api.buffer.com \
+          curl -sS https://api.buffer.com \
             -H "Authorization: Bearer ${BUFFER_ACCESS_TOKEN}" \
             -H "Content-Type: application/json" \
             --data-binary @/tmp/query.json \
             | tee distribution/pinterest-channel-probe.json
-          node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('distribution/pinterest-channel-probe.json','utf8'));if(j.errors||!j.data?.channel)process.exit(1);console.log(JSON.stringify(j.data.channel,null,2))"
+      - name: Validate response
+        continue-on-error: true
+        run: |
+          node -e "const fs=require('fs');const j=JSON.parse(fs.readFileSync('distribution/pinterest-channel-probe.json','utf8'));console.log(JSON.stringify(j,null,2));if(j.errors||!j.data?.channel)process.exit(1)"
       - name: Commit probe evidence
+        if: always()
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
