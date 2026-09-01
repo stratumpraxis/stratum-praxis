@@ -1,0 +1,103 @@
+name: Fix PostHog Identity Continuity Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/fix-posthog-identity-continuity-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: fix-posthog-identity-continuity-once
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unify analytics distinct id
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path('scos-analytics.js')
+          s = path.read_text(encoding='utf-8')
+          old = '''  window.scosCapture = function (name, props) {
+    const eventProperties = Object.assign({}, attribution, { path: location.pathname, funnel: funnelId() }, props || {});
+    delete eventProperties.email;
+    delete eventProperties.purchaser_email;
+    delete eventProperties.session_id;
+    try { window.posthog.capture(name, eventProperties, { transport: 'sendBeacon', send_instantly: true }); } catch (_) {}
+  };
+  window.scosAttribution = attribution;
+
+  function captureBeforeNavigation(name, props) {
+    const properties = Object.assign({}, attribution, { path: location.pathname, funnel: funnelId(), '$process_person_profile': false }, props || {});
+    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
+    try {
+      if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return;
+    } catch (_) {}
+    window.scosCapture(name, props);
+  }
+'''
+          new = '''  function sendEvent(name, props) {
+    const properties = Object.assign({}, attribution, {
+      path: location.pathname,
+      funnel: funnelId(),
+      '$process_person_profile': false
+    }, props || {});
+    delete properties.email;
+    delete properties.purchaser_email;
+    delete properties.session_id;
+    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
+    try {
+      if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return true;
+    } catch (_) {}
+    try {
+      fetch(HOST + '/i/v0/e/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+        mode: 'cors'
+      });
+      return true;
+    } catch (_) { return false; }
+  }
+
+  window.scosCapture = function (name, props) {
+    sendEvent(name, props);
+  };
+  window.scosAttribution = attribution;
+
+  function captureBeforeNavigation(name, props) {
+    sendEvent(name, props);
+  }
+'''
+          if old not in s:
+              raise SystemExit('target analytics block not found; aborting without changes')
+          s = s.replace(old, new, 1)
+          path.write_text(s, encoding='utf-8')
+
+      - name: Verify identity continuity fix
+        run: |
+          set -euo pipefail
+          grep -Fq "distinct_id: anonymousId" scos-analytics.js
+          grep -Fq "function sendEvent(name, props)" scos-analytics.js
+          test "$(grep -Fo "window.posthog.capture(name" scos-analytics.js | wc -l)" -eq 0
+          test "$(grep -Fo "distinct_id: anonymousId" scos-analytics.js | wc -l)" -eq 1
+
+      - name: Persist fix
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add scos-analytics.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Fix PostHog identity continuity across funnel events"
+          git pull --rebase origin main
+          git push
