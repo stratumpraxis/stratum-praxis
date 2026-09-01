@@ -1,0 +1,63 @@
+name: Forwelle Live Evidence Probe
+
+on:
+  push:
+    paths:
+      - 'automation/forwelle-revenue-loop/run.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Fetch current YouTube evidence read-only
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          YOUTUBE_VIDEO_ID: B-nSx6zkExM
+        run: |
+          node <<'NODE'
+          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
+          for (const k of required) if (!process.env[k]) throw new Error(`${k} missing`);
+          const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: {'content-type':'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({
+              client_id: process.env.YOUTUBE_CLIENT_ID,
+              client_secret: process.env.YOUTUBE_CLIENT_SECRET,
+              refresh_token: process.env.YOUTUBE_REFRESH_TOKEN,
+              grant_type: 'refresh_token'
+            })
+          });
+          const tokenJson = await tokenRes.json();
+          if (!tokenRes.ok || !tokenJson.access_token) throw new Error(`token refresh failed: ${tokenJson.error || tokenRes.status}`);
+          const id = process.env.YOUTUBE_VIDEO_ID;
+          const url = new URL('https://www.googleapis.com/youtube/v3/videos');
+          url.searchParams.set('part','snippet,status,statistics');
+          url.searchParams.set('id',id);
+          const r = await fetch(url, {headers:{authorization:`Bearer ${tokenJson.access_token}`}});
+          const j = await r.json();
+          if (!r.ok) throw new Error(`videos.list failed: ${j?.error?.message || r.status}`);
+          const v = j.items?.[0];
+          if (!v) throw new Error('video not found');
+          const evidence = {
+            capturedAt: new Date().toISOString(),
+            videoId: id,
+            url: `https://www.youtube.com/watch?v=${id}`,
+            title: v.snippet?.title || null,
+            privacyStatus: v.status?.privacyStatus || null,
+            views: Number(v.statistics?.viewCount || 0),
+            likes: Number(v.statistics?.likeCount || 0),
+            comments: Number(v.statistics?.commentCount || 0)
+          };
+          console.log('FORWELLE_LIVE_EVIDENCE=' + JSON.stringify(evidence));
+          NODE
