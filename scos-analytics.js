@@ -144,22 +144,38 @@
     disable_session_recording: true
   });
 
+  function sendEvent(name, props) {
+    const properties = Object.assign({}, attribution, {
+      path: location.pathname,
+      funnel: funnelId(),
+      '$process_person_profile': false
+    }, props || {});
+    delete properties.email;
+    delete properties.purchaser_email;
+    delete properties.session_id;
+    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
+    try {
+      if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return true;
+    } catch (_) {}
+    try {
+      fetch(HOST + '/i/v0/e/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload,
+        keepalive: true,
+        mode: 'cors'
+      });
+      return true;
+    } catch (_) { return false; }
+  }
+
   window.scosCapture = function (name, props) {
-    const eventProperties = Object.assign({}, attribution, { path: location.pathname, funnel: funnelId() }, props || {});
-    delete eventProperties.email;
-    delete eventProperties.purchaser_email;
-    delete eventProperties.session_id;
-    try { window.posthog.capture(name, eventProperties, { transport: 'sendBeacon', send_instantly: true }); } catch (_) {}
+    sendEvent(name, props);
   };
   window.scosAttribution = attribution;
 
   function captureBeforeNavigation(name, props) {
-    const properties = Object.assign({}, attribution, { path: location.pathname, funnel: funnelId(), '$process_person_profile': false }, props || {});
-    const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
-    try {
-      if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return;
-    } catch (_) {}
-    window.scosCapture(name, props);
+    sendEvent(name, props);
   }
 
   function isEnglishPage() {
