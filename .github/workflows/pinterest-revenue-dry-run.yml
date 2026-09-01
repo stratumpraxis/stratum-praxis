@@ -8,7 +8,7 @@ on:
       - .github/triggers/pinterest-revenue-dry-run.txt
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   validate:
@@ -23,6 +23,8 @@ jobs:
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
         run: node distribution/safety-audit.mjs
       - name: Dry run Pinterest publisher
+        id: publisher
+        continue-on-error: true
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_QUEUE_FILE: pinterest-queue.json
@@ -30,4 +32,22 @@ jobs:
           BUFFER_SELECT_MODE: first
           REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: '1'
-        run: node distribution/buffer-publisher.mjs
+        run: |
+          set +e
+          node distribution/buffer-publisher.mjs > distribution/pinterest-dry-run.log 2>&1
+          code=$?
+          cat distribution/pinterest-dry-run.log
+          echo "exit_code=${code}" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Commit dry-run evidence
+        if: always()
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          printf 'exit_code=%s\n' '${{ steps.publisher.outputs.exit_code }}' > distribution/pinterest-dry-run-status.txt
+          git add distribution/pinterest-dry-run.log distribution/pinterest-dry-run-status.txt
+          git commit -m "evidence: capture Pinterest revenue dry run" || exit 0
+          git push
+      - name: Fail when publisher failed
+        if: steps.publisher.outputs.exit_code != '0'
+        run: exit 1
