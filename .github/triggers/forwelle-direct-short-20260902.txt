@@ -1,7 +1,9 @@
-run=2026-09-02T05:03:00+09:00
+run=2026-09-02T05:12:00+09:00
 objective=increase-forwelle-exposure-with-brand-safe-short
 brand=Forwelle
 external_destination=youtube:UCw9wnPzccaPba5rLKWyL6nQ
 baseline_source_video=https://www.youtube.com/watch?v=rPYeG1LYgRg
 baseline_source_views=4
 creative=9s-original-typography-no-third-party-audio-or-footage
+brand_gate=private-upload-response-channel-id-before-public
+reason=read-scope-unavailable-use-existing-youtube-upload-scope-only

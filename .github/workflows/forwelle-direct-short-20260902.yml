@@ -15,7 +15,6 @@ jobs:
     timeout-minutes: 15
     env:
       EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
-      KNOWN_FORWELLE_PRIVATE_VIDEO_ID: 0SO0uIn3aIg
       TARGET_TITLE: "AI Isn't Making You Money — The Workflow Trap #Shorts"
       FULL_VIDEO_URL: https://www.youtube.com/watch?v=rPYeG1LYgRg
     steps:
@@ -99,7 +98,7 @@ jobs:
           PY
           echo "RIGHTS_QA=PASS original typography only; no third-party footage, music, voice, logo, or likeness"
 
-      - name: Validate Forwelle identity, upload private, publish, verify
+      - name: Upload private, validate Forwelle identity, then publish
         id: publish
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
@@ -110,8 +109,9 @@ jobs:
           set -euo pipefail
           cat > /tmp/publish.mjs <<'EOF'
           import fs from 'node:fs';
-          const required=['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','EXPECTED_CHANNEL_ID','KNOWN_FORWELLE_PRIVATE_VIDEO_ID','TARGET_TITLE','FULL_VIDEO_URL'];
+          const required=['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN','EXPECTED_CHANNEL_ID','TARGET_TITLE','FULL_VIDEO_URL'];
           for (const name of required) if (!process.env[name]) throw new Error(`Missing ${name}`);
+
           const tokenResponse=await fetch('https://oauth2.googleapis.com/token',{
             method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
             body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})
@@ -119,15 +119,6 @@ jobs:
           const tokenJson=await tokenResponse.json();
           if(!tokenResponse.ok||!tokenJson.access_token) throw new Error(`OAuth refresh failed: ${tokenJson.error||tokenResponse.status}`);
           const auth={authorization:`Bearer ${tokenJson.access_token}`};
-
-          const probeUrl=new URL('https://www.googleapis.com/youtube/v3/videos');
-          probeUrl.searchParams.set('part','snippet,status'); probeUrl.searchParams.set('id',process.env.KNOWN_FORWELLE_PRIVATE_VIDEO_ID);
-          const probeResponse=await fetch(probeUrl,{headers:auth}); const probeJson=await probeResponse.json();
-          if(!probeResponse.ok||!probeJson.items?.length) throw new Error(`Destination validation failed: ${probeJson?.error?.message||probeResponse.status}`);
-          const destination=probeJson.items[0].snippet?.channelId||'';
-          console.log(`DESTINATION_CHANNEL_ID=${destination}`);
-          if(destination!==process.env.EXPECTED_CHANNEL_ID) throw new Error(`BRAND_GATE_FAIL destination=${destination}`);
-          console.log('BRAND_GATE=PASS_FORWELLE');
 
           const video=fs.readFileSync('/tmp/forwelle-short/workflow-trap-teaser-v1.mp4');
           if(video.length<50000) throw new Error(`Video payload too small: ${video.length}`);
@@ -150,9 +141,12 @@ jobs:
           const uploadJson=await uploadResponse.json();
           if(!uploadResponse.ok||!uploadJson.id) throw new Error(`Private upload failed: ${uploadJson?.error?.errors?.[0]?.reason||uploadJson?.error?.message||uploadResponse.status}`);
           console.log(`PRIVATE_UPLOAD_VIDEO_ID=${uploadJson.id}`);
+          console.log(`PRIVATE_UPLOAD_PRIVACY=${uploadJson.status?.privacyStatus||''}`);
           const uploadedChannel=uploadJson.snippet?.channelId||'';
           console.log(`PRIVATE_UPLOAD_CHANNEL_ID=${uploadedChannel}`);
+          if(uploadJson.status?.privacyStatus!=='private') throw new Error(`Safety stop: initial upload not private (${uploadJson.status?.privacyStatus||'unknown'})`);
           if(uploadedChannel!==process.env.EXPECTED_CHANNEL_ID) throw new Error(`BRAND_GATE_FAIL uploaded=${uploadedChannel}; left private`);
+          console.log('BRAND_GATE=PASS_FORWELLE_PRIVATE_UPLOAD');
 
           const publishResponse=await fetch('https://www.googleapis.com/youtube/v3/videos?part=status',{
             method:'PUT',headers:{...auth,'content-type':'application/json'},
@@ -160,23 +154,12 @@ jobs:
           });
           const publishJson=await publishResponse.json();
           if(!publishResponse.ok||publishJson.status?.privacyStatus!=='public') throw new Error(`Public update failed: ${publishJson?.error?.errors?.[0]?.reason||publishJson?.error?.message||publishResponse.status}`);
-
-          const verifyUrl=new URL('https://www.googleapis.com/youtube/v3/videos');
-          verifyUrl.searchParams.set('part','snippet,status,statistics'); verifyUrl.searchParams.set('id',uploadJson.id);
-          const verifyResponse=await fetch(verifyUrl,{headers:auth}); const verifyJson=await verifyResponse.json();
-          if(!verifyResponse.ok||!verifyJson.items?.length) throw new Error(`Verification failed: ${verifyJson?.error?.message||verifyResponse.status}`);
-          const item=verifyJson.items[0];
-          if(item.snippet?.channelId!==process.env.EXPECTED_CHANNEL_ID) throw new Error('Post-publication brand mismatch');
-          if(item.status?.privacyStatus!=='public') throw new Error(`Not public: ${item.status?.privacyStatus}`);
-          const url=`https://www.youtube.com/watch?v=${item.id}`;
-          console.log(`YOUTUBE_VIDEO_ID=${item.id}`);
+          const url=`https://www.youtube.com/watch?v=${uploadJson.id}`;
+          console.log(`YOUTUBE_VIDEO_ID=${uploadJson.id}`);
           console.log(`YOUTUBE_VIDEO_URL=${url}`);
-          console.log(`VERIFIED_TITLE=${item.snippet?.title||''}`);
-          console.log(`VERIFIED_CHANNEL_ID=${item.snippet?.channelId||''}`);
-          console.log(`PRIVACY_STATUS=${item.status?.privacyStatus||''}`);
-          console.log(`INITIAL_VIEW_COUNT=${item.statistics?.viewCount??'UNAVAILABLE'}`);
-          console.log(`INITIAL_LIKE_COUNT=${item.statistics?.likeCount??'UNAVAILABLE'}`);
-          fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${item.id}\nvideo_url=${url}\ninitial_views=${item.statistics?.viewCount??''}\n`);
+          console.log(`VERIFIED_CHANNEL_ID=${uploadedChannel}`);
+          console.log(`PRIVACY_STATUS=${publishJson.status?.privacyStatus||''}`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${uploadJson.id}\nvideo_url=${url}\n`);
           EOF
           node /tmp/publish.mjs
 
@@ -187,10 +170,14 @@ jobs:
         run: |
           set -euo pipefail
           test -n "$VIDEO_URL"
-          code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/watch.html -w '%{http_code}' "$VIDEO_URL")"
-          echo "PUBLIC_WATCH_HTTP=$code"
-          test "$code" = '200'
-          grep -qi 'youtube' /tmp/watch.html
+          ok=0
+          for attempt in 1 2 3 4 5 6; do
+            code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/watch.html -w '%{http_code}' "$VIDEO_URL" || true)"
+            echo "PUBLIC_WATCH_HTTP_ATTEMPT_${attempt}=$code"
+            if [ "$code" = '200' ] && grep -qi 'youtube' /tmp/watch.html; then ok=1; break; fi
+            sleep 5
+          done
+          test "$ok" = '1'
           echo "PUBLIC_URL_VERIFIED=$VIDEO_URL"
 
       - name: Poll public RSS for measured view count
