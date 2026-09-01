@@ -15,55 +15,49 @@ jobs:
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-python@v5
         with:
-          node-version: '24'
-      - name: Collect current YouTube statistics
-        env:
-          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
-          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
-          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+          python-version: '3.13'
+      - name: Collect current public YouTube statistics
         run: |
-          node --input-type=module <<'NODE'
-          import fs from 'node:fs';
-          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
-          if (!required.every(k => process.env[k])) throw new Error('YouTube auth is not configured');
-          const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
-            method:'POST',
-            headers:{'content-type':'application/x-www-form-urlencoded'},
-            body:new URLSearchParams({
-              client_id:process.env.YOUTUBE_CLIENT_ID,
-              client_secret:process.env.YOUTUBE_CLIENT_SECRET,
-              refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,
-              grant_type:'refresh_token'
-            })
-          });
-          const tokenJson = await tokenRes.json();
-          if (!tokenRes.ok || !tokenJson.access_token) throw new Error(`YouTube token refresh failed: ${tokenJson.error || tokenRes.status}`);
-          const ids = ['rPYeG1LYgRg','7rFKNKHAfXQ'];
-          const url = new URL('https://www.googleapis.com/youtube/v3/videos');
-          url.searchParams.set('part','statistics,snippet,contentDetails');
-          url.searchParams.set('id',ids.join(','));
-          const r = await fetch(url, {headers:{authorization:`Bearer ${tokenJson.access_token}`}});
-          const j = await r.json();
-          if (!r.ok) throw new Error(j?.error?.message || `YouTube API ${r.status}`);
-          const result = {
-            capturedAt:new Date().toISOString(),
-            channelId:'UCw9wnPzccaPba5rLKWyL6nQ',
-            videos:(j.items || []).map(v => ({
-              videoId:v.id,
-              title:v.snippet?.title || null,
-              publishedAt:v.snippet?.publishedAt || null,
-              duration:v.contentDetails?.duration || null,
-              views:Number(v.statistics?.viewCount || 0),
-              likes:Number(v.statistics?.likeCount || 0),
-              comments:Number(v.statistics?.commentCount || 0),
-              url:`https://www.youtube.com/watch?v=${v.id}`
-            }))
-          };
-          fs.writeFileSync('automation/forwelle-operator/live-metrics-20260902.json', JSON.stringify(result, null, 2) + '\n');
-          console.log(JSON.stringify(result, null, 2));
-          NODE
+          python -m pip install --disable-pip-version-check -q yt-dlp
+          python <<'PY'
+          import datetime, json, subprocess
+          urls = [
+              'https://www.youtube.com/watch?v=rPYeG1LYgRg',
+              'https://www.youtube.com/watch?v=7rFKNKHAfXQ',
+          ]
+          videos = []
+          for url in urls:
+              proc = subprocess.run(
+                  ['python','-m','yt_dlp','--dump-single-json','--no-warnings','--skip-download',url],
+                  text=True, capture_output=True, check=True,
+              )
+              v = json.loads(proc.stdout)
+              videos.append({
+                  'videoId': v.get('id'),
+                  'title': v.get('title'),
+                  'publishedAt': v.get('timestamp') or v.get('release_timestamp'),
+                  'uploadDate': v.get('upload_date'),
+                  'durationSeconds': v.get('duration'),
+                  'views': v.get('view_count'),
+                  'likes': v.get('like_count'),
+                  'comments': v.get('comment_count'),
+                  'channel': v.get('channel'),
+                  'channelId': v.get('channel_id'),
+                  'url': v.get('webpage_url') or url,
+              })
+          result = {
+              'capturedAt': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'method': 'public-web-yt-dlp',
+              'videos': videos,
+          }
+          out = 'automation/forwelle-operator/live-metrics-20260902.json'
+          with open(out, 'w', encoding='utf-8') as f:
+              json.dump(result, f, ensure_ascii=False, indent=2)
+              f.write('\n')
+          print(json.dumps(result, ensure_ascii=False, indent=2))
+          PY
       - name: Persist evidence
         run: |
           git config user.name "forwelle-metrics"
