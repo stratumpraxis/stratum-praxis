@@ -1,0 +1,3 @@
+run=2026-09-02T05:05:00+09:00
+post_id=6a8ec67b8cd7131cf2749041
+channel_id=6a8e5c44ccaf649a671a1092
