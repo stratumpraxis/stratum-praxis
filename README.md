@@ -64,3 +64,5 @@ Each comparison routes back into the existing SaaS Renewal Decision Calculator a
 - Quantify expected value before implementation spend.
 - Keep judgment-heavy, sensitive, and exception-heavy work human-controlled.
 - Prefer small, reversible systems that can be measured and improved.
+
+The public site remains deployable as plain HTML, CSS, and JavaScript with no build step.
