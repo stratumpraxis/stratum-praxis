@@ -1,0 +1,192 @@
+name: Forwelle Direct Public Insert 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-direct-public-insert-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  publish-measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+      TARGET_TITLE: "AI Isn't Making You Money — The Workflow Trap #Shorts"
+      FULL_VIDEO_URL: https://www.youtube.com/watch?v=rPYeG1LYgRg
+      BRAND_PROOF_RUN_ID: "33554012030"
+      BRAND_PROOF_PRIVATE_VIDEO_ID: "-ReIsp0mDE4"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Render 9-second original typography teaser
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg
+          fi
+          mkdir -p /tmp/forwelle-public
+          printf '%s\n' "AI ISN'T" "MAKING YOU MONEY" > /tmp/forwelle-public/h1.txt
+          printf '%s\n' "The output is faster. Revenue isn't." > /tmp/forwelle-public/s1.txt
+          printf '%s\n' "THE BOTTLENECK" "IS THE WORKFLOW" > /tmp/forwelle-public/h2.txt
+          printf '%s\n' "Handoffs. Human gates. Decisions." > /tmp/forwelle-public/s2.txt
+          printf '%s\n' "FULL BREAKDOWN" > /tmp/forwelle-public/h3.txt
+          printf '%s\n' "YouTube  →  @forwelle" "Why AI Isn't Making You Money" > /tmp/forwelle-public/s3.txt
+          FONT='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          REG='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          ffmpeg -hide_banner -loglevel error -y \
+            -f lavfi -i 'color=c=0x080a0e:s=1080x1920:d=9:r=30' \
+            -vf "drawtext=fontfile=${FONT}:text='FORWELLE':fontcolor=0xa8adb5:fontsize=32:x=84:y=110,drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-public/h1.txt:fontcolor=0xe8eaee:fontsize=92:line_spacing=18:x=(w-text_w)/2:y=590:enable='between(t,0,2.99)',drawtext=fontfile=${REG}:textfile=/tmp/forwelle-public/s1.txt:fontcolor=0xa8adb5:fontsize=42:x=(w-text_w)/2:y=900:enable='between(t,0,2.99)',drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-public/h2.txt:fontcolor=0xe8eaee:fontsize=92:line_spacing=18:x=(w-text_w)/2:y=590:enable='between(t,3,5.99)',drawtext=fontfile=${REG}:textfile=/tmp/forwelle-public/s2.txt:fontcolor=0xa8adb5:fontsize=42:x=(w-text_w)/2:y=900:enable='between(t,3,5.99)',drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-public/h3.txt:fontcolor=0xe8eaee:fontsize=106:x=(w-text_w)/2:y=650:enable='between(t,6,9)',drawtext=fontfile=${REG}:textfile=/tmp/forwelle-public/s3.txt:fontcolor=0xa8adb5:fontsize=42:line_spacing=18:x=(w-text_w)/2:y=860:enable='between(t,6,9)',drawtext=fontfile=${REG}:text='Performance Media · measured route':fontcolor=0x707680:fontsize=28:x=(w-text_w)/2:y=1600" \
+            -c:v libx264 -pix_fmt yuv420p -movflags +faststart \
+            /tmp/forwelle-public/workflow-trap-short.mp4
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,pix_fmt -of json /tmp/forwelle-public/workflow-trap-short.mp4
+
+      - name: Rights and technical QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=/tmp/forwelle-public/workflow-trap-short.mp4
+          test -s "$FILE"
+          duration="$(ffprobe -v error -show_entries format=duration -of default=nw=1:nk=1 "$FILE")"
+          width="$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 "$FILE")"
+          height="$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=nw=1:nk=1 "$FILE")"
+          test "$width" = '1080'
+          test "$height" = '1920'
+          python3 - <<PY
+          d=float('$duration')
+          assert 8.9 <= d <= 9.1, d
+          PY
+          echo 'RIGHTS_QA=PASS original typography only; no third-party footage, music, voice, logo, or likeness'
+          echo "BRAND_PROOF=run:${BRAND_PROOF_RUN_ID} private_video:${BRAND_PROOF_PRIVATE_VIDEO_ID} channel:${EXPECTED_CHANNEL_ID}"
+
+      - name: Direct public insert on proven Forwelle credential
+        id: publish
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/direct-public.mjs <<'EOF'
+          import fs from 'node:fs';
+          const channelId=process.env.EXPECTED_CHANNEL_ID;
+          const title=process.env.TARGET_TITLE;
+          const feedUrl=`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`;
+          const feedResponse=await fetch(feedUrl,{headers:{'user-agent':'Mozilla/5.0'}});
+          if(feedResponse.ok){
+            const feed=await feedResponse.text();
+            const entries=feed.match(/<entry>[\s\S]*?<\/entry>/g)||[];
+            for(const entry of entries){
+              if(!entry.includes(`<title>${title}</title>`)) continue;
+              const id=entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1];
+              if(id){
+                const url=`https://www.youtube.com/watch?v=${id}`;
+                console.log(`DUPLICATE_PUBLIC_FOUND=${id}`);
+                console.log(`YOUTUBE_VIDEO_URL=${url}`);
+                fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${id}\nvideo_url=${url}\nmode=existing\n`);
+                process.exit(0);
+              }
+            }
+          }
+
+          const required=['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
+          for(const name of required) if(!process.env[name]) throw new Error(`Missing ${name}`);
+          const tokenResponse=await fetch('https://oauth2.googleapis.com/token',{
+            method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+            body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})
+          });
+          const tokenJson=await tokenResponse.json();
+          if(!tokenResponse.ok||!tokenJson.access_token) throw new Error(`OAuth refresh failed: ${tokenJson.error||tokenResponse.status}`);
+          const auth={authorization:`Bearer ${tokenJson.access_token}`};
+          const video=fs.readFileSync('/tmp/forwelle-public/workflow-trap-short.mp4');
+          if(video.length<50000) throw new Error(`Video payload too small: ${video.length}`);
+          const metadata={
+            snippet:{
+              title,
+              description:`AI can multiply output without multiplying revenue. The bottleneck is often the workflow around the model: handoffs, human gates, and decisions.\n\nFull breakdown: ${process.env.FULL_VIDEO_URL}\n\n#AI #Automation #Workflow #Shorts`,
+              categoryId:'28',tags:['AI','Automation','Workflow','Forwelle','Shorts'],defaultLanguage:'en'
+            },
+            status:{privacyStatus:'public',selfDeclaredMadeForKids:false}
+          };
+          const boundary=`forwelle_public_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+          const prefix=Buffer.from(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: video/mp4\r\n\r\n`);
+          const suffix=Buffer.from(`\r\n--${boundary}--\r\n`);
+          const body=Buffer.concat([prefix,video,suffix]);
+          const r=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status&uploadType=multipart',{
+            method:'POST',headers:{...auth,'content-type':`multipart/related; boundary=${boundary}`,'content-length':String(body.length)},body
+          });
+          const j=await r.json();
+          if(!r.ok||!j.id) throw new Error(`Direct public insert failed: ${j?.error?.errors?.[0]?.reason||j?.error?.message||r.status}`);
+          const returnedChannel=j.snippet?.channelId||'';
+          const privacy=j.status?.privacyStatus||'';
+          console.log(`INSERT_VIDEO_ID=${j.id}`);
+          console.log(`INSERT_CHANNEL_ID=${returnedChannel}`);
+          console.log(`INSERT_PRIVACY=${privacy}`);
+          if(returnedChannel!==channelId) throw new Error(`BRAND_GATE_FAIL public insert channel=${returnedChannel}`);
+          if(privacy!=='public') throw new Error(`PUBLIC_INSERT_NOT_PUBLIC status=${privacy}; YouTube/API policy forced non-public`);
+          const url=`https://www.youtube.com/watch?v=${j.id}`;
+          console.log('BRAND_GATE=PASS_FORWELLE_PUBLIC_INSERT');
+          console.log(`YOUTUBE_VIDEO_URL=${url}`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${j.id}\nvideo_url=${url}\nmode=created\n`);
+          EOF
+          node /tmp/direct-public.mjs
+
+      - name: Verify public watch URL
+        env:
+          VIDEO_URL: ${{ steps.publish.outputs.video_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "$VIDEO_URL"
+          ok=0
+          for attempt in 1 2 3 4 5 6; do
+            code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/watch.html -w '%{http_code}' "$VIDEO_URL" || true)"
+            echo "PUBLIC_WATCH_HTTP_ATTEMPT_${attempt}=$code"
+            if [ "$code" = '200' ] && grep -qi 'youtube' /tmp/watch.html; then ok=1; break; fi
+            sleep 5
+          done
+          test "$ok" = '1'
+          echo "PUBLIC_URL_VERIFIED=$VIDEO_URL"
+
+      - name: Poll public RSS for actual view count
+        env:
+          VIDEO_ID: ${{ steps.publish.outputs.video_id }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import os,time,urllib.request,xml.etree.ElementTree as ET
+          vid=os.environ['VIDEO_ID']
+          feed='https://www.youtube.com/feeds/videos.xml?channel_id=UCw9wnPzccaPba5rLKWyL6nQ'
+          ns={'yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          for attempt in range(1,9):
+              try:
+                  req=urllib.request.Request(feed,headers={'User-Agent':'Mozilla/5.0'})
+                  root=ET.fromstring(urllib.request.urlopen(req,timeout=20).read())
+                  for entry in root.findall('{http://www.w3.org/2005/Atom}entry'):
+                      eid=entry.find('yt:videoId',ns)
+                      if eid is None or eid.text!=vid: continue
+                      stats=entry.find('.//media:community/media:statistics',ns)
+                      views=stats.attrib.get('views','UNAVAILABLE') if stats is not None else 'UNAVAILABLE'
+                      print(f'RSS_VIDEO_ID={vid}')
+                      print(f'RSS_VIEW_COUNT={views}')
+                      print(f'RSS_ATTEMPT={attempt}')
+                      raise SystemExit(0)
+              except SystemExit:
+                  raise
+              except Exception as e:
+                  print(f'RSS_ATTEMPT_ERROR={attempt}:{e}')
+              if attempt<8: time.sleep(15)
+          print('RSS_PROPAGATION=PENDING')
+          print('RSS_VIEW_COUNT=UNAVAILABLE')
+          PY
