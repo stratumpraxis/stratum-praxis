@@ -4,6 +4,7 @@
   const SESSION_KEY = 'sp_funnel_attribution_v2';
   const params = new URLSearchParams(location.search);
   const explicitRoute = String(params.get('route_id') || '').trim().slice(0, 100);
+  const PERSONAL_CHECKOUT = 'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T';
 
   function applyExplicitRoute() {
     if (!explicitRoute) return;
@@ -28,6 +29,32 @@
         if (value) url.searchParams.set(key, value);
       });
       link.href = url.toString();
+    });
+  }
+
+  function alignProductPagePrimaryCheckout() {
+    if (location.pathname !== '/cross-agent-operating-kit.html') return;
+
+    const targets = [
+      {
+        link: document.querySelector('.hero .actions .primary'),
+        id: 'cross_agent_personal_product_hero',
+        label: 'Get Personal — $69 →'
+      },
+      {
+        link: document.querySelector('.close .primary'),
+        id: 'cross_agent_personal_product_close',
+        label: 'Get Personal — $69 →'
+      }
+    ];
+
+    targets.forEach(function (item) {
+      if (!item.link) return;
+      item.link.href = PERSONAL_CHECKOUT;
+      item.link.textContent = item.label;
+      item.link.dataset.analyticsId = item.id;
+      item.link.dataset.product = 'cross_agent_personal';
+      item.link.setAttribute('data-primary-cta', 'true');
     });
   }
 
@@ -63,10 +90,12 @@
   }
 
   applyExplicitRoute();
+  alignProductPagePrimaryCheckout();
   alignHomepageRoutes();
 
   window.addEventListener('pageshow', function () {
     applyExplicitRoute();
+    alignProductPagePrimaryCheckout();
     alignHomepageRoutes();
   });
 })();
