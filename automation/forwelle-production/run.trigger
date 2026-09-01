@@ -1,1 +1,1 @@
-forwelle-hugging-face-trend-2026-09-01T13:15+09:00
+forwelle-hugging-face-trend-final-v2-2026-09-01T13:17+09:00
