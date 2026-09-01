@@ -1,1 +1,1 @@
-{"errors":[{"message":"Access token is not valid","extensions":{"code":"UNAUTHENTICATED"}}]}
+{"errors":[{"message":"Channel not found","path":["channel"],"extensions":{"code":"NOT_FOUND"}}],"data":null}
