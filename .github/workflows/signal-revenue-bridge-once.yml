@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/signal-revenue-bridge-once.yml'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -19,22 +20,17 @@ jobs:
           fetch-depth: 0
 
       - name: Replace non-revenue membership tease with live revenue step
+        shell: bash
         run: |
-          python - <<'PY'
+          python3 - <<'PY'
           from pathlib import Path
           import re
 
           p = Path('signal/index.html')
           s = p.read_text(encoding='utf-8')
-
-          pattern = re.compile(
-              r'<div class="membership-tease">.*?</div></section>\n<section class="section" id="tools">',
-              re.S,
-          )
-
+          pattern = re.compile(r'<div class="membership-tease">.*?</div></section>\n<section class="section" id="tools">', re.S)
           replacement = '''<div class="membership-tease" id="revenueStep"><div><div class="eyebrow">NEXT STEP · OWNED REVENUE</div><h2>情報収集で止めず、次の収益ルートを1本選ぶ。</h2><p>Signalで変化を把握したら、Revenue Routerでそのシグナルを既存コンテンツ・商品・Lead・B2B施策へ優先順位付け。業務全体の改善が必要ならWorkflow Auditへ進めます。</p></div><div style="display:flex;gap:9px;flex-wrap:wrap"><a data-revenue-cta="revenue-router" href="../revenue-router.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_primary">Revenue Router $29 →</a><a data-revenue-cta="workflow-audit" href="../workflow-audit.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_secondary" style="background:transparent;color:#fff;border:1px solid var(--line)">Workflow Audit $499 →</a></div></div></section>
 <section class="section" id="tools">'''
-
           s2, n = pattern.subn(replacement, s, count=1)
           if n != 1:
               raise SystemExit(f'expected exactly one membership tease, replaced {n}')
@@ -44,11 +40,11 @@ jobs:
           if needle not in s2:
               raise SystemExit('tracking insertion point not found')
           s2 = s2.replace(needle, tracking, 1)
-
           p.write_text(s2, encoding='utf-8')
           PY
 
       - name: QA revenue route and analytics hook
+        shell: bash
         run: |
           set -euo pipefail
           grep -q 'Revenue Router $29' signal/index.html
@@ -57,6 +53,7 @@ jobs:
           grep -q 'utm_campaign=signal_revenue_bridge' signal/index.html
 
       - name: Commit production change
+        shell: bash
         run: |
           set -euo pipefail
           git config user.name 'github-actions[bot]'
