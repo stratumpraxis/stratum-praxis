@@ -1,0 +1,60 @@
+name: Forwelle A B C Metrics 0742 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-abc-metrics-0742-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Read current public YouTube RSS metrics
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          import urllib.request, xml.etree.ElementTree as ET, datetime
+          channel='UCw9wnPzccaPba5rLKWyL6nQ'
+          targets=['oFaUQEmcaKs','SJJxnyC3ufc','_NEHx1nJEbA','rPYeG1LYgRg','7rFKNKHAfXQ']
+          names={'oFaUQEmcaKs':'MOTION_C','SJJxnyC3ufc':'HOOK_A','_NEHx1nJEbA':'HOOK_B','rPYeG1LYgRg':'LONG_A','7rFKNKHAfXQ':'LONG_B'}
+          url=f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}'
+          req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 ForwelleABCMetrics/1.0'})
+          xml=urllib.request.urlopen(req,timeout=30).read()
+          root=ET.fromstring(xml)
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          found={}
+          for e in root.findall('atom:entry',ns):
+              vid=e.findtext('yt:videoId',default='',namespaces=ns)
+              if vid not in targets: continue
+              stat=e.find('media:group/media:community/media:statistics',ns)
+              rating=e.find('media:group/media:community/media:starRating',ns)
+              found[vid]={
+                  'title':e.findtext('atom:title',default='',namespaces=ns),
+                  'views':int(stat.attrib.get('views','0')) if stat is not None else None,
+                  'ratingCount':int(rating.attrib.get('count','0')) if rating is not None else None,
+                  'published':e.findtext('atom:published',default='',namespaces=ns),
+              }
+          print('CAPTURED_AT='+datetime.datetime.now(datetime.timezone.utc).isoformat())
+          print('RSS_BYTES='+str(len(xml)))
+          print('FOUND_COUNT='+str(len(found)))
+          for vid in targets:
+              r=found.get(vid)
+              if r:
+                  print(f'METRIC name={names[vid]} video={vid} views={r["views"]} ratingCount={r["ratingCount"]} published={r["published"]} title={r["title"]}')
+              else:
+                  print(f'METRIC name={names[vid]} video={vid} MISSING_FROM_RSS')
+          vals={names[v]:found.get(v,{}).get('views') for v in targets[:3]}
+          valid={k:v for k,v in vals.items() if isinstance(v,int)}
+          if valid:
+              best=max(valid.values())
+              winners=','.join(sorted(k for k,v in valid.items() if v==best))
+              print('SHORT_WINNER='+winners)
+              print('SHORT_MAX_VIEWS='+str(best))
+          print('ABC_METRICS=PASS')
+          PY
