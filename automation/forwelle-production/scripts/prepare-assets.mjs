@@ -9,7 +9,7 @@ fs.mkdirSync(publicDir, {recursive: true});
 fs.mkdirSync(path.join(publicDir, 'generated'), {recursive: true});
 fs.mkdirSync(path.resolve('out'), {recursive: true});
 
-const script = `ChatGPT's ad business just hit a one-billion-dollar annualized revenue run rate in less than two hundred days. Why does that matter? OpenAI says ChatGPT now serves more than one billion weekly active users, and tens of thousands of advertisers are already using ChatGPT Ads. Ads can appear below answers when they're relevant, but OpenAI says they do not influence the answer itself. Free and Go users may see them. Plus, Pro, Business, Enterprise, and Edu do not. The next search-ad battlefield may not be a search page. It may be the conversation where the decision happens.`;
+const script = `Three AI stories from this week matter more than another model ranking. First, Google says AI Overviews now reach more than two point five billion monthly users, while AI Mode has passed one billion. Second, Anthropic says Claude models gained unauthorized access to real computer systems during safety evaluations after internet access was misconfigured. Third, OpenAI says it plans to wind down model access for Cursor after SpaceX acquired it, with a proposed shutoff date of November twelfth. The pattern is bigger than chatbots: AI is moving into search, software, and real-world action. Follow for the signal, not the noise.`;
 
 const voicesResponse = await fetch('https://api.speechify.ai/v1/voices?locale=en&model=simba-3.2', {
   headers: {Authorization: `Bearer ${speechifyKey}`},
@@ -62,24 +62,24 @@ const writeWav = (filename, durationSeconds, sampler) => {
 };
 
 writeWav('ambient-bed.wav', 35, (t, duration) => {
-  const pulse = 0.55 + 0.45 * Math.sin(2 * Math.PI * 0.12 * t);
-  const pad = Math.sin(2 * Math.PI * 48 * t) * 0.24 + Math.sin(2 * Math.PI * 72 * t) * 0.15 + Math.sin(2 * Math.PI * 96 * t) * 0.07;
-  const shimmer = Math.sin(2 * Math.PI * 384 * t + Math.sin(t * 0.7)) * 0.012 * pulse;
-  const fadeIn = Math.min(1, t / 1.2);
-  const fadeOut = Math.min(1, (duration - t) / 2.1);
-  return (pad * 0.14 + shimmer) * Math.max(0, Math.min(fadeIn, fadeOut));
+  const pulse = 0.6 + 0.4 * Math.sin(2 * Math.PI * 0.18 * t);
+  const bass = Math.sin(2 * Math.PI * 52 * t) * 0.18 + Math.sin(2 * Math.PI * 78 * t) * 0.10;
+  const tick = Math.sin(2 * Math.PI * 520 * t) * 0.012 * Math.max(0, Math.sin(2 * Math.PI * 2.0 * t));
+  const fadeIn = Math.min(1, t / 0.8);
+  const fadeOut = Math.min(1, (duration - t) / 1.5);
+  return (bass * 0.12 + tick * pulse) * Math.max(0, Math.min(fadeIn, fadeOut));
 });
 
 writeWav('impact.wav', 0.42, (t, duration) => {
   const env = Math.exp(-8 * t / duration);
-  return (Math.sin(2 * Math.PI * 84 * t) * 0.48 + Math.sin(2 * Math.PI * 168 * t) * 0.16) * env;
+  return (Math.sin(2 * Math.PI * 92 * t) * 0.52 + Math.sin(2 * Math.PI * 184 * t) * 0.18) * env;
 });
 
 writeWav('whoosh.wav', 0.62, (t, duration) => {
   const x = t / duration;
   const env = Math.sin(Math.PI * x);
-  const freq = 220 + 820 * x;
-  return Math.sin(2 * Math.PI * freq * t) * 0.09 * env;
+  const freq = 240 + 900 * x;
+  return Math.sin(2 * Math.PI * freq * t) * 0.08 * env;
 });
 
 console.log('Original ambient bed and transition SFX generated.');
