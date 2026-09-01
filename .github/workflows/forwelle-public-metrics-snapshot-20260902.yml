@@ -19,10 +19,11 @@ jobs:
         run: |
           set -euo pipefail
           python3 <<'PY'
-          import urllib.request, xml.etree.ElementTree as ET
+          import urllib.request, xml.etree.ElementTree as ET, datetime
           channel='UCw9wnPzccaPba5rLKWyL6nQ'
-          targets=['SJJxnyC3ufc','rPYeG1LYgRg','7rFKNKHAfXQ']
-          req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwellePublicMetrics/1.0'})
+          targets=['oFaUQEmcaKs','SJJxnyC3ufc','_NEHx1nJEbA','rPYeG1LYgRg','7rFKNKHAfXQ']
+          names={'oFaUQEmcaKs':'MOTION_C','SJJxnyC3ufc':'HOOK_A','_NEHx1nJEbA':'HOOK_B','rPYeG1LYgRg':'LONG_A','7rFKNKHAfXQ':'LONG_B'}
+          req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwellePublicMetrics/2.0'})
           data=urllib.request.urlopen(req,timeout=30).read()
           root=ET.fromstring(data)
           ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
@@ -34,17 +35,25 @@ jobs:
               rating=e.find('media:group/media:community/media:starRating',ns)
               found[vid]={
                   'title':e.findtext('atom:title',default='',namespaces=ns),
-                  'views':stat.attrib.get('views') if stat is not None else None,
-                  'ratingCount':rating.attrib.get('count') if rating is not None else None,
+                  'views':int(stat.attrib.get('views','0')) if stat is not None else None,
+                  'ratingCount':int(rating.attrib.get('count','0')) if rating is not None else None,
                   'published':e.findtext('atom:published',default='',namespaces=ns),
               }
+          print('CAPTURED_AT='+datetime.datetime.now(datetime.timezone.utc).isoformat())
           print(f'RSS_BYTES={len(data)}')
           print(f'RSS_FOUND_COUNT={len(found)}')
           for vid in targets:
               row=found.get(vid)
               if row:
-                  print(f'METRIC video={vid} views={row["views"]} ratingCount={row["ratingCount"]} title={row["title"]}')
+                  print(f'METRIC name={names[vid]} video={vid} views={row["views"]} ratingCount={row["ratingCount"]} published={row["published"]} title={row["title"]}')
               else:
-                  print(f'METRIC video={vid} MISSING_FROM_RSS')
+                  print(f'METRIC name={names[vid]} video={vid} MISSING_FROM_RSS')
+          shorts={names[v]:found.get(v,{}).get('views') for v in targets[:3]}
+          valid={k:v for k,v in shorts.items() if isinstance(v,int)}
+          if valid:
+              best=max(valid.values())
+              winners=','.join(sorted(k for k,v in valid.items() if v==best))
+              print('SHORT_WINNER='+winners)
+              print('SHORT_MAX_VIEWS='+str(best))
           print('SNAPSHOT=PASS')
           PY
