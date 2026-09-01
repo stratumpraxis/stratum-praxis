@@ -1,0 +1,13 @@
+{
+  "capturedAt": "2026-09-01T20:14:24.546501+00:00",
+  "method": "dailymotion-api-v2-readonly-preflight",
+  "secretsPresent": {
+    "clientId": false,
+    "clientSecret": false,
+    "profileId": false
+  },
+  "profileIdHash": null,
+  "token": {},
+  "profileProbe": {},
+  "decision": "BLOCKED_MISSING_CREDENTIALS"
+}
