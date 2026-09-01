@@ -14,6 +14,7 @@ This is the minimum external-traffic route for every currently active offer in t
 
 These are public, measurable entry points for the current product-validation cycle. Links to Stratum Praxis pages include source tags so GitHub referral traffic can be separated from other distribution.
 
+- [Cross-Agent Operating Kit — Personal $69](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=cross_agent_operating_kit) — portable operating infrastructure for AI teams using Claude Code, Codex, Cursor, and other agent runtimes; includes operating policy, runtime adapters, human gates, budget/token/quota guardrails, migration checklist, and policy scoring.
 - [AI App Builder Router 2026 — $24](https://payhip.com/b/LBtbr) — choose an AI app-building path by goal, constraints, and implementation fit; the current storefront also connects to the existing upgrade ladder.
 - [AI Council Builder — $29](https://stratumpraxis.com/ai-council-builder.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=ai_council_builder) — design a practical AI team, assign roles, and run structured multi-agent decision workflows without requiring the buyer to hand over account access.
 - [Smartphone Income Blueprint — $19](https://stratumpraxis.com/smartphone-income-blueprint.html?utm_source=github&utm_medium=referral&utm_campaign=current_products&utm_content=smartphone_income_blueprint) — a phone-first loop for validating one real problem, publishing one useful digital product, and measuring the largest funnel leak.
@@ -63,5 +64,3 @@ Each comparison routes back into the existing SaaS Renewal Decision Calculator a
 - Quantify expected value before implementation spend.
 - Keep judgment-heavy, sensitive, and exception-heavy work human-controlled.
 - Prefer small, reversible systems that can be measured and improved.
-
-The public site remains deployable as plain HTML, CSS, and JavaScript with no build step.
