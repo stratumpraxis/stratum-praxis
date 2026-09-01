@@ -1,0 +1,73 @@
+name: Forwelle Buffer Brand-Safe Channel Audit
+
+on:
+  push:
+    branches: [forwelle-selfdrive-proof-20260902]
+    paths:
+      - '.github/triggers/forwelle-buffer-brand-audit.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Read current Buffer channels without posting
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p automation/forwelle-operator
+          node <<'NODE'
+          import fs from 'node:fs';
+          const key = process.env.BUFFER_API_KEY || '';
+          const out = {capturedAt:new Date().toISOString(),method:'buffer-readonly-brand-audit',keyPresent:Boolean(key),organizations:[],decision:null};
+          if (!key) {
+            out.decision='BLOCKED_MISSING_BUFFER_KEY';
+          } else {
+            async function gql(query){
+              const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+              const j=await r.json();
+              if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+              return j.data;
+            }
+            try {
+              const acct=await gql('query { account { organizations { id name } } }');
+              for (const org of acct.account?.organizations || []) {
+                const data=await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
+                out.organizations.push({name:org.name,channels:(data.channels||[]).map(c=>({name:c.name,displayName:c.displayName,service:c.service,isQueuePaused:c.isQueuePaused}))});
+              }
+              const channels=out.organizations.flatMap(o=>o.channels);
+              const forwelle=channels.filter(c=>`${c.name||''} ${c.displayName||''}`.toLowerCase().includes('forwelle'));
+              out.forwelleChannels=forwelle;
+              out.decision=forwelle.length ? 'FORWELLE_CHANNEL_AVAILABLE' : 'NO_FORWELLE_CHANNEL_AVAILABLE';
+            } catch (e) {
+              out.error=String(e);
+              out.decision='BUFFER_READ_FAILED';
+            }
+          }
+          fs.writeFileSync('automation/forwelle-operator/buffer-brand-audit-20260902.json',JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify(out,null,2));
+          NODE
+      - name: Persist audit evidence
+        run: |
+          set -euo pipefail
+          BRANCH='forwelle-selfdrive-proof-20260902'
+          git config user.name 'forwelle-distribution'
+          git config user.email 'forwelle.media@gmail.com'
+          git add automation/forwelle-operator/buffer-brand-audit-20260902.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Record Forwelle Buffer brand audit evidence'
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && exit 0
+            sleep $((attempt * 2))
+          done
+          exit 1
