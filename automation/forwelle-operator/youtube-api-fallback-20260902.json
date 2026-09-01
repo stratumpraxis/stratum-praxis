@@ -1,0 +1,22 @@
+{
+  "capturedAt": "2026-09-01T20:10:25.625Z",
+  "method": "youtube-data-api-oauth-fallback",
+  "oauth": {
+    "tokenHttp": 200,
+    "tokenStatus": "ok",
+    "tokenError": null,
+    "scope": "https://www.googleapis.com/auth/youtube.upload"
+  },
+  "channel": {
+    "http": 403,
+    "errorReason": "insufficientPermissions",
+    "errorMessage": "Request had insufficient authentication scopes.",
+    "id": null,
+    "title": null,
+    "statistics": null
+  },
+  "videos": [],
+  "videosHttp": 403,
+  "videosErrorReason": "insufficientPermissions",
+  "videosErrorMessage": "Request had insufficient authentication scopes."
+}
