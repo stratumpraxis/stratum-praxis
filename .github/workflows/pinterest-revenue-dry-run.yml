@@ -1,0 +1,33 @@
+name: Pinterest Revenue Lane Dry Run
+
+on:
+  push:
+    branches:
+      - ops/pinterest-revenue-lane-20260902
+    paths:
+      - .github/triggers/pinterest-revenue-dry-run.txt
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Safety audit Pinterest queue
+        env:
+          BUFFER_QUEUE_FILE: pinterest-queue.json
+          MAX_SERVICES_PER_ITEM: '1'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
+      - name: Dry run Pinterest publisher
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_QUEUE_FILE: pinterest-queue.json
+          BUFFER_TARGET_SERVICES: pinterest
+          BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
+          DRY_RUN: '1'
+        run: node distribution/buffer-publisher.mjs
