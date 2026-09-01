@@ -21,9 +21,17 @@ jobs:
       - name: Read public YouTube channel feed
         run: |
           python <<'PY'
-          import json, urllib.request, xml.etree.ElementTree as ET, datetime
+          import json, urllib.request, xml.etree.ElementTree as ET, datetime, pathlib
           channel_id='UCw9wnPzccaPba5rLKWyL6nQ'
-          targets={'rPYeG1LYgRg','7rFKNKHAfXQ'}
+          trigger=pathlib.Path('.github/triggers/forwelle-rss-metrics-20260902.txt')
+          targets=set()
+          if trigger.exists():
+              for line in trigger.read_text(encoding='utf-8').splitlines():
+                  if line.startswith('video_ids='):
+                      targets={x.strip() for x in line.split('=',1)[1].split(',') if x.strip()}
+          if not targets:
+              targets={'rPYeG1LYgRg','7rFKNKHAfXQ'}
+          print('TARGET_VIDEO_IDS='+','.join(sorted(targets)))
           url=f'https://www.youtube.com/feeds/videos.xml?channel_id={channel_id}'
           req=urllib.request.Request(url,headers={'User-Agent':'Mozilla/5.0 ForwelleMetrics/1.0'})
           with urllib.request.urlopen(req,timeout=30) as r:
@@ -46,7 +54,8 @@ jobs:
                   'ratingCount': int(rating.attrib.get('count','0')) if rating is not None else None,
                   'url':f'https://www.youtube.com/watch?v={vid}'
               })
-          result={'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':'youtube-public-rss','channelId':channel_id,'targetCount':len(targets),'foundCount':len(rows),'videos':rows}
+          rows.sort(key=lambda x: x['publishedAt'], reverse=True)
+          result={'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'source':'youtube-public-rss','channelId':channel_id,'targetCount':len(targets),'foundCount':len(rows),'missingVideoIds':sorted(targets-{x['videoId'] for x in rows}),'videos':rows}
           with open('automation/forwelle-operator/rss-metrics-20260902.json','w',encoding='utf-8') as f:
               json.dump(result,f,ensure_ascii=False,indent=2); f.write('\n')
           print(json.dumps(result,ensure_ascii=False,indent=2))
