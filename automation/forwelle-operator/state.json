@@ -1,14 +1,15 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49525378",
     "feed:cloudflare-blog:signal",
     "feed:openai-news:signal",
     "feed:google-ai:signal"
   ],
   "lastScoutAt": "2026-09-01T23:08:02.803Z",
   "lastRun": {
-    "id": "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal",
-    "at": "2026-08-31T23:06:06.958Z",
+    "id": "2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378",
+    "at": "2026-09-01T23:09:23.221Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }

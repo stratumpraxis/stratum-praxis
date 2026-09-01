@@ -2,6 +2,80 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378",
+      "candidateId": "hn:49525378",
+      "createdAt": "2026-09-01T23:08:02.907Z",
+      "recordedAt": "2026-09-01T23:09:23.221Z",
+      "title": "Claude Fable 5.1 and Claude Mythos 5.1",
+      "source": {
+        "name": "anthropic.com — first-party source",
+        "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
+        "factSource": true,
+        "verified": true,
+        "published": "2026-09-01T17:53:53.000Z"
+      },
+      "outputFile": "media/forwelle/2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "structureProfile": {
+        "hookType": "concrete-change",
+        "hookText": "Claude Fable 5.1 and Claude Mythos 5.1",
+        "pacing": "five-scene-progressive",
+        "ctaType": "non-salesy-takeaway",
+        "visualStyle": "procedural-motion",
+        "sceneCount": 5,
+        "durationSeconds": 40
+      },
+      "strategy": {
+        "winningPatternLearning": {
+          "status": "BUILDING_DATASET",
+          "sampleCount": 0,
+          "targetCount": 10,
+          "briefUsed": false,
+          "editorialBrief": null
+        },
+        "rendering": {
+          "preferredFinalComposer": "remotion",
+          "currentOperatorRenderer": "procedural"
+        }
+      },
+      "assetCandidates": {
+        "moneyPrinterTurbo": {
+          "status": "SKIPPED_NOT_CONFIGURED",
+          "candidateOnly": true,
+          "promotedToPublication": false,
+          "provider": "MoneyPrinterTurbo",
+          "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal",
       "candidateId": "feed:cloudflare-blog:signal",
       "createdAt": "2026-08-31T23:04:41.845Z",
