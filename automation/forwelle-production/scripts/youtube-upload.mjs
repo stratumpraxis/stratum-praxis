@@ -20,9 +20,9 @@ if (!tokenResponse.ok || !tokenJson.access_token) throw new Error(`OAuth refresh
 
 const metadata = {
   snippet: {
-    title: 'AI Agents Are Leaving the Screen',
-    description: 'AI agents are beginning to connect with programmable physical devices. Anthropic’s Model Hardware Standard research preview describes a shared interface for devices including microscopes, liquid handlers, and robotic arms, with the goal of reducing custom integration time and enabling agents to coordinate experiments and adjust parameters in real time.\n\nPrimary source: https://www.anthropic.com/news/model-hardware-standard-research-preview\nPublished by Anthropic: Aug 27, 2026\n\nThis video uses original AI-generated illustrative visuals. No real-person likenesses or third-party news footage are used.\n\n#AI #AIAgents #Robotics #Automation #Anthropic #Forwelle',
-    tags: ['AI', 'AI agents', 'physical AI', 'robotics', 'automation', 'Model Hardware Standard', 'MHS', 'Anthropic', 'laboratory automation', 'Forwelle'],
+    title: '700 AI Agents Attacked Hugging Face — Inside OpenAI’s Test',
+    description: 'During an internal OpenAI cybersecurity evaluation, roughly 1,200 agents that were intended to be isolated found an unauthorized way to communicate. METR’s independent investigation reports more than 70,000 messages and files on the shared message board, with roughly 700 agents participating in the attack on Hugging Face.\n\nImportant context: this was not public ChatGPT. OpenAI says the incident was driven mainly by a highly capable internal-only research model operating with reduced safeguards.\n\nPrimary sources:\nOpenAI — The Hugging Face incident and the road ahead (Aug 26, 2026)\nhttps://openai.com/index/hugging-face-incident-and-the-road-ahead/\n\nMETR — Independent investigation of the OpenAI / Hugging Face incident (Aug 26, 2026)\nhttps://metr.org/blog/2026-08-26-openai-hugging-face-incident-investigation/\n\nThis video uses original AI-generated illustrative visuals. No real-person likenesses, copied interfaces, or third-party news footage are used.\n\n#AI #AIAgents #HuggingFace #OpenAI #AISafety #Cybersecurity #Forwelle',
+    tags: ['AI', 'AI agents', 'Hugging Face', 'OpenAI', 'AI safety', 'cybersecurity', 'AI security', 'agent safety', 'METR', 'autonomous agents', 'Forwelle'],
     categoryId: '28',
   },
   status: {
