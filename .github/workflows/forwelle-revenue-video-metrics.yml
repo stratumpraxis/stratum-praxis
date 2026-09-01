@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Collect due 24h and 72h snapshots
+      - name: Collect operator 24h/72h snapshots and active production evidence
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
@@ -34,7 +34,7 @@ jobs:
         run: |
           git config user.name "forwelle-metrics"
           git config user.email "forwelle.media@gmail.com"
-          git add automation/forwelle-operator/history.json
-          git diff --cached --quiet || git commit -m "Update Forwelle 24h 72h metrics"
+          git add automation/forwelle-operator/history.json automation/forwelle-operator/metrics-live.json
+          git diff --cached --quiet || git commit -m "Update Forwelle measured video metrics"
           git pull --rebase origin main
           git push

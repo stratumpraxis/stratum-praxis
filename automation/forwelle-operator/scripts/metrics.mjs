@@ -3,8 +3,13 @@ import path from 'node:path';
 
 const ROOT = path.resolve('automation/forwelle-operator');
 const historyPath = path.join(ROOT, 'history.json');
+const targetsPath = path.join(ROOT, 'metric-targets.json');
+const livePath = path.join(ROOT, 'metrics-live.json');
+
 let history = {version:1, items:[]};
 try { history = JSON.parse(await fs.readFile(historyPath, 'utf8')); } catch {}
+let targets = {version:1, items:[]};
+try { targets = JSON.parse(await fs.readFile(targetsPath, 'utf8')); } catch {}
 
 const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
 const hasYouTubeAuth = required.every(k => process.env[k]);
@@ -30,11 +35,19 @@ async function youtubeStats(id) {
   try {
     const token = await getYouTubeToken(); if (!token) return {status:'AUTH_NOT_CONFIGURED'};
     const u = new URL('https://www.googleapis.com/youtube/v3/videos');
-    u.searchParams.set('part','statistics'); u.searchParams.set('id',id);
+    u.searchParams.set('part','snippet,status,statistics'); u.searchParams.set('id',id);
     const r = await fetch(u, {headers:{authorization:`Bearer ${token}`}}); const j = await r.json();
     if (!r.ok) return {status:'UNAVAILABLE', reason:j?.error?.message || String(r.status)};
-    const s = j.items?.[0]?.statistics; if (!s) return {status:'NOT_FOUND'};
-    return {status:'OK', views:Number(s.viewCount||0), likes:Number(s.likeCount||0), comments:Number(s.commentCount||0)};
+    const v = j.items?.[0]; if (!v) return {status:'NOT_FOUND'};
+    const s = v.statistics || {};
+    return {
+      status:'OK',
+      title:v.snippet?.title || null,
+      privacyStatus:v.status?.privacyStatus || null,
+      views:Number(s.viewCount||0),
+      likes:Number(s.likeCount||0),
+      comments:Number(s.commentCount||0)
+    };
   } catch (e) { return {status:'UNAVAILABLE', reason:String(e)}; }
 }
 
@@ -60,4 +73,35 @@ for (const item of history.items || []) {
   }
 }
 if (changed) await fs.writeFile(historyPath, JSON.stringify(history, null, 2) + '\n');
-console.log(JSON.stringify({changed, items: history.items?.length || 0, youtubeAuth: hasYouTubeAuth}, null, 2));
+
+const capturedAt = new Date().toISOString();
+const liveItems = [];
+for (const target of targets.items || []) {
+  if (target.status && target.status !== 'ACTIVE') continue;
+  const id = target.videoId || youtubeId(target.url);
+  const youtube = id ? await youtubeStats(id) : {status:'NO_VIDEO_ID'};
+  const baseline = target.baseline || {};
+  const delta = youtube.status === 'OK' ? {
+    views: Number.isFinite(Number(baseline.views)) ? youtube.views - Number(baseline.views) : null,
+    likes: Number.isFinite(Number(baseline.likes)) ? youtube.likes - Number(baseline.likes) : null,
+    comments: Number.isFinite(Number(baseline.comments)) ? youtube.comments - Number(baseline.comments) : null
+  } : null;
+  liveItems.push({
+    id: target.id,
+    goal: target.goal || null,
+    url: target.url || (id ? `https://www.youtube.com/watch?v=${id}` : null),
+    baseline,
+    capturedAt,
+    youtube,
+    delta
+  });
+}
+const live = {version:1, capturedAt, items:liveItems};
+if (liveItems.length) await fs.writeFile(livePath, JSON.stringify(live, null, 2) + '\n');
+
+console.log(JSON.stringify({
+  changed,
+  items: history.items?.length || 0,
+  youtubeAuth: hasYouTubeAuth,
+  liveTargets: liveItems
+}, null, 2));
