@@ -1,3 +1,4 @@
-run=2026-09-02T05:15:00+09:00
+run=2026-09-02T05:45:00+09:00
 source=youtube-public-rss
+purpose=remeasure-after-sitewide-owned-distribution-change
 video_ids=rPYeG1LYgRg,7rFKNKHAfXQ
