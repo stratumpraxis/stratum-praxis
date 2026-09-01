@@ -1,0 +1,38 @@
+{
+  "status": "publish-ready",
+  "manifest": "trend-video-engine/current.json",
+  "videoId": "2026-08-27-physical-ai-control-tiktok-v6b",
+  "startedAt": "2026-09-01T06:26:17.479349+00:00",
+  "stages": {
+    "preflight": {
+      "status": "passed"
+    },
+    "render": {
+      "status": "passed"
+    },
+    "qa": {
+      "status": "passed"
+    },
+    "publish-ready": {
+      "status": "passed",
+      "note": "External distribution safety audit still runs before publication."
+    }
+  },
+  "policy": {
+    "mode": "fail-closed",
+    "sequence": [
+      "preflight",
+      "render",
+      "qa",
+      "publish-ready"
+    ],
+    "telopRules": [
+      "one primary headline per scene",
+      "maximum three headline lines",
+      "headline density limit by language",
+      "body-copy density limit",
+      "duplicate primary-message rejection"
+    ]
+  },
+  "finishedAt": "2026-09-01T06:26:36.480660+00:00"
+}
