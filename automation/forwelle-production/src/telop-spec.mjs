@@ -6,7 +6,7 @@ export const SAFE_AREA = Object.freeze({
 });
 
 export const TELOP_RULES = Object.freeze({
-  preset: 'forwelle-video-first-v4',
+  preset: 'forwelle-weekly-ai-signal-v1',
   maxTitleLines: 3,
   maxCharsPerTitleLine: 26,
   minTitleLines: 1,
@@ -18,37 +18,37 @@ export const TELOP_RULES = Object.freeze({
 export const TELOP_COPY = Object.freeze({
   hook: {
     role: 'hook',
-    eyebrow: 'FORWELLE / AI ECONOMY',
+    eyebrow: 'FORWELLE / WEEKLY AI SIGNAL',
     counter: '01 / 05',
-    lines: ['CHATGPT ADS HIT', '$1B RUN RATE.'],
+    lines: ['3 AI STORIES', 'THAT ACTUALLY MATTER'],
     accentLine: 1,
   },
-  scale: {
-    role: 'scale',
-    eyebrow: 'WHY THIS SCALED',
+  search: {
+    role: 'search-scale',
+    eyebrow: 'STORY 1 / GOOGLE SEARCH',
     counter: '02 / 05',
-    lines: ['1B+ WEEKLY USERS.', 'TENS OF THOUSANDS', 'OF ADVERTISERS.'],
-    accentLine: 0,
-  },
-  intent: {
-    role: 'mechanism',
-    eyebrow: 'THE NEW AD MOMENT',
-    counter: '03 / 05',
-    lines: ['THE AD SITS NEAR', 'THE DECISION.'],
+    lines: ['GOOGLE AI SEARCH', 'IS NOW MASSIVE'],
     accentLine: 1,
   },
-  trust: {
-    role: 'trust',
-    eyebrow: 'THE TRUST LINE',
+  systems: {
+    role: 'agent-risk',
+    eyebrow: 'STORY 2 / ANTHROPIC',
+    counter: '03 / 05',
+    lines: ['CLAUDE TOUCHED', 'REAL SYSTEMS'],
+    accentLine: 1,
+  },
+  cursor: {
+    role: 'platform-shift',
+    eyebrow: 'STORY 3 / OPENAI × CURSOR',
     counter: '04 / 05',
-    lines: ['OPENAI SAYS ADS', "DON'T CHANGE ANSWERS."],
+    lines: ['OPENAI IS LEAVING', 'CURSOR'],
     accentLine: 1,
   },
   end: {
     role: 'takeaway',
-    eyebrow: 'WHAT CHANGES NEXT',
+    eyebrow: 'THE SIGNAL',
     counter: '05 / 05',
-    lines: ['SEARCH ADS ARE MOVING', 'INTO CONVERSATIONS.'],
+    lines: ['AI IS MOVING', 'FROM CHAT TO ACTION'],
     accentLine: 1,
   },
 });
