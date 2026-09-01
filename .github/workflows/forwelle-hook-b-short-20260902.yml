@@ -1,0 +1,108 @@
+name: Forwelle Hook B Short 20260902
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/forwelle-hook-b-short-20260902.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    env:
+      EXPECTED_CHANNEL_ID: UCw9wnPzccaPba5rLKWyL6nQ
+      TARGET_TITLE: "Your AI Is Fast. Your Workflow Is the Bottleneck #Shorts"
+      FULL_VIDEO_URL: https://www.youtube.com/watch?v=rPYeG1LYgRg
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Render Hook B original typography Short
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq ffmpeg
+          fi
+          mkdir -p /tmp/forwelle-b
+          printf '%s\n' 'YOUR AI IS FAST.' > /tmp/forwelle-b/a.txt
+          printf '%s\n' 'YOUR BUSINESS' 'IS STILL SLOW.' > /tmp/forwelle-b/b.txt
+          printf '%s\n' 'THE BOTTLENECK' '= WORKFLOW' > /tmp/forwelle-b/c.txt
+          FONT='/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf'
+          REG='/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'
+          ffmpeg -hide_banner -loglevel error -y \
+            -f lavfi -i 'color=c=0x080a0e:s=1080x1920:d=7:r=30' \
+            -vf "drawtext=fontfile=${FONT}:text='FORWELLE':fontcolor=0xa8adb5:fontsize=32:x=84:y=110,drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-b/a.txt:fontcolor=0xe8eaee:fontsize=100:x=(w-text_w)/2:y=700:enable='between(t,0,1.99)',drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-b/b.txt:fontcolor=0xe8eaee:fontsize=94:line_spacing=18:x=(w-text_w)/2:y=640:enable='between(t,2,4.19)',drawtext=fontfile=${FONT}:textfile=/tmp/forwelle-b/c.txt:fontcolor=0xe8eaee:fontsize=94:line_spacing=18:x=(w-text_w)/2:y=640:enable='between(t,4.2,7)',drawtext=fontfile=${REG}:text='Full breakdown  →  @forwelle':fontcolor=0xa8adb5:fontsize=38:x=(w-text_w)/2:y=1050:enable='between(t,4.2,7)'" \
+            -c:v libx264 -pix_fmt yuv420p -movflags +faststart /tmp/forwelle-b/hook-b.mp4
+          ffprobe -v error -show_entries format=duration,size -show_entries stream=width,height,codec_name,pix_fmt -of json /tmp/forwelle-b/hook-b.mp4
+
+      - name: Rights and technical QA
+        shell: bash
+        run: |
+          set -euo pipefail
+          FILE=/tmp/forwelle-b/hook-b.mp4
+          test -s "$FILE"
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of default=nw=1:nk=1 "$FILE")" = '1080'
+          test "$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of default=nw=1:nk=1 "$FILE")" = '1920'
+          echo 'RIGHTS_QA=PASS original typography only; no third-party footage, music, voice, logo, or likeness'
+
+      - name: Publish Hook B directly to proven Forwelle channel
+        id: publish
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > /tmp/publish-b.mjs <<'EOF'
+          import fs from 'node:fs';
+          const channel=process.env.EXPECTED_CHANNEL_ID, title=process.env.TARGET_TITLE;
+          const feed=await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channel}`,{headers:{'user-agent':'Mozilla/5.0'}});
+          if(feed.ok){
+            const xml=await feed.text();
+            for(const entry of (xml.match(/<entry>[\s\S]*?<\/entry>/g)||[])){
+              if(!entry.includes(`<title>${title}</title>`)) continue;
+              const id=entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1];
+              if(id){
+                const url=`https://www.youtube.com/watch?v=${id}`;
+                console.log(`DUPLICATE_PUBLIC_FOUND=${id}`);
+                fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${id}\nvideo_url=${url}\nmode=existing\n`);
+                process.exit(0);
+              }
+            }
+          }
+          const t=await fetch('https://oauth2.googleapis.com/token',{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},body:new URLSearchParams({client_id:process.env.YOUTUBE_CLIENT_ID,client_secret:process.env.YOUTUBE_CLIENT_SECRET,refresh_token:process.env.YOUTUBE_REFRESH_TOKEN,grant_type:'refresh_token'})});
+          const tj=await t.json(); if(!t.ok||!tj.access_token) throw new Error(`OAuth refresh failed: ${tj.error||t.status}`);
+          const auth={authorization:`Bearer ${tj.access_token}`};
+          const video=fs.readFileSync('/tmp/forwelle-b/hook-b.mp4');
+          const metadata={snippet:{title,description:`AI output can be fast while the workflow around it stays slow. Handoffs, human gates, and decisions often become the real bottleneck.\n\nFull breakdown: ${process.env.FULL_VIDEO_URL}\n\n#AI #Automation #Workflow #Shorts`,categoryId:'28',tags:['AI','Automation','Workflow','Forwelle','Shorts'],defaultLanguage:'en'},status:{privacyStatus:'public',selfDeclaredMadeForKids:false}};
+          const boundary=`forwelle_b_${Date.now()}`;
+          const body=Buffer.concat([Buffer.from(`--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n--${boundary}\r\nContent-Type: video/mp4\r\n\r\n`),video,Buffer.from(`\r\n--${boundary}--\r\n`)]);
+          const r=await fetch('https://www.googleapis.com/upload/youtube/v3/videos?part=snippet,status&uploadType=multipart',{method:'POST',headers:{...auth,'content-type':`multipart/related; boundary=${boundary}`,'content-length':String(body.length)},body});
+          const j=await r.json(); if(!r.ok||!j.id) throw new Error(`Upload failed: ${j?.error?.message||r.status}`);
+          console.log(`VIDEO_ID=${j.id}`); console.log(`CHANNEL_ID=${j.snippet?.channelId||''}`); console.log(`PRIVACY=${j.status?.privacyStatus||''}`);
+          if(j.snippet?.channelId!==channel) throw new Error(`BRAND_GATE_FAIL channel=${j.snippet?.channelId||''}`);
+          if(j.status?.privacyStatus!=='public') throw new Error(`NOT_PUBLIC status=${j.status?.privacyStatus||''}`);
+          const url=`https://www.youtube.com/watch?v=${j.id}`;
+          console.log(`PUBLIC_URL=${url}`); console.log('BRAND_GATE=PASS_FORWELLE');
+          fs.appendFileSync(process.env.GITHUB_OUTPUT,`video_id=${j.id}\nvideo_url=${url}\nmode=created\n`);
+          EOF
+          node /tmp/publish-b.mjs
+
+      - name: Verify public URL
+        env:
+          VIDEO_URL: ${{ steps.publish.outputs.video_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          code="$(curl -L -sS -A 'Mozilla/5.0' -o /tmp/b.html -w '%{http_code}' "$VIDEO_URL")"
+          echo "PUBLIC_HTTP=$code"
+          test "$code" = '200'
+          echo "PUBLIC_URL_VERIFIED=$VIDEO_URL"
