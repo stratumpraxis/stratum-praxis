@@ -12,7 +12,11 @@
     "horizontal:assets": "node scripts/prepare-horizontal-assets.mjs",
     "horizontal:render": "mkdir -p out && remotion render src/horizontal.jsx ForwelleHorizontalROI out/forwelle-ai-roi-horizontal.mp4 --codec=h264",
     "horizontal:qa": "node scripts/qa-horizontal.mjs out/forwelle-ai-roi-horizontal.mp4",
-    "build:horizontal": "npm run horizontal:assets && npm run horizontal:render && npm run horizontal:qa"
+    "build:horizontal": "npm run horizontal:assets && npm run horizontal:render && npm run horizontal:qa",
+    "hidden:assets": "node scripts/prepare-horizontal-hidden-assets.mjs",
+    "hidden:render": "mkdir -p out && remotion render src/horizontal-hidden.jsx ForwelleHiddenBottleneck out/forwelle-hidden-bottleneck.mp4 --codec=h264",
+    "hidden:qa": "node scripts/qa-horizontal-hidden.mjs out/forwelle-hidden-bottleneck.mp4",
+    "build:hidden": "npm run hidden:assets && npm run hidden:render && npm run hidden:qa"
   },
   "dependencies": {
     "@remotion/cli": "4.0.506",
