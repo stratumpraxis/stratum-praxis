@@ -1,0 +1,2 @@
+run=2026-09-02T05:00:00+09:00
+purpose=collect-public-youtube-metrics-without-manual-studio-operation
