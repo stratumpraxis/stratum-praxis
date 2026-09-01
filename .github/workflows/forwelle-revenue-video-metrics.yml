@@ -4,6 +4,10 @@ on:
   schedule:
     - cron: '30 23 * * *' # 08:30 JST
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'automation/forwelle-operator/metrics-trigger.txt'
 
 permissions:
   contents: write
@@ -23,7 +27,7 @@ jobs:
         with:
           node-version: '24'
 
-      - name: Collect due 24h and 72h snapshots
+      - name: Collect current, 24h and 72h snapshots
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
@@ -34,7 +38,7 @@ jobs:
         run: |
           git config user.name "forwelle-metrics"
           git config user.email "forwelle.media@gmail.com"
-          git add automation/forwelle-operator/history.json
-          git diff --cached --quiet || git commit -m "Update Forwelle 24h 72h metrics"
+          git add automation/forwelle-operator/history.json automation/forwelle-operator/manual-publications.json
+          git diff --cached --quiet || git commit -m "Update Forwelle performance metrics"
           git pull --rebase origin main
           git push
