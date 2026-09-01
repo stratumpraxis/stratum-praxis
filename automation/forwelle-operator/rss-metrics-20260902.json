@@ -1,17 +1,27 @@
 {
-  "capturedAt": "2026-09-01T20:28:25.151199+00:00",
+  "capturedAt": "2026-09-01T22:36:53.936017+00:00",
   "source": "youtube-public-rss",
   "channelId": "UCw9wnPzccaPba5rLKWyL6nQ",
-  "targetCount": 3,
-  "foundCount": 3,
+  "targetCount": 4,
+  "foundCount": 4,
   "missingVideoIds": [],
   "videos": [
+    {
+      "videoId": "_NEHx1nJEbA",
+      "title": "Your AI Is Fast. Your Workflow Is the Bottleneck #Shorts",
+      "publishedAt": "2026-09-01T20:31:44+00:00",
+      "updatedAt": "2026-09-01T20:42:09+00:00",
+      "views": 0,
+      "averageRating": 0.0,
+      "ratingCount": 0,
+      "url": "https://www.youtube.com/watch?v=_NEHx1nJEbA"
+    },
     {
       "videoId": "SJJxnyC3ufc",
       "title": "AI Isn't Making You Money — The Workflow Trap #Shorts",
       "publishedAt": "2026-09-01T20:21:41+00:00",
       "updatedAt": "2026-09-01T20:24:59+00:00",
-      "views": 0,
+      "views": 1,
       "averageRating": 0.0,
       "ratingCount": 0,
       "url": "https://www.youtube.com/watch?v=SJJxnyC3ufc"
@@ -21,7 +31,7 @@
       "title": "AI Isn't Making You Money — The Hidden Bottleneck",
       "publishedAt": "2026-09-01T17:11:32+00:00",
       "updatedAt": "2026-09-01T17:11:33+00:00",
-      "views": 2,
+      "views": 3,
       "averageRating": 0.0,
       "ratingCount": 0,
       "url": "https://www.youtube.com/watch?v=7rFKNKHAfXQ"
