@@ -1,33 +1,33 @@
 {
-  "id": "2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal",
-  "createdAt": "2026-08-31T23:04:41.845Z",
+  "id": "2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378",
+  "createdAt": "2026-09-01T23:08:02.907Z",
   "brandLane": "forwelle-en",
   "platformVariant": "cross-platform-short",
-  "title": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
-  "topic": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
+  "title": "Claude Fable 5.1 and Claude Mythos 5.1",
+  "topic": "Claude Fable 5.1 and Claude Mythos 5.1",
   "language": "en",
-  "summary": "Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with cheap proxies and retooling. Cloudflare's new Adaptive Intelligence engine flips this dynamic by autonomously learning from the meta-signals of live traffic and deploying disposable rules, making automated attacks too expensive to sustain.",
-  "voiceover": "A fresh signal from blog.cloudflare.com is getting attention: Introducing Adaptive Intelligence: Undermining the economics of every bot attack. Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with cheap proxies and retooling. Cloudflare's new Adaptive Intelligence engine flips this… The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
-  "sourceCandidateId": "feed:cloudflare-blog:signal",
-  "outputFile": "media/forwelle/2026-08-31-introducing-adaptive-intelligence-undermining-the-econo-dflare-blog-signal.mp4",
+  "summary": "A fresh first-party signal from anthropic.com is worth watching.",
+  "voiceover": "A fresh signal from anthropic.com is getting attention: Claude Fable 5.1 and Claude Mythos 5.1. The headline matters less than the change underneath it. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "hn:49525378",
+  "outputFile": "media/forwelle/2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378.mp4",
   "scores": {
-    "freshness": 8,
-    "themeFit": 7,
-    "revenueFit": 4,
-    "engagement": 0,
+    "freshness": 10,
+    "themeFit": 3,
+    "revenueFit": 2,
+    "engagement": 10,
     "sourceTrust": 10,
     "originalityOpportunity": 8,
-    "officialFeedBoost": 6,
+    "officialFeedBoost": 0,
     "total": 43,
     "max": 74
   },
   "sources": [
     {
-      "name": "blog.cloudflare.com — first-party source",
-      "url": "https://blog.cloudflare.com/introducing-adaptive-intelligence/",
+      "name": "anthropic.com — first-party source",
+      "url": "https://www.anthropic.com/claude-fable-and-mythos-5-1",
       "factSource": true,
       "verified": true,
-      "published": "Mon, 31 Aug 2026 12:59:00 GMT"
+      "published": "2026-09-01T17:53:53.000Z"
     }
   ],
   "thirdPartyAssets": [],
@@ -55,7 +55,7 @@
   },
   "structureProfile": {
     "hookType": "concrete-change",
-    "hookText": "Introducing Adaptive Intelligence:",
+    "hookText": "Claude Fable 5.1 and Claude Mythos 5.1",
     "pacing": "five-scene-progressive",
     "ctaType": "non-salesy-takeaway",
     "visualStyle": "procedural-motion",
@@ -86,27 +86,27 @@
   },
   "scenes": [
     {
-      "duration": 6.91,
+      "duration": 6,
       "eyebrow": "NEW SIGNAL",
       "motionTag": "WHY NOW",
-      "headline": "Introducing\nAdaptive\nIntelligence:",
-      "body": "A fresh first-party update from blog.cloudflare.com.",
-      "sourceLabel": "blog.cloudflare.com",
+      "headline": "Claude Fable 5.1\nand Claude Mythos\n5.1",
+      "body": "A fresh first-party update from anthropic.com.",
+      "sourceLabel": "anthropic.com",
       "background": "#050711",
       "accent": "#7CFFDA"
     },
     {
-      "duration": 6.91,
+      "duration": 6,
       "eyebrow": "WHAT CHANGED",
       "motionTag": "THE SIGNAL",
       "headline": "Look past the\nheadline.",
-      "body": "Bot operators have historically had the economic advantage, bypassing static, deterministic detection rules with c…",
-      "sourceLabel": "blog.cloudflare.com",
+      "body": "A new capability or workflow change is emerging.",
+      "sourceLabel": "anthropic.com",
       "background": "#071421",
       "accent": "#5BE7FF"
     },
     {
-      "duration": 6.91,
+      "duration": 6,
       "eyebrow": "REAL QUESTION",
       "motionTag": "WORKFLOW IMPACT",
       "headline": "What becomes\npossible now?",
@@ -116,7 +116,7 @@
       "accent": "#B39CFF"
     },
     {
-      "duration": 6.91,
+      "duration": 6,
       "eyebrow": "FILTER THE HYPE",
       "motionTag": "PROOF > NOISE",
       "headline": "A demo is not a\nhabit.",
@@ -126,7 +126,7 @@
       "accent": "#FF78D8"
     },
     {
-      "duration": 6.91,
+      "duration": 6,
       "eyebrow": "BOTTOM LINE",
       "motionTag": "TRACK THE SHIFT",
       "headline": "Watch behavior,\nnot buzz.",
@@ -144,8 +144,8 @@
     ],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack",
-    "caption": "Introducing Adaptive Intelligence: Undermining the economics of every bot attack Forwelle tracks practical shifts in AI, tools and how people work. Source: https://blog.cloudflare.com/introducing-adaptive-intelligence/ #AI #FutureOfWork #Technology #Forwelle",
+    "title": "Claude Fable 5.1 and Claude Mythos 5.1",
+    "caption": "Claude Fable 5.1 and Claude Mythos 5.1 Forwelle tracks practical shifts in AI, tools and how people work. Source: https://www.anthropic.com/claude-fable-and-mythos-5-1 #AI #FutureOfWork #Technology #Forwelle",
     "youtubePrivacy": "public",
     "channelAllowlist": {
       "youtube": [
@@ -165,6 +165,6 @@
   "narration": {
     "file": "automation/forwelle-operator/narration.mp3",
     "voiceId": "geffen_32",
-    "durationSeconds": 32.952
+    "durationSeconds": 22.632
   }
 }
