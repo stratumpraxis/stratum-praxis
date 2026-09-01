@@ -1,0 +1,29 @@
+{
+  "capturedAt": "2026-09-01T19:47:08.990389+00:00",
+  "source": "youtube-public-rss",
+  "channelId": "UCw9wnPzccaPba5rLKWyL6nQ",
+  "targetCount": 2,
+  "foundCount": 2,
+  "videos": [
+    {
+      "videoId": "7rFKNKHAfXQ",
+      "title": "AI Isn't Making You Money — The Hidden Bottleneck",
+      "publishedAt": "2026-09-01T17:11:32+00:00",
+      "updatedAt": "2026-09-01T17:11:33+00:00",
+      "views": 2,
+      "averageRating": 0.0,
+      "ratingCount": 0,
+      "url": "https://www.youtube.com/watch?v=7rFKNKHAfXQ"
+    },
+    {
+      "videoId": "rPYeG1LYgRg",
+      "title": "Why AI Isn't Making You Money (The Workflow Trap)",
+      "publishedAt": "2026-09-01T15:52:32+00:00",
+      "updatedAt": "2026-09-01T15:52:33+00:00",
+      "views": 4,
+      "averageRating": 0.0,
+      "ratingCount": 0,
+      "url": "https://www.youtube.com/watch?v=rPYeG1LYgRg"
+    }
+  ]
+}
