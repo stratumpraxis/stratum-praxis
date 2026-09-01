@@ -1,0 +1,182 @@
+name: Stratum TikTok More Agents Publish Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stratum-tiktok-more-agents-publish-once.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-tiktok-more-agents-20260902-v1
+  cancel-in-progress: false
+
+jobs:
+  render-publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      VOICE_URL: https://resource2.heygen.ai/text_to_speech/a97602ecc435417ab1b776674e7db173/1f8bf1bba5e648d2ba0305408b5517cf/id=56a5a7bd-1f97-4245-b822-5e278e54465c.wav
+      SRC_VIDEO: campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4
+      OUT_VIDEO: campaigns/cross-agent-remotion/output/stratum-tiktok-more-agents-20260902-v1.mp4
+      PUBLIC_VIDEO_URL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-tiktok-more-agents-20260902-v1.mp4
+      MANIFEST: distribution/stratum-tiktok-more-agents-20260902.json
+      LEDGER: distribution/stratum-tiktok-more-agents-ledger.json
+      STATUS_FILE: distribution/stratum-tiktok-more-agents-status.json
+      TARGET_CHANNEL_ID: 6a8e5d28ccaf649a671a13e7
+      KNOWN_GOOD_POST_ID: 6a971c66a9e3af9a883cdae3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Validate exact Stratum TikTok destination
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module - <<'NODE'
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('BUFFER_API_KEY missing');
+          const API='https://api.buffer.com';
+          const q=s=>JSON.stringify(String(s));
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          if(!org) throw new Error('No Buffer organization');
+          const channels=await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service} }`);
+          const target=(channels.channels||[]).find(c=>c.id===process.env.TARGET_CHANNEL_ID && String(c.service).toLowerCase()==='tiktok');
+          if(!target) throw new Error('Safety stop: exact Stratum TikTok channel unavailable');
+          const posts=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(target.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id status externalLink } } } }`);
+          const known=(posts.posts?.edges||[]).map(e=>e?.node).filter(Boolean).find(p=>p.id===process.env.KNOWN_GOOD_POST_ID);
+          if(!known || !String(known.externalLink||'').includes('tiktok.com/@stratumpraxis/video/')) throw new Error('Safety stop: recent known-good Stratum TikTok post not found');
+          console.log(`DESTINATION=${target.displayName||target.name}`);
+          console.log(`KNOWN_GOOD=${known.externalLink}`);
+          NODE
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Build second creative
+        run: |
+          set -euo pipefail
+          test -s "$SRC_VIDEO"
+          curl --fail --silent --show-error --location "$VOICE_URL" -o /tmp/voice.wav
+          test -s /tmp/voice.wav
+          (cd campaigns/cross-agent-remotion && node music.mjs)
+          cat > /tmp/stratum-filter.txt <<'EOF'
+          [0:v]trim=start=9.5:end=25.5,setpts=PTS-STARTPTS[v0];
+          color=c=0x03070c:s=1080x1920:r=30:d=4.5[base];
+          [base]drawbox=x=60:y=380:w=960:h=960:color=0x07111f@0.94:t=fill,
+          drawbox=x=60:y=380:w=960:h=10:color=0x68aaff@1:t=fill,
+          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='MORE AGENTS':fontcolor=white:fontsize=82:x=100:y=560,
+          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='MORE HANDOFFS?':fontcolor=0x68aaff:fontsize=82:x=100:y=665,
+          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='Roles. Gates. Stop rules.':fontcolor=0xd6deea:fontsize=42:x=100:y=860,
+          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='CROSS-AGENT OPERATING KIT':fontcolor=white:fontsize=45:x=100:y=1010,
+          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='$69 · LINK IN BIO':fontcolor=0x68aaff:fontsize=54:x=100:y=1110[v1];
+          [v0][v1]concat=n=2:v=1:a=0[vout];
+          [1:a]atrim=0:20.5,asetpts=PTS-STARTPTS,volume=1.0[voice];
+          [2:a]atrim=0:20.5,asetpts=PTS-STARTPTS,volume=0.09[bgm];
+          [voice][bgm]amix=inputs=2:duration=longest:dropout_transition=0,loudnorm=I=-14:TP=-1.5:LRA=7[aout]
+          EOF
+          ffmpeg -y -i "$SRC_VIDEO" -i /tmp/voice.wav -i campaigns/cross-agent-remotion/public/bgm.wav \
+            -filter_complex_script /tmp/stratum-filter.txt \
+            -map '[vout]' -map '[aout]' -t 20.5 -r 30 \
+            -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p \
+            -c:a aac -b:a 192k -ar 48000 -movflags +faststart "$OUT_VIDEO"
+
+      - name: Technical QA
+        run: |
+          set -euo pipefail
+          ffmpeg -v error -i "$OUT_VIDEO" -f null -
+          ffprobe -v error -show_entries stream=codec_name,width,height,sample_rate -show_entries format=duration,size -of json "$OUT_VIDEO" | tee /tmp/qa.json
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const q=JSON.parse(fs.readFileSync('/tmp/qa.json','utf8'));
+          const v=q.streams.find(x=>x.width&&x.height), a=q.streams.find(x=>x.codec_name==='aac');
+          const d=Number(q.format.duration), size=Number(q.format.size);
+          if(!v||v.width!==1080||v.height!==1920||v.codec_name!=='h264') throw new Error('Video QA failed');
+          if(!a||Number(a.sample_rate)!==48000) throw new Error('Audio QA failed');
+          if(d<20.2||d>20.8||size<500000) throw new Error(`Output QA failed d=${d} size=${size}`);
+          console.log(`VIDEO_QA=PASS duration=${d} size=${size}`);
+          NODE
+
+      - name: Commit rendered MP4
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-tiktok-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add "$OUT_VIDEO"
+          git commit -m 'Render Stratum TikTok more-agents creative'
+          git pull --rebase origin main
+          git push origin HEAD:main
+
+      - name: Verify public MP4
+        run: |
+          set -euo pipefail
+          for i in 1 2 3 4 5; do
+            code=$(curl -L -sS -o /tmp/public.mp4 -w '%{http_code}' "$PUBLIC_VIDEO_URL" || true)
+            bytes=$(wc -c < /tmp/public.mp4 2>/dev/null || echo 0)
+            echo "PUBLIC_VIDEO_ATTEMPT=$i HTTP=$code BYTES=$bytes"
+            if [ "$code" = '200' ] && [ "$bytes" -gt 500000 ]; then exit 0; fi
+            sleep 5
+          done
+          exit 1
+
+      - name: Publish to Stratum TikTok
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: ${{ env.MANIFEST }}
+          TREND_VIDEO_URL: ${{ env.PUBLIC_VIDEO_URL }}
+          VIDEO_PUBLISH_LEDGER: ${{ env.LEDGER }}
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Verify exact public TikTok post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const key=process.env.BUFFER_API_KEY;
+          const API='https://api.buffer.com';
+          const q=s=>JSON.stringify(String(s));
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const acct=await gql('query { account { organizations { id name } } }');
+          const org=acct.account?.organizations?.[0];
+          let found=null;
+          for(let attempt=1;attempt<=18;attempt++){
+            const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(process.env.TARGET_CHANNEL_ID)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text status sentAt externalLink } } } }`);
+            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+            found=posts.find(p=>String(p.text||'').includes('Adding more AI agents can look like scaling'));
+            console.log(`VERIFY_ATTEMPT=${attempt} STATUS=${found?.status||''} LINK=${found?.externalLink||''}`);
+            if(found?.externalLink && String(found.externalLink).includes('tiktok.com/@stratumpraxis/video/')) break;
+            if(found && ['failed','error'].includes(String(found.status||'').toLowerCase())) throw new Error(`Publish failed: ${found.status}`);
+            if(attempt<18) await new Promise(r=>setTimeout(r,10000));
+          }
+          if(!found?.externalLink || !String(found.externalLink).includes('tiktok.com/@stratumpraxis/video/')) throw new Error(`Public URL not verified; status=${found?.status||'unknown'}`);
+          const evidence={campaign:'stratum-tiktok-more-agents-20260902-v1',platform:'tiktok',channelId:process.env.TARGET_CHANNEL_ID,channel:'stratumpraxis',bufferPostId:found.id,status:found.status||null,sentAt:found.sentAt||null,externalLink:found.externalLink,videoUrl:process.env.PUBLIC_VIDEO_URL,voice:'Sunny / friendly English male',checkedAt:new Date().toISOString(),productUrl:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=tiktok&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=more_agents_v1&route_id=tiktok_cross_agent_more_agents_20260902'};
+          fs.writeFileSync(process.env.STATUS_FILE,JSON.stringify(evidence,null,2)+'\n');
+          console.log(JSON.stringify(evidence,null,2));
+          NODE
+
+      - name: Persist evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-tiktok-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add "$STATUS_FILE" "$LEDGER"
+          git commit -m 'Record second Stratum TikTok publication evidence'
+          git pull --rebase origin main
+          git push origin HEAD:main
