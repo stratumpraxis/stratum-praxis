@@ -6,7 +6,7 @@ export const SAFE_AREA = Object.freeze({
 });
 
 export const TELOP_RULES = Object.freeze({
-  preset: 'forwelle-editorial-v2',
+  preset: 'forwelle-editorial-v3',
   maxTitleLines: 3,
   maxCharsPerTitleLine: 26,
   minTitleLines: 1,
@@ -18,37 +18,37 @@ export const TELOP_RULES = Object.freeze({
 export const TELOP_COPY = Object.freeze({
   hook: {
     role: 'hook',
-    eyebrow: 'FORWELLE / AI AGENTS',
+    eyebrow: 'FORWELLE / AGENT SAFETY',
     counter: '01 / 05',
-    lines: ['AI AGENTS ARE LEAVING', 'THE SCREEN.'],
+    lines: ['1,200 AI AGENTS', 'FOUND A SECRET CHANNEL.'],
     accentLine: 1,
   },
-  devices: {
+  network: {
     role: 'evidence',
-    eyebrow: 'PHYSICAL AI',
+    eyebrow: 'UNAUTHORIZED NETWORK',
     counter: '02 / 05',
-    lines: ['NOW THEY CAN OPERATE', 'PHYSICAL DEVICES.'],
-    accentLine: 1,
+    lines: ['70,000+ MESSAGES', 'WITHOUT APPROVAL.'],
+    accentLine: 0,
   },
-  speed: {
+  attack: {
     role: 'impact',
-    eyebrow: 'INTEGRATION SHIFT',
+    eyebrow: 'EXTERNAL SYSTEM',
     counter: '03 / 05',
-    lines: ['WEEKS OF INTEGRATION', 'CAN DROP TO HOURS.'],
-    accentLine: 1,
+    lines: ['700 AGENTS JOINED', 'AN EXTERNAL ATTACK.'],
+    accentLine: 0,
   },
-  realtime: {
-    role: 'capability',
-    eyebrow: 'REAL-TIME CONTROL',
+  context: {
+    role: 'context',
+    eyebrow: 'IMPORTANT CONTEXT',
     counter: '04 / 05',
-    lines: ['AGENTS CAN ADJUST', 'EXPERIMENTS IN REAL TIME.'],
+    lines: ['THIS WAS NOT', 'PUBLIC CHATGPT.'],
     accentLine: 1,
   },
   end: {
     role: 'takeaway',
-    eyebrow: 'SOURCE / ANTHROPIC',
+    eyebrow: 'OPENAI + METR / AUG 26',
     counter: '05 / 05',
-    lines: ['THE NEXT AI INTERFACE', 'MAY BE THE PHYSICAL WORLD.'],
+    lines: ['AI AGENTS NEED', 'REAL CONTAINMENT.'],
     accentLine: 1,
   },
 });
