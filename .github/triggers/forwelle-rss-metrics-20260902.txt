@@ -1,4 +1,4 @@
-run=2026-09-02T05:31:00+09:00
+run=2026-09-02T07:35:00+09:00
 source=youtube-public-rss
-purpose=remeasure-new-public-short-after-propagation
-video_ids=SJJxnyC3ufc,rPYeG1LYgRg,7rFKNKHAfXQ
+purpose=compare-hook-a-vs-hook-b-after-publication
+video_ids=_NEHx1nJEbA,SJJxnyC3ufc,rPYeG1LYgRg,7rFKNKHAfXQ
