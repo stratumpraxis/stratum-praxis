@@ -1,0 +1,178 @@
+{
+  "capturedAt": "2026-09-01T20:13:01.038512+00:00",
+  "source": "youtube-public-rss",
+  "channelId": "UCw9wnPzccaPba5rLKWyL6nQ",
+  "videoCount": 15,
+  "winnerByViews": {
+    "videoId": "B-nSx6zkExM",
+    "title": "700 AI Agents Attacked Hugging Face — Inside OpenAI’s Test",
+    "publishedAt": "2026-09-01T04:22:07+00:00",
+    "updatedAt": "2026-09-01T09:29:22+00:00",
+    "views": 312,
+    "ratingCount": 2,
+    "viewsPerHourApprox": 19.69,
+    "url": "https://www.youtube.com/watch?v=B-nSx6zkExM"
+  },
+  "winnerByApproxVPH": {
+    "videoId": "B-nSx6zkExM",
+    "title": "700 AI Agents Attacked Hugging Face — Inside OpenAI’s Test",
+    "publishedAt": "2026-09-01T04:22:07+00:00",
+    "updatedAt": "2026-09-01T09:29:22+00:00",
+    "views": 312,
+    "ratingCount": 2,
+    "viewsPerHourApprox": 19.69,
+    "url": "https://www.youtube.com/watch?v=B-nSx6zkExM"
+  },
+  "videosByViews": [
+    {
+      "videoId": "B-nSx6zkExM",
+      "title": "700 AI Agents Attacked Hugging Face — Inside OpenAI’s Test",
+      "publishedAt": "2026-09-01T04:22:07+00:00",
+      "updatedAt": "2026-09-01T09:29:22+00:00",
+      "views": 312,
+      "ratingCount": 2,
+      "viewsPerHourApprox": 19.69,
+      "url": "https://www.youtube.com/watch?v=B-nSx6zkExM"
+    },
+    {
+      "videoId": "cUGD3z67RVc",
+      "title": "ChatGPT Ads Just Hit a $1B Run Rate — Here’s What Changes",
+      "publishedAt": "2026-09-01T04:43:34+00:00",
+      "updatedAt": "2026-09-01T06:31:33+00:00",
+      "views": 197,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 12.72,
+      "url": "https://www.youtube.com/watch?v=cUGD3z67RVc"
+    },
+    {
+      "videoId": "CJdJaAZsJ_I",
+      "title": "The Next AI Bottleneck Isn't Intelligence. It's Control. #Shorts",
+      "publishedAt": "2026-08-27T09:59:39+00:00",
+      "updatedAt": "2026-08-27T12:57:15+00:00",
+      "views": 60,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.46,
+      "url": "https://www.youtube.com/watch?v=CJdJaAZsJ_I"
+    },
+    {
+      "videoId": "0SO0uIn3aIg",
+      "title": "AI Agents Are Leaving the Screen",
+      "publishedAt": "2026-09-01T02:33:20+00:00",
+      "updatedAt": "2026-09-01T13:31:45+00:00",
+      "views": 32,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 1.81,
+      "url": "https://www.youtube.com/watch?v=0SO0uIn3aIg"
+    },
+    {
+      "videoId": "CzSmhIlhQ9w",
+      "title": "The Web Page Your AI Agent Reads Can Attack It",
+      "publishedAt": "2026-08-31T09:18:33+00:00",
+      "updatedAt": "2026-08-31T09:18:56+00:00",
+      "views": 22,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.63,
+      "url": "https://www.youtube.com/watch?v=CzSmhIlhQ9w"
+    },
+    {
+      "videoId": "_ZiRLYMoNzc",
+      "title": "Human Approval Everywhere Is a Bad AI Safety Strategy",
+      "publishedAt": "2026-08-30T17:35:29+00:00",
+      "updatedAt": "2026-08-30T21:54:02+00:00",
+      "views": 15,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.3,
+      "url": "https://www.youtube.com/watch?v=_ZiRLYMoNzc"
+    },
+    {
+      "videoId": "vcK7v0iY7mI",
+      "title": "The AI Agent Rule Nobody Talks About",
+      "publishedAt": "2026-08-30T17:35:17+00:00",
+      "updatedAt": "2026-08-30T22:25:34+00:00",
+      "views": 12,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.24,
+      "url": "https://www.youtube.com/watch?v=vcK7v0iY7mI"
+    },
+    {
+      "videoId": "BFvmSfppbuQ",
+      "title": "The AI Agent Rule Nobody Talks About",
+      "publishedAt": "2026-08-30T17:34:57+00:00",
+      "updatedAt": "2026-08-30T17:35:22+00:00",
+      "views": 9,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.18,
+      "url": "https://www.youtube.com/watch?v=BFvmSfppbuQ"
+    },
+    {
+      "videoId": "rPYeG1LYgRg",
+      "title": "Why AI Isn't Making You Money (The Workflow Trap)",
+      "publishedAt": "2026-09-01T15:52:32+00:00",
+      "updatedAt": "2026-09-01T15:52:33+00:00",
+      "views": 4,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.92,
+      "url": "https://www.youtube.com/watch?v=rPYeG1LYgRg"
+    },
+    {
+      "videoId": "GxTeBZIXW6g",
+      "title": "The Web Page Your AI Agent Reads Can Attack It",
+      "publishedAt": "2026-08-31T16:53:46+00:00",
+      "updatedAt": "2026-08-31T19:26:30+00:00",
+      "views": 3,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.11,
+      "url": "https://www.youtube.com/watch?v=GxTeBZIXW6g"
+    },
+    {
+      "videoId": "7rFKNKHAfXQ",
+      "title": "AI Isn't Making You Money — The Hidden Bottleneck",
+      "publishedAt": "2026-09-01T17:11:32+00:00",
+      "updatedAt": "2026-09-01T17:11:33+00:00",
+      "views": 2,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.66,
+      "url": "https://www.youtube.com/watch?v=7rFKNKHAfXQ"
+    },
+    {
+      "videoId": "g_ralPovMZI",
+      "title": "3 AI Stories That Actually Matter This Week",
+      "publishedAt": "2026-09-01T07:31:55+00:00",
+      "updatedAt": "2026-09-01T07:32:18+00:00",
+      "views": 2,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.16,
+      "url": "https://www.youtube.com/watch?v=g_ralPovMZI"
+    },
+    {
+      "videoId": "MunV8dCODwo",
+      "title": "Forwelle YouTube Automation — Private Smoke Test",
+      "publishedAt": "2026-08-30T14:34:43+00:00",
+      "updatedAt": "2026-08-30T14:34:43+00:00",
+      "views": 2,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.04,
+      "url": "https://www.youtube.com/watch?v=MunV8dCODwo"
+    },
+    {
+      "videoId": "nGo6FLFydiI",
+      "title": "AI Agents Are Powerful. They’re Also Overused. | 5 Real Business Tasks Tested",
+      "publishedAt": "2026-08-31T16:51:05+00:00",
+      "updatedAt": "2026-08-31T16:51:05+00:00",
+      "views": 1,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.04,
+      "url": "https://www.youtube.com/watch?v=nGo6FLFydiI"
+    },
+    {
+      "videoId": "BKSAqm4vBQA",
+      "title": "The AI Agent Rule Nobody Talks About",
+      "publishedAt": "2026-08-31T09:18:20+00:00",
+      "updatedAt": "2026-08-31T09:18:41+00:00",
+      "views": 1,
+      "ratingCount": 0,
+      "viewsPerHourApprox": 0.03,
+      "url": "https://www.youtube.com/watch?v=BKSAqm4vBQA"
+    }
+  ]
+}
