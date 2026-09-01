@@ -1,0 +1,120 @@
+name: Forwelle YouTube API Metrics Fallback
+
+on:
+  push:
+    branches: [forwelle-selfdrive-proof-20260902]
+    paths:
+      - '.github/triggers/forwelle-youtube-api-fallback.txt'
+
+permissions:
+  contents: write
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Query YouTube Data API with existing OAuth
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p automation/forwelle-operator
+          cat > /tmp/forwelle-api.mjs <<'EOF'
+          import fs from 'node:fs';
+
+          const ids = ['rPYeG1LYgRg','7rFKNKHAfXQ'];
+          const out = {
+            capturedAt: new Date().toISOString(),
+            method: 'youtube-data-api-oauth-fallback',
+            oauth: {},
+            channel: {},
+            videos: []
+          };
+
+          const required = ['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN'];
+          const missing = required.filter(k => !process.env[k]);
+          if (missing.length) {
+            out.oauth = {status:'missing-secrets', missing};
+            fs.writeFileSync('automation/forwelle-operator/youtube-api-fallback-20260902.json', JSON.stringify(out,null,2)+'\n');
+            process.exit(0);
+          }
+
+          const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: {'content-type':'application/x-www-form-urlencoded'},
+            body: new URLSearchParams({
+              client_id: process.env.YOUTUBE_CLIENT_ID,
+              client_secret: process.env.YOUTUBE_CLIENT_SECRET,
+              refresh_token: process.env.YOUTUBE_REFRESH_TOKEN,
+              grant_type: 'refresh_token'
+            })
+          });
+          const tokenJson = await tokenResponse.json();
+          out.oauth.tokenHttp = tokenResponse.status;
+          out.oauth.tokenStatus = tokenResponse.ok && tokenJson.access_token ? 'ok' : 'error';
+          out.oauth.tokenError = tokenJson.error || null;
+          if (!tokenJson.access_token) {
+            fs.writeFileSync('automation/forwelle-operator/youtube-api-fallback-20260902.json', JSON.stringify(out,null,2)+'\n');
+            process.exit(0);
+          }
+
+          const auth = {authorization:`Bearer ${tokenJson.access_token}`};
+          const infoResponse = await fetch(`https://oauth2.googleapis.com/tokeninfo?access_token=${encodeURIComponent(tokenJson.access_token)}`);
+          const info = await infoResponse.json();
+          out.oauth.scope = info.scope || '';
+
+          const channelResponse = await fetch('https://www.googleapis.com/youtube/v3/channels?part=snippet,statistics&mine=true',{headers:auth});
+          const channelJson = await channelResponse.json();
+          out.channel = {
+            http: channelResponse.status,
+            errorReason: channelJson?.error?.errors?.[0]?.reason || null,
+            errorMessage: channelJson?.error?.message || null,
+            id: channelJson?.items?.[0]?.id || null,
+            title: channelJson?.items?.[0]?.snippet?.title || null,
+            statistics: channelJson?.items?.[0]?.statistics || null,
+          };
+
+          const videosResponse = await fetch(`https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics,contentDetails&id=${ids.join(',')}`,{headers:auth});
+          const videosJson = await videosResponse.json();
+          out.videosHttp = videosResponse.status;
+          out.videosErrorReason = videosJson?.error?.errors?.[0]?.reason || null;
+          out.videosErrorMessage = videosJson?.error?.message || null;
+          out.videos = (videosJson?.items || []).map(v => ({
+            videoId: v.id,
+            title: v.snippet?.title || null,
+            publishedAt: v.snippet?.publishedAt || null,
+            channelId: v.snippet?.channelId || null,
+            channelTitle: v.snippet?.channelTitle || null,
+            statistics: v.statistics || null,
+            duration: v.contentDetails?.duration || null,
+            url: `https://www.youtube.com/watch?v=${v.id}`
+          }));
+
+          fs.writeFileSync('automation/forwelle-operator/youtube-api-fallback-20260902.json', JSON.stringify(out,null,2)+'\n');
+          console.log(JSON.stringify(out,null,2));
+          EOF
+          node /tmp/forwelle-api.mjs
+
+      - name: Persist fallback evidence to same branch
+        run: |
+          set -euo pipefail
+          BRANCH='forwelle-selfdrive-proof-20260902'
+          git config user.name 'forwelle-metrics'
+          git config user.email 'forwelle.media@gmail.com'
+          git add automation/forwelle-operator/youtube-api-fallback-20260902.json
+          if git diff --cached --quiet; then
+            echo 'No evidence change'
+            exit 0
+          fi
+          git commit -m 'Record Forwelle YouTube API fallback evidence'
+          for attempt in 1 2 3; do
+            git pull --rebase origin "$BRANCH" && git push origin HEAD:"$BRANCH" && exit 0
+            sleep $((attempt * 2))
+          done
+          exit 1
