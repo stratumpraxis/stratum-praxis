@@ -1,0 +1,47 @@
+name: QA PostHog Identity Continuity Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/qa-posthog-identity-continuity-once.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: qa-posthog-identity-continuity-once
+  cancel-in-progress: false
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for patched production analytics
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 30); do
+            body="$(curl -fsSL --max-time 10 "https://stratumpraxis.com/scos-analytics.js?qa=${GITHUB_RUN_ID}-${attempt}" || true)"
+            if printf '%s' "$body" | grep -Fq 'function sendEvent(name, props)' && ! printf '%s' "$body" | grep -Fq 'window.posthog.capture(name'; then
+              echo "production analytics patch verified on attempt ${attempt}"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'patched analytics not visible in production'
+          exit 1
+
+      - name: Verify browser runtime
+        run: |
+          set -euo pipefail
+          google-chrome --version || chromium --version
+          chromedriver --version
+          python -m pip install --disable-pip-version-check selenium
+
+      - name: Dispatch linked production QA funnel
+        env:
+          BASE_URL: https://stratumpraxis.com
+        run: python scripts/qa_posthog_identity_continuity.py
