@@ -37,16 +37,19 @@
     const actions = document.querySelector('.hero .actions');
     if (!actions || document.getElementById('cross-agent-checkout-reassurance')) return;
 
-    const note = document.createElement('div');
-    note.id = 'cross-agent-checkout-reassurance';
-    note.setAttribute('role', 'note');
-    note.textContent = 'One-time $69 · No subscription · Secure Stripe checkout · Buyer access after verified payment';
-    note.style.marginTop = '12px';
-    note.style.fontSize = '13px';
-    note.style.lineHeight = '1.5';
-    note.style.color = '#aeb8c8';
-    note.style.letterSpacing = '0.01em';
-    actions.insertAdjacentElement('afterend', note);
+    const proof = document.createElement('div');
+    proof.id = 'cross-agent-checkout-reassurance';
+    proof.setAttribute('role', 'note');
+    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>';
+    proof.style.marginTop = '14px';
+    proof.style.padding = '14px 16px';
+    proof.style.border = '1px solid #263248';
+    proof.style.borderRadius = '12px';
+    proof.style.background = '#0d141f';
+    proof.style.fontSize = '13px';
+    proof.style.lineHeight = '1.55';
+    proof.style.color = '#aeb8c8';
+    actions.insertAdjacentElement('afterend', proof);
   }
 
   function alignProductPagePrimaryCheckout() {
@@ -56,12 +59,12 @@
       {
         link: document.querySelector('.hero .actions .primary'),
         id: 'cross_agent_personal_product_hero',
-        label: 'Get Personal — $69 →'
+        label: 'Get the full kit — $69 one-time →'
       },
       {
         link: document.querySelector('.close .primary'),
         id: 'cross_agent_personal_product_close',
-        label: 'Get Personal — $69 →'
+        label: 'Get the full kit — $69 one-time →'
       }
     ];
 
