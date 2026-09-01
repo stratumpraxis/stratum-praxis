@@ -26,16 +26,17 @@ jobs:
         working-directory: automation/forwelle-production
         run: npm install
 
-      - name: Build production Short — assets, render, fail-closed QA
+      - name: Generate preclips, edit master, and run fail-closed QA
         working-directory: automation/forwelle-production
         env:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
         run: npm run build:production
 
-      - name: Upload QA-approved Short to YouTube as private
+      - name: Publish QA-approved Short to YouTube
         working-directory: automation/forwelle-production
         env:
           YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
-        run: node scripts/youtube-upload.mjs out/forwelle-agent-stop-condition.mp4
+          YOUTUBE_PRIVACY_STATUS: public
+        run: node scripts/youtube-upload.mjs out/forwelle-chatgpt-ads-1b.mp4
