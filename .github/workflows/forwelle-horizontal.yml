@@ -29,19 +29,20 @@ jobs:
       - name: Install ffmpeg for technical QA
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Generate English narration, render 16x9 master, and run fail-closed QA
+      - name: Generate male narration, original in-flight-radio BGM, render motion-dense 16x9 master, and run fail-closed QA
         working-directory: automation/forwelle-production
         env:
           SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
-        run: npm run build:horizontal
+        run: npm run build:hidden
 
       - name: Save rendered video artifact
         uses: actions/upload-artifact@v4
         with:
-          name: forwelle-ai-roi-horizontal
+          name: forwelle-hidden-bottleneck-horizontal
           path: |
-            automation/forwelle-production/out/forwelle-ai-roi-horizontal.mp4
-            automation/forwelle-production/out/qa-horizontal-report.json
+            automation/forwelle-production/out/forwelle-hidden-bottleneck.mp4
+            automation/forwelle-production/out/qa-horizontal-hidden-report.json
+            automation/forwelle-production/public/hidden-voice.json
           retention-days: 7
 
       - name: Upload QA-approved horizontal video to YouTube as private
@@ -51,4 +52,4 @@ jobs:
           YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
           YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
           YOUTUBE_PRIVACY_STATUS: private
-        run: node scripts/youtube-upload-horizontal.mjs out/forwelle-ai-roi-horizontal.mp4
+        run: node scripts/youtube-upload-horizontal-hidden.mjs out/forwelle-hidden-bottleneck.mp4
