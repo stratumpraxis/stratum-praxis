@@ -19,33 +19,38 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Replace non-revenue membership tease with live revenue step
+      - name: Insert live revenue bridge before membership tease
         shell: bash
         run: |
           python3 - <<'PY'
           from pathlib import Path
-          import re
 
           p = Path('signal/index.html')
           s = p.read_text(encoding='utf-8')
-          pattern = re.compile(r'<div class="membership-tease">.*?</div></section>\n<section class="section" id="tools">', re.S)
-          replacement = '<div class="membership-tease" id="revenueStep"><div><div class="eyebrow">NEXT STEP · OWNED REVENUE</div><h2>情報収集で止めず、次の収益ルートを1本選ぶ。</h2><p>Signalで変化を把握したら、Revenue Routerでそのシグナルを既存コンテンツ・商品・Lead・B2B施策へ優先順位付け。業務全体の改善が必要ならWorkflow Auditへ進めます。</p></div><div style="display:flex;gap:9px;flex-wrap:wrap"><a data-revenue-cta="revenue-router" href="../revenue-router.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_primary">Revenue Router $29 →</a><a data-revenue-cta="workflow-audit" href="../workflow-audit.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_secondary" style="background:transparent;color:#fff;border:1px solid var(--line)">Workflow Audit $499 →</a></div></div></section>' + '\n' + '<section class="section" id="tools">'
-          s2, n = pattern.subn(replacement, s, count=1)
-          if n != 1:
-              raise SystemExit(f'expected exactly one membership tease, replaced {n}')
 
-          needle = "if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));posthog.capture('funnel_view',{funnel:'signal_praxis',content_type:'hub',language:lang.value});"
-          tracking = "document.querySelectorAll('[data-revenue-cta]').forEach(a=>a.addEventListener('click',()=>{let u=new URL(a.href);posthog.capture('primary_cta_click',{cta_id:'signal_'+a.dataset.revenueCta,funnel:'signal_owned_revenue',path:location.pathname,product:a.dataset.revenueCta,destination_path:u.pathname,destination_host:u.host,utm_source:'signal',utm_medium:'owned',utm_campaign:'signal_revenue_bridge'})}));" + needle
-          if needle not in s2:
-              raise SystemExit('tracking insertion point not found')
-          s2 = s2.replace(needle, tracking, 1)
-          p.write_text(s2, encoding='utf-8')
+          bridge = '<div class="membership-tease" id="revenueStep"><div><div class="eyebrow">NEXT STEP · OWNED REVENUE</div><h2>情報収集で止めず、次の収益ルートを1本選ぶ。</h2><p>Signalで変化を把握したら、Revenue Routerでそのシグナルを既存コンテンツ・商品・Lead・B2B施策へ優先順位付け。業務全体の改善が必要ならWorkflow Auditへ進めます。</p></div><div style="display:flex;gap:9px;flex-wrap:wrap"><a data-revenue-cta="revenue-router" href="../revenue-router.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_primary">Revenue Router $29 →</a><a data-revenue-cta="workflow-audit" href="../workflow-audit.html?utm_source=signal&utm_medium=owned&utm_campaign=signal_revenue_bridge&utm_content=hub_secondary" style="background:transparent;color:#fff;border:1px solid var(--line)">Workflow Audit $499 →</a></div></div>\n'
+
+          if 'id="revenueStep"' not in s:
+              marker = '<div class="membership-tease">'
+              if marker not in s:
+                  raise SystemExit('membership tease marker not found')
+              s = s.replace(marker, bridge + marker, 1)
+
+          if "funnel:'signal_owned_revenue'" not in s:
+              marker = "posthog.capture('funnel_view',{funnel:'signal_praxis'"
+              if marker not in s:
+                  raise SystemExit('funnel_view marker not found')
+              tracking = "document.querySelectorAll('[data-revenue-cta]').forEach(a=>a.addEventListener('click',()=>{let u=new URL(a.href);posthog.capture('primary_cta_click',{cta_id:'signal_'+a.dataset.revenueCta,funnel:'signal_owned_revenue',path:location.pathname,product:a.dataset.revenueCta,destination_path:u.pathname,destination_host:u.host,utm_source:'signal',utm_medium:'owned',utm_campaign:'signal_revenue_bridge'})}));"
+              s = s.replace(marker, tracking + marker, 1)
+
+          p.write_text(s, encoding='utf-8')
           PY
 
       - name: QA revenue route and analytics hook
         shell: bash
         run: |
           set -euo pipefail
+          grep -q 'id="revenueStep"' signal/index.html
           grep -q 'Revenue Router $29' signal/index.html
           grep -q 'Workflow Audit $499' signal/index.html
           grep -q "funnel:'signal_owned_revenue'" signal/index.html
@@ -64,5 +69,3 @@ jobs:
           fi
           git commit -m 'Connect Signal hub to paid revenue routes'
           git push origin HEAD:main
-
-# Activation marker: valid workflow is already present on the default branch before this push.
