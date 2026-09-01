@@ -1,0 +1,16 @@
+{
+  "capturedAt": "2026-09-01T20:09:22.948170+00:00",
+  "method": "public-web-yt-dlp",
+  "videos": [
+    {
+      "url": "https://www.youtube.com/watch?v=rPYeG1LYgRg",
+      "status": "error",
+      "error": "ERROR: [youtube] rPYeG1LYgRg: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies\n"
+    },
+    {
+      "url": "https://www.youtube.com/watch?v=7rFKNKHAfXQ",
+      "status": "error",
+      "error": "ERROR: [youtube] 7rFKNKHAfXQ: Sign in to confirm you’re not a bot. Use --cookies-from-browser or --cookies for the authentication. See  https://github.com/yt-dlp/yt-dlp/wiki/FAQ#how-do-i-pass-cookies-to-yt-dlp  for how to manually pass cookies. Also see  https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies  for tips on effectively exporting YouTube cookies\n"
+    }
+  ]
+}
