@@ -1,4 +1,4 @@
-name: Stratum Signal Router Promo 20260903 v2
+name: Verify Existing Signal Promo Posts 20260903
 
 on:
   push:
@@ -10,154 +10,46 @@ on:
 permissions:
   contents: write
 
-concurrency:
-  group: stratum-signal-router-promo-20260903-v2
-  cancel-in-progress: false
-
 jobs:
-  render-publish-verify:
+  verify-existing:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 5
     env:
-      VOICE_URL: https://resource2.heygen.ai/text_to_speech/a97602ecc435417ab1b776674e7db173/88bb9ee1c81b466eb2a08fdde86d3619/id=4c7a5aaf-b7d3-42ef-8246-82ccc066addb.wav
-      OUT_VIDEO: campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4
-      PUBLIC_VIDEO_URL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4
-      MANIFEST: distribution/stratum-signal-router-promo-20260903.json
-      LEDGER: distribution/stratum-signal-router-promo-20260903-ledger.json
       STATUS_FILE: distribution/stratum-signal-router-promo-20260903-status.json
       TIKTOK_CHANNEL_ID: 6a8e5d28ccaf649a671a13e7
       INSTAGRAM_CHANNEL_ID: 6a8e5b5accaf649a671a0cd9
-      CAMPAIGN_ID: stratum-signal-router-promo-20260903-v1
+      TIKTOK_POST_ID: 6a985fd7b85185cae2238dc4
+      INSTAGRAM_POST_ID: 6a985fe3b85185cae2238e0b
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - name: Validate exact Stratum destinations
+      - name: Read exact existing Buffer posts
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
         run: |
           set -euo pipefail
           node --input-type=module - <<'NODE'
-          const key=process.env.BUFFER_API_KEY; if(!key) throw new Error('BUFFER_API_KEY missing');
+          import fs from 'node:fs';
+          const key=process.env.BUFFER_API_KEY;if(!key)throw new Error('BUFFER_API_KEY missing');
           async function gql(query){const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});const j=await r.json();if(!r.ok||j.errors)throw new Error(JSON.stringify(j.errors||j));return j.data;}
-          const acct=await gql('query { account { organizations { id name } } }'); const org=acct.account?.organizations?.[0]; if(!org) throw new Error('No Buffer organization');
-          const q=s=>JSON.stringify(String(s)); const data=await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service} }`);
-          for(const [service,id] of [['tiktok',process.env.TIKTOK_CHANNEL_ID],['instagram',process.env.INSTAGRAM_CHANNEL_ID]]){const c=(data.channels||[]).find(x=>x.id===id&&String(x.service).toLowerCase()===service);if(!c)throw new Error(`Safety stop: ${service} unavailable`);console.log(`DESTINATION_${service.toUpperCase()}=${c.displayName||c.name}`);}
-          NODE
-
-      - name: Install ffmpeg
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-dejavu-core
-
-      - name: Build manifest and render creative
-        run: |
-          set -euo pipefail
-          mkdir -p distribution "$(dirname "$OUT_VIDEO")"
-          cat > "$MANIFEST" <<'JSON'
-          {
-            "id":"stratum-signal-router-promo-20260903-v1",
-            "title":"Most AI Research Dies in a Notes App",
-            "summary":"Most AI research dies in a notes app. Signal Praxis finds the change. Revenue Router helps verify, score and route it into the closest useful revenue action. Revenue Router is $29 once.\n\nStart here: https://stratumpraxis.com/signal/?utm_source=social&utm_medium=organic_video&utm_campaign=signal_revenue_router_launch&utm_content=promo_v1\n\nAI-generated narration and original motion graphics.\n\n#AI #AItools #AIAutomation #B2B #StratumPraxis",
-            "publish":{"services":["tiktok","instagram"],"mode":"shareNow","title":"Most AI Research Dies in a Notes App","caption":"Most AI research dies in a notes app. Signal Praxis finds the change. Revenue Router helps verify, score and route it into the closest useful revenue action. Revenue Router is $29 once.\n\nStart here: https://stratumpraxis.com/signal/?utm_source=social&utm_medium=organic_video&utm_campaign=signal_revenue_router_launch&utm_content=promo_v1\n\nAI-generated narration and original motion graphics.\n\n#AI #AItools #AIAutomation #B2B #StratumPraxis","channelAllowlist":{"tiktok":["6a8e5d28ccaf649a671a13e7"],"instagram":["6a8e5b5accaf649a671a0cd9"]}}
+          const acct=await gql('query { account { organizations { id name } } }');const org=acct.account?.organizations?.[0];if(!org)throw new Error('No Buffer organization');const q=s=>JSON.stringify(String(s));
+          const targets={tiktok:{channelId:process.env.TIKTOK_CHANNEL_ID,postId:process.env.TIKTOK_POST_ID},instagram:{channelId:process.env.INSTAGRAM_CHANNEL_ID,postId:process.env.INSTAGRAM_POST_ID}};
+          const evidence={campaign:'stratum-signal-router-promo-20260903-v1',videoUrl:'https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4',productUrl:'https://stratumpraxis.com/signal/?utm_source=social&utm_medium=organic_video&utm_campaign=signal_revenue_router_launch&utm_content=promo_v1',checkedAt:new Date().toISOString(),platforms:{}};
+          for(const [service,t] of Object.entries(targets)){
+            const data=await gql(`query { posts(first:30,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(t.channelId)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text status sentAt externalLink } } } }`);
+            const found=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean).find(p=>p.id===t.postId)||null;
+            evidence.platforms[service]={channelId:t.channelId,bufferPostId:t.postId,status:found?.status||'not_found',sentAt:found?.sentAt||null,externalLink:found?.externalLink||null};
+            console.log(`${service.toUpperCase()} status=${evidence.platforms[service].status} link=${evidence.platforms[service].externalLink||''}`);
           }
-          JSON
-          curl --fail --silent --show-error --location "$VOICE_URL" -o /tmp/voice.wav
-          test -s /tmp/voice.wav
-          cat > /tmp/filter.txt <<'EOF'
-          [0:v]drawgrid=w=90:h=90:t=1:c=0x263447@0.22,
-          drawbox=x=70:y=90:w=940:h=2:color=0x6da9ff@0.9:t=fill,
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='STRATUM PRAXIS':fontcolor=0xdce5f2:fontsize=32:x=74:y=118,
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='OWNED REVENUE ENGINE':fontcolor=0x7f8c9e:fontsize=24:x=74:y=162,
-          drawbox=x=70:y=370:w=940:h=770:color=0x0b111a@0.95:t=fill:enable='between(t,0,4.4)',
-          drawbox=x=70:y=370:w=12:h=770:color=0x6da9ff@1:t=fill:enable='between(t,0,4.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='MOST AI RESEARCH':fontcolor=white:fontsize=76:x=112:y=535:enable='between(t,0,4.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='DIES IN A':fontcolor=white:fontsize=76:x=112:y=650:enable='between(t,0,4.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='NOTES APP.':fontcolor=0x6da9ff:fontsize=86:x=112:y=765:enable='between(t,0,4.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='Research without a route is storage.':fontcolor=0xb9c4d3:fontsize=35:x=112:y=945:enable='between(t,0,4.4)',
-          drawbox=x=70:y=400:w=940:h=720:color=0x0b111a@0.96:t=fill:enable='between(t,4.4,7.0)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='SIGNAL PRAXIS':fontcolor=0x6da9ff:fontsize=82:x=112:y=565:enable='between(t,4.4,7.0)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='FINDS THE CHANGE.':fontcolor=white:fontsize=70:x=112:y=690:enable='between(t,4.4,7.0)',
-          drawbox=x=112:y=865:w=760:h=104:color=0x111d2d@1:t=fill:enable='between(t,4.4,7.0)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='AI / WEB / SEARCH / GLOBAL TECH':fontcolor=0xcad5e4:fontsize=31:x=145:y=898:enable='between(t,4.4,7.0)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='REVENUE ROUTER':fontcolor=white:fontsize=74:x=112:y=360:enable='between(t,7.0,12.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='decides what to do next':fontcolor=0xaeb9c8:fontsize=38:x=116:y=455:enable='between(t,7.0,12.4)',
-          drawbox=x=95:y=650:w=255:h=190:color=0x101925@1:t=fill:enable='between(t,7.0,12.4)',
-          drawbox=x=412:y=650:w=255:h=190:color=0x101925@1:t=fill:enable='between(t,7.0,12.4)',
-          drawbox=x=729:y=650:w=255:h=190:color=0x101925@1:t=fill:enable='between(t,7.0,12.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='VERIFY':fontcolor=0x6da9ff:fontsize=43:x=135:y=705:enable='between(t,7.0,12.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='SCORE':fontcolor=0x6da9ff:fontsize=43:x=470:y=705:enable='between(t,7.0,12.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='ROUTE':fontcolor=0x6da9ff:fontsize=43:x=778:y=705:enable='between(t,7.0,12.4)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='REVENUE ACTION':fontcolor=white:fontsize=60:x=278:y=980:enable='between(t,7.0,12.4)',
-          drawbox=x=70:y=390:w=940:h=720:color=0x0b111a@0.96:t=fill:enable='between(t,12.4,15.2)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='STOP BUILDING':fontcolor=white:fontsize=80:x=112:y=540:enable='between(t,12.4,15.2)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='A NEW BUSINESS':fontcolor=0x6da9ff:fontsize=70:x=112:y=660:enable='between(t,12.4,15.2)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='FOR EVERY IDEA.':fontcolor=white:fontsize=70:x=112:y=775:enable='between(t,12.4,15.2)',
-          drawbox=x=70:y=330:w=940:h=900:color=0x09111c@0.98:t=fill:enable='between(t,15.2,20.1)',
-          drawbox=x=70:y=330:w=940:h=8:color=0x6da9ff@1:t=fill:enable='between(t,15.2,20.1)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='START WITH':fontcolor=0xaeb9c8:fontsize=46:x=112:y=485:enable='between(t,15.2,20.1)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='SIGNAL PRAXIS':fontcolor=white:fontsize=84:x=112:y=570:enable='between(t,15.2,20.1)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='REVENUE ROUTER':fontcolor=0x6da9ff:fontsize=70:x=112:y=720:enable='between(t,15.2,20.1)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='$29 ONCE':fontcolor=white:fontsize=76:x=112:y=825:enable='between(t,15.2,20.1)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf:text='stratumpraxis.com/signal/':fontcolor=0xd7e0ec:fontsize=39:x=112:y=1020:enable='between(t,15.2,20.1)',
-          drawbox=x=55:y=1490:w=970:h=220:color=0x020408@0.9:t=fill,
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Most AI research dies in a notes app.':fontcolor=white:fontsize=38:x=(w-text_w)/2:y=1560:enable='between(t,0,2.45)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Signal Praxis finds the change.':fontcolor=white:fontsize=38:x=(w-text_w)/2:y=1560:enable='between(t,2.45,4.55)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Revenue Router decides what to do with it.':fontcolor=white:fontsize=34:x=(w-text_w)/2:y=1560:enable='between(t,4.55,6.75)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Verify. Score. Route.':fontcolor=white:fontsize=42:x=(w-text_w)/2:y=1560:enable='between(t,6.75,9.55)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Route it to the closest useful revenue action.':fontcolor=white:fontsize=31:x=(w-text_w)/2:y=1560:enable='between(t,9.55,12.35)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Stop building a new business for every idea.':fontcolor=white:fontsize=32:x=(w-text_w)/2:y=1560:enable='between(t,12.35,15.15)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf:text='Start with Signal Praxis.':fontcolor=white:fontsize=40:x=(w-text_w)/2:y=1560:enable='between(t,15.15,16.85)',
-          drawtext=fontfile=/usr/share/fonts/truetype/dejavu/DejaSans-Bold.ttf:text='Revenue Router - $29 once.':fontcolor=white:fontsize=42:x=(w-text_w)/2:y=1560:enable='between(t,16.85,20.1)'[vout];
-          [1:a]atrim=0:20.1,asetpts=PTS-STARTPTS,loudnorm=I=-14:TP=-1.5:LRA=7[aout]
-          EOF
-          ffmpeg -y -f lavfi -i color=c=0x05070b:s=1080x1920:r=30:d=20.1 -i /tmp/voice.wav -filter_complex_script /tmp/filter.txt -map '[vout]' -map '[aout]' -t 20.1 -r 30 -c:v libx264 -preset medium -crf 18 -pix_fmt yuv420p -c:a aac -b:a 192k -ar 48000 -movflags +faststart "$OUT_VIDEO"
-
-      - name: Technical and content QA
-        run: |
-          set -euo pipefail
-          ffmpeg -v error -i "$OUT_VIDEO" -f null -
-          ffprobe -v error -show_entries stream=codec_name,width,height,sample_rate -show_entries format=duration,size -of json "$OUT_VIDEO" > /tmp/qa.json
-          node --input-type=module - <<'NODE'
-          import fs from 'node:fs'; const q=JSON.parse(fs.readFileSync('/tmp/qa.json','utf8')); const v=q.streams.find(x=>x.width&&x.height),a=q.streams.find(x=>x.codec_name==='aac'); const d=Number(q.format.duration),s=Number(q.format.size); if(!v||v.width!==1080||v.height!==1920||v.codec_name!=='h264')throw new Error('Video QA failed');if(!a||Number(a.sample_rate)!==48000)throw new Error('Audio QA failed');if(d<19.8||d>20.3||s<300000)throw new Error(`Output QA failed d=${d} size=${s}`);const m=JSON.parse(fs.readFileSync(process.env.MANIFEST,'utf8'));if(!m.publish.caption.includes('stratumpraxis.com/signal/'))throw new Error('CTA missing');if(!m.publish.caption.includes('$29 once'))throw new Error('price missing');console.log(`VIDEO_QA=PASS duration=${d} size=${s}`);console.log('CONTENT_QA=PASS');
+          fs.writeFileSync(process.env.STATUS_FILE,JSON.stringify(evidence,null,2)+'\n');
           NODE
-
-      - name: Persist creative
+      - name: Persist readback evidence
         run: |
           set -euo pipefail
-          persist=/tmp/promo-persist; rm -rf "$persist" && mkdir -p "$persist"; cp --parents "$OUT_VIDEO" "$MANIFEST" "$persist"
-          git config user.name 'stratum-promo-bot'; git config user.email 'stratumpraxis@gmail.com'
-          for attempt in 1 2 3; do git fetch origin main; git reset --hard origin/main; cp -a "$persist"/. .; git add "$OUT_VIDEO" "$MANIFEST"; if git diff --cached --quiet; then break; fi; git commit -m 'Render Signal Praxis Revenue Router promo'; if git push origin HEAD:main; then break; fi; done
-
-      - name: Verify public MP4
-        run: |
-          set -euo pipefail
-          ok=0; for i in 1 2 3 4 5 6; do code=$(curl -L -sS -o /tmp/public.mp4 -w '%{http_code}' "$PUBLIC_VIDEO_URL" || true); bytes=$(wc -c < /tmp/public.mp4 2>/dev/null || echo 0); echo "PUBLIC_VIDEO_ATTEMPT=$i HTTP=$code BYTES=$bytes"; if [ "$code" = '200' ] && [ "$bytes" -gt 300000 ]; then ok=1; break; fi; sleep 5; done; test "$ok" = 1
-
-      - name: Publish through Buffer
-        env:
-          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          TREND_VIDEO_MANIFEST: ${{ env.MANIFEST }}
-          TREND_VIDEO_URL: ${{ env.PUBLIC_VIDEO_URL }}
-          VIDEO_PUBLISH_LEDGER: ${{ env.LEDGER }}
-        run: node distribution/buffer-video-publisher.mjs
-
-      - name: Verify social posts
-        env:
-          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-        run: |
-          set -euo pipefail
-          node --input-type=module - <<'NODE'
-          import fs from 'node:fs'; const key=process.env.BUFFER_API_KEY; const ledger=JSON.parse(fs.readFileSync(process.env.LEDGER,'utf8')); const item=ledger.items?.[process.env.CAMPAIGN_ID]; if(!item)throw new Error('Campaign missing from ledger');
-          async function gql(query){const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});const j=await r.json();if(!r.ok||j.errors)throw new Error(JSON.stringify(j.errors||j));return j.data;}
-          const acct=await gql('query { account { organizations { id name } } }'); const org=acct.account?.organizations?.[0]; const q=s=>JSON.stringify(String(s)); const targets={tiktok:process.env.TIKTOK_CHANNEL_ID,instagram:process.env.INSTAGRAM_CHANNEL_ID}; const evidence={campaign:process.env.CAMPAIGN_ID,videoUrl:process.env.PUBLIC_VIDEO_URL,productUrl:'https://stratumpraxis.com/signal/?utm_source=social&utm_medium=organic_video&utm_campaign=signal_revenue_router_launch&utm_content=promo_v1',checkedAt:new Date().toISOString(),platforms:{}};
-          for(const [service,channelId] of Object.entries(targets)){const postId=item?.[service]?.postId;if(!postId)throw new Error(`No ${service} post ID: ${JSON.stringify(item?.[service])}`);let found=null;for(let attempt=1;attempt<=10;attempt++){const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(channelId)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text status sentAt externalLink } } } }`);found=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean).find(p=>p.id===postId)||null;console.log(`VERIFY_${service.toUpperCase()} attempt=${attempt} status=${found?.status||''} link=${found?.externalLink||''}`);if(found?.status==='sent'&&found?.externalLink)break;if(found&&['failed','error'].includes(String(found.status||'').toLowerCase()))throw new Error(`${service} failed: ${found.status}`);if(attempt<10)await new Promise(r=>setTimeout(r,8000));}evidence.platforms[service]={channelId,bufferPostId:postId,status:found?.status||item?.[service]?.status||null,sentAt:found?.sentAt||null,externalLink:found?.externalLink||null};}
-          fs.writeFileSync(process.env.STATUS_FILE,JSON.stringify(evidence,null,2)+'\n');console.log(JSON.stringify(evidence,null,2));const t=evidence.platforms.tiktok,i=evidence.platforms.instagram;if(t.status!=='sent'||!t.externalLink)throw new Error('TikTok public URL not verified');if(i.status!=='sent'||!i.externalLink)throw new Error('Instagram public URL not verified');
-          NODE
-
-      - name: Persist evidence
-        if: always()
-        run: |
-          set -euo pipefail
-          persist=/tmp/evidence-persist; rm -rf "$persist" && mkdir -p "$persist"; for file in "$LEDGER" "$STATUS_FILE"; do if [ -f "$file" ]; then cp --parents "$file" "$persist"; fi; done
-          git config user.name 'stratum-promo-bot'; git config user.email 'stratumpraxis@gmail.com'
-          for attempt in 1 2 3; do git fetch origin main; git reset --hard origin/main; cp -a "$persist"/. .; git add "$LEDGER" "$STATUS_FILE" 2>/dev/null || true; if git diff --cached --quiet; then exit 0; fi; git commit -m 'Record Signal Router promotion publication evidence'; if git push origin HEAD:main; then exit 0; fi; done; exit 1
+          git config user.name 'stratum-promo-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add "$STATUS_FILE"
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'Refresh Signal promo social publication status'
+          git push origin HEAD:main
