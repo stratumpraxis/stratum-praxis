@@ -25,7 +25,7 @@ jobs:
       - name: Publish approved launch payload through Buffer
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_TARGET_SERVICES: bluesky
+          BUFFER_TARGET_SERVICES: pinterest
           BUFFER_QUEUE_FILE: launch-now.json
           BUFFER_SELECT_MODE: first
           BUFFER_POST_MODE: shareNow
