@@ -8,7 +8,9 @@ const targetServices = (process.env.BUFFER_TARGET_SERVICES || 'bluesky,threads,l
 const requireEligibleChannels = process.env.REQUIRE_ELIGIBLE_CHANNELS === '1';
 
 if (!key) {
-  console.log('BUFFER_API_KEY is not configured. Safe no-op.');
+  const message = 'BUFFER_API_KEY is not configured';
+  if (requireEligibleChannels) throw new Error(message);
+  console.log(`${message}. Safe no-op.`);
   process.exit(0);
 }
 
