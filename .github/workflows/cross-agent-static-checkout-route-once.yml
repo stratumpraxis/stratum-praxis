@@ -1,0 +1,75 @@
+name: Cross-Agent Static Checkout Route Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/cross-agent-static-checkout-route-once.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: cross-agent-static-checkout-route-once
+  cancel-in-progress: false
+
+jobs:
+  patch-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Patch static product CTA routes
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('cross-agent-operating-kit.html')
+          s = p.read_text()
+          hero_old = '<a class="btn primary" href="#pricing">Choose a license →</a>'
+          hero_new = '<a class="btn primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_hero" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a>'
+          close_old = '<a class="btn primary" href="#pricing">Choose your license →</a>'
+          close_new = '<a class="btn primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a>'
+          if hero_old in s:
+              s = s.replace(hero_old, hero_new, 1)
+          elif hero_new not in s:
+              raise SystemExit('Hero CTA shape not recognized; fail closed')
+          if close_old in s:
+              s = s.replace(close_old, close_new, 1)
+          elif close_new not in s:
+              raise SystemExit('Closing CTA shape not recognized; fail closed')
+          p.write_text(s)
+          PY
+
+      - name: Verify static revenue route
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          s=Path('cross-agent-operating-kit.html').read_text()
+          required=[
+            'data-analytics-id="cross_agent_personal_product_hero"',
+            'data-analytics-id="cross_agent_personal_product_close"',
+            'href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a>'
+          ]
+          missing=[x for x in required if x not in s]
+          if missing: raise SystemExit('Missing static checkout route: '+repr(missing))
+          if '<a class="btn primary" href="#pricing">Choose a license →</a>' in s:
+            raise SystemExit('Old hero pricing jump still present')
+          print('STATIC_CHECKOUT_ROUTE_QA=PASS')
+          PY
+
+      - name: Commit production HTML change
+        run: |
+          git config user.name 'stratum-revenue-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add cross-agent-operating-kit.html
+          if git diff --cached --quiet; then
+            echo 'Static route already present.'
+            exit 0
+          fi
+          git commit -m 'Route Cross-Agent static hero CTAs directly to Personal checkout'
+          git pull --rebase origin main
+          git push origin HEAD:main
