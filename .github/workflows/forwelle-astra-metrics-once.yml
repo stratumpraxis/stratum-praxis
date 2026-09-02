@@ -1,0 +1,46 @@
+name: Forwelle Astra Metrics Once
+
+on:
+  push:
+    branches: [forwelle-astra-short-20260903]
+    paths:
+      - 'automation/forwelle-production/astra-metrics.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poll public RSS for published video
+        run: |
+          mkdir -p automation/forwelle-production/out
+          python <<'PY'
+          import json,time,urllib.request,xml.etree.ElementTree as ET,datetime
+          vid='fV9yc1lUJ8g'; channel='UCw9wnPzccaPba5rLKWyL6nQ'
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          row=None
+          for _ in range(20):
+            req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwelleMetrics/1.0'})
+            try:
+              with urllib.request.urlopen(req,timeout=20) as r: root=ET.fromstring(r.read())
+              for e in root.findall('atom:entry',ns):
+                if e.findtext('yt:videoId',default='',namespaces=ns)==vid:
+                  stat=e.find('media:group/media:community/media:statistics',ns); rat=e.find('media:group/media:community/media:starRating',ns)
+                  row={'videoId':vid,'title':e.findtext('atom:title',default='',namespaces=ns),'views':int(stat.attrib.get('views','0')) if stat is not None else None,'ratingCount':int(rat.attrib.get('count','0')) if rat is not None else None,'url':f'https://www.youtube.com/watch?v={vid}'}
+                  break
+              if row: break
+            except Exception: pass
+            time.sleep(10)
+          result={'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'found':bool(row),'video':row}
+          json.dump(result,open('automation/forwelle-production/out/astra-live-metrics.json','w'),indent=2); print(json.dumps(result,indent=2))
+          if not row: raise SystemExit('Video not yet present in public RSS after polling')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-astra-live-metrics
+          path: automation/forwelle-production/out/astra-live-metrics.json
+          retention-days: 30
