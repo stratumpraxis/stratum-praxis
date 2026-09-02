@@ -1,0 +1,90 @@
+name: Forwelle Astra Public Once
+
+on:
+  push:
+    branches: [forwelle-astra-short-20260903]
+    paths:
+      - 'automation/forwelle-production/astra-public.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  produce-publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: Install dependencies and ffmpeg
+        run: |
+          cd automation/forwelle-production
+          npm install
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg >/dev/null
+      - name: Generate narration and original BGM
+        working-directory: automation/forwelle-production
+        env:
+          SPEECHIFY_API_KEY: ${{ secrets.SPEECHIFY_API_KEY }}
+        run: node scripts/prepare-astra-assets.mjs
+      - name: Render vertical short
+        working-directory: automation/forwelle-production
+        run: npx remotion render src/astra.jsx ForwelleAstraShort out/forwelle-astra-short.mp4 --codec=h264
+      - name: Fail-closed QA
+        working-directory: automation/forwelle-production
+        run: node scripts/qa-astra.mjs out/forwelle-astra-short.mp4
+      - name: Publish to Forwelle YouTube as PUBLIC
+        working-directory: automation/forwelle-production
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node scripts/youtube-upload-astra.mjs out/forwelle-astra-short.mp4
+      - name: Verify public URL and collect initial public evidence
+        working-directory: automation/forwelle-production
+        run: |
+          python <<'PY'
+          import json,time,urllib.request,xml.etree.ElementTree as ET,datetime
+          up=json.load(open('out/astra-upload.json'))
+          vid=up['videoId']; url=up['url']
+          oembed=f'https://www.youtube.com/oembed?url={url}&format=json'
+          verified=False; title=None
+          for _ in range(12):
+            try:
+              with urllib.request.urlopen(oembed,timeout=20) as r:
+                d=json.load(r); title=d.get('title'); verified=(r.status==200)
+              if verified: break
+            except Exception: pass
+            time.sleep(10)
+          if not verified: raise SystemExit('Public oEmbed verification failed')
+          views=None; ratingCount=None; feedFound=False
+          feed='https://www.youtube.com/feeds/videos.xml?channel_id=UCw9wnPzccaPba5rLKWyL6nQ'
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          for _ in range(6):
+            try:
+              req=urllib.request.Request(feed,headers={'User-Agent':'Mozilla/5.0 ForwelleVerify/1.0'})
+              with urllib.request.urlopen(req,timeout=20) as r: root=ET.fromstring(r.read())
+              for e in root.findall('atom:entry',ns):
+                if e.findtext('yt:videoId',default='',namespaces=ns)==vid:
+                  stat=e.find('media:group/media:community/media:statistics',ns); rat=e.find('media:group/media:community/media:starRating',ns)
+                  views=int(stat.attrib.get('views','0')) if stat is not None else None
+                  ratingCount=int(rat.attrib.get('count','0')) if rat is not None else None
+                  feedFound=True; break
+              if feedFound: break
+            except Exception: pass
+            time.sleep(10)
+          ev={'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'videoId':vid,'publicUrl':url,'oEmbedVerified':verified,'oEmbedTitle':title,'feedFound':feedFound,'initialViews':views,'initialRatingCount':ratingCount,'privacyStatus':up['privacyStatus'],'syntheticMediaDisclosed':up['syntheticMedia']}
+          json.dump(ev,open('out/astra-public-evidence.json','w'),indent=2); print(json.dumps(ev,indent=2))
+          PY
+      - name: Upload production evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-astra-public-evidence
+          path: |
+            automation/forwelle-production/out/forwelle-astra-short.mp4
+            automation/forwelle-production/out/astra-qa-report.json
+            automation/forwelle-production/out/astra-upload.json
+            automation/forwelle-production/out/astra-public-evidence.json
+          retention-days: 30
