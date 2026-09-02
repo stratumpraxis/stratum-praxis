@@ -12,8 +12,16 @@ const a=await gql('query { account { organizations { id name } } }');
 const result={checkedAt:new Date().toISOString(),organizations:[]};
 for(const org of a.account?.organizations||[]){
   const d=await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){id name displayName service isLocked isDisconnected isQueuePaused} }`);
-  const channels=(d.channels||[]).map(c=>({id:c.id,name:c.name,displayName:c.displayName,service:c.service,isLocked:c.isLocked,isDisconnected:c.isDisconnected,isQueuePaused:c.isQueuePaused}));
+  const channels=[];
+  for(const c of d.channels||[]){
+    const row={id:c.id,name:c.name,displayName:c.displayName,service:c.service,isLocked:c.isLocked,isDisconnected:c.isDisconnected,isQueuePaused:c.isQueuePaused};
+    if(String(c.service).toLowerCase()==='pinterest'){
+      const detail=await gql(`query { channel(input:{id:${JSON.stringify(c.id)}}){ metadata { ... on PinterestMetadata { boards { id serviceId name url } } } } }`);
+      row.boards=(detail.channel?.metadata?.boards||[]).map(b=>({id:b.id,serviceId:b.serviceId,name:b.name,url:b.url}));
+    }
+    channels.push(row);
+    console.log(JSON.stringify(row));
+  }
   result.organizations.push({id:org.id,name:org.name,channels});
-  for(const c of channels) console.log(JSON.stringify(c));
 }
 await fs.writeFile(outFile,JSON.stringify(result,null,2)+'\n','utf8');
