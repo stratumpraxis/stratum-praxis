@@ -2,21 +2,21 @@
   "campaign": "stratum-signal-router-promo-20260903-v1",
   "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4",
   "productUrl": "https://stratumpraxis.com/signal/?utm_source=social&utm_medium=organic_video&utm_campaign=signal_revenue_router_launch&utm_content=promo_v1",
-  "checkedAt": "2026-09-02T17:42:07.709Z",
+  "checkedAt": "2026-09-02T17:46:14.781Z",
   "platforms": {
     "tiktok": {
       "channelId": "6a8e5d28ccaf649a671a13e7",
       "bufferPostId": "6a985fd7b85185cae2238dc4",
-      "status": "sending",
-      "sentAt": null,
-      "externalLink": null
+      "status": "sent",
+      "sentAt": "2026-09-02T17:43:26.826Z",
+      "externalLink": "https://tiktok.com/@stratumpraxis/video/7680994338276429057"
     },
     "instagram": {
       "channelId": "6a8e5b5accaf649a671a0cd9",
       "bufferPostId": "6a985fe3b85185cae2238e0b",
-      "status": "sending",
-      "sentAt": null,
-      "externalLink": null
+      "status": "sent",
+      "sentAt": "2026-09-02T17:44:55.040Z",
+      "externalLink": "https://www.instagram.com/reel/DcyzLT9j0qU/"
     }
   }
 }
