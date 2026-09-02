@@ -1,0 +1,52 @@
+name: Inspect Signal Promo Buffer Status 20260903
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-signal-promo-buffer-status-20260903.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      STATUS_FILE: distribution/stratum-signal-router-promo-buffer-inspect.json
+      TIKTOK_CHANNEL_ID: 6a8e5d28ccaf649a671a13e7
+      INSTAGRAM_CHANNEL_ID: 6a8e5b5accaf649a671a0cd9
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inspect recent Buffer posts
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          set -euo pipefail
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
+          const key=process.env.BUFFER_API_KEY;if(!key)throw new Error('BUFFER_API_KEY missing');
+          async function gql(query){const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});const j=await r.json();if(!r.ok||j.errors)throw new Error(JSON.stringify(j.errors||j));return j.data;}
+          const acct=await gql('query { account { organizations { id name } } }');const org=acct.account?.organizations?.[0];if(!org)throw new Error('No org');const q=s=>JSON.stringify(String(s));
+          const targets={tiktok:process.env.TIKTOK_CHANNEL_ID,instagram:process.env.INSTAGRAM_CHANNEL_ID};const out={checkedAt:new Date().toISOString(),platforms:{}};
+          for(const [service,channelId] of Object.entries(targets)){
+            const data=await gql(`query { posts(first:30,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(channelId)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text status sentAt externalLink createdAt } } } }`);
+            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean);
+            const p=posts.find(x=>String(x.text||'').includes('Most AI research dies in a notes app'))||null;
+            out.platforms[service]=p?{channelId,id:p.id,status:p.status,sentAt:p.sentAt,externalLink:p.externalLink,createdAt:p.createdAt,text:p.text}: {channelId,found:false};
+            console.log(`${service.toUpperCase()}=${JSON.stringify(out.platforms[service])}`);
+          }
+          fs.mkdirSync('distribution',{recursive:true});fs.writeFileSync(process.env.STATUS_FILE,JSON.stringify(out,null,2)+'\n');
+          NODE
+      - name: Persist inspection
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-promo-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add "$STATUS_FILE"
+          git commit -m 'Record live Buffer status for Signal promo'
+          git push origin HEAD:main
