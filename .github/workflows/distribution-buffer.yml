@@ -34,5 +34,6 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
