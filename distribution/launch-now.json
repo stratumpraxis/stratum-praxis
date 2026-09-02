@@ -1,10 +1,10 @@
 [
   {
-    "id":"ai-saas-cost-ig-20260827-retry1",
+    "id":"ai-saas-cost-pinterest-20260903-01",
     "active":true,
-    "services":["instagram"],
-    "text":"Before renewing another AI or SaaS tool, make the cost visible. Enter your monthly spend, choose how much you want to review, and test your own reducible-spend assumption. The calculator does the arithmetic without inventing a savings claim. Free. No signup.",
-    "url":"https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=instagram&utm_medium=social&utm_campaign=ai_saas_cost_review&utm_content=ig_20260827_retry1",
+    "services":["pinterest"],
+    "text":"AI & SaaS Spend Review — Free Calculator for Renewal Decisions. Before renewing another AI or SaaS tool, make the monthly cost visible, choose how much spend to review, and test your own reducible-spend assumption. No invented savings claim and no signup required.",
+    "url":"https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=pinterest&utm_medium=organic_social&utm_campaign=ai_saas_cost_review&utm_content=pin_cost_review_20260903_01",
     "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
   }
 ]
