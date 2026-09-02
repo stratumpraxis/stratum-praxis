@@ -74,25 +74,37 @@ for (const channel of channels) {
   const item = selectItem(candidates);
   const text = `${item.text}\n\n${item.url}`.trim();
 
+  if (service === 'pinterest' && !item.imageUrl) {
+    throw new Error(`Pinterest item ${item.id} requires an approved imageUrl`);
+  }
+
+  let metadata = '';
+  if (service === 'instagram') {
+    metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
+  } else if (service === 'pinterest') {
+    const detail = await gql(`query { channel(input:{id:${q(channel.id)}}){ metadata { ... on PinterestMetadata { boards { serviceId name } } } } }`);
+    const boards = detail.channel?.metadata?.boards || [];
+    if (boards.length !== 1) {
+      throw new Error(`Pinterest channel requires exactly one unambiguous board for autonomous posting; found ${boards.length}`);
+    }
+    const board = boards[0];
+    const title = String(item.title || item.text || 'Stratum Praxis').split(/[.!?\n]/)[0].trim().slice(0, 100) || 'Stratum Praxis';
+    metadata = `metadata:{pinterest:{boardServiceId:${q(board.serviceId)},title:${q(title)},url:${q(item.url)}}},`;
+    console.log(`Pinterest board selected: ${board.name} (${board.serviceId})`);
+  }
+
   if (dryRun) {
     console.log(`[DRY RUN] ${service} / ${item.id} / ${postMode} -> ${text}`);
     continue;
   }
 
-  if (service === 'pinterest' && !item.imageUrl) {
-    console.log(`Skip Pinterest item ${item.id}: no approved imageUrl`);
-    continue;
-  }
-
   let assets = '';
   if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
-  const metadata = service === 'instagram'
-    ? 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},'
-    : '';
   const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${postMode},${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
   console.log(JSON.stringify({channel:service,item:item.id,postMode,result}, null, 2));
   if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
+  if (!result?.post?.id) throw new Error(`Buffer did not return a post id for ${service}`);
   await new Promise(r=>setTimeout(r,1500));
 }
