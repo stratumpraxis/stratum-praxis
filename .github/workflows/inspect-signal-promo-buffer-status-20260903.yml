@@ -50,3 +50,5 @@ jobs:
           git add "$STATUS_FILE"
           git commit -m 'Record live Buffer status for Signal promo'
           git push origin HEAD:main
+
+# trigger: 2026-09-03
