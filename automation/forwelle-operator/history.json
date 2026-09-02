@@ -2,6 +2,80 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal",
+      "candidateId": "feed:github-ai-ml:signal",
+      "createdAt": "2026-09-02T23:07:28.501Z",
+      "recordedAt": "2026-09-02T23:09:01.075Z",
+      "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my!",
+      "source": {
+        "name": "github.blog — first-party source",
+        "url": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+        "factSource": true,
+        "verified": true,
+        "published": "Wed, 02 Sep 2026 21:00:00 +0000"
+      },
+      "outputFile": "media/forwelle/2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "structureProfile": {
+        "hookType": "new-signal",
+        "hookText": "Decoding the new AI lingo: Loops, harnesses, squads,",
+        "pacing": "five-scene-progressive",
+        "ctaType": "non-salesy-takeaway",
+        "visualStyle": "procedural-motion",
+        "sceneCount": 5,
+        "durationSeconds": 40
+      },
+      "strategy": {
+        "winningPatternLearning": {
+          "status": "BUILDING_DATASET",
+          "sampleCount": 0,
+          "targetCount": 10,
+          "briefUsed": false,
+          "editorialBrief": null
+        },
+        "rendering": {
+          "preferredFinalComposer": "remotion",
+          "currentOperatorRenderer": "procedural"
+        }
+      },
+      "assetCandidates": {
+        "moneyPrinterTurbo": {
+          "status": "SKIPPED_NOT_CONFIGURED",
+          "candidateOnly": true,
+          "promotedToPublication": false,
+          "provider": "MoneyPrinterTurbo",
+          "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378",
       "candidateId": "hn:49525378",
       "createdAt": "2026-09-01T23:08:02.907Z",
