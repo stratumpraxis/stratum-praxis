@@ -1,47 +1,9 @@
 {
-  "at": "2026-09-01T23:09:23.221Z",
-  "status": "ATTEMPTED_OR_BLOCKED",
-  "manifestId": "2026-09-01-claude-fable-5-1-and-claude-mythos-5-1-hn-49525378",
-  "platforms": {
-    "youtube": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "tiktok": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "instagram": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    }
-  },
-  "structureProfile": {
-    "hookType": "concrete-change",
-    "hookText": "Claude Fable 5.1 and Claude Mythos 5.1",
-    "pacing": "five-scene-progressive",
-    "ctaType": "non-salesy-takeaway",
-    "visualStyle": "procedural-motion",
-    "sceneCount": 5,
-    "durationSeconds": 40
-  },
-  "winningPatternLearning": {
-    "status": "BUILDING_DATASET",
-    "sampleCount": 0,
-    "targetCount": 10,
-    "briefUsed": false,
-    "editorialBrief": null
-  }
+  "at": "2026-09-02T23:07:28.501Z",
+  "status": "PLANNED",
+  "manifestId": "2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal",
+  "candidateId": "feed:github-ai-ml:signal",
+  "usedAIEditor": false,
+  "winningPatternSamples": 0,
+  "winningPatternBriefUsed": false
 }
