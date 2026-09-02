@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "items": {
+    "stratum-signal-router-promo-20260903-v1": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-09-02T17:41:54.054Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4",
+        "postId": "6a985fd7b85185cae2238dc4",
+        "dueAt": "2026-09-02T17:41:43.852Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      },
+      "instagram": {
+        "status": "sending",
+        "at": "2026-09-02T17:42:06.012Z",
+        "channelId": "6a8e5b5accaf649a671a0cd9",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/stratum-signal-router-promo-20260903-v1.mp4",
+        "postId": "6a985fe3b85185cae2238e0b",
+        "dueAt": "2026-09-02T17:41:55.836Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
+    }
+  }
+}
