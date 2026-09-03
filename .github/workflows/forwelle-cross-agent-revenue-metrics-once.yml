@@ -1,0 +1,56 @@
+name: Forwelle Cross-Agent Revenue Metrics Once
+
+on:
+  push:
+    branches: [forwelle-cross-agent-revenue-20260903]
+    paths:
+      - 'campaigns/cross-agent-remotion/revenue-metrics.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - name: Poll public YouTube feed without reposting
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/forwelle-revenue-metrics
+          python <<'PY'
+          import urllib.request,xml.etree.ElementTree as ET,json,time,datetime
+          vid='AVCK3mPwJIY'; channel='UCw9wnPzccaPba5rLKWyL6nQ'
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          row=None
+          for attempt in range(16):
+              try:
+                  req=urllib.request.Request(f'https://www.youtube.com/feeds/videos.xml?channel_id={channel}',headers={'User-Agent':'Mozilla/5.0 ForwelleRevenueMetrics/1.0'})
+                  with urllib.request.urlopen(req,timeout=20) as r: root=ET.fromstring(r.read())
+                  for e in root.findall('atom:entry',ns):
+                      if e.findtext('yt:videoId',default='',namespaces=ns)==vid:
+                          stat=e.find('media:group/media:community/media:statistics',ns)
+                          rating=e.find('media:group/media:community/media:starRating',ns)
+                          row={
+                              'videoId':vid,
+                              'title':e.findtext('atom:title',default='',namespaces=ns),
+                              'publishedAt':e.findtext('atom:published',default='',namespaces=ns),
+                              'views':int(stat.attrib.get('views','0')) if stat is not None else None,
+                              'ratingCount':int(rating.attrib.get('count','0')) if rating is not None else None,
+                              'publicUrl':f'https://www.youtube.com/watch?v={vid}'
+                          }
+                          break
+              except Exception as ex:
+                  last_error=str(ex)
+              if row: break
+              time.sleep(15)
+          out={'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),'feedFound':bool(row),'metrics':row}
+          open('/tmp/forwelle-revenue-metrics/metrics.json','w').write(json.dumps(out,indent=2)+'\n')
+          print(json.dumps(out,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-cross-agent-revenue-metrics
+          path: /tmp/forwelle-revenue-metrics/metrics.json
+          retention-days: 7
