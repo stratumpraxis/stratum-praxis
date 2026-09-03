@@ -1,33 +1,33 @@
 {
-  "id": "2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal",
-  "createdAt": "2026-09-02T23:07:28.501Z",
+  "id": "2026-09-03-gpt-6-astra-hn-49554643",
+  "createdAt": "2026-09-03T23:07:23.933Z",
   "brandLane": "forwelle-en",
   "platformVariant": "cross-platform-short",
-  "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my!",
-  "topic": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my!",
+  "title": "GPT-6 Astra",
+  "topic": "GPT-6 Astra",
   "language": "en",
-  "summary": "From loop engineering to harnesses, squads, and open weights, the GitHub Podcast breaks down the AI terms showing up in developer conversations. The post Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my! appeared first on The GitHub Blog .",
-  "voiceover": "A fresh signal from github.blog is getting attention: Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my!. From loop engineering to harnesses, squads, and open weights, the GitHub Podcast breaks down the AI terms showing up in developer conversations. The post Decoding the new AI lingo: Loops, harnesses,… The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
-  "sourceCandidateId": "feed:github-ai-ml:signal",
-  "outputFile": "media/forwelle/2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal.mp4",
+  "summary": "A fresh first-party signal from openai.com is worth watching.",
+  "voiceover": "A fresh signal from openai.com is getting attention: GPT-6 Astra. The headline matters less than the change underneath it. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "hn:49554643",
+  "outputFile": "media/forwelle/2026-09-03-gpt-6-astra-hn-49554643.mp4",
   "scores": {
     "freshness": 10,
-    "themeFit": 7,
-    "revenueFit": 4,
-    "engagement": 0,
+    "themeFit": 3,
+    "revenueFit": 2,
+    "engagement": 10,
     "sourceTrust": 10,
     "originalityOpportunity": 8,
-    "officialFeedBoost": 6,
-    "total": 45,
+    "officialFeedBoost": 0,
+    "total": 43,
     "max": 74
   },
   "sources": [
     {
-      "name": "github.blog — first-party source",
-      "url": "https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/",
+      "name": "openai.com — first-party source",
+      "url": "https://openai.com/index/gpt-6-astra/",
       "factSource": true,
       "verified": true,
-      "published": "Wed, 02 Sep 2026 21:00:00 +0000"
+      "published": "2026-09-03T18:41:05.000Z"
     }
   ],
   "thirdPartyAssets": [],
@@ -54,8 +54,8 @@
     }
   },
   "structureProfile": {
-    "hookType": "new-signal",
-    "hookText": "Decoding the new AI lingo: Loops, harnesses, squads,",
+    "hookType": "concrete-change",
+    "hookText": "GPT-6 Astra",
     "pacing": "five-scene-progressive",
     "ctaType": "non-salesy-takeaway",
     "visualStyle": "procedural-motion",
@@ -86,27 +86,27 @@
   },
   "scenes": [
     {
-      "duration": 6.853,
+      "duration": 6,
       "eyebrow": "NEW SIGNAL",
       "motionTag": "WHY NOW",
-      "headline": "Decoding the new\nAI lingo: Loops,\nharnesses, squads,",
-      "body": "A fresh first-party update from github.blog.",
-      "sourceLabel": "github.blog",
+      "headline": "GPT-6 Astra",
+      "body": "A fresh first-party update from openai.com.",
+      "sourceLabel": "openai.com",
       "background": "#050711",
       "accent": "#7CFFDA"
     },
     {
-      "duration": 6.853,
+      "duration": 6,
       "eyebrow": "WHAT CHANGED",
       "motionTag": "THE SIGNAL",
       "headline": "Look past the\nheadline.",
-      "body": "From loop engineering to harnesses, squads, and open weights, the GitHub Podcast breaks down the AI terms showing…",
-      "sourceLabel": "github.blog",
+      "body": "A new capability or workflow change is emerging.",
+      "sourceLabel": "openai.com",
       "background": "#071421",
       "accent": "#5BE7FF"
     },
     {
-      "duration": 6.853,
+      "duration": 6,
       "eyebrow": "REAL QUESTION",
       "motionTag": "WORKFLOW IMPACT",
       "headline": "What becomes\npossible now?",
@@ -116,7 +116,7 @@
       "accent": "#B39CFF"
     },
     {
-      "duration": 6.853,
+      "duration": 6,
       "eyebrow": "FILTER THE HYPE",
       "motionTag": "PROOF > NOISE",
       "headline": "A demo is not a\nhabit.",
@@ -126,7 +126,7 @@
       "accent": "#FF78D8"
     },
     {
-      "duration": 6.853,
+      "duration": 6,
       "eyebrow": "BOTTOM LINE",
       "motionTag": "TRACK THE SHIFT",
       "headline": "Watch behavior,\nnot buzz.",
@@ -144,8 +144,8 @@
     ],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my!",
-    "caption": "Decoding the new AI lingo: Loops, harnesses, squads, hill climbing… oh my! Forwelle tracks practical shifts in AI, tools and how people work. Source: https://github.blog/ai-and-ml/decoding-the-new-ai-lingo-loops-harnesses-squads-hill-climbing-oh-my/ #AI #FutureOfWork #Technology #Forwelle",
+    "title": "GPT-6 Astra",
+    "caption": "GPT-6 Astra Forwelle tracks practical shifts in AI, tools and how people work. Source: https://openai.com/index/gpt-6-astra/ #AI #FutureOfWork #Technology #Forwelle",
     "youtubePrivacy": "public",
     "channelAllowlist": {
       "youtube": [
@@ -165,6 +165,6 @@
   "narration": {
     "file": "automation/forwelle-operator/narration.mp3",
     "voiceId": "geffen_32",
-    "durationSeconds": 32.664
+    "durationSeconds": 21.576
   }
 }
