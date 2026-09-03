@@ -70,10 +70,13 @@ test('sources are immutable: a changed file breaks its own hash', async () => {
 test('the shipped register loads with the real file hashes intact', async () => {
   const result = await loadSources();
   assert.deepEqual(result.rejected, [], 'the shipped source register must verify against the real files');
-  assert.equal(result.accepted.length, 3);
+  assert.equal(result.accepted.length, 4);
   const owner = result.byId.get('repeat-visit-sites-win-owner-package');
   assert.equal(owner.source_type, 'OWNER_APPROVED_SOURCE');
   assert.equal(owner.status, 'COMPLETE');
+  const agentControl = result.byId.get('agent-company-control-owner-package');
+  assert.ok(agentControl, 'the shipped agent-control owner package must survive integrity validation');
+  assert.equal(agentControl.status, 'COMPLETE');
   const draft = result.byId.get('routine-information-assets-draft');
   assert.equal(isDerivable(draft).ok, false, 'the draft note must not be derivable');
 });
