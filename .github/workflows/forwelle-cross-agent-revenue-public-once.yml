@@ -1,0 +1,145 @@
+name: Forwelle Cross-Agent Revenue Public Once
+
+on:
+  push:
+    branches: [forwelle-cross-agent-revenue-20260903]
+    paths:
+      - 'campaigns/cross-agent-remotion/revenue-public.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  reuse-transform-publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Validate Revenue Input Contract
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import json
+          p='campaigns/cross-agent-remotion/revenue-baseline-20260903.json'
+          d=json.load(open(p))
+          required=['creative_id','owner_project','product_id','product_name','target_customer','pain','desired_outcome','current_bottleneck','primary_cta','destination_url','success_metric']
+          missing=[k for k in required if not d.get(k)]
+          if missing: raise SystemExit('Missing Revenue Input Contract: '+','.join(missing))
+          if 'utm_source=forwelle' not in d['destination_url'] or 'route_id=' not in d['destination_url']:
+              raise SystemExit('Tracking parameters missing from destination URL')
+          print(json.dumps(d,indent=2))
+          PY
+
+      - name: Reuse winning existing Cross-Agent asset and convert to standard 16:9
+        run: |
+          set -euo pipefail
+          src='campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4'
+          out='campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-landscape.mp4'
+          test -s "$src"
+          ffmpeg -hide_banner -loglevel error -y -i "$src" \
+            -filter_complex "[0:v]split=2[bg][fg];[bg]scale=1920:1080:force_original_aspect_ratio=increase,crop=1920:1080,gblur=sigma=34[bg2];[fg]scale=-2:1080[fg2];[bg2][fg2]overlay=(W-w)/2:(H-h)/2,format=yuv420p[v]" \
+            -map '[v]' -map 0:a:0 -c:v libx264 -crf 19 -preset medium -c:a aac -b:a 192k -movflags +faststart "$out"
+          test -s "$out"
+
+      - name: Fail-closed technical and CTA QA
+        run: |
+          set -euo pipefail
+          out='campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-landscape.mp4'
+          ffprobe -v error -show_entries format=duration:stream=codec_type,codec_name,width,height,r_frame_rate -of json "$out" > /tmp/probe.json
+          python <<'PY'
+          import json, pathlib
+          p=json.load(open('/tmp/probe.json'))
+          v=next((x for x in p.get('streams',[]) if x.get('codec_type')=='video'),None)
+          a=next((x for x in p.get('streams',[]) if x.get('codec_type')=='audio'),None)
+          if not v or not a: raise SystemExit('Missing video or audio stream')
+          if (v.get('width'),v.get('height'))!=(1920,1080): raise SystemExit(f"Wrong dimensions: {v.get('width')}x{v.get('height')}")
+          if v.get('codec_name')!='h264' or a.get('codec_name')!='aac': raise SystemExit('Unexpected codec')
+          dur=float(p['format']['duration'])
+          if not 25 <= dur <= 30: raise SystemExit(f'Unexpected duration {dur}')
+          upload=pathlib.Path('campaigns/cross-agent-remotion/youtube-upload-forwelle-revenue.mjs').read_text()
+          for needle in ['stratumpraxis.com/cross-agent-operating-kit.html','utm_source=forwelle','route_id=forwelle_youtube_permission_drift_v1_20260903','$69']:
+              if needle not in upload: raise SystemExit('CTA/tracking QA missing: '+needle)
+          report={'status':'PASS','width':1920,'height':1080,'durationSeconds':dur,'audio':'aac','video':'h264','ctaTracking':'PASS','sourceReuse':'cross-agent-permission-drift-v4.mp4'}
+          pathlib.Path('campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-qa.json').write_text(json.dumps(report,indent=2)+'\n')
+          print(json.dumps(report,indent=2))
+          PY
+
+      - name: Verify destination and tracking code are live in source-of-truth
+        run: |
+          set -euo pipefail
+          grep -q 'data-funnel="cross_agent_operating_kit"' cross-agent-operating-kit.html
+          grep -q 'data-product="cross_agent_personal"' cross-agent-operating-kit.html
+          grep -q 'cross-agent-attribution.js' cross-agent-operating-kit.html
+          grep -q 'client_reference_id' cross-agent-attribution.js
+          curl -fsSL --max-time 30 'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=forwelle&utm_medium=youtube_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v1&route_id=forwelle_youtube_permission_drift_v1_20260903' | grep -q 'Cross-Agent Operating Kit'
+
+      - name: Publish to Forwelle YouTube as PUBLIC
+        working-directory: campaigns/cross-agent-remotion
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: node youtube-upload-forwelle-revenue.mjs output/forwelle-cross-agent-revenue-landscape.mp4
+
+      - name: Verify public URL and Forwelle brand identity
+        working-directory: campaigns/cross-agent-remotion
+        run: |
+          set -euo pipefail
+          python <<'PY'
+          import json,time,urllib.request,xml.etree.ElementTree as ET,datetime
+          up=json.load(open('output/forwelle-cross-agent-revenue-upload.json'))
+          vid=up['videoId']; url=up['url']
+          expected="Your AI Agents Can All Be Right — And the System Can Still Fail"
+          verified=False; title=None; author=None
+          for _ in range(12):
+              try:
+                  with urllib.request.urlopen(f'https://www.youtube.com/oembed?url={url}&format=json',timeout=20) as r:
+                      d=json.load(r); title=d.get('title'); author=d.get('author_name'); verified=(r.status==200)
+                  if verified: break
+              except Exception: pass
+              time.sleep(10)
+          if not verified: raise SystemExit('Public oEmbed verification failed')
+          if title != expected: raise SystemExit(f'Title mismatch: {title!r}')
+          if not author or 'forwelle' not in author.lower(): raise SystemExit(f'Brand mismatch: author={author!r}')
+          views=None; feedFound=False
+          feed='https://www.youtube.com/feeds/videos.xml?channel_id=UCw9wnPzccaPba5rLKWyL6nQ'
+          ns={'atom':'http://www.w3.org/2005/Atom','yt':'http://www.youtube.com/xml/schemas/2015','media':'http://search.yahoo.com/mrss/'}
+          for _ in range(4):
+              try:
+                  req=urllib.request.Request(feed,headers={'User-Agent':'Mozilla/5.0 ForwelleRevenueVerify/1.0'})
+                  with urllib.request.urlopen(req,timeout=20) as r: root=ET.fromstring(r.read())
+                  for e in root.findall('atom:entry',ns):
+                      if e.findtext('yt:videoId',default='',namespaces=ns)==vid:
+                          stat=e.find('media:group/media:community/media:statistics',ns)
+                          views=int(stat.attrib.get('views','0')) if stat is not None else None
+                          feedFound=True; break
+                  if feedFound: break
+              except Exception: pass
+              time.sleep(10)
+          ev={
+              'capturedAt':datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'creativeId':up['creativeId'],'videoId':vid,'publicUrl':url,'title':title,'author':author,
+              'publicVerified':True,'destination':up['destination'],'trackingRoute':'forwelle_youtube_permission_drift_v1_20260903',
+              'initialFeedFound':feedFound,'initialViews':views,
+              'baseline30d':{'funnelViewsExExplicitQA':14,'ctaClicksExExplicitQA':3,'checkoutClicksExExplicitQA':1,'purchase':0},
+              'fixApplied':'Reused the existing vertical creative but converted it to 16:9 standard video so the tracked description CTA can serve as the primary outbound route.'
+          }
+          json.dump(ev,open('output/forwelle-cross-agent-revenue-evidence.json','w'),indent=2)
+          print(json.dumps(ev,indent=2))
+          PY
+
+      - name: Upload evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-cross-agent-revenue-evidence
+          path: |
+            campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-landscape.mp4
+            campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-qa.json
+            campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-upload.json
+            campaigns/cross-agent-remotion/output/forwelle-cross-agent-revenue-evidence.json
+            campaigns/cross-agent-remotion/revenue-baseline-20260903.json
+          retention-days: 30
