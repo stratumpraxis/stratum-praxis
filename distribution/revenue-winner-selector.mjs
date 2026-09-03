@@ -1,7 +1,7 @@
 import { readFile, writeFile } from 'node:fs/promises';
 
 const QUEUE_FILE = new URL('./revenue-strike-queue.json', import.meta.url);
-const PERFORMANCE_FILE = new URL('./revenue-performance.json', import.meta.url);
+const PERFORMANCE_FILE = new URL(process.env.REVENUE_PERFORMANCE_FILE || './revenue-performance.json', import.meta.url);
 const POLICY_FILE = new URL('./revenue-evidence-policy.json', import.meta.url);
 const OUT_FILE = new URL('./revenue-strike-selected.json', import.meta.url);
 
@@ -112,18 +112,21 @@ function chooseForService(service, offset) {
 
   const best = ranked[0];
   const enoughEvidence =
-    best.metrics.trustedEvidence
+    performance?.status === 'live'
+    && best.metrics.trustedEvidence
     && !best.metrics.unverifiedPurchaseClaim
     && best.metrics.score >= finiteNumber(gates.minimum_score, 8)
     && best.metrics.signals >= finiteNumber(gates.minimum_trusted_signals, 3);
 
-  // Exploration is the safe default. Only Regular-human and verified-purchase
-  // evidence is allowed to move a route into exploitation.
+  // Exploration is the safe default. Only complete live evidence may move a route
+  // into exploitation; missing sources are never interpreted as zero demand.
   if (!enoughEvidence) {
     return {
       ...candidates[(day + offset) % candidates.length],
       selection_mode: 'explore',
-      evidence_mode: 'trusted-market-evidence-required'
+      evidence_mode: performance?.status === 'live'
+        ? 'trusted-market-evidence-required'
+        : 'blocked-evidence-not-live'
     };
   }
 
@@ -163,6 +166,7 @@ await writeFile(OUT_FILE, `${JSON.stringify(selected, null, 2)}\n`);
 console.log(JSON.stringify({
   status: 'READY',
   performance_status: performance?.status || 'explore',
+  performance_file: PERFORMANCE_FILE.pathname,
   policy_version: policy.version,
   trusted_market_traffic_types: policy.market_evidence.accepted_traffic_types,
   legacy_metrics: policy.market_evidence.legacy_metrics,
