@@ -1,0 +1,105 @@
+name: Forwelle YouTube HQ Analytics Probe
+
+on:
+  push:
+    branches: [forwelle-youtube-hq-20260903]
+    paths:
+      - 'automation/forwelle-production/youtube-hq-analytics.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Probe existing YouTube OAuth scopes and Analytics API
+        env:
+          YOUTUBE_CLIENT_ID: ${{ secrets.YOUTUBE_CLIENT_ID }}
+          YOUTUBE_CLIENT_SECRET: ${{ secrets.YOUTUBE_CLIENT_SECRET }}
+          YOUTUBE_REFRESH_TOKEN: ${{ secrets.YOUTUBE_REFRESH_TOKEN }}
+        run: |
+          set -euo pipefail
+          mkdir -p automation/forwelle-production/out/youtube-hq
+          python <<'PY'
+          import os, json, urllib.parse, urllib.request, urllib.error, datetime
+          out='automation/forwelle-production/out/youtube-hq'
+          required=['YOUTUBE_CLIENT_ID','YOUTUBE_CLIENT_SECRET','YOUTUBE_REFRESH_TOKEN']
+          missing=[k for k in required if not os.environ.get(k)]
+          if missing:
+              json.dump({'status':'MISSING_SECRET','missing':missing},open(out+'/probe.json','w'),indent=2)
+              raise SystemExit(0)
+
+          data=urllib.parse.urlencode({
+              'client_id':os.environ['YOUTUBE_CLIENT_ID'],
+              'client_secret':os.environ['YOUTUBE_CLIENT_SECRET'],
+              'refresh_token':os.environ['YOUTUBE_REFRESH_TOKEN'],
+              'grant_type':'refresh_token'
+          }).encode()
+          try:
+              req=urllib.request.Request('https://oauth2.googleapis.com/token',data=data,headers={'Content-Type':'application/x-www-form-urlencoded'})
+              with urllib.request.urlopen(req,timeout=30) as r: tok=json.load(r)
+          except Exception as e:
+              json.dump({'status':'TOKEN_REFRESH_FAILED','error':str(e)},open(out+'/probe.json','w'),indent=2)
+              raise SystemExit(0)
+          access=tok.get('access_token')
+          result={'status':'TOKEN_OK','analyticsReadable':False,'ctrReadable':False}
+          if not access:
+              result={'status':'NO_ACCESS_TOKEN'}
+              json.dump(result,open(out+'/probe.json','w'),indent=2); raise SystemExit(0)
+
+          try:
+              with urllib.request.urlopen('https://oauth2.googleapis.com/tokeninfo?access_token='+urllib.parse.quote(access),timeout=30) as r:
+                  ti=json.load(r)
+              result['scope']=ti.get('scope','')
+          except Exception as e:
+              result['scopeProbeError']=str(e)
+
+          end=datetime.date.today()
+          start=end-datetime.timedelta(days=28)
+          def get(url):
+              req=urllib.request.Request(url,headers={'Authorization':'Bearer '+access})
+              try:
+                  with urllib.request.urlopen(req,timeout=30) as r:
+                      return r.status,json.load(r)
+              except urllib.error.HTTPError as e:
+                  body=e.read().decode('utf-8','replace')[:4000]
+                  try: body=json.loads(body)
+                  except: pass
+                  return e.code,body
+              except Exception as e:
+                  return 0,{'error':str(e)}
+
+          base='https://youtubeanalytics.googleapis.com/v2/reports?'+urllib.parse.urlencode({
+              'ids':'channel==MINE',
+              'startDate':start.isoformat(),
+              'endDate':end.isoformat(),
+              'metrics':'views,estimatedMinutesWatched,averageViewDuration,subscribersGained,subscribersLost,likes,comments'
+          })
+          code,payload=get(base)
+          result['summaryHttp']=code
+          result['summary']=payload
+          result['analyticsReadable']=(code==200)
+
+          ctr='https://youtubeanalytics.googleapis.com/v2/reports?'+urllib.parse.urlencode({
+              'ids':'channel==MINE',
+              'startDate':start.isoformat(),
+              'endDate':end.isoformat(),
+              'metrics':'views,videoThumbnailImpressions,videoThumbnailImpressionsClickRate'
+          })
+          c2,p2=get(ctr)
+          result['ctrHttp']=c2
+          result['ctr']=p2
+          result['ctrReadable']=(c2==200)
+
+          json.dump(result,open(out+'/probe.json','w'),indent=2)
+          print(json.dumps({k:v for k,v in result.items() if k not in ('summary','ctr')},indent=2))
+          PY
+      - name: Upload probe evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-youtube-hq-analytics-probe
+          path: automation/forwelle-production/out/youtube-hq/probe.json
+          retention-days: 7
