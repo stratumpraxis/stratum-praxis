@@ -1,10 +1,10 @@
 [
   {
-    "id":"ai-saas-cost-pinterest-20260903-01",
+    "id":"workflow-reliability-pinterest-20260903-01",
     "active":true,
     "services":["pinterest"],
-    "text":"AI & SaaS Spend Review — Free Calculator for Renewal Decisions. Before renewing another AI or SaaS tool, make the monthly cost visible, choose how much spend to review, and test your own reducible-spend assumption. No invented savings claim and no signup required.",
-    "url":"https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=pinterest&utm_medium=organic_social&utm_campaign=ai_saas_cost_review&utm_content=pin_cost_review_20260903_01",
-    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/ai-saas-cost-instagram-20260827.png"
+    "text":"AI Workflow Reliability Checklist — 10 checks before you automate or scale. Review context, ownership, completion evidence, verification, bounded retries, fallback paths, approval boundaries, state, and evaluation loops. Free checklist; no signup required.",
+    "url":"https://stratumpraxis.com/prompt-store/workflow-reliability-checklist.html?utm_source=pinterest&utm_medium=organic_social&utm_campaign=workflow_reliability&utm_content=checklist_cover_20260903_01",
+    "imageUrl":"https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/pinterest/ai-workflow-checklist-v1-cover.png"
   }
 ]
