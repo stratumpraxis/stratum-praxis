@@ -1,0 +1,68 @@
+name: Autonomous Revenue Decision Loop
+
+on:
+  schedule:
+    # 08:30 / 13:30 / 19:30 JST
+    - cron: '30 23 * * *'
+    - cron: '30 4 * * *'
+    - cron: '30 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: autonomous-revenue-decision-loop
+  cancel-in-progress: false
+
+jobs:
+  revenue-loop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate autonomous controller code
+        run: |
+          set -euo pipefail
+          node --check acquisition/lib/portfolio-allocator.mjs
+          node --check acquisition/cli/portfolio-report.mjs
+          node -e "JSON.parse(require('fs').readFileSync('acquisition/portfolio-policy.json','utf8'))"
+          node --test 'acquisition/test/*.test.mjs'
+
+      - name: Re-run existing-asset and safety gates
+        run: |
+          set -euo pipefail
+          node acquisition/cli/verify-inventory.mjs
+          node acquisition/cli/queue-check.mjs
+          node acquisition/signal-intelligence/cli/ingest.mjs
+          node acquisition/signal-intelligence/cli/rank.mjs
+          node acquisition/signal-intelligence/cli/promote.mjs
+
+      - name: Build evidence-only revenue reports
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/stratum-revenue-loop
+          node acquisition/cli/daily-report.mjs --json > /tmp/stratum-revenue-loop/acquisition-report.json
+          node acquisition/cli/portfolio-report.mjs --json > /tmp/stratum-revenue-loop/portfolio-report.json
+          node acquisition/opportunity-engine/cli/value-network-report.mjs --json > /tmp/stratum-revenue-loop/value-network-report.json
+
+      - name: Print selected allocation decisions
+        run: node acquisition/cli/portfolio-report.mjs
+
+      - name: Upload audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-loop-${{ github.run_id }}
+          path: /tmp/stratum-revenue-loop
+          retention-days: 14
+
+      - name: Enforce autonomy boundary
+        run: |
+          set -euo pipefail
+          git diff --exit-code
+          echo 'Decision loop completed without repository writes, external publishing, billing changes, or production merges.'
