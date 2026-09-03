@@ -255,6 +255,57 @@
         ],
         "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/forwelle/2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal.mp4"
       }
+    },
+    "2026-09-03-gpt-6-astra-hn-49554643": {
+      "youtube": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-09-03T23:08:43.746Z",
+        "requestedAllowlist": [
+          "// Forwelle",
+          "Forwelle"
+        ],
+        "available": []
+      },
+      "tiktok": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-09-03T23:08:43.747Z",
+        "requestedAllowlist": [
+          "Forwelle",
+          "forwelle"
+        ],
+        "available": [
+          {
+            "id": "6a8e5d28ccaf649a671a13e7",
+            "name": "stratumpraxis",
+            "displayName": "stratumpraxis"
+          }
+        ]
+      },
+      "instagram": {
+        "status": "blocked-channel-allowlist",
+        "at": "2026-09-03T23:08:43.748Z",
+        "requestedAllowlist": [
+          "Forwelle",
+          "forwelle"
+        ],
+        "available": [
+          {
+            "id": "6a8e5b5accaf649a671a0cd9",
+            "name": "praxisstratum",
+            "displayName": "praxisstratum"
+          }
+        ]
+      },
+      "_state": {
+        "status": "blocked-no-eligible-channel",
+        "at": "2026-09-03T23:08:43.749Z",
+        "requestedServices": [
+          "youtube",
+          "tiktok",
+          "instagram"
+        ],
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/forwelle/2026-09-03-gpt-6-astra-hn-49554643.mp4"
+      }
     }
   }
 }

@@ -2,6 +2,80 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-09-03-gpt-6-astra-hn-49554643",
+      "candidateId": "hn:49554643",
+      "createdAt": "2026-09-03T23:07:23.933Z",
+      "recordedAt": "2026-09-03T23:08:43.794Z",
+      "title": "GPT-6 Astra",
+      "source": {
+        "name": "openai.com — first-party source",
+        "url": "https://openai.com/index/gpt-6-astra/",
+        "factSource": true,
+        "verified": true,
+        "published": "2026-09-03T18:41:05.000Z"
+      },
+      "outputFile": "media/forwelle/2026-09-03-gpt-6-astra-hn-49554643.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "structureProfile": {
+        "hookType": "concrete-change",
+        "hookText": "GPT-6 Astra",
+        "pacing": "five-scene-progressive",
+        "ctaType": "non-salesy-takeaway",
+        "visualStyle": "procedural-motion",
+        "sceneCount": 5,
+        "durationSeconds": 40
+      },
+      "strategy": {
+        "winningPatternLearning": {
+          "status": "BUILDING_DATASET",
+          "sampleCount": 0,
+          "targetCount": 10,
+          "briefUsed": false,
+          "editorialBrief": null
+        },
+        "rendering": {
+          "preferredFinalComposer": "remotion",
+          "currentOperatorRenderer": "procedural"
+        }
+      },
+      "assetCandidates": {
+        "moneyPrinterTurbo": {
+          "status": "SKIPPED_NOT_CONFIGURED",
+          "candidateOnly": true,
+          "promotedToPublication": false,
+          "provider": "MoneyPrinterTurbo",
+          "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal",
       "candidateId": "feed:github-ai-ml:signal",
       "createdAt": "2026-09-02T23:07:28.501Z",

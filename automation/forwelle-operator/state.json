@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49554643",
     "feed:github-ai-ml:signal",
     "hn:49525378",
     "feed:cloudflare-blog:signal",
@@ -9,8 +10,8 @@
   ],
   "lastScoutAt": "2026-09-03T23:07:23.832Z",
   "lastRun": {
-    "id": "2026-09-02-decoding-the-new-ai-lingo-loops-harnesses-squads-hill-c-ithub-ai-ml-signal",
-    "at": "2026-09-02T23:09:01.075Z",
+    "id": "2026-09-03-gpt-6-astra-hn-49554643",
+    "at": "2026-09-03T23:08:43.794Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
