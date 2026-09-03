@@ -1,0 +1,23 @@
+{
+  "creative_id": "forwelle_cross_agent_permission_drift_landscape_v1",
+  "owner_project": "Stratum",
+  "product_id": "prod_VA15eq5Gxy3Zzj",
+  "product_name": "Cross-Agent Operating Kit — Personal",
+  "price_usd": 69,
+  "target_customer": "Solo operators and small teams using multiple AI agents or coding-agent runtimes",
+  "pain": "Agent permissions, human gates, budgets, handoffs and stop rules drift across runtimes, leaving the operator as the coordination layer",
+  "desired_outcome": "One portable operating layer that keeps policy, control and migration rules consistent when agents or runtimes change",
+  "current_bottleneck": "Qualified Traffic",
+  "angle": "Contrarian + Risk Avoidance",
+  "hook": "Your agents can all be right, and the system can still fail.",
+  "primary_cta": "Get the Cross-Agent Operating Kit — Personal · $69",
+  "destination_url": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=forwelle&utm_medium=youtube_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v1&route_id=forwelle_youtube_permission_drift_v1_20260903",
+  "success_metric": "Purchase > Checkout > CTA Click > Qualified View",
+  "baseline_30d": {
+    "funnel_views_excluding_explicit_qa_sources": 14,
+    "primary_cta_clicks_excluding_explicit_qa_sources": 3,
+    "checkout_clicks_excluding_explicit_qa_sources": 1,
+    "stripe_completed_purchases_personal_payment_link": 0
+  },
+  "baseline_note": "Counts exclude events explicitly labeled identity_qa or codex_qa. Remaining events are not asserted to be unique customers without stronger identity evidence. Stripe is the purchase truth source."
+}
