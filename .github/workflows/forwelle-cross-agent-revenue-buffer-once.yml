@@ -1,0 +1,79 @@
+name: Forwelle Cross-Agent Revenue Buffer Once
+
+on:
+  push:
+    branches: [forwelle-cross-agent-revenue-20260903]
+    paths:
+      - 'campaigns/cross-agent-remotion/revenue-buffer.trigger'
+
+permissions:
+  contents: read
+
+jobs:
+  distribute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify stable public media URL
+        run: |
+          set -euo pipefail
+          MEDIA='https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4'
+          curl -fsSIL --max-time 30 "$MEDIA" | grep -qi 'content-type:.*video\|content-type:.*octet-stream'
+      - name: Publish only to Stratum TikTok and Instagram
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: |
+          node <<'NODE'
+          const API='https://api.buffer.com';
+          const key=process.env.BUFFER_API_KEY;
+          if(!key) throw new Error('Missing BUFFER_API_KEY');
+          async function gql(query){
+            const r=await fetch(API,{method:'POST',headers:{'Content-Type':'application/json',Authorization:`Bearer ${key}`},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            return j.data;
+          }
+          const orgs=(await gql('query { account { organizations { id name } } }')).account?.organizations||[];
+          if(orgs.length!==1) throw new Error(`Expected exactly one Buffer org; got ${orgs.length}`);
+          const org=orgs[0];
+          const channels=(await gql(`query { channels(input:{organizationId:${JSON.stringify(org.id)}}){id name displayName service isLocked isDisconnected isQueuePaused} }`)).channels||[];
+          const tiktok=channels.find(c=>String(c.service).toLowerCase()==='tiktok' && c.name==='stratumpraxis');
+          const instagram=channels.find(c=>String(c.service).toLowerCase()==='instagram' && c.name==='praxisstratum');
+          for(const [label,c] of [['TikTok',tiktok],['Instagram',instagram]]){
+            if(!c) throw new Error(`${label} Stratum channel missing`);
+            if(c.isLocked||c.isDisconnected) throw new Error(`${label} channel not publishable: ${JSON.stringify(c)}`);
+          }
+          const media='https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/cross-agent-permission-drift-v4.mp4';
+          const routes={
+            tiktok:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=tiktok&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v1&route_id=forwelle_tiktok_permission_drift_v1_20260903',
+            instagram:'https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=instagram&utm_medium=organic_video&utm_campaign=cross_agent_personal&utm_content=permission_drift_v1&route_id=forwelle_instagram_permission_drift_v1_20260903'
+          };
+          const esc=s=>JSON.stringify(s);
+          const textFor=(service)=>`Your AI agents can all be right — and the system can still fail.\n\nPermissions, human gates, budgets and stop rules can drift across runtimes. Fix the operating layer before adding another agent.\n\nCross-Agent Operating Kit — Personal · $69\n${routes[service]}\n\n#AIAgents #AIWorkflow #Automation #ClaudeCode #Codex #Cursor`;
+          const mutationFor=(channel,service)=>{
+            const metadata=service==='instagram'
+              ? `metadata:{instagram:{type:reel,shouldShareToFeed:true,isAiGenerated:true,link:${esc(routes.instagram)}}}`
+              : `metadata:{tiktok:{isAiGenerated:true}}`;
+            return `mutation { createPost(input:{text:${esc(textFor(service))},channelId:${esc(channel.id)},schedulingType:automatic,mode:shareNow,aiAssisted:true,assets:[{video:{url:${esc(media)},metadata:{thumbnailOffset:1800}}}],${metadata}}){... on PostActionSuccess{post{id text status sentAt dueAt channelId assets{id mimeType source}}} ... on MutationError{message}} }`;
+          };
+          const out={createdAt:new Date().toISOString(),creativeId:'forwelle_cross_agent_permission_drift_landscape_v1',sourceAsset:'cross-agent-permission-drift-v4.mp4',posts:{}};
+          for(const [service,c] of [['tiktok',tiktok],['instagram',instagram]]){
+            const d=await gql(mutationFor(c,service));
+            const result=d.createPost;
+            if(!result?.post) throw new Error(`${service} createPost failed: ${JSON.stringify(result)}`);
+            out.posts[service]={channel:{id:c.id,name:c.name,service:c.service},route:routes[service],post:result.post};
+            console.log(service,JSON.stringify(result.post));
+          }
+          require('fs').mkdirSync('campaigns/cross-agent-remotion/output',{recursive:true});
+          require('fs').writeFileSync('campaigns/cross-agent-remotion/output/forwelle-cross-agent-buffer-distribution.json',JSON.stringify(out,null,2)+'\n');
+          NODE
+      - name: Upload distribution evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: forwelle-cross-agent-buffer-distribution
+          path: campaigns/cross-agent-remotion/output/forwelle-cross-agent-buffer-distribution.json
+          retention-days: 30
