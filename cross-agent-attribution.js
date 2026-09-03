@@ -32,6 +32,22 @@
     });
   }
 
+  function getAttributionSource() {
+    const direct = String(params.get('utm_source') || '').trim().toLowerCase();
+    if (direct) return direct;
+    const attribution = window.scosAttribution;
+    if (attribution && typeof attribution === 'object') {
+      const stored = String(attribution.utm_source || '').trim().toLowerCase();
+      if (stored) return stored;
+    }
+    try {
+      const parsed = JSON.parse(sessionStorage.getItem(SESSION_KEY) || '{}');
+      return String(parsed.utm_source || '').trim().toLowerCase();
+    } catch (_) {
+      return '';
+    }
+  }
+
   function addCheckoutReassurance() {
     if (location.pathname !== '/cross-agent-operating-kit.html') return;
     const actions = document.querySelector('.hero .actions');
@@ -40,7 +56,11 @@
     const proof = document.createElement('div');
     proof.id = 'cross-agent-checkout-reassurance';
     proof.setAttribute('role', 'note');
-    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>';
+    const source = getAttributionSource();
+    const vectorNote = source === 'vector_praxis'
+      ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid #263248;color:#d8e2ef"><strong style="color:#f5f7fb">日本語圏からの方へ：</strong> Personal版は69ドルの買い切りです。自分のプロジェクトで使えるAGENTS.md、Claude / Codex / Cursor用アダプター、Human Gate、予算・再試行ガード、移行チェックリストを含みます。サブスクリプションではありません。決済確認後、購入者用アクセスへ進みます。</div>'
+      : '';
+    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>' + vectorNote;
     proof.style.marginTop = '14px';
     proof.style.padding = '14px 16px';
     proof.style.border = '1px solid #263248';
