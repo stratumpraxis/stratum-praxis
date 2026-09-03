@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "purpose": "Allocate Stratum Praxis attention toward measured commercial winners while keeping one-human operating burden bounded. This policy never invents revenue and never authorizes publishing, billing, deletion, or production merges.",
+  "human_touch_budget_minutes_per_cycle": 30,
+  "max_active_actions_per_cycle": 3,
+  "verdict_weight": {
+    "SCALE": 100,
+    "ITERATE": 55,
+    "INSUFFICIENT_DATA": 20,
+    "STOP": 0
+  },
+  "claim_multiplier": {
+    "EVIDENCE_BACKED": 1,
+    "PARTIALLY_OBSERVED": 0.7,
+    "UNOBSERVED_HYPOTHESIS": 0.25
+  },
+  "human_minutes_by_channel": {
+    "instagram": 5,
+    "tiktok": 5,
+    "youtube": 6,
+    "devto": 12,
+    "pinterest": 12,
+    "bluesky": 10,
+    "threads": 10,
+    "note": 15,
+    "line": 15,
+    "default": 10
+  },
+  "rules": {
+    "verified_purchase_is_strongest_signal": true,
+    "views_alone_never_scale": true,
+    "unattributed_routes_never_scale": true,
+    "existing_asset_before_new_product": true,
+    "prefer_low_human_burden_when_scores_are_close": true,
+    "stop_actions_do_not_receive_incremental_distribution": true,
+    "human_gate_required_for_external_publish_or_irreversible_change": true
+  }
+}
