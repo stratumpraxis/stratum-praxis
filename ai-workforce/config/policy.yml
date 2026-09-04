@@ -1,0 +1,37 @@
+mode: subordinate_execution
+strategy_owner: parent_project
+
+cost_policy:
+  default_external_cost: 0
+  paid_ai_default: false
+  require_parent_authorization_for_paid_ai: true
+
+execution_priority:
+  - deterministic_tools
+  - free_tier_services
+  - local_or_open_models
+  - paid_models_after_authorization
+
+friction_policy:
+  reject_if:
+    - high_kyc
+    - interview_required
+    - unclear_acceptance
+    - unlimited_revisions
+    - credential_custody
+    - unclear_liability
+
+qa_policy:
+  require_acceptance_tests: true
+  require_evidence: true
+  fail_closed: true
+
+parents:
+  stratum:
+    workers: [code, web, research]
+  vector:
+    workers: [web, data, research]
+  gwr:
+    workers: [research, data, code]
+  forwelle:
+    workers: [video, code, data]
