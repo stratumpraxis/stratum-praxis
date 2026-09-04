@@ -11,6 +11,7 @@ on:
     paths:
       - 'revenue-os/common-revenue-core-*.mjs'
       - '.github/workflows/common-revenue-core-production-loop-check.yml'
+  # Auto-merge dispatches this explicitly because GITHUB_TOKEN push events do not fan out.
   workflow_dispatch:
     inputs:
       live_read_only:
