@@ -1,0 +1,59 @@
+name: Common Revenue Core Ledger Check
+
+on:
+  pull_request:
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ledger-v0.mjs'
+      - 'revenue-os/common-revenue-core-ledger-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ledger-append.mjs'
+      - '.github/workflows/common-revenue-core-ledger-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ledger-v0.mjs'
+      - 'revenue-os/common-revenue-core-ledger-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ledger-append.mjs'
+      - '.github/workflows/common-revenue-core-ledger-check.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: common-revenue-core-ledger-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ledger-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax check
+        run: |
+          set -euo pipefail
+          node --check revenue-os/common-revenue-core-schema-v0.mjs
+          node --check revenue-os/common-revenue-core-ingestion-v0.mjs
+          node --check revenue-os/common-revenue-core-ledger-v0.mjs
+          node --check revenue-os/common-revenue-core-ledger-append.mjs
+
+      - name: Contract, ingestion and ledger tests
+        run: |
+          set -euo pipefail
+          node --test revenue-os/common-revenue-core-schema-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ingestion-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ledger-v0.test.mjs
