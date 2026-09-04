@@ -85,3 +85,51 @@ jobs:
           path: revenue-os/common-revenue-core-production-summary.runtime.json
           if-no-files-found: warn
           retention-days: 7
+
+  live-read-only-after-main:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Run sanitized live read-only verification when credentials exist
+        id: live
+        env:
+          POSTHOG_HOST: https://us.posthog.com
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID || '573335' }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          CRC_WINDOW_DAYS: '30'
+        run: |
+          set -euo pipefail
+          if [[ -z "${POSTHOG_PERSONAL_API_KEY:-}" || -z "${STRIPE_SECRET_KEY:-}" ]]; then
+            echo "Live provider verification skipped: one or more read credentials are not configured."
+            echo "produced=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          INGESTION="$RUNNER_TEMP/common-revenue-ingestion.json"
+          LEDGER="$RUNNER_TEMP/common-revenue-ledger.jsonl"
+          REPORT="$RUNNER_TEMP/common-revenue-production-report.json"
+          CRC_INGESTION_OUT="$INGESTION" node revenue-os/common-revenue-core-readonly-collector.mjs
+          CRC_INGESTION_FILE="$INGESTION" \
+          CRC_LEDGER_FILE="$LEDGER" \
+          CRC_PRODUCTION_REPORT="$REPORT" \
+          CRC_EXECUTION_MODE=DRY_RUN \
+          node revenue-os/common-revenue-core-production-loop-v0.mjs
+          cp "$REPORT" revenue-os/common-revenue-core-production-summary.runtime.json
+          rm -f "$INGESTION" "$LEDGER" "$LEDGER.lock"
+          echo "produced=true" >> "$GITHUB_OUTPUT"
+
+      - name: Upload sanitized main verification summary
+        if: steps.live.outputs.produced == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-revenue-core-main-verification-${{ github.run_id }}
+          path: revenue-os/common-revenue-core-production-summary.runtime.json
+          if-no-files-found: error
+          retention-days: 7
