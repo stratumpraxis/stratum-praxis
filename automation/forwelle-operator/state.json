@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49568506",
     "hn:49554643",
     "feed:github-ai-ml:signal",
     "hn:49525378",
@@ -10,8 +11,8 @@
   ],
   "lastScoutAt": "2026-09-04T23:07:46.109Z",
   "lastRun": {
-    "id": "2026-09-03-gpt-6-astra-hn-49554643",
-    "at": "2026-09-03T23:08:43.794Z",
+    "id": "2026-09-04-formalizing-fermat-s-last-theorem-hn-49568506",
+    "at": "2026-09-04T23:09:04.602Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }

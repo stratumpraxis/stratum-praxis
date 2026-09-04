@@ -1,9 +1,47 @@
 {
-  "at": "2026-09-04T23:07:46.212Z",
-  "status": "PLANNED",
+  "at": "2026-09-04T23:09:04.602Z",
+  "status": "ATTEMPTED_OR_BLOCKED",
   "manifestId": "2026-09-04-formalizing-fermat-s-last-theorem-hn-49568506",
-  "candidateId": "hn:49568506",
-  "usedAIEditor": false,
-  "winningPatternSamples": 0,
-  "winningPatternBriefUsed": false
+  "platforms": {
+    "youtube": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "tiktok": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "instagram": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    }
+  },
+  "structureProfile": {
+    "hookType": "concrete-change",
+    "hookText": "Formalizing Fermat's Last Theorem",
+    "pacing": "five-scene-progressive",
+    "ctaType": "non-salesy-takeaway",
+    "visualStyle": "procedural-motion",
+    "sceneCount": 5,
+    "durationSeconds": 40
+  },
+  "winningPatternLearning": {
+    "status": "BUILDING_DATASET",
+    "sampleCount": 0,
+    "targetCount": 10,
+    "briefUsed": false,
+    "editorialBrief": null
+  }
 }
