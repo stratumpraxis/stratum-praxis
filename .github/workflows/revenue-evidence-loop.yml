@@ -1,0 +1,70 @@
+name: Revenue Evidence Loop
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: revenue-evidence-loop
+  cancel-in-progress: true
+
+jobs:
+  evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate revenue automation syntax
+        run: |
+          node --check distribution/revenue-evidence-collector.mjs
+          node --check distribution/revenue-next-action.mjs
+          node --check distribution/revenue-winner-selector.mjs
+          node --check distribution/revenue-capability-gate.mjs
+          node -e "JSON.parse(require('fs').readFileSync('distribution/revenue-evidence-policy.json','utf8'))"
+          node -e "JSON.parse(require('fs').readFileSync('distribution/revenue-strike-queue.json','utf8'))"
+
+      - name: Collect trusted live revenue evidence
+        env:
+          POSTHOG_HOST: https://us.posthog.com
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID || '573335' }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          REVENUE_WINDOW_DAYS: '30'
+        run: node distribution/revenue-evidence-collector.mjs
+
+      - name: Generate autonomous next action
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
+        run: node distribution/revenue-next-action.mjs
+
+      - name: Select candidates from runtime evidence
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
+        run: node distribution/revenue-winner-selector.mjs
+
+      - name: Check connected brand capabilities
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
+          REVENUE_BRAND_CHANNEL_NAMES: stratumpraxis,praxisstratum
+        run: node distribution/revenue-capability-gate.mjs
+
+      - name: Upload revenue decision evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-evidence-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 14
+          path: |
+            distribution/revenue-performance.runtime.json
+            distribution/revenue-next-action.json
+            distribution/revenue-strike-selected.json
+            distribution/revenue-dispatch-plan.json
