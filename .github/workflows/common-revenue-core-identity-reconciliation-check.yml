@@ -1,0 +1,35 @@
+name: Common Revenue Core Identity Reconciliation Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'revenue-os/common-revenue-core-ingestion-v0.mjs'
+      - 'revenue-os/common-revenue-core-identity-reconciliation-v0.mjs'
+      - 'revenue-os/common-revenue-core-identity-reconciliation-v0.test.mjs'
+      - '.github/workflows/common-revenue-core-identity-reconciliation-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  identity-reconciliation-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Syntax check
+        run: |
+          node --check revenue-os/common-revenue-core-ingestion-v0.mjs
+          node --check revenue-os/common-revenue-core-identity-reconciliation-v0.mjs
+          node --check revenue-os/common-revenue-core-identity-reconciliation-v0.test.mjs
+      - name: Contract, ingestion, ledger, identity and reconciliation tests
+        run: |
+          node --test revenue-os/common-revenue-core-schema-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ingestion-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ledger-v0.test.mjs
+          node --test revenue-os/common-revenue-core-identity-reconciliation-v0.test.mjs
