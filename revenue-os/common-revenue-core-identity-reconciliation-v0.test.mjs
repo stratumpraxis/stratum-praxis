@@ -29,7 +29,7 @@ function syncedEvent(overrides = {}) {
     provider: overrides.provider || 'stripe',
     provider_object_type: overrides.provider_object_type || 'checkout_session',
     provider_transaction_id: overrides.provider_transaction_id || 'cs_default',
-    provider_customer_id: overrides.provider_customer_id ?? 'cus_provider_1',
+    provider_customer_id: Object.prototype.hasOwnProperty.call(overrides, 'provider_customer_id') ? overrides.provider_customer_id : 'cus_provider_1',
     provider_links: overrides.provider_links || {},
     transaction_id: overrides.transaction_id ?? null,
     customer_id: overrides.customer_id ?? null,
