@@ -1,0 +1,40 @@
+name: Common Revenue Core Safe Execution Check
+
+on:
+  pull_request:
+    paths:
+      - 'revenue-os/common-revenue-core-*.mjs'
+      - '.github/workflows/common-revenue-core-safe-execution-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/common-revenue-core-*.mjs'
+      - '.github/workflows/common-revenue-core-safe-execution-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  safe-execution-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: |
+          node --check revenue-os/common-revenue-core-safe-execution-v0.mjs
+          node --check revenue-os/common-revenue-core-safe-execution-v0.test.mjs
+      - name: Contract through safe execution tests
+        run: |
+          set -euo pipefail
+          node --test revenue-os/common-revenue-core-schema-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ingestion-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ledger-v0.test.mjs
+          node --test revenue-os/common-revenue-core-identity-reconciliation-v0.test.mjs
+          node --test revenue-os/common-revenue-core-economics-v0.test.mjs
+          node --test revenue-os/common-revenue-core-decision-evidence-v0.test.mjs
+          node --test revenue-os/common-revenue-core-allocator-nba-v0.test.mjs
+          node --test revenue-os/common-revenue-core-safe-execution-v0.test.mjs
