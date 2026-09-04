@@ -1,5 +1,5 @@
 import { createHash } from 'node:crypto';
-import { appendFile, mkdir, readFile } from 'node:fs/promises';
+import { appendFile, mkdir, open, readFile, rm } from 'node:fs/promises';
 import { dirname } from 'node:path';
 import { decidePortfolio } from './common-revenue-core-allocator-nba-v0.mjs';
 import { classifyPermission, executeSafeAction } from './common-revenue-core-safe-execution-v0.mjs';
@@ -19,6 +19,26 @@ function actionFingerprint(action) {
   const copy = { ...(action || {}) };
   delete copy.requested_at;
   return hash(stableStringify(copy));
+}
+async function sleep(ms) { await new Promise((resolve) => setTimeout(resolve, ms)); }
+
+async function acquireJournalLock(lockFile, retries = 5, delayMs = 50) {
+  for (let attempt = 0; attempt <= retries; attempt += 1) {
+    try {
+      const handle = await open(lockFile, 'wx');
+      await handle.writeFile(`${process.pid}\n${new Date().toISOString()}\n`, 'utf8');
+      return handle;
+    } catch (error) {
+      if (error?.code !== 'EEXIST') throw error;
+      if (attempt === retries) throw Object.assign(new Error('action journal lock unavailable'), { code: 'ACTION_JOURNAL_LOCKED' });
+      await sleep(delayMs);
+    }
+  }
+  throw Object.assign(new Error('action journal lock unavailable'), { code: 'ACTION_JOURNAL_LOCKED' });
+}
+async function releaseJournalLock(handle, lockFile) {
+  try { await handle?.close(); } catch {}
+  try { await rm(lockFile, { force: true }); } catch {}
 }
 
 export async function readActionJournal(file = DEFAULT_ACTION_JOURNAL) {
@@ -64,43 +84,54 @@ export async function executeWithJournal(action, {
   approval = null,
   dry_run = false,
   max_attempts = 2,
+  lock_retries = 5,
+  lock_delay_ms = 50,
   now = () => new Date().toISOString()
 } = {}) {
-  const rows = await readActionJournal(journal_file);
-  const actionId = text(action?.action_id);
-  const fingerprint = actionFingerprint(action);
-  const prior = previousForAction(rows, actionId);
-  if (prior) {
-    if (prior.action_fingerprint !== fingerprint) {
-      return Object.freeze({ status: 'BLOCKED', reason: 'ACTION_ID_FINGERPRINT_CONFLICT', prior });
+  await mkdir(dirname(journal_file), { recursive: true });
+  const lockFile = `${journal_file}.lock`;
+  const lockHandle = await acquireJournalLock(lockFile, lock_retries, lock_delay_ms);
+  try {
+    const rows = await readActionJournal(journal_file);
+    const actionId = text(action?.action_id);
+    const fingerprint = actionFingerprint(action);
+    const prior = previousForAction(rows, actionId);
+    if (prior) {
+      if (prior.action_fingerprint !== fingerprint) {
+        return Object.freeze({ status: 'BLOCKED', reason: 'ACTION_ID_FINGERPRINT_CONFLICT', prior, attempts: 0 });
+      }
+      if (prior.status === 'EXECUTED' || prior.status === 'SKIPPED') {
+        return Object.freeze({ status: 'REPLAY_NOOP', prior, attempts: 0 });
+      }
     }
-    if (prior.status === 'EXECUTED' || prior.status === 'SKIPPED') {
-      return Object.freeze({ status: 'REPLAY_NOOP', prior });
-    }
-  }
 
-  const permission = classifyPermission(action, policy);
-  const attemptsAllowed = retryAllowed(action, permission, policy) ? Math.max(1, Math.min(3, Number(max_attempts) || 1)) : 1;
-  let result = null;
-  for (let attempt = 1; attempt <= attemptsAllowed; attempt += 1) {
-    result = await executeSafeAction(action, { adapters, policy, approval, dry_run, now });
-    const record = {
-      resilience_version: RESILIENCE_VERSION,
-      action_id: actionId,
-      action_fingerprint: fingerprint,
-      attempt,
-      permission_level: result.permission?.level || permission.level,
-      status: result.receipt?.status || result.status,
-      result_status: result.status,
-      executed_at: result.receipt?.executed_at || now(),
-      evidence_ref: result.receipt?.evidence_ref || [],
-      result_summary: result.receipt?.result_summary || null,
-      error_code: result.error_code || null
-    };
-    await appendActionJournal(record, journal_file);
-    if (!retryableFailure(result) || attempt === attemptsAllowed) break;
+    const permission = classifyPermission(action, policy);
+    const attemptsAllowed = retryAllowed(action, permission, policy) ? Math.max(1, Math.min(3, Number(max_attempts) || 1)) : 1;
+    let result = null;
+    let attempts = 0;
+    for (let attempt = 1; attempt <= attemptsAllowed; attempt += 1) {
+      attempts = attempt;
+      result = await executeSafeAction(action, { adapters, policy, approval, dry_run, now });
+      const record = {
+        resilience_version: RESILIENCE_VERSION,
+        action_id: actionId,
+        action_fingerprint: fingerprint,
+        attempt,
+        permission_level: result.permission?.level || permission.level,
+        status: result.receipt?.status || result.status,
+        result_status: result.status,
+        executed_at: result.receipt?.executed_at || now(),
+        evidence_ref: result.receipt?.evidence_ref || [],
+        result_summary: result.receipt?.result_summary || null,
+        error_code: result.error_code || null
+      };
+      await appendActionJournal(record, journal_file);
+      if (!retryableFailure(result) || attempt === attemptsAllowed) break;
+    }
+    return Object.freeze({ ...result, attempts });
+  } finally {
+    await releaseJournalLock(lockHandle, lockFile);
   }
-  return Object.freeze({ ...result, attempts: attemptsAllowed });
 }
 
 export function selectAdapterRoute(action, {
