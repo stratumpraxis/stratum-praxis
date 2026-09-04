@@ -241,6 +241,37 @@ function stripeIsExcluded(record = {}) {
   return false;
 }
 
+function stripeObjectType(sourceEventName) {
+  if (sourceEventName.includes('checkout.session')) return 'checkout_session';
+  if (sourceEventName.includes('payment_intent')) return 'payment_intent';
+  if (sourceEventName.includes('charge')) return 'charge';
+  if (sourceEventName.includes('refund')) return 'refund';
+  return 'object';
+}
+
+function stripeProviderLinks(record = {}, sourceEventName = '') {
+  const links = {};
+  if (sourceEventName.includes('checkout.session')) {
+    const paymentIntentId = typeof record.payment_intent === 'string' ? record.payment_intent : text(record?.payment_intent?.id);
+    const subscriptionId = typeof record.subscription === 'string' ? record.subscription : text(record?.subscription?.id);
+    if (paymentIntentId) links.payment_intent = paymentIntentId;
+    if (subscriptionId) links.subscription = subscriptionId;
+  }
+  if (sourceEventName.includes('payment_intent')) {
+    const latestChargeId = typeof record.latest_charge === 'string' ? record.latest_charge : text(record?.latest_charge?.id);
+    if (latestChargeId) links.charge = latestChargeId;
+  }
+  return Object.freeze(links);
+}
+
+function normalizedAmountMinor(record = {}) {
+  for (const value of [record.amount_total, record.amount_received, record.amount]) {
+    const numeric = Number(value);
+    if (Number.isFinite(numeric)) return numeric;
+  }
+  return null;
+}
+
 function makeStripeEvent(record, eventType, sourceEventName, { fallback_business_unit = 'stratum' } = {}) {
   const { metadata, routeId, context } = stripeContext(record);
   const sourceEventId = text(record?.id);
@@ -248,6 +279,7 @@ function makeStripeEvent(record, eventType, sourceEventName, { fallback_business
   const resolvedBusinessUnit = inferBusinessUnit(context, fallback_business_unit);
   const providerCustomerId = typeof record?.customer === 'string' ? record.customer : text(record?.customer?.id);
   const evidenceRef = `stripe:${sourceEventName}:${sourceEventId}`;
+  const amountMinor = normalizedAmountMinor(record);
 
   const event = {
     event_id: deterministicEventId({ source: 'stripe', source_event_id: sourceEventId, event_type: eventType, timestamp }),
@@ -262,8 +294,10 @@ function makeStripeEvent(record, eventType, sourceEventName, { fallback_business
     attribution_state: routeId ? 'ATTRIBUTED' : 'UNVERIFIED',
     sync_status: 'PENDING_SYNC',
     provider: 'stripe',
+    provider_object_type: stripeObjectType(sourceEventName),
     provider_transaction_id: sourceEventId,
     provider_customer_id: providerCustomerId || null,
+    provider_links: stripeProviderLinks(record, sourceEventName),
     source_url: firstText(record?.url, record?.success_url) || null,
     transaction_id: null,
     customer_id: null,
@@ -277,6 +311,7 @@ function makeStripeEvent(record, eventType, sourceEventName, { fallback_business
     cta_id: text(metadata.cta_id) || null,
     client_reference_id: text(record?.client_reference_id) || null,
     currency: text(record?.currency).toLowerCase() || null,
+    amount_minor: amountMinor,
     amount_total: Number.isFinite(Number(record?.amount_total)) ? Number(record.amount_total) : null
   };
 
