@@ -79,13 +79,58 @@ jobs:
           cp "$REPORT" revenue-os/common-revenue-core-production-summary.runtime.json
           rm -f "$INGESTION" "$LEDGER" "$LEDGER.lock"
 
+      - name: Prepare sanitized blocker summary
+        if: failure() && github.event_name == 'workflow_dispatch' && inputs.live_read_only == true
+        env:
+          SUMMARY_FILE: revenue-os/common-revenue-core-production-summary.runtime.json
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFile, writeFile } from 'node:fs/promises';
+
+          let ingestion = null;
+          try {
+            ingestion = JSON.parse(await readFile(`${process.env.RUNNER_TEMP}/common-revenue-ingestion.json`, 'utf8'));
+          } catch {
+            ingestion = null;
+          }
+
+          const providerStatus = {};
+          for (const provider of ['posthog', 'stripe']) {
+            const source = ingestion?.source_status?.[provider] || null;
+            providerStatus[provider] = {
+              status: source?.status || 'BLOCKED',
+              error_code: source?.error_code || 'PROVIDER_UNAVAILABLE'
+            };
+          }
+
+          const summary = {
+            status: 'BLOCKED',
+            execution_mode: 'DRY_RUN',
+            live_provider_read_verified: false,
+            provider_status: providerStatus,
+            counts: {
+              accepted: Number(ingestion?.counts?.accepted || 0),
+              ignored: Number(ingestion?.counts?.ignored || 0),
+              invalid: Number(ingestion?.counts?.invalid || 0)
+            },
+            raw_data_retained: false
+          };
+
+          await writeFile(process.env.SUMMARY_FILE, `${JSON.stringify(summary, null, 2)}\n`, 'utf8');
+          NODE
+          rm -f "$RUNNER_TEMP/common-revenue-ingestion.json" \
+                "$RUNNER_TEMP/common-revenue-ledger.jsonl" \
+                "$RUNNER_TEMP/common-revenue-ledger.jsonl.lock" \
+                "$RUNNER_TEMP/common-revenue-production-report.json"
+
       - name: Upload sanitized live verification summary
         if: always() && github.event_name == 'workflow_dispatch' && inputs.live_read_only == true
         uses: actions/upload-artifact@v4
         with:
           name: common-revenue-core-production-summary-${{ github.run_id }}
           path: revenue-os/common-revenue-core-production-summary.runtime.json
-          if-no-files-found: warn
+          if-no-files-found: error
           retention-days: 7
 
   live-read-only-after-main:
