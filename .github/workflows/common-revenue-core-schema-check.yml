@@ -1,0 +1,33 @@
+name: Common Revenue Core Schema Check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - '.github/workflows/common-revenue-core-schema-check.yml'
+  pull_request:
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - '.github/workflows/common-revenue-core-schema-check.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  schema-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check revenue-os/common-revenue-core-schema-v0.mjs
+      - name: Contract compatibility tests
+        run: node --test revenue-os/common-revenue-core-schema-v0.test.mjs
