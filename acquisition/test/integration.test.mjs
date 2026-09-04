@@ -104,13 +104,18 @@ test('the daily report surfaces the paused-checkout gap it discovered', async ()
   assert.equal(gap.destination_type, 'PAUSED');
 });
 
-test('the queue check blocks the item that collides with the live distribution lane', async () => {
+test('the queue check reflects current external lanes without inventing collisions', async () => {
   const { stdout } = await run(node, ['acquisition/cli/queue-check.mjs', '--json'], { cwd: REPO_ROOT });
   const report = JSON.parse(stdout);
-  const blocked = report.items.filter((i) => !i.safety_ok);
-  assert.equal(blocked.length, 1);
-  assert.equal(blocked[0].queue_id, 'ai-saas-waste-calculator-instagram-v1');
-  assert.ok(blocked[0].cross_lane_collisions.length > 0);
+  assert.equal(report.items.length, 2);
+  for (const item of report.items) {
+    assert.equal(item.safety_ok, item.blocks.length === 0,
+      `${item.queue_id} safety_ok must be derived from the blocks that exist now`);
+    if (item.cross_lane_collisions.length > 0) {
+      assert.equal(item.safety_ok, false, `${item.queue_id} has a collision but was reported safe`);
+      assert.ok(item.blocks.some((block) => block.includes('do not queue another payload')));
+    }
+  }
 });
 
 test('concurrent evaluations are independent and deterministic', async () => {

@@ -165,21 +165,22 @@ test('a paused-checkout destination produces a warning, not a silent pass', () =
   assert.ok(verdict.warnings.some((w) => w.includes('paused checkout')));
 });
 
-test('cross-lane collisions with the existing distribution lanes are detected', async () => {
+test('cross-lane collisions are detected deterministically', async () => {
   const queue = await loadQueue();
-  const launchNow = await readJson('distribution/launch-now.json');
-  const inFlight = launchNow.flatMap((item) =>
-    (item.services || []).map((service) => ({
-      lane: 'distribution/launch-now.json',
-      platform: service,
-      destination_url: item.url,
-      campaign: new URL(item.url).searchParams.get('utm_campaign'),
-      state: 'SCHEDULED'
-    })));
+  const item = queue.items.find((candidate) => candidate.queue_id === 'ai-saas-waste-calculator-instagram-v1');
+  assert.ok(item, 'expected the seeded acquisition queue item');
+  const inFlight = [{
+    lane: 'fixture/external-lane',
+    platform: item.platform,
+    destination_url: item.destination_url,
+    campaign: item.utm_parameters.utm_campaign,
+    state: 'SCHEDULED'
+  }];
 
   const collisions = checkExternalLaneCollisions(queue.items, inFlight);
-  assert.ok(collisions.length > 0, 'the seeded Instagram item collides with the in-flight launch-now run');
-  assert.equal(collisions[0].lane, 'distribution/launch-now.json');
+  assert.equal(collisions.length, 1);
+  assert.equal(collisions[0].queue_id, item.queue_id);
+  assert.equal(collisions[0].lane, 'fixture/external-lane');
   assert.match(collisions[0].reason, /do not queue another payload/);
 });
 

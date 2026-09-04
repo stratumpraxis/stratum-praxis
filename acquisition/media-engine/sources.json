@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-30",
+  "updated_at": "2026-09-03",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -99,7 +99,7 @@
       "source_type": "OWNER_APPROVED_SOURCE",
       "title": "AI agent companies need control boundaries before they need more agents",
       "language": "en",
-      "content_hash": "sha256:52306f9e228557ad9b8a82989481daeca1d8f0b1ae99b48d0c8fc792344f3056",
+      "content_hash": "sha256:b0672e9147182943a33f01eb1522d123b6642d3a84227c0a61b2eeac93b7704a",
       "source_file": "acquisition/media-engine/agent-company-control-source.md",
       "source_url": "https://stratumpraxis.com/paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html",
       "created_at": "2026-08-30T00:00:00Z",
@@ -127,7 +127,7 @@
         {"role": "SECONDARY", "asset_id": "agent-control-auditor", "url": "https://stratumpraxis.com/agent-control-auditor.html", "cta": "Audit your agent-control design"}
       ],
       "excerpt": "More agents do not merely add capacity. They multiply permissions, handoffs, context boundaries and failure paths. The operating question is therefore not how many agents a system can run, but how clearly it can constrain, observe and stop them.",
-      "notes": "Owner-approved derivative source package created from the premium research thesis without exposing paid article text. The autonomous writer may create standalone public articles from these claims and route a relevant CTA to the paid insight."
+      "notes": "Owner-approved derivative source package created from the premium research thesis without exposing paid article text. The source file is byte-for-byte unchanged since commit 5d90e9a4a0713b29a31d361e3bd8472508655ec4; on 2026-09-03 the stored hash metadata was corrected to the digest recomputed by lib/source.mjs. This is a provenance-metadata correction, not a source-content edit. The autonomous writer may create standalone public articles from these claims and route a relevant CTA to the paid insight."
     }
   ]
 }
