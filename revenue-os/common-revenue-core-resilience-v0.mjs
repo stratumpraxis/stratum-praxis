@@ -95,18 +95,25 @@ export async function executeWithJournal(action, {
     const rows = await readActionJournal(journal_file);
     const actionId = text(action?.action_id);
     const fingerprint = actionFingerprint(action);
+    const permission = classifyPermission(action, policy);
+    const idempotentRetry = retryAllowed(action, permission, policy);
     const prior = previousForAction(rows, actionId);
     if (prior) {
       if (prior.action_fingerprint !== fingerprint) {
         return Object.freeze({ status: 'BLOCKED', reason: 'ACTION_ID_FINGERPRINT_CONFLICT', prior, attempts: 0 });
       }
-      if (prior.status === 'EXECUTED' || prior.status === 'SKIPPED') {
+      if (prior.status === 'EXECUTED') {
         return Object.freeze({ status: 'REPLAY_NOOP', prior, attempts: 0 });
+      }
+      if (prior.status === 'SKIPPED' && (prior.dry_run !== true || dry_run === true)) {
+        return Object.freeze({ status: 'REPLAY_NOOP', prior, attempts: 0 });
+      }
+      if (prior.status === 'FAILED' && permission.level !== 'AUTO' && !idempotentRetry) {
+        return Object.freeze({ status: 'BLOCKED', reason: 'PRIOR_AMBIGUOUS_FAILURE_REQUIRES_RECONCILIATION', prior, attempts: 0 });
       }
     }
 
-    const permission = classifyPermission(action, policy);
-    const attemptsAllowed = retryAllowed(action, permission, policy) ? Math.max(1, Math.min(3, Number(max_attempts) || 1)) : 1;
+    const attemptsAllowed = idempotentRetry ? Math.max(1, Math.min(3, Number(max_attempts) || 1)) : 1;
     let result = null;
     let attempts = 0;
     for (let attempt = 1; attempt <= attemptsAllowed; attempt += 1) {
@@ -120,6 +127,7 @@ export async function executeWithJournal(action, {
         permission_level: result.permission?.level || permission.level,
         status: result.receipt?.status || result.status,
         result_status: result.status,
+        dry_run: result.receipt?.dry_run === true,
         executed_at: result.receipt?.executed_at || now(),
         evidence_ref: result.receipt?.evidence_ref || [],
         result_summary: result.receipt?.result_summary || null,
