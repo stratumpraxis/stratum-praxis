@@ -37,6 +37,11 @@ export const HUMAN_GATE_ACTIONS = Object.freeze(new Set([
 function text(value) { return typeof value === 'string' ? value.trim() : ''; }
 function hash(value) { return createHash('sha256').update(String(value)).digest('hex').slice(0, 24); }
 function nowIso(now) { return typeof now === 'function' ? now() : new Date().toISOString(); }
+function optionalSafeInteger(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
+  return Number.isSafeInteger(number) ? number : null;
+}
 
 function normalizedAction(input = {}) {
   return Object.freeze({
@@ -51,8 +56,8 @@ function normalizedAction(input = {}) {
     cta_id: text(input.cta_id) || null,
     payload: input.payload && typeof input.payload === 'object' && !Array.isArray(input.payload) ? input.payload : {},
     requested_at: text(input.requested_at) || null,
-    expected_external_writes: Number.isSafeInteger(Number(input.expected_external_writes)) ? Number(input.expected_external_writes) : null,
-    expected_cost_minor: Number.isSafeInteger(Number(input.expected_cost_minor)) ? Number(input.expected_cost_minor) : null,
+    expected_external_writes: optionalSafeInteger(input.expected_external_writes),
+    expected_cost_minor: optionalSafeInteger(input.expected_cost_minor),
     currency: text(input.currency) || null
   });
 }
