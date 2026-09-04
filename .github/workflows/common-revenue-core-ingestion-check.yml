@@ -1,0 +1,78 @@
+name: Common Revenue Core Ingestion Check
+
+on:
+  pull_request:
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-readonly-collector.mjs'
+      - '.github/workflows/common-revenue-core-ingestion-check.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/common-revenue-core-contract-v0.md'
+      - 'revenue-os/common-revenue-core-schema-v0.mjs'
+      - 'revenue-os/common-revenue-core-schema-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.mjs'
+      - 'revenue-os/common-revenue-core-ingestion-v0.test.mjs'
+      - 'revenue-os/common-revenue-core-readonly-collector.mjs'
+      - '.github/workflows/common-revenue-core-ingestion-check.yml'
+  workflow_dispatch:
+    inputs:
+      live_read_only:
+        description: 'Run read-only PostHog + Stripe collection and upload the runtime artifact'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: common-revenue-core-ingestion-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  ingestion-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Syntax check
+        run: |
+          set -euo pipefail
+          node --check revenue-os/common-revenue-core-schema-v0.mjs
+          node --check revenue-os/common-revenue-core-ingestion-v0.mjs
+          node --check revenue-os/common-revenue-core-readonly-collector.mjs
+
+      - name: Contract and ingestion tests
+        run: |
+          set -euo pipefail
+          node --test revenue-os/common-revenue-core-schema-v0.test.mjs
+          node --test revenue-os/common-revenue-core-ingestion-v0.test.mjs
+
+      - name: Live read-only collection
+        if: github.event_name == 'workflow_dispatch' && inputs.live_read_only == true
+        env:
+          POSTHOG_HOST: https://us.posthog.com
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID || '573335' }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          CRC_WINDOW_DAYS: '30'
+        run: node revenue-os/common-revenue-core-readonly-collector.mjs
+
+      - name: Upload live ingestion evidence
+        if: always() && github.event_name == 'workflow_dispatch' && inputs.live_read_only == true
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-revenue-core-ingestion-${{ github.run_id }}
+          path: revenue-os/common-revenue-core-ingestion.runtime.json
+          if-no-files-found: warn
+          retention-days: 14
