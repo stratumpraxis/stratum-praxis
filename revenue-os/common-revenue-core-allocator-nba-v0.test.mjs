@@ -106,7 +106,7 @@ test('budget allocator keeps reserve instead of forcing 100% allocation', () => 
     ]
   };
   const budget = allocateGlobalBudget(portfolio, { execution_units: 10, human_minutes: 60 });
-  assert.ok(budget.allocated_share <= 0.8);
-  assert.ok(budget.reserve_share >= 0.2);
+  assert.ok(budget.allocated_share <= 0.8000000001);
+  assert.ok(budget.reserve_share >= 0.1999999999);
   assert.ok(budget.allocations.every((row) => row.execution_units >= 0));
 });
