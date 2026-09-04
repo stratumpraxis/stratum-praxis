@@ -5,6 +5,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
 
 permissions:
+  actions: write
   contents: write
   pull-requests: write
   checks: read
@@ -23,6 +24,24 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
+      - name: Detect Common Revenue Core PR
+        id: crc
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          files="$(gh api --paginate "repos/$REPO/pulls/$PR_NUMBER/files?per_page=100" --jq '.[].filename')"
+          if grep -Eq '^(revenue-os/common-revenue-core-.*\.mjs|\.github/workflows/common-revenue-core-production-loop-check\.yml)$' <<<"$files"; then
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            echo "Common Revenue Core change detected."
+          else
+            echo "relevant=false" >> "$GITHUB_OUTPUT"
+            echo "No Common Revenue Core change detected."
+          fi
+
       - name: Wait for other PR checks
         env:
           GH_TOKEN: ${{ github.token }}
@@ -64,3 +83,16 @@ jobs:
         run: |
           set -euo pipefail
           gh pr merge "$PR_URL" --squash --delete-branch
+
+      - name: Dispatch Common Revenue Core live read-only verification
+        if: steps.crc.outputs.relevant == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh workflow run common-revenue-core-production-loop-check.yml \
+            --repo "$REPO" \
+            --ref main \
+            -f live_read_only=true
