@@ -79,8 +79,7 @@ export function decisionToSafeAction(decision, { requested_at = new Date().toISO
       decision_id: decision.decision_id,
       decision: decision.decision,
       recommendation: decision.next_best_action,
-      bottleneck: decision.max_bottleneck,
-      evidence_ref: decision.evidence_ref || []
+      bottleneck: decision.max_bottleneck
     }
   };
 
@@ -137,7 +136,6 @@ export async function runProductionRevenueLoop({
   let audit = auditCanonicalLedger(events);
   if (!audit.ok) throw Object.assign(new Error('ledger integrity failed after ingestion append'), { code: 'CORE_UNAVAILABLE', details: audit.errors });
 
-  const economicsBefore = rollupCanonicalEconomics(events);
   const portfolioBefore = decidePortfolio(events, { generated_at });
   const budgetBefore = allocateGlobalBudget(portfolioBefore, { execution_units: 1 });
   const selectedDecision = selectDecision(portfolioBefore, budgetBefore);
