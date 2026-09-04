@@ -5,6 +5,7 @@ on:
     paths:
       - 'revenue-os/common-revenue-core-*.mjs'
       - '.github/workflows/common-revenue-core-production-loop-check.yml'
+      - '.github/workflows/auto-merge-internal-prs.yml'
   push:
     branches: [main]
     paths:
