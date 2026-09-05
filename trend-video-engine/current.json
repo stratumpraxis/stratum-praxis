@@ -1,24 +1,23 @@
 {
-  "id": "2026-08-27-physical-ai-control-instagram-v6",
-  "createdAt": "2026-08-27T20:20:00+09:00",
-  "brandLane": "stratum-en",
-  "platformVariant": "instagram-reel-discovery",
-  "title": "AI Agents Are Leaving the Screen",
-  "topic": "Anthropic's Model Hardware Standard research preview shows AI agents moving from software-only workflows toward controlled interaction with programmable physical equipment",
+  "id": "2026-09-05-workflow-audit-499-instagram-v1",
+  "createdAt": "2026-09-05T12:00:00+09:00",
+  "brandLane": "stratum-praxis-en",
+  "platformVariant": "instagram-reel-revenue",
+  "title": "Automate the Right Workflow First",
+  "topic": "Why founders and operations leaders should identify and rank workflow automation opportunities before buying or implementing more AI tools",
   "language": "en",
-  "summary": "A short original explainer on why physical AI makes permissions, limits and stop conditions more important, not less.",
-  "outputFile": "media/trend-videos/2026-08-27-physical-ai-control-instagram-v6.mp4",
-  "scores": {"freshness":10,"businessDemand":9,"crossPlatformPotential":9,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":9,"total":57,"max":60},
+  "summary": "A short problem-first B2B video routing qualified automation buyers to the fixed-scope $499 AI Workflow Opportunity Audit.",
+  "outputFile": "media/trend-videos/2026-09-05-workflow-audit-499-instagram-v1.mp4",
+  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":10,"total":59,"max":60},
   "sources": [
-    {"name":"Model Hardware Standard — official project site","url":"https://modelhardwarestandard.com/","factSource":true,"verified":true,"published":"2026-08-27"},
-    {"name":"Anthropic — UST is bringing Claude to physical AI","url":"https://www.anthropic.com/news/ust-claude","factSource":true,"verified":true,"published":"2026-07-09"}
+    {"name":"Stratum Praxis — AI Workflow Opportunity Audit","url":"https://stratumpraxis.com/workflow-audit.html","factSource":true,"verified":true,"published":"2026-09-05"}
   ],
   "thirdPartyAssets": [],
   "originality": {
     "creatorSignals":[
-      "original thesis: physical AI turns software permission design into real-world boundary design",
-      "original three-layer framework: capability + boundary + stop condition",
-      "original procedural device-network motion sequence without third-party visuals"
+      "original problem-first thesis: choose the workflow before choosing the automation",
+      "original workflow-map to ROI-risk ranking sequence",
+      "original procedural graphics with no third-party media"
     ],
     "notReusedCompilation":true,
     "notTemplateVariant":true
@@ -29,21 +28,21 @@
     "originalityVerified":true,
     "realPersonLikeness":false,
     "copyrightedMedia":false,
-    "categories":["ai","agents","automation","operations","governance"],
-    "notes":"Original procedural graphics only. No logos, screenshots, people, copyrighted footage, brand artwork or third-party music. General operational analysis only; not safety-engineering, legal, compliance, medical or financial advice."
+    "categories":["ai","automation","operations","workflow","small-business"],
+    "notes":"Original procedural graphics only. No testimonials, client results, third-party footage, logos or invented performance claims. Offer facts match the live Stratum Praxis Workflow Audit page."
   },
   "scenes": [
-    {"duration":4.5,"eyebrow":"PHYSICAL AI / 2026","motionTag":"SCREEN → MACHINE","headline":"AI agents are leaving\nthe screen.","body":"A new research preview is connecting agents to programmable physical equipment.","sourceLabel":"Model Hardware Standard / Aug 2026","background":"#050711","accent":"#7CFFDA"},
-    {"duration":4.5,"eyebrow":"WHAT CHANGED","motionTag":"SOFTWARE → HARDWARE","headline":"Now the output can move\nmore than data.","body":"The target can be a microscope, robotic arm or other programmable instrument.","sourceLabel":"Official MHS project description","background":"#071421","accent":"#5BE7FF"},
-    {"duration":4.5,"eyebrow":"THE REAL SHIFT","motionTag":"CAPABILITY ≠ PERMISSION","headline":"More capability means\nmore boundaries.","body":"What an agent can do is not the same as what it should be allowed to finish.","sourceLabel":"Stratum Praxis / original analysis","background":"#10102A","accent":"#B39CFF"},
-    {"duration":4.5,"eyebrow":"CONTROL LAYER","motionTag":"LIMIT / STOP / VERIFY","headline":"Design the stop condition\nbefore the action.","body":"Permissions, limits, verification and human escalation become part of the system itself.","sourceLabel":"Original operational-control framework","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":4.5,"eyebrow":"BOTTOM LINE","motionTag":"AUTONOMY WITH BOUNDS","headline":"Physical AI raises\nthe cost of ambiguity.","body":"Build the boundary before you scale the autonomy.","sourceLabel":"Stratum Praxis / original takeaway","background":"#050811","accent":"#FFD166"}
+    {"duration":3.6,"eyebrow":"AI AUTOMATION / OPERATIONS","motionTag":"DON'T START WITH TOOLS","headline":"Automate the right\nworkflow first.","body":"Buying another AI tool does not tell you where automation will create the most value.","sourceLabel":"Stratum Praxis / Workflow Audit","background":"#050711","accent":"#9FD7FF"},
+    {"duration":3.6,"eyebrow":"STEP 1 / MAP","motionTag":"TRIGGER → HANDOFF → LEAK","headline":"Map the work\nbefore you automate it.","body":"Expose repetitive steps, delays, handoffs and the places where human judgment still matters.","sourceLabel":"Current Workflow Map + Leak Analysis","background":"#071421","accent":"#7CFFDA"},
+    {"duration":3.6,"eyebrow":"STEP 2 / RANK","motionTag":"IMPACT / EFFORT / RISK","headline":"Rank opportunities\nby ROI and risk.","body":"Compare 5–10 automation candidates instead of chasing the loudest idea first.","sourceLabel":"Ranked Opportunities + ROI Scenarios","background":"#10102A","accent":"#B39CFF"},
+    {"duration":3.6,"eyebrow":"STEP 3 / CONTROL","motionTag":"HUMAN CHECKPOINTS","headline":"Keep the decisions\nthat should stay human.","body":"Make risk, reversibility and human checkpoints visible before implementation.","sourceLabel":"Risk + Human Checkpoints","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":4.2,"eyebrow":"FIXED-SCOPE AUDIT / $499","motionTag":"MAP → RANK → 30-DAY PLAN","headline":"Find the 3 workflows\nworth automating first.","body":"One-time $499 written audit. No discovery call required. 30-day action plan included.","sourceLabel":"stratumpraxis.com/workflow-audit.html","background":"#050811","accent":"#FFD166"}
   ],
   "publish": {
     "services":["instagram"],
     "mode":"shareNow",
     "aiGeneratedLabel":true,
-    "title":"AI Agents Are Leaving the Screen",
-    "caption":"AI agents are moving beyond software-only workflows. Anthropic's new Model Hardware Standard research preview is designed to connect agents with programmable physical equipment.\n\nThe operational takeaway is bigger than the hardware: capability, permission and stop conditions have to be designed separately.\n\nPractical control framework: https://stratumpraxis.com/agentic-ai-governance-permission-kit.html?utm_source=instagram&utm_medium=social&utm_campaign=physical-ai-control-20260827\n\n#AI #AIAgents #PhysicalAI #Automation #AgentOps"
+    "title":"Automate the Right Workflow First",
+    "caption":"Before you buy another AI tool, decide which workflow deserves automation first.\n\nThe $499 AI Workflow Opportunity Audit maps one real workflow, exposes leaks, ranks 5–10 automation opportunities by impact, effort, reversibility and risk, and returns ROI scenarios plus a 30-day action plan.\n\nNo discovery call required. Written delivery.\n\nhttps://stratumpraxis.com/workflow-audit.html?utm_source=instagram&utm_medium=social&utm_campaign=workflow_audit_499_20260905&utm_content=video_v1\n\n#AIAutomation #WorkflowAutomation #Operations #SmallBusiness #AI"
   }
 }
