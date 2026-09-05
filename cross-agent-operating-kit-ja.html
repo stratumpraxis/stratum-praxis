@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Cross-Agent Operating Kit Personal | 複数AI運用の引き継ぎ・Human Gate・Evidenceを実装</title>
+<meta name="description" content="複数AI・開発Agentのレビュー待ち、引き継ぎ漏れ、完了判定のズレを減らすための実装用Operating Kit。Personalは$69買い切り。Markdown + YAMLで自分のプロジェクトに組み込めます。">
+<link rel="canonical" href="https://stratumpraxis.com/cross-agent-operating-kit-ja.html">
+<script defer src="/scos-analytics.js"></script>
+<script defer src="/cross-agent-attribution.js"></script>
+<style>
+:root{--b:#070a10;--p:#101722;--l:#263248;--t:#f5f7fb;--m:#a9b3c2;--c:#70d9ff}*{box-sizing:border-box}body{margin:0;background:#070a10;color:var(--t);font:16px/1.75 system-ui,-apple-system,"Segoe UI",sans-serif}.w{width:min(900px,calc(100% - 32px));margin:auto}.hero{padding:72px 0 46px}.ey{font-size:11px;letter-spacing:.14em;color:var(--c);font-weight:800}.hero h1{font-size:clamp(36px,7vw,68px);line-height:1.08;letter-spacing:-.035em;margin:.25em 0}.lead{font-size:19px;color:var(--m)}.btn{display:inline-flex;min-height:54px;align-items:center;justify-content:center;padding:0 22px;border-radius:12px;text-decoration:none;font-weight:900;background:#f4f7fb;color:#08101a;margin:18px 0}.fine{font-size:12px;color:#8995a6}.section{padding:44px 0;border-top:1px solid #182234}.section h2{font-size:clamp(28px,5vw,44px);line-height:1.15}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.card{border:1px solid var(--l);border-radius:18px;background:#0f1723;padding:20px}.card b{display:block;margin-bottom:6px}.muted{color:var(--m)}.box{border:1px solid #3a4c68;border-radius:22px;padding:24px;background:#0d141f}.price{font-size:48px;font-weight:900;line-height:1}.check{padding-left:22px}.check li{margin:8px 0}@media(max-width:680px){.grid{grid-template-columns:1fr}.hero{padding-top:48px}}
+</style>
+</head>
+<body data-funnel="cross_agent_operating_kit">
+<main class="w">
+<section class="hero">
+<div class="ey">CROSS-AGENT OPERATING KIT · PERSONAL</div>
+<h1>AIを増やす前に、<br>「引き継ぎ」と「完了条件」を固定する。</h1>
+<p class="lead">ChatGPT、Claude、Codex、Cursorなどを併用したときに起きる、レビュー待ち・役割重複・Evidence不足・Human Gateの曖昧さを、プロジェクト側の運用ルールとして実装するためのキットです。</p>
+<a class="btn" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_ja_hero" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Personalを購入する — $69</a>
+<p class="fine">買い切り · Markdown + YAML · 自分のプロジェクト向け · サブスクリプションなし</p>
+</section>
+
+<section class="section">
+<h2>こんな状態を減らすためのものです。</h2>
+<div class="grid">
+<div class="card"><b>「完了」が担当ごとに違う</b><span class="muted">生成・実装・Deploy・公開確認・Evidenceの境界を定義します。</span></div>
+<div class="card"><b>Agent間の引き継ぎで止まる</b><span class="muted">INPUT / ACTION / RESULT / EVIDENCE / BLOCKER / NEXT ACTIONを構造化します。</span></div>
+<div class="card"><b>人間確認が多すぎる</b><span class="muted">Human Gateを必要な一点へ狭め、前後を自動化しやすくします。</span></div>
+<div class="card"><b>Agentを変えるたび運用知識が消える</b><span class="muted">ポリシーと状態をRuntimeから分離し、移行しやすくします。</span></div>
+</div>
+</section>
+
+<section class="section">
+<h2>Personal $69 に含まれるもの</h2>
+<ul class="check">
+<li><strong>AGENTS.md Master Policy</strong> — 目的、Source of Truth、権限、Human Gate、失敗時ルール、Definition of Done</li>
+<li><strong>Claude / Codex / Cursor adapters</strong> — Runtime固有ルールを分離</li>
+<li><strong>Policy Conflict Check</strong> — 目的・権限・完了・Cost・Retryなどの衝突確認</li>
+<li><strong>Human Gate Matrix</strong> — 自動実行と人間判断の境界</li>
+<li><strong>Budget / Token / Quota / Retry guardrails</strong></li>
+<li><strong>Migration + State Handoff templates</strong></li>
+</ul>
+<p class="muted">読むためのPrompt集ではなく、実プロジェクトへコピーして編集するための運用ファイルです。</p>
+</section>
+
+<section class="section">
+<div class="box">
+<div class="ey">購入前に確認</div>
+<h2>Personalは「自分のプロジェクト」で使う1購入者向けです。</h2>
+<p class="muted">購入後はStripeの支払い確認を経て、購入者向けアクセス導線からv1.0キットを受け取ります。クライアント案件での実装利用が必要な場合はPersonalではなくCommercialライセンスが対象です。</p>
+<div class="price">$69</div>
+<p>一回払い。継続課金はありません。</p>
+<a class="btn" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_ja_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Personalを購入する — $69</a>
+<p class="fine">再配布・転売・公開ミラー・サブライセンスは含まれません。</p>
+</div>
+</section>
+</main>
+</body>
+</html>
