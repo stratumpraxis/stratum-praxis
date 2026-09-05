@@ -194,15 +194,15 @@
     },
     "2026-09-05-workflow-audit-buyer-intent-instagram-v2": {
       "instagram": {
-        "status": "sending",
+        "status": "sent",
         "at": "2026-09-05T05:50:22.933Z",
         "channelId": "6a8e5b5accaf649a671a0cd9",
         "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-09-05-workflow-audit-buyer-intent-instagram-v2.mp4",
         "postId": "6a9bad94720c7a42cca4d38a",
         "dueAt": "2026-09-05T05:50:12.750Z",
-        "sentAt": null,
+        "sentAt": "2026-09-05T05:51:11.232Z",
         "sharedNow": true,
-        "externalLink": null
+        "externalLink": "https://www.instagram.com/reel/Dc5P_-lD4CB/"
       }
     }
   }
