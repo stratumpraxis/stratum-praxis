@@ -33,7 +33,7 @@ jobs:
           page = Path('workflow-audit.html')
           text = page.read_text(encoding='utf-8')
 
-          replacements = [
+          exact_once = [
               (
                   '<nav class="nav" aria-label="Primary"><a href="sample-workflow-audit.html">Sample</a><a href="passage-network.html">Decision Hub</a><a href="ai-value-realization-kit.html">$39 ROI Kit</a></nav>',
                   '<nav class="nav" aria-label="Primary"><a href="sample-workflow-audit.html">View sample</a></nav>'
@@ -42,16 +42,19 @@ jobs:
                   'data-funnel="workflow_audit" data-product="workflow_audit"',
                   'data-funnel="workflow_audit" data-product="workflow-audit"'
               ),
-              (
-                  '>Start the audit — $499</a>',
-                  '>Get the workflow decision audit — $499</a>'
-              ),
           ]
-          for old, new in replacements:
+          for old, new in exact_once:
               count = text.count(old)
               if count != 1:
                   raise SystemExit(f'Expected one page match, found {count}: {old[:80]}')
               text = text.replace(old, new, 1)
+
+          old_cta = '>Start the audit — $499</a>'
+          new_cta = '>Get the workflow decision audit — $499</a>'
+          cta_count = text.count(old_cta)
+          if cta_count != 2:
+              raise SystemExit(f'Expected two CTA matches, found {cta_count}')
+          text = text.replace(old_cta, new_cta)
           page.write_text(text, encoding='utf-8')
 
           analytics = Path('scos-analytics.js')
