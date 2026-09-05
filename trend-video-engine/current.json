@@ -1,22 +1,22 @@
 {
-  "id": "2026-09-05-workflow-audit-499-instagram-v1",
-  "createdAt": "2026-09-05T12:00:00+09:00",
+  "id": "2026-09-05-workflow-audit-buyer-intent-instagram-v2",
+  "createdAt": "2026-09-05T14:50:00+09:00",
   "brandLane": "stratum-praxis-en",
   "platformVariant": "instagram-reel-revenue",
-  "title": "Automate the Right Workflow First",
-  "topic": "Why founders and operations leaders should identify and rank workflow automation opportunities before buying or implementing more AI tools",
+  "title": "Your AI Bottleneck Is Probably Not the Tool",
+  "topic": "A buyer-intent message for founders and operations leaders already evaluating workflow automation, routing them to the fixed-scope $499 AI Workflow Opportunity Audit.",
   "language": "en",
-  "summary": "A short problem-first B2B video routing qualified automation buyers to the fixed-scope $499 AI Workflow Opportunity Audit.",
-  "outputFile": "media/trend-videos/2026-09-05-workflow-audit-499-instagram-v1.mp4",
-  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":10,"commercialSafety":10,"revenueFit":10,"total":59,"max":60},
+  "summary": "A direct B2B revenue video for companies already showing workflow-automation intent, focused on identifying the highest-value workflow before implementation.",
+  "outputFile": "media/trend-videos/2026-09-05-workflow-audit-buyer-intent-instagram-v2.mp4",
+  "scores": {"freshness":9,"businessDemand":10,"crossPlatformPotential":10,"originalityOpportunity":9,"commercialSafety":10,"revenueFit":10,"total":58,"max":60},
   "sources": [
     {"name":"Stratum Praxis — AI Workflow Opportunity Audit","url":"https://stratumpraxis.com/workflow-audit.html","factSource":true,"verified":true,"published":"2026-09-05"}
   ],
   "thirdPartyAssets": [],
   "originality": {
     "creatorSignals":[
-      "original problem-first thesis: choose the workflow before choosing the automation",
-      "original workflow-map to ROI-risk ranking sequence",
+      "original buyer-intent thesis: automation interest is not the same as knowing what to automate",
+      "original sequence from workflow bottleneck to ranked automation decision",
       "original procedural graphics with no third-party media"
     ],
     "notReusedCompilation":true,
@@ -28,21 +28,21 @@
     "originalityVerified":true,
     "realPersonLikeness":false,
     "copyrightedMedia":false,
-    "categories":["ai","automation","operations","workflow","small-business"],
-    "notes":"Original procedural graphics only. No testimonials, client results, third-party footage, logos or invented performance claims. Offer facts match the live Stratum Praxis Workflow Audit page."
+    "categories":["ai","automation","operations","workflow","b2b"],
+    "notes":"Original procedural graphics only. No testimonials, client results, third-party footage, logos or invented performance claims. Offer facts match the live Workflow Audit page."
   },
   "scenes": [
-    {"duration":3.6,"eyebrow":"AI AUTOMATION / OPERATIONS","motionTag":"DON'T START WITH TOOLS","headline":"Automate the right\nworkflow first.","body":"Buying another AI tool does not tell you where automation will create the most value.","sourceLabel":"Stratum Praxis / Workflow Audit","background":"#050711","accent":"#9FD7FF"},
-    {"duration":3.6,"eyebrow":"STEP 1 / MAP","motionTag":"TRIGGER → HANDOFF → LEAK","headline":"Map the work\nbefore you automate it.","body":"Expose repetitive steps, delays, handoffs and the places where human judgment still matters.","sourceLabel":"Current Workflow Map + Leak Analysis","background":"#071421","accent":"#7CFFDA"},
-    {"duration":3.6,"eyebrow":"STEP 2 / RANK","motionTag":"IMPACT / EFFORT / RISK","headline":"Rank opportunities\nby ROI and risk.","body":"Compare 5–10 automation candidates instead of chasing the loudest idea first.","sourceLabel":"Ranked Opportunities + ROI Scenarios","background":"#10102A","accent":"#B39CFF"},
-    {"duration":3.6,"eyebrow":"STEP 3 / CONTROL","motionTag":"HUMAN CHECKPOINTS","headline":"Keep the decisions\nthat should stay human.","body":"Make risk, reversibility and human checkpoints visible before implementation.","sourceLabel":"Risk + Human Checkpoints","background":"#130A1D","accent":"#FF78D8"},
-    {"duration":4.2,"eyebrow":"FIXED-SCOPE AUDIT / $499","motionTag":"MAP → RANK → 30-DAY PLAN","headline":"Find the 3 workflows\nworth automating first.","body":"One-time $499 written audit. No discovery call required. 30-day action plan included.","sourceLabel":"stratumpraxis.com/workflow-audit.html","background":"#050811","accent":"#FFD166"}
+    {"duration":3.6,"eyebrow":"FOR FOUNDERS + OPERATIONS LEADERS","motionTag":"AI AUTOMATION INTENT ≠ PRIORITY","headline":"Your bottleneck is probably\nnot the AI tool.","body":"The harder question is which workflow is actually worth automating first.","sourceLabel":"Stratum Praxis / Workflow Audit","background":"#050711","accent":"#9FD7FF"},
+    {"duration":3.6,"eyebrow":"BEFORE IMPLEMENTATION","motionTag":"MAP → LEAK → DECIDE","headline":"Find where the work\nis really leaking.","body":"Map repetitive steps, delays, handoffs and human judgment before buying or building more automation.","sourceLabel":"Current Workflow Map + Leak Analysis","background":"#071421","accent":"#7CFFDA"},
+    {"duration":3.6,"eyebrow":"RANK THE OPTIONS","motionTag":"IMPACT / EFFORT / RISK","headline":"Not every automation\nis worth doing.","body":"Rank 5–10 candidates by impact, effort, reversibility and risk.","sourceLabel":"Ranked Opportunities + ROI Scenarios","background":"#10102A","accent":"#B39CFF"},
+    {"duration":3.6,"eyebrow":"KEEP CONTROL","motionTag":"HUMAN CHECKPOINTS","headline":"Automate the work,\nnot the judgment.","body":"Keep the decisions that need a human visible before implementation starts.","sourceLabel":"Risk + Human Checkpoints","background":"#130A1D","accent":"#FF78D8"},
+    {"duration":4.2,"eyebrow":"FIXED-SCOPE AUDIT / $499","motionTag":"ONE WORKFLOW → 30-DAY PLAN","headline":"Choose the 3 workflows\nworth automating first.","body":"One-time $499 written audit. No discovery call required.","sourceLabel":"stratumpraxis.com/workflow-audit.html","background":"#050811","accent":"#FFD166"}
   ],
   "publish": {
     "services":["instagram"],
     "mode":"shareNow",
     "aiGeneratedLabel":true,
-    "title":"Automate the Right Workflow First",
-    "caption":"Before you buy another AI tool, decide which workflow deserves automation first.\n\nThe $499 AI Workflow Opportunity Audit maps one real workflow, exposes leaks, ranks 5–10 automation opportunities by impact, effort, reversibility and risk, and returns ROI scenarios plus a 30-day action plan.\n\nNo discovery call required. Written delivery.\n\nhttps://stratumpraxis.com/workflow-audit.html?utm_source=instagram&utm_medium=social&utm_campaign=workflow_audit_499_20260905&utm_content=video_v1\n\n#AIAutomation #WorkflowAutomation #Operations #SmallBusiness #AI"
+    "title":"Your AI Bottleneck Is Probably Not the Tool",
+    "caption":"Already evaluating workflow automation? The next decision is not which AI tool to buy. It is which workflow is worth automating first.\n\nThe $499 AI Workflow Opportunity Audit maps one real workflow, exposes leaks, ranks 5–10 automation candidates by impact, effort, reversibility and risk, and returns ROI scenarios plus a 30-day action plan.\n\nBuilt for founders and operations leaders who want the decision before the implementation.\n\nhttps://stratumpraxis.com/workflow-audit.html?utm_source=instagram&utm_medium=social&utm_campaign=workflow_audit_b2b_intent_20260905&utm_content=b2b_intent_ops_v2\n\n#WorkflowAutomation #AIAutomation #Operations #B2B #AI"
   }
 }
