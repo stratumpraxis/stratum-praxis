@@ -53,6 +53,17 @@
     return source === 'zenn' || source === 'vector_praxis';
   }
 
+  function clarifySelfServeOffer() {
+    if (location.pathname !== '/cross-agent-operating-kit.html') return;
+    if (isJapaneseAcquisition()) return;
+    const eyebrow = document.querySelector('.hero .ey');
+    const heading = document.querySelector('.hero h1');
+    const lead = document.querySelector('.hero .lead');
+    if (eyebrow) eyebrow.textContent = 'FOR SOLO AI OPERATORS · PERSONAL LICENSE · $69 ONE-TIME';
+    if (heading) heading.innerHTML = 'One operating layer.<br><span class="grad">Claude Code, Codex & Cursor.</span>';
+    if (lead) lead.textContent = 'Stop rebuilding project rules every time you switch AI runtimes. Keep policy, permissions, human gates, budget/retry guards and migration state in one editable kit you own.';
+  }
+
   function addCheckoutReassurance() {
     if (location.pathname !== '/cross-agent-operating-kit.html') return;
     const actions = document.querySelector('.hero .actions');
@@ -170,11 +181,13 @@
   }
 
   applyExplicitRoute();
+  clarifySelfServeOffer();
   alignProductPagePrimaryCheckout();
   alignHomepageRoutes();
 
   window.addEventListener('pageshow', function () {
     applyExplicitRoute();
+    clarifySelfServeOffer();
     alignProductPagePrimaryCheckout();
     alignHomepageRoutes();
   });
