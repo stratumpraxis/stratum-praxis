@@ -228,6 +228,7 @@
 
   function injectNetworkEntry() {
     if (document.getElementById('return-gate-entry')) return;
+    if (location.pathname === '/workflow-audit.html') return;
     const english = isEnglishPage();
     const onReturnGate = location.pathname.startsWith('/return-gate');
     const onCrossAgent = location.pathname === '/cross-agent-operating-kit.html';
