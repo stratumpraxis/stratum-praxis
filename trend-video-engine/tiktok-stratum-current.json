@@ -1,28 +1,28 @@
 {
-  "id": "2026-08-27-stratum-tiktok-ai-control-heygen-v1",
-  "createdAt": "2026-08-27T20:20:00+09:00",
+  "id": "2026-09-05-workflow-audit-499-tiktok-v1",
+  "createdAt": "2026-09-05T12:00:00+09:00",
   "brandLane": "stratum-praxis-en",
-  "platformVariant": "tiktok-en-discovery",
-  "title": "AI Wasn't the Bottleneck. Control Was.",
-  "topic": "Why aggressive AI-native workforce transformation can fail when reliability, security, workflow control, and accountability lag behind automation",
+  "platformVariant": "tiktok-en-revenue",
+  "title": "Automate the Right Workflow First",
+  "topic": "Why founders and operations leaders should identify and rank workflow automation opportunities before buying or implementing more AI tools",
   "language": "en",
-  "summary": "A fast English TikTok on the operational lesson from a major tech company's AI-native workforce experiment: execution can scale faster than control.",
-  "videoUrl": "https://resource2.heygen.ai/aws_pacific/avatar_tmp/a97602ecc435417ab1b776674e7db173/ve6f960ed0ea04f888ef85598f4165eff/caption_b068548938e3451db425862bfa61225b.mp4",
+  "summary": "A short problem-first B2B video routing qualified automation buyers to the fixed-scope $499 AI Workflow Opportunity Audit.",
+  "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-09-05-workflow-audit-499-instagram-v1.mp4",
   "sources": [
     {
-      "name": "Reuters — How Meta's AI workforce transformation plans went kaput",
-      "url": "https://www.reuters.com/technology/artificial-intelligence/how-metas-ai-workforce-transformation-plans-went-kaput-2026-08-26/",
+      "name": "Stratum Praxis — AI Workflow Opportunity Audit",
+      "url": "https://stratumpraxis.com/workflow-audit.html",
       "factSource": true,
       "verified": true,
-      "published": "2026-08-26"
+      "published": "2026-09-05"
     }
   ],
   "thirdPartyAssets": [],
   "originality": {
     "creatorSignals": [
-      "original control-over-intelligence thesis",
-      "original kinetic short-form treatment",
-      "original procedural visuals with no news footage"
+      "original problem-first thesis: choose the workflow before choosing the automation",
+      "original workflow-map to ROI-risk ranking sequence",
+      "original procedural graphics with no third-party media"
     ],
     "notReusedCompilation": true,
     "notTemplateVariant": true
@@ -33,14 +33,14 @@
     "originalityVerified": true,
     "realPersonLikeness": false,
     "copyrightedMedia": false,
-    "categories": ["ai", "future-of-work", "agents", "operations"],
-    "notes": "English-only. No company logo, celebrity likeness, news footage, or third-party media. AI-generated labeling remains enabled."
+    "categories": ["ai", "automation", "operations", "workflow", "small-business"],
+    "notes": "Original procedural graphics only. No testimonials, client results, third-party footage, logos or invented performance claims. AI-generated labeling enabled."
   },
   "publish": {
     "services": ["tiktok"],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "AI Wasn't the Bottleneck. Control Was.",
-    "caption": "AI wasn’t the bottleneck. Control was. The next AI advantage isn’t more agents — it’s knowing when they should stop. #AI #AIAgents #FutureOfWork #TechTok"
+    "title": "Automate the Right Workflow First",
+    "caption": "Before you automate another workflow, choose the one worth automating first. The $499 AI Workflow Opportunity Audit maps one real workflow, ranks 5–10 automation candidates by impact, effort, reversibility and risk, and returns ROI scenarios + a 30-day action plan. https://stratumpraxis.com/workflow-audit.html?utm_source=tiktok&utm_medium=social_video&utm_campaign=workflow_audit_499_20260905&utm_content=video_v1 #AIAutomation #WorkflowAutomation #Operations #AI"
   }
 }
