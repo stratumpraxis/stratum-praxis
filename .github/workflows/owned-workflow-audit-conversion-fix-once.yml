@@ -1,0 +1,76 @@
+name: Owned Workflow Audit Conversion Fix Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/owned-workflow-audit-conversion-fix-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: owned-workflow-audit-conversion-fix-once
+  cancel-in-progress: false
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Sync latest main
+        run: git pull --rebase origin main
+
+      - name: Focus the $499 conversion route
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          page = Path('workflow-audit.html')
+          text = page.read_text(encoding='utf-8')
+
+          replacements = [
+              (
+                  '<nav class="nav" aria-label="Primary"><a href="sample-workflow-audit.html">Sample</a><a href="passage-network.html">Decision Hub</a><a href="ai-value-realization-kit.html">$39 ROI Kit</a></nav>',
+                  '<nav class="nav" aria-label="Primary"><a href="sample-workflow-audit.html">View sample</a></nav>'
+              ),
+              (
+                  'data-funnel="workflow_audit" data-product="workflow_audit"',
+                  'data-funnel="workflow_audit" data-product="workflow-audit"'
+              ),
+              (
+                  '>Start the audit — $499</a>',
+                  '>Get the workflow decision audit — $499</a>'
+              ),
+          ]
+          for old, new in replacements:
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'Expected one page match, found {count}: {old[:80]}')
+              text = text.replace(old, new, 1)
+          page.write_text(text, encoding='utf-8')
+
+          analytics = Path('scos-analytics.js')
+          js = analytics.read_text(encoding='utf-8')
+          old = "  function injectNetworkEntry() {\n    if (document.getElementById('return-gate-entry')) return;"
+          new = "  function injectNetworkEntry() {\n    if (document.getElementById('return-gate-entry')) return;\n    if (location.pathname === '/workflow-audit.html') return;"
+          count = js.count(old)
+          if count != 1:
+              raise SystemExit(f'Expected one analytics match, found {count}')
+          analytics.write_text(js.replace(old, new, 1), encoding='utf-8')
+          PY
+
+      - name: Commit conversion fix and self-remove
+        run: |
+          git config user.name "stratum-owned-revenue-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          rm -f .github/workflows/owned-workflow-audit-conversion-fix-once.yml
+          git add workflow-audit.html scos-analytics.js .github/workflows/owned-workflow-audit-conversion-fix-once.yml
+          git diff --cached --check
+          git commit -m "Focus Workflow Audit conversion route after zero-CTA traffic"
+          git pull --rebase origin main
+          git push origin main
