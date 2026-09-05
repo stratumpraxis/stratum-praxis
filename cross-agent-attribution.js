@@ -48,6 +48,11 @@
     }
   }
 
+  function isJapaneseAcquisition() {
+    const source = getAttributionSource();
+    return source === 'zenn' || source === 'vector_praxis';
+  }
+
   function addCheckoutReassurance() {
     if (location.pathname !== '/cross-agent-operating-kit.html') return;
     const actions = document.querySelector('.hero .actions');
@@ -56,11 +61,10 @@
     const proof = document.createElement('div');
     proof.id = 'cross-agent-checkout-reassurance';
     proof.setAttribute('role', 'note');
-    const source = getAttributionSource();
-    const vectorNote = source === 'vector_praxis'
-      ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid #263248;color:#d8e2ef"><strong style="color:#f5f7fb">日本語圏からの方へ：</strong> Personal版は69ドルの買い切りです。自分のプロジェクトで使えるAGENTS.md、Claude / Codex / Cursor用アダプター、Human Gate、予算・再試行ガード、移行チェックリストを含みます。サブスクリプションではありません。決済確認後、購入者用アクセスへ進みます。</div>'
+    const japaneseNote = isJapaneseAcquisition()
+      ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid #263248;color:#d8e2ef" lang="ja"><strong style="color:#f5f7fb">Zenn / 日本語圏からの方へ：</strong> Personal版は<strong>69ドルの買い切り</strong>です。自分のプロジェクトで使えるAGENTS.md、Claude / Codex / Cursor用アダプター、Human Gate Matrix、予算・再試行ガード、Migration / State Handoffを含みます。サブスクリプションではありません。Stripeで支払い確認後、購入者用アクセスへ進みます。</div>'
       : '';
-    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>' + vectorNote;
+    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>' + japaneseNote;
     proof.style.marginTop = '14px';
     proof.style.padding = '14px 16px';
     proof.style.border = '1px solid #263248';
@@ -75,16 +79,17 @@
   function alignProductPagePrimaryCheckout() {
     if (location.pathname !== '/cross-agent-operating-kit.html') return;
 
+    const japanese = isJapaneseAcquisition();
     const targets = [
       {
         link: document.querySelector('.hero .actions .primary'),
         id: 'cross_agent_personal_product_hero',
-        label: 'Get the full kit — $69 one-time →'
+        label: japanese ? 'Personalを購入する — $69・買い切り →' : 'Get the full kit — $69 one-time →'
       },
       {
         link: document.querySelector('.close .primary'),
         id: 'cross_agent_personal_product_close',
-        label: 'Get the full kit — $69 one-time →'
+        label: japanese ? 'Personalを購入する — $69・買い切り →' : 'Get the full kit — $69 one-time →'
       }
     ];
 
