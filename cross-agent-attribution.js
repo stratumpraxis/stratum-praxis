@@ -64,7 +64,7 @@
     const japaneseNote = isJapaneseAcquisition()
       ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid #263248;color:#d8e2ef" lang="ja"><strong style="color:#f5f7fb">Zenn / 日本語圏からの方へ：</strong> Personal版は<strong>69ドルの買い切り</strong>です。自分のプロジェクトで使えるAGENTS.md、Claude / Codex / Cursor用アダプター、Human Gate Matrix、予算・再試行ガード、Migration / State Handoffを含みます。サブスクリプションではありません。Stripeで支払い確認後、購入者用アクセスへ進みます。</div>'
       : '';
-    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Buyer access after verified payment</span>' + japaneseNote;
+    proof.innerHTML = '<strong style="color:#f5f7fb">What the $69 Personal license gives you:</strong> the full v1.0 operating kit for your own projects — AGENTS.md master policy, Claude/Codex/Cursor adapters, Human Gate matrix, budget/retry guards, migration checklist and maturity score.<br><span style="display:inline-block;margin-top:8px">One-time purchase · No subscription · Secure Stripe checkout · Card or Link · Buyer access after verified payment</span>' + japaneseNote;
     proof.style.marginTop = '14px';
     proof.style.padding = '14px 16px';
     proof.style.border = '1px solid #263248';
@@ -74,6 +74,38 @@
     proof.style.lineHeight = '1.55';
     proof.style.color = '#aeb8c8';
     actions.insertAdjacentElement('afterend', proof);
+  }
+
+  function addPersistentCheckoutBar() {
+    if (location.pathname !== '/cross-agent-operating-kit.html') return;
+    if (document.getElementById('cross-agent-checkout-bar')) return;
+
+    const bar = document.createElement('div');
+    bar.id = 'cross-agent-checkout-bar';
+    bar.setAttribute('aria-label', 'Personal license checkout');
+    bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:760px;margin:auto;padding:10px 12px;border:1px solid #354763;border-radius:14px;background:rgba(7,10,16,.96);box-shadow:0 16px 50px rgba(0,0,0,.45);backdrop-filter:blur(12px);font:13px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif';
+
+    const copy = document.createElement('div');
+    copy.innerHTML = '<strong style="display:block;color:#f5f7fb">Personal · $69 one-time</strong><span style="color:#9da9ba">Full v1.0 kit · No subscription · Secure Stripe</span>';
+
+    const link = document.createElement('a');
+    link.href = PERSONAL_CHECKOUT;
+    link.textContent = 'Continue to checkout →';
+    link.dataset.analyticsId = 'cross_agent_personal_sticky_checkout';
+    link.dataset.product = 'cross_agent_personal';
+    link.setAttribute('data-primary-cta', 'true');
+    link.style.cssText = 'flex:0 0 auto;display:inline-flex;min-height:44px;align-items:center;justify-content:center;padding:0 14px;border-radius:10px;background:#f4f7fb;color:#08101a;text-decoration:none;font-weight:900';
+
+    bar.appendChild(copy);
+    bar.appendChild(link);
+    document.body.appendChild(bar);
+
+    if (typeof window.scosCapture === 'function') {
+      window.scosCapture('checkout_offer_exposure', {
+        product: 'cross_agent_personal',
+        placement: 'persistent_checkout_bar'
+      });
+    }
   }
 
   function alignProductPagePrimaryCheckout() {
@@ -103,6 +135,7 @@
     });
 
     addCheckoutReassurance();
+    addPersistentCheckoutBar();
   }
 
   function alignHomepageRoutes() {
