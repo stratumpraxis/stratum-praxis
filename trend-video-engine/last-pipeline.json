@@ -1,8 +1,8 @@
 {
   "status": "publish-ready",
   "manifest": "trend-video-engine/current.json",
-  "videoId": "2026-09-05-workflow-audit-499-instagram-v1",
-  "startedAt": "2026-09-05T02:56:49.970656+00:00",
+  "videoId": "2026-09-05-workflow-audit-buyer-intent-instagram-v2",
+  "startedAt": "2026-09-05T05:49:52.049923+00:00",
   "stages": {
     "preflight": {
       "status": "passed"
@@ -34,5 +34,5 @@
       "duplicate primary-message rejection"
     ]
   },
-  "finishedAt": "2026-09-05T02:57:05.750244+00:00"
+  "finishedAt": "2026-09-05T05:50:07.715747+00:00"
 }
