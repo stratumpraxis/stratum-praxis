@@ -64,10 +64,11 @@ jobs:
             echo "Public route OK: $BASE$path -> 200"
           done
           curl -L -sS "$BASE/b2b/" -o /tmp/b2b.html
-          grep -Fq 'Find the workflow leak worth fixing before you buy more AI.' /tmp/b2b.html
+          grep -Fq 'Decide whether this workflow is worth fixing — before you automate it.' /tmp/b2b.html
           grep -Fq 'b2b_diagnostic_entry_click' /tmp/b2b.html
           grep -Fq 'Audit this workflow — $499' /tmp/b2b.html
-          echo 'B2B conversion rebuild marker check -> PASS'
+          grep -Fq 'No purchase recommended for this workflow.' /tmp/b2b.html
+          echo 'B2B decision diagnostic marker check -> PASS'
 
       - name: Verify Pinterest media routes
         shell: bash
