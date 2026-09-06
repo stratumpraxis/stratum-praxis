@@ -204,6 +204,19 @@
         "sharedNow": true,
         "externalLink": "https://www.instagram.com/reel/Dc5P_-lD4CB/"
       }
+    },
+    "2026-09-07-market-toolchain-stratum-tiktok-v1": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-09-06T22:50:17.848Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-27-ai-stack-sprawl-short.mp4",
+        "postId": "6a9dee1f2066ff47cc477a5c",
+        "dueAt": "2026-09-06T22:50:07.616Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      }
     }
   }
 }
