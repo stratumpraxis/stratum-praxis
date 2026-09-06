@@ -1,28 +1,28 @@
 {
-  "id": "2026-09-05-workflow-audit-499-tiktok-v1",
-  "createdAt": "2026-09-05T12:00:00+09:00",
+  "id": "2026-09-07-market-toolchain-stratum-tiktok-v1",
+  "createdAt": "2026-09-07T07:44:00+09:00",
   "brandLane": "stratum-praxis-en",
-  "platformVariant": "tiktok-en-revenue",
-  "title": "Automate the Right Workflow First",
-  "topic": "Why founders and operations leaders should identify and rank workflow automation opportunities before buying or implementing more AI tools",
+  "platformVariant": "tiktok-en-operations",
+  "title": "Tool Count Is Not Execution Capability",
+  "topic": "Why a useful AI stack is measured by reproducible execution and verification rather than by the number of tools installed",
   "language": "en",
-  "summary": "A short problem-first B2B video routing qualified automation buyers to the fixed-scope $499 AI Workflow Opportunity Audit.",
-  "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-09-05-workflow-audit-499-instagram-v1.mp4",
+  "summary": "Stratum Praxis / MARKET verified a reproducible low-cost execution toolchain on a clean Ubuntu 24.04 runner, including browser automation, data tooling, media processing, document generation, backup, automation and infrastructure utilities.",
+  "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/media/trend-videos/2026-08-27-ai-stack-sprawl-short.mp4",
   "sources": [
     {
-      "name": "Stratum Praxis — AI Workflow Opportunity Audit",
-      "url": "https://stratumpraxis.com/workflow-audit.html",
+      "name": "MARKET AI Execution Toolchain verification",
+      "url": "https://github.com/stratumpraxis/stratum-praxis",
       "factSource": true,
       "verified": true,
-      "published": "2026-09-05"
+      "published": "2026-09-07"
     }
   ],
   "thirdPartyAssets": [],
   "originality": {
     "creatorSignals": [
-      "original problem-first thesis: choose the workflow before choosing the automation",
-      "original workflow-map to ROI-risk ranking sequence",
-      "original procedural graphics with no third-party media"
+      "original Stratum Praxis AI-stack operations framing",
+      "original procedural technical visuals",
+      "MARKET reproducible execution and verification update"
     ],
     "notReusedCompilation": true,
     "notTemplateVariant": true
@@ -33,14 +33,17 @@
     "originalityVerified": true,
     "realPersonLikeness": false,
     "copyrightedMedia": false,
-    "categories": ["ai", "automation", "operations", "workflow", "small-business"],
-    "notes": "Original procedural graphics only. No testimonials, client results, third-party footage, logos or invented performance claims. AI-generated labeling enabled."
+    "categories": ["ai", "automation", "operations", "toolchain", "workflow"],
+    "notes": "Existing Stratum-owned AI-stack short reused for a current operations update. Claims are limited to the verified reproducible GitHub runner environment; this does not claim installation on the owner's physical PC."
   },
   "publish": {
     "services": ["tiktok"],
+    "channelAllowlist": {
+      "tiktok": ["stratumpraxis"]
+    },
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Automate the Right Workflow First",
-    "caption": "Before you automate another workflow, choose the one worth automating first. The $499 AI Workflow Opportunity Audit maps one real workflow, ranks 5–10 automation candidates by impact, effort, reversibility and risk, and returns ROI scenarios + a 30-day action plan. https://stratumpraxis.com/workflow-audit.html?utm_source=tiktok&utm_medium=social_video&utm_campaign=workflow_audit_499_20260905&utm_content=video_v1 #AIAutomation #WorkflowAutomation #Operations #AI"
+    "title": "Tool Count Is Not Execution Capability",
+    "caption": "More AI tools do not automatically create more execution capacity. MARKET just verified a reproducible low-cost toolchain on a clean Ubuntu 24.04 runner: Playwright + Chromium, DuckDB, Polars, FFmpeg, whisper.cpp, Typst, PocketBase, Node-RED, rclone/restic, OpenTofu and more — bootstrap to smoke test to final verify, PASS. Not a claim about the owner's physical PC; the value is reproducibility. Systems: https://stratumpraxis.com/systems/?utm_source=tiktok&utm_medium=social_video&utm_campaign=market_toolchain_20260907&utm_content=ai_stack_reuse #AIAutomation #AITools #WorkflowAutomation #AIEngineering"
   }
 }
