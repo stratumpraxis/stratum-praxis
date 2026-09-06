@@ -54,7 +54,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://stratum-praxis-site.pages.dev'
-          for path in / /systems/ /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html; do
+          for path in / /systems/ /b2b/ /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
               echo "Expected 200 for $BASE$path, got $code"
@@ -63,6 +63,11 @@ jobs:
             fi
             echo "Public route OK: $BASE$path -> 200"
           done
+          curl -L -sS "$BASE/b2b/" -o /tmp/b2b.html
+          grep -Fq 'Find the workflow leak worth fixing before you buy more AI.' /tmp/b2b.html
+          grep -Fq 'b2b_diagnostic_entry_click' /tmp/b2b.html
+          grep -Fq 'Audit this workflow — $499' /tmp/b2b.html
+          echo 'B2B conversion rebuild marker check -> PASS'
 
       - name: Verify Pinterest media routes
         shell: bash
