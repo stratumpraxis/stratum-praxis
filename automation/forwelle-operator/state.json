@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49587217",
     "hn:49568506",
     "hn:49554643",
     "feed:github-ai-ml:signal",
@@ -11,8 +12,8 @@
   ],
   "lastScoutAt": "2026-09-06T23:07:35.658Z",
   "lastRun": {
-    "id": "2026-09-04-formalizing-fermat-s-last-theorem-hn-49568506",
-    "at": "2026-09-04T23:09:04.602Z",
+    "id": "2026-09-06-research-acceleration-the-view-inside-openai-hn-49587217",
+    "at": "2026-09-06T23:08:55.052Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
