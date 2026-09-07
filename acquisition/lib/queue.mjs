@@ -6,21 +6,14 @@
 //   - nothing is ever marked purchased here; purchases live in the ledger and
 //     require payment-provider evidence.
 
-import { APPROVAL_STATES, QUEUE_STATES, QUEUE_TRANSITIONS } from './taxonomy.mjs';
+import { APPROVAL_STATES, EXECUTION_APPROVAL_STATES, QUEUE_STATES, QUEUE_TRANSITIONS } from './taxonomy.mjs';
 import { isPlainObject, nowIso, readJson, writeJson } from './util.mjs';
 import { evaluateItem, evaluateQueue } from './safety.mjs';
+import { evaluateSystemApproval } from './autonomy.mjs';
 
 const REQUIRED_FIELDS = [
-  'queue_id',
-  'platform',
-  'asset_id',
-  'content_angle',
-  'cta',
-  'destination_url',
-  'utm_parameters',
-  'safety_status',
-  'approval_status',
-  'status'
+  'queue_id', 'platform', 'asset_id', 'content_angle', 'cta', 'destination_url',
+  'utm_parameters', 'safety_status', 'approval_status', 'status'
 ];
 
 export const SAFETY_STATUSES = Object.freeze(['UNCHECKED', 'PASSED', 'BLOCKED']);
@@ -30,7 +23,10 @@ export function canTransition(from, to) {
   return (QUEUE_TRANSITIONS[from] || []).includes(to);
 }
 
-/** Structural validation. Safety validation is separate (lib/safety.mjs). */
+function hasExecutionApproval(item) {
+  return EXECUTION_APPROVAL_STATES.includes(item?.approval_status);
+}
+
 export function validateItem(item) {
   const errors = [];
   const label = isPlainObject(item) && item.queue_id ? item.queue_id : 'unnamed-item';
@@ -47,16 +43,19 @@ export function validateItem(item) {
   if (!APPROVAL_STATES.includes(item.approval_status)) errors.push(`${label}: unknown approval_status ${item.approval_status}`);
   if (!isPlainObject(item.utm_parameters)) errors.push(`${label}: utm_parameters must be an object`);
 
-  // State preconditions. These are what stop a request from masquerading as a result.
   if (['READY', 'SCHEDULED', 'PUBLISHED', 'VERIFIED'].includes(item.status) && item.safety_status !== 'PASSED') {
     errors.push(`${label}: status ${item.status} requires safety_status PASSED`);
   }
-  if (['SCHEDULED', 'PUBLISHED', 'VERIFIED'].includes(item.status) && item.approval_status !== 'HUMAN_APPROVED') {
-    errors.push(`${label}: status ${item.status} requires approval_status HUMAN_APPROVED`);
+  if (['SCHEDULED', 'PUBLISHED', 'VERIFIED'].includes(item.status) && !hasExecutionApproval(item)) {
+    errors.push(`${label}: status ${item.status} requires HUMAN_APPROVED or SYSTEM_APPROVED`);
   }
-  if (item.status === 'SCHEDULED' && !item.scheduled_at) {
-    errors.push(`${label}: SCHEDULED requires scheduled_at`);
+  if (item.approval_status === 'SYSTEM_APPROVED') {
+    if (item.system_approval?.eligible !== true) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.eligible === true`);
+    if (!item.system_approval?.publisher) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.publisher`);
+    if (!item.system_approval?.evidence) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.evidence`);
+    if (!item.system_approval?.channel_id) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.channel_id`);
   }
+  if (item.status === 'SCHEDULED' && !item.scheduled_at) errors.push(`${label}: SCHEDULED requires scheduled_at`);
   if (item.status === 'PUBLISHED') {
     if (!item.external_post_id) errors.push(`${label}: PUBLISHED requires external_post_id; a sent request is not a publication`);
     if (!item.published_at) errors.push(`${label}: PUBLISHED requires published_at`);
@@ -72,17 +71,12 @@ export function validateItem(item) {
     }
   }
   if (item.status === 'ERROR' && !item.error) errors.push(`${label}: ERROR requires an error description`);
-
-  if (item.history !== undefined && !Array.isArray(item.history)) {
-    errors.push(`${label}: history must be an array when present`);
-  }
+  if (item.history !== undefined && !Array.isArray(item.history)) errors.push(`${label}: history must be an array when present`);
   return errors;
 }
 
 export function validateQueue(queue) {
-  if (!isPlainObject(queue) || !Array.isArray(queue.items)) {
-    return ['queue must be an object with an items array'];
-  }
+  if (!isPlainObject(queue) || !Array.isArray(queue.items)) return ['queue must be an object with an items array'];
   const errors = [];
   const seen = new Set();
   for (const item of queue.items) {
@@ -96,21 +90,10 @@ export function validateQueue(queue) {
   return errors;
 }
 
-/**
- * Advance one item. Returns a NEW item; the caller decides whether to persist.
- * Transitions are refused rather than forced, and every change is appended to history.
- */
 export function transition(item, to, { reason = '', at = nowIso(), patch = {} } = {}) {
   const from = item?.status;
-  if (!canTransition(from, to)) {
-    throw new Error(`illegal transition ${from} -> ${to} for ${item?.queue_id}`);
-  }
-  const next = {
-    ...item,
-    ...patch,
-    status: to,
-    history: [...(item.history || []), { from, to, at, reason }]
-  };
+  if (!canTransition(from, to)) throw new Error(`illegal transition ${from} -> ${to} for ${item?.queue_id}`);
+  const next = { ...item, ...patch, status: to, history: [...(item.history || []), { from, to, at, reason }] };
   const errors = validateItem(next);
   if (errors.length) {
     const error = new Error(`transition ${from} -> ${to} would produce an invalid item`);
@@ -120,7 +103,10 @@ export function transition(item, to, { reason = '', at = nowIso(), patch = {} } 
   return next;
 }
 
-/** Run the safety gate on a DRAFT/SAFETY_CHECK item and move it to READY or ERROR. */
+/**
+ * Run the safety gate. Low-risk autonomous publication is not assumed: a
+ * second, positive-evidence autonomy gate must prove brand + account + provider.
+ */
 export function runSafetyGate(item, context) {
   const verdict = evaluateItem(item, context);
   const staged = item.status === 'DRAFT'
@@ -136,14 +122,32 @@ export function runSafetyGate(item, context) {
       verdict
     };
   }
+
+  const autonomy = evaluateSystemApproval(item, context, verdict);
+  const approvalPatch = autonomy.eligible
+    ? {
+        approval_status: 'SYSTEM_APPROVED',
+        system_approval: {
+          eligible: true,
+          publisher: autonomy.publisher,
+          channel_id: autonomy.channel_id,
+          account_name: autonomy.account_name,
+          evidence: autonomy.evidence,
+          approved_at: nowIso()
+        }
+      }
+    : { approval_status: item.approval_status || 'PENDING_HUMAN' };
+
   return {
     item: transition(staged, 'READY', {
-      reason: verdict.human_required.length
-        ? 'safety passed; publication requires a human step'
-        : 'safety passed',
-      patch: { safety_status: 'PASSED' }
+      reason: autonomy.eligible
+        ? 'safety passed; brand/account/provider evidence permits bounded autonomous publication'
+        : verdict.human_required.length
+          ? 'safety passed; publication requires a human step'
+          : 'safety passed; autonomy evidence insufficient, kept at human gate',
+      patch: { safety_status: 'PASSED', ...approvalPatch }
     }),
-    verdict
+    verdict: { ...verdict, system_approval: autonomy }
   };
 }
 

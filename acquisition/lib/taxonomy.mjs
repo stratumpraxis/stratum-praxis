@@ -96,23 +96,19 @@ export const ASSET_TYPES = Object.freeze([
 ]);
 
 export const ASSET_STATUSES = Object.freeze([
-  'LIVE',            // publicly reachable and commercially usable
-  'PAUSED_CHECKOUT', // page is live, but its purchase path is deliberately closed
-  'DRAFT',           // exists in repo, not fit to receive paid distribution
-  'BLOCKED',         // known blocker; never a distribution destination
+  'LIVE',
+  'PAUSED_CHECKOUT',
+  'DRAFT',
+  'BLOCKED',
   'RETIRED'
 ]);
 
-/**
- * Verification tiers, strongest first. Anything below REPO_ONLY must never be
- * used as a live distribution destination.
- */
 export const VERIFICATION_STATES = Object.freeze([
-  'HTTP_VERIFIED',    // a real HTTP check succeeded and was recorded
-  'REPO_AND_SITEMAP', // source file exists in this repo AND is published in sitemap.xml
-  'REPO_ONLY',        // source file exists in this repo, not in sitemap.xml
-  'DOC_ONLY',         // asserted by an operational document, not confirmed here
-  'UNKNOWN',          // explicitly unknown - never silently guessed
+  'HTTP_VERIFIED',
+  'REPO_AND_SITEMAP',
+  'REPO_ONLY',
+  'DOC_ONLY',
+  'UNKNOWN',
   'UNVERIFIED'
 ]);
 
@@ -126,18 +122,15 @@ export const REVENUE_DESTINATION_TYPES = Object.freeze([
   'STRIPE',
   'PAYHIP',
   'GUMROAD',
-  'INTERNAL_FUNNEL', // free asset whose job is to hand off to a paid asset
+  'INTERNAL_FUNNEL',
   'NONE',
   'PAUSED',
   'UNKNOWN'
 ]);
 
 export const COMMERCIAL_INTENT = Object.freeze(['NONE', 'LOW', 'MID', 'HIGH']);
-
-/** PHASE 3 evidence classes. A hypothesis is never reported as evidence. */
 export const EVIDENCE_CLASSES = Object.freeze(['OBSERVED', 'ASSUMPTION', 'HYPOTHESIS']);
 
-/** PHASE 8 queue states. Distinct by design - "requested" is not "published". */
 export const QUEUE_STATES = Object.freeze([
   'DRAFT',
   'SAFETY_CHECK',
@@ -149,7 +142,6 @@ export const QUEUE_STATES = Object.freeze([
   'STOPPED'
 ]);
 
-/** Only these transitions are legal. Anything else is a bug or a forged state. */
 export const QUEUE_TRANSITIONS = Object.freeze({
   DRAFT: ['SAFETY_CHECK', 'STOPPED'],
   SAFETY_CHECK: ['READY', 'ERROR', 'STOPPED'],
@@ -161,11 +153,23 @@ export const QUEUE_TRANSITIONS = Object.freeze({
   STOPPED: []
 });
 
-/** States a human owner must sign off before the item may advance. */
+/**
+ * Approval states are evidence-bearing execution gates, not a blanket human
+ * requirement. SYSTEM_APPROVED is valid only when the safety layer proves an
+ * already-authorized autonomous publisher lane, an owned verified destination,
+ * no collision, and no warning requiring judgment. It never applies to KYC,
+ * payment, account creation, auth, CAPTCHA, or unverified external actions.
+ */
 export const APPROVAL_STATES = Object.freeze([
   'PENDING_HUMAN',
+  'SYSTEM_APPROVED',
   'HUMAN_APPROVED',
   'HUMAN_REJECTED'
+]);
+
+export const EXECUTION_APPROVAL_STATES = Object.freeze([
+  'SYSTEM_APPROVED',
+  'HUMAN_APPROVED'
 ]);
 
 export const WINNER_VERDICTS = Object.freeze([
@@ -175,12 +179,10 @@ export const WINNER_VERDICTS = Object.freeze([
   'INSUFFICIENT_DATA'
 ]);
 
-/** Hosts allowed to receive owned traffic. Keep in sync with distribution/safety-audit.mjs. */
 export const APPROVED_DESTINATION_DOMAINS = Object.freeze([
   'stratumpraxis.com'
 ]);
 
-/** Checkout hosts recognised by scos-analytics.js; used to classify revenue destinations. */
 export const CHECKOUT_HOSTS = Object.freeze([
   'buy.stripe.com',
   'payhip.com',
