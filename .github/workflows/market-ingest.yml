@@ -71,9 +71,15 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          SOURCE='${{ github.event.inputs.source || ''github'' }}'
+          # repository_dispatch is the production path from Make. Manual dispatch
+          # remains useful for verification. A scheduled safety-net run defaults to
+          # github because it has no client_payload or workflow inputs.
+          SOURCE='${{ github.event.client_payload.source || github.event.inputs.source || ''github'' }}'
+          LOCAL_FLAG='${{ github.event.client_payload.local || github.event.inputs.local || false }}'
           EXTRA=''
-          if [ '${{ github.event.inputs.local }}' = 'true' ]; then EXTRA='--local'; fi
+          if [ "$LOCAL_FLAG" = 'true' ]; then EXTRA='--local'; fi
+
+          echo "MARKET source=$SOURCE trigger=${{ github.event_name }}"
 
           node market/cli/ingest.mjs \
             --source "$SOURCE" \
