@@ -2,12 +2,12 @@
 // PHASE 8 / PHASE 11 - validate the distribution queue and run the safety gate.
 //
 // Usage:
-//   node acquisition/cli/queue-check.mjs            # report only (safe default)
-//   node acquisition/cli/queue-check.mjs --apply    # persist DRAFT -> READY/ERROR
+//   node acquisition/cli/queue-check.mjs
+//   node acquisition/cli/queue-check.mjs --apply
 //   node acquisition/cli/queue-check.mjs --json
 //
-// This CLI never publishes anything. Publication requires HUMAN_APPROVED plus a
-// publisher lane, and both are checked elsewhere.
+// This CLI never publishes. --apply may grant SYSTEM_APPROVED only when positive
+// brand/account/provider evidence proves an already-authorized autonomous lane.
 
 import { loadInventory } from '../lib/inventory.mjs';
 import { knownChannels, loadSourceRouting } from '../lib/utm.mjs';
@@ -22,6 +22,8 @@ const asJson = argv.has('--json');
 
 const sourceRouting = await loadSourceRouting();
 const providerPolicy = await readJson('distribution/provider-policy.json');
+const brandAccountPolicy = await readJson('acquisition/brand-account-policy.json');
+const publisherEvidence = await readJson('distribution/buffer-channel-audit-result.json');
 const inventory = await loadInventory('acquisition/asset-inventory.json', { knownChannels: knownChannels(sourceRouting) });
 
 let queue;
@@ -33,7 +35,6 @@ try {
   process.exit(1);
 }
 
-/** Build the in-flight picture from the OTHER distribution lanes (read-only). */
 async function collectInFlight() {
   const inFlight = [];
 
@@ -84,7 +85,7 @@ for (const collision of collisions) {
   collisionsById.get(collision.queue_id).push(collision);
 }
 
-const context = { inventory, providerPolicy, sourceRouting };
+const context = { inventory, providerPolicy, sourceRouting, brandAccountPolicy, publisherEvidence };
 const audit = evaluateQueue(queue, context);
 
 const perItem = queue.items.map((item) => {
@@ -102,8 +103,6 @@ if (apply) {
       updated.push(item);
       continue;
     }
-    // runSafetyGate covers in-queue safety; cross-lane collisions are applied here
-    // because they depend on files this queue does not own.
     updated.push(verdict.ok ? runSafetyGate(item, { ...context, siblings: queue.items }).item : {
       ...item,
       status: 'ERROR',
@@ -125,19 +124,24 @@ if (apply) {
 const report = {
   checked_at: new Date().toISOString(),
   applied: apply,
-  items: perItem.map(({ item, verdict, collisions: c }) => ({
-    queue_id: item.queue_id,
-    platform: item.platform,
-    asset_id: item.asset_id,
-    status: apply ? nextQueue.items.find((i) => i.queue_id === item.queue_id).status : item.status,
-    approval_status: item.approval_status,
-    automation: item.automation,
-    safety_ok: verdict.ok,
-    blocks: verdict.blocks,
-    warnings: verdict.warnings,
-    human_required: verdict.human_required,
-    cross_lane_collisions: c
-  })),
+  publisher_evidence_checked_at: publisherEvidence.checkedAt || null,
+  items: perItem.map(({ item, verdict, collisions: c }) => {
+    const current = apply ? nextQueue.items.find((i) => i.queue_id === item.queue_id) : item;
+    return {
+      queue_id: item.queue_id,
+      platform: item.platform,
+      asset_id: item.asset_id,
+      status: current.status,
+      approval_status: current.approval_status,
+      system_approval: current.system_approval || null,
+      automation: item.automation,
+      safety_ok: verdict.ok,
+      blocks: verdict.blocks,
+      warnings: verdict.warnings,
+      human_required: verdict.human_required,
+      cross_lane_collisions: c
+    };
+  }),
   external_lanes_scanned: [...new Set(inFlight.map((x) => x.lane))],
   human_required: audit.human_required
 };
@@ -146,18 +150,18 @@ if (asJson) {
   console.log(JSON.stringify(report, null, 2));
 } else {
   console.log(`Queue check${apply ? ' (applied)' : ' (report only)'} - ${report.items.length} item(s)`);
+  console.log(`Publisher evidence: ${report.publisher_evidence_checked_at || 'UNKNOWN'}`);
   console.log(`External lanes scanned: ${report.external_lanes_scanned.join(', ') || 'none'}`);
   for (const entry of report.items) {
     console.log(`\n  ${entry.queue_id}`);
     console.log(`    platform=${entry.platform} asset=${entry.asset_id} status=${entry.status} approval=${entry.approval_status} automation=${entry.automation}`);
     console.log(`    safety=${entry.safety_ok ? 'PASS' : 'BLOCKED'}`);
+    if (entry.system_approval?.eligible) console.log(`    SYSTEM_APPROVED publisher=${entry.system_approval.publisher} channel=${entry.system_approval.channel_id}`);
     for (const block of entry.blocks) console.log(`    BLOCK   ${block}`);
     for (const warning of entry.warnings) console.log(`    WARN    ${warning}`);
     for (const hr of entry.human_required) console.log(`    HUMAN_REQUIRED  ${hr.platform}: ${hr.reason}`);
   }
 }
 
-// A blocked item is a correct outcome, not a build failure: exit 0 unless the queue
-// itself is structurally invalid (handled above). In --json mode stdout stays pure JSON.
 const mark = asJson ? console.error : console.log;
 mark(`\nQUEUE_CHECK_COMPLETE blocked=${report.items.filter((i) => !i.safety_ok).length}/${report.items.length}`);
