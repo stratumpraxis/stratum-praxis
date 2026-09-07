@@ -10,6 +10,8 @@
 //
 // Usage:
 //   node market/cli/ingest.mjs --source github --owner OWNER --repo REPO [--local] [--json]
+//   node market/cli/ingest.mjs --source posthog [--local] [--json]
+//   node market/cli/ingest.mjs --source stripe [--local] [--json]
 //
 //   --local   use the local file store instead of the Make Data Store. Marked as
 //             LOCAL_FILE everywhere it is written; never treat it as production state.
@@ -25,7 +27,7 @@ import { makeTrace } from '../lib/evidence.mjs';
 import { classifyFailure, recordFailure } from '../lib/retry.mjs';
 import { LocalFileStore, selectStore } from '../lib/store.mjs';
 import { fitExistingAsset } from '../lib/asset-fit.mjs';
-import * as githubEvents from '../adapters/github-events.mjs';
+import { ingestExternalSource, sourceTrigger } from '../lib/source-adapter.mjs';
 import { REPO_ROOT } from '../../acquisition/lib/util.mjs';
 
 const argv = process.argv.slice(2);
@@ -76,14 +78,15 @@ async function main() {
   // ---- 1. EXTERNAL REALITY -> SIGNAL -------------------------------------------
   let ingested;
   const failures = [];
+  const owner = flag('owner');
+  const repo = flag('repo');
   try {
-    if (SOURCE !== 'github') throw new Error(`unknown --source ${SOURCE}; only github is wired to a live feed`);
-    const owner = flag('owner');
-    const repo = flag('repo');
-    if (!owner || !repo) throw new Error('--owner and --repo are required for the github source');
-    ingested = await githubEvents.ingest({
-      owner, repo, now,
-      ...(BACKFILL ? { ttlSeconds: Number(TTL_HOURS) * 3600 } : {})
+    ingested = await ingestExternalSource({
+      source: SOURCE,
+      owner,
+      repo,
+      now,
+      ttlHours: BACKFILL ? Number(TTL_HOURS) : null
     });
   } catch (err) {
     const cls = err.failure_class ?? classifyFailure(err);
@@ -195,7 +198,7 @@ async function main() {
 
   const trace = makeTrace({
     run_id: runId,
-    trigger: `${SOURCE}:${flag('owner', '')}/${flag('repo', '')}`,
+    trigger: sourceTrigger(SOURCE, { owner, repo }),
     store_kind: store.kind,
     started_at: startedAt,
     signals_seen: ingested.signals.length,
@@ -210,6 +213,12 @@ async function main() {
   if (BACKFILL) trace.backfill_ttl_hours = Number(TTL_HOURS);
   trace.invalid = invalid;
   trace.source_url = ingested.source_url;
+  if (SOURCE === 'stripe') {
+    trace.stripe_summary = {
+      paid_sessions: ingested.paid_sessions ?? 0,
+      unpaid_sessions: ingested.unpaid_sessions ?? 0
+    };
+  }
 
   await writeTrace(trace);
 
@@ -223,6 +232,9 @@ async function main() {
   log('');
   log(`expired on arrival: ${expiredOnArrival.length} (persisted as EXPIRED so they are not re-ingested)`);
   log(`actionable revenue routes: ${actions.length}`);
+  if (SOURCE === 'stripe') {
+    log(`stripe paid sessions: ${ingested.paid_sessions ?? 0}  unpaid sessions: ${ingested.unpaid_sessions ?? 0}`);
+  }
   log(`verified_revenue: ${trace.verified_revenue}  payment_evidence: ${trace.payment_evidence_present}`);
   log(`trace: market/evidence/${trace.run_id}.json`);
 }
