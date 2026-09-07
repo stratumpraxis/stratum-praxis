@@ -4,6 +4,8 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 **Website:** https://stratumpraxis.com/
 
+[![RustChain contributor](https://img.shields.io/badge/RustChain-contributor-orange)](https://rustchain.org)
+
 ## Tracked external acquisition entry
 
 - [Browse all currently active offers](https://stratumpraxis.com/product-router.html?utm_source=github&utm_medium=referral&utm_campaign=all_active_offers&utm_content=repository_readme) — external GitHub → tracked Stratum Praxis product router → product landing page / checkout. The shared analytics layer preserves source attribution and captures CTA / checkout exits before purchase verification in Stripe, Payhip, Gumroad, or the relevant marketplace.
