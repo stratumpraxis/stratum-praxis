@@ -133,7 +133,7 @@
   }
 
   if (!(window.posthog && window.posthog.__SV)) {
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people'},o='init capture register register_once unregister set_config reset opt_out_capturing has_opted_out_capturing opt_in_capturing'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people.toString=function(){return u.toString(1)+\'.people\'}'},o='init capture register register_once unregister set_config reset opt_out_capturing has_opted_out_capturing opt_in_capturing'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
   }
   window.posthog.init(TOKEN, {
     api_host: HOST,
@@ -181,9 +181,7 @@
 
   function normalizeLanguageRoutes() {
     if (!isEnglishPage()) return;
-    document.querySelectorAll('a[href="/return-gate/"]').forEach(function (link) {
-      link.setAttribute('href', '/return-gate/en/');
-    });
+    document.querySelectorAll('a[href="/return-gate/"]').forEach(function (link) { link.setAttribute('href', '/return-gate/en/'); });
   }
 
   function alignPrimaryRevenueCTA() {
@@ -228,8 +226,7 @@
       path === '/workflow-operator.html' || path === '/live-lab.html' ||
       path === '/ai-operations-standard.html' || path === '/execution-without-drift.html' ||
       path === '/prompt-systems.html' || path === '/ai-workspace-safety-workflow-kit.html' ||
-      path === '/ai-workflow-sop-governance-kit.html' ||
-      path.startsWith('/systems/') || path.startsWith('/guides/');
+      path === '/ai-workflow-sop-governance-kit.html' || path.startsWith('/systems/') || path.startsWith('/guides/');
   }
 
   function injectNetworkEntry() {
@@ -245,7 +242,6 @@
     wrap.id = 'return-gate-entry';
     wrap.setAttribute('aria-label', english ? 'Stratum Praxis network' : 'Stratum Praxis交通網');
     wrap.style.cssText = "max-width:1180px;margin:28px auto 18px;padding:0 16px;display:flex;gap:8px;flex-wrap:wrap;font:13px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif";
-
     function addLink(href, text, analyticsId, primary) {
       if (location.pathname === href || (href.endsWith('/') && location.pathname === href + 'index.html')) return;
       const link = document.createElement('a');
@@ -264,7 +260,6 @@
       });
       wrap.appendChild(link);
     }
-
     if (agentLabEligiblePath()) addLink(AGENT_LAB_CHECKOUT + '&utm_content=' + encodeURIComponent(funnelId()), 'Agent Lab · Founding Member $19/mo', 'agent_lab_founding_network', false);
     if (!onCrossAgent) addLink('/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=network&utm_campaign=cross_agent_personal&utm_content=network_primary', english ? 'Cross-Agent Operating Kit · Personal $69' : 'Cross-Agent Operating Kit · Personal $69', 'cross_agent_personal_network', true);
     if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', false);
