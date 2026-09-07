@@ -1,0 +1,63 @@
+name: t2000 Revenue Radar
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 * * * *"
+  push:
+    paths:
+      - "automation/t2000-revenue-runner/**"
+      - ".github/workflows/t2000-revenue-radar.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: t2000-revenue-radar
+  cancel-in-progress: false
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Scan and score t2000 Open Jobs
+        run: |
+          set -euo pipefail
+          node automation/t2000-revenue-runner/runner.mjs scan | tee t2000-report.json
+
+      - name: Revenue Radar summary
+        if: always()
+        run: |
+          if [ -f t2000-report.json ]; then
+            node - <<'NODE' >> "$GITHUB_STEP_SUMMARY"
+          const fs = require('fs');
+          const r = JSON.parse(fs.readFileSync('t2000-report.json','utf8'));
+          console.log('# t2000 Revenue Radar');
+          console.log('');
+          console.log(`Open observed: **${r.totalOpen}**`);
+          console.log(`Eligible: **${r.eligible.length}**`);
+          console.log(`Revenue recognized: **$0 until settlement evidence exists**`);
+          console.log('');
+          console.log('|Score|USDC|Title|Opening|');
+          console.log('|---:|---:|---|---|');
+          for (const j of r.top.slice(0,10)) {
+            const title = String(j.title || '').replace(/\|/g,'\\|');
+            console.log(`|${j.evaluation.score}|${j.evaluation.budget}|${title}|${j.id}|`);
+          }
+          NODE
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: t2000-revenue-radar-${{ github.run_id }}
+          path: t2000-report.json
+          if-no-files-found: ignore
+          retention-days: 14
