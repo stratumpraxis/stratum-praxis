@@ -7,7 +7,9 @@ import { spawnSync } from 'node:child_process';
 
 const API_BASE = process.env.T2000_API_BASE || 'https://api.t2000.ai/v1';
 const MIN_SCORE = Number(process.env.T2000_MIN_SCORE || 80);
-const MIN_BUDGET = Number(process.env.T2000_MIN_BUDGET_USDC || 0.05);
+// First verified settlement matters more than ticket size. Current live Open Jobs
+// commonly start at 0.02 USDC, so keep the onboarding floor below that market.
+const MIN_BUDGET = Number(process.env.T2000_MIN_BUDGET_USDC || 0.01);
 const mode = process.argv[2] || 'scan';
 const openingIdArg = process.argv[3] || '';
 const deliveryArg = process.argv[4] || process.env.T2000_DELIVERY_TEXT || '';
@@ -30,6 +32,16 @@ function textOf(job) {
   return [job.title, job.brief, job.briefPreview].filter(Boolean).join('\n');
 }
 
+function expiryOf(job) {
+  // Current t2000 API uses ISO `expiresAt`. Keep `openUntilMs` as a legacy fallback.
+  if (job.expiresAt) {
+    const parsed = Date.parse(job.expiresAt);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  const legacy = Number(job.openUntilMs || 0);
+  return Number.isFinite(legacy) && legacy > 0 ? legacy : null;
+}
+
 function scoreJob(job) {
   const text = textOf(job);
   const reasons = [];
@@ -42,6 +54,7 @@ function scoreJob(job) {
   if (budget >= 5) score += 20;
   else if (budget >= 1) score += 18;
   else if (budget >= 0.25) score += 15;
+  else if (budget >= 0.05) score += 12;
   else if (budget >= MIN_BUDGET) score += 10;
   else if (budget > 0) score += 4;
   else reasons.push('no_budget');
@@ -66,9 +79,19 @@ function scoreJob(job) {
   else if (sla >= 60) score += 5;
   else reasons.push('sla_too_short');
 
-  const remainingMs = Number(job.openUntilMs || 0) - Date.now();
-  if (!job.openUntilMs || remainingMs > 60 * 60 * 1000) score += 5;
-  else reasons.push('closing_soon');
+  const expiryMs = expiryOf(job);
+  const remainingMs = expiryMs ? expiryMs - Date.now() : null;
+  const notExpired = remainingMs === null || remainingMs > 0;
+  if (remainingMs === null) {
+    reasons.push('expiry_unknown');
+  } else if (remainingMs > 60 * 60 * 1000) {
+    score += 5;
+  } else if (remainingMs > 0) {
+    score += 2;
+    reasons.push('closing_soon');
+  } else {
+    reasons.push('expired');
+  }
 
   if (job.kind === 'batch' && Number(job.slotsRemaining || 0) <= 0) {
     reasons.push('batch_full');
@@ -79,13 +102,22 @@ function scoreJob(job) {
   score = Math.max(0, Math.min(100, score));
   const eligible =
     job.status === 'open' &&
+    notExpired &&
     budget >= MIN_BUDGET &&
     blocked.length === 0 &&
     positives > 0 &&
     minSellerLevel === 0 &&
+    !(job.kind === 'batch' && Number(job.slotsRemaining || 0) <= 0) &&
     score >= MIN_SCORE;
 
-  return { score, eligible, budget, reasons };
+  return {
+    score,
+    eligible,
+    budget,
+    expiresAt: job.expiresAt || null,
+    remainingMinutes: remainingMs === null ? null : Math.floor(remainingMs / 60000),
+    reasons,
+  };
 }
 
 async function api(path) {
@@ -153,7 +185,7 @@ async function scan() {
     try {
       full = await getOpening(row.id);
     } catch {
-      // bounded board preview is still enough to safely downgrade.
+      // Board preview remains usable, but unknown fields safely reduce eligibility.
     }
     enriched.push({ ...full, evaluation: scoreJob(full) });
   }
