@@ -9,6 +9,7 @@
 import { APPROVAL_STATES, EXECUTION_APPROVAL_STATES, QUEUE_STATES, QUEUE_TRANSITIONS } from './taxonomy.mjs';
 import { isPlainObject, nowIso, readJson, writeJson } from './util.mjs';
 import { evaluateItem, evaluateQueue } from './safety.mjs';
+import { evaluateSystemApproval } from './autonomy.mjs';
 
 const REQUIRED_FIELDS = [
   'queue_id', 'platform', 'asset_id', 'content_angle', 'cta', 'destination_url',
@@ -52,10 +53,9 @@ export function validateItem(item) {
     if (item.system_approval?.eligible !== true) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.eligible === true`);
     if (!item.system_approval?.publisher) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.publisher`);
     if (!item.system_approval?.evidence) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.evidence`);
+    if (!item.system_approval?.channel_id) errors.push(`${label}: SYSTEM_APPROVED requires system_approval.channel_id`);
   }
-  if (item.status === 'SCHEDULED' && !item.scheduled_at) {
-    errors.push(`${label}: SCHEDULED requires scheduled_at`);
-  }
+  if (item.status === 'SCHEDULED' && !item.scheduled_at) errors.push(`${label}: SCHEDULED requires scheduled_at`);
   if (item.status === 'PUBLISHED') {
     if (!item.external_post_id) errors.push(`${label}: PUBLISHED requires external_post_id; a sent request is not a publication`);
     if (!item.published_at) errors.push(`${label}: PUBLISHED requires published_at`);
@@ -104,9 +104,8 @@ export function transition(item, to, { reason = '', at = nowIso(), patch = {} } 
 }
 
 /**
- * Run the safety gate. Low-risk autonomous publication is not assumed: the
- * safety evaluator must explicitly return system_approval_eligible with a
- * verified publisher. Otherwise the item remains PENDING_HUMAN.
+ * Run the safety gate. Low-risk autonomous publication is not assumed: a
+ * second, positive-evidence autonomy gate must prove brand + account + provider.
  */
 export function runSafetyGate(item, context) {
   const verdict = evaluateItem(item, context);
@@ -124,14 +123,16 @@ export function runSafetyGate(item, context) {
     };
   }
 
-  const systemApproved = verdict.system_approval_eligible === true;
-  const approvalPatch = systemApproved
+  const autonomy = evaluateSystemApproval(item, context, verdict);
+  const approvalPatch = autonomy.eligible
     ? {
         approval_status: 'SYSTEM_APPROVED',
         system_approval: {
           eligible: true,
-          publisher: verdict.publisher,
-          evidence: verdict.system_approval_evidence,
+          publisher: autonomy.publisher,
+          channel_id: autonomy.channel_id,
+          account_name: autonomy.account_name,
+          evidence: autonomy.evidence,
           approved_at: nowIso()
         }
       }
@@ -139,14 +140,14 @@ export function runSafetyGate(item, context) {
 
   return {
     item: transition(staged, 'READY', {
-      reason: systemApproved
-        ? 'safety passed; existing authorized publisher lane is system-approved'
+      reason: autonomy.eligible
+        ? 'safety passed; brand/account/provider evidence permits bounded autonomous publication'
         : verdict.human_required.length
           ? 'safety passed; publication requires a human step'
-          : 'safety passed; no autonomous lane was proven',
+          : 'safety passed; autonomy evidence insufficient, kept at human gate',
       patch: { safety_status: 'PASSED', ...approvalPatch }
     }),
-    verdict
+    verdict: { ...verdict, system_approval: autonomy }
   };
 }
 
