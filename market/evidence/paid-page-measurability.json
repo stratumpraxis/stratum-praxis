@@ -1,0 +1,113 @@
+{
+  "proof": "paid pages that previously emitted nothing now emit checkout_click",
+  "sampled": 8,
+  "emitting_checkout_click": 8,
+  "verified_revenue": 0,
+  "note": "No purchase attempted. sendBeacon intercepted; nothing reached PostHog.",
+  "results": [
+    {
+      "route": "/ai-saas-spend.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "ai_saas_spend_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "ai-saas-spend"
+      },
+      "error": null,
+      "cta_id": "ai_saas_spend_checkout_1"
+    },
+    {
+      "route": "/overdue-invoice-recovery-kit.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "overdue_invoice_recovery_kit_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "overdue-invoice-recovery-kit"
+      },
+      "error": null,
+      "cta_id": "overdue_invoice_recovery_kit_checkout_1"
+    },
+    {
+      "route": "/life-resilience-toolkit/",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "life_resilience_toolkit_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "life-resilience-toolkit/"
+      },
+      "error": null,
+      "cta_id": "life_resilience_toolkit_checkout_1"
+    },
+    {
+      "route": "/ai-fit-router-ja/",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "ai_fit_router_ja_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "ai-fit-router-ja/"
+      },
+      "error": null,
+      "cta_id": "ai_fit_router_ja_checkout_1"
+    },
+    {
+      "route": "/accounting-ai-workflow-audit.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "accounting_ai_workflow_audit_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "accounting-ai-workflow-audit"
+      },
+      "error": null,
+      "cta_id": "accounting_ai_workflow_audit_checkout_1"
+    },
+    {
+      "route": "/ai-agent-cost-roi-calculator.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "ai_agent_cost_roi_calculator_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "ai-agent-cost-roi-calculator"
+      },
+      "error": null,
+      "cta_id": "ai_agent_cost_roi_calculator_checkout_1"
+    },
+    {
+      "route": "/sample-workflow-audit.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "sample_workflow_audit_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "sample-workflow-audit"
+      },
+      "error": null,
+      "cta_id": "sample_workflow_audit_checkout_1"
+    },
+    {
+      "route": "/global-digital-product-ai-starter-kit.html",
+      "loaded": true,
+      "analytics": true,
+      "checkout_click": {
+        "cta_id": "global_digital_product_ai_starter_kit_checkout_1",
+        "destination_host": "buy.stripe.com",
+        "first_utm_source": "audit",
+        "funnel": "global-digital-product-ai-starter-kit"
+      },
+      "error": null,
+      "cta_id": "global_digital_product_ai_starter_kit_checkout_1"
+    }
+  ]
+}
