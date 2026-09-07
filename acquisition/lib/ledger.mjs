@@ -52,6 +52,12 @@ export function makeRecord(input) {
     ledger_id: input.ledger_id,
     lane: input.lane,                     // 'acquisition' | 'trend-video-engine'
     platform: String(input.platform || '').toLowerCase(),
+    // Explicit revenue lineage. These fields are optional for legacy records but are
+    // preserved whenever a new route can name the signal/action/human evidence it came from.
+    revenue_route_id: input.revenue_route_id ?? null,
+    signal_id: input.signal_id ?? null,
+    action_type: input.action_type ?? null,
+    human_signal: isPlainObject(input.human_signal) ? input.human_signal : null,
     asset: input.asset ?? 'UNKNOWN',
     campaign: input.campaign ?? 'UNKNOWN',
     post_id: input.post_id ?? null,
@@ -240,5 +246,5 @@ export async function loadLedger(file = 'acquisition/distribution-ledger.json') 
 }
 
 export async function saveLedger(ledger, file = 'acquisition/distribution-ledger.json') {
-  await writeJson(file, { ...ledger, version: LEDGER_VERSION, updated_at: nowIso() });
+  await writeJson(file, ledger);
 }
