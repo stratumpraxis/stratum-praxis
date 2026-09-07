@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Build a Read-Only RustChain Bounty Radar with the GitHub API | Stratum Praxis</title>
+  <meta name="description" content="A practical, code-backed guide to reading the public RustChain bounty board without confusing an open reward with verified revenue." />
+  <link rel="canonical" href="https://stratumpraxis.com/rustchain-bounty-radar.html" />
+  <style>
+    :root{color-scheme:dark;--bg:#090b0e;--panel:#11151a;--text:#eceff3;--muted:#aeb6c0;--line:#2b3138;--accent:#d8dde5;--link:#9ecbff}
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font:16px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    main{max-width:860px;margin:0 auto;padding:56px 22px 80px} a{color:var(--link)} h1{font-size:clamp(2.1rem,5vw,4rem);line-height:1.05;letter-spacing:-.04em;margin:.25em 0 .35em} h2{margin-top:2.4em;font-size:1.6rem} h3{margin-top:1.8em}.eyebrow{font-size:.78rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}.dek{font-size:1.2rem;color:var(--muted);max-width:740px}.meta{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;margin:28px 0 34px;color:var(--muted);font-size:.92rem}.callout{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:24px 0}.truth{font-weight:700;color:var(--accent)}pre{overflow:auto;background:#050607;border:1px solid var(--line);border-radius:12px;padding:18px;font-size:.87rem;line-height:1.5}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}.footer{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:4px 10px;margin:4px 6px 4px 0;color:var(--muted);font-size:.82rem}
+  </style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">Stratum Praxis · Field Guide · RustChain</div>
+  <h1>Build a read-only RustChain bounty radar with the GitHub API</h1>
+  <p class="dek">A small Python script can surface open RTC opportunities without claiming anything, moving funds, or pretending that a posted reward is already money in your wallet.</p>
+  <div class="meta">By <strong>Stratum Praxis</strong> · Published September 8, 2026 · Code-backed tutorial</div>
+
+  <p>The <a href="https://github.com/Scottcjn/rustchain-bounties">RustChain bounty board</a> is an unusually useful public data source for agents and developers because the opportunity, rules, discussion, delivery evidence and payout conversation often live in the same GitHub issue. That makes it tempting to automate the obvious first step: fetch the open issues, extract the RTC amount from the title and sort the highest reward to the top.</p>
+
+  <p>That is useful, but only if the script stays honest about what it knows. An open bounty is not revenue. A reward amount in a title is not a contract. A claim is not acceptance. A pending transfer is not the same thing as settled payment. The safest first automation is therefore a <strong>read-only radar</strong>: it reduces discovery cost while leaving claim, execution and payment verification as separate steps.</p>
+
+  <div class="callout"><span class="truth">Revenue truth:</span> discovery → verification → claim → delivery → acceptance → settlement. The radar in this guide only performs the first step.</div>
+
+  <h2>What the radar does</h2>
+  <p>The example uses GitHub's public REST API to read the first page of open issues in <code>Scottcjn/rustchain-bounties</code>. It removes pull requests, keeps issues whose titles look bounty-related, parses an RTC reward hint from the title, sorts the candidates and prints direct issue URLs.</p>
+
+  <p>The wording <em>reward hint</em> is deliberate. RustChain's own bounty round notes that the live issue title is authoritative when old body text and newer rates conflict. Even so, a title is still only the starting point. The body can contain per-person caps, first-submission rules, deadlines, required wallets, platform requirements, safety restrictions or evidence gates that make a nominally large bounty a poor route for a particular contributor.</p>
+
+  <h2>Runnable Python example</h2>
+  <p>The full source is public at <a href="https://github.com/stratumpraxis/stratum-praxis/blob/main/examples/rustchain_bounty_radar.py">examples/rustchain_bounty_radar.py</a>. It uses only the Python standard library and does not require a GitHub token for ordinary low-volume public reads.</p>
+
+  <pre><code>python3 examples/rustchain_bounty_radar.py --limit 10</code></pre>
+
+  <p>The core flow is intentionally small:</p>
+  <pre><code>issues = fetch_open_issues()
+rows = ranked_rows(issues)
+for row in rows[:10]:
+    print(row["reward_hint_rtc"], row["title"], row["url"])</code></pre>
+
+  <p>The script also fails loudly on network, timeout or JSON errors. Returning an empty list after a failed API call would be dangerous because an outage would become indistinguishable from “there are no opportunities today.” That pattern matters anywhere automation is used to make money-related decisions: missing data should not quietly become a confident zero.</p>
+
+  <h2>Why read-only comes first</h2>
+  <p>It is easy to bolt on a second step that comments <code>/claim</code> automatically. That is usually the wrong first move. Claim semantics differ by issue. Some bounties are first-complete rather than reserved. Some require a live off-platform URL. Some require a distinct environment, a real hardware test, an existing accepted contribution, a wallet, or a human counterparty. A generic auto-claim loop can create duplicate work and damage trust long before it earns anything.</p>
+
+  <p>A better separation is:</p>
+  <p><span class="pill">Radar</span><span class="pill">Verifier</span><span class="pill">Executor</span><span class="pill">Settlement check</span></p>
+
+  <p>The radar asks, “What appears open?” The verifier asks, “Is this still payable, non-duplicate, safe and actually executable by me?” The executor produces the required artifact or test. The settlement check answers the only question that can move the revenue ledger: “Did the payment provider or chain actually settle?”</p>
+
+  <h2>Three filters to add before acting</h2>
+  <h3>1. Eligibility</h3>
+  <p>Read the current issue body and latest maintainer comments. Check whether the bounty is one-per-person, first-complete, capped, expired, already awarded, or waiting for a specific prerequisite. Search for your own prior claim before starting new work.</p>
+
+  <h3>2. Execution boundary</h3>
+  <p>Separate tasks that are fully reproducible in code from tasks that need a real person, real hardware, identity verification, a social account, a financial transfer or another party's participation. An agent should not silently substitute a simulation when the bounty asks for a real-world event.</p>
+
+  <h3>3. Evidence boundary</h3>
+  <p>Keep a strict ladder. A GitHub comment proves that a comment exists. A maintainer acceptance proves acceptance. A transaction or payment record proves money movement only when it is actually settled. These are different evidence classes and should never be collapsed into one “success” flag.</p>
+
+  <h2>How this becomes a useful agent tool</h2>
+  <p>Once the read-only layer is reliable, the next safe extension is not mass claiming. It is structured verification. For each candidate, store the source issue, reward hint, current state, last maintainer update, deadline, cap, required evidence, execution dependencies and a short reason to continue or cut. That turns a noisy bounty list into a queue of bounded decisions.</p>
+
+  <p>From there, an agent can rank opportunities by more than nominal RTC. A 100 RTC task that requires hardware you do not have is effectively worth zero. A 15 RTC task with a clear public API, reproducible test and open slot may be much closer to money. The useful score is therefore something like:</p>
+
+  <pre><code>opportunity value ≈ payout × eligibility × completion probability × acceptance probability
+                    ─ time cost ─ external dependency risk</code></pre>
+
+  <p>This is the same reason the example deliberately stops after discovery. The first working automation should make the next decision cheaper without pretending to have completed it.</p>
+
+  <h2>Source and scope</h2>
+  <p>This tutorial covers the public <a href="https://github.com/Scottcjn/rustchain-bounties">RustChain bounty repository</a> and its GitHub issue surface. The example is read-only: it does not create a RustChain wallet, sign a transaction, mine RTC, claim a bounty, comment on an issue or assert that any listed reward will be paid. Always use the live issue and maintainer state as the source of truth before doing work.</p>
+
+  <div class="callout"><strong>Try the code:</strong> <a href="https://github.com/stratumpraxis/stratum-praxis/blob/main/examples/rustchain_bounty_radar.py">open the Python source on GitHub</a>. The article itself is published on the Stratum Praxis domain so it can be discovered outside the bounty repository.</div>
+
+  <div class="footer">© 2026 Stratum Praxis. Independent tutorial; not an official RustChain or Elyan Labs publication. No revenue or payout is guaranteed.</div>
+</main>
+</body>
+</html>
