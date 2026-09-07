@@ -51,7 +51,7 @@ test('a request is never PUBLISHED and a publish is never VERIFIED', async () =>
   const errors = validateQueue(bad).join('\n');
   assert.match(errors, /PUBLISHED requires external_post_id; a sent request is not a publication/);
   assert.match(errors, /VERIFIED requires a verification_status object/);
-  assert.match(errors, /status SCHEDULED requires approval_status HUMAN_APPROVED/);
+  assert.match(errors, /status SCHEDULED requires HUMAN_APPROVED or SYSTEM_APPROVED/);
   assert.match(errors, /SCHEDULED requires scheduled_at/);
   assert.match(errors, /unknown status PURCHASED/);
 });
@@ -68,14 +68,14 @@ test('duplicate queue ids are caught', () => {
   assert.ok(validateQueue({ items: [item, { ...item }] }).some((e) => e.includes('duplicate queue_id')));
 });
 
-test('the safety gate advances a clean draft to READY but leaves approval with a human', async () => {
+test('the safety gate advances a clean draft to READY but stays human-gated without positive account evidence', async () => {
   const queue = await loadQueue();
   const clean = queue.items.find((i) => i.queue_id === 'ai-agent-cost-roi-calculator-youtube-v1');
   const { item, verdict } = runSafetyGate(clean, { ...context, siblings: queue.items });
   assert.equal(verdict.ok, true);
   assert.equal(item.status, 'READY');
   assert.equal(item.safety_status, 'PASSED');
-  assert.equal(item.approval_status, 'PENDING_HUMAN', 'the gate must never grant its own approval');
+  assert.equal(item.approval_status, 'PENDING_HUMAN', 'absence of brand/account evidence must fail closed');
   assert.equal(item.history.at(-1).to, 'READY');
 });
 
@@ -92,7 +92,6 @@ test('the safety gate routes a blocked draft to ERROR with the reason recorded',
 test('a transition that would produce an invalid item is refused', async () => {
   const queue = await loadQueue();
   const ready = runSafetyGate(queue.items[1], { ...context, siblings: queue.items }).item;
-  // READY -> SCHEDULED is legal, but only with approval and a time.
   assert.throws(() => transition(ready, 'SCHEDULED', { reason: 'forced' }), /would produce an invalid item/);
   const approved = { ...ready, approval_status: 'HUMAN_APPROVED' };
   const scheduled = transition(approved, 'SCHEDULED', { reason: 'approved by owner', patch: { scheduled_at: '2026-09-10T09:00:00.000Z' } });
