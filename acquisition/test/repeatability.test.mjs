@@ -6,7 +6,9 @@ import { assessRepeatability, hasVerifiedPurchase, routeFamilyKey } from '../lib
 function record(overrides = {}) {
   return {
     ledger_id: overrides.ledger_id || 'r1',
-    revenue_route_id: overrides.revenue_route_id ?? 'route-a',
+    revenue_route_id: Object.prototype.hasOwnProperty.call(overrides, 'revenue_route_id')
+      ? overrides.revenue_route_id
+      : 'route-a',
     attribution_state: overrides.attribution_state ?? 'ATTRIBUTED',
     status: overrides.status ?? 'PUBLISHED',
     signal_id: overrides.signal_id ?? null,
