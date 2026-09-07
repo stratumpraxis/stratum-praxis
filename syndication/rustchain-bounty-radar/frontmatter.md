@@ -8,7 +8,7 @@ Source article: https://github.com/stratumpraxis/stratum-praxis/blob/main/rustch
 
 Runnable code: https://github.com/stratumpraxis/stratum-praxis/blob/main/examples/rustchain_bounty_radar.py
 
-Cover image: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.png
+Cover image (1000×420): https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.svg
 
 ## Dev.to frontmatter
 
@@ -19,7 +19,7 @@ published: false
 description: "A code-backed guide to discovering public RustChain bounty opportunities without confusing an open reward, claim, or pending transfer with verified revenue."
 tags: rustchain, python, github, aiagents
 canonical_url: https://stratumpraxis.com/rustchain-bounty-radar.html
-cover_image: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.png
+cover_image: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.svg
 ---
 ```
 
@@ -35,7 +35,7 @@ tags:
   - GitHub API
   - AI Agents
 canonicalURL: https://stratumpraxis.com/rustchain-bounty-radar.html
-coverImageURL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.png
+coverImageURL: https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/syndication/rustchain-bounty-radar/cover.svg
 ```
 
 ## Suggested syndication excerpt
