@@ -54,6 +54,12 @@ export function toSignals(events, { now = Date.now() } = {}) {
       // PostHog's own event uuid keeps the id stable across re-reads of the same
       // window; without it a re-query would mint a second signal for one human act.
       external_id: String(event.uuid ?? event.id ?? `${name}:${event.timestamp}`),
+      source_event_id: String(event.uuid ?? event.id ?? `${name}:${event.timestamp}`),
+      // The whole property bag, so the contract can rebuild the exact
+      // client_reference_id this page would have written onto its checkout link.
+      // That value - not cta_id - is what Stripe sees, so it is the only thing that
+      // can join this click to the payment it may eventually produce.
+      event_properties: props,
       detected_at: event.timestamp ?? new Date(now).toISOString(),
       subject: `${name} on ${props.path ?? props.funnel ?? 'unknown page'}`,
       buyer_or_human: props.distinct_id ?? event.distinct_id ?? null,

@@ -53,6 +53,14 @@ export function toSignals(sessions, { now = Date.now() } = {}) {
       source: 'stripe',
       source_url: null,
       external_id: id,
+      source_event_id: id,
+      // The reference the page wrote onto the outbound link. It is the same string
+      // the PostHog adapter rebuilds from a checkout_click, so a click and the
+      // payment it produced arrive on one correlation_id without either system
+      // knowing about the other. Absent on a session that was opened by some path
+      // that never carried attribution - in which case the payment starts its own
+      // chain rather than being joined to a guess.
+      correlation_ref: routeId,
       detected_at: session.created
         ? new Date(session.created * 1000).toISOString()
         : new Date(now).toISOString(),
@@ -71,6 +79,10 @@ export function toSignals(sessions, { now = Date.now() } = {}) {
         // Carried through verbatim. state.mjs re-checks it before allowing PAID, so
         // an unpaid status here cannot be laundered into a payment upstream.
         payment_status: paid ? 'paid' : (session.payment_status ?? session.status ?? 'unknown'),
+        // Only a paid session gets an amount. An open session has an amount_total
+        // too, and carrying it would put a number that looks like revenue onto a
+        // record where no money moved.
+        ...(paid ? { amount_minor: session.amount_total ?? null, currency: session.currency ?? null } : {}),
         detail: `amount_total=${session.amount_total ?? 'null'} currency=${session.currency ?? 'null'}`,
         observed_at: new Date(now).toISOString()
       }),
