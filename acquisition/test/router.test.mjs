@@ -97,6 +97,20 @@ test('an asset with an undefined channel is rejected rather than guessed', () =>
   assert.match(rejected[0].reason, /not defined in distribution\/source-routing\.json/);
 });
 
+test('verified HN agent-scheduler signal selects the existing low-friction Agent Control Auditor', async () => {
+  const signals = await readJson('acquisition/demand-signals.json');
+  const signal = signals.signals.find((entry) => entry.signal_id === 'hn-agent-scheduler-governance-2026-09');
+  assert.ok(signal, 'HN signal must be persisted in the acquisition engine');
+  const route = routeDemand(signal, inventory, context);
+  assert.equal(route.best_existing_asset, 'agent-control-auditor');
+  assert.equal(route.new_product_gate, 'BLOCKED_EXISTING_ASSET_SUFFICIENT');
+  assert.equal(route.commercial_path.available, true);
+  assert.equal(route.commercial_path.price, 'USD 29');
+  assert.ok(route.reason.includes('agent_governance'));
+  assert.ok(route.channels.all.some((entry) => entry.channel === 'youtube'));
+  assert.ok(route.channels.all.some((entry) => entry.channel === 'devto'));
+});
+
 test('malformed router input is refused', () => {
   assert.throws(() => routeDemand(null, inventory, context), /signal must be an object/);
   assert.throws(() => routeDemand({}, inventory, context), /signal_id is required/);

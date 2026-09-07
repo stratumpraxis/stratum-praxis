@@ -1,12 +1,13 @@
 {
-  "version": 1,
-  "reviewed_at": "2026-08-27",
-  "purpose": "Demand signals scored by acquisition/lib/signal-score.mjs. Every dimension carries an explicit evidence class. OBSERVED means it was read from a measurement, a repository record or an operational document in this repository. ASSUMPTION and HYPOTHESIS are NOT evidence and must never be reported as such.",
+  "version": 2,
+  "reviewed_at": "2026-09-08",
+  "purpose": "Demand signals scored by acquisition/lib/signal-score.mjs. Every dimension carries an explicit evidence class. OBSERVED means it was read from a measurement, a repository record or an external primary/public record. ASSUMPTION and HYPOTHESIS are NOT evidence and must never be reported as such.",
   "evidence_sources": {
     "backlog": "revenue-os/backlog.md",
     "metrics": "revenue-os/metrics.json",
     "ledger": "revenue-link-ledger.md",
-    "agents": "AGENTS.md"
+    "agents": "AGENTS.md",
+    "external_nervous_system": "https://github.com/stratumpraxis/vector-praxis-japan/blob/main/capability-lab/evidence/external/hn-2026-09-07T144719Z.json"
   },
   "signals": [
     {
@@ -77,6 +78,37 @@
         "distribution_fit": {"score": 5, "evidence": "ASSUMPTION", "note": "no channel has been assigned to this asset"},
         "measurement_quality": {"score": 3, "evidence": "OBSERVED", "note": "3 pageviews in 7 days, all direct; too little to learn from"},
         "safety": {"score": 10, "evidence": "OBSERVED", "note": "owned destination, no claims"}
+      }
+    },
+    {
+      "signal_id": "hn-agent-scheduler-governance-2026-09",
+      "title": "Public agent scheduling activity exposes unattended-control questions",
+      "language": "en",
+      "user_problem": "Teams building schedulers for AI agents need a way to check permissions, human approval boundaries, retry ceilings and cost controls before unattended execution becomes routine.",
+      "problem_keys": ["agent_governance", "human_approval_boundaries", "cost_guardrails", "repeatable_execution"],
+      "target_audience": ["engineering_lead", "founder", "ops_lead"],
+      "observed_basis": [
+        "Hacker News official public API returned Show HN: Moadim.io – A scheduler for agents (item 49571537) in the verified External Nervous System run",
+        "the item had score 36 and 18 comments in the captured evidence; this proves discussion/activity, not purchase intent",
+        "the external sensor classified the item HIGH for multi-agent governance but explicitly recorded purchase intent as unproven"
+      ],
+      "external_source": {
+        "type": "HACKER_NEWS_OFFICIAL_API",
+        "event_id": "hn-49571537",
+        "source_event_id": "49571537",
+        "url": "https://news.ycombinator.com/item?id=49571537",
+        "evidence_ref": "https://github.com/stratumpraxis/vector-praxis-japan/blob/main/capability-lab/evidence/external/hn-2026-09-07T144719Z.json"
+      },
+      "scores": {
+        "pain_intensity": {"score": 5, "evidence": "ASSUMPTION", "note": "the post proves active building and discussion; it does not itself say buyers are suffering this exact governance pain"},
+        "urgency": {"score": 4, "evidence": "HYPOTHESIS", "note": "no deadline or buying window was observed"},
+        "audience_fit": {"score": 8, "evidence": "ASSUMPTION", "note": "agent builders are adjacent to the engineering/founder audience, but individual buyer identity was not established"},
+        "commercial_intent": {"score": 3, "evidence": "HYPOTHESIS", "note": "no checkout, contract, budget or buyer request was observed"},
+        "asset_fit": {"score": 10, "evidence": "OBSERVED", "note": "the verified inventory already contains Agent Control Auditor and paid agent-governance assets with matching problem keys"},
+        "content_fit": {"score": 7, "evidence": "ASSUMPTION", "note": "a bounded educational entry around unattended-agent controls fits the observed topic but has not yet produced qualified traffic from this source"},
+        "distribution_fit": {"score": 5, "evidence": "OBSERVED", "note": "an Agent Control Auditor publisher exists, but its historic queue and currently verified social accounts need alignment before this can be treated as an autonomous placement lane"},
+        "measurement_quality": {"score": 9, "evidence": "OBSERVED", "note": "Agent Control Auditor records funnel_view, qualified_tool_action, paid_offer_exposure, primary_cta_click and checkout_click; purchase still requires payment-provider evidence"},
+        "safety": {"score": 10, "evidence": "OBSERVED", "note": "the intended entry is an owned free diagnostic; no HN auto-commenting or unsolicited contact is permitted by this route"}
       }
     }
   ]
