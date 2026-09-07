@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { fileURLToPath } from 'node:url';
 
 const ROOT = process.cwd();
 const ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID || '';
@@ -113,12 +114,15 @@ function quality(final, source) {
   return { score: Math.max(0, score), words, generic_hits: genericHits, restricted_hits: restrictedHits, first_person_risk: firstPersonRisk, threshold: QUALITY_THRESHOLD };
 }
 
-function chooseCta(final, source) {
+// Exported so the routing decision can be asserted in a test. Until now the only
+// way to find out where the publisher would send a reader was to run it against
+// a live model, which is why it once shipped an article with no CTA at all.
+export function chooseCta(final, source) {
   if (!final.cta_recommendation?.include) return null;
   const i = Number(final.cta_recommendation.route_index);
   return Number.isInteger(i) ? source.existing_product_routes?.[i] || null : null;
 }
-function trackedUrl(route, source, lensId) {
+export function trackedUrl(route, source, lensId) {
   if (!route?.url) return null;
   const u = new URL(route.url);
   u.searchParams.set('utm_source', 'owned_media'); u.searchParams.set('utm_medium', 'blog');
@@ -162,4 +166,9 @@ async function main() {
   console.log(`BLOGGER_${status} ${id} ghost=${record.ghost_label} quality=${q.score} attempt=${state.attempts[source.source_id]}/${MAX_ATTEMPTS}`);
 }
 
-main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
+// Run only when invoked directly. Importing this module - which a test must do to
+// reach chooseCta - must never kick off a real publishing run.
+const INVOKED_DIRECTLY = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+if (INVOKED_DIRECTLY) {
+  main().catch((error) => { console.error(`BLOGGER_STOP ${error.message}`); process.exitCode = 0; });
+}

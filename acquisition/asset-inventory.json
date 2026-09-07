@@ -1456,6 +1456,104 @@
         "in_sitemap": true,
         "note": "Added to sitemap.xml here; it was previously absent. The /systems/ page published to main linked /prompt-store/ops10/, which has no page - the worker serves only /prompt-store/ops10/login and /workspace under that path."
       }
+    },
+    {
+      "asset_id": "paid-insight-300-ai-agents",
+      "brand": "Stratum Praxis",
+      "asset_name": "What You Need to Know Before Hiring 300 AI Agents",
+      "asset_type": "PAID_PRODUCT",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/eVq9AUgfqdHt3Sg9ZV6Zy0X",
+        "price": "USD 29",
+        "evidence": "in-page Stripe payment link, two CTAs on the page"
+      },
+      "primary_user_problem": "Scaling agent count multiplies decisions, permissions, handoffs and failure paths faster than headcount thinking accounts for.",
+      "problem_keys": [
+        "agent_governance",
+        "agent_portability",
+        "repeatable_execution",
+        "human_approval_boundaries"
+      ],
+      "target_audience": [
+        "engineering_lead",
+        "ops_lead",
+        "founder"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "note",
+        "youtube"
+      ],
+      "cta": {
+        "label": "Read the full framework",
+        "analytics_id": "paid_insight_300_hero_checkout"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html",
+        "in_sitemap": true,
+        "note": "Registered because it is the PRIMARY route of the agent-company-control-owner-package publisher source, yet was absent from the inventory - so every CTA the publisher sent there was unattributable. It also carried no scos-analytics.js at all and was added to sitemap.xml in the same change; before that it emitted nothing and was invisible to search. Live HTTP check runs from Actions, not from the authoring session."
+      }
+    },
+    {
+      "asset_id": "agent-control-auditor",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI Agent Control Auditor",
+      "asset_type": "FREE_DIAGNOSTIC",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/agent-control-auditor.html",
+      "revenue_destination": {
+        "type": "STRIPE",
+        "url": "https://buy.stripe.com/cNiaEY3sEgTF60o6NJ6Zy0W",
+        "price": "USD 29",
+        "evidence": "in-page Stripe payment link behind the free auditor result"
+      },
+      "primary_user_problem": "No way to check whether an agent setup actually has human gates, permission limits and budget ceilings before it runs unattended.",
+      "problem_keys": [
+        "agent_governance",
+        "human_approval_boundaries",
+        "cost_guardrails",
+        "agent_portability"
+      ],
+      "target_audience": [
+        "engineering_lead",
+        "ops_lead",
+        "founder"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "youtube",
+        "bluesky"
+      ],
+      "cta": {
+        "label": "Upgrade after the free result",
+        "analytics_id": "agent_control_auditor_pro_after_result"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "qualified_tool_action",
+        "paid_offer_exposure",
+        "primary_cta_click",
+        "checkout_click"
+      ],
+      "verification_state": "REPO_AND_SITEMAP",
+      "verification": {
+        "repo_file": "agent-control-auditor.html",
+        "in_sitemap": true,
+        "note": "Registered because it is the SECONDARY route of the agent-company-control-owner-package publisher source. Already loads scos-analytics.js and emits qualified_tool_action and paid_offer_exposure; those two events were added to the engine taxonomy separately."
+      }
     }
   ]
 }
