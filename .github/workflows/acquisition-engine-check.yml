@@ -83,6 +83,9 @@ jobs:
       - name: Daily acquisition report
         run: node acquisition/cli/daily-report.mjs
 
+      - name: Revenue route repeatability report
+        run: node acquisition/cli/repeatability-report.mjs
+
       - name: Opportunity network - audit, rank and stop at human gates
         run: |
           set -euo pipefail
