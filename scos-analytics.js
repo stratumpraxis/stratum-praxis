@@ -9,6 +9,7 @@
   const ANON_KEY = 'sp_anonymous_id_v2';
   const CHECKOUT_HOSTS = new Set(['buy.stripe.com', 'payhip.com', 'gumroad.com', 'stratumpraxis.gumroad.com']);
   const SOCIAL_HOSTS = ['x.com','twitter.com','instagram.com','tiktok.com','linkedin.com','facebook.com','threads.net','bsky.app'];
+  const AGENT_LAB_CHECKOUT = 'https://buy.stripe.com/5kQ3cwd3e0UHfAYdc76Zy0Y?utm_source=stratumpraxis&utm_medium=owned_network&utm_campaign=agent_lab_founding';
 
   function clean(value, limit) {
     return String(value || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, limit || 160);
@@ -226,6 +227,15 @@
     return 'external';
   }
 
+  function agentLabEligiblePath() {
+    if (!isEnglishPage()) return false;
+    const path = location.pathname;
+    return path === '/' || path === '/index.html' || path === '/agent-control-auditor.html' ||
+      path === '/cross-agent-operating-kit.html' || path === '/ai-council-builder.html' ||
+      path === '/workflow-operator.html' || path === '/live-lab.html' ||
+      path.startsWith('/systems/') || path.startsWith('/guides/');
+  }
+
   function injectNetworkEntry() {
     if (document.getElementById('return-gate-entry')) return;
     if (location.pathname === '/workflow-audit.html') return;
@@ -247,6 +257,7 @@
       link.href = href;
       link.textContent = text;
       link.dataset.analyticsId = analyticsId;
+      if (analyticsId.indexOf('agent_lab') >= 0) link.dataset.product = 'agent_lab_membership';
       if (primary) link.setAttribute('data-primary-cta', 'true');
       link.style.cssText = primary
         ? 'display:inline-block;border:1px solid rgba(190,205,225,.65);border-radius:999px;padding:9px 13px;color:#080b10;text-decoration:none;background:#f5f7fb;font-weight:850'
@@ -254,10 +265,12 @@
       link.addEventListener('pointerdown', function () {
         captureBeforeNavigation('network_route_click', { source_funnel: funnelId(), destination_path: href, route_id: analyticsId });
         if (analyticsId.indexOf('return_gate') >= 0) captureBeforeNavigation('return_gate_entry_click', { source_funnel: funnelId(), destination_path: href });
+        if (analyticsId.indexOf('agent_lab') >= 0) captureBeforeNavigation('agent_lab_entry_click', { source_funnel: funnelId(), destination_path: href, price_usd: 19, billing: 'monthly' });
       });
       wrap.appendChild(link);
     }
 
+    if (agentLabEligiblePath()) addLink(AGENT_LAB_CHECKOUT + '&utm_content=' + encodeURIComponent(funnelId()), 'Agent Lab · Founding Member $19/mo', 'agent_lab_founding_network', false);
     if (!onCrossAgent) addLink('/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=network&utm_campaign=cross_agent_personal&utm_content=network_primary', english ? 'Cross-Agent Operating Kit · Personal $69' : 'Cross-Agent Operating Kit · Personal $69', 'cross_agent_personal_network', true);
     if (!onReturnGate) addLink(returnPath, english ? '↩ Return Gate' : '↩ Return Gate｜再訪ハブ', 'return_gate_entry', false);
     if (onReturnGate) addLink('/return-gate-growth-os.html', english ? 'Build your own Return Gate · $24' : '再訪導線を作る · Growth OS $24', 'return_gate_growth_os', false);
