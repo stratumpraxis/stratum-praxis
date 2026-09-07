@@ -10,6 +10,8 @@
 //
 // Usage:
 //   node market/cli/ingest.mjs --source github --owner OWNER --repo REPO [--local] [--json]
+//   node market/cli/ingest.mjs --source posthog [--local] [--json]
+//   node market/cli/ingest.mjs --source stripe [--local] [--json]
 //
 //   --local   use the local file store instead of the durable ledger. Marked as
 //             LOCAL_FILE everywhere it is written; never treat it as production state.
@@ -35,47 +37,8 @@ import { classifyFailure, recordFailure } from '../lib/retry.mjs';
 import { LocalFileStore, selectStore } from '../lib/store.mjs';
 import { fitExistingAsset } from '../lib/asset-fit.mjs';
 import { carriesVerifiedPayment, explorationPosture, findWinners, prioritise, promoteToWinner } from '../lib/winner.mjs';
-import * as githubEvents from '../adapters/github-events.mjs';
-import * as posthogEvents from '../adapters/posthog-events.mjs';
-import * as stripeEvents from '../adapters/stripe-events.mjs';
-import * as dispatchEvents from '../adapters/dispatch-events.mjs';
+import { ingestExternalSource, sourceTrigger } from '../lib/source-adapter.mjs';
 import { REPO_ROOT } from '../../acquisition/lib/util.mjs';
-
-// The source registry. Adding a feed is adding an entry here, not editing the run
-// loop - which is what keeps the qualification, dedupe and state logic identical no
-// matter where an event came from.
-//
-// `trigger` is what the trace records as the reason this run happened, and it is
-// deliberately specific per source: "posthog" and "github:owner/repo" answer
-// different questions when you are reading a trace six weeks later.
-const SOURCES = Object.freeze({
-  github: {
-    describe: (f) => `github:${f('owner', '')}/${f('repo', '')}`,
-    run: ({ now, flag, ttlSeconds }) => {
-      const owner = flag('owner');
-      const repo = flag('repo');
-      if (!owner || !repo) throw new Error('--owner and --repo are required for the github source');
-      return githubEvents.ingest({ owner, repo, now, ...(ttlSeconds ? { ttlSeconds } : {}) });
-    }
-  },
-  posthog: {
-    describe: () => 'posthog:human_events',
-    run: ({ now }) => posthogEvents.ingest({ now })
-  },
-  stripe: {
-    describe: () => 'stripe:checkout_sessions',
-    run: ({ now }) => stripeEvents.ingest({ now })
-  },
-  dispatch: {
-    describe: (f) => `dispatch:${f('dispatch-id', 'market_signal')}`,
-    run: ({ now, flag }) => dispatchEvents.ingest({
-      now,
-      payloadFile: flag('payload-file'),
-      payload: flag('payload') ? JSON.parse(flag('payload')) : null,
-      dispatchId: flag('dispatch-id')
-    })
-  }
-});
 
 const argv = process.argv.slice(2);
 const flag = (name, fallback = null) => {
@@ -91,6 +54,9 @@ const SOURCE = flag('source', 'github');
 // qualification path against reality when the live window happens to be quiet. It
 // is NOT the default, and every run that uses it says so in its trace, so a
 // backfill can never be read as ordinary live throughput.
+const DISPATCH_PAYLOAD_FILE = flag('payload-file');
+const DISPATCH_PAYLOAD = flag('payload');
+const DISPATCH_ID = flag('dispatch-id');
 const TTL_HOURS = flag('ttl-hours', null);
 const BACKFILL = TTL_HOURS !== null;
 
@@ -125,14 +91,20 @@ async function main() {
   // ---- 1. EXTERNAL REALITY -> SIGNAL -------------------------------------------
   let ingested;
   const failures = [];
+  const owner = flag('owner');
+  const repo = flag('repo');
   try {
-    const adapter = SOURCES[SOURCE];
-    if (!adapter) {
-      throw new Error(`unknown --source ${SOURCE}; wired sources are ${Object.keys(SOURCES).join(', ')}`);
-    }
-    ingested = await adapter.run({
-      now, flag,
-      ttlSeconds: BACKFILL ? Number(TTL_HOURS) * 3600 : null
+    ingested = await ingestExternalSource({
+      source: SOURCE,
+      owner,
+      repo,
+      now,
+      ttlHours: BACKFILL ? Number(TTL_HOURS) : null,
+      // A repository_dispatch hands its client_payload over as a file so that no
+      // part of it is ever interpreted by a shell.
+      payloadFile: DISPATCH_PAYLOAD_FILE,
+      payload: DISPATCH_PAYLOAD ? JSON.parse(DISPATCH_PAYLOAD) : null,
+      dispatchId: DISPATCH_ID
     });
   } catch (err) {
     const cls = err.failure_class ?? classifyFailure(err);
@@ -346,7 +318,7 @@ async function main() {
 
   const trace = makeTrace({
     run_id: runId,
-    trigger: SOURCES[SOURCE].describe(flag),
+    trigger: sourceTrigger(SOURCE, { owner, repo, dispatchId: DISPATCH_ID }),
     store_kind: store.kind,
     started_at: startedAt,
     signals_seen: ingested.signals.length,
@@ -377,6 +349,12 @@ async function main() {
     acc[s.correlation_basis] = (acc[s.correlation_basis] ?? 0) + 1;
     return acc;
   }, {});
+  if (SOURCE === 'stripe') {
+    trace.stripe_summary = {
+      paid_sessions: ingested.paid_sessions ?? 0,
+      unpaid_sessions: ingested.unpaid_sessions ?? 0
+    };
+  }
 
   await writeTrace(trace);
 
@@ -393,6 +371,9 @@ async function main() {
   log(`actionable revenue routes: ${actions.length}`);
   log(`routes promoted to WINNER: ${promotions.filter((p) => p.promoted).length}`);
   log(`correlation basis: ${JSON.stringify(trace.correlation_basis)}`);
+  if (SOURCE === 'stripe') {
+    log(`stripe paid sessions: ${ingested.paid_sessions ?? 0}  unpaid sessions: ${ingested.unpaid_sessions ?? 0}`);
+  }
   log(`verified_revenue: ${trace.verified_revenue} payment(s) ${JSON.stringify(trace.verified_revenue_amount_minor)}  payment_evidence: ${trace.payment_evidence_present}`);
   log(`trace: market/evidence/${trace.run_id}.json`);
 }

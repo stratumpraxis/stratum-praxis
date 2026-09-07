@@ -90,20 +90,36 @@ jobs:
         run: |
           set -o pipefail
 
-          # An external event decides the source. A dispatch is the real
-          # event-driven path; workflow_dispatch is a human asking; the schedule is
-          # the safety net and reads github.
-          if [ '${{ github.event_name }}' = 'repository_dispatch' ]; then
+          # repository_dispatch is the production path from Make, and it can mean two
+          # different things. Both are supported because both are useful:
+          #
+          #   client_payload.source named  -> "go and read that feed now". The dispatch
+          #                                   is the trigger; the events come from the
+          #                                   source. This is how Make turns a Stripe
+          #                                   webhook into a real Stripe read rather
+          #                                   than relaying a payment it may not assert.
+          #   no source named              -> the payload IS the events, handled by the
+          #                                   dispatch adapter under its refusal rules.
+          #
+          # workflow_dispatch is a human asking; the schedule is the safety net and
+          # reads github, having neither a payload nor inputs.
+          SOURCE='${{ github.event.client_payload.source || github.event.inputs.source || 'github' }}'
+          LOCAL_FLAG='${{ github.event.client_payload.local || github.event.inputs.local || false }}'
+
+          if [ '${{ github.event_name }}' = 'repository_dispatch' ] \
+             && [ -z '${{ github.event.client_payload.source }}' ]; then
+            SOURCE='dispatch'
             ARGS=( --source dispatch
                    --payload-file /tmp/market-dispatch.json
                    --dispatch-id "${{ github.run_id }}" )
           else
-            SOURCE='${{ github.event.inputs.source || ''github'' }}'
             ARGS=( --source "$SOURCE"
                    --owner "${{ github.repository_owner }}"
                    --repo "${{ github.event.repository.name }}" )
           fi
-          if [ '${{ github.event.inputs.local }}' = 'true' ]; then ARGS+=( --local ); fi
+          if [ "$LOCAL_FLAG" = 'true' ]; then ARGS+=( --local ); fi
+
+          echo "MARKET source=$SOURCE trigger=${{ github.event_name }}"
 
           node market/cli/ingest.mjs "${ARGS[@]}" --json | tee /tmp/market-run.json
           code=${PIPESTATUS[0]}
@@ -140,7 +156,7 @@ jobs:
           '
 
       - name: Report what the bus was refused
-        if: github.event_name == 'repository_dispatch'
+        if: github.event_name == 'repository_dispatch' && !github.event.client_payload.source
         shell: bash
         run: |
           set -euo pipefail
