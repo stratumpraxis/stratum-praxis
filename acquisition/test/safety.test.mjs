@@ -166,21 +166,33 @@ test('a paused-checkout destination produces a warning, not a silent pass', () =
 });
 
 test('cross-lane collisions with the existing distribution lanes are detected', async () => {
+  // The invariant is that the detector fires when a lane really is in flight for the
+  // same asset and platform. It is deliberately NOT asserted against whatever
+  // distribution/launch-now.json happens to hold today: that file is live operational
+  // state and drains as posts go out, so pinning it here turned an ordinary lane
+  // change into a red test that said nothing about the detector.
   const queue = await loadQueue();
-  const launchNow = await readJson('distribution/launch-now.json');
-  const inFlight = launchNow.flatMap((item) =>
-    (item.services || []).map((service) => ({
-      lane: 'distribution/launch-now.json',
-      platform: service,
-      destination_url: item.url,
-      campaign: new URL(item.url).searchParams.get('utm_campaign'),
-      state: 'SCHEDULED'
-    })));
+  const target = queue.items[0];
+  assert.ok(target, 'the queue fixture must have at least one item to collide with');
+
+  const inFlight = [{
+    lane: 'distribution/launch-now.json',
+    platform: target.platform,
+    destination_url: target.destination_url,
+    campaign: target.utm_parameters?.utm_campaign ?? null,
+    state: 'SCHEDULED'
+  }];
 
   const collisions = checkExternalLaneCollisions(queue.items, inFlight);
-  assert.ok(collisions.length > 0, 'the seeded Instagram item collides with the in-flight launch-now run');
+  assert.ok(collisions.length > 0, 'an in-flight lane entry for the same asset must collide');
   assert.equal(collisions[0].lane, 'distribution/launch-now.json');
   assert.match(collisions[0].reason, /do not queue another payload/);
+});
+
+test('an empty external lane produces no collisions', async () => {
+  const queue = await loadQueue();
+  assert.deepEqual(checkExternalLaneCollisions(queue.items, []), [],
+    'nothing is in flight, so nothing may be blocked');
 });
 
 test('a lane entry that already failed does not block new work', () => {

@@ -1,7 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { readFile } from 'node:fs/promises';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
+
 import { contentHash, isDerivable, loadSources, validateSource, verifySourceIntegrity } from '../lib/source.mjs';
+
+const REPO_ROOT = path.resolve(fileURLToPath(new URL('../../..', import.meta.url)));
+const repoPath = (p) => path.join(REPO_ROOT, p);
 
 const base = {
   source_id: 'probe-source',
@@ -70,7 +77,13 @@ test('sources are immutable: a changed file breaks its own hash', async () => {
 test('the shipped register loads with the real file hashes intact', async () => {
   const result = await loadSources();
   assert.deepEqual(result.rejected, [], 'the shipped source register must verify against the real files');
-  assert.equal(result.accepted.length, 3);
+  // The register grows as sources are approved, so the invariant is that every
+  // registered source verifies - not that there are exactly N of them. Pinning a
+  // count here made an honest addition look like a provenance failure.
+  const registered = JSON.parse(await readFile(repoPath('acquisition/media-engine/sources.json'), 'utf8'));
+  assert.equal(result.accepted.length, registered.sources.length,
+    'every source in the shipped register must be accepted');
+  assert.ok(result.accepted.length > 0);
   const owner = result.byId.get('repeat-visit-sites-win-owner-package');
   assert.equal(owner.source_type, 'OWNER_APPROVED_SOURCE');
   assert.equal(owner.status, 'COMPLETE');

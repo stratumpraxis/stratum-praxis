@@ -104,13 +104,21 @@ test('the daily report surfaces the paused-checkout gap it discovered', async ()
   assert.equal(gap.destination_type, 'PAUSED');
 });
 
-test('the queue check blocks the item that collides with the live distribution lane', async () => {
+test('the queue check reports every item and blocks exactly those with collisions', async () => {
   const { stdout } = await run(node, ['acquisition/cli/queue-check.mjs', '--json'], { cwd: REPO_ROOT });
   const report = JSON.parse(stdout);
-  const blocked = report.items.filter((i) => !i.safety_ok);
-  assert.equal(blocked.length, 1);
-  assert.equal(blocked[0].queue_id, 'ai-saas-waste-calculator-instagram-v1');
-  assert.ok(blocked[0].cross_lane_collisions.length > 0);
+
+  // The live external lanes drain as posts go out, so how MANY items are blocked is
+  // operational state, not a contract. What must always hold is the relationship:
+  // an item is unsafe if and only if something concrete was found against it.
+  assert.ok(report.items.length > 0, 'the queue check must report on every queued item');
+  assert.ok(report.external_lanes_scanned.length > 0, 'it must actually scan the external lanes');
+  for (const item of report.items) {
+    assert.ok(Array.isArray(item.cross_lane_collisions));
+    const hasFinding = item.blocks.length > 0 || item.cross_lane_collisions.length > 0;
+    assert.equal(item.safety_ok, !hasFinding,
+      `${item.queue_id}: safety_ok must reflect its own blocks and collisions`);
+  }
 });
 
 test('concurrent evaluations are independent and deterministic', async () => {
