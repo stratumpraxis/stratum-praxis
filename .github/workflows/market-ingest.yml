@@ -1,0 +1,111 @@
+name: MARKET external signal ingest
+
+# External reality is the trigger. repository_dispatch is the real one - Make calls
+# it when it has something. The schedule is a safety net for sources that have no
+# webhook, not the primary mechanism; if this file ever becomes the only way signals
+# arrive, the architecture has quietly reverted to schedule-driven.
+on:
+  repository_dispatch:
+    types: [market_signal]
+  workflow_dispatch:
+    inputs:
+      source:
+        description: 'Adapter to run'
+        type: choice
+        options: [github, posthog, stripe]
+        default: github
+      local:
+        description: 'Use the local file store instead of the Make Data Store'
+        type: boolean
+        default: false
+  schedule:
+    - cron: '17 */6 * * *'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: market-ingest
+  cancel-in-progress: false
+
+jobs:
+  contracts:
+    name: Contracts hold
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: MARKET contract tests
+        run: node --test market/test/*.test.mjs
+      - name: The engine suites still pass
+        run: |
+          node --test acquisition/test/*.test.mjs \
+                      acquisition/signal-intelligence/test/*.test.mjs \
+                      acquisition/media-engine/test/*.test.mjs \
+                      acquisition/opportunity-engine/test/*.test.mjs
+
+  ingest:
+    name: Ingest external signals
+    needs: contracts
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Ingest
+        env:
+          # Runtime state. Without these the CLI reports BLOCKED rather than
+          # writing production state somewhere it does not belong.
+          MARKET_STATE_ENDPOINT: ${{ secrets.MARKET_STATE_ENDPOINT }}
+          MARKET_STATE_SECRET: ${{ secrets.MARKET_STATE_SECRET }}
+          GITHUB_TOKEN: ${{ github.token }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        shell: bash
+        run: |
+          set -o pipefail
+          SOURCE='${{ github.event.inputs.source || ''github'' }}'
+          EXTRA=''
+          if [ '${{ github.event.inputs.local }}' = 'true' ]; then EXTRA='--local'; fi
+
+          node market/cli/ingest.mjs \
+            --source "$SOURCE" \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
+            $EXTRA | tee /tmp/market-run.log
+
+          code=${PIPESTATUS[0]}
+          if [ "$code" = '2' ]; then
+            echo '::warning::MARKET state store is not configured; no signal was persisted.'
+            echo 'Set MARKET_STATE_ENDPOINT and MARKET_STATE_SECRET to enable the production lane.'
+            exit 0
+          fi
+          exit "$code"
+
+      - name: Revenue claims must stay grounded
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A run may never report revenue. Money enters the ledger through payment
+          # evidence and the state machine, never through an ingest summary.
+          if grep -qiE 'verified_revenue: *[1-9]' /tmp/market-run.log; then
+            echo '::error::an ingest run reported non-zero verified revenue; that can only come from payment evidence'
+            exit 1
+          fi
+          echo 'OK  no revenue was claimed by this run'
+
+      - name: Upload run trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-evidence
+          path: market/evidence/
+          if-no-files-found: ignore
+          retention-days: 30

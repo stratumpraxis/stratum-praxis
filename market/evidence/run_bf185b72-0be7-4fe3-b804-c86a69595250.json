@@ -1,0 +1,144 @@
+{
+  "run_id": "run_bf185b72-0be7-4fe3-b804-c86a69595250",
+  "trigger": "github:stratumpraxis/stratum-praxis",
+  "store_kind": "LOCAL_FILE",
+  "started_at": "2026-09-07T08:42:45.262Z",
+  "finished_at": "2026-09-07T08:42:47.231Z",
+  "signals_seen": 31,
+  "signals_new": 31,
+  "decisions": [],
+  "actions": [],
+  "failures": [],
+  "verified_revenue": 0,
+  "payment_evidence_present": false,
+  "suppressed": [],
+  "expired_on_arrival": [
+    {
+      "signal_id": "sig_dfd48d36b92ba05be29791e4bb00564b",
+      "detected_at": "2026-09-05T02:47:48Z"
+    },
+    {
+      "signal_id": "sig_15d75c0c47dfb9cf642c2c4998658987",
+      "detected_at": "2026-09-04T07:20:38Z"
+    },
+    {
+      "signal_id": "sig_1addb3481f4a44cbcee87bc3e49ce74a",
+      "detected_at": "2026-09-04T07:19:56Z"
+    },
+    {
+      "signal_id": "sig_0108695ab930752371c7cec4490ae8fb",
+      "detected_at": "2026-09-04T07:16:47Z"
+    },
+    {
+      "signal_id": "sig_43c1dff113c183a7f7b733f2daa51008",
+      "detected_at": "2026-09-04T07:16:18Z"
+    },
+    {
+      "signal_id": "sig_e8c74f7aae0ce295f4bb9784953de720",
+      "detected_at": "2026-09-04T07:15:35Z"
+    },
+    {
+      "signal_id": "sig_c71845cee214c032e85eca507c27407a",
+      "detected_at": "2026-09-04T07:15:07Z"
+    },
+    {
+      "signal_id": "sig_8cdca5229c2948473cb8fc5de5a76b04",
+      "detected_at": "2026-09-04T06:27:44Z"
+    },
+    {
+      "signal_id": "sig_831124da1ad609d722e673bddbea3f4f",
+      "detected_at": "2026-09-04T06:11:14Z"
+    },
+    {
+      "signal_id": "sig_7eac29b299305cdfce3fad6d09a4e8db",
+      "detected_at": "2026-09-04T05:43:10Z"
+    },
+    {
+      "signal_id": "sig_5adc8786ea87dde21240c17f22fbe6f0",
+      "detected_at": "2026-09-04T05:42:11Z"
+    },
+    {
+      "signal_id": "sig_55ab23c9b0529b1a1a488f86c3e57c4c",
+      "detected_at": "2026-09-04T05:37:43Z"
+    },
+    {
+      "signal_id": "sig_3f56dff21c1ab9d8e5c79f477bbac8aa",
+      "detected_at": "2026-09-04T05:34:29Z"
+    },
+    {
+      "signal_id": "sig_9ad574719348b4e21bb3fb0eac0542e7",
+      "detected_at": "2026-09-04T05:32:22Z"
+    },
+    {
+      "signal_id": "sig_d242512f03f846dda5db1c576ae70801",
+      "detected_at": "2026-09-04T05:30:00Z"
+    },
+    {
+      "signal_id": "sig_aa0044ab5f027f1090481b86f84778ba",
+      "detected_at": "2026-09-04T05:27:04Z"
+    },
+    {
+      "signal_id": "sig_c2b5628fb798a6a1b8268e9499cd42bc",
+      "detected_at": "2026-09-04T05:25:49Z"
+    },
+    {
+      "signal_id": "sig_b4b40ed7b787298abdc0bfd1b2492e37",
+      "detected_at": "2026-09-04T05:22:34Z"
+    },
+    {
+      "signal_id": "sig_ee65ca37babb7e1b446b5b2b5fd95119",
+      "detected_at": "2026-09-04T05:05:51Z"
+    },
+    {
+      "signal_id": "sig_973bf1b3c3e6873f6fc8b025f862f539",
+      "detected_at": "2026-09-04T04:57:26Z"
+    },
+    {
+      "signal_id": "sig_02a28670d76255f8fcee9d49ecbc8fcc",
+      "detected_at": "2026-09-04T04:24:49Z"
+    },
+    {
+      "signal_id": "sig_b067b2f16feffcde75f6202dd473d9a4",
+      "detected_at": "2026-09-04T04:16:14Z"
+    },
+    {
+      "signal_id": "sig_baccfdfc6fb00a5307f27ce4c83ce461",
+      "detected_at": "2026-09-04T04:00:41Z"
+    },
+    {
+      "signal_id": "sig_aabe4bba72b8d0296a447d08f0469d6b",
+      "detected_at": "2026-09-04T03:55:47Z"
+    },
+    {
+      "signal_id": "sig_d1148215147d96f724936e76b72317a6",
+      "detected_at": "2026-09-04T03:55:23Z"
+    },
+    {
+      "signal_id": "sig_26a7d6aded5649d396263f889fb7917a",
+      "detected_at": "2026-09-04T03:21:28Z"
+    },
+    {
+      "signal_id": "sig_93a0b434d45761a3587ad22e888f2485",
+      "detected_at": "2026-09-04T03:21:03Z"
+    },
+    {
+      "signal_id": "sig_81f0273ce67e5d870037afd39af7fd7a",
+      "detected_at": "2026-09-04T02:21:39Z"
+    },
+    {
+      "signal_id": "sig_6160b0a7cd871c6f915b88a0ca7ff713",
+      "detected_at": "2026-09-04T02:21:13Z"
+    },
+    {
+      "signal_id": "sig_2b59a18db5b806e0fbcdf140df6be7d1",
+      "detected_at": "2026-09-03T04:10:47Z"
+    },
+    {
+      "signal_id": "sig_ec86fb5c8832000d542dbae6b72a9a12",
+      "detected_at": "2026-09-03T01:59:57Z"
+    }
+  ],
+  "mode": "LIVE",
+  "invalid": [],
+  "source_url": "https://api.github.com/repos/stratumpraxis/stratum-praxis/events?per_page=100&page=1"
+}
