@@ -1,0 +1,51 @@
+{
+  "proof": "qualified signal -> Revenue Publisher route -> tracked CTA -> Stripe boundary",
+  "source_id": "repeat-visit-sites-win-owner-package",
+  "lens_id": "structural_reflection",
+  "routes_tested": 2,
+  "verified_revenue": 0,
+  "payment_evidence": false,
+  "note": "No purchase attempted. Attribution is verified only to the Stripe domain boundary.",
+  "results": [
+    {
+      "route_index": 0,
+      "asset_id": "systems-library",
+      "role": "PRIMARY",
+      "tracked_cta": "https://stratumpraxis.com/systems/?utm_source=owned_media&utm_medium=blog&utm_campaign=international_personal_media&utm_content=repeat-visit-sites-win-owner-package%3Astructural_reflection",
+      "path": "/systems/ -> /prompt-store/ -> buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P",
+      "landing_first_utm_source": "owned_media",
+      "landing_utm_content": "repeat-visit-sites-win-owner-package:structural_reflection",
+      "checkout_click": {
+        "product": "workflow_operator_bundle",
+        "cta_id": "prompt_store_offer_checkout",
+        "destination_host": "buy.stripe.com",
+        "first_landing_path": "/systems/",
+        "first_utm_source": "owned_media",
+        "utm_campaign": "international_personal_media",
+        "utm_content": "repeat-visit-sites-win-owner-package:structural_reflection"
+      },
+      "client_reference_id": "prompt_store_owned_media_international_personal_media_repeat-visit-sites-win-owner-package_structural_reflection",
+      "reached_stripe_boundary": true
+    },
+    {
+      "route_index": 1,
+      "asset_id": "ai-workflow-operator-bundle",
+      "role": "PURCHASE_PATH",
+      "tracked_cta": "https://stratumpraxis.com/prompt-store/?utm_source=owned_media&utm_medium=blog&utm_campaign=international_personal_media&utm_content=repeat-visit-sites-win-owner-package%3Astructural_reflection",
+      "path": "/prompt-store/ -> buy.stripe.com/cNicN60gs9rd1K85JF6Zy0P",
+      "landing_first_utm_source": "owned_media",
+      "landing_utm_content": "repeat-visit-sites-win-owner-package:structural_reflection",
+      "checkout_click": {
+        "product": "workflow_operator_bundle",
+        "cta_id": "prompt_store_offer_checkout",
+        "destination_host": "buy.stripe.com",
+        "first_landing_path": "/prompt-store/",
+        "first_utm_source": "owned_media",
+        "utm_campaign": "international_personal_media",
+        "utm_content": "repeat-visit-sites-win-owner-package:structural_reflection"
+      },
+      "client_reference_id": "prompt_store_owned_media_international_personal_media_repeat-visit-sites-win-owner-package_structural_reflection",
+      "reached_stripe_boundary": true
+    }
+  ]
+}
