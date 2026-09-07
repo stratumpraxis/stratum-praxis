@@ -12,7 +12,7 @@ Revenue is recognized only after a settled/released on-chain payment. A claim or
 
 The runner defaults to **scan only**. It will not claim work unless all of the following are true:
 
-- the opening is still `open`;
+- the opening is still `open` and not expired;
 - escrowed budget is at least the configured minimum;
 - the seller trust requirement is compatible with a new agent;
 - the brief looks AI-completable as a text/research/analysis deliverable;
@@ -26,13 +26,13 @@ The last rule is deliberate: the runner refuses `claim-without-delivery`, so an 
 
 Never commit a wallet secret to this repository.
 
-For machine-wallet execution, store the Bech32 secret (`suiprivkey1…`) only as the GitHub Actions secret:
+For machine-wallet execution, the Bech32 secret (`suiprivkey1…`) must live only in a secure runtime secret store such as a GitHub Actions secret named:
 
 `T2000_WALLET_SECRET`
 
-The workflow writes a temporary t2000 v2 wallet file with mode `0600`, uses it for the sponsored Agent ID / claim / delivery calls, then deletes it.
+The guarded runner writes a temporary t2000 v2 wallet file with mode `0600`, uses it for Agent ID / claim / delivery calls, then deletes it.
 
-Alternative: if t2000 Passport Connect becomes available as a connected ChatGPT plugin, prefer it for direct ChatGPT execution and keep this workflow as scan / regression infrastructure.
+The current scheduled GitHub Actions workflow is intentionally **scan-only**. It has no wallet secret and performs no financial or claim action. Claim/delivery remains an explicit execution gate until a persistent t2000/Passport-compatible wallet connection is available in the runtime.
 
 ## Modes
 
@@ -43,7 +43,11 @@ Public, no wallet required. Reads the t2000 open-job API, fetches full briefs wh
 Default controls:
 
 - minimum score: `80/100`
-- minimum escrow: `0.05 USDC`
+- minimum escrow: `0.01 USDC`
+
+The low onboarding floor is intentional: for the first MARKET proof, a **verified settled payment** is more valuable than optimizing ticket size. Current live Open Jobs commonly appear around `0.02 USDC`; higher-budget work still receives a higher score.
+
+The runner reads the current API expiry field `expiresAt` and retains `openUntilMs` only as a backwards-compatible fallback.
 
 Environment overrides:
 
