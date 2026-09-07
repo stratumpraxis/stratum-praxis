@@ -6,6 +6,10 @@ Practical AI workflow audits, ROI tools, and implementation resources for small 
 
 [![RustChain contributor](https://img.shields.io/badge/RustChain-contributor-orange)](https://rustchain.org)
 
+## Related ecosystem
+
+- [RustChain](https://rustchain.org) — this repository includes a read-only RustChain bounty-radar example that turns its public GitHub bounty board into a bounded opportunity-discovery input. The integration is intentionally discovery-only: claim, acceptance, and actual settlement remain separate evidence states so an open reward is never counted as revenue.
+
 ## Tracked external acquisition entry
 
 - [Browse all currently active offers](https://stratumpraxis.com/product-router.html?utm_source=github&utm_medium=referral&utm_campaign=all_active_offers&utm_content=repository_readme) — external GitHub → tracked Stratum Praxis product router → product landing page / checkout. The shared analytics layer preserves source attribution and captures CTA / checkout exits before purchase verification in Stripe, Payhip, Gumroad, or the relevant marketplace.
