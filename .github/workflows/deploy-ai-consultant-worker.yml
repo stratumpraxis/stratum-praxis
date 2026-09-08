@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'worker/**'
+      - '!worker/x402-agent-api/**'
       - '.github/workflows/deploy-ai-consultant-worker.yml'
   workflow_dispatch:
 
