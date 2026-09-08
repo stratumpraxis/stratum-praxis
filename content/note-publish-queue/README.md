@@ -37,36 +37,36 @@ Revenue truth: verified revenue from this upgrade remains ¥0 until an actual pa
 
 Next action: measure post-update human behavior and purchases before amplifying distribution.
 
-## Active queue
-
 ### 2026-09-08｜Codex revenue company upgrade
 
 Target:
 https://note.com/deft_eel6718/n/n6643ede87ad3
 
-State: `READY_DRAFT_ONLY`
+State: `PUBLISHED`
 
 Files:
 - `2026-09-08-codex-revenue-company-upgrade.md`
 - `2026-09-08-codex-revenue-company-upgrade-research.md`
 - `2026-09-08-codex-revenue-company-upgrade-distribution.md`
+- `2026-09-08-codex-revenue-company-upgrade-published.md`
 - `../ghost/codex-revenue-company-ja.md`
 
-Public offer observed 2026-09-08:
-- regular ¥13,400
-- sale ¥9,950
-- sale displayed through 2026-09-12 16:00
-- visible likes: 2
-- purchases: unverified
+Public verification 2026-09-08:
+- HTTP 200 live page confirmed
+- regular price ¥13,400
+- sale price ¥9,950
+- public page displays sale through 2026-09-12 03:00
+- visible likes: 3
+- paid boundary visible; 14,814 characters shown behind purchase boundary
+- purchase evidence: unverified
 
 Price rule: do not change the current sale while it is live. Re-evaluate only after purchase evidence or after the sale window ends.
 
-Next external action:
-1. Add the short 2026-09 update notice near the top.
-2. Append the completed Revenue Executor section to the end of the existing paid body.
-3. Remove only confirmed overlap with the existing paid body.
-4. Publish/update in the authenticated note editor.
-5. Verify the public page and measure purchase behavior.
+Revenue truth: visible likes and a live paid boundary are Human/Commerce signals, not verified revenue. Verified Revenue remains ¥0 until actual purchase evidence is observed.
+
+Next action: measure post-update qualified visits / purchase behavior, while moving Publishing to the next non-duplicate paid-note route.
+
+## Active queue
 
 ### 2026-09-08｜AI revenue pipeline diagnosis upgrade
 
