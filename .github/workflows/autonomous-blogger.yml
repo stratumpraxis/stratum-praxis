@@ -1,5 +1,6 @@
 name: Autonomous Revenue Publisher
 
+# 2026-09-08: explicit second-pass trigger to verify newly requested MarketNest owned publication.
 on:
   workflow_dispatch:
   schedule:
