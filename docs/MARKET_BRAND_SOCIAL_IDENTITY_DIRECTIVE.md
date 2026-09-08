@@ -89,7 +89,37 @@ State:
 
 ---
 
-## 3. Brand Routing Map
+## 3. Global X Safety Rule — HARD LOCK
+
+**XはMARKET全体で自動運用禁止。**
+
+対象Brandを問わず、Xへの以下を禁止する。
+
+- API / Connector / Make / Buffer / Metricool / SimplePost / Post Bridge等による自動投稿
+- 自動予約投稿
+- 自動返信
+- 自動DM
+- 自動Follow / Unfollow
+- 自動Like / Repost
+- 定期Bot運用
+- Agentによる無人投稿
+- Fallback Routeとしての自動X投稿
+
+Xは **MANUAL_ONLY** とする。
+
+X Accountが存在しても、Social Publish Router / Gatewayの自動Writer候補へ入れない。
+
+Xを使う場合はOwnerまたは明示的なHuman操作のみ。
+
+理由：Account ban / freeze riskを避け、既存X資産を保護するため。
+
+Xで自動実行できない場合はRevenue Route全体を止めず、Bluesky / Instagram / TikTok / Threads / Pinterest / YouTube / note / DEV / Medium / Reddit等の許可済みRouteへ切り替える。
+
+`X blocked for automation ≠ Brand blocked ≠ Revenue Route blocked`
+
+---
+
+## 4. Brand Routing Map
 
 ### STRATUM
 
@@ -105,7 +135,7 @@ SNS運用目的:
 
 B2B Market Signal → Content → Qualified Buyer → Existing Stratum Offer → CTA → Checkout / Contract → Purchase
 
-Xの自動投稿は禁止。
+Xは `MANUAL_ONLY`。自動投稿・自動返信・自動DMを禁止。
 
 ---
 
@@ -126,7 +156,7 @@ Known surfaces:
 - Bluesky: `vectorpx.bsky.social`
 - Pinterest: `vectorpraxis`
 - TikTok: `vectorpraxismd`
-- X: existing Vector account / manual-only automation policy
+- X: existing Vector account / `MANUAL_ONLY`
 
 目的:
 
@@ -151,6 +181,8 @@ Known surfaces:
 Collision watch:
 
 Post Bridge上に `arvenvoxxx` のTikTok表記が存在するため、同一Accountと推測しない。
+
+Xを将来使う場合も `MANUAL_ONLY`。自動Writerへ追加しない。
 
 目的:
 
@@ -199,7 +231,7 @@ Primary Gmail:
 Known surface:
 
 - note: `structureflow`
-- X: existing account
+- X: existing account / `MANUAL_ONLY`
 
 StructureFlowとLingua Flowは同一Brandとして扱わない。
 
@@ -223,13 +255,33 @@ GWRはStratumでもVectorでもない。
 
 専用Gmail・SNSが既に存在する可能性を前提に、再確認してから新規作成する。
 
+GWRのX Accountが存在・発見されても `MANUAL_ONLY`。自動投稿Routeには入れない。
+
 目的:
 
 Labor Market Signal → Insight → Qualified Human → GWR → Search → Official Apply → Referral / Revenue
 
 ---
 
-## 4. Owned / Standby Gmail Pool
+### ORDLUME
+
+Role:
+
+`Default Non-B2B English Social Identity / Temporary Primary`
+
+Gmail:
+
+`ordlume.contact@gmail.com`
+
+Known surface:
+
+- X: `@0rdlume` / `MANUAL_ONLY`
+
+ORDLUMEのXは自動投稿に使わない。非B2B英語圏の自動Distributionを行う場合は、X以外の既存または後に明示承認されたSurfaceを使う。
+
+---
+
+## 5. Owned / Standby Gmail Pool
 
 以下は保有IdentityとしてRegistryに残すが、Ownerの明示割当なしに勝手にBrand化・SNS作成・投稿元利用しない。
 
@@ -244,7 +296,7 @@ Labor Market Signal → Insight → Qualified Human → GWR → Search → Offic
 
 ---
 
-## 5. New Account Creation Gate
+## 6. New Account Creation Gate
 
 新しいGmail / SNS Accountを作る前に必ず以下を確認する。
 
@@ -263,15 +315,19 @@ Labor Market Signal → Insight → Qualified Human → GWR → Search → Offic
 
 `Accountが見つからない = Accountが存在しない` と判断しない。
 
+Xについては新規Accountを作成して自動運用を増やす方向へ進めない。
+
 ---
 
-## 6. Social Publishing Safety
+## 7. Social Publishing Safety
 
 ### One Account = One Primary Writer
 
 同一SNS Accountへ複数Toolから同時書き込みしない。
 
 Primary Writerを1つ固定し、FallbackはPrimary障害時のみ使う。
+
+**Exception: XにはPrimary Writerを設定しない。`MANUAL_ONLY`。**
 
 ### Collision Prevention
 
@@ -287,6 +343,8 @@ Primary Writerを1つ固定し、FallbackはPrimary障害時のみ使う。
 
 Accountを推測しない。
 
+Platform = X の場合は自動Publish処理を実行せず `MANUAL_ONLY_X` として扱う。
+
 ### Evidence
 
 `PUBLISHED` はPublic URLまたはPlatform Post IDが取得できた場合のみ。
@@ -299,18 +357,18 @@ View / Like / Follower / ClickはRevenueではない。
 
 ---
 
-## 7. Non-B2B English Routing Rule — Effective Now
+## 8. Non-B2B English Routing Rule — Effective Now
 
-当面の非B2B英語圏Route:
+当面の非B2B英語圏Identity:
 
 ```text
 English non-B2B Signal
 ↓
 ORDLUME
-@0rdlume
+@0rdlume = MANUAL_ONLY X
 ordlume.contact@gmail.com
 ↓
-Native English Social Content
+X以外の許可済みSurfaceがある場合のみ自動Distribution
 ↓
 One Existing Revenue Destination
 ↓
@@ -325,11 +383,11 @@ Stratum B2Bと混ぜない。
 
 Vectorを英語圏へ使うか、Practical AI Report / Agent Flow Ops HQ / その他未使用Gmailを再割当するかは、今後のOwner判断まで未確定とする。
 
-**Until changed by Owner, ORDLUME is the default non-B2B English social identity.**
+**Until changed by Owner, ORDLUME is the default non-B2B English identity, but its X account is manual-only.**
 
 ---
 
-## 8. Final Operating Principle
+## 9. Final Operating Principle
 
 Identityを増やすより、既存IdentityをRevenue Routeへ正しく接続する。
 
@@ -340,7 +398,7 @@ Correct Gmail
 ↓
 Correct SNS Account
 ↓
-Primary Writer
+Allowed Writer / X = MANUAL_ONLY
 ↓
 External Action
 ↓
@@ -356,5 +414,7 @@ Learning
 ```
 
 Ownerを通信経路にしない。
+
+ただしXだけは例外で、自動投稿・自動返信・自動DM等を禁止し、Human操作に限定する。
 
 GitHub / Account Registry / shared stateをSource of Truthとして更新し、各Revenue Cellが同じIdentity Mapを参照して自律再開できる状態を維持する。
