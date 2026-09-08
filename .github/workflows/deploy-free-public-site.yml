@@ -28,6 +28,32 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Verify AI agent economics math contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { computeAgentEconomics, compareAgentEconomics } from './ai-agent-economics-calculator.mjs';
+          const current = computeAgentEconomics({
+            volume:1000, executionsPerOutcome:3, modelCostPerExecution:.08, toolCostPerExecution:.02,
+            fixedMonthlyCost:150, retryRatePct:15, finalFailureRatePct:8, reviewMinutesPerOutcome:1.5,
+            reviewHourlyCost:45, businessValuePerSuccess:8, humanMinutesPerSuccess:6, humanHourlyCost:45
+          });
+          const comparison = computeAgentEconomics({
+            volume:1000, executionsPerOutcome:3.5, modelCostPerExecution:.03, toolCostPerExecution:.02,
+            fixedMonthlyCost:150, retryRatePct:25, finalFailureRatePct:14, reviewMinutesPerOutcome:2,
+            reviewHourlyCost:45, businessValuePerSuccess:8, humanMinutesPerSuccess:6, humanHourlyCost:45
+          });
+          const cmp = compareAgentEconomics(current, comparison);
+          const near = (a,b,t=1e-6) => Math.abs(a-b) <= t;
+          if (!near(current.allInMonthlyCost, 1620)) throw new Error('current all-in cost mismatch');
+          if (!near(current.successfulOutcomes, 920)) throw new Error('current successful outcomes mismatch');
+          if (!near(current.costPerSuccessfulOutcome, 1620/920)) throw new Error('current unit cost mismatch');
+          if (!near(current.humanOnlyEquivalentCost, 4140)) throw new Error('human equivalent mismatch');
+          if (cmp.lowerCostScenario !== 'current') throw new Error('comparison ranking mismatch');
+          console.log('AI Agent Economics deterministic math contract -> PASS');
+          NODE
+
       - name: Prepare static site
         shell: bash
         run: |
@@ -65,7 +91,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://stratum-praxis-site.pages.dev'
-          for path in / /systems/ /b2b/ /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /rustchain-bounty-radar.html; do
+          for path in / /systems/ /b2b/ /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
               echo "Expected 200 for $BASE$path, got $code"
@@ -93,7 +119,13 @@ jobs:
           grep -Fq 'agent_economics_result' /tmp/agent-economics.html
           grep -Fq 'agent_economics_to_499_audit' /tmp/agent-economics.html
           grep -Fq 'AI &amp; SaaS Spend Waste Audit — $499' /tmp/agent-economics.html
-          echo 'AI Agent Economics Calculator logic, analytics and revenue route markers -> PASS'
+          echo 'AI Agent Economics Calculator analytics and revenue route markers -> PASS'
+
+          curl -L -sS "$BASE/ai-saas-spend-waste-audit.html" -o /tmp/spend-audit.html
+          grep -Fq 'AI & SaaS Spend Waste Audit' /tmp/spend-audit.html
+          grep -Fq 'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02' /tmp/spend-audit.html
+          grep -Fq 'Buy the audit - $499' /tmp/spend-audit.html
+          echo 'Agent economics -> $499 audit -> existing Stripe checkout route -> PASS'
 
           curl -L -sS 'https://stratumpraxis.com/rustchain-bounty-radar.html' -o /tmp/rustchain-bounty-radar.html
           grep -Fq 'Build a read-only RustChain bounty radar with the GitHub API' /tmp/rustchain-bounty-radar.html
