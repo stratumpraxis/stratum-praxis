@@ -1,0 +1,100 @@
+{
+  "evidence_id": "repository-dispatch-hop-open",
+  "recorded_at": "2026-09-08",
+  "note": "Appended. Records what two real GitHub Actions runs established about the Make -> GitHub leg. It corrects a claim made in an earlier evidence file in this directory; the earlier file is left as written, because it was accurate about what was known at the time.",
+
+  "verified_revenue": 0,
+  "payment_evidence_present": false,
+
+  "headline": "The Make -> GitHub hop is OPEN, and the earlier AUTH BLOCKER call was wrong.",
+
+  "correction": {
+    "previously_recorded": "live-actions-run-credential-state.json states: 'AUTH BLOCKER ... this environment holds no token with contents:write' and 'A real repository_dispatch has not been received by this workflow.'",
+    "what_was_actually_true": "Both statements were correct about the AUTHORING SANDBOX, which genuinely has only placeholder tokens. The unexamined assumption was that this extended to GitHub Actions - that a repository_dispatch POSTed with the workflow's own token would be suppressed, as GitHub's recursive-trigger protection would suggest. It was not. A dispatch sent from inside a workflow created a real run.",
+    "why_it_matters": "The blocker was misfiled. It was reported as 'GitHub needs a personal access token', which would have sent the owner to mint one. GitHub needs nothing. What is actually missing sits entirely on the other two sides: a credential for Make to call GitHub with, and a store for the run to write to.",
+    "lesson": "The earlier conclusion was reasoned from documentation rather than measured. The probe that settled it costs one workflow run."
+  },
+
+  "probe": {
+    "run_id": 34174652001,
+    "url": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/34174652001",
+    "job_id": 101901559462,
+    "method": "POST /repos/stratumpraxis/stratum-praxis/dispatches with ${{ github.token }}, then query for runs created since the POST.",
+    "runner_output": [
+      "POST /dispatches -> HTTP 204",
+      "dispatch accepted; waiting to see whether a run appears",
+      "repository_dispatch runs created since 2026-09-08T00:50:53Z: 1",
+      "##[notice]the Make -> GitHub hop can be closed with the workflow token"
+    ],
+    "result": "HOP_OPEN"
+  },
+
+  "real_repository_dispatch_run": {
+    "run_id": 34174659501,
+    "url": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/34174659501",
+    "event": "repository_dispatch",
+    "display_title": "market_signal",
+    "triggering_actor": "github-actions[bot]",
+    "head_branch": "main",
+    "head_sha": "e8a4c945ccb689fd058eef457a26c17c26b0a8d7",
+    "what_happened": [
+      "Contracts hold: SUCCESS (market contract tests, evidence integrity, engine suites)",
+      "Ingest external signals: ran and selected the dispatch source from the event",
+      "MARKET source=dispatch trigger=repository_dispatch",
+      "BLOCKED at the store gate: store_kind UNCONFIGURED, no signal persisted",
+      "OK  verified_revenue=0 refs=[]"
+    ],
+    "artifact": "market-evidence, id 10036851660",
+    "reading": "The route works end to end into MARKET. It stops exactly where it should when there is nowhere durable to write. This is the first repository_dispatch this workflow has ever received.",
+    "not_claimed": "This dispatch came from a workflow in this repository, not from Make. What is proven is that GitHub accepts the hop and runs MARKET on it. Make's own leg - its scenario POSTing with its own credential - is still unproven."
+  },
+
+  "dispatch_path_on_a_real_runner": {
+    "run_id": 34174652001,
+    "job_id": 101901601850,
+    "why": "Until this run, staging the client_payload, running --source dispatch and reporting refusals had never executed in Actions. The code that will handle every signal Make sends had only ever run in an authoring sandbox.",
+    "payload": "Two events: one legitimate BUYER_DEMAND carrying a correlation_ref, and one PAYMENT claiming a Stripe charge that the bus is not entitled to assert.",
+    "observed": {
+      "trigger": "dispatch:34174652001",
+      "signal_id": "sig_fb1f45d3887d334aa55b2b67a2a6a797",
+      "event_id": "evt_26478694f18629c6b8e5269d37e95176",
+      "correlation_id": "cor_46f76a5b48701839138d2bea30667696",
+      "correlation_basis": { "BOUNDARY_REFERENCE": 1 },
+      "state_before": "NEW",
+      "state_after": "QUALIFIED",
+      "transition_path": ["QUALIFIED"],
+      "decision_reason": "demand present but no existing asset cleared the routing floor",
+      "refused": [
+        {
+          "id": "cs_forged_on_runner",
+          "reason": "BUS_MAY_NOT_ASSERT_PAYMENT",
+          "detail": "a PAYMENT signal is produced by reading the payment provider, never by a dispatch payload"
+        }
+      ],
+      "winners": [],
+      "exploration": "OPEN",
+      "verified_revenue": 0,
+      "payment_evidence_present": false
+    },
+    "significance": "The forged payment was refused on a GitHub-hosted runner, surfaced as a workflow warning. Until now that refusal had only ever fired in a sandbox. The rule that stops the event bus minting revenue is enforced in production.",
+    "artifact": "market-evidence, id 10036836711",
+    "store": "LOCAL_FILE - this run passed local=true, so nothing was written to production state."
+  },
+
+  "what_is_still_blocked": {
+    "supabase": "No SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY. The schema of public.market_event_ledger cannot be read, so the unique constraint on signal_id can neither be verified nor added, and row_count remains 0. Every dispatch run will stop at the store gate until this exists.",
+    "stripe": "No STRIPE_SECRET_KEY. The clicks-versus-payments question stays open.",
+    "posthog": "No POSTHOG_PERSONAL_API_KEY or POSTHOG_PROJECT_ID in Actions. Separately, a PostHog connector is installed for the account but is not enabled in this chat, so its tools are not loaded here either.",
+    "make": "No webhook URL, API access or connector reachable from this session, so the Make scenario cannot be inspected or modified. Its GitHub leg needs a credential of its own; the workflow token proved the hop but is not available to Make.",
+    "checked_and_empty": "Zapier is connected but has zero authenticated apps (auto_provision_mcp returned none), so it offers no path to Make, Supabase or Stripe."
+  },
+
+  "state_machine_reached": {
+    "furthest_this_session": "QUALIFIED on the real-runner dispatch; ACTIONABLE remains the furthest reached overall, from an earlier local run.",
+    "not_reached": ["HUMAN_SIGNAL", "CHECKOUT", "PAID", "WON"],
+    "winners": 0,
+    "why": "HUMAN_SIGNAL and CHECKOUT need a live PostHog read; PAID and WON need a Stripe payment record. None may be simulated."
+  },
+
+  "next_blocker": "SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY as repository secrets, plus a unique constraint on signal_id in public.market_event_ledger. With the hop now proven open, the ledger is the only thing standing between a dispatch and a durable row."
+}
