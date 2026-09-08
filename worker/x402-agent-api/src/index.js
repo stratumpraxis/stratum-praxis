@@ -27,25 +27,33 @@ function headers() {
   };
 }
 
+function validAddress(value = '') {
+  return /^0x[a-fA-F0-9]{40}$/.test(String(value));
+}
+
 function runtime(env = {}) {
   const network = String(env.X402_NETWORK || 'eip155:84532');
   const price = String(env.X402_PRICE || '$0.01');
   const mode = String(env.X402_MODE || 'development');
-  const payTo = String(env.PAY_TO || '');
+  const productionPayTo = String(env.PAY_TO || '');
+  const testPayTo = String(env.X402_TEST_PAY_TO || '');
   const apiKeyId = String(env.CDP_API_KEY_ID || '');
   const apiKeySecret = String(env.CDP_API_KEY_SECRET || '');
-  const allowedNetwork = network === 'eip155:84532' || network === 'eip155:8453';
-  const productionGuard = network !== 'eip155:8453' || mode === 'production';
-  const addressGuard = /^0x[a-fA-F0-9]{40}$/.test(payTo);
+  const testnet = mode === 'development' && network === 'eip155:84532';
+  const mainnet = mode === 'production' && network === 'eip155:8453';
+  const paymentConfigured = testnet
+    ? validAddress(testPayTo)
+    : Boolean(mainnet && validAddress(productionPayTo) && apiKeyId && apiKeySecret);
   return {
     network,
     price,
     mode,
-    payTo,
+    payTo: testnet ? testPayTo : productionPayTo,
     apiKeyId,
     apiKeySecret,
-    productionGuard,
-    paymentConfigured: Boolean(apiKeyId && apiKeySecret && addressGuard && allowedNetwork && productionGuard),
+    facilitator: testnet ? 'x402.org-testnet' : 'cdp',
+    productionGuard: !mainnet || Boolean(validAddress(productionPayTo) && apiKeyId && apiKeySecret),
+    paymentConfigured,
   };
 }
 
@@ -110,18 +118,26 @@ function routeProfile(profile) {
 
 let paymentCache = null;
 async function getPaymentMiddleware(cfg) {
-  const cacheKey = `${cfg.network}|${cfg.price}|${cfg.payTo}|${cfg.apiKeyId}`;
+  const cacheKey = `${cfg.facilitator}|${cfg.network}|${cfg.price}|${cfg.payTo}|${cfg.apiKeyId}`;
   if (paymentCache?.key === cacheKey) return paymentCache.middleware;
 
-  const [cdp, evm, hono] = await Promise.all([
-    import('@coinbase/cdp-sdk/x402'),
+  const [evm, hono] = await Promise.all([
     import('@x402/evm/exact/server'),
     import('@x402/hono'),
   ]);
-  const facilitator = cdp.createCdpFacilitatorClient({
-    apiKeyId: cfg.apiKeyId,
-    apiKeySecret: cfg.apiKeySecret,
-  });
+
+  let facilitator;
+  if (cfg.facilitator === 'x402.org-testnet') {
+    const core = await import('@x402/core/server');
+    facilitator = new core.HTTPFacilitatorClient({ url: 'https://x402.org/facilitator' });
+  } else {
+    const cdp = await import('@coinbase/cdp-sdk/x402');
+    facilitator = cdp.createCdpFacilitatorClient({
+      apiKeyId: cfg.apiKeyId,
+      apiKeySecret: cfg.apiKeySecret,
+    });
+  }
+
   const server = new hono.x402ResourceServer(facilitator).register(cfg.network, new evm.ExactEvmScheme());
   const middleware = hono.paymentMiddleware({
     'POST /v1/ai-fit': {
@@ -142,9 +158,10 @@ app.get('/', (c) => {
     schema_endpoint: 'GET /v1/ai-fit/schema',
     payment_protocol: 'x402',
     payment_ready: cfg.paymentConfigured,
-    mode: cfg.mode,
+    environment: cfg.mode,
     network: cfg.network,
     price: cfg.price,
+    facilitator: cfg.facilitator,
   }, 200, headers());
 });
 
@@ -153,8 +170,9 @@ app.get('/health', (c) => {
   return c.json({
     ok: true,
     payment_ready: cfg.paymentConfigured,
-    mode: cfg.mode,
+    environment: cfg.mode,
     network: cfg.network,
+    facilitator: cfg.facilitator,
     production_guard: cfg.productionGuard,
   }, 200, headers());
 });
@@ -165,6 +183,7 @@ app.get('/v1/ai-fit/schema', (c) => {
     endpoint: 'POST /v1/ai-fit',
     price: cfg.price,
     payment_protocol: 'x402',
+    environment: cfg.mode,
     input: {
       profile: {
         scope: '0=organize, 100=expand',
@@ -184,7 +203,7 @@ app.use('/v1/ai-fit', async (c, next) => {
   if (!cfg.paymentConfigured) {
     return c.json({
       error: 'payment_not_configured',
-      message: 'The paid endpoint is intentionally disabled until CDP credentials and a receive-only EVM address are configured.',
+      message: 'The paid endpoint is fail-closed until the active environment has a valid payment configuration.',
     }, 503, headers());
   }
   try {
