@@ -42,8 +42,9 @@ on:
         description: 'Attempt a real repository_dispatch with the workflow token and report what happens. Measures the hop rather than assuming it.'
         type: boolean
         default: false
-  schedule:
-    - cron: '17 */6 * * *'
+  # No polling while the durable state store is unconfigured. External dispatch
+  # and explicit manual runs remain available; restore a bounded safety-net only
+  # after the store gate is closed.
 
 permissions:
   contents: read

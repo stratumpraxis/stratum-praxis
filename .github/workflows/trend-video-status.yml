@@ -8,8 +8,6 @@ on:
       - 'distribution/buffer-video-status.mjs'
       - '.github/workflows/trend-video-status.yml'
   workflow_dispatch:
-  schedule:
-    - cron: '23 */6 * * *'
 
 permissions:
   contents: write

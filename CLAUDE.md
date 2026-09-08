@@ -199,6 +199,29 @@ Avoid:
 
 Report concise evidence-backed status.
 
+Default to silence when external state did not change. A scheduled wake-up,
+successful no-op, unchanged wait, zero new replies, zero purchases, zero
+submissions, repeated known blocker, or passing internal test is not a reportable
+event. Zero remains a valid measured value, but it is not itself a notification.
+
+Notify only for a meaningful state transition: external publish/send/submit,
+qualified human action, checkout/contract/payment/reward, a newly discovered
+owner-only gate, or an exhausted failure whose viable fallbacks also failed.
+When a non-payment event is reportable, say `no verified payment change` once at
+most; do not headline or dramatize a repeated zero.
+
+Keep GitHub quiet as well:
+
+- one logical external state transition should normally produce one commit;
+- combine research, draft, routing metadata, and evidence for one publication
+  into one coherent change when they are already known in the same session;
+- never commit no-op checks, temporary markers, unchanged snapshots, routine
+  waiting, or repeated zero-state evidence;
+- verify locally or in the existing pull-request checks instead of pushing probe
+  commits to make Actions run;
+- update an existing durable record for the same route/state instead of creating
+  multiple near-duplicate evidence commits.
+
 Preferred final states:
 
 REVENUE_LOOP_READY

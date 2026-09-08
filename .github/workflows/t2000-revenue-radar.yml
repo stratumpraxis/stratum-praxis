@@ -3,7 +3,9 @@ name: t2000 Revenue Radar
 on:
   workflow_dispatch:
   schedule:
-    - cron: "17 * * * *"
+    # Six-hour sampling is enough for a single marketplace. Hourly scans created
+    # duplicate artifacts without advancing a claim or payment state.
+    - cron: "17 */6 * * *"
   push:
     paths:
       - "automation/t2000-revenue-runner/**"
