@@ -27,6 +27,21 @@ on:
         description: 'Use the local file store instead of the Make Data Store'
         type: boolean
         default: false
+      # The dispatch branch of the ingest job - staging the payload, running
+      # --source dispatch, reporting refusals - had never executed on a runner.
+      # It could not: the only way in was a real repository_dispatch, which needs a
+      # token this repository does not have. That left the code that will handle
+      # Make's traffic completely unexercised in the environment that will run it.
+      # Supplying the payload here exercises every line of it except the inbound
+      # network hop.
+      test_payload:
+        description: 'A client_payload to run through the dispatch adapter (JSON). Exercises the dispatch path without an inbound dispatch.'
+        type: string
+        default: ''
+      probe_dispatch:
+        description: 'Attempt a real repository_dispatch with the workflow token and report what happens. Measures the hop rather than assuming it.'
+        type: boolean
+        default: false
   schedule:
     - cron: '17 */6 * * *'
 
@@ -59,6 +74,69 @@ jobs:
                       acquisition/media-engine/test/*.test.mjs \
                       acquisition/opportunity-engine/test/*.test.mjs
 
+  # Does the workflow token actually close the Make -> GitHub hop?
+  #
+  # The documented answer is no - GitHub suppresses workflow runs triggered by
+  # GITHUB_TOKEN so an action cannot recursively trigger itself. But a blocker that
+  # decides whether a human has to go and mint a PAT should be measured, not quoted.
+  # This job POSTs a real repository_dispatch and then looks for the run it should
+  # have created. Whichever way it comes out, the answer is evidence.
+  #
+  # Opt-in only, and the payload is deliberately harmless: a MARKET signal with no
+  # demand, which the classifier parks rather than acts on.
+  dispatch-probe:
+    name: Probe the repository_dispatch hop
+    if: github.event_name == 'workflow_dispatch' && inputs.probe_dispatch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      # The narrowest scope that can POST to /dispatches. Confined to this job so
+      # nothing else in the workflow gains write access.
+      contents: write
+    steps:
+      - name: POST a repository_dispatch and look for the run it should create
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          before=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+
+          code=$(curl -sS -o /tmp/dispatch-response.txt -w '%{http_code}' \
+            -X POST \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H 'X-GitHub-Api-Version: 2022-11-28' \
+            "https://api.github.com/repos/${{ github.repository }}/dispatches" \
+            -d '{"event_type":"market_signal","client_payload":{"events":[{"signal_type":"MARKET","source":"dispatch_probe","source_event_id":"probe-${{ github.run_id }}","subject":"connectivity probe from the workflow token","confidence":0.05}]}}')
+
+          echo "POST /dispatches -> HTTP $code"
+          cat /tmp/dispatch-response.txt || true
+
+          if [ "$code" != '204' ]; then
+            echo "::warning::the workflow token cannot POST a repository_dispatch (HTTP $code); a PAT is required for the Make hop"
+            echo "PROBE_RESULT=POST_REJECTED_$code" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          # Accepted. Now the real question: did it actually start a run?
+          echo 'dispatch accepted; waiting to see whether a run appears'
+          sleep 45
+          runs=$(curl -sS \
+            -H 'Accept: application/vnd.github+json' \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/${{ github.repository }}/actions/runs?event=repository_dispatch&created=>$before")
+          count=$(echo "$runs" | node -e 'let s="";process.stdin.on("data",d=>s+=d).on("end",()=>{try{console.log(JSON.parse(s).total_count??0)}catch(e){console.log(0)}})')
+
+          echo "repository_dispatch runs created since $before: $count"
+          if [ "$count" -gt 0 ]; then
+            echo "PROBE_RESULT=HOP_OPEN  a repository_dispatch from the workflow token DID start a run" >> "$GITHUB_STEP_SUMMARY"
+            echo "::notice::the Make -> GitHub hop can be closed with the workflow token"
+          else
+            echo "PROBE_RESULT=ACCEPTED_BUT_SUPPRESSED  HTTP 204 but no run was created" >> "$GITHUB_STEP_SUMMARY"
+            echo "::warning::the dispatch was accepted but created no run - GitHub suppresses runs triggered by GITHUB_TOKEN, so a PAT is required"
+          fi
+
   ingest:
     name: Ingest external signals
     needs: contracts
@@ -78,14 +156,26 @@ jobs:
       # by the shell, and the adapter parses it under the same rules as any other
       # input - including the refusals that stop the bus asserting a payment.
       - name: Stage the dispatch payload
-        if: github.event_name == 'repository_dispatch'
+        if: github.event_name == 'repository_dispatch' || inputs.test_payload != ''
         shell: bash
         env:
-          CLIENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+          # A real dispatch wins; the manual input is the stand-in used to exercise
+          # this path while no inbound dispatch is possible. Both go to disk rather
+          # than into an argv string, so no part of either is interpreted by a shell.
+          CLIENT_PAYLOAD: ${{ github.event_name == 'repository_dispatch' && toJSON(github.event.client_payload) || inputs.test_payload }}
+          FROM_REAL_DISPATCH: ${{ github.event_name == 'repository_dispatch' }}
         run: |
           set -euo pipefail
           printf '%s' "$CLIENT_PAYLOAD" > /tmp/market-dispatch.json
-          echo "staged $(wc -c < /tmp/market-dispatch.json) bytes of client_payload"
+          echo "staged $(wc -c < /tmp/market-dispatch.json) bytes"
+          # Stated plainly in the log so a reader never mistakes a rehearsal for a
+          # real inbound event. This distinction is the whole difference between
+          # "the code works" and "Make reached us".
+          if [ "$FROM_REAL_DISPATCH" = 'true' ]; then
+            echo 'ORIGIN: real repository_dispatch from an external caller'
+          else
+            echo 'ORIGIN: manual test_payload - the dispatch code path, NOT an inbound dispatch'
+          fi
 
       - name: Ingest
         env:
@@ -121,8 +211,9 @@ jobs:
           SOURCE='${{ github.event.client_payload.source || github.event.inputs.source || 'github' }}'
           LOCAL_FLAG='${{ github.event.client_payload.local || github.event.inputs.local || false }}'
 
-          if [ '${{ github.event_name }}' = 'repository_dispatch' ] \
-             && [ -z '${{ github.event.client_payload.source }}' ]; then
+          if { [ '${{ github.event_name }}' = 'repository_dispatch' ] \
+               && [ -z '${{ github.event.client_payload.source }}' ]; } \
+             || [ -s /tmp/market-dispatch.json ]; then
             SOURCE='dispatch'
             ARGS=( --source dispatch
                    --payload-file /tmp/market-dispatch.json
@@ -179,7 +270,7 @@ jobs:
           '
 
       - name: Report what the bus was refused
-        if: github.event_name == 'repository_dispatch' && !github.event.client_payload.source
+        if: success() && (github.event_name == 'repository_dispatch' && !github.event.client_payload.source || inputs.test_payload != '')
         shell: bash
         run: |
           set -euo pipefail
