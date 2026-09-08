@@ -1,0 +1,9 @@
+name = "stratum-x402-agent-api"
+main = "src/index.js"
+compatibility_date = "2026-09-09"
+workers_dev = true
+
+[vars]
+X402_NETWORK = "eip155:84532"
+X402_PRICE = "$0.01"
+X402_MODE = "development"
