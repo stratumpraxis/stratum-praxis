@@ -16,6 +16,11 @@
 
 import crypto from 'node:crypto';
 
+import {
+  ACTION_ID_RE, CORRELATION_ID_RE, EVENT_ID_RE,
+  checkoutReference, eventId, resolveCorrelation
+} from './correlation.mjs';
+
 export const SIGNAL_TYPES = Object.freeze([
   'PAYMENT',
   'HUMAN_SIGNAL',
@@ -49,7 +54,12 @@ export const REVENUE_DISTANCE = Object.freeze(['PAID', 'NEAR', 'MID', 'FAR', 'UN
 
 const REQUIRED = Object.freeze([
   'signal_id', 'signal_type', 'source', 'detected_at', 'subject',
-  'demand_type', 'revenue_distance', 'confidence', 'status', 'evidence'
+  'demand_type', 'revenue_distance', 'confidence', 'status', 'evidence',
+  // The chain ids are required, not optional enrichment. An event that cannot say
+  // which upstream delivery it is, or which revenue attempt it belongs to, cannot be
+  // traced end to end - and an untraceable event is exactly the one that later gets
+  // counted twice or attributed to the wrong route.
+  'event_id', 'source_event_id', 'correlation_id'
 ]);
 
 // Time-to-live per signal type, in seconds. A payment is a permanent fact; a
@@ -114,8 +124,27 @@ export function normalizeSignal(raw, { now = Date.now(), ttlSeconds = null } = {
     ? new Date(base + ttl * 1000).toISOString()
     : new Date(now + ttl * 1000).toISOString();
 
+  const id = raw.signal_id ?? signalId(raw);
+
+  // The upstream's own id for this delivery. It falls back to external_id because
+  // for several sources they are the same thing - a GitHub event has one id and it
+  // is both. Where they differ (Make redelivering a Stripe event, say) the adapter
+  // passes both and the distinction is preserved.
+  const sourceEventId = raw.source_event_id ?? raw.external_id ?? id;
+
+  // What joins this event to the rest of its revenue attempt. An adapter may hand
+  // over a reference it knows crosses the boundary; otherwise it is rebuilt from the
+  // analytics properties the same way the page builds client_reference_id.
+  const reference = raw.correlation_ref
+    ?? (raw.event_properties ? checkoutReference(raw.event_properties) : null);
+  const { correlation_id: correlationId, correlation_basis: correlationBasis } = resolveCorrelation({
+    correlation_id: raw.correlation_id,
+    reference,
+    signal_id: id
+  });
+
   return {
-    signal_id: raw.signal_id ?? signalId(raw),
+    signal_id: id,
     signal_type: type,
     source: raw.source,
     source_url: raw.source_url ?? null,
@@ -132,6 +161,20 @@ export function normalizeSignal(raw, { now = Date.now(), ttlSeconds = null } = {
     confidence: numberOrNull(raw.confidence) ?? 0,
     urgency: raw.urgency ?? null,
     route_id: raw.route_id ?? null,
+
+    // ---- chain identity -------------------------------------------------------
+    source_event_id: String(sourceEventId),
+    event_id: raw.event_id ?? eventId({ source: raw.source, source_event_id: sourceEventId }),
+    correlation_id: correlationId,
+    // How the chain root was decided. SELF means nothing joined this event to
+    // anything else, which is a measurement fact worth keeping rather than hiding:
+    // a run full of SELF correlations means attribution is not actually reaching
+    // the boundary.
+    correlation_basis: correlationBasis,
+    correlation_ref: reference ?? null,
+    causation_id: raw.causation_id ?? null,
+    action_id: raw.action_id ?? null,
+
     status: raw.status ?? 'NEW',
     evidence: raw.evidence ?? { kind: 'NONE', ref: null },
     raw_ref: raw.raw_ref ?? null
@@ -164,6 +207,23 @@ export function validateSignal(signal) {
   }
   if (!signal.expires_at) {
     errors.push('expires_at is required: a signal without a TTL never goes stale');
+  }
+  // The chain ids are checked for shape, not just presence. A free-form string here
+  // would join nothing while looking as if it did.
+  if (signal.event_id && !EVENT_ID_RE.test(signal.event_id)) {
+    errors.push('event_id must be a deterministic evt_<32 hex> value');
+  }
+  if (signal.correlation_id && !CORRELATION_ID_RE.test(signal.correlation_id)) {
+    errors.push('correlation_id must be a deterministic cor_<32 hex> value');
+  }
+  if (signal.causation_id && !EVENT_ID_RE.test(signal.causation_id)) {
+    errors.push('causation_id must reference an event_id, so the cause can be looked up');
+  }
+  if (signal.action_id && !ACTION_ID_RE.test(signal.action_id)) {
+    errors.push('action_id must be a deterministic act_<32 hex> value');
+  }
+  if (signal.causation_id && signal.causation_id === signal.event_id) {
+    errors.push('an event cannot be its own cause');
   }
   return errors;
 }

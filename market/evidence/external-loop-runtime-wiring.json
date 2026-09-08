@@ -1,0 +1,80 @@
+{
+  "evidence_id": "external-loop-runtime-wiring",
+  "recorded_at": "2026-09-07",
+  "objective": "Wire the external revenue loop so one revenue attempt can be followed from an external event, through Make and the ledger, into a GitHub route, and back out to PostHog and Stripe, under one correlation_id.",
+  "verified_revenue": 0,
+  "payment_evidence_present": false,
+  "verified_revenue_note": "No purchase has occurred. Every path below was exercised against real code and, where noted, real network calls; none of it produced or implies money. Revenue stays 0 until a Stripe payment record with payment_status paid exists.",
+  "verified_by_execution": [
+    {
+      "claim": "The github-only constraint is gone; four sources dispatch from one registry. A parallel session landed market/lib/source-adapter.mjs on main covering github/posthog/stripe while this work was in progress; rather than replacing it, `dispatch` was added to it and the parallel registry in the CLI was dropped.",
+      "how": "node market/cli/ingest.mjs --source <each> --local",
+      "result": {
+        "github": "LIVE. 41 signals fetched over the real GitHub API through the proxy; 30 expired on arrival and were persisted as EXPIRED; 11 decided.",
+        "posthog": "AUTH failure, next_allowed_action HUMAN_REQUIRED - POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID are not present in this environment.",
+        "stripe": "AUTH failure, next_allowed_action HUMAN_REQUIRED - STRIPE_SECRET_KEY is not present in this environment.",
+        "dispatch": "LIVE. Ran end to end against a real client_payload file, before and after merging main.",
+        "unknown source": "Refused, naming the four wired sources."
+      }
+    },
+    {
+      "claim": "The event bus cannot assert a payment.",
+      "how": "A repository_dispatch payload containing (a) a PAYMENT signal claiming $69 and (b) a HUMAN_SIGNAL carrying forged PAYMENT_PROVIDER evidence was put through the real CLI.",
+      "result": "Both refused: BUS_MAY_NOT_ASSERT_PAYMENT and BUS_MAY_NOT_SUPPLY_PAYMENT_EVIDENCE. Neither reached the store. The legitimate third event in the same payload was accepted."
+    },
+    {
+      "claim": "A redelivery is an upsert, not a second row.",
+      "how": "The same dispatch payload replayed under a different dispatch id.",
+      "result": "Pass 1: 1 new. Pass 2: 0 new, 1 already known. Ledger holds exactly 1 row with the same event_id."
+    },
+    {
+      "claim": "A signal the classifier calls ACTION can now actually become ACTIONABLE.",
+      "how": "Same dispatch run, before and after the fix.",
+      "result": "Before: status NEW, failure 'NEW -> ACTIONABLE is not an allowed transition', 0 actionable revenue routes. After: status ACTIONABLE via path [QUALIFIED, ACTIONABLE], 1 actionable revenue route.",
+      "note": "This was a live defect on main. A qualified buyer with a live checkout was entering the store and being counted as zero."
+    },
+    {
+      "claim": "A dispatch can either carry the events or name a source to read.",
+      "how": "Workflow resolution after merging main.",
+      "result": "client_payload.source named -> that feed is read (how Make turns a Stripe webhook into a real Stripe read rather than relaying a payment it may not assert). No source named -> the payload is the events, handled by the dispatch adapter under its refusal rules.",
+      "note": "Both halves come from different sessions; keeping both is strictly better than either alone."
+    }
+  ],
+  "verified_by_test": {
+    "command": "node --test market/test/*.test.mjs acquisition/**/test/*.test.mjs",
+    "total": 449,
+    "passed": 449,
+    "failed": 0,
+    "new_suite": {
+      "file": "market/test/runtime-loop.test.mjs",
+      "tests": 46
+    },
+    "key_assertions": [
+      "A PostHog checkout_click and the Stripe session it produced resolve to one correlation_id, derived independently on both sides from the client_reference_id the page writes.",
+      "An event that joins to nothing starts its own chain instead of sharing an empty-key bucket with every other unattributable event.",
+      "settlePayment - the shipped function, imported from the CLI - moves the correlated checkout to PAID then WON, stamps causation_id with the payment's event_id, and mints a deterministic action_id.",
+      "A payment does not settle a checkout on a different chain; the money is still recorded, and no route is promoted.",
+      "An unpaid session settles nothing and writes nothing, even on the correct chain.",
+      "Nothing is a winner without a payment provider saying money moved: a WON status with analytics evidence, a confident model, and an unpaid PAYMENT_PROVIDER record all yield zero winners.",
+      "Exploration stays open while there are no winners and closes with a recorded reason once one exists.",
+      "Winner resemblance breaks ties but never outranks a live payment.",
+      "Revenue is never summed across currencies, and a paid record with no amount is reported as unpriced rather than as zero."
+    ]
+  },
+  "not_verified": [
+    "PostHog as a live source. Requires POSTHOG_PERSONAL_API_KEY and POSTHOG_PROJECT_ID in Actions; the adapter is exercised against fixtures only.",
+    "Stripe as a live source. Requires STRIPE_SECRET_KEY in Actions; the adapter is exercised against fixtures only.",
+    "The Supabase ledger against a real database. SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are not present in this environment, and public.market_event_ledger has not been read or written. The adapter is verified against an injected fetch: it upserts on signal_id with Prefer resolution=merge-duplicates, projects the chain ids to columns, and returns the payload unchanged on read.",
+    "A real repository_dispatch from Make. The workflow leg is wired and its YAML parses; no Make scenario has called it.",
+    "Any purchase, of any kind, by anyone."
+  ],
+  "chain_vocabulary": {
+    "source_event_id": "the upstream system's own id, verbatim; never invented",
+    "event_id": "evt_<32hex>, deterministic from source + source_event_id, so a redelivery is one event",
+    "correlation_id": "cor_<32hex>, the revenue attempt; derived from the checkout reference that crosses the Stripe boundary",
+    "causation_id": "the event_id of the direct cause; null at an external boundary",
+    "action_id": "act_<32hex>, deterministic per correlation + asset + action",
+    "route_id": "which CTA, unchanged from before"
+  },
+  "next_blocker": "PostHog and Stripe credentials in GitHub Actions, and the Supabase ledger connection. Until Stripe is readable from a run, the standing question - 17 recorded checkout_clicks against 0 payment records - cannot be answered from either side."
+}

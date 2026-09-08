@@ -7,6 +7,15 @@ name: MARKET external signal ingest
 on:
   repository_dispatch:
     types: [market_signal]
+  # The contracts job on every PR that touches MARKET. Until this existed, nothing
+  # in CI ran market/test/ on a pull request at all - the payment-evidence gate, the
+  # bus refusals and the revenue-integrity guards were enforced only by whoever
+  # happened to run the suite locally. The ingest job stays off pull_request: it
+  # reaches real external APIs and must not run on an untrusted head.
+  pull_request:
+    paths:
+      - 'market/**'
+      - '.github/workflows/market-ingest.yml'
   workflow_dispatch:
     inputs:
       source:
@@ -40,6 +49,9 @@ jobs:
           node-version: '22'
       - name: MARKET contract tests
         run: node --test market/test/*.test.mjs
+
+      - name: Historical evidence is append-only
+        run: node --test market/test/evidence-integrity.test.mjs
       - name: The engine suites still pass
         run: |
           node --test acquisition/test/*.test.mjs \
@@ -50,6 +62,9 @@ jobs:
   ingest:
     name: Ingest external signals
     needs: contracts
+    # Never on a pull request: this job holds live credentials and calls out to
+    # GitHub, PostHog, Stripe and the ledger.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -58,10 +73,28 @@ jobs:
         with:
           node-version: '22'
 
+      # A repository_dispatch carries whatever the caller typed. It goes to disk as
+      # a file rather than into an argv string so no part of it is ever interpreted
+      # by the shell, and the adapter parses it under the same rules as any other
+      # input - including the refusals that stop the bus asserting a payment.
+      - name: Stage the dispatch payload
+        if: github.event_name == 'repository_dispatch'
+        shell: bash
+        env:
+          CLIENT_PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$CLIENT_PAYLOAD" > /tmp/market-dispatch.json
+          echo "staged $(wc -c < /tmp/market-dispatch.json) bytes of client_payload"
+
       - name: Ingest
         env:
-          # Runtime state. Without these the CLI reports BLOCKED rather than
-          # writing production state somewhere it does not belong.
+          # Durable state. Supabase is the event ledger; the Make Data Store remains
+          # supported for the bus-side cache. Without either the CLI reports BLOCKED
+          # rather than writing production state somewhere it does not belong.
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          MARKET_LEDGER_TABLE: ${{ vars.MARKET_LEDGER_TABLE }}
           MARKET_STATE_ENDPOINT: ${{ secrets.MARKET_STATE_ENDPOINT }}
           MARKET_STATE_SECRET: ${{ secrets.MARKET_STATE_SECRET }}
           GITHUB_TOKEN: ${{ github.token }}
@@ -71,41 +104,96 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          # repository_dispatch is the production path from Make. Manual dispatch
-          # remains useful for verification. A scheduled safety-net run defaults to
-          # github because it has no client_payload or workflow inputs.
-          SOURCE='${{ github.event.client_payload.source || github.event.inputs.source || ''github'' }}'
+
+          # repository_dispatch is the production path from Make, and it can mean two
+          # different things. Both are supported because both are useful:
+          #
+          #   client_payload.source named  -> "go and read that feed now". The dispatch
+          #                                   is the trigger; the events come from the
+          #                                   source. This is how Make turns a Stripe
+          #                                   webhook into a real Stripe read rather
+          #                                   than relaying a payment it may not assert.
+          #   no source named              -> the payload IS the events, handled by the
+          #                                   dispatch adapter under its refusal rules.
+          #
+          # workflow_dispatch is a human asking; the schedule is the safety net and
+          # reads github, having neither a payload nor inputs.
+          SOURCE='${{ github.event.client_payload.source || github.event.inputs.source || 'github' }}'
           LOCAL_FLAG='${{ github.event.client_payload.local || github.event.inputs.local || false }}'
-          EXTRA=''
-          if [ "$LOCAL_FLAG" = 'true' ]; then EXTRA='--local'; fi
+
+          if [ '${{ github.event_name }}' = 'repository_dispatch' ] \
+             && [ -z '${{ github.event.client_payload.source }}' ]; then
+            SOURCE='dispatch'
+            ARGS=( --source dispatch
+                   --payload-file /tmp/market-dispatch.json
+                   --dispatch-id "${{ github.run_id }}" )
+          else
+            ARGS=( --source "$SOURCE"
+                   --owner "${{ github.repository_owner }}"
+                   --repo "${{ github.event.repository.name }}" )
+          fi
+          if [ "$LOCAL_FLAG" = 'true' ]; then ARGS+=( --local ); fi
 
           echo "MARKET source=$SOURCE trigger=${{ github.event_name }}"
 
-          node market/cli/ingest.mjs \
-            --source "$SOURCE" \
-            --owner "${{ github.repository_owner }}" \
-            --repo "${{ github.event.repository.name }}" \
-            $EXTRA | tee /tmp/market-run.log
-
+          # GitHub runs every step under `bash -e`, so a non-zero pipeline aborts the
+          # step immediately and the PIPESTATUS check below is never reached. That
+          # turned an expected, correctly-reported BLOCKED state into a red job -
+          # exactly the outcome the exit-2 branch exists to avoid. Disable -e across
+          # the pipeline only, keeping pipefail so the node exit code is the one read.
+          set +e
+          node market/cli/ingest.mjs "${ARGS[@]}" --json | tee /tmp/market-run.json
           code=${PIPESTATUS[0]}
+          set -e
+
           if [ "$code" = '2' ]; then
             echo '::warning::MARKET state store is not configured; no signal was persisted.'
-            echo 'Set MARKET_STATE_ENDPOINT and MARKET_STATE_SECRET to enable the production lane.'
+            echo 'Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to enable the durable ledger.'
             exit 0
           fi
           exit "$code"
 
       - name: Revenue claims must stay grounded
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
-          # A run may never report revenue. Money enters the ledger through payment
-          # evidence and the state machine, never through an ingest summary.
-          if grep -qiE 'verified_revenue: *[1-9]' /tmp/market-run.log; then
-            echo '::error::an ingest run reported non-zero verified revenue; that can only come from payment evidence'
-            exit 1
-          fi
-          echo 'OK  no revenue was claimed by this run'
+          # The invariant is not "a run may never see revenue" - once Stripe is a
+          # live source a run legitimately can. It is that a revenue figure must be
+          # backed by payment-provider evidence, and that the references proving it
+          # are present. A number without them is refused here even though the code
+          # that produced it believed itself.
+          node -e '
+            const fs = require("fs");
+            const trace = JSON.parse(fs.readFileSync("/tmp/market-run.json", "utf8"));
+            const revenue = Number(trace.verified_revenue ?? 0);
+            if (revenue > 0 && !trace.payment_evidence_present) {
+              console.error("::error::verified revenue was reported with no payment evidence");
+              process.exit(1);
+            }
+            if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) {
+              console.error("::error::verified revenue is not matched one-to-one by provider references");
+              process.exit(1);
+            }
+            console.log(`OK  verified_revenue=${revenue} refs=${JSON.stringify(trace.payment_refs ?? [])}`);
+          '
+
+      - name: Report what the bus was refused
+        if: github.event_name == 'repository_dispatch' && !github.event.client_payload.source
+        shell: bash
+        run: |
+          set -euo pipefail
+          # A refusal is a rule firing upstream of a mistake. It is surfaced as a
+          # warning rather than buried in the trace, because a Make scenario sending
+          # what this side will not accept otherwise fails silently for ever.
+          node -e '
+            const fs = require("fs");
+            const trace = JSON.parse(fs.readFileSync("/tmp/market-run.json", "utf8"));
+            for (const r of trace.refused ?? []) {
+              console.log(`::warning::dispatch refused (${r.reason}): ${r.detail ?? r.id}`);
+            }
+            console.log(`${(trace.refused ?? []).length} refused, ${trace.signals_new ?? 0} accepted`);
+          '
 
       - name: Upload run trace
         if: always()

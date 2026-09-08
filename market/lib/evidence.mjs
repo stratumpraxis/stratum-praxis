@@ -73,18 +73,66 @@ export function canSupportMoneyClaim(evidence) {
  * accident somewhere upstream.
  */
 export function makeEvidence(kind, { ref, provider = null, observed_at = null, detail = null,
-                                     payment_status = null } = {}) {
+                                     payment_status = null, amount_minor = null,
+                                     currency = null } = {}) {
   const record = {
     kind,
     ref: ref ?? null,
     provider,
     observed_at: observed_at ?? new Date().toISOString(),
     detail: detail ?? null,
-    ...(payment_status ? { payment_status } : {})
+    ...(payment_status ? { payment_status } : {}),
+    // Carried as the provider's own minor units, never converted and never summed
+    // across currencies here. An amount is optional because a payment can be real
+    // and its amount unknown to us; what is not allowed is inventing one.
+    ...(Number.isFinite(Number(amount_minor)) && amount_minor !== null
+      ? { amount_minor: Number(amount_minor) }
+      : {}),
+    ...(currency ? { currency: String(currency).toLowerCase() } : {})
   };
   const errors = validateEvidence(record);
   if (errors.length) throw new Error(`invalid evidence: ${errors.join('; ')}`);
   return record;
+}
+
+/**
+ * Total verified revenue across a set of signals.
+ *
+ * This is the only function permitted to produce a revenue number, and it will only
+ * count a signal whose evidence a payment provider produced AND that says the money
+ * moved AND that carries the amount. Everything else is reported separately rather
+ * than folded in:
+ *
+ *   - a paid record with no amount becomes `unpriced_payments`, not a zero. A zero
+ *     would read as "no money", which is a different claim from "money we cannot
+ *     size", and the difference matters when the total is being trusted.
+ *   - amounts are grouped by currency and never added across them.
+ *
+ * With no payment evidence at all the answer is a hard zero, which is the correct
+ * and expected state of this system until a real purchase happens.
+ */
+export function verifiedRevenue(signals = []) {
+  const byCurrency = new Map();
+  let unpriced = 0;
+  const refs = [];
+
+  for (const signal of signals) {
+    const evidence = signal?.evidence;
+    if (!canSupportMoneyClaim(evidence)) continue;
+    if (!PAID_STATUSES.includes(evidence.payment_status)) continue;
+    refs.push(evidence.ref);
+    if (!Number.isFinite(Number(evidence.amount_minor))) { unpriced += 1; continue; }
+    const currency = evidence.currency ?? 'unknown';
+    byCurrency.set(currency, (byCurrency.get(currency) ?? 0) + Number(evidence.amount_minor));
+  }
+
+  return {
+    payments: refs.length,
+    unpriced_payments: unpriced,
+    amount_minor_by_currency: Object.fromEntries(byCurrency),
+    payment_refs: refs,
+    payment_evidence_present: refs.length > 0
+  };
 }
 
 /**
@@ -93,7 +141,13 @@ export function makeEvidence(kind, { ref, provider = null, observed_at = null, d
  */
 export function makeTrace({ run_id, trigger, signals_seen = 0, signals_new = 0,
                             decisions = [], actions = [], failures = [],
-                            store_kind = null, started_at, finished_at = null }) {
+                            store_kind = null, started_at, finished_at = null,
+                            payment_signals = [] }) {
+  // Revenue is computed from payment evidence, not asserted by the run. A run that
+  // saw no payments reports a hard zero; a run that saw one reports it with the
+  // provider reference that proves it, so the number is checkable by someone who
+  // was not there.
+  const revenue = verifiedRevenue(payment_signals);
   return {
     run_id,
     trigger,
@@ -106,7 +160,11 @@ export function makeTrace({ run_id, trigger, signals_seen = 0, signals_new = 0,
     actions,
     failures,
     // Stated on every trace so a reader never has to infer it from absence.
-    verified_revenue: 0,
-    payment_evidence_present: decisions.some((d) => d.evidence && canSupportMoneyClaim(d.evidence))
+    verified_revenue: revenue.payments,
+    verified_revenue_amount_minor: revenue.amount_minor_by_currency,
+    unpriced_payments: revenue.unpriced_payments,
+    payment_refs: revenue.payment_refs,
+    payment_evidence_present: revenue.payment_evidence_present
+      || decisions.some((d) => d.evidence && canSupportMoneyClaim(d.evidence))
   };
 }
