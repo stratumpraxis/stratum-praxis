@@ -3,6 +3,10 @@ name: Publish Ghost Article
 on:
   push:
     branches: [main]
+    paths:
+      - 'content/ghost/ai-is-not-your-bottleneck.md'
+      - 'scripts/publish_ghost_post.mjs'
+      - '.github/workflows/publish-ghost.yml'
   workflow_dispatch:
 
 permissions:

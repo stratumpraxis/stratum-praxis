@@ -3,6 +3,17 @@ name: Deploy Free Public Site
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - '.claude/**'
+      - '.github/**'
+      - 'acquisition/**'
+      - 'content/**'
+      - 'docs/**'
+      - 'evidence/**'
+      - 'market/**'
+      - 'revenue-os/**'
+      - 'tests/**'
+      - '**/*.md'
   workflow_dispatch:
 
 concurrency:

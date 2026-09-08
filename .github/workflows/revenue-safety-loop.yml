@@ -12,7 +12,9 @@ on:
       - 'worker/**'
       - 'agent-control-auditor*'
   schedule:
-    - cron: '17 */6 * * *'
+    # One daily health check; pull requests and relevant pushes still validate
+    # immediately. Repeated unchanged checks are not a revenue event.
+    - cron: '17 2 * * *'
   workflow_dispatch:
 
 permissions:
