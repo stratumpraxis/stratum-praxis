@@ -1,0 +1,23 @@
+{
+  "purpose": "Reference fixture for the deterministic AI Agent Economics Calculator math contract used by deployment QA.",
+  "input": {
+    "volume": 1000,
+    "executionsPerOutcome": 3,
+    "modelCostPerExecution": 0.08,
+    "toolCostPerExecution": 0.02,
+    "fixedMonthlyCost": 150,
+    "retryRatePct": 15,
+    "finalFailureRatePct": 8,
+    "reviewMinutesPerOutcome": 1.5,
+    "reviewHourlyCost": 45,
+    "businessValuePerSuccess": 8,
+    "humanMinutesPerSuccess": 6,
+    "humanHourlyCost": 45
+  },
+  "expected": {
+    "allInMonthlyCost": 1620,
+    "successfulOutcomes": 920,
+    "costPerSuccessfulOutcome": 1.7608695652173914,
+    "humanOnlyEquivalentCost": 4140
+  }
+}
