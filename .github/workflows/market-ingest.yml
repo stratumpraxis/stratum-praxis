@@ -136,8 +136,15 @@ jobs:
 
           echo "MARKET source=$SOURCE trigger=${{ github.event_name }}"
 
+          # GitHub runs every step under `bash -e`, so a non-zero pipeline aborts the
+          # step immediately and the PIPESTATUS check below is never reached. That
+          # turned an expected, correctly-reported BLOCKED state into a red job -
+          # exactly the outcome the exit-2 branch exists to avoid. Disable -e across
+          # the pipeline only, keeping pipefail so the node exit code is the one read.
+          set +e
           node market/cli/ingest.mjs "${ARGS[@]}" --json | tee /tmp/market-run.json
           code=${PIPESTATUS[0]}
+          set -e
 
           if [ "$code" = '2' ]; then
             echo '::warning::MARKET state store is not configured; no signal was persisted.'
@@ -147,6 +154,7 @@ jobs:
           exit "$code"
 
       - name: Revenue claims must stay grounded
+        if: success()
         shell: bash
         run: |
           set -euo pipefail
