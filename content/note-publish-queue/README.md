@@ -66,42 +66,35 @@ Revenue truth: visible likes and a live paid boundary are Human/Commerce signals
 
 Next action: measure post-update qualified visits / purchase behavior, while moving Publishing to the next non-duplicate paid-note route.
 
-## Active queue
-
 ### 2026-09-08｜AI revenue pipeline diagnosis upgrade
 
 Target:
 https://note.com/deft_eel6718/n/nc120a3159186
 
-State: `READY_DRAFT_ONLY`
+State: `PUBLISHED`
 
 Files:
 - `2026-09-08-ai-revenue-pipeline-upgrade.md`
 - `2026-09-08-ai-revenue-pipeline-upgrade-research.md`
 - `2026-09-08-ai-revenue-pipeline-upgrade-distribution.md`
+- `2026-09-08-ai-revenue-pipeline-upgrade-published.md`
 - `../ghost/ai-revenue-pipeline-diagnosis-ja.md`
 
-Public state observed 2026-09-08:
-- price ¥1,980
+Public verification 2026-09-08:
+- HTTP 200 live page confirmed
+- price ¥1,980 retained
 - visible likes: 7
-- purchases: unverified
+- `2026年9月追記` visible in the public/free section
+- paid boundary and purchase CTA visible
+- paid-boundary character count increased from the earlier 3,233 to 7,049 after the update
+- the exact hidden paid appendix heading cannot be independently verified from the public page
+- purchase evidence: unverified
 
-Price rule: retain ¥1,980 until purchase evidence supports a change.
+Revenue truth: the public update and larger paid section are publication evidence, not purchase evidence. Verified Revenue remains ¥0 until actual purchase evidence is observed.
 
-Paid differentiation:
-- Revenue Reality Ladder
-- Leak Diagnosis Matrix
-- Revenue Pipeline Health Score
-- 72-hour Repair Loop
-- Route Switching Rule
-- Weekly Pipeline Sheet
+Next action: measure post-update paid-boundary / purchase behavior while moving to the next non-duplicate paid-note route.
 
-Next external action:
-1. Add the 2026-09 update notice.
-2. Append the completed diagnosis / repair section to the paid body.
-3. Check overlap manually rather than replacing the hidden paid body wholesale.
-4. Publish/update.
-5. Verify the public page and compare post-update human signal / purchases.
+## Active queue
 
 ### 2026-09-08｜AI agent organization upgrade
 
