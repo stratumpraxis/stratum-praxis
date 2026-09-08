@@ -92,7 +92,7 @@ jobs:
           grep -Fq 'Cost per successful outcome' /tmp/agent-economics.html
           grep -Fq 'agent_economics_result' /tmp/agent-economics.html
           grep -Fq 'agent_economics_to_499_audit' /tmp/agent-economics.html
-          grep -Fq 'AI & SaaS Spend Waste Audit — $499' /tmp/agent-economics.html
+          grep -Fq 'AI &amp; SaaS Spend Waste Audit — $499' /tmp/agent-economics.html
           echo 'AI Agent Economics Calculator logic, analytics and revenue route markers -> PASS'
 
           curl -L -sS 'https://stratumpraxis.com/rustchain-bounty-radar.html' -o /tmp/rustchain-bounty-radar.html
