@@ -7,6 +7,15 @@ name: MARKET external signal ingest
 on:
   repository_dispatch:
     types: [market_signal]
+  # The contracts job on every PR that touches MARKET. Until this existed, nothing
+  # in CI ran market/test/ on a pull request at all - the payment-evidence gate, the
+  # bus refusals and the revenue-integrity guards were enforced only by whoever
+  # happened to run the suite locally. The ingest job stays off pull_request: it
+  # reaches real external APIs and must not run on an untrusted head.
+  pull_request:
+    paths:
+      - 'market/**'
+      - '.github/workflows/market-ingest.yml'
   workflow_dispatch:
     inputs:
       source:
@@ -40,6 +49,9 @@ jobs:
           node-version: '22'
       - name: MARKET contract tests
         run: node --test market/test/*.test.mjs
+
+      - name: Historical evidence is append-only
+        run: node --test market/test/evidence-integrity.test.mjs
       - name: The engine suites still pass
         run: |
           node --test acquisition/test/*.test.mjs \
@@ -50,6 +62,9 @@ jobs:
   ingest:
     name: Ingest external signals
     needs: contracts
+    # Never on a pull request: this job holds live credentials and calls out to
+    # GitHub, PostHog, Stripe and the ledger.
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:

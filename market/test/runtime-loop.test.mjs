@@ -405,7 +405,7 @@ test('the durable ledger is preferred over the bus cache when both are configure
   const store = selectStore({
     env: {
       SUPABASE_URL: 'https://project.supabase.co',
-      SUPABASE_SERVICE_ROLE_KEY: 'service-role',
+      SUPABASE_SERVICE_ROLE_KEY: 'not-a-real-key',
       MARKET_STATE_ENDPOINT: 'https://hook.make.com/x',
       MARKET_STATE_SECRET: 'shh'
     }
