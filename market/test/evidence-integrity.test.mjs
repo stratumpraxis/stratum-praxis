@@ -34,7 +34,14 @@ const PROTECTED = Object.freeze({
   'run_90c37efd-1c12-4223-9381-25209f9eceb1.json': '44d3efad8078d28d7b64ba23464e47d6389942683831d29d04eeeea29d02f6e8',
   'run_bf185b72-0be7-4fe3-b804-c86a69595250.json': 'feed3e837cc76c5eeac93a165cc8a1e4aef2e419624c59856a8e0082edf2675e',
   'publisher-route-to-stripe-boundary.json': '3aa4c12318a9cf548b668c62d2afdae5706aeec4454d79504ec0bb52911fb4d8',
-  'paid-page-measurability.json': '2b04c3416e5a710103ce297842df8f2fa3e3eb5b6ac44cbedc167939f8b22926'
+  'paid-page-measurability.json': '2b04c3416e5a710103ce297842df8f2fa3e3eb5b6ac44cbedc167939f8b22926',
+  // The two records of the external-loop work, pinned now that both are complete.
+  // The live-run file was deliberately left unpinned while it still carried a
+  // pending result; a hash on a document still being written would have to be
+  // updated every time it changed, which trains people to update the list instead
+  // of questioning the change.
+  'external-loop-runtime-wiring.json': '60bb52a9123e632db4668dcc22289ba91c5d5aae4ea67bf619d45950d0cf1808',
+  'live-actions-run-credential-state.json': 'c5213f5847cda8f80278aa680e4e1a2c00ae337eeae71282135587290ddca0ce'
 });
 
 async function digest(file) {
