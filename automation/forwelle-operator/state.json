@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49604257",
     "hn:49587217",
     "hn:49568506",
     "hn:49554643",
@@ -12,8 +13,8 @@
   ],
   "lastScoutAt": "2026-09-08T00:53:23.710Z",
   "lastRun": {
-    "id": "2026-09-06-research-acceleration-the-view-inside-openai-hn-49587217",
-    "at": "2026-09-06T23:08:55.052Z",
+    "id": "2026-09-08-weathernext-3-our-most-advanced-global-weather-ai-model-hn-49604257",
+    "at": "2026-09-08T00:54:43.200Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }

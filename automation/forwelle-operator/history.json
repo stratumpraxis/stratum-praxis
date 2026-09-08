@@ -2,6 +2,80 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-09-08-weathernext-3-our-most-advanced-global-weather-ai-model-hn-49604257",
+      "candidateId": "hn:49604257",
+      "createdAt": "2026-09-08T00:53:23.816Z",
+      "recordedAt": "2026-09-08T00:54:43.200Z",
+      "title": "WeatherNext 3: Our most advanced global weather AI model",
+      "source": {
+        "name": "blog.google — first-party source",
+        "url": "https://blog.google/innovation-and-ai/models-and-research/google-deepmind/introducing-weathernext-3/",
+        "factSource": true,
+        "verified": true,
+        "published": "2026-09-07T23:56:41.000Z"
+      },
+      "outputFile": "media/forwelle/2026-09-08-weathernext-3-our-most-advanced-global-weather-ai-model-hn-49604257.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "structureProfile": {
+        "hookType": "concrete-change",
+        "hookText": "WeatherNext 3: Our most advanced global weather AI",
+        "pacing": "five-scene-progressive",
+        "ctaType": "non-salesy-takeaway",
+        "visualStyle": "procedural-motion",
+        "sceneCount": 5,
+        "durationSeconds": 40
+      },
+      "strategy": {
+        "winningPatternLearning": {
+          "status": "BUILDING_DATASET",
+          "sampleCount": 0,
+          "targetCount": 10,
+          "briefUsed": false,
+          "editorialBrief": null
+        },
+        "rendering": {
+          "preferredFinalComposer": "remotion",
+          "currentOperatorRenderer": "procedural"
+        }
+      },
+      "assetCandidates": {
+        "moneyPrinterTurbo": {
+          "status": "SKIPPED_NOT_CONFIGURED",
+          "candidateOnly": true,
+          "promotedToPublication": false,
+          "provider": "MoneyPrinterTurbo",
+          "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-09-06-research-acceleration-the-view-inside-openai-hn-49587217",
       "candidateId": "hn:49587217",
       "createdAt": "2026-09-06T23:07:35.755Z",
