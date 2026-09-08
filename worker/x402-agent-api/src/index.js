@@ -1,7 +1,4 @@
 import { Hono } from 'hono';
-import { createCdpFacilitatorClient } from '@coinbase/cdp-sdk/x402';
-import { ExactEvmScheme } from '@x402/evm/exact/server';
-import { paymentMiddleware, x402ResourceServer } from '@x402/hono';
 
 const app = new Hono();
 const AXES = ['scope', 'motion', 'depth', 'output', 'control'];
@@ -27,6 +24,28 @@ function headers() {
     'Cache-Control': 'no-store',
     'X-Content-Type-Options': 'nosniff',
     'Referrer-Policy': 'no-referrer',
+  };
+}
+
+function runtime(env = {}) {
+  const network = String(env.X402_NETWORK || 'eip155:84532');
+  const price = String(env.X402_PRICE || '$0.01');
+  const mode = String(env.X402_MODE || 'development');
+  const payTo = String(env.PAY_TO || '');
+  const apiKeyId = String(env.CDP_API_KEY_ID || '');
+  const apiKeySecret = String(env.CDP_API_KEY_SECRET || '');
+  const allowedNetwork = network === 'eip155:84532' || network === 'eip155:8453';
+  const productionGuard = network !== 'eip155:8453' || mode === 'production';
+  const addressGuard = /^0x[a-fA-F0-9]{40}$/.test(payTo);
+  return {
+    network,
+    price,
+    mode,
+    payTo,
+    apiKeyId,
+    apiKeySecret,
+    productionGuard,
+    paymentConfigured: Boolean(apiKeyId && apiKeySecret && addressGuard && allowedNetwork && productionGuard),
   };
 }
 
@@ -89,71 +108,92 @@ function routeProfile(profile) {
   };
 }
 
-const network = process.env.X402_NETWORK || 'eip155:84532';
-const price = process.env.X402_PRICE || '$0.01';
-const mode = process.env.X402_MODE || 'development';
-const payTo = process.env.PAY_TO || '';
-const keyId = process.env.CDP_API_KEY_ID || '';
-const keySecret = process.env.CDP_API_KEY_SECRET || '';
-const allowedNetwork = network === 'eip155:84532' || network === 'eip155:8453';
-const productionGuard = network !== 'eip155:8453' || mode === 'production';
-const addressGuard = /^0x[a-fA-F0-9]{40}$/.test(payTo);
-const paymentConfigured = Boolean(keyId && keySecret && addressGuard && allowedNetwork && productionGuard);
+let paymentCache = null;
+async function getPaymentMiddleware(cfg) {
+  const cacheKey = `${cfg.network}|${cfg.price}|${cfg.payTo}|${cfg.apiKeyId}`;
+  if (paymentCache?.key === cacheKey) return paymentCache.middleware;
 
-app.get('/', (c) => c.json({
-  service: 'Stratum Praxis Agent API',
-  product: 'AI Fit Router',
-  machine_endpoint: 'POST /v1/ai-fit',
-  schema_endpoint: 'GET /v1/ai-fit/schema',
-  payment_protocol: 'x402',
-  payment_ready: paymentConfigured,
-  mode,
-  network,
-  price,
-}, 200, headers()));
-
-app.get('/health', (c) => c.json({
-  ok: true,
-  payment_ready: paymentConfigured,
-  mode,
-  network,
-  production_guard: productionGuard,
-}, 200, headers()));
-
-app.get('/v1/ai-fit/schema', (c) => c.json({
-  endpoint: 'POST /v1/ai-fit',
-  price,
-  payment_protocol: 'x402',
-  input: {
-    profile: {
-      scope: '0=organize, 100=expand',
-      motion: '0=confirm, 100=advance',
-      depth: '0=deep, 100=broad',
-      output: '0=create, 100=explore',
-      control: '0=approval-heavy, 100=autonomous',
-    },
-  },
-  output: ['primary_role', 'secondary_role', 'role_scores', 'tool_fit', 'initial_instructions', 'safety'],
-}, 200, headers()));
-
-if (paymentConfigured) {
-  const facilitator = createCdpFacilitatorClient();
-  const server = new x402ResourceServer(facilitator).register(network, new ExactEvmScheme());
-  app.use('/v1/ai-fit', paymentMiddleware({
+  const [cdp, evm, hono] = await Promise.all([
+    import('@coinbase/cdp-sdk/x402'),
+    import('@x402/evm/exact/server'),
+    import('@x402/hono'),
+  ]);
+  const facilitator = cdp.createCdpFacilitatorClient({
+    apiKeyId: cfg.apiKeyId,
+    apiKeySecret: cfg.apiKeySecret,
+  });
+  const server = new hono.x402ResourceServer(facilitator).register(cfg.network, new evm.ExactEvmScheme());
+  const middleware = hono.paymentMiddleware({
     'POST /v1/ai-fit': {
-      accepts: [{ scheme: 'exact', price, network, payTo }],
+      accepts: [{ scheme: 'exact', price: cfg.price, network: cfg.network, payTo: cfg.payTo }],
       description: 'Route an AI work profile to primary and secondary agent roles with tool-fit scores and safety gates.',
     },
-  }, server));
-} else {
-  app.use('/v1/ai-fit', async (c, next) => {
-    if (c.req.method !== 'POST') return next();
+  }, server);
+  paymentCache = { key: cacheKey, middleware };
+  return middleware;
+}
+
+app.get('/', (c) => {
+  const cfg = runtime(c.env);
+  return c.json({
+    service: 'Stratum Praxis Agent API',
+    product: 'AI Fit Router',
+    machine_endpoint: 'POST /v1/ai-fit',
+    schema_endpoint: 'GET /v1/ai-fit/schema',
+    payment_protocol: 'x402',
+    payment_ready: cfg.paymentConfigured,
+    mode: cfg.mode,
+    network: cfg.network,
+    price: cfg.price,
+  }, 200, headers());
+});
+
+app.get('/health', (c) => {
+  const cfg = runtime(c.env);
+  return c.json({
+    ok: true,
+    payment_ready: cfg.paymentConfigured,
+    mode: cfg.mode,
+    network: cfg.network,
+    production_guard: cfg.productionGuard,
+  }, 200, headers());
+});
+
+app.get('/v1/ai-fit/schema', (c) => {
+  const cfg = runtime(c.env);
+  return c.json({
+    endpoint: 'POST /v1/ai-fit',
+    price: cfg.price,
+    payment_protocol: 'x402',
+    input: {
+      profile: {
+        scope: '0=organize, 100=expand',
+        motion: '0=confirm, 100=advance',
+        depth: '0=deep, 100=broad',
+        output: '0=create, 100=explore',
+        control: '0=approval-heavy, 100=autonomous',
+      },
+    },
+    output: ['primary_role', 'secondary_role', 'role_scores', 'tool_fit', 'initial_instructions', 'safety'],
+  }, 200, headers());
+});
+
+app.use('/v1/ai-fit', async (c, next) => {
+  if (c.req.method !== 'POST') return next();
+  const cfg = runtime(c.env);
+  if (!cfg.paymentConfigured) {
     return c.json({
       error: 'payment_not_configured',
       message: 'The paid endpoint is intentionally disabled until CDP credentials and a receive-only EVM address are configured.',
     }, 503, headers());
-  });
-}
+  }
+  try {
+    const middleware = await getPaymentMiddleware(cfg);
+    return middleware(c, next);
+  } catch {
+    return c.json({ error: 'payment_gateway_unavailable' }, 503, headers());
+  }
+});
 
 app.post('/v1/ai-fit', async (c) => {
   try {
