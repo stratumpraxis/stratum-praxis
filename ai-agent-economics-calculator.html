@@ -6,53 +6,48 @@
 <title>AI Agent Economics Calculator | Cost per Successful Outcome</title>
 <meta name="description" content="Calculate the all-in cost of a successful AI agent outcome using model/API cost, tool cost, retries, failures, human review and business value. Compare a second model before changing the stack.">
 <link rel="canonical" href="https://stratumpraxis.com/ai-agent-economics-calculator.html">
+<meta name="theme-color" content="#f5f3ee">
 <meta property="og:type" content="website">
 <meta property="og:title" content="AI Agent Economics Calculator">
 <meta property="og:description" content="See what one successful AI-agent outcome actually costs after retries, failures, tooling and human review.">
 <meta property="og:url" content="https://stratumpraxis.com/ai-agent-economics-calculator.html">
 <meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"WebApplication",
-  "name":"AI Agent Economics Calculator",
-  "applicationCategory":"BusinessApplication",
-  "operatingSystem":"Any",
-  "url":"https://stratumpraxis.com/ai-agent-economics-calculator.html",
-  "description":"A browser-based planning calculator for AI agent unit economics, including model/API spend, tool cost, retries, failures, human review and cost per successful outcome.",
-  "provider":{"@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/"},
-  "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}
-}
-</script>
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AI Agent Economics Calculator","applicationCategory":"BusinessApplication","operatingSystem":"Any","url":"https://stratumpraxis.com/ai-agent-economics-calculator.html","description":"A browser-based planning calculator for AI agent unit economics, including model/API spend, tool cost, retries, failures, human review and cost per successful outcome.","provider":{"@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
 <style>
-:root{--bg:#070a0f;--panel:#0f151f;--panel2:#0a1018;--line:#2b3442;--text:#f5f7fa;--muted:#9da8b7;--silver:#d5dbe3;--white:#fff;--good:#98dfb8;--warn:#f2cf7a;--bad:#ff9e9e}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--text);font:16px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.wrap{max-width:1120px;margin:auto;padding:0 22px}.top{border-bottom:1px solid var(--line);background:rgba(7,10,15,.95);position:sticky;top:0;z-index:10}.topin{min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:850;text-decoration:none}.nav{display:flex;gap:14px;flex-wrap:wrap}.nav a{color:var(--muted);text-decoration:none;font-size:14px}.nav a:hover,.nav a:focus{color:var(--text)}
-.hero{padding:72px 0 38px}.ey{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}h1{font-size:clamp(42px,7vw,76px);line-height:.98;letter-spacing:-.045em;max-width:960px;margin:12px 0 20px}.lead{font-size:21px;color:#cbd3dd;max-width:850px;margin:0}.proof{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:13px}
-.layout{display:grid;grid-template-columns:minmax(0,1.16fr) minmax(300px,.84fr);gap:18px;align-items:start;padding:18px 0 76px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px}.panel h2{font-size:24px;margin:0 0 8px}.sub{color:var(--muted);margin:0 0 20px}.section-title{margin:26px 0 12px;font-size:13px;text-transform:uppercase;letter-spacing:.12em;color:var(--silver)}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-weight:720;font-size:14px;margin-bottom:6px}.field small{display:block;color:var(--muted);font-size:12px;margin-top:5px}.field input{width:100%;background:var(--panel2);border:1px solid var(--line);border-radius:9px;color:var(--text);padding:12px;font:inherit}.field input:focus{outline:2px solid #8997a9;outline-offset:1px}.field.full{grid-column:1/-1}.btn{border:0;border-radius:9px;background:var(--white);color:#090c11;font:inherit;font-weight:850;padding:13px 17px;cursor:pointer}.btn.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:22px}.error{color:var(--bad);font-size:13px}
-.results{position:sticky;top:76px}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}.metric{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:15px}.metric span{display:block;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}.metric b{display:block;font-size:20px;margin-top:5px}.headline-metric{border:1px solid #566274;background:#111925;border-radius:13px;padding:18px;margin-top:18px}.headline-metric span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.1em}.headline-metric b{display:block;font-size:34px;line-height:1.1;margin-top:6px}.comparison{margin-top:16px;border-top:1px solid var(--line);padding-top:16px}.comparison strong{display:block;font-size:18px}.comparison p{color:var(--muted);margin:6px 0 0}.signal{display:inline-block;border-radius:999px;padding:5px 9px;border:1px solid var(--line);font-size:12px;margin-top:8px}.signal.good{color:var(--good)}.signal.warn{color:var(--warn)}.audit{margin-top:18px;background:#f5f7fa;color:#0b0e13;border-radius:13px;padding:18px}.audit h3{margin:0 0 7px;font-size:20px}.audit p{margin:0 0 13px;color:#303743}.audit a{display:inline-block;background:#0b0e13;color:#fff;text-decoration:none;border-radius:8px;padding:12px 15px;font-weight:850}.audit small{display:block;margin-top:11px;color:#59616c}.formula{border-top:1px solid var(--line);margin-top:18px;padding-top:16px;color:var(--muted);font-size:13px}.formula code{color:var(--silver);white-space:normal}.context{max-width:860px;padding:0 0 74px}.context h2{font-size:30px;margin:0 0 12px}.context p,.context li{color:#c3ccd7}.context ul{padding-left:20px}.fine{font-size:13px;color:var(--muted)}
-@media(max-width:860px){.layout{grid-template-columns:1fr}.results{position:static}.nav{display:none}}@media(max-width:620px){.wrap{padding:0 16px}.hero{padding-top:50px}.grid,.metric-grid{grid-template-columns:1fr}.field.full{grid-column:auto}h1{font-size:44px}.lead{font-size:18px}}
+:root{--bg:#f5f3ee;--paper:#fff;--paper2:#faf9f6;--line:#d9d5cb;--text:#171922;--muted:#656974;--mint:#c9f2df;--mint-ink:#0d5f49;--lilac:#e8defe;--blue:#dfeaff;--coral:#ffd9d5;--good:#0d6b51;--warn:#9b6b13;--bad:#a33b35;--shadow:0 18px 50px rgba(28,31,40,.08)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 84% 5%,rgba(201,242,223,.8),transparent 24rem),radial-gradient(circle at 18% 10%,rgba(232,222,254,.55),transparent 24rem),var(--bg);color:var(--text);font:16px/1.58 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:inherit}.wrap{max-width:1160px;margin:auto;padding:0 22px}.top{border-bottom:1px solid rgba(23,25,34,.08);background:rgba(245,243,238,.82);backdrop-filter:blur(16px);position:sticky;top:0;z-index:10}.topin{min-height:64px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font-weight:850;text-decoration:none;letter-spacing:-.02em}.nav{display:flex;gap:18px;flex-wrap:wrap}.nav a{color:var(--muted);text-decoration:none;font-size:13px}.nav a:hover,.nav a:focus{color:var(--text)}
+.hero{padding:74px 0 34px;position:relative}.ey{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mint-ink);font-weight:800}.hero-grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(280px,.75fr);gap:44px;align-items:end}h1{font-size:clamp(48px,7vw,82px);line-height:.95;letter-spacing:-.058em;max-width:870px;margin:12px 0 22px}.lead{font-size:clamp(18px,2vw,21px);color:var(--muted);max-width:760px;margin:0}.proof{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}.pill{border:1px solid var(--line);background:rgba(255,255,255,.66);border-radius:999px;padding:7px 11px;color:var(--muted);font-size:12px}.hero-visual{padding:24px;border:1px solid rgba(23,25,34,.09);background:rgba(255,255,255,.62);border-radius:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}.hero-visual::after{content:"";position:absolute;width:180px;height:180px;border-radius:50%;right:-56px;top:-80px;background:radial-gradient(circle,var(--mint),var(--lilac) 56%,transparent 72%);filter:blur(4px);animation:drift 8s ease-in-out infinite}.hero-visual strong{font-size:34px;line-height:1;letter-spacing:-.05em;display:block;position:relative;z-index:1}.hero-visual p{color:var(--muted);margin:12px 0 0;position:relative;z-index:1}.mini-route{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;margin-top:28px;color:var(--muted);font-size:11px;position:relative;z-index:1}.mini-route i{height:1px;background:linear-gradient(90deg,var(--mint-ink),#6179e5);display:block;animation:pulse 4s ease-in-out infinite}
+.layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.92fr);gap:18px;align-items:start;padding:18px 0 76px}.panel{background:rgba(255,255,255,.82);border:1px solid rgba(23,25,34,.09);border-radius:24px;padding:24px;box-shadow:0 12px 36px rgba(28,31,40,.05)}.panel h2{font-size:24px;margin:0 0 8px;letter-spacing:-.025em}.sub{color:var(--muted);margin:0 0 20px}.section-title{margin:30px 0 12px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--mint-ink);font-weight:800}.grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field label{display:block;font-weight:750;font-size:13px;margin-bottom:6px}.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px}.field input{width:100%;background:var(--paper2);border:1px solid var(--line);border-radius:12px;color:var(--text);padding:13px;font:inherit;transition:border-color .16s ease,box-shadow .16s ease,background .16s ease}.field input:focus{outline:none;border-color:#86bda7;background:#fff;box-shadow:0 0 0 4px rgba(134,189,167,.14)}.field.full{grid-column:1/-1}.btn{border:0;border-radius:12px;background:var(--text);color:#fff;font:inherit;font-weight:850;padding:14px 18px;cursor:pointer;transition:transform .16s ease,box-shadow .16s ease}.btn:hover,.btn:focus-visible{transform:translateY(-1px);box-shadow:0 10px 24px rgba(23,25,34,.14)}.btn.secondary{background:transparent;color:var(--text);border:1px solid var(--line)}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:24px}.error{color:var(--bad);font-size:12px}
+.results{position:sticky;top:82px;background:linear-gradient(155deg,#fff 0 68%,#edf8f3)}.result-kicker{display:flex;align-items:center;justify-content:space-between;gap:12px}.result-kicker .signal-dot{width:9px;height:9px;border-radius:50%;background:#53b992;box-shadow:0 0 16px rgba(83,185,146,.45)}.headline-metric{border:1px solid rgba(13,95,73,.16);background:rgba(201,242,223,.46);border-radius:18px;padding:20px;margin-top:18px}.headline-metric span{display:block;color:var(--mint-ink);font-size:11px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}.headline-metric b{display:block;font-size:clamp(38px,5vw,58px);line-height:.95;margin-top:8px;letter-spacing:-.055em}.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.metric{background:rgba(255,255,255,.72);border:1px solid rgba(23,25,34,.08);border-radius:14px;padding:15px}.metric span{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.07em}.metric b{display:block;font-size:19px;margin-top:6px}.cost-stack{margin-top:16px;padding:16px;border:1px solid rgba(23,25,34,.08);border-radius:15px;background:rgba(255,255,255,.55)}.cost-stack-head{display:flex;justify-content:space-between;gap:16px;font-size:12px;color:var(--muted);margin-bottom:12px}.bar-row{display:grid;grid-template-columns:70px 1fr 50px;gap:8px;align-items:center;margin:8px 0;font-size:11px;color:var(--muted)}.bar{height:8px;background:#ecebe6;border-radius:999px;overflow:hidden}.bar i{display:block;height:100%;width:0;border-radius:inherit;transition:width .42s ease}.bar-ai i{background:#6179e5}.bar-review i{background:#53b992}.bar-fixed i{background:#d9ad45}.comparison{margin-top:16px;border-top:1px solid rgba(23,25,34,.09);padding-top:16px}.comparison strong{display:block;font-size:18px;letter-spacing:-.02em}.comparison p{color:var(--muted);margin:6px 0 0;font-size:13px}.signal{display:inline-block;border-radius:999px;padding:6px 9px;border:1px solid var(--line);font-size:11px;margin-top:9px;background:#fff}.signal.good{color:var(--good)}.signal.warn{color:var(--warn)}.audit{margin-top:18px;background:var(--text);color:#fff;border-radius:18px;padding:20px}.audit h3{margin:0 0 7px;font-size:20px}.audit p{margin:0 0 14px;color:#cfd2d9}.audit a{display:inline-block;background:var(--mint);color:#123d32;text-decoration:none;border-radius:11px;padding:12px 15px;font-weight:850}.audit small{display:block;margin-top:11px;color:#aeb3bc}.formula{border-top:1px solid rgba(23,25,34,.09);margin-top:18px;padding-top:16px;color:var(--muted);font-size:12px}.formula code{color:#555966;white-space:normal}.context{max-width:880px;padding:0 0 78px}.context h2{font-size:34px;margin:0 0 12px;letter-spacing:-.035em}.context p,.context li{color:#555966}.context ul{padding-left:20px}.fine{font-size:12px;color:var(--muted)}
+@keyframes drift{50%{transform:translate(-12px,18px) scale(1.06)}}@keyframes pulse{50%{transform:scaleX(.62);opacity:.45}}
+@media(max-width:900px){.hero-grid,.layout{grid-template-columns:1fr}.results{position:static}.nav{display:none}.hero-visual{max-width:520px}.layout{padding-top:6px}}@media(max-width:620px){.wrap{padding:0 16px}.hero{padding-top:50px}.grid,.metric-grid{grid-template-columns:1fr}.field.full{grid-column:auto}h1{font-size:46px}.lead{font-size:18px}.panel{padding:18px;border-radius:20px}.bar-row{grid-template-columns:58px 1fr 44px}}
+@media(prefers-reduced-motion:reduce){.hero-visual::after,.mini-route i{animation:none!important}.bar i{transition:none}}
 </style>
 <script defer src="scos-analytics.js"></script>
 </head>
 <body data-funnel="ai_agent_economics_calculator" data-product="workflow_audit">
-<header class="top"><div class="wrap topin"><a class="brand" href="/">▣ Stratum Praxis</a><nav class="nav" aria-label="Primary"><a href="/ai-saas-waste-calculator.html">AI &amp; SaaS Waste Calculator</a><a href="/ai-saas-spend-waste-audit.html">$499 Spend Audit</a></nav></div></header>
+<header class="top"><div class="wrap topin"><a class="brand" href="/">SP · Stratum Praxis</a><nav class="nav" aria-label="Primary"><a href="/">Home</a><a href="/ai-saas-waste-calculator.html">AI &amp; SaaS Waste</a><a href="/agent-control-auditor.html">Agent Control</a><a href="/ai-saas-spend-waste-audit.html">$499 Spend Audit</a></nav></div></header>
 <main>
 <section class="wrap hero">
-  <div class="ey">Agent Economics · Unit Cost · ROI</div>
-  <h1>Know what one successful AI-agent outcome actually costs.</h1>
-  <p class="lead">Token price is only one line item. Model/API spend, tool calls, retries, failures, fixed platform cost and human review all change the economics. Compare the current setup with a second model before changing the stack.</p>
-  <div class="proof"><span class="pill">Free · no signup</span><span class="pill">Runs in this browser</span><span class="pill">No guaranteed savings claims</span></div>
+  <div class="hero-grid">
+    <div>
+      <div class="ey">Agent Economics · Unit Cost · ROI</div>
+      <h1>What does one successful AI-agent outcome really cost?</h1>
+      <p class="lead">Token price is only one line item. Add retries, failures, tool calls, fixed software cost, and human review — then compare the current setup with another configuration before changing the stack.</p>
+      <div class="proof"><span class="pill">Free · no signup</span><span class="pill">Runs in this browser</span><span class="pill">No input values uploaded</span></div>
+    </div>
+    <aside class="hero-visual" aria-label="Calculator purpose">
+      <div class="ey">Decision target</div><strong>Cost per successful outcome</strong><p>The cheapest model is not always the cheapest system.</p><div class="mini-route"><span>cost</span><i></i><span>decision</span></div>
+    </aside>
+  </div>
 </section>
 
 <section class="wrap layout">
   <div class="panel" aria-labelledby="calc-title">
     <h2 id="calc-title">Current agent / workflow</h2>
-    <p class="sub">Use planning averages from a representative month. The calculator keeps the math transparent so the assumptions can be challenged.</p>
-
+    <p class="sub">Use planning averages from a representative month. The math stays visible so every assumption can be challenged.</p>
     <div class="section-title">Workload and variable cost</div>
     <div class="grid">
       <div class="field"><label for="volume">Target outcomes / month</label><input id="volume" type="number" min="1" step="1" value="1000"><small>How many completed outcomes the workflow is asked to produce.</small></div>
@@ -68,7 +63,6 @@
       <div class="field"><label for="humanMinutes">Human-only minutes for the same successful outcome</label><input id="humanMinutes" type="number" min="0" step="0.1" value="6"></div>
       <div class="field"><label for="humanHourly">Loaded human-only cost / hour (USD)</label><input id="humanHourly" type="number" min="0" step="1" value="45"></div>
     </div>
-
     <div class="section-title">Comparison model / configuration</div>
     <div class="grid">
       <div class="field"><label for="bModelCost">Model + API cost per execution (USD)</label><input id="bModelCost" type="number" min="0" step="0.001" value="0.03"></div>
@@ -77,12 +71,11 @@
       <div class="field"><label for="bFailureRate">Final failure rate (%)</label><input id="bFailureRate" type="number" min="0" max="99.9" step="0.1" value="14"></div>
       <div class="field"><label for="bReviewMinutes">Human review minutes per requested outcome</label><input id="bReviewMinutes" type="number" min="0" step="0.1" value="2"></div>
     </div>
-
     <div class="actions"><button class="btn" id="calculate">Calculate agent economics</button><button class="btn secondary" id="reset" type="button">Reset example</button><span class="error" id="error" role="alert"></span></div>
   </div>
 
   <aside class="panel results" aria-live="polite" aria-labelledby="result-title">
-    <div class="ey">Current setup</div>
+    <div class="result-kicker"><div class="ey">Current setup</div><span class="signal-dot" aria-hidden="true"></span></div>
     <h2 id="result-title">Unit economics</h2>
     <div class="headline-metric"><span>Cost per successful outcome</span><b id="costSuccess">—</b></div>
     <div class="metric-grid">
@@ -93,28 +86,19 @@
       <div class="metric"><span>AI cost vs human-only</span><b id="humanDelta">—</b></div>
       <div class="metric"><span>Break-even value / success</span><b id="breakEven">—</b></div>
     </div>
-    <div class="comparison"><div class="ey">Model / configuration comparison</div><strong id="compareTitle">Calculate to compare</strong><p id="compareBody">The cheaper model is not automatically the better model. Failure, retries and review burden are included in cost per successful outcome.</p><span class="signal" id="compareSignal">Waiting for inputs</span></div>
-    <div class="audit" id="auditBox" hidden>
-      <h3>Material spend or operating decision?</h3>
-      <p>If this agent is expensive, difficult to rightsize, or tied to a high-value workflow, the existing fixed-scope audit can review the economics, control points and next action.</p>
-      <a href="/ai-saas-spend-waste-audit.html?utm_source=stratumpraxis&amp;utm_medium=calculator&amp;utm_campaign=agent_economics&amp;utm_content=result&amp;route_id=agent_economics_to_499_audit" data-primary-cta data-analytics-id="agent_economics_to_499_audit" data-product="workflow_audit">AI &amp; SaaS Spend Waste Audit — $499</a>
-      <small>Existing Stratum Praxis audit. No new product or checkout flow.</small>
+    <div class="cost-stack">
+      <div class="cost-stack-head"><strong>What drives monthly cost?</strong><span id="costTotal">—</span></div>
+      <div class="bar-row"><span>AI + tools</span><div class="bar bar-ai"><i id="barAI"></i></div><b id="barAILabel">—</b></div>
+      <div class="bar-row"><span>Review</span><div class="bar bar-review"><i id="barReview"></i></div><b id="barReviewLabel">—</b></div>
+      <div class="bar-row"><span>Fixed</span><div class="bar bar-fixed"><i id="barFixed"></i></div><b id="barFixedLabel">—</b></div>
     </div>
+    <div class="comparison"><div class="ey">Configuration comparison</div><strong id="compareTitle">Calculate to compare</strong><p id="compareBody">The cheaper model is not automatically the better model. Failure, retries and review burden are included in cost per successful outcome.</p><span class="signal" id="compareSignal">Waiting for inputs</span></div>
+    <div class="audit" id="auditBox" hidden><h3>Material spend or operating decision?</h3><p>If this agent is expensive, difficult to rightsize, or tied to a high-value workflow, the existing fixed-scope audit can review the economics, control points and next action.</p><a href="/ai-saas-spend-waste-audit.html?utm_source=stratumpraxis&amp;utm_medium=calculator&amp;utm_campaign=agent_economics&amp;utm_content=result&amp;route_id=agent_economics_to_499_audit" data-primary-cta data-analytics-id="agent_economics_to_499_audit" data-product="workflow_audit">AI &amp; SaaS Spend Waste Audit — $499</a><small>Existing Stratum Praxis audit. No new product or checkout flow.</small></div>
     <div class="formula"><strong>Core planning formulas</strong><br><code>base executions = target outcomes × executions per outcome</code><br><code>total executions = base executions × (1 + retry rate)</code><br><code>successful outcomes = target outcomes × (1 − final failure rate)</code><br><code>all-in cost = variable AI/tool cost + fixed cost + human review cost</code><br><code>cost per success = all-in cost ÷ successful outcomes</code></div>
   </aside>
 </section>
 
-<section class="wrap context">
-  <h2>What this calculator is — and is not.</h2>
-  <p>This is a planning model for comparing agent economics. It does not assume that the lowest token price produces the lowest cost per successful outcome. A cheaper model can lose its advantage through extra executions, retries, failures or review burden.</p>
-  <ul>
-    <li>Use observed production averages where available.</li>
-    <li>Treat business value as an assumption that should be pressure-tested.</li>
-    <li>Do not treat the result as guaranteed savings, accounting advice or a production-readiness certification.</li>
-    <li>For high-impact workflows, economics should be reviewed alongside security, governance, human approval and failure-recovery requirements.</li>
-  </ul>
-  <p class="fine">No input is uploaded by this page. Standard anonymous funnel analytics record page and action metadata, not the values typed into the form.</p>
-</section>
+<section class="wrap context"><h2>What this calculator is — and is not.</h2><p>This is a planning model for comparing agent economics. It does not assume that the lowest token price produces the lowest cost per successful outcome. A cheaper model can lose its advantage through extra executions, retries, failures or review burden.</p><ul><li>Use observed production averages where available.</li><li>Treat business value as an assumption that should be pressure-tested.</li><li>Do not treat the result as guaranteed savings, accounting advice or a production-readiness certification.</li><li>For high-impact workflows, economics should be reviewed alongside security, governance, human approval and failure-recovery requirements.</li></ul><p class="fine">No input is uploaded by this page. Standard anonymous funnel analytics record page and action metadata, not the values typed into the form.</p></section>
 </main>
 <script>
 (function(){
@@ -122,55 +106,19 @@
   const defaults={volume:1000,execs:3,modelCost:.08,toolCost:.02,fixedCost:150,retryRate:15,failureRate:8,reviewMinutes:1.5,reviewHourly:45,valuePerSuccess:8,humanMinutes:6,humanHourly:45,bModelCost:.03,bExecs:3.5,bRetryRate:25,bFailureRate:14,bReviewMinutes:2};
   const ids=Object.keys(defaults); const $=id=>document.getElementById(id);
   const money=n=>new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:n<10?2:0}).format(Number.isFinite(n)?n:0);
-  const pct=n=>(Number.isFinite(n)?n:0).toFixed(1)+'%';
-  const num=id=>Number($(id).value);
-  function valid(){
-    for(const id of ids){if(!Number.isFinite(num(id))||num(id)<0)return false;}
-    if(num('volume')<=0||num('execs')<=0||num('bExecs')<=0||num('failureRate')>=100||num('bFailureRate')>=100)return false;
-    return true;
-  }
-  function scenario(modelCost,execs,retry,failure,reviewMinutes){
-    const volume=num('volume'), tool=num('toolCost'), fixed=num('fixedCost'), reviewHourly=num('reviewHourly');
-    const baseExec=volume*execs, totalExec=baseExec*(1+retry/100), successful=volume*(1-failure/100);
-    const variable=totalExec*(modelCost+tool), review=volume*(reviewMinutes/60)*reviewHourly, allIn=variable+fixed+review;
-    const costPerSuccess=successful>0?allIn/successful:Infinity;
-    const value=successful*num('valuePerSuccess'), net=value-allIn;
-    return {baseExec,totalExec,successful,variable,review,allIn,costPerSuccess,value,net,successRate:100-failure};
-  }
+  const pct=n=>(Number.isFinite(n)?n:0).toFixed(1)+'%'; const num=id=>Number($(id).value);
+  function valid(){for(const id of ids){if(!Number.isFinite(num(id))||num(id)<0)return false;}if(num('volume')<=0||num('execs')<=0||num('bExecs')<=0||num('failureRate')>=100||num('bFailureRate')>=100)return false;return true;}
+  function scenario(modelCost,execs,retry,failure,reviewMinutes){const volume=num('volume'),tool=num('toolCost'),fixed=num('fixedCost'),reviewHourly=num('reviewHourly');const baseExec=volume*execs,totalExec=baseExec*(1+retry/100),successful=volume*(1-failure/100);const variable=totalExec*(modelCost+tool),review=volume*(reviewMinutes/60)*reviewHourly,allIn=variable+fixed+review;const costPerSuccess=successful>0?allIn/successful:Infinity;const value=successful*num('valuePerSuccess'),net=value-allIn;return{baseExec,totalExec,successful,variable,review,fixed,allIn,costPerSuccess,value,net,successRate:100-failure};}
+  function setBar(id,labelId,value,total){$(id).style.width=(total>0?Math.max(3,Math.min(100,value/total*100)):0)+'%';$(labelId).textContent=total>0?(value/total*100).toFixed(0)+'%':'0%';}
   function calculate(track){
-    $('error').textContent='';
-    if(!valid()){$('error').textContent='Enter valid non-negative values. Failure rates must stay below 100%.';return;}
-    const a=scenario(num('modelCost'),num('execs'),num('retryRate'),num('failureRate'),num('reviewMinutes'));
-    const b=scenario(num('bModelCost'),num('bExecs'),num('bRetryRate'),num('bFailureRate'),num('bReviewMinutes'));
-    const humanCost=a.successful*(num('humanMinutes')/60)*num('humanHourly');
-    const humanDelta=humanCost-a.allIn;
-    $('costSuccess').textContent=money(a.costPerSuccess);
-    $('monthlyCost').textContent=money(a.allIn);
-    $('successRate').textContent=pct(a.successRate);
-    $('netValue').textContent=money(a.net);
-    $('netValue').style.color=a.net>=0?'var(--good)':'var(--bad)';
-    $('humanCost').textContent=money(humanCost);
-    $('humanDelta').textContent=(humanDelta>=0?'+':'')+money(humanDelta);
-    $('humanDelta').style.color=humanDelta>=0?'var(--good)':'var(--warn)';
-    $('breakEven').textContent=money(a.costPerSuccess);
-    const diff=b.costPerSuccess-a.costPerSuccess;
-    const abs=Math.abs(diff), rel=a.costPerSuccess>0?abs/a.costPerSuccess*100:0;
-    const bBetter=diff<0;
-    $('compareTitle').textContent=(bBetter?'Comparison setup':'Current setup')+' has lower cost per successful outcome';
-    $('compareBody').textContent='Current: '+money(a.costPerSuccess)+' / success · Comparison: '+money(b.costPerSuccess)+' / success. Difference: '+money(abs)+' ('+rel.toFixed(1)+'%). Comparison success rate: '+pct(b.successRate)+'.';
-    $('compareSignal').textContent=bBetter?'Comparison is cheaper on all-in unit economics':'Current setup remains cheaper on all-in unit economics';
-    $('compareSignal').className='signal '+(Math.abs(rel)>=10?'good':'warn');
-    $('auditBox').hidden=false;
-    if(track&&window.scosCapture){
-      window.scosCapture('calculator_input',{calculator:'ai_agent_economics',action:'calculate'});
-      window.scosCapture('agent_economics_result',{current_cost_per_success:Number(a.costPerSuccess.toFixed(4)),comparison_cost_per_success:Number(b.costPerSuccess.toFixed(4)),current_success_rate:Number(a.successRate.toFixed(2)),comparison_success_rate:Number(b.successRate.toFixed(2)),current_monthly_cost:Number(a.allIn.toFixed(2)),current_net_value:Number(a.net.toFixed(2)),human_equivalent_cost:Number(humanCost.toFixed(2)),lower_cost_per_success_scenario:bBetter?'comparison':'current'});
-      window.scosCapture('qualified_tool_action',{tool:'ai_agent_economics_calculator',action:'calculated'});
-      window.scosCapture('paid_offer_exposure',{product:'workflow_audit',price_usd:499,placement:'agent_economics_result'});
-    }
+    $('error').textContent='';if(!valid()){$('error').textContent='Enter valid non-negative values. Failure rates must stay below 100%.';return;}
+    const a=scenario(num('modelCost'),num('execs'),num('retryRate'),num('failureRate'),num('reviewMinutes'));const b=scenario(num('bModelCost'),num('bExecs'),num('bRetryRate'),num('bFailureRate'),num('bReviewMinutes'));const humanCost=a.successful*(num('humanMinutes')/60)*num('humanHourly');const humanDelta=humanCost-a.allIn;
+    $('costSuccess').textContent=money(a.costPerSuccess);$('monthlyCost').textContent=money(a.allIn);$('successRate').textContent=pct(a.successRate);$('netValue').textContent=money(a.net);$('netValue').style.color=a.net>=0?'var(--good)':'var(--bad)';$('humanCost').textContent=money(humanCost);$('humanDelta').textContent=(humanDelta>=0?'+':'')+money(humanDelta);$('humanDelta').style.color=humanDelta>=0?'var(--good)':'var(--warn)';$('breakEven').textContent=money(a.costPerSuccess);
+    $('costTotal').textContent=money(a.allIn);setBar('barAI','barAILabel',a.variable,a.allIn);setBar('barReview','barReviewLabel',a.review,a.allIn);setBar('barFixed','barFixedLabel',a.fixed,a.allIn);
+    const diff=b.costPerSuccess-a.costPerSuccess;const abs=Math.abs(diff),rel=a.costPerSuccess>0?abs/a.costPerSuccess*100:0;const bBetter=diff<0;$('compareTitle').textContent=(bBetter?'Comparison setup':'Current setup')+' has lower cost per successful outcome';$('compareBody').textContent='Current: '+money(a.costPerSuccess)+' / success · Comparison: '+money(b.costPerSuccess)+' / success. Difference: '+money(abs)+' ('+rel.toFixed(1)+'%). Comparison success rate: '+pct(b.successRate)+'.';$('compareSignal').textContent=bBetter?'Comparison is cheaper on all-in unit economics':'Current setup remains cheaper on all-in unit economics';$('compareSignal').className='signal '+(Math.abs(rel)>=10?'good':'warn');$('auditBox').hidden=false;
+    if(track&&window.scosCapture){window.scosCapture('calculator_input',{calculator:'ai_agent_economics',action:'calculate'});window.scosCapture('agent_economics_result',{current_cost_per_success:Number(a.costPerSuccess.toFixed(4)),comparison_cost_per_success:Number(b.costPerSuccess.toFixed(4)),current_success_rate:Number(a.successRate.toFixed(2)),comparison_success_rate:Number(b.successRate.toFixed(2)),current_monthly_cost:Number(a.allIn.toFixed(2)),current_net_value:Number(a.net.toFixed(2)),human_equivalent_cost:Number(humanCost.toFixed(2)),lower_cost_per_success_scenario:bBetter?'comparison':'current'});window.scosCapture('qualified_tool_action',{tool:'ai_agent_economics_calculator',action:'calculated'});window.scosCapture('paid_offer_exposure',{product:'workflow_audit',price_usd:499,placement:'agent_economics_result'});}
   }
-  $('calculate').addEventListener('click',()=>calculate(true));
-  $('reset').addEventListener('click',function(){ids.forEach(id=>{$(id).value=defaults[id]});calculate(true);});
-  document.addEventListener('DOMContentLoaded',()=>calculate(false));
+  $('calculate').addEventListener('click',()=>calculate(true));$('reset').addEventListener('click',function(){ids.forEach(id=>{$(id).value=defaults[id]});calculate(true);});document.addEventListener('DOMContentLoaded',()=>calculate(false));
 })();
 </script>
 </body>
