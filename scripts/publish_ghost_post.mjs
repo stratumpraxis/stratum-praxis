@@ -26,7 +26,18 @@ const markdown = fs.readFileSync(sourcePath, 'utf8').trim();
 const lines = markdown.split('\n');
 const title = lines[0].replace(/^#\s+/, '').trim();
 const bodyMarkdown = lines.slice(1).join('\n').trim();
-const html = marked.parse(bodyMarkdown);
+
+const revenueCta = slug === 'ai-is-not-your-bottleneck'
+  ? `
+    <hr>
+    <h2>When the bottleneck is the handoff between AI agents</h2>
+    <p>If Codex, Claude, Cursor, or other agents keep losing state between sessions, the problem is no longer raw model capability. It is the operating layer between them: role boundaries, durable handoffs, approval state, verification, and the next action.</p>
+    <p><strong>Cross-Agent Operating Kit — $69 one-time</strong></p>
+    <p><a href="https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=ghost&utm_medium=field_note&utm_campaign=cross_agent_continuity_20260908&utm_content=org_throughput_handoff">See the Cross-Agent Operating Kit →</a></p>
+  `
+  : '';
+
+const html = `${marked.parse(bodyMarkdown)}${revenueCta}`;
 const excerpt = 'AI can now produce more work than many organizations can absorb. The next competitive advantage is not generation. It is organizational throughput.';
 
 const headers = {
