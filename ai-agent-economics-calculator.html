@@ -39,7 +39,7 @@
 <script defer src="scos-analytics.js"></script>
 </head>
 <body data-funnel="ai_agent_economics_calculator" data-product="workflow_audit">
-<header class="top"><div class="wrap topin"><a class="brand" href="/">▣ Stratum Praxis</a><nav class="nav" aria-label="Primary"><a href="/ai-saas-waste-calculator.html">AI & SaaS Waste Calculator</a><a href="/ai-saas-spend-waste-audit.html">$499 Spend Audit</a></nav></div></header>
+<header class="top"><div class="wrap topin"><a class="brand" href="/">▣ Stratum Praxis</a><nav class="nav" aria-label="Primary"><a href="/ai-saas-waste-calculator.html">AI &amp; SaaS Waste Calculator</a><a href="/ai-saas-spend-waste-audit.html">$499 Spend Audit</a></nav></div></header>
 <main>
 <section class="wrap hero">
   <div class="ey">Agent Economics · Unit Cost · ROI</div>
@@ -97,7 +97,7 @@
     <div class="audit" id="auditBox" hidden>
       <h3>Material spend or operating decision?</h3>
       <p>If this agent is expensive, difficult to rightsize, or tied to a high-value workflow, the existing fixed-scope audit can review the economics, control points and next action.</p>
-      <a href="/ai-saas-spend-waste-audit.html?utm_source=stratumpraxis&utm_medium=calculator&utm_campaign=agent_economics&utm_content=result&route_id=agent_economics_to_499_audit" data-primary-cta data-analytics-id="agent_economics_to_499_audit" data-product="workflow_audit">AI &amp; SaaS Spend Waste Audit — $499</a>
+      <a href="/ai-saas-spend-waste-audit.html?utm_source=stratumpraxis&amp;utm_medium=calculator&amp;utm_campaign=agent_economics&amp;utm_content=result&amp;route_id=agent_economics_to_499_audit" data-primary-cta data-analytics-id="agent_economics_to_499_audit" data-product="workflow_audit">AI &amp; SaaS Spend Waste Audit — $499</a>
       <small>Existing Stratum Praxis audit. No new product or checkout flow.</small>
     </div>
     <div class="formula"><strong>Core planning formulas</strong><br><code>base executions = target outcomes × executions per outcome</code><br><code>total executions = base executions × (1 + retry rate)</code><br><code>successful outcomes = target outcomes × (1 − final failure rate)</code><br><code>all-in cost = variable AI/tool cost + fixed cost + human review cost</code><br><code>cost per success = all-in cost ÷ successful outcomes</code></div>
@@ -137,7 +137,7 @@
     const value=successful*num('valuePerSuccess'), net=value-allIn;
     return {baseExec,totalExec,successful,variable,review,allIn,costPerSuccess,value,net,successRate:100-failure};
   }
-  function calculate(){
+  function calculate(track){
     $('error').textContent='';
     if(!valid()){$('error').textContent='Enter valid non-negative values. Failure rates must stay below 100%.';return;}
     const a=scenario(num('modelCost'),num('execs'),num('retryRate'),num('failureRate'),num('reviewMinutes'));
@@ -161,16 +161,16 @@
     $('compareSignal').textContent=bBetter?'Comparison is cheaper on all-in unit economics':'Current setup remains cheaper on all-in unit economics';
     $('compareSignal').className='signal '+(Math.abs(rel)>=10?'good':'warn');
     $('auditBox').hidden=false;
-    if(window.scosCapture){
+    if(track&&window.scosCapture){
       window.scosCapture('calculator_input',{calculator:'ai_agent_economics',action:'calculate'});
       window.scosCapture('agent_economics_result',{current_cost_per_success:Number(a.costPerSuccess.toFixed(4)),comparison_cost_per_success:Number(b.costPerSuccess.toFixed(4)),current_success_rate:Number(a.successRate.toFixed(2)),comparison_success_rate:Number(b.successRate.toFixed(2)),current_monthly_cost:Number(a.allIn.toFixed(2)),current_net_value:Number(a.net.toFixed(2)),human_equivalent_cost:Number(humanCost.toFixed(2)),lower_cost_per_success_scenario:bBetter?'comparison':'current'});
       window.scosCapture('qualified_tool_action',{tool:'ai_agent_economics_calculator',action:'calculated'});
       window.scosCapture('paid_offer_exposure',{product:'workflow_audit',price_usd:499,placement:'agent_economics_result'});
     }
   }
-  $('calculate').addEventListener('click',calculate);
-  $('reset').addEventListener('click',function(){ids.forEach(id=>{$(id).value=defaults[id]});calculate();});
-  document.addEventListener('DOMContentLoaded',calculate);
+  $('calculate').addEventListener('click',()=>calculate(true));
+  $('reset').addEventListener('click',function(){ids.forEach(id=>{$(id).value=defaults[id]});calculate(true);});
+  document.addEventListener('DOMContentLoaded',()=>calculate(false));
 })();
 </script>
 </body>
