@@ -1,0 +1,19 @@
+{
+  "name": "stratum-x402-agent-api",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "dependencies": {
+    "@coinbase/cdp-sdk": "1.55.0",
+    "@x402/core": "2.21.0",
+    "@x402/evm": "2.21.0",
+    "@x402/hono": "2.21.0",
+    "hono": "4.7.1"
+  },
+  "devDependencies": {
+    "wrangler": "4.37.1"
+  }
+}
