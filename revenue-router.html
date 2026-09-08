@@ -18,244 +18,29 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
   <style>
-    :root{
-      --ink:#17191f;
-      --muted:#676d78;
-      --paper:#f6f7fb;
-      --white:#fff;
-      --line:rgba(23,25,31,.10);
-      --blue:#dce7ff;
-      --mint:#d9f7eb;
-      --lilac:#ebe2ff;
-      --soft:#eef1f6;
-      --dark:#17191f;
-      --radius-xl:32px;
-      --radius-lg:24px;
-      --radius-md:18px;
-      --shadow:0 26px 80px rgba(45,50,66,.10);
-      --max:1180px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
-    a{color:inherit}
-    button,a{-webkit-tap-highlight-color:transparent}
-    a:focus-visible,button:focus-visible{outline:3px solid #6d8dff;outline-offset:4px}
-    .skip-link{position:fixed;left:16px;top:-80px;z-index:999;padding:10px 14px;background:var(--ink);color:#fff;border-radius:10px}.skip-link:focus{top:16px}
-    .wrap{width:min(calc(100% - 40px),var(--max));margin-inline:auto}
-
-    .router-header{position:sticky;top:0;z-index:40;background:rgba(246,247,251,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(23,25,31,.07)}
-    .router-header-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:22px}
-    .router-brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-weight:760;letter-spacing:-.02em}
-    .router-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;font-size:11px;letter-spacing:.08em}
-    .router-nav{display:flex;align-items:center;gap:24px}.router-nav a{font-size:14px;text-decoration:none;color:#555b66}.router-nav a:hover{color:var(--ink)}
-    .router-nav .nav-cta{padding:10px 14px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700}
-
-    .hero{position:relative;overflow:hidden;padding:92px 0 78px}
-    .hero::before,.hero::after{content:"";position:absolute;border-radius:999px;filter:blur(4px);pointer-events:none;opacity:.85}
-    .hero::before{width:420px;height:420px;right:-150px;top:-120px;background:radial-gradient(circle at 40% 40%,rgba(219,230,255,.95),rgba(235,226,255,.48) 48%,transparent 72%)}
-    .hero::after{width:360px;height:360px;left:-170px;bottom:-150px;background:radial-gradient(circle at 60% 40%,rgba(217,247,235,.9),rgba(255,255,255,.12) 60%,transparent 75%)}
-    .hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:68px;align-items:center}
-    .kicker{display:inline-flex;align-items:center;gap:9px;margin:0 0 18px;font-size:13px;font-weight:720;color:#575d67}.kicker-dot{width:9px;height:9px;border-radius:50%;background:#71d7b4;box-shadow:0 0 0 6px rgba(113,215,180,.15)}
-    h1,h2,h3,p{text-wrap:pretty}
-    h1{max-width:760px;margin:0;font-size:clamp(50px,6.8vw,88px);line-height:.96;letter-spacing:-.062em;font-weight:780}
-    h1 em{font-style:normal;color:#626976}
-    .hero-copy>p.hero-text{max-width:650px;margin:26px 0 0;color:var(--muted);font-size:clamp(18px,2vw,21px);line-height:1.55}
-    .button-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
-    .button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 19px;border-radius:999px;text-decoration:none;font-weight:740;border:1px solid transparent;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}
-    .button-primary{background:var(--ink);color:#fff;box-shadow:0 12px 30px rgba(23,25,31,.16)}
-    .button-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(23,25,31,.20)}
-    .button-secondary{background:rgba(255,255,255,.74);border-color:var(--line);color:var(--ink)}
-    .button-secondary:hover{transform:translateY(-2px);background:#fff}
-    .micro-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.micro-proof span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.58);border:1px solid rgba(23,25,31,.07);font-size:12px;color:#656b75}
-    .fine{max-width:620px;margin:18px 0 0;color:#858a93;font-size:12px;line-height:1.55}
-
-    .preview-shell{position:relative;padding:16px;border-radius:34px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.75);box-shadow:var(--shadow);backdrop-filter:blur(20px)}
-    .preview-shell::before{content:"";position:absolute;inset:-14px 14% auto -10%;height:86px;border-radius:999px;background:linear-gradient(90deg,rgba(220,231,255,.9),rgba(235,226,255,.78),rgba(217,247,235,.72));filter:blur(26px);z-index:-1}
-    .preview{background:rgba(255,255,255,.92);border:1px solid rgba(23,25,31,.08);border-radius:26px;padding:20px}
-    .preview-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.preview-label{font-size:13px;font-weight:760;margin:0}.preview-status{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#4b6b5f;background:#eaf8f2;border-radius:999px;padding:7px 9px}.preview-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#55c49f}
-    .signal-box{padding:16px;border-radius:18px;background:#f5f6f8;border:1px solid rgba(23,25,31,.06)}.signal-box small,.result-card small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:#8a8f98;font-weight:720;margin-bottom:7px}.signal-box strong{font-size:17px;line-height:1.4}
-    .route-track{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.route-step{position:relative;padding:11px 9px;border-radius:14px;background:#fff;border:1px solid rgba(23,25,31,.08);font-size:12px;color:#747a84;transition:transform .2s ease,background .2s ease,border-color .2s ease}.route-step b{display:block;color:var(--ink);font-size:13px;margin-top:2px}.route-step.is-active{transform:translateY(-3px);background:#eef3ff;border-color:#cbd9ff}
-    .result-card{padding:17px;border-radius:18px;background:linear-gradient(135deg,#eef3ff 0%,#f2ecff 48%,#eaf8f2 100%);border:1px solid rgba(105,117,158,.12)}.result-card strong{display:block;font-size:18px;line-height:1.35}.result-card p{margin:7px 0 0;color:#646b75;font-size:13px}
-    .demo-tabs{display:flex;gap:7px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.demo-tabs::-webkit-scrollbar{display:none}.demo-tabs button{white-space:nowrap;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid rgba(23,25,31,.09);background:#fff;color:#656b75;font:inherit;font-size:12px;cursor:pointer}.demo-tabs button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
-
-    .section{padding:92px 0}.section-head{max-width:760px;margin-bottom:38px}.section-head .eyebrow{margin:0 0 10px;color:#757b85;font-size:12px;font-weight:760;letter-spacing:.08em;text-transform:uppercase}.section-head h2{margin:0;font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-.05em}.section-head>p:last-child{max-width:650px;margin:18px 0 0;color:var(--muted);font-size:18px}
-    .three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.soft-card{min-height:250px;padding:24px;border-radius:var(--radius-lg);border:1px solid rgba(23,25,31,.07);background:rgba(255,255,255,.68);display:flex;flex-direction:column}.soft-card:nth-child(1){background:linear-gradient(155deg,#fff,#eef3ff)}.soft-card:nth-child(2){background:linear-gradient(155deg,#fff,#f2ecff)}.soft-card:nth-child(3){background:linear-gradient(155deg,#fff,#eaf8f2)}.card-index{font-size:12px;color:#8a8f98;font-weight:760}.soft-card h3{margin:auto 0 10px;font-size:25px;line-height:1.05;letter-spacing:-.035em}.soft-card p{margin:0;color:#686e78}
-
-    .inside{background:#fff;border-block:1px solid rgba(23,25,31,.07)}
-    .inside-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:50px;align-items:start}.inside-copy h2{margin:0;font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-.05em}.inside-copy p{margin:18px 0 0;color:var(--muted);font-size:17px}
-    .feature-bento{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.feature{padding:20px;border-radius:20px;background:#f7f8fa;border:1px solid rgba(23,25,31,.06)}.feature.wide{grid-column:1/-1;background:linear-gradient(110deg,#f0f4ff,#f5efff,#eef9f5)}.feature small{display:block;color:#858a93;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:760}.feature strong{display:block;margin-top:8px;font-size:19px;line-height:1.25}.feature p{margin:7px 0 0;color:#6e747d;font-size:14px}
-
-    .uses-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.use-card{padding:22px;border-radius:22px;background:#fff;border:1px solid rgba(23,25,31,.07)}.use-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:#f0f2f6;font-size:18px}.use-card h3{margin:28px 0 8px;font-size:21px;letter-spacing:-.03em}.use-card p{margin:0;color:#6c727c;font-size:14px}
-
-    .purchase{padding:40px 0 88px}.purchase-box{position:relative;overflow:hidden;border-radius:32px;background:var(--dark);color:#fff;padding:42px}.purchase-box::after{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(204,220,255,.24),rgba(231,217,255,.10) 45%,transparent 70%)}.purchase-grid{position:relative;z-index:1;display:grid;grid-template-columns:.92fr 1.08fr;gap:52px;align-items:start}.purchase-label{margin:0 0 12px;color:#bfc4cd;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:760}.purchase h2{margin:0;font-size:clamp(44px,6vw,72px);line-height:.95;letter-spacing:-.055em}.purchase-intro{margin:18px 0 0;color:#c2c7d0;font-size:17px;max-width:470px}.purchase-meta{display:grid;gap:0;border-top:1px solid rgba(255,255,255,.13)}.purchase-meta p{display:flex;justify-content:space-between;gap:22px;margin:0;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.11);color:#d4d7dd;font-size:14px}.purchase-meta span:first-child{color:#949aa5}.purchase-actions{margin-top:22px}.purchase .button-primary{background:#fff;color:var(--ink)}.purchase .button-secondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#fff}.legal{margin:18px 0 0;color:#9096a1;font-size:11px;line-height:1.55}
-
-    footer{padding:24px 0 34px;color:#777d87;font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-inner p{margin:0}.footer-inner a{text-decoration:none}.footer-inner a:hover{color:var(--ink)}
-
-    @media(max-width:900px){.hero-grid,.inside-grid,.purchase-grid{grid-template-columns:1fr}.hero-grid{gap:44px}.three-up{grid-template-columns:1fr}.soft-card{min-height:210px}.uses-grid{grid-template-columns:repeat(2,1fr)}.purchase-grid{gap:34px}}
-    @media(max-width:700px){.wrap{width:min(calc(100% - 28px),var(--max))}.router-header-inner{min-height:60px}.router-brand span:last-child{display:none}.router-nav{gap:8px}.router-nav a:not(.nav-cta){display:none}.router-nav .nav-cta{font-size:12px;padding:9px 12px}.hero{padding:58px 0 56px}h1{font-size:clamp(46px,14vw,66px)}.hero-copy>p.hero-text{font-size:17px}.button-row{display:grid;grid-template-columns:1fr}.button{width:100%;min-height:52px}.preview-shell{padding:10px;border-radius:27px}.preview{padding:15px;border-radius:22px}.route-track{grid-template-columns:repeat(2,1fr)}.section{padding:70px 0}.section-head h2,.inside-copy h2{font-size:clamp(36px,11vw,50px)}.feature-bento{grid-template-columns:1fr}.feature.wide{grid-column:auto}.uses-grid{grid-template-columns:1fr}.use-card{min-height:auto}.purchase{padding:22px 0 62px}.purchase-box{padding:28px 22px;border-radius:26px}.purchase h2{font-size:48px}.purchase-meta p{display:grid;gap:4px}.footer-inner{align-items:flex-start;flex-direction:column}}
-    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.route-step{transition:none!important}.button:hover,.route-step.is-active{transform:none!important}}
+    :root{--ink:#17191f;--muted:#676d78;--paper:#f6f7fb;--white:#fff;--line:rgba(23,25,31,.10);--blue:#dce7ff;--mint:#d9f7eb;--lilac:#ebe2ff;--soft:#eef1f6;--dark:#17191f;--radius-xl:32px;--radius-lg:24px;--radius-md:18px;--shadow:0 26px 80px rgba(45,50,66,.10);--max:1180px}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}a{color:inherit}button,a{-webkit-tap-highlight-color:transparent}a:focus-visible,button:focus-visible{outline:3px solid #6d8dff;outline-offset:4px}.skip-link{position:fixed;left:16px;top:-80px;z-index:999;padding:10px 14px;background:var(--ink);color:#fff;border-radius:10px}.skip-link:focus{top:16px}.wrap{width:min(calc(100% - 40px),var(--max));margin-inline:auto}
+    .router-header{position:sticky;top:0;z-index:40;background:rgba(246,247,251,.78);backdrop-filter:blur(18px);border-bottom:1px solid rgba(23,25,31,.07)}.router-header-inner{min-height:68px;display:flex;align-items:center;justify-content:space-between;gap:22px}.router-brand{display:inline-flex;align-items:center;gap:11px;text-decoration:none;font-weight:760;letter-spacing:-.02em}.router-mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:var(--ink);color:#fff;font-size:11px;letter-spacing:.08em}.router-nav{display:flex;align-items:center;gap:24px}.router-nav a{font-size:14px;text-decoration:none;color:#555b66}.router-nav a:hover{color:var(--ink)}.router-nav .nav-cta{padding:10px 14px;border-radius:999px;background:var(--ink);color:#fff;font-weight:700}
+    .hero{position:relative;overflow:hidden;padding:92px 0 78px}.hero::before,.hero::after{content:"";position:absolute;border-radius:999px;filter:blur(4px);pointer-events:none;opacity:.85}.hero::before{width:420px;height:420px;right:-150px;top:-120px;background:radial-gradient(circle at 40% 40%,rgba(219,230,255,.95),rgba(235,226,255,.48) 48%,transparent 72%)}.hero::after{width:360px;height:360px;left:-170px;bottom:-150px;background:radial-gradient(circle at 60% 40%,rgba(217,247,235,.9),rgba(255,255,255,.12) 60%,transparent 75%)}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(360px,.98fr);gap:68px;align-items:center}.kicker{display:inline-flex;align-items:center;gap:9px;margin:0 0 18px;font-size:13px;font-weight:720;color:#575d67}.kicker-dot{width:9px;height:9px;border-radius:50%;background:#71d7b4;box-shadow:0 0 0 6px rgba(113,215,180,.15)}h1,h2,h3,p{text-wrap:pretty}h1{max-width:760px;margin:0;font-size:clamp(50px,6.8vw,88px);line-height:.96;letter-spacing:-.062em;font-weight:780}h1 em{font-style:normal;color:#626976}.hero-copy>p.hero-text{max-width:650px;margin:26px 0 0;color:var(--muted);font-size:clamp(18px,2vw,21px);line-height:1.55}.button-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}.button{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 19px;border-radius:999px;text-decoration:none;font-weight:740;border:1px solid transparent;transition:transform .18s ease,box-shadow .18s ease,background .18s ease}.button-primary{background:var(--ink);color:#fff;box-shadow:0 12px 30px rgba(23,25,31,.16)}.button-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(23,25,31,.20)}.button-secondary{background:rgba(255,255,255,.74);border-color:var(--line);color:var(--ink)}.button-secondary:hover{transform:translateY(-2px);background:#fff}.micro-proof{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.micro-proof span{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.58);border:1px solid rgba(23,25,31,.07);font-size:12px;color:#656b75}.fine{max-width:620px;margin:18px 0 0;color:#858a93;font-size:12px;line-height:1.55}
+    .preview-shell{position:relative;padding:16px;border-radius:34px;background:rgba(255,255,255,.48);border:1px solid rgba(255,255,255,.75);box-shadow:var(--shadow);backdrop-filter:blur(20px)}.preview-shell::before{content:"";position:absolute;inset:-14px 14% auto -10%;height:86px;border-radius:999px;background:linear-gradient(90deg,rgba(220,231,255,.9),rgba(235,226,255,.78),rgba(217,247,235,.72));filter:blur(26px);z-index:-1}.preview{background:rgba(255,255,255,.92);border:1px solid rgba(23,25,31,.08);border-radius:26px;padding:20px}.preview-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.preview-label{font-size:13px;font-weight:760;margin:0}.preview-status{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:#4b6b5f;background:#eaf8f2;border-radius:999px;padding:7px 9px}.preview-status::before{content:"";width:7px;height:7px;border-radius:50%;background:#55c49f}.signal-box{padding:16px;border-radius:18px;background:#f5f6f8;border:1px solid rgba(23,25,31,.06)}.signal-box small,.result-card small{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.11em;color:#8a8f98;font-weight:720;margin-bottom:7px}.signal-box strong{font-size:17px;line-height:1.4}.route-track{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin:12px 0}.route-step{position:relative;padding:11px 9px;border-radius:14px;background:#fff;border:1px solid rgba(23,25,31,.08);font-size:12px;color:#747a84;transition:transform .2s ease,background .2s ease,border-color .2s ease}.route-step b{display:block;color:var(--ink);font-size:13px;margin-top:2px}.route-step.is-active{transform:translateY(-3px);background:#eef3ff;border-color:#cbd9ff}.result-card{padding:17px;border-radius:18px;background:linear-gradient(135deg,#eef3ff 0%,#f2ecff 48%,#eaf8f2 100%);border:1px solid rgba(105,117,158,.12)}.result-card strong{display:block;font-size:18px;line-height:1.35}.result-card p{margin:7px 0 0;color:#646b75;font-size:13px}.demo-tabs{display:flex;gap:7px;margin-top:12px;overflow-x:auto;padding-bottom:2px;scrollbar-width:none}.demo-tabs::-webkit-scrollbar{display:none}.demo-tabs button{white-space:nowrap;min-height:40px;padding:0 12px;border-radius:999px;border:1px solid rgba(23,25,31,.09);background:#fff;color:#656b75;font:inherit;font-size:12px;cursor:pointer}.demo-tabs button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .section{padding:92px 0}.section-head{max-width:760px;margin-bottom:38px}.section-head .eyebrow{margin:0 0 10px;color:#757b85;font-size:12px;font-weight:760;letter-spacing:.08em;text-transform:uppercase}.section-head h2{margin:0;font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-.05em}.section-head>p:last-child{max-width:650px;margin:18px 0 0;color:var(--muted);font-size:18px}.three-up{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.soft-card{min-height:250px;padding:24px;border-radius:var(--radius-lg);border:1px solid rgba(23,25,31,.07);background:rgba(255,255,255,.68);display:flex;flex-direction:column}.soft-card:nth-child(1){background:linear-gradient(155deg,#fff,#eef3ff)}.soft-card:nth-child(2){background:linear-gradient(155deg,#fff,#f2ecff)}.soft-card:nth-child(3){background:linear-gradient(155deg,#fff,#eaf8f2)}.card-index{font-size:12px;color:#8a8f98;font-weight:760}.soft-card h3{margin:auto 0 10px;font-size:25px;line-height:1.05;letter-spacing:-.035em}.soft-card p{margin:0;color:#686e78}.inside{background:#fff;border-block:1px solid rgba(23,25,31,.07)}.inside-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:50px;align-items:start}.inside-copy h2{margin:0;font-size:clamp(38px,5vw,62px);line-height:1.02;letter-spacing:-.05em}.inside-copy p{margin:18px 0 0;color:var(--muted);font-size:17px}.feature-bento{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.feature{padding:20px;border-radius:20px;background:#f7f8fa;border:1px solid rgba(23,25,31,.06)}.feature.wide{grid-column:1/-1;background:linear-gradient(110deg,#f0f4ff,#f5efff,#eef9f5)}.feature small{display:block;color:#858a93;font-size:11px;text-transform:uppercase;letter-spacing:.1em;font-weight:760}.feature strong{display:block;margin-top:8px;font-size:19px;line-height:1.25}.feature p{margin:7px 0 0;color:#6e747d;font-size:14px}.inside-cta{margin-top:26px}.uses-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.use-card{padding:22px;border-radius:22px;background:#fff;border:1px solid rgba(23,25,31,.07)}.use-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;background:#f0f2f6;font-size:18px}.use-card h3{margin:28px 0 8px;font-size:21px;letter-spacing:-.03em}.use-card p{margin:0;color:#6c727c;font-size:14px}
+    .purchase{padding:40px 0 88px}.purchase-box{position:relative;overflow:hidden;border-radius:32px;background:var(--dark);color:#fff;padding:42px}.purchase-box::after{content:"";position:absolute;width:340px;height:340px;right:-120px;top:-150px;border-radius:50%;background:radial-gradient(circle,rgba(204,220,255,.24),rgba(231,217,255,.10) 45%,transparent 70%)}.purchase-grid{position:relative;z-index:1;display:grid;grid-template-columns:.92fr 1.08fr;gap:52px;align-items:start}.purchase-label{margin:0 0 12px;color:#bfc4cd;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:760}.purchase h2{margin:0;font-size:clamp(44px,6vw,72px);line-height:.95;letter-spacing:-.055em}.purchase-intro{margin:18px 0 0;color:#c2c7d0;font-size:17px;max-width:470px}.purchase-meta{display:grid;gap:0;border-top:1px solid rgba(255,255,255,.13)}.purchase-meta p{display:flex;justify-content:space-between;gap:22px;margin:0;padding:13px 0;border-bottom:1px solid rgba(255,255,255,.11);color:#d4d7dd;font-size:14px}.purchase-meta span:first-child{color:#949aa5}.purchase-actions{margin-top:22px}.purchase .button-primary{background:#fff;color:var(--ink)}.purchase .button-secondary{background:rgba(255,255,255,.06);border-color:rgba(255,255,255,.15);color:#fff}.legal{margin:18px 0 0;color:#9096a1;font-size:11px;line-height:1.55}footer{padding:24px 0 34px;color:#777d87;font-size:12px}.footer-inner{display:flex;justify-content:space-between;gap:20px;align-items:center}.footer-inner p{margin:0}.footer-inner a{text-decoration:none}.footer-inner a:hover{color:var(--ink)}
+    @media(max-width:900px){.hero-grid,.inside-grid,.purchase-grid{grid-template-columns:1fr}.hero-grid{gap:44px}.three-up{grid-template-columns:1fr}.soft-card{min-height:210px}.uses-grid{grid-template-columns:repeat(2,1fr)}.purchase-grid{gap:34px}}@media(max-width:700px){.wrap{width:min(calc(100% - 28px),var(--max))}.router-header-inner{min-height:60px}.router-brand span:last-child{display:none}.router-nav{gap:8px}.router-nav a:not(.nav-cta){display:none}.router-nav .nav-cta{font-size:12px;padding:9px 12px}.hero{padding:58px 0 56px}h1{font-size:clamp(46px,14vw,66px)}.hero-copy>p.hero-text{font-size:17px}.button-row{display:grid;grid-template-columns:1fr}.button{width:100%;min-height:52px}.preview-shell{padding:10px;border-radius:27px}.preview{padding:15px;border-radius:22px}.route-track{grid-template-columns:repeat(2,1fr)}.section{padding:70px 0}.section-head h2,.inside-copy h2{font-size:clamp(36px,11vw,50px)}.feature-bento{grid-template-columns:1fr}.feature.wide{grid-column:auto}.uses-grid{grid-template-columns:1fr}.use-card{min-height:auto}.purchase{padding:22px 0 62px}.purchase-box{padding:28px 22px;border-radius:26px}.purchase h2{font-size:48px}.purchase-meta p{display:grid;gap:4px}.footer-inner{align-items:flex-start;flex-direction:column}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.button,.route-step{transition:none!important}.button:hover,.route-step.is-active{transform:none!important}}
   </style>
-  <script type="application/ld+json">
-  {
-    "@context":"https://schema.org",
-    "@type":"Product",
-    "name":"Revenue Router v1.0",
-    "description":"Browser-based decision tool for verifying, scoring and routing AI research signals into prioritized revenue actions.",
-    "brand":{"@type":"Brand","name":"Stratum Praxis"},
-    "offers":{"@type":"Offer","price":"29","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08"}
-  }
-  </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Product","name":"Revenue Router v1.0","description":"Browser-based decision tool for verifying, scoring and routing AI research signals into prioritized revenue actions.","brand":{"@type":"Brand","name":"Stratum Praxis"},"offers":{"@type":"Offer","price":"29","priceCurrency":"USD","availability":"https://schema.org/InStock","url":"https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08"}}</script>
   <script defer src="scos-analytics.js"></script>
 </head>
 <body>
   <a class="skip-link" href="#main">Skip to content</a>
-
-  <header class="router-header">
-    <div class="wrap router-header-inner">
-      <a class="router-brand" href="/" aria-label="Stratum Praxis home"><span class="router-mark" aria-hidden="true">SP</span><span>Stratum Praxis</span></a>
-      <nav class="router-nav" aria-label="Primary navigation">
-        <a href="/">Home</a>
-        <a href="/#tools">Tools</a>
-        <a class="nav-cta" href="#get-router">Get Revenue Router</a>
-      </nav>
-    </div>
-  </header>
-
+  <header class="router-header"><div class="wrap router-header-inner"><a class="router-brand" href="/" aria-label="Stratum Praxis home"><span class="router-mark" aria-hidden="true">SP</span><span>Stratum Praxis</span></a><nav class="router-nav" aria-label="Primary navigation"><a href="/">Home</a><a href="/#tools">Tools</a><a class="nav-cta" href="#get-router">Get Revenue Router</a></nav></div></header>
   <main id="main">
-    <section class="hero">
-      <div class="wrap hero-grid">
-        <div class="hero-copy">
-          <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>Revenue Router · $29 once</p>
-          <h1>Got an AI signal. <em>What should you do next?</em></h1>
-          <p class="hero-text">Drop in a pricing change, product launch, workflow pain, post, headline, URL, or research note. Revenue Router checks the signal, weighs whether it matters, and points you to the strongest next move you already have.</p>
-          <div class="button-row">
-            <a data-analytics-id="revenue_router_checkout_1" class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Get Revenue Router — $29</a>
-            <a class="button button-secondary" href="#preview">Try a quick example</a>
-          </div>
-          <div class="micro-proof" aria-label="Product characteristics">
-            <span>No API key</span><span>Your data stays local</span><span>Browser-based</span><span>No subscription</span>
-          </div>
-          <p class="fine">Single-user license. Redistribution or resale of the delivered file is not permitted. Decision support only; no revenue outcome is guaranteed.</p>
-        </div>
-
-        <aside class="preview-shell" id="preview" aria-label="Interactive Revenue Router preview">
-          <div class="preview">
-            <div class="preview-top"><p class="preview-label">Try the idea</p><span class="preview-status">ready</span></div>
-            <div class="signal-box"><small>Incoming signal</small><strong id="demoSignal">“A major AI tool changed its pricing.”</strong></div>
-            <div class="route-track" aria-label="Routing stages">
-              <div class="route-step is-active" data-stage="0"><span>01</span><b>Check</b></div>
-              <div class="route-step" data-stage="1"><span>02</span><b>Weigh</b></div>
-              <div class="route-step" data-stage="2"><span>03</span><b>Pick</b></div>
-              <div class="route-step" data-stage="3"><span>04</span><b>Route</b></div>
-            </div>
-            <div class="result-card"><small>Best next move</small><strong id="demoResult">Pricing comparison → cost calculator → relevant paid decision support</strong><p id="demoNote">Use the signal where the money impact is immediate.</p></div>
-            <div class="demo-tabs" aria-label="Try another example">
-              <button type="button" aria-pressed="true" data-demo="pricing">Pricing change</button>
-              <button type="button" aria-pressed="false" data-demo="launch">New launch</button>
-              <button type="button" aria-pressed="false" data-demo="workflow">Workflow pain</button>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="why-title">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="eyebrow">Made for the messy middle</p>
-          <h2 id="why-title">Less research pile. More next move.</h2>
-          <p>The interface stays simple on purpose. The work underneath is about deciding whether a signal is real, useful, and close enough to money to deserve your attention.</p>
-        </div>
-        <div class="three-up">
-          <article class="soft-card"><span class="card-index">01</span><h3>Check before you chase it.</h3><p>Separate official or credible evidence from unverified claims, noise, and unsafe signals.</p></article>
-          <article class="soft-card"><span class="card-index">02</span><h3>Know if it matters now.</h3><p>Weigh freshness, demand, money impact, confidence, and risk before turning a signal into work.</p></article>
-          <article class="soft-card"><span class="card-index">03</span><h3>Get a next move, not a lecture.</h3><p>Return only the strongest one to three routes across the destinations you already have.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="section inside" aria-labelledby="inside-title">
-      <div class="wrap inside-grid">
-        <div class="inside-copy">
-          <p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>What stays inside</p>
-          <h2 id="inside-title">Small on the surface. Useful underneath.</h2>
-          <p>No new business model for every headline. Revenue Router keeps the decision layer close to your existing products, channels, tools, and B2B paths.</p>
-        </div>
-        <div class="feature-bento">
-          <div class="feature wide"><small>Decision</small><strong>ACT · TRY · WATCH · VERIFY · IGNORE · AVOID</strong><p>Verdicts plus priority, confidence, and revenue-fit scoring.</p></div>
-          <div class="feature"><small>Route map</small><strong>Top 1–3 actions</strong><p>Editable destinations for your own products, channels, lead magnets, and services.</p></div>
-          <div class="feature"><small>Today</small><strong>Highest-priority queue</strong><p>Keep the signals that deserve action now separate from everything else.</p></div>
-          <div class="feature"><small>History</small><strong>CSV + JSON backup</strong><p>Keep a portable record of decisions and export when needed.</p></div>
-          <div class="feature"><small>Privacy</small><strong>Local browser storage</strong><p>No API key required. Designed to work locally and save offline.</p></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="section" aria-labelledby="routes-title">
-      <div class="wrap">
-        <div class="section-head">
-          <p class="eyebrow">Use what you already have</p>
-          <h2 id="routes-title">One signal can lead somewhere useful.</h2>
-          <p>Only use a route when it fits. Revenue Router does not force every signal into a post, product, or sales conversation.</p>
-        </div>
-        <div class="uses-grid">
-          <article class="use-card"><span class="use-icon" aria-hidden="true">✦</span><h3>Content</h3><p>Use fresh, verified signals when a post, article, newsletter, or video is genuinely the closest move.</p></article>
-          <article class="use-card"><span class="use-icon" aria-hidden="true">↗</span><h3>Affiliate</h3><p>Connect relevant pricing or product signals without forcing an affiliate link into every idea.</p></article>
-          <article class="use-card"><span class="use-icon" aria-hidden="true">◇</span><h3>Owned products</h3><p>Route directly into existing kits, calculators, templates, or other self-service offers.</p></article>
-          <article class="use-card"><span class="use-icon" aria-hidden="true">◎</span><h3>B2B</h3><p>Escalate measurable workflow, spend, renewal, or operations pain when a higher-value audit is a strong fit.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <section class="purchase" id="get-router" aria-labelledby="purchase-title">
-      <div class="wrap">
-        <div class="purchase-box">
-          <div class="purchase-grid">
-            <div>
-              <p class="purchase-label">Revenue Router v1.0</p>
-              <h2 id="purchase-title">$29 once.<br>No subscription.</h2>
-              <p class="purchase-intro">A browser-based decision tool for turning research signals into clearer next actions without adding another monthly bill.</p>
-            </div>
-            <div>
-              <div class="purchase-meta" aria-label="Purchase details">
-                <p><span>Price</span><strong>$29 USD · one-time</strong></p>
-                <p><span>Format</span><strong>Browser-based HTML tool</strong></p>
-                <p><span>Requirements</span><strong>Modern browser · no API key</strong></p>
-                <p><span>Data</span><strong>Saved locally with LocalStorage</strong></p>
-                <p><span>License</span><strong>Single-user use + customization</strong></p>
-              </div>
-              <div class="button-row purchase-actions">
-                <a data-analytics-id="revenue_router_checkout_2" class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Continue to Stripe — $29</a>
-                <a class="button button-secondary" href="ai-value-realization-kit.html">Need ROI support instead?</a>
-              </div>
-              <p class="legal">Redistribution and resale are prohibited. Decision support only; no guarantee of revenue, affiliate approval, market accuracy, or business results. Your browser and LocalStorage settings can affect saved data.</p>
-              <a data-analytics-id="revenue_router_checkout_3" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap">Buy Revenue Router — $29</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <section class="hero"><div class="wrap hero-grid"><div class="hero-copy"><p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>Revenue Router · $29 once</p><h1>Got an AI signal. <em>What should you do next?</em></h1><p class="hero-text">Drop in a pricing change, product launch, workflow pain, post, headline, URL, or research note. Revenue Router checks the signal, weighs whether it matters, and points you to the strongest next move you already have.</p><div class="button-row"><a data-analytics-id="revenue_router_checkout_1" class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Get Revenue Router — $29</a><a class="button button-secondary" href="#preview">Try a quick example</a></div><div class="micro-proof" aria-label="Product characteristics"><span>No API key</span><span>Your data stays local</span><span>Browser-based</span><span>No subscription</span></div><p class="fine">Single-user license. Redistribution or resale of the delivered file is not permitted. Decision support only; no revenue outcome is guaranteed.</p></div><aside class="preview-shell" id="preview" aria-label="Interactive Revenue Router preview"><div class="preview"><div class="preview-top"><p class="preview-label">Try the idea</p><span class="preview-status">ready</span></div><div class="signal-box"><small>Incoming signal</small><strong id="demoSignal">“A major AI tool changed its pricing.”</strong></div><div class="route-track" aria-label="Routing stages"><div class="route-step is-active" data-stage="0"><span>01</span><b>Check</b></div><div class="route-step" data-stage="1"><span>02</span><b>Weigh</b></div><div class="route-step" data-stage="2"><span>03</span><b>Pick</b></div><div class="route-step" data-stage="3"><span>04</span><b>Route</b></div></div><div class="result-card"><small>Best next move</small><strong id="demoResult">Pricing comparison → cost calculator → relevant paid decision support</strong><p id="demoNote">Use the signal where the money impact is immediate.</p></div><div class="demo-tabs" aria-label="Try another example"><button type="button" aria-pressed="true" data-demo="pricing">Pricing change</button><button type="button" aria-pressed="false" data-demo="launch">New launch</button><button type="button" aria-pressed="false" data-demo="workflow">Workflow pain</button></div></div></aside></div></section>
+    <section class="section" aria-labelledby="why-title"><div class="wrap"><div class="section-head"><p class="eyebrow">Made for the messy middle</p><h2 id="why-title">Less research pile. More next move.</h2><p>The interface stays simple on purpose. The work underneath is about deciding whether a signal is real, useful, and close enough to money to deserve your attention.</p></div><div class="three-up"><article class="soft-card"><span class="card-index">01</span><h3>Check before you chase it.</h3><p>Separate official or credible evidence from unverified claims, noise, and unsafe signals.</p></article><article class="soft-card"><span class="card-index">02</span><h3>Know if it matters now.</h3><p>Weigh freshness, demand, money impact, confidence, and risk before turning a signal into work.</p></article><article class="soft-card"><span class="card-index">03</span><h3>Get a next move, not a lecture.</h3><p>Return only the strongest one to three routes across the destinations you already have.</p></article></div></div></section>
+    <section class="section inside" aria-labelledby="inside-title"><div class="wrap inside-grid"><div class="inside-copy"><p class="kicker"><span class="kicker-dot" aria-hidden="true"></span>What stays inside</p><h2 id="inside-title">Small on the surface. Useful underneath.</h2><p>No new business model for every headline. Revenue Router keeps the decision layer close to your existing products, channels, tools, and B2B paths.</p><div class="button-row inside-cta"><a data-analytics-id="revenue_router_checkout_2" class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Get Revenue Router — $29</a></div></div><div class="feature-bento"><div class="feature wide"><small>Decision</small><strong>ACT · TRY · WATCH · VERIFY · IGNORE · AVOID</strong><p>Verdicts plus priority, confidence, and revenue-fit scoring.</p></div><div class="feature"><small>Route map</small><strong>Top 1–3 actions</strong><p>Editable destinations for your own products, channels, lead magnets, and services.</p></div><div class="feature"><small>Today</small><strong>Highest-priority queue</strong><p>Keep the signals that deserve action now separate from everything else.</p></div><div class="feature"><small>History</small><strong>CSV + JSON backup</strong><p>Keep a portable record of decisions and export when needed.</p></div><div class="feature"><small>Privacy</small><strong>Local browser storage</strong><p>No API key required. Designed to work locally and save offline.</p></div></div></div></section>
+    <section class="section" aria-labelledby="routes-title"><div class="wrap"><div class="section-head"><p class="eyebrow">Use what you already have</p><h2 id="routes-title">One signal can lead somewhere useful.</h2><p>Only use a route when it fits. Revenue Router does not force every signal into a post, product, or sales conversation.</p></div><div class="uses-grid"><article class="use-card"><span class="use-icon" aria-hidden="true">✦</span><h3>Content</h3><p>Use fresh, verified signals when a post, article, newsletter, or video is genuinely the closest move.</p></article><article class="use-card"><span class="use-icon" aria-hidden="true">↗</span><h3>Affiliate</h3><p>Connect relevant pricing or product signals without forcing an affiliate link into every idea.</p></article><article class="use-card"><span class="use-icon" aria-hidden="true">◇</span><h3>Owned products</h3><p>Route directly into existing kits, calculators, templates, or other self-service offers.</p></article><article class="use-card"><span class="use-icon" aria-hidden="true">◎</span><h3>B2B</h3><p>Escalate measurable workflow, spend, renewal, or operations pain when a higher-value audit is a strong fit.</p></article></div></div></section>
+    <section class="purchase" id="get-router" aria-labelledby="purchase-title"><div class="wrap"><div class="purchase-box"><div class="purchase-grid"><div><p class="purchase-label">Revenue Router v1.0</p><h2 id="purchase-title">$29 once.<br>No subscription.</h2><p class="purchase-intro">A browser-based decision tool for turning research signals into clearer next actions without adding another monthly bill.</p></div><div><div class="purchase-meta" aria-label="Purchase details"><p><span>Price</span><strong>$29 USD · one-time</strong></p><p><span>Format</span><strong>Browser-based HTML tool</strong></p><p><span>Requirements</span><strong>Modern browser · no API key</strong></p><p><span>Data</span><strong>Saved locally with LocalStorage</strong></p><p><span>License</span><strong>Single-user use + customization</strong></p></div><div class="button-row purchase-actions"><a data-analytics-id="revenue_router_checkout_3" class="button button-primary" href="https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08" target="_blank" rel="noopener noreferrer">Continue to Stripe — $29</a><a class="button button-secondary" href="ai-value-realization-kit.html">Need ROI support instead?</a></div><p class="legal">Redistribution and resale are prohibited. Decision support only; no guarantee of revenue, affiliate approval, market accuracy, or business results. Your browser and LocalStorage settings can affect saved data.</p></div></div></div></div></section>
   </main>
-
-  <footer>
-    <div class="wrap footer-inner"><p>© 2026 Stratum Praxis</p><div><a href="/">Home</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a></div></div>
-  </footer>
-
-  <script>
-    (()=>{
-      const demos={
-        pricing:{signal:'“A major AI tool changed its pricing.”',result:'Pricing comparison → cost calculator → relevant paid decision support',note:'Use the signal where the money impact is immediate.'},
-        launch:{signal:'“A new AI product launched with a specific workflow claim.”',result:'Verify the claim → compare workflow fit → watch, try, or route it',note:'A launch is not automatically worth acting on.'},
-        workflow:{signal:'“Teams are repeatedly losing time to the same manual workflow.”',result:'Problem brief → ROI calculator → fixed-scope workflow audit',note:'Measurable operational pain can justify a higher-value route.'}
-      };
-      const buttons=[...document.querySelectorAll('[data-demo]')];
-      const nodes=[...document.querySelectorAll('.route-step')];
-      let timer;
-      function animateStages(){clearInterval(timer);let i=0;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===0));timer=setInterval(()=>{i=(i+1)%nodes.length;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===i));},1050)}
-      buttons.forEach(btn=>btn.addEventListener('click',()=>{const d=demos[btn.dataset.demo];document.getElementById('demoSignal').textContent=d.signal;document.getElementById('demoResult').textContent=d.result;document.getElementById('demoNote').textContent=d.note;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)animateStages();}));
-      if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)animateStages();
-    })();
-  </script>
+  <footer><div class="wrap footer-inner"><p>© 2026 Stratum Praxis</p><div><a href="/">Home</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a></div></div></footer>
+  <script>(()=>{const demos={pricing:{signal:'“A major AI tool changed its pricing.”',result:'Pricing comparison → cost calculator → relevant paid decision support',note:'Use the signal where the money impact is immediate.'},launch:{signal:'“A new AI product launched with a specific workflow claim.”',result:'Verify the claim → compare workflow fit → watch, try, or route it',note:'A launch is not automatically worth acting on.'},workflow:{signal:'“Teams are repeatedly losing time to the same manual workflow.”',result:'Problem brief → ROI calculator → fixed-scope workflow audit',note:'Measurable operational pain can justify a higher-value route.'}};const buttons=[...document.querySelectorAll('[data-demo]')];const nodes=[...document.querySelectorAll('.route-step')];let timer;function animateStages(){clearInterval(timer);let i=0;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===0));timer=setInterval(()=>{i=(i+1)%nodes.length;nodes.forEach((n,j)=>n.classList.toggle('is-active',j===i));},1050)}buttons.forEach(btn=>btn.addEventListener('click',()=>{const d=demos[btn.dataset.demo];document.getElementById('demoSignal').textContent=d.signal;document.getElementById('demoResult').textContent=d.result;document.getElementById('demoNote').textContent=d.note;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)animateStages()}));if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)animateStages()})();</script>
 </body>
 </html>
