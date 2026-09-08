@@ -76,10 +76,10 @@ https://note.com/deft_eel6718/n/nc120a3159186
 State: `READY_DRAFT_ONLY`
 
 Files:
-- `2026-09-08-ai-revenue-pipeline-upgrade.md` — final appendix / leak diagnosis / weekly operating sheet
-- `2026-09-08-ai-revenue-pipeline-upgrade-research.md` — 3-pass research / Paid Value Gate / Claim Ledger
-- `2026-09-08-ai-revenue-pipeline-upgrade-distribution.md` — newsletter / social / video / Shorts
-- `../ghost/ai-revenue-pipeline-diagnosis-ja.md` — free SEO adaptation
+- `2026-09-08-ai-revenue-pipeline-upgrade.md`
+- `2026-09-08-ai-revenue-pipeline-upgrade-research.md`
+- `2026-09-08-ai-revenue-pipeline-upgrade-distribution.md`
+- `../ghost/ai-revenue-pipeline-diagnosis-ja.md`
 
 Public state observed 2026-09-08:
 - price ¥1,980
@@ -102,5 +102,42 @@ Next external action:
 3. Check overlap manually rather than replacing the hidden paid body wholesale.
 4. Publish/update.
 5. Verify the public page and compare post-update human signal / purchases.
+
+### 2026-09-08｜AI agent organization upgrade
+
+Target:
+https://note.com/deft_eel6718/n/nfce5ac047c15
+
+State: `READY_DRAFT_ONLY`
+
+Files:
+- `2026-09-08-ai-agent-organization-upgrade.md` — Agent Operating Constitution / final appendix
+- `2026-09-08-ai-agent-organization-upgrade-research.md` — 3-pass research / Paid Value Gate / Claim Ledger
+- `2026-09-08-ai-agent-organization-upgrade-distribution.md` — newsletter / social / video / Shorts
+- `../ghost/ai-agent-operating-constitution-ja.md` — free SEO adaptation
+
+Public state observed 2026-09-08:
+- price ¥3,850
+- visible likes: 2
+- purchases: unverified
+
+Price rule: retain ¥3,850 until purchase evidence supports a change.
+
+Paid differentiation:
+- Agent Role Charter
+- Permission / Action Matrix
+- Human Approval Matrix
+- Evidence Contract
+- Escalation Packet
+- Failure / Rollback Protocol
+- Agent-to-Agent Handoff
+- Weekly Agent Review
+
+Next external action:
+1. Add the 2026-09 update notice.
+2. Append the Agent Operating Constitution to the existing paid body.
+3. Remove only confirmed overlap.
+4. Publish/update.
+5. Verify the public page and measure purchase behavior.
 
 Revenue truth for every queue item: likes, visits, clicks and checkout starts are not verified revenue. Purchase / Contract / Reward / Commission evidence is required.
