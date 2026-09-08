@@ -1,4 +1,7 @@
 import { Hono } from 'hono';
+import { HTTPFacilitatorClient, x402ResourceServer } from '@x402/core/server';
+import { ExactEvmScheme } from '@x402/evm/exact/server';
+import { paymentMiddleware } from '@x402/hono';
 
 const app = new Hono();
 const AXES = ['scope', 'motion', 'depth', 'output', 'control'];
@@ -121,15 +124,9 @@ async function getPaymentMiddleware(cfg) {
   const cacheKey = `${cfg.facilitator}|${cfg.network}|${cfg.price}|${cfg.payTo}|${cfg.apiKeyId}`;
   if (paymentCache?.key === cacheKey) return paymentCache.middleware;
 
-  const [evm, hono] = await Promise.all([
-    import('@x402/evm/exact/server'),
-    import('@x402/hono'),
-  ]);
-
   let facilitator;
   if (cfg.facilitator === 'x402.org-testnet') {
-    const core = await import('@x402/core/server');
-    facilitator = new core.HTTPFacilitatorClient({ url: 'https://x402.org/facilitator' });
+    facilitator = new HTTPFacilitatorClient({ url: 'https://x402.org/facilitator' });
   } else {
     const cdp = await import('@coinbase/cdp-sdk/x402');
     facilitator = cdp.createCdpFacilitatorClient({
@@ -138,8 +135,8 @@ async function getPaymentMiddleware(cfg) {
     });
   }
 
-  const server = new hono.x402ResourceServer(facilitator).register(cfg.network, new evm.ExactEvmScheme());
-  const middleware = hono.paymentMiddleware({
+  const server = new x402ResourceServer(facilitator).register(cfg.network, new ExactEvmScheme());
+  const middleware = paymentMiddleware({
     'POST /v1/ai-fit': {
       accepts: [{ scheme: 'exact', price: cfg.price, network: cfg.network, payTo: cfg.payTo }],
       description: 'Route an AI work profile to primary and secondary agent roles with tool-fit scores and safety gates.',
