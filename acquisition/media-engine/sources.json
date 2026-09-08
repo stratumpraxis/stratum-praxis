@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-08-30",
+  "updated_at": "2026-09-08",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -128,6 +128,48 @@
       ],
       "excerpt": "More agents do not merely add capacity. They multiply permissions, handoffs, context boundaries and failure paths. The operating question is therefore not how many agents a system can run, but how clearly it can constrain, observe and stop them.",
       "notes": "Owner-approved derivative source package created from the premium research thesis without exposing paid article text. The autonomous writer may create standalone public articles from these claims and route a relevant CTA to the paid insight."
+    },
+    {
+      "source_id": "recurring-digital-spend-owner-package-2026-09-08",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Recurring digital spend deserves a keep, reduce, replace, or stop decision",
+      "language": "en",
+      "content_hash": "sha256:d5f93bfe4a786938cb21f32f32ecf33a5aed57830f61c643163ad5a5f0e9b974",
+      "source_file": "acquisition/media-engine/recurring-digital-spend-source-2026-09-08.md",
+      "source_url": "https://x.com/tarat_211/status/2096173515217240458",
+      "created_at": "2026-09-08T00:00:00Z",
+      "completed_at": "2026-09-08T00:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": ["founder", "smb_owner", "creator", "ops_lead", "finance"],
+      "evidence_families": ["builder_discussion", "industry_change", "editorial_source"],
+      "allowed_claims": [
+        "Two owner-supplied public X posts describe individuals reducing recurring cloud or infrastructure costs; these are anecdotes, not independently audited savings.",
+        "Anil Jaiswal publicly wrote that Matters.AI reduced AWS spend from around $30,000 per month to about $16,500 per month over two quarters while stating that features and deploy velocity were preserved.",
+        "AWS documentation says exchange rates for supported non-USD payment currencies can change daily and card issuers may add foreign-currency conversion charges or fees.",
+        "Recurring digital spend can be reviewed as a KEEP / REDUCE / CONSOLIDATE / REVIEW / REPLACE / STOP decision rather than a blanket cancellation exercise.",
+        "The Stratum Praxis AI & SaaS Waste Calculator is free, requires no signup, and uses the reader's own inputs to size a review rather than promising savings."
+      ],
+      "restricted_claims": [
+        {"phrase": "we saved TaraT", "safe_rewrite": "TaraT publicly described the change; Stratum Praxis did not produce or verify the reported saving."},
+        {"phrase": "we saved Vivek", "safe_rewrite": "Vivek Maskara publicly described the result; Stratum Praxis did not produce or verify the reported saving."},
+        {"phrase": "we cut Matters.AI's bill", "safe_rewrite": "Anil Jaiswal publicly described Matters.AI's cost reduction; Stratum Praxis was not involved."},
+        {"phrase": "everyone can cut 45%", "safe_rewrite": "The Matters.AI figure is one public case, not a universal benchmark or promise."},
+        {"phrase": "FX will make this cheaper", "safe_rewrite": "Currency movement and payment fees can change effective local-currency cost; do not predict direction or promise savings."}
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "acquisition/media-engine/recurring-digital-spend-source-2026-09-08.md",
+        "https://x.com/tarat_211/status/2096173515217240458",
+        "https://x.com/maskaravivek/status/2096314669778555355",
+        "https://aniljaiswal.com/blog/how-we-cut-aws-bill-45-percent",
+        "https://repost.aws/knowledge-center/non-us-currency"
+      ],
+      "existing_product_routes": [
+        {"role": "PRIMARY", "asset_id": "ai-saas-waste-calculator", "url": "https://stratumpraxis.com/ai-saas-waste-calculator.html", "cta": "Size the recurring spend worth reviewing"},
+        {"role": "PURCHASE_PATH", "asset_id": "ai-saas-spend-waste-audit", "url": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html", "cta": "Review a material software-spend decision"}
+      ],
+      "excerpt": "The useful question is not whether a digital bill looks expensive. It is whether the outcome it protects still justifies the recurring cost after overlap, idle capacity, switching cost, renewal timing, and currency/payment friction are included.",
+      "notes": "Owner-approved source package created 2026-09-08 from owner-supplied X signals plus public Matters.AI and AWS evidence. It expands the existing spend-decision entrance without creating a new product or LP. MarketNest Pro may use the money-flow angle for demand capture; the paid asset and revenue owner remain Stratum Praxis."
     }
   ]
 }
