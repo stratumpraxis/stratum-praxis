@@ -94,43 +94,38 @@ Revenue truth: the public update and larger paid section are publication evidenc
 
 Next action: measure post-update paid-boundary / purchase behavior while moving to the next non-duplicate paid-note route.
 
-## Active queue
-
 ### 2026-09-08｜AI agent organization upgrade
 
 Target:
 https://note.com/deft_eel6718/n/nfce5ac047c15
 
-State: `READY_DRAFT_ONLY`
+State: `PUBLISHED`
 
 Files:
-- `2026-09-08-ai-agent-organization-upgrade.md` — Agent Operating Constitution / final appendix
-- `2026-09-08-ai-agent-organization-upgrade-research.md` — 3-pass research / Paid Value Gate / Claim Ledger
-- `2026-09-08-ai-agent-organization-upgrade-distribution.md` — newsletter / social / video / Shorts
-- `../ghost/ai-agent-operating-constitution-ja.md` — free SEO adaptation
+- `2026-09-08-ai-agent-organization-upgrade.md`
+- `2026-09-08-ai-agent-organization-upgrade-research.md`
+- `2026-09-08-ai-agent-organization-upgrade-distribution.md`
+- `2026-09-08-ai-agent-organization-upgrade-published.md`
+- `../ghost/ai-agent-operating-constitution-ja.md`
 
-Public state observed 2026-09-08:
-- price ¥3,850
+Public verification 2026-09-08:
+- HTTP 200 live page confirmed
+- price ¥3,850 retained
 - visible likes: 2
-- purchases: unverified
+- `2026年9月追記` visible in the public/free section
+- paid boundary and purchase CTA visible
+- paid-boundary character count shown as 17,658 after the update
+- the exact hidden paid appendix cannot be independently verified from the public page
+- purchase evidence: unverified
 
-Price rule: retain ¥3,850 until purchase evidence supports a change.
+Revenue truth: publication and paid-boundary evidence are not purchase evidence. Verified Revenue remains ¥0 until actual purchase evidence is observed.
 
-Paid differentiation:
-- Agent Role Charter
-- Permission / Action Matrix
-- Human Approval Matrix
-- Evidence Contract
-- Escalation Packet
-- Failure / Rollback Protocol
-- Agent-to-Agent Handoff
-- Weekly Agent Review
+Next action: observe paid-boundary / purchase behavior and move Publishing to the next non-duplicate revenue route.
 
-Next external action:
-1. Add the 2026-09 update notice.
-2. Append the Agent Operating Constitution to the existing paid body.
-3. Remove only confirmed overlap.
-4. Publish/update.
-5. Verify the public page and measure purchase behavior.
+## Active queue
+
+No additional paid-note upgrade is currently marked READY_DRAFT_ONLY.
+
+Next route selection must use Revenue Probability × Revenue Distance × Existing Asset Fit. Do not create a new note merely to keep publishing volume high.
 
 Revenue truth for every queue item: likes, visits, clicks and checkout starts are not verified revenue. Purchase / Contract / Reward / Commission evidence is required.
