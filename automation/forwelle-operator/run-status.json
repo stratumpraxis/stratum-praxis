@@ -1,9 +1,47 @@
 {
-  "at": "2026-09-09T01:01:19.261Z",
-  "status": "PLANNED",
+  "at": "2026-09-09T01:02:39.992Z",
+  "status": "ATTEMPTED_OR_BLOCKED",
   "manifestId": "2026-09-09-muse-meta-s-personal-ai-agent-hn-49615537",
-  "candidateId": "hn:49615537",
-  "usedAIEditor": false,
-  "winningPatternSamples": 0,
-  "winningPatternBriefUsed": false
+  "platforms": {
+    "youtube": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "tiktok": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    },
+    "instagram": {
+      "status": "blocked-channel-allowlist",
+      "postId": null,
+      "externalLink": null,
+      "sentAt": null,
+      "dueAt": null,
+      "message": null
+    }
+  },
+  "structureProfile": {
+    "hookType": "concrete-change",
+    "hookText": "Muse – Meta’s personal AI agent",
+    "pacing": "five-scene-progressive",
+    "ctaType": "non-salesy-takeaway",
+    "visualStyle": "procedural-motion",
+    "sceneCount": 5,
+    "durationSeconds": 40
+  },
+  "winningPatternLearning": {
+    "status": "BUILDING_DATASET",
+    "sampleCount": 0,
+    "targetCount": 10,
+    "briefUsed": false,
+    "editorialBrief": null
+  }
 }

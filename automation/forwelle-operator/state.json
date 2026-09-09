@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49615537",
     "hn:49604257",
     "hn:49587217",
     "hn:49568506",
@@ -13,8 +14,8 @@
   ],
   "lastScoutAt": "2026-09-09T01:01:19.159Z",
   "lastRun": {
-    "id": "2026-09-08-weathernext-3-our-most-advanced-global-weather-ai-model-hn-49604257",
-    "at": "2026-09-08T00:54:43.200Z",
+    "id": "2026-09-09-muse-meta-s-personal-ai-agent-hn-49615537",
+    "at": "2026-09-09T01:02:39.992Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
