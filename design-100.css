@@ -1,0 +1,122 @@
+/* Stratum Design 100 pass — visual refinement only. No copy, routing, analytics, SEO, or information architecture changes. */
+
+:root{
+  --surface-glass:rgba(5,13,21,.44);
+  --surface-glass-strong:rgba(4,11,18,.68);
+  --hairline:rgba(190,220,238,.12);
+  --hairline-strong:rgba(190,220,238,.20);
+  --focus:#dff5ff;
+  --shadow-deep:0 36px 120px rgba(0,0,0,.32);
+}
+
+/* Global rhythm + tactile quality */
+body{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+a,button{-webkit-tap-highlight-color:transparent}
+a:focus-visible,button:focus-visible{outline:2px solid var(--focus);outline-offset:4px}
+::selection{background:rgba(139,220,255,.22);color:#fff}
+
+/* Navigation: quieter chrome, stronger brand presence */
+.topbar{border-bottom-color:rgba(190,220,238,.08);background:linear-gradient(180deg,rgba(3,8,14,.78),rgba(3,8,14,.34));box-shadow:0 14px 50px rgba(0,0,0,.12)}
+.brand strong{letter-spacing:-.015em}
+.desktop-nav a{position:relative}
+.desktop-nav a:after{content:"";position:absolute;left:0;right:100%;bottom:-8px;height:1px;background:rgba(223,245,255,.72);transition:right .28s var(--ease)}
+.desktop-nav a:hover:after,.desktop-nav a:focus-visible:after{right:0}
+
+/* Hero: office remains the protagonist; system becomes atmospheric infrastructure */
+.hero:after{content:"";position:absolute;inset:auto 0 0;height:28%;pointer-events:none;background:linear-gradient(180deg,transparent,rgba(4,9,16,.78) 76%,#060d14)}
+.hero-layout{gap:clamp(42px,7vw,112px)}
+.hero-copy{position:relative}
+.hero-copy:before{content:"";position:absolute;left:-32px;top:-48px;width:1px;height:116px;background:linear-gradient(180deg,transparent,rgba(139,220,255,.48),transparent);opacity:.62}
+.hero h1{max-width:780px;text-wrap:balance}
+.hero-text{max-width:530px;color:#b8c6cf}
+.hero-actions{gap:24px}
+.button{border-radius:10px;letter-spacing:.015em;box-shadow:none}
+.button.primary{box-shadow:0 18px 54px rgba(67,169,224,.11),inset 0 0 0 1px rgba(255,255,255,.35)}
+.button.primary:hover{box-shadow:0 22px 62px rgba(67,169,224,.16),inset 0 0 0 1px rgba(255,255,255,.46)}
+.quiet-link{position:relative;padding-block:8px}
+.quiet-link:after{content:"";position:absolute;left:0;right:100%;bottom:2px;height:1px;background:rgba(223,245,255,.58);transition:right .28s var(--ease)}
+.quiet-link:hover:after,.quiet-link:focus-visible:after{right:0}
+
+/* Intelligence panel: fragment, not dashboard */
+.intel-scene{border-color:rgba(190,220,238,.095);background:linear-gradient(155deg,rgba(8,22,34,.20),rgba(3,10,17,.34));backdrop-filter:blur(8px);box-shadow:0 42px 130px rgba(0,0,0,.18);opacity:.88}
+.intel-scene:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(135deg,rgba(223,245,255,.035),transparent 36%,transparent 70%,rgba(139,220,255,.025))}
+.scene-status{opacity:.74}
+.world-panel{opacity:.78}
+.system-sequence{opacity:.76}
+
+/* Four primary routes: calm wayfinding, not cards */
+.hero-edge{bottom:24px;border-top-color:rgba(198,224,240,.14);border-bottom-color:rgba(198,224,240,.07);background:rgba(3,9,15,.22);box-shadow:0 20px 60px rgba(0,0,0,.10)}
+.hero-edge a{min-height:54px;position:relative;overflow:hidden}
+.hero-edge a:after{content:"";position:absolute;left:20px;right:100%;bottom:0;height:1px;background:rgba(139,220,255,.54);transition:right .32s var(--ease)}
+.hero-edge a:hover:after,.hero-edge a:focus-visible:after{right:20px}
+.hero-edge strong{letter-spacing:-.01em}
+
+/* Long-form hierarchy */
+.manifesto{position:relative}
+.manifesto:before{content:"";position:absolute;left:50%;top:0;width:min(var(--max),calc(100% - 56px));transform:translateX(-50%);height:1px;background:linear-gradient(90deg,transparent,rgba(185,216,235,.12),transparent)}
+.manifesto h2,.capabilities-head h2,.system-copy h2,.decision-inner h2{text-wrap:balance}
+.manifesto p:last-child,.capability-list p,.system-copy>p:nth-of-type(2),.decision-inner p:nth-of-type(2){color:#8799a6}
+
+/* Capability rows: editorial layers rather than component cards */
+.capability-list>a{position:relative;transition:padding .32s var(--ease),background .32s var(--ease),border-color .32s}
+.capability-list>a:before{content:"";position:absolute;inset:0 -18px;background:linear-gradient(90deg,rgba(139,220,255,.028),transparent 58%);opacity:0;transition:opacity .3s}
+.capability-list>a:hover:before,.capability-list>a:focus-visible:before{opacity:1}
+.capability-list>a:hover{padding-left:16px;border-bottom-color:rgba(190,220,238,.20)}
+.capability-list>a>*{position:relative;z-index:1}
+.capability-list h3{letter-spacing:-.032em}
+
+/* System section: photo carries atmosphere; radar recedes */
+.system-shade{background:linear-gradient(90deg,rgba(3,9,15,.94),rgba(3,9,15,.74) 46%,rgba(3,9,15,.34) 74%,rgba(3,9,15,.72)),linear-gradient(180deg,rgba(4,10,16,.10),rgba(4,10,16,.90))}
+.radar-field{opacity:.72;filter:drop-shadow(0 22px 50px rgba(0,0,0,.16))}
+.ring{border-color:rgba(159,211,236,.12)}
+
+/* Final CTA: deliberate breathing room */
+.decision-section{position:relative}
+.decision-section:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 22% 48%,rgba(65,131,172,.075),transparent 34rem);pointer-events:none}
+.decision-inner{position:relative;z-index:1}
+
+/* Reveal polish without changing motion language */
+.section-reveal{transform:translateY(14px);filter:blur(2px);transition:opacity 1s var(--ease),transform 1s var(--ease),filter 1s var(--ease)}
+.section-reveal.is-visible{filter:none}
+
+/* Tablet */
+@media(max-width:920px){
+  .hero-copy:before{left:-18px;top:-34px;height:92px;opacity:.42}
+  .intel-scene{opacity:.46;filter:saturate(.82)}
+  .hero-edge{background:rgba(3,9,15,.34)}
+  .radar-field{opacity:.55}
+}
+
+/* Mobile: protect hierarchy and touch comfort */
+@media(max-width:640px){
+  .shell{width:min(var(--max),calc(100% - 36px))}
+  .topbar{width:calc(100% - 18px);height:68px}
+  .brand-mark{transform:scale(.92);transform-origin:left center}
+  .hero{padding-top:68px}
+  .hero-layout{min-height:calc(100svh - 68px);padding-top:17vh}
+  .hero-copy:before{display:none}
+  .hero h1{margin-top:22px;letter-spacing:-.052em}
+  .hero-text{font-size:13px;line-height:1.78}
+  .hero-actions{margin-top:28px;gap:16px}
+  .button{min-height:48px}
+  .intel-scene{opacity:.34;border-color:rgba(190,220,238,.07)}
+  .hero-edge{bottom:12px;backdrop-filter:blur(12px)}
+  .hero-edge a{min-height:48px;padding-inline:10px}
+  .hero-edge a:after{left:10px}
+  .hero-edge a:hover:after,.hero-edge a:focus-visible:after{right:10px}
+  .manifesto,.system-section,.decision-section{min-height:auto}
+  .manifesto{padding:112px 0}
+  .capabilities{padding-top:104px;padding-bottom:116px}
+  .capability-list>a{padding-block:24px}
+  .capability-list>a:hover{padding-left:0}
+  .system-section{padding:116px 0}
+  .radar-field{opacity:.42}
+  .decision-section{padding:116px 0 132px}
+  .section-reveal{filter:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .desktop-nav a:after,.quiet-link:after,.hero-edge a:after,.capability-list>a:before{transition:none}
+  .button,.capability-list>a{transition:none}
+  .section-reveal{filter:none;transform:none}
+}
