@@ -2,8 +2,8 @@ name: Apply Stratum Revenue Intelligence UI 2026
 on:
   push:
     paths:
-      - 'design-preview/**'
       - 'stratum-ui-v2.css'
+      - 'stratum-retrofit-2026.css'
       - 'b2b-experience-2026.css'
       - 'b2b-experience-2026.js'
       - 'b2b-experience-trigger.txt'
@@ -18,30 +18,12 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Promote approved shadow homepage
-        run: |
-          python3 - <<'PY'
-          from pathlib import Path
-          src=Path('design-preview/index.html')
-          dst=Path('index.html')
-          if not src.exists():
-            raise SystemExit('design-preview/index.html missing')
-          s=src.read_text(encoding='utf-8')
-          s=s.replace('<meta name="robots" content="noindex,nofollow,noarchive">','<meta name="robots" content="index,follow,max-image-preview:large">')
-          s=s.replace('<title>Stratum Praxis — Revenue Intelligence Preview</title>','<title>Stratum Praxis | B2B Revenue Intelligence & Decision System</title>')
-          s=s.replace('Preview of the next Stratum Praxis homepage: ','')
-          s=s.replace('data-page="stratum_design_preview"','data-page="stratum_home"')
-          s=s.replace('utm_medium=design_preview','utm_medium=homepage')
-          s=s.replace('preview_','home_')
-          dst.write_text(s,encoding='utf-8')
-          print('Promoted design-preview/index.html -> index.html')
-          PY
       - name: Inject shared Stratum UI across official B2B pages
         run: |
           python3 - <<'PY'
           from pathlib import Path
+          import re
           targets = [
-            'index.html',
             'ai-agent-economics-calculator.html',
             'b2b/index.html',
             'agent-control-auditor.html',
@@ -59,6 +41,7 @@ jobs:
           ]
           css_old = '<link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience>'
           css_new = '<link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2>'
+          css_retro = '<link rel="stylesheet" href="/stratum-retrofit-2026.css" data-stratum-retrofit>'
           js = '<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>'
           changed=[]
           for name in targets:
@@ -68,26 +51,26 @@ jobs:
               continue
             s=p.read_text(encoding='utf-8')
             old=s
-            # Preview-derived homepage owns its own dedicated CSS and must not be visually overridden.
-            if name!='index.html':
-              if 'b2b-experience-2026.css' not in s and '</head>' in s:
-                s=s.replace('</head>',f'  {css_old}\n</head>',1)
-              if 'stratum-ui-v2.css' not in s and '</head>' in s:
-                s=s.replace('</head>',f'  {css_new}\n</head>',1)
-              if 'b2b-experience-2026.js' not in s:
-                if '</body>' in s:
-                  s=s.replace('</body>',f'  {js}\n</body>',1)
-                else:
-                  s += '\n'+js+'\n'
-              # Guarantee the shared visual layer applies even to pages not yet in JS path registry.
-              if '<body' in s and 'sp-b2b-experience' not in s.split('>',1)[0]:
-                import re
-                def add_class(m):
-                  tag=m.group(0)
-                  if 'class=' in tag:
-                    return re.sub(r'class="([^"]*)"', lambda x: f'class="{x.group(1)} sp-b2b-experience"', tag, count=1)
-                  return tag[:-1]+' class="sp-b2b-experience">'
-                s=re.sub(r'<body\b[^>]*>', add_class, s, count=1)
+            for marker, tag in [
+              ('b2b-experience-2026.css', css_old),
+              ('stratum-ui-v2.css', css_new),
+              ('stratum-retrofit-2026.css', css_retro),
+            ]:
+              if marker not in s and '</head>' in s:
+                s=s.replace('</head>',f'  {tag}\n</head>',1)
+            if 'b2b-experience-2026.js' not in s:
+              if '</body>' in s:
+                s=s.replace('</body>',f'  {js}\n</body>',1)
+              else:
+                s += '\n'+js+'\n'
+            m=re.search(r'<body\b[^>]*>',s)
+            if m and 'sp-b2b-experience' not in m.group(0):
+              tag=m.group(0)
+              if 'class=' in tag:
+                newtag=re.sub(r'class="([^"]*)"',lambda x:f'class="{x.group(1)} sp-b2b-experience"',tag,count=1)
+              else:
+                newtag=tag[:-1]+' class="sp-b2b-experience">'
+              s=s[:m.start()]+newtag+s[m.end():]
             if s!=old:
               p.write_text(s,encoding='utf-8')
               changed.append(name)
@@ -96,13 +79,10 @@ jobs:
       - name: Guard excluded and legacy assets
         run: |
           python3 - <<'PY'
-          from pathlib import Path
-          forbidden=['revenue-router.html','return-gate/index.html','passage-hub/index.html','passage-network/index.html','ordlume/index.html']
-          touched=[]
           import subprocess
+          forbidden=['revenue-router.html','return-gate/index.html','passage-hub/index.html','passage-network/index.html','ordlume/index.html']
           out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
-          for f in forbidden:
-            if f in out:touched.append(f)
+          touched=[f for f in forbidden if f in out]
           if touched:
             raise SystemExit('Protected legacy/hold assets touched: '+', '.join(touched))
           print('Protected legacy/hold assets unchanged')
@@ -116,5 +96,5 @@ jobs:
           git config user.name "stratumpraxis-bot"
           git config user.email "stratumpraxis@gmail.com"
           git add -A
-          git commit -m "Promote approved Stratum homepage and roll out Revenue Intelligence UI"
+          git commit -m "Apply final Stratum Revenue Intelligence UI across official B2B pages"
           git push
