@@ -1,0 +1,114 @@
+name: Finalize reorg hold assets
+on:
+  push:
+    paths:
+      - '.github/workflows/finalize-reorg-hold-assets-20260910.yml'
+permissions:
+  contents: write
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply safe hold handling and memo
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          targets = [
+              Path('passage-hub/index.html'),
+              Path('passage-network.html'),
+              Path('ordlume/index.html'),
+          ]
+          for p in targets:
+              if not p.exists():
+                  continue
+              s = p.read_text(encoding='utf-8')
+              # Keep the public URL alive, but stop active search indexing while held.
+              if 'name="robots"' in s:
+                  s = re.sub(r'<meta\s+name="robots"\s+content="[^"]*"\s*/?>', '<meta name="robots" content="noindex,follow">', s, count=1, flags=re.I)
+              else:
+                  s = s.replace('</head>', '<meta name="robots" content="noindex,follow">\n</head>', 1)
+              p.write_text(s, encoding='utf-8')
+
+          sitemap = Path('sitemap.xml')
+          if sitemap.exists():
+              s = sitemap.read_text(encoding='utf-8')
+              for url in [
+                  'https://stratumpraxis.com/passage-hub/',
+                  'https://stratumpraxis.com/passage-network.html',
+                  'https://stratumpraxis.com/ordlume/',
+              ]:
+                  s = re.sub(r'\s*<url><loc>'+re.escape(url)+r'</loc>.*?</url>', '', s)
+              sitemap.write_text(s, encoding='utf-8')
+
+          memo = Path('docs/REORG_HOLD_AND_CANONICAL_CANDIDATES_20260910.md')
+          memo.parent.mkdir(parents=True, exist_ok=True)
+          memo.write_text('''# 再編成｜保留・正規ページ候補メモ 2026-09-10
+
+## ルール
+
+- **非公開/保留**: メインHPに出さない。コード・資産・既存URLは保存する。公開URLがあるページは `noindex,follow` とし、サイトマップから外す。物理削除や404化はしない。
+- **新しい正規ページ候補**: 旧URLは維持する。今は移設・複製・リダイレクトを行わない。Digital Index Base本体または適切な所属先が確定した時だけ再配置する。
+- ①で処理済みの旧公開資産は、既存URLを維持し「Praxis Group内の旧公開資産です」表示を継続する。
+
+## ② 非公開 / 保留
+
+### 公開URLあり — 検索露出停止処理
+
+- Passage Hub — https://stratumpraxis.com/passage-hub/
+- Passage Network — https://stratumpraxis.com/passage-network.html
+- Ordlume — https://stratumpraxis.com/ordlume/
+
+処理: HP主要導線には出さない / `noindex,follow` / sitemap除外 / URL・コード保存。
+
+### 公開単独URLなし・未確認 — コード/資産のみ保存
+
+- Business Pulse — Vector repo のコンポーネント。現在のWorks Hub本体からは呼び出されていないため追加公開停止処理なし。
+- Lingua Flow — 公開URL未確認。資産保存。
+- SOVLTA BLW — 公開URL未確認。資産保存。
+- Qelvane — 公開URL未確認。資産保存。
+
+## ③ 新しい正規ページ候補
+
+### 優先度 高
+
+- Solo Company Score — https://stratumpraxis.com/solo-company-score.html
+- One-Person Business AI Operating System — https://stratumpraxis.com/one-person-business-ai-operating-system.html
+- AI Stack Optimizer — 公開URL未確認
+
+### 優先度 中
+
+- AI Agent Bottleneck — 公開URL未確認
+- Life Resilience Check — https://stratumpraxis.com/life-resilience-check/
+- Life Resilience Toolkit — https://stratumpraxis.com/life-resilience-toolkit/
+- Household Resilience Checklist — https://stratumpraxis.com/household-resilience-checklist/
+- 72-Hour Household Readiness — https://stratumpraxis.com/72-hour-household-readiness/
+- Monthly Money Leak Audit — https://stratumpraxis.com/monthly-money-leak-audit/
+- Life Resilience OS — https://stratumpraxis.com/life-resilience-os/
+
+### 優先度 低 / 保留
+
+- Passage Hub — https://stratumpraxis.com/passage-hub/
+- Passage Network — https://stratumpraxis.com/passage-network.html
+- Ordlume — https://stratumpraxis.com/ordlume/
+
+## 再配置時の安全条件
+
+1. 新しい正規ページが完成するまで旧URLを消さない。
+2. 同内容を複製公開する場合は canonical / redirect を先に決める。
+3. 旧URLから新URLへ移す場合は内部リンク・note・外部リンクを確認してから301を設定する。
+4. 現時点では計測・ブランド横断統一などの追加作業は行わない。
+''', encoding='utf-8')
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add passage-hub/index.html passage-network.html ordlume/index.html sitemap.xml docs/REORG_HOLD_AND_CANONICAL_CANDIDATES_20260910.md
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: safely hold non-public assets and record migration candidates"
+            git push
+          fi
