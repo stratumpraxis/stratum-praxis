@@ -27,7 +27,6 @@ jobs:
             'workflow-audit.html',
             'product-router.html',
             'live-lab.html',
-            'explore-intelligence.html',
             'ai-saas-waste-calculator.html',
             'ai-saas-spend-waste-audit.html',
             'ai-consultant.html',
@@ -65,6 +64,6 @@ jobs:
           fi
           git config user.name "stratumpraxis-bot"
           git config user.email "stratumpraxis@gmail.com"
-          git add index.html ai-agent-economics-calculator.html b2b/index.html agent-control-auditor.html workflow-audit.html product-router.html live-lab.html explore-intelligence.html ai-saas-waste-calculator.html ai-saas-spend-waste-audit.html ai-consultant.html
+          git add -A
           git commit -m "Roll out B2B design system and multilingual experience"
           git push
