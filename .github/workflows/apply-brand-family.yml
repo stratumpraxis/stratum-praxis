@@ -1,0 +1,60 @@
+name: Apply Stratum Brand Family
+
+on:
+  push:
+    paths:
+      - 'design-apply.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply shared visual DNA to priority pages
+        shell: python
+        run: |
+          from pathlib import Path
+          targets = [
+              Path('index.html'),
+              Path('b2b/index.html'),
+              Path('ai-monetization-reality-check.html'),
+              Path('agent-control-auditor.html'),
+              Path('ai-agent-economics-calculator.html'),
+          ]
+          for p in targets:
+              s = p.read_text(encoding='utf-8')
+              if '/brand-family.css' not in s:
+                  s = s.replace('</head>', '  <link rel="stylesheet" href="/brand-family.css">\n</head>', 1)
+              if 'sp-brand-family' not in s:
+                  if '<body ' in s:
+                      s = s.replace('<body ', '<body class="sp-brand-family" ', 1)
+                  else:
+                      s = s.replace('<body>', '<body class="sp-brand-family">', 1)
+              elif '<body class=' in s and 'sp-brand-family' not in s.split('<body',1)[1].split('>',1)[0]:
+                  pass
+              # Existing class attribute: append safely if needed.
+              head = s.split('<body',1)[1].split('>',1)[0]
+              if 'sp-brand-family' not in head and 'class="' in head:
+                  s = s.replace('class="', 'class="sp-brand-family ', 1)
+              # Add a single signal edge after body open if absent.
+              if 'class="sp-signal-edge"' not in s:
+                  body_end = s.find('>', s.find('<body'))
+                  if body_end != -1:
+                      s = s[:body_end+1] + '\n  <div class="sp-signal-edge" aria-hidden="true"></div>' + s[body_end+1:]
+              p.write_text(s, encoding='utf-8')
+      - name: Commit design reflection
+        run: |
+          git config user.name "stratumpraxis"
+          git config user.email "stratumpraxis@gmail.com"
+          git add index.html b2b/index.html ai-monetization-reality-check.html agent-control-auditor.html ai-agent-economics-calculator.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Apply Stratum brand family to priority revenue pages"
+            git push
+          fi
