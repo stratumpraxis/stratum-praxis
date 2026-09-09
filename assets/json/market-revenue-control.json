@@ -1,0 +1,230 @@
+{
+  "asOf": "2026-09-09T14:32:00+09:00",
+  "marketNow": [
+    {
+      "type": "Paid Bounty",
+      "signal": "RustChain has recently paid verified bounty work and new distinct submissions are in adjudication.",
+      "strength": "PROVEN",
+      "routeId": "rustchain-bounty"
+    },
+    {
+      "type": "Paid Creative Work",
+      "signal": "Remote AI-assisted short-form / UGC editing demand is active; two targeted applications have been sent.",
+      "strength": "LIVE",
+      "routeId": "forwelle-paid-creative"
+    },
+    {
+      "type": "B2B Buyer Fit",
+      "signal": "AI workflow unit economics and finance-operations workflow pain are under active targeted outreach.",
+      "strength": "LIVE",
+      "routeId": "b2b-workflow"
+    },
+    {
+      "type": "Agent-native Work",
+      "signal": "Agent-native paid work remains an available route through existing work-market infrastructure.",
+      "strength": "WATCH",
+      "routeId": "gwr-agent-work"
+    }
+  ],
+  "verifiedRevenue": [
+    {
+      "routeId": "rustchain-bounty",
+      "type": "Verified Reward",
+      "amount": 57.1,
+      "currency": "RTC",
+      "status": "PAID",
+      "evidenceDate": "2026-09-08",
+      "note": "Eight submissions adjudicated; 57.1 RTC confirmed paid to the hosted handle wallet."
+    }
+  ],
+  "routes": [
+    {
+      "id": "rustchain-bounty",
+      "name": "RustChain / Bounty",
+      "owner": "RustChain / Bounty Cell",
+      "stage": "PAYMENT",
+      "status": "HOT",
+      "buyerIntent": 5,
+      "externalReady": true,
+      "existingAsset": true,
+      "humanGates": 1,
+      "value": 4,
+      "repeatable": 5,
+      "waitingHuman": true,
+      "verifiedRevenue": 57.1,
+      "revenueCurrency": "RTC",
+      "bottleneck": "SUBMISSION_TO_ADJUDICATION",
+      "lastAction": "New distinct bounty submissions sent through the established fallback path.",
+      "lastReaction": "57.1 RTC paid on the prior adjudicated batch.",
+      "nextAction": "Choose one distinct currently eligible bounty with an explicit RTC reward, run eligibility/date/duplicate checks, and submit once.",
+      "routeTo": "RustChain / Bounty Cell"
+    },
+    {
+      "id": "forwelle-paid-creative",
+      "name": "Forwelle Paid Creative Work",
+      "owner": "Forwelle",
+      "stage": "EXTERNAL_ACTION",
+      "status": "TESTING",
+      "buyerIntent": 5,
+      "externalReady": true,
+      "existingAsset": true,
+      "humanGates": 2,
+      "value": 3,
+      "repeatable": 4,
+      "waitingHuman": true,
+      "verifiedRevenue": 0,
+      "revenueCurrency": "USD",
+      "bottleneck": "APPLICATION_TO_SCREENING",
+      "lastAction": "Targeted applications sent to two remote short-form / UGC editing buyers.",
+      "lastReaction": "No verified buyer reply yet.",
+      "nextAction": "Do not duplicate outreach; wait for screening and only open one new explicit-budget opportunity if the queue remains silent.",
+      "routeTo": "Forwelle"
+    },
+    {
+      "id": "b2b-workflow",
+      "name": "B2B Workflow / AI Spend",
+      "owner": "B2B Revenue Execution",
+      "stage": "EXTERNAL_ACTION",
+      "status": "TESTING",
+      "buyerIntent": 3,
+      "externalReady": true,
+      "existingAsset": true,
+      "humanGates": 2,
+      "value": 5,
+      "repeatable": 4,
+      "waitingHuman": true,
+      "verifiedRevenue": 0,
+      "revenueCurrency": "USD",
+      "bottleneck": "CONTACT_TO_REPLY",
+      "lastAction": "Targeted AI workflow / unit-economics outreach and one qualified follow-up sent.",
+      "lastReaction": "No verified qualified reply after the latest sends.",
+      "nextAction": "If a qualified reply lands, stop new outreach and move directly to scoped offer → $499 audit / contract.",
+      "routeTo": "B2B Revenue Execution"
+    },
+    {
+      "id": "revenue-router",
+      "name": "Revenue Router → Existing Offer",
+      "owner": "Revenue Router",
+      "stage": "CTA",
+      "status": "TESTING",
+      "buyerIntent": 2,
+      "externalReady": true,
+      "existingAsset": true,
+      "humanGates": 1,
+      "value": 2,
+      "repeatable": 5,
+      "waitingHuman": false,
+      "verifiedRevenue": 0,
+      "revenueCurrency": "USD",
+      "bottleneck": "QUALIFIED_ACQUISITION",
+      "lastAction": "$29 checkout route is live.",
+      "lastReaction": "Open/unpaid session evidence exists, but no customer/email/payment intent; excluded from Human Reaction and Revenue.",
+      "nextAction": "Acquire one qualified human visit before changing the product or checkout.",
+      "routeTo": "Revenue Router"
+    },
+    {
+      "id": "gwr-agent-work",
+      "name": "GWR / Agent-native Paid Work",
+      "owner": "Global Work Radar",
+      "stage": "DEMAND",
+      "status": "TESTING",
+      "buyerIntent": 4,
+      "externalReady": true,
+      "existingAsset": true,
+      "humanGates": 1,
+      "value": 3,
+      "repeatable": 4,
+      "waitingHuman": false,
+      "verifiedRevenue": 0,
+      "revenueCurrency": "USD",
+      "bottleneck": "OPPORTUNITY_TO_SUBMISSION",
+      "lastAction": "Agent-native paid-work route identified through existing work-market infrastructure.",
+      "lastReaction": "No verified paid submission result in the current snapshot.",
+      "nextAction": "Select one explicit-reward agent-eligible job only when it does not duplicate an active paid route.",
+      "routeTo": "GWR"
+    }
+  ],
+  "externalActions": [
+    {
+      "date": "2026-09-09",
+      "routeId": "rustchain-bounty",
+      "type": "Submission",
+      "target": "RustChain bounty market",
+      "detail": "Multiple distinct bounty findings / deliverables submitted via the established fallback path."
+    },
+    {
+      "date": "2026-09-09",
+      "routeId": "forwelle-paid-creative",
+      "type": "Application Submitted",
+      "target": "Remote AI / short-form video buyer",
+      "detail": "Targeted AI video / short-form editor application sent with existing portfolio evidence."
+    },
+    {
+      "date": "2026-09-09",
+      "routeId": "forwelle-paid-creative",
+      "type": "Application Submitted",
+      "target": "Remote UGC editing buyer",
+      "detail": "Targeted UGC video editor application sent with AI-assisted short-form sample positioning."
+    },
+    {
+      "date": "2026-09-09",
+      "routeId": "b2b-workflow",
+      "type": "Qualified Outreach",
+      "target": "AI workflow / unit-economics buyer",
+      "detail": "One decision-focused B2B contact sent."
+    },
+    {
+      "date": "2026-09-09",
+      "routeId": "b2b-workflow",
+      "type": "Qualified Follow-up",
+      "target": "Finance-operations buyer",
+      "detail": "One brief workflow-focused follow-up sent; no further chase while waiting."
+    }
+  ],
+  "externalReactions": [
+    {
+      "date": "2026-09-08",
+      "routeId": "rustchain-bounty",
+      "type": "Reward",
+      "detail": "57.1 RTC confirmed paid after adjudication.",
+      "commercial": true
+    },
+    {
+      "date": "2026-09-07",
+      "routeId": "rustchain-bounty",
+      "type": "Decline",
+      "detail": "One retroactive README-style bounty was declined on eligibility timing; this pattern is now gated by a pre-submit date check.",
+      "commercial": false
+    }
+  ],
+  "excludedEvidence": [
+    {
+      "type": "Stripe Checkout",
+      "detail": "Open / unpaid sessions without customer, email, or PaymentIntent are not counted as Human Reaction or Revenue."
+    },
+    {
+      "type": "Automation Traffic",
+      "detail": "Automation-classified traffic and route-attributed sessions are excluded from qualified human evidence."
+    }
+  ],
+  "routing": [
+    {"signal": "B2B workflow / AI spend", "destination": "B2B Revenue Execution"},
+    {"signal": "Paid job / agent-native work", "destination": "GWR"},
+    {"signal": "Digital product buyer", "destination": "ARVEN"},
+    {"signal": "Video paid demand", "destination": "Forwelle"},
+    {"signal": "AI / SaaS spend", "destination": "MarketNest / Stratum"},
+    {"signal": "Publishing demand", "destination": "Publishing Revenue"},
+    {"signal": "External signal", "destination": "Market Signal / Buyer Acquisition"},
+    {"signal": "Inbound qualified traffic", "destination": "Revenue Router"}
+  ],
+  "learning": [
+    "Paid bounty work is proven; validate repeatability with distinct eligible submissions rather than repeating the same angle.",
+    "Eligibility timing is a real rejection cause; run date and duplicate checks before bounty submission.",
+    "Open checkout and automation traffic stay outside Human Reaction / Revenue until buyer evidence exists."
+  ],
+  "sources": [
+    "Gmail execution and buyer-reaction evidence",
+    "Stripe live-mode payment / checkout evidence",
+    "MARKET Revenue Reality rules and asset registry"
+  ]
+}
