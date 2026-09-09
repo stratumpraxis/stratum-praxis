@@ -1,0 +1,103 @@
+/* Stratum density quiet pass — visual density reduction only.
+   No copy, routes, SEO, analytics, multilingual behavior, sitemap, indexing, or asset inventory changes. */
+
+/* Reduce perceived copy pressure without deleting content */
+.hero-text,.manifesto p:last-child,.capability-list p,.system-copy>p:nth-of-type(2),.decision-inner p:nth-of-type(2){max-width:48ch}
+.hero-text,.manifesto p:last-child,.system-copy>p:nth-of-type(2),.decision-inner p:nth-of-type(2){font-size:11px;line-height:1.72}
+
+/* Headings: less wall-like, more editorial */
+.hero h1{font-size:clamp(52px,5.8vw,78px);line-height:.99;max-width:10.5ch}
+.manifesto h2{font-size:clamp(40px,4.8vw,66px);max-width:13ch}
+.capabilities-head h2{font-size:clamp(34px,4vw,52px);max-width:15ch}
+.system-copy h2{font-size:clamp(38px,4.5vw,58px);max-width:12ch}
+.decision-inner h2{font-size:clamp(40px,4.8vw,62px);max-width:12ch}
+
+/* Air between idea groups */
+.hero-layout{padding-top:11vh;padding-bottom:18vh}
+.manifesto{min-height:auto;padding:126px 0}
+.capabilities{padding-top:118px;padding-bottom:146px}
+.system-section{min-height:82svh}
+.decision-section{min-height:auto;padding:126px 0}
+
+/* Turn capability cards into visual stamps: scan first, read second */
+.capability-list{gap:18px}
+.capability-list>a{min-height:168px;padding:22px 22px 20px;border-radius:24px;overflow:hidden;position:relative}
+.capability-list>a:before{content:"";position:absolute;width:54px;height:54px;right:18px;top:18px;border-radius:50%;border:1px solid rgba(28,83,111,.12);background:linear-gradient(145deg,rgba(255,255,255,.72),rgba(190,220,236,.22));box-shadow:inset 0 0 0 8px rgba(255,255,255,.24)}
+.capability-list>a>span{font-size:7px;letter-spacing:.12em}
+.capability-list h3{font-size:17px;max-width:12ch;margin:0}
+.capability-list p{font-size:10px;line-height:1.55;max-width:28ch;opacity:.74;transition:opacity .25s var(--ease)}
+.capability-list b{position:relative;z-index:2}
+.capability-list>a:hover p,.capability-list>a:focus-visible p{opacity:1}
+
+/* Desktop: de-emphasize explanatory lines until interaction */
+@media(min-width:921px){
+  .capability-list p{opacity:.46}
+}
+
+/* Hero quick routes become labels, not mini text blocks */
+.hero-edge a{min-height:72px;padding:14px 18px}
+.hero-edge a:before{width:26px;height:26px}
+.hero-edge strong{font-size:9px;letter-spacing:.055em;white-space:nowrap}
+.hero-edge small{font-size:6px}
+
+/* Let images and atmosphere carry more of the page */
+.intel-scene{opacity:.58;transform:scale(.94)}
+.radar-field{opacity:.40}
+.system-copy{max-width:460px}
+.manifesto-inner{max-width:780px}
+.capabilities-head{max-width:680px}
+.decision-inner{max-width:680px}
+
+/* Smaller labels and calmer chrome */
+.eyebrow,.kicker{font-size:8px;letter-spacing:.19em}
+.desktop-nav{font-size:10px}
+.button{min-height:46px;padding-inline:19px;font-size:10px}
+.quiet-link{font-size:10px}
+
+/* Mobile: one glance first. Supporting copy becomes secondary. */
+@media(max-width:640px){
+  .shell{width:calc(100% - 40px)}
+  .hero{min-height:90svh}
+  .hero-layout{min-height:calc(90svh - 68px);padding:11vh 0 27vh}
+  .hero h1{font-size:clamp(38px,11.5vw,52px);max-width:9.5ch;margin:16px 0 14px;line-height:1}
+  .hero-text{max-width:27ch;font-size:10px;line-height:1.58}
+  .hero-actions{margin-top:20px}
+  .intel-scene{opacity:.20;transform:scale(.82);transform-origin:top right}
+
+  .hero-edge{grid-template-columns:repeat(2,1fr);gap:8px;background:transparent;box-shadow:none;backdrop-filter:none;overflow:visible}
+  .hero-edge a{min-height:58px;border:1px solid rgba(24,67,91,.09)!important;border-radius:16px;background:rgba(249,252,253,.78);backdrop-filter:blur(15px);padding:11px 12px;box-shadow:0 8px 24px rgba(39,70,88,.055)}
+  .hero-edge a:before{width:22px;height:22px}
+  .hero-edge strong{font-size:8px;letter-spacing:.045em;white-space:normal;line-height:1.25}
+  .hero-edge small{display:none}
+  .hero-edge a:after{font-size:11px}
+
+  .manifesto{padding:96px 0}
+  .manifesto h2{font-size:clamp(34px,9vw,46px);max-width:10ch;margin:18px 0 20px}
+  .manifesto p:last-child{max-width:28ch;font-size:10px;line-height:1.6}
+
+  .capabilities{padding:92px 0 108px}
+  .capabilities-head h2{font-size:clamp(30px,8.6vw,42px);max-width:11ch;margin-bottom:38px}
+  .capability-list{grid-template-columns:repeat(2,1fr);gap:10px}
+  .capability-list>a{min-height:128px;padding:16px;border-radius:18px;display:block}
+  .capability-list>a:before{width:40px;height:40px;right:14px;top:14px}
+  .capability-list>a>span{display:block;margin-bottom:40px;font-size:6px}
+  .capability-list h3{font-size:14px;line-height:1.15;max-width:9ch}
+  .capability-list p{display:none}
+  .capability-list b{position:absolute;right:15px;bottom:14px;font-size:12px}
+
+  .system-section{min-height:auto;padding:104px 0}
+  .system-layout{display:block}
+  .system-copy h2{font-size:clamp(34px,9vw,46px);max-width:9ch}
+  .system-copy>p:nth-of-type(2){max-width:27ch;font-size:10px;line-height:1.6}
+  .radar-field{position:absolute;right:-26%;top:12%;width:70%;height:70%;opacity:.20;pointer-events:none}
+
+  .decision-section{padding:96px 0 120px}
+  .decision-inner h2{font-size:clamp(34px,9vw,46px);max-width:9ch}
+  .decision-inner p:nth-of-type(2){max-width:27ch;font-size:10px;line-height:1.6}
+
+  .footer nav{gap:11px;font-size:8px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  .capability-list p{transition:none}
+}
