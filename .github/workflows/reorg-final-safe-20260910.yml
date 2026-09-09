@@ -10,7 +10,44 @@ jobs:
       - name: Apply
         run: |
           python3 scripts/finalize_reorg_hold.py
+          python3 - <<'PY'
+          from pathlib import Path
+          targets = [
+            'index.html',
+            'ai-agent-economics-calculator.html',
+            'b2b/index.html',
+            'agent-control-auditor.html',
+            'workflow-audit.html',
+            'product-router.html',
+            'live-lab.html',
+            'ai-saas-waste-calculator.html',
+            'ai-saas-spend-waste-audit.html',
+            'ai-consultant.html',
+          ]
+          css = '<link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience>'
+          js = '<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>'
+          changed=[]
+          for name in targets:
+            p=Path(name)
+            if not p.exists():
+              print('skip missing', name)
+              continue
+            s=p.read_text(encoding='utf-8')
+            old=s
+            if 'b2b-experience-2026.css' not in s and '</head>' in s:
+              s=s.replace('</head>',f'  {css}\n</head>',1)
+            if 'b2b-experience-2026.js' not in s:
+              if '</body>' in s:
+                s=s.replace('</body>',f'  {js}\n</body>',1)
+              else:
+                s += '\n'+js+'\n'
+            if s!=old:
+              p.write_text(s,encoding='utf-8')
+              changed.append(name)
+          print('B2B experience changed:', ', '.join(changed) if changed else 'none')
+          PY
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add passage-hub/index.html passage-network.html ordlume/index.html sitemap.xml docs/REORG_HOLD_AND_CANONICAL_CANDIDATES_20260910.md
-          git diff --cached --quiet || (git commit -m 'chore: apply safe hold status and migration memo' && git push)
+          git add index.html ai-agent-economics-calculator.html b2b/index.html agent-control-auditor.html workflow-audit.html product-router.html live-lab.html ai-saas-waste-calculator.html ai-saas-spend-waste-audit.html ai-consultant.html
+          git diff --cached --quiet || (git commit -m 'chore: preserve reorg and roll out B2B experience' && git push)
