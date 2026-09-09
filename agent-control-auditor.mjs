@@ -19,6 +19,24 @@ const groups = {
   secret: /\b(?:sk|pk)_(?:live|test)_[a-z0-9]{12,}|api[_ -]?key\s*[:=]\s*["']?[a-z0-9_\-]{12,}|bearer\s+[a-z0-9._\-]{16,}/ig
 };
 
+const REVIEW_PROFILES = {
+  FOCUSED: {
+    rank: 1,
+    checks: ['changed-scope correctness','regression risk','obvious control violations']
+  },
+  STANDARD: {
+    rank: 2,
+    checks: ['changed-scope correctness','regression risk','edge cases','test and evidence sufficiency','permission boundaries']
+  },
+  DEEP: {
+    rank: 3,
+    checks: ['changed-scope correctness','regression risk','edge cases','test and evidence sufficiency','permission boundaries','financial or irreversible side effects','auth and secret exposure','retry and idempotency safety','state transition and rollback integrity','evidence and attribution integrity']
+  }
+};
+const HIGH_RISK_REVIEW = /(?:^|[\/_.-])(stripe|payment|checkout|billing|invoice|auth|permission|secret|security|workflow|actions?|deploy|runtime|agent|ledger|evidence|state|migration|database|supabase|contract)(?:[\/_.-]|$)/i;
+const HIGH_RISK_CONTEXT = /\b(stripe|payment|checkout|billing|invoice|auth|permission|secret|security|deploy|runtime|agent|ledger|evidence|state transition|migration|database|contract|financial|irreversible)\b/i;
+const DOC_ONLY = /(?:^|\/)(?:docs?\/.*|README(?:\.[^/]*)?|[^/]+\.(?:md|mdx|txt|rst))$/i;
+
 function clean(s=''){ return String(s).replace(groups.secret,'[REDACTED SECRET]').trim(); }
 function has(re,s){ re.lastIndex=0; return re.test(s); }
 function capability(text){
@@ -50,7 +68,23 @@ function normalizeIntent(intent){
   return {goal:t,inputs:has(groups.read,t)?'Information needed to research or evaluate the goal':'No input source is explicitly stated',outputs:output,externalActions:level>=4?`External action is implied (L${level})`:'None required by the declared goal',humanDecisionPoints:decision>=3?'Approval should precede material or external execution':decision===2?'Human retains execution authority':'Human reviews the output before any downstream action',requiredLevel:level,intendedDecision:decision};
 }
 
-export function auditAgent(rawIntent, rawConfig){
+export function selectReviewProfile({changedPaths=[], context=''}={}){
+  const paths=Array.isArray(changedPaths)?changedPaths.filter(Boolean).map(String):[];
+  const safeContext=clean(context);
+  const highRiskPath=paths.find(path=>HIGH_RISK_REVIEW.test(path));
+  const highRiskContext=HIGH_RISK_CONTEXT.test(safeContext);
+  let profile='STANDARD', reason='Unknown or mixed scope defaults to standard review depth.';
+  if(highRiskPath || highRiskContext){
+    profile='DEEP';
+    reason=highRiskPath?`High-impact path detected: ${highRiskPath}`:'High-impact execution context detected.';
+  } else if(paths.length && paths.every(path=>DOC_ONLY.test(path))){
+    profile='FOCUSED';
+    reason='Documentation-only change with no high-impact context detected.';
+  }
+  return {profile,rank:REVIEW_PROFILES[profile].rank,reason,checks:[...REVIEW_PROFILES[profile].checks],failClosed:profile!=='FOCUSED'||paths.length>0};
+}
+
+export function auditAgent(rawIntent, rawConfig, reviewContext={}){
   const intent=clean(rawIntent), config=clean(rawConfig);
   if(!intent) throw new Error('Describe the business outcome first.');
   if(!config) throw new Error('Paste or upload the current agent configuration.');
@@ -70,7 +104,8 @@ export function auditAgent(rawIntent, rawConfig){
   const authorityGap=excess?'EXCESS AUTHORITY':insufficient?'INSUFFICIENT CAPABILITY':'ALIGNED';
   const score=Math.max(0,100-findings.reduce((s,f)=>s+({critical:22,high:14,medium:8}[f.severity]||5),0));
   const risk=findings.some(f=>f.severity==='critical')?'CRITICAL':findings.some(f=>f.severity==='high')?'HIGH':findings.length?'MEDIUM':'LOW';
-  return {businessIntent:n,actualCapability:{level:actual,label:LEVELS[actual]},recommendedCeiling:{level:n.requiredLevel,label:LEVELS[n.requiredLevel]},decisionAuthority:{intended:n.intendedDecision,intendedLabel:DECISIONS[n.intendedDecision],actual:decision,actualLabel:DECISIONS[decision]},authorityGap,findings,score,risk,readiness:risk==='CRITICAL'||risk==='HIGH'?'NOT READY':risk==='MEDIUM'?'READY WITH RESTRICTIONS':'READY',humanBoundary:actual>=5?'Named human approves every financial, destructive, contractual, or irreversible action.':actual>=4?'Named human approves external execution; the agent may prepare the action.':decision>=2?'Human confirms the decision before execution.':'Human reviews outputs before downstream use.'};
+  const reviewProfile=selectReviewProfile(reviewContext);
+  return {businessIntent:n,actualCapability:{level:actual,label:LEVELS[actual]},recommendedCeiling:{level:n.requiredLevel,label:LEVELS[n.requiredLevel]},decisionAuthority:{intended:n.intendedDecision,intendedLabel:DECISIONS[n.intendedDecision],actual:decision,actualLabel:DECISIONS[decision]},authorityGap,findings,score,risk,reviewProfile,readiness:risk==='CRITICAL'||risk==='HIGH'?'NOT READY':risk==='MEDIUM'?'READY WITH RESTRICTIONS':'READY',humanBoundary:actual>=5?'Named human approves every financial, destructive, contractual, or irreversible action.':actual>=4?'Named human approves external execution; the agent may prepare the action.':decision>=2?'Human confirms the decision before execution.':'Human reviews outputs before downstream use.'};
 }
 
-export const labels={levels:LEVELS,decisions:DECISIONS};
+export const labels={levels:LEVELS,decisions:DECISIONS,reviewProfiles:Object.keys(REVIEW_PROFILES)};
