@@ -1,7 +1,13 @@
-import assert from 'node:assert/strict';import {auditAgent} from '../agent-control-auditor.mjs';
-const good=auditAgent('Research competitors and report pricing changes.','Role: analyst. Owner: operations lead. Research public pages. Draft a report with URLs and evidence. Stop after 2 retries. Human review required.');assert.equal(good.actualCapability.level,2);assert.equal(good.recommendedCeiling.level,2);assert.equal(good.authorityGap,'ALIGNED');
+import assert from 'node:assert/strict';import {auditAgent,selectReviewProfile} from '../agent-control-auditor.mjs';
+const good=auditAgent('Research competitors and report pricing changes.','Role: analyst. Owner: operations lead. Research public pages. Draft a report with URLs and evidence. Stop after 2 retries. Human review required.');assert.equal(good.actualCapability.level,2);assert.equal(good.recommendedCeiling.level,2);assert.equal(good.authorityGap,'ALIGNED');assert.equal(good.reviewProfile.profile,'STANDARD');
 const excess=auditAgent('Research competitors and report pricing changes.','Research pricing. Automatically update our public prices and email customers without approval. Retry until success.');assert.equal(excess.actualCapability.level,4);assert.equal(excess.recommendedCeiling.level,2);assert.equal(excess.authorityGap,'EXCESS AUTHORITY');assert.ok(excess.findings.some(f=>f.title.includes('Decision authority')));
 const insufficient=auditAgent('Send an approved customer email.','Read the approved message and report it to the owner with a URL.');assert.equal(insufficient.authorityGap,'INSUFFICIENT CAPABILITY');
 const dangerous=auditAgent('Summarize uploaded customer requests.','Read uploaded user input and automatically delete records and make payment without approval.');assert.equal(dangerous.risk,'CRITICAL');assert.ok(dangerous.findings.some(f=>f.title.includes('Untrusted input')));
 const secret=auditAgent('Report API configuration status.','Owner: ops. Read api_key=abcdefghijklmnop1234 and report test result.');assert.ok(!JSON.stringify(secret).includes('abcdefghijklmnop1234'));
-assert.throws(()=>auditAgent('','config'));assert.throws(()=>auditAgent('intent',''));console.log('Agent Control Auditor: 7 scenarios passed');
+const focused=selectReviewProfile({changedPaths:['README.md','docs/setup.md']});assert.equal(focused.profile,'FOCUSED');
+const standard=selectReviewProfile({changedPaths:['src/parser.js']});assert.equal(standard.profile,'STANDARD');
+const deepPayment=selectReviewProfile({changedPaths:['src/checkout/stripe-handler.js']});assert.equal(deepPayment.profile,'DEEP');assert.ok(deepPayment.checks.includes('financial or irreversible side effects'));
+const deepWorkflow=selectReviewProfile({changedPaths:['.github/workflows/deploy.yml','README.md']});assert.equal(deepWorkflow.profile,'DEEP');
+const failClosed=selectReviewProfile();assert.equal(failClosed.profile,'STANDARD');
+const integrated=auditAgent('Review an agent configuration.','Owner: ops. Read the config and report evidence. Human review required.',{changedPaths:['runtime/payment-state.mjs']});assert.equal(integrated.reviewProfile.profile,'DEEP');
+assert.throws(()=>auditAgent('','config'));assert.throws(()=>auditAgent('intent',''));console.log('Agent Control Auditor: 13 scenarios passed');
