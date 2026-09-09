@@ -1,0 +1,88 @@
+name: Apply Evidence-First Inbound Revenue
+
+on:
+  push:
+    paths:
+      - 'inbound-revenue.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Apply inbound revenue routes to existing assets
+        shell: python
+        run: |
+          from pathlib import Path
+
+          css = '  <link rel="stylesheet" href="/inbound-revenue.css">\n'
+
+          home = Path('index.html')
+          s = home.read_text(encoding='utf-8')
+          if '/inbound-revenue.css' not in s:
+              s = s.replace('</head>', css + '</head>', 1)
+          marker = '<!-- sp-inbound-route-v1 -->'
+          if marker not in s:
+              block = '''\n    <!-- sp-inbound-route-v1 -->\n    <section class="sp-inbound-route" aria-labelledby="sp-inbound-title">\n      <div class="sp-inbound-wrap">\n        <p class="sp-inbound-kicker">Start with evidence · No signup required</p>\n        <h2 id="sp-inbound-title">Use the smallest free tool that can answer the decision.</h2>\n        <p>Clear entry points for different problems. Each route states who it fits, when to use it, and only escalates to a paid layer after useful evidence appears.</p>\n        <div class="sp-inbound-grid">\n          <a class="sp-inbound-card" href="/b2b/" data-analytics-id="inbound_workflow_diagnostic" data-product="workflow_diagnostic">\n            <small>Workflow · Free · 2 minutes</small><strong>Should this workflow be fixed?</strong><span>For recurring manual work with a real owner, repeat frequency, and measurable cost or delay.</span><em>Use Workflow Decision Diagnostic →</em>\n          </a>\n          <a class="sp-inbound-card" href="/ai-agent-economics-calculator.html" data-analytics-id="inbound_agent_economics" data-product="agent_economics">\n            <small>Economics · Free calculator</small><strong>Does this AI agent earn its cost?</strong><span>For teams already estimating model, retry, tooling, failure, and human-review costs.</span><em>Calculate cost per successful outcome →</em>\n          </a>\n          <a class="sp-inbound-card" href="/agent-control-auditor.html" data-analytics-id="inbound_agent_control" data-product="agent_control_auditor">\n            <small>Control · Free local audit</small><strong>Where should this agent stop?</strong><span>For agents with tools, permissions, budgets, or external side effects that need explicit human gates.</span><em>Audit control gaps →</em>\n          </a>\n        </div>\n        <p class="sp-inbound-note">No fake scarcity, gated giveaway, or guaranteed outcome. Paid audits and kits remain downstream options when the free result shows a real problem worth solving.</p>\n      </div>\n    </section>\n'''
+              anchor = '<section id="live-lab"'
+              if anchor in s:
+                  s = s.replace(anchor, block + '    ' + anchor, 1)
+              else:
+                  s = s.replace('</main>', block + '</main>', 1)
+          home.write_text(s, encoding='utf-8')
+
+          routes = {
+            'b2b/index.html': ('Workflow route', 'Use the ROI calculator if the workflow is worth sizing; move to the $499 audit only when the workflow is valuable enough.', [('/','Home · choose another route',False),('https://roi.stratumpraxis.com/','Free ROI Calculator',False),('/workflow-audit.html','$499 Workflow Opportunity Audit',True)]),
+            'ai-agent-economics-calculator.html': ('Economics route', 'If cost per successful outcome is the problem, compare spend exposure next; escalate only when a paid decision review is justified.', [('/','Home · choose another route',False),('/ai-saas-waste-calculator.html','Free AI & SaaS Waste Calculator',False),('/ai-saas-spend-waste-audit.html','AI & SaaS Spend Waste Audit',True)]),
+            'agent-control-auditor.html': ('Control route', 'Use the free result to identify the authority gap first. Paid operating material is optional and should come after the gap is visible.', [('/','Home · choose another route',False),('/ai-council-builder.html','Free AI Council Builder',False),('/cross-agent-operating-kit.html','Cross-Agent Operating Kit · $69',True)]),
+            'ai-monetization-reality-check.html': ('Revenue evidence route', 'Separate claims from reproducible evidence first; then route to a practical revenue action instead of creating another asset.', [('/ai-income-claim-checklist.html','Free Claim Checklist',False),('/revenue-router.html','Revenue Router',False),('/','Stratum Praxis Home',False)]),
+          }
+
+          for path, (title, desc, links) in routes.items():
+              p = Path(path)
+              if not p.exists():
+                  continue
+              t = p.read_text(encoding='utf-8')
+              if '/inbound-revenue.css' not in t:
+                  t = t.replace('</head>', css + '</head>', 1)
+              m = '<!-- sp-related-route-v1 -->'
+              if m not in t:
+                  link_html = ''.join(f'<a href="{href}" data-analytics-id="related_route_{i}"' + (' data-paid="true"' if paid else '') + f'>{label}</a>' for i,(href,label,paid) in enumerate(links,1))
+                  aside = f'''\n{m}\n<aside class="sp-related-route" aria-label="Related Stratum Praxis route"><b>{title}</b><p>{desc}</p><div class="sp-related-links">{link_html}</div></aside>\n'''
+                  t = t.replace('</main>', aside + '</main>', 1)
+              p.write_text(t, encoding='utf-8')
+
+          analytics = Path('scos-analytics.js')
+          a = analytics.read_text(encoding='utf-8')
+          old = 'function ready() { normalizeLanguageRoutes(); alignPrimaryRevenueCTA(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }'
+          new = 'function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }'
+          if old in a:
+              a = a.replace(old, new, 1)
+          analytics.write_text(a, encoding='utf-8')
+      - name: Verify revenue invariants
+        shell: bash
+        run: |
+          set -e
+          grep -q 'Open the Live Lab' index.html
+          grep -q 'Take the Free AI Consultant' index.html
+          grep -q 'inbound_workflow_diagnostic' index.html
+          grep -q 'Audit this workflow — $499' b2b/index.html
+          grep -q 'agent_economics_to_499_audit' ai-agent-economics-calculator.html
+          grep -q 'rel="sponsored' smartphone-ai-slide-factory.html
+          ! grep -q 'normalizeLanguageRoutes(); alignPrimaryRevenueCTA();' scos-analytics.js
+      - name: Commit inbound revenue reflection
+        run: |
+          git config user.name "stratumpraxis"
+          git config user.email "stratumpraxis@gmail.com"
+          git add index.html b2b/index.html ai-agent-economics-calculator.html agent-control-auditor.html ai-monetization-reality-check.html scos-analytics.js
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Route free evidence into measured paid decisions"
+            git push
+          fi
