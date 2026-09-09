@@ -122,30 +122,19 @@ Revenue truth: publication and paid-boundary evidence are not purchase evidence.
 
 Next action: observe paid-boundary / purchase behavior and move Publishing to the next non-duplicate revenue route.
 
-## Active queue
+## Active queue policy
 
-### 2026-09-09｜AI work: operation → orchestration
+Do not duplicate active item state in this README.
 
-File:
-- `2026-09-09-ai-work-from-operation-to-orchestration.md`
+The publish package file itself is the Source of Truth. Any file in this folder with `State: READY_DRAFT_ONLY` is an active Human-Gate item until it is either published or explicitly cancelled/replaced.
 
-State: `READY_DRAFT_ONLY`
+Do not add a second ACTIVE entry, status mirror, or routine zero-result note here.
 
-Publishing decision:
-- FREE acquisition note
-- do not create a new paid product
-- do not create a new paid note
-- route readers to the existing paid Vector note at `https://note.com/deft_eel6718/n/nfce5ac047c15`
-- X announcement is manual-only; do not auto-post to X
-
-Human Gate:
-- authenticated note editor / publish action only
-
-After publish:
-- verify public URL
-- verify CTA destination is live
-- then hand Distribution to permitted non-X surfaces
-- report only actual publish / human signal / checkout / purchase or a real gate; no zero-result noise
+Operational rule:
+- publish package = working state
+- public URL / platform post ID = publication evidence
+- purchase / contract / reward / commission = revenue evidence
+- no-change / zero-result / waiting = silent unless explicitly requested
 
 Next route selection must use Revenue Probability × Revenue Distance × Existing Asset Fit. Do not create a new note merely to keep publishing volume high.
 
