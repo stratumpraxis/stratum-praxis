@@ -18,83 +18,79 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Inject shared Stratum UI across official B2B pages
+      - name: Finalize official Stratum surfaces
         run: |
           python3 - <<'PY'
           from pathlib import Path
           import re
           targets = [
-            'ai-agent-economics-calculator.html',
-            'b2b/index.html',
-            'agent-control-auditor.html',
-            'workflow-audit.html',
-            'product-router.html',
-            'live-lab.html',
-            'explore-intelligence.html',
-            'ai-saas-waste-calculator.html',
-            'ai-saas-spend-waste-audit.html',
-            'ai-saas-spend-decision-kit.html',
-            'saas-renewal-decision.html',
-            'ai-saas-spend-audit-checklist.html',
-            'ai-consultant.html',
-            'workflow-operator.html',
+            'ai-agent-economics-calculator.html','b2b/index.html','agent-control-auditor.html','workflow-audit.html',
+            'product-router.html','live-lab.html','explore-intelligence.html','ai-saas-waste-calculator.html',
+            'ai-saas-spend-waste-audit.html','ai-saas-spend-decision-kit.html','saas-renewal-decision.html',
+            'ai-saas-spend-audit-checklist.html','ai-consultant.html','workflow-operator.html'
           ]
-          css_old = '<link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience>'
-          css_new = '<link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2>'
-          css_retro = '<link rel="stylesheet" href="/stratum-retrofit-2026.css" data-stratum-retrofit>'
-          js = '<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>'
+          css_old='<link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience>'
+          css_new='<link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2>'
+          css_retro='<link rel="stylesheet" href="/stratum-retrofit-2026.css" data-stratum-retrofit>'
+          js='<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>'
           changed=[]
           for name in targets:
             p=Path(name)
             if not p.exists():
-              print('skip missing', name)
-              continue
-            s=p.read_text(encoding='utf-8')
-            old=s
-            for marker, tag in [
-              ('b2b-experience-2026.css', css_old),
-              ('stratum-ui-v2.css', css_new),
-              ('stratum-retrofit-2026.css', css_retro),
-            ]:
-              if marker not in s and '</head>' in s:
-                s=s.replace('</head>',f'  {tag}\n</head>',1)
+              print('skip missing',name); continue
+            s=p.read_text(encoding='utf-8'); old=s
+            for marker,tag in [('b2b-experience-2026.css',css_old),('stratum-ui-v2.css',css_new),('stratum-retrofit-2026.css',css_retro)]:
+              if marker not in s and '</head>' in s: s=s.replace('</head>',f'  {tag}\n</head>',1)
             if 'b2b-experience-2026.js' not in s:
-              if '</body>' in s:
-                s=s.replace('</body>',f'  {js}\n</body>',1)
-              else:
-                s += '\n'+js+'\n'
+              s=s.replace('</body>',f'  {js}\n</body>',1) if '</body>' in s else s+'\n'+js+'\n'
             m=re.search(r'<body\b[^>]*>',s)
             if m and 'sp-b2b-experience' not in m.group(0):
               tag=m.group(0)
-              if 'class=' in tag:
-                newtag=re.sub(r'class="([^"]*)"',lambda x:f'class="{x.group(1)} sp-b2b-experience"',tag,count=1)
-              else:
-                newtag=tag[:-1]+' class="sp-b2b-experience">'
+              newtag=(re.sub(r'class="([^"]*)"',lambda x:f'class="{x.group(1)} sp-b2b-experience"',tag,count=1)
+                      if 'class=' in tag else tag[:-1]+' class="sp-b2b-experience">')
               s=s[:m.start()]+newtag+s[m.end():]
+            # Remove stale cross-brand/legacy recommendation block that survived old rollout.
+            if name=='agent-control-auditor.html':
+              s=re.sub(r'\s*<!-- sp-related-route-v1 -->\s*<aside class="sp-related-route".*?</aside>\s*','\n',s,count=1,flags=re.S)
             if s!=old:
-              p.write_text(s,encoding='utf-8')
-              changed.append(name)
-          print('changed:', ', '.join(changed) if changed else 'none')
+              p.write_text(s,encoding='utf-8'); changed.append(name)
+          # Production home uses approved Shadow Preview V2 visual layer.
+          home=Path('index.html')
+          if home.exists():
+            s=home.read_text(encoding='utf-8'); old=s
+            v2='<link rel="stylesheet" href="/design-preview/stratum-preview-v2.css" data-stratum-home-v2>'
+            if 'stratum-preview-v2.css' not in s and '</head>' in s:
+              s=s.replace('</head>',f'  {v2}\n</head>',1)
+            if s!=old:
+              home.write_text(s,encoding='utf-8'); changed.append('index.html')
+          print('changed:',', '.join(changed) if changed else 'none')
           PY
-      - name: Guard excluded and legacy assets
+      - name: Guard Stratum ownership and protected assets
         run: |
           python3 - <<'PY'
-          import subprocess
-          forbidden=['revenue-router.html','return-gate/index.html','passage-hub/index.html','passage-network/index.html','ordlume/index.html']
-          out=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
-          touched=[f for f in forbidden if f in out]
-          if touched:
-            raise SystemExit('Protected legacy/hold assets touched: '+', '.join(touched))
-          print('Protected legacy/hold assets unchanged')
+          from pathlib import Path
+          import re, subprocess
+          protected=['revenue-router.html','return-gate/index.html','passage-hub/index.html','passage-network/index.html','ordlume/index.html']
+          touched=subprocess.check_output(['git','diff','--name-only'],text=True).splitlines()
+          bad=[f for f in protected if f in touched]
+          if bad: raise SystemExit('Protected legacy/hold assets touched: '+', '.join(bad))
+          official=['index.html','ai-agent-economics-calculator.html','b2b/index.html','agent-control-auditor.html','workflow-audit.html','product-router.html','live-lab.html','explore-intelligence.html','ai-saas-waste-calculator.html','ai-saas-spend-waste-audit.html','ai-saas-spend-decision-kit.html','saas-renewal-decision.html','ai-saas-spend-audit-checklist.html','ai-consultant.html','workflow-operator.html']
+          forbidden_href=[r'revenue-router(?:\.html|/)',r'return-gate/',r'passage-hub/',r'passage-network/',r'ordlume/',r'cross-agent-operating-kit\.html',r'ai-council-builder\.html']
+          found=[]
+          for name in official:
+            p=Path(name)
+            if not p.exists(): continue
+            s=p.read_text(encoding='utf-8')
+            for pat in forbidden_href:
+              if re.search(r'href=["\'][^"\']*'+pat,s,re.I): found.append(f'{name}: {pat}')
+          if found: raise SystemExit('Non-canonical Stratum links remain: '+ ' | '.join(found))
+          print('Ownership guard passed')
           PY
       - name: Commit rollout
         run: |
-          if git diff --quiet; then
-            echo "No rollout changes"
-            exit 0
-          fi
+          if git diff --quiet; then echo "No rollout changes"; exit 0; fi
           git config user.name "stratumpraxis-bot"
           git config user.email "stratumpraxis@gmail.com"
           git add -A
-          git commit -m "Apply final Stratum Revenue Intelligence UI across official B2B pages"
+          git commit -m "Complete Stratum Revenue Intelligence site rollout"
           git push
