@@ -105,7 +105,7 @@
       "id": "revenue-router",
       "name": "Revenue Router → Existing Offer",
       "owner": "Revenue Router",
-      "stage": "CTA",
+      "stage": "DEMAND",
       "status": "TESTING",
       "buyerIntent": 2,
       "externalReady": true,
