@@ -124,7 +124,28 @@ Next action: observe paid-boundary / purchase behavior and move Publishing to th
 
 ## Active queue
 
-No additional paid-note upgrade is currently marked READY_DRAFT_ONLY.
+### 2026-09-09｜AI work: operation → orchestration
+
+File:
+- `2026-09-09-ai-work-from-operation-to-orchestration.md`
+
+State: `READY_DRAFT_ONLY`
+
+Publishing decision:
+- FREE acquisition note
+- do not create a new paid product
+- do not create a new paid note
+- route readers to the existing paid Vector note at `https://note.com/deft_eel6718/n/nfce5ac047c15`
+- X announcement is manual-only; do not auto-post to X
+
+Human Gate:
+- authenticated note editor / publish action only
+
+After publish:
+- verify public URL
+- verify CTA destination is live
+- then hand Distribution to permitted non-X surfaces
+- report only actual publish / human signal / checkout / purchase or a real gate; no zero-result noise
 
 Next route selection must use Revenue Probability × Revenue Distance × Existing Asset Fit. Do not create a new note merely to keep publishing volume high.
 
