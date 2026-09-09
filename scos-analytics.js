@@ -133,7 +133,7 @@
   }
 
   if (!(window.posthog && window.posthog.__SV)) {
-    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people (stub)'},o='init capture register register_once unregister set_config reset opt_out_capturing has_opted_out_capturing opt_in_capturing'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split('.');2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement('script')).type='text/javascript',p.crossOrigin='anonymous',p.async=!0,p.src=s.api_host.replace('.i.posthog.com','-assets.i.posthog.com')+'/static/array.js';(r=t.getElementsByTagName('script')[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a='posthog',u.people=u.people||[],u.toString=function(t){var e='posthog';return'posthog'!==a&&(e+='.'+a),t||(e+=' (stub)'),e},u.people.toString=function(){return u.toString(1)+'.people (stub)},o='init capture register register_once unregister set_config reset opt_out_capturing has_opted_out_capturing opt_in_capturing'.split(' '),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
   }
   window.posthog.init(TOKEN, {
     api_host: HOST,
@@ -189,32 +189,6 @@
     document.querySelectorAll('a[href="/return-gate/"]').forEach(function (link) {
       link.setAttribute('href', '/return-gate/en/');
     });
-  }
-
-  function alignPrimaryRevenueCTA() {
-    const onHomepage = location.pathname === '/' || location.pathname === '/index.html';
-    if (!onHomepage) return;
-
-    const destination = '/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=homepage&utm_campaign=cross_agent_personal&utm_content=hero_primary';
-    const heroPrimary = document.querySelector('.hero .button-primary');
-    if (heroPrimary) {
-      heroPrimary.href = destination;
-      heroPrimary.textContent = 'Cross-Agent Operating Kit — Personal · $69';
-      heroPrimary.dataset.analyticsId = 'cross_agent_personal_home_hero';
-      heroPrimary.dataset.product = 'cross_agent_personal';
-      heroPrimary.setAttribute('data-primary-cta', 'true');
-    }
-
-    const nav = document.querySelector('#site-nav');
-    if (nav && !nav.querySelector('[data-cross-agent-primary]')) {
-      const link = document.createElement('a');
-      link.href = destination.replace('hero_primary', 'nav');
-      link.textContent = '$69 Cross-Agent Kit';
-      link.dataset.crossAgentPrimary = 'true';
-      link.dataset.analyticsId = 'cross_agent_personal_home_nav';
-      link.dataset.product = 'cross_agent_personal';
-      nav.insertBefore(link, nav.firstChild);
-    }
   }
 
   function externalCategory(host) {
@@ -296,7 +270,16 @@
     });
   }
 
-  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
+  function loadRevenueRouter() {
+    if (document.querySelector('script[data-sp-revenue-router]')) return;
+    const script = document.createElement('script');
+    script.src = '/revenue-route.js';
+    script.defer = true;
+    script.dataset.spRevenueRouter = 'true';
+    document.head.appendChild(script);
+  }
+
+  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); loadRevenueRouter(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
