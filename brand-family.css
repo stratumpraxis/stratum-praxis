@@ -104,6 +104,284 @@ body.sp-brand-family :is(.result,.results,.result-card)::after {
   pointer-events:none;
 }
 
+/* Phase 2 representative page — AI Agent Economics Calculator only. */
+body[data-funnel="ai_agent_economics_calculator"].sp-brand-family{
+  --aec-bg:#f4f1ea;
+  --aec-paper:#fffdf8;
+  --aec-ink:#17202b;
+  --aec-muted:#6f7884;
+  --aec-line:#d8d3c7;
+  --aec-blue:#245f78;
+  --aec-teal:#0f7562;
+  --aec-amber:#a96f1e;
+  background:linear-gradient(180deg,#f7f4ee 0%,#f1eee7 58%,#f6f3ed 100%)!important;
+  color:var(--aec-ink)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .sp-signal-edge{
+  background:linear-gradient(90deg,var(--aec-blue),var(--aec-teal),#d4c39e)!important;
+  opacity:.78;
+}
+body[data-funnel="ai_agent_economics_calculator"] .top{
+  background:rgba(250,248,243,.93)!important;
+  border-bottom:1px solid rgba(23,32,43,.09)!important;
+  box-shadow:0 8px 28px rgba(23,32,43,.035)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .top .brand{color:var(--aec-ink)!important}
+body[data-funnel="ai_agent_economics_calculator"] .top .nav a{color:#67727d!important}
+body[data-funnel="ai_agent_economics_calculator"] .hero{
+  padding:78px 0 42px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-grid{
+  grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr)!important;
+  gap:54px!important;
+  align-items:center!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .ey{
+  color:var(--aec-blue)!important;
+  font-weight:850!important;
+  letter-spacing:.13em!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] h1{
+  color:var(--aec-ink)!important;
+  font-size:clamp(50px,6.4vw,82px)!important;
+  line-height:.96!important;
+  letter-spacing:-.06em!important;
+  max-width:820px!important;
+  margin:14px 0 20px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .lead{
+  color:#5f6873!important;
+  font-size:clamp(17px,1.7vw,20px)!important;
+  line-height:1.58!important;
+  max-width:720px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .proof{gap:8px!important;margin-top:24px!important}
+body[data-funnel="ai_agent_economics_calculator"] .pill{
+  background:rgba(255,255,255,.78)!important;
+  border:1px solid var(--aec-line)!important;
+  color:#6e7882!important;
+  padding:8px 11px!important;
+  font-size:11px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-visual{
+  min-height:300px!important;
+  padding:30px!important;
+  border:1px solid rgba(23,32,43,.11)!important;
+  border-radius:24px!important;
+  background:linear-gradient(150deg,#fffdf8 0%,#eef3f4 100%)!important;
+  box-shadow:0 24px 68px rgba(36,45,56,.11)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-visual::before{
+  content:"DECISION METRIC";
+  display:block;
+  margin-bottom:38px;
+  color:#7b8992;
+  font:850 8px/1 ui-monospace,SFMono-Regular,Menlo,monospace;
+  letter-spacing:.14em;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-visual::after{
+  width:220px!important;height:220px!important;
+  right:-72px!important;top:-90px!important;
+  background:radial-gradient(circle,rgba(36,95,120,.14),rgba(15,117,98,.05) 45%,transparent 70%)!important;
+  filter:none!important;
+  animation:none!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-visual strong{
+  color:var(--aec-ink)!important;
+  font-size:clamp(34px,4vw,50px)!important;
+  line-height:.98!important;
+  letter-spacing:-.05em!important;
+  max-width:320px;
+}
+body[data-funnel="ai_agent_economics_calculator"] .hero-visual p{color:#6d7781!important;max-width:300px!important}
+body[data-funnel="ai_agent_economics_calculator"] .mini-route{
+  margin-top:32px!important;
+  color:#76828c!important;
+  font-weight:750!important;
+  text-transform:uppercase;
+  letter-spacing:.09em;
+}
+body[data-funnel="ai_agent_economics_calculator"] .mini-route i{
+  background:linear-gradient(90deg,var(--aec-blue),var(--aec-teal))!important;
+  animation:none!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .layout{
+  grid-template-columns:minmax(0,1.04fr) minmax(360px,.86fr)!important;
+  gap:20px!important;
+  padding:18px 0 84px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .panel{
+  background:rgba(255,253,248,.97)!important;
+  border:1px solid rgba(23,32,43,.10)!important;
+  border-radius:22px!important;
+  padding:28px!important;
+  box-shadow:0 14px 42px rgba(36,45,56,.06)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .panel h2{
+  color:var(--aec-ink)!important;
+  font-size:26px!important;
+  line-height:1.08!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .sub{color:#6d7781!important;font-size:13px!important;line-height:1.7!important}
+body[data-funnel="ai_agent_economics_calculator"] .section-title{
+  color:var(--aec-blue)!important;
+  font-size:9px!important;
+  letter-spacing:.13em!important;
+  margin:30px 0 13px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .grid{gap:12px!important}
+body[data-funnel="ai_agent_economics_calculator"] .field{
+  padding:13px!important;
+  border:1px solid rgba(23,32,43,.08)!important;
+  border-radius:14px!important;
+  background:#faf8f3!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .field label{
+  color:#273440!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+  margin-bottom:7px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .field small{color:#89919a!important;font-size:10px!important;line-height:1.45!important}
+body[data-funnel="ai_agent_economics_calculator"] .field input{
+  min-height:48px!important;
+  background:#fff!important;
+  color:var(--aec-ink)!important;
+  border:1px solid #cbc7bd!important;
+  border-radius:10px!important;
+  padding:12px!important;
+  font-weight:700!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .field input:focus{
+  border-color:var(--aec-blue)!important;
+  box-shadow:0 0 0 4px rgba(36,95,120,.10)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .btn{
+  min-height:48px!important;
+  border-radius:10px!important;
+  background:var(--aec-ink)!important;
+  color:#fff!important;
+  font-size:13px!important;
+  box-shadow:0 10px 24px rgba(23,32,43,.10)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .btn.secondary{
+  background:#fff!important;
+  color:var(--aec-ink)!important;
+  border:1px solid var(--aec-line)!important;
+  box-shadow:none!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .results{
+  top:84px!important;
+  background:linear-gradient(160deg,#17202b 0%,#20313e 100%)!important;
+  color:#fff!important;
+  border-color:#17202b!important;
+  box-shadow:0 22px 54px rgba(23,32,43,.18)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .results h2,
+body[data-funnel="ai_agent_economics_calculator"] .results .result-kicker{color:#fff!important}
+body[data-funnel="ai_agent_economics_calculator"] .result-kicker .signal-dot{
+  background:#8bd7bf!important;
+  box-shadow:0 0 16px rgba(139,215,191,.35)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .headline-metric{
+  border:1px solid rgba(255,255,255,.14)!important;
+  background:rgba(255,255,255,.07)!important;
+  border-radius:16px!important;
+  padding:22px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .headline-metric span{color:#9bc9d8!important}
+body[data-funnel="ai_agent_economics_calculator"] .headline-metric b{color:#fff!important;font-size:clamp(44px,5vw,62px)!important}
+body[data-funnel="ai_agent_economics_calculator"] .metric{
+  background:rgba(255,255,255,.055)!important;
+  border:1px solid rgba(255,255,255,.10)!important;
+  box-shadow:none!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .metric span{color:#9aaab4!important}
+body[data-funnel="ai_agent_economics_calculator"] .metric b{color:#fff!important}
+body[data-funnel="ai_agent_economics_calculator"] .cost-stack{
+  border:1px solid rgba(255,255,255,.10)!important;
+  background:rgba(255,255,255,.035)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .cost-stack-head,
+body[data-funnel="ai_agent_economics_calculator"] .bar-row,
+body[data-funnel="ai_agent_economics_calculator"] .comparison p,
+body[data-funnel="ai_agent_economics_calculator"] .formula{color:#9baab4!important}
+body[data-funnel="ai_agent_economics_calculator"] .bar{background:rgba(255,255,255,.10)!important}
+body[data-funnel="ai_agent_economics_calculator"] .bar-ai i{background:#7ab0c4!important}
+body[data-funnel="ai_agent_economics_calculator"] .bar-review i{background:#77bda7!important}
+body[data-funnel="ai_agent_economics_calculator"] .bar-fixed i{background:#c5a36c!important}
+body[data-funnel="ai_agent_economics_calculator"] .comparison{border-top-color:rgba(255,255,255,.11)!important}
+body[data-funnel="ai_agent_economics_calculator"] .comparison strong{color:#fff!important}
+body[data-funnel="ai_agent_economics_calculator"] .signal{
+  background:rgba(255,255,255,.07)!important;
+  border-color:rgba(255,255,255,.12)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .signal.good{color:#9de1ca!important}
+body[data-funnel="ai_agent_economics_calculator"] .signal.warn{color:#e2bf85!important}
+body[data-funnel="ai_agent_economics_calculator"] .audit{
+  background:#fffdf8!important;
+  color:var(--aec-ink)!important;
+  border-radius:14px!important;
+  padding:18px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .audit h3{color:var(--aec-ink)!important}
+body[data-funnel="ai_agent_economics_calculator"] .audit p{color:#69737d!important}
+body[data-funnel="ai_agent_economics_calculator"] .audit a{
+  width:100%;
+  text-align:center;
+  background:var(--aec-ink)!important;
+  color:#fff!important;
+  border-radius:10px!important;
+  padding:13px 15px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .audit small{color:#858e97!important}
+body[data-funnel="ai_agent_economics_calculator"] .formula{border-top-color:rgba(255,255,255,.10)!important}
+body[data-funnel="ai_agent_economics_calculator"] .formula code{color:#c6d2d9!important}
+body[data-funnel="ai_agent_economics_calculator"] .context{
+  max-width:900px!important;
+  padding-bottom:96px!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .context h2{color:var(--aec-ink)!important}
+body[data-funnel="ai_agent_economics_calculator"] .context p,
+body[data-funnel="ai_agent_economics_calculator"] .context li{color:#68727c!important}
+body[data-funnel="ai_agent_economics_calculator"] .spx-route-stage-inner{
+  background:linear-gradient(145deg,#fffdf8,#eef3f4)!important;
+  border-color:rgba(23,32,43,.11)!important;
+  box-shadow:0 20px 58px rgba(36,45,56,.09)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .spx-route-stage h2{color:var(--aec-ink)!important}
+body[data-funnel="ai_agent_economics_calculator"] .spx-route-stage p{color:#69747d!important}
+body[data-funnel="ai_agent_economics_calculator"] .spx-route-links a{
+  background:#fff!important;
+  border-color:var(--aec-line)!important;
+  color:var(--aec-ink)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .spx-route-links span span{color:#7a858e!important}
+body[data-funnel="ai_agent_economics_calculator"] .spx-paid-card{
+  background:var(--aec-ink)!important;
+  color:#fff!important;
+  border-color:var(--aec-ink)!important;
+}
+body[data-funnel="ai_agent_economics_calculator"] .spx-paid-card strong{color:#fff!important}
+body[data-funnel="ai_agent_economics_calculator"] .spx-paid-card span span{color:#bac5cc!important}
+@media(max-width:900px){
+  body[data-funnel="ai_agent_economics_calculator"] .hero-grid,
+  body[data-funnel="ai_agent_economics_calculator"] .layout{grid-template-columns:1fr!important}
+  body[data-funnel="ai_agent_economics_calculator"] .hero{padding-top:56px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .hero-visual{min-height:240px!important;max-width:none!important}
+  body[data-funnel="ai_agent_economics_calculator"] .results{position:static!important}
+}
+@media(max-width:620px){
+  body[data-funnel="ai_agent_economics_calculator"] h1{font-size:44px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .hero{padding:46px 0 28px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .hero-visual{padding:22px!important;min-height:210px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .hero-visual::before{margin-bottom:26px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .panel{padding:18px!important;border-radius:18px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .field{padding:11px!important}
+  body[data-funnel="ai_agent_economics_calculator"] .actions{display:grid!important;grid-template-columns:1fr!important}
+  body[data-funnel="ai_agent_economics_calculator"] .actions .btn{width:100%!important}
+}
+
 /* Keep motion useful and accessible. */
 @media (prefers-reduced-motion:reduce){
   body.sp-brand-family *,body.sp-brand-family *::before,body.sp-brand-family *::after{
