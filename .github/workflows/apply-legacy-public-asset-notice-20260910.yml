@@ -1,0 +1,103 @@
+name: Apply legacy public asset notice
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-legacy-public-asset-notice-20260910.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Mark legacy public assets
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          exact_files = [
+              'image-commerce/index.html',
+              'folio-junction/index.html',
+              'return-gate-growth-os.html',
+              'prompt-systems.html',
+              'smartphone-ai-slide-factory.html',
+              'smartphone-income-blueprint.html',
+              'ai-revenue-toolkit.html',
+              'ai-practical-check.html',
+              'global-digital-product-ai-starter-kit.html',
+              'revenue-router.html',
+              'ai-monetization-reality-check.html',
+              'ai-income-claim-checklist.html',
+              'life-resilience-check/index.html',
+              'life-resilience-toolkit/index.html',
+              'household-resilience-checklist/index.html',
+              '72-hour-household-readiness/index.html',
+              'monthly-money-leak-audit/index.html',
+              'life-resilience-os/index.html',
+          ]
+
+          # Return Gate has language variants; keep every public variant consistent.
+          return_gate_dir = Path('return-gate')
+          if return_gate_dir.exists():
+              exact_files.extend(str(p) for p in return_gate_dir.rglob('*.html'))
+
+          notice = '''<div class="praxis-legacy-notice" role="note" aria-label="Praxis Group legacy asset" style="box-sizing:border-box;width:100%;padding:9px 16px;text-align:center;background:#111827;color:#e5e7eb;border-bottom:1px solid rgba(255,255,255,.12);font:600 12px/1.5 -apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;letter-spacing:.01em;position:relative;z-index:9999">Praxis Group内の旧公開資産です</div>'''
+
+          changed = []
+          for rel in sorted(set(exact_files)):
+              path = Path(rel)
+              if not path.exists() or path.suffix.lower() != '.html':
+                  print(f'SKIP missing: {rel}')
+                  continue
+              text = path.read_text(encoding='utf-8')
+              if 'praxis-legacy-notice' in text:
+                  continue
+              updated, count = re.subn(r'(<body(?:\s[^>]*)?>)', r'\1\n' + notice, text, count=1, flags=re.I)
+              if count != 1:
+                  print(f'SKIP no body tag: {rel}')
+                  continue
+              path.write_text(updated, encoding='utf-8')
+              changed.append(rel)
+
+          # Homepage must not surface these legacy assets. Current homepage is already clean;
+          # this is a guard that removes any matching anchor if one was accidentally reintroduced.
+          homepage = Path('index.html')
+          legacy_href_fragments = [
+              '/image-commerce', '/folio-junction', '/return-gate', '/return-gate-growth-os',
+              '/prompt-systems', '/smartphone-ai-slide-factory', '/smartphone-income-blueprint',
+              '/ai-revenue-toolkit', '/ai-practical-check', '/global-digital-product-ai-starter-kit',
+              '/revenue-router', '/ai-monetization-reality-check', '/ai-income-claim-checklist',
+              '/life-resilience-check', '/life-resilience-toolkit', '/household-resilience-checklist',
+              '/72-hour-household-readiness', '/monthly-money-leak-audit', '/life-resilience-os'
+          ]
+          if homepage.exists():
+              text = homepage.read_text(encoding='utf-8')
+              original = text
+              for frag in legacy_href_fragments:
+                  # Only remove standalone homepage anchors; do not touch scripts, metadata or page files.
+                  text = re.sub(r'<a\b[^>]*href=["\'][^"\']*' + re.escape(frag) + r'[^"\']*["\'][^>]*>.*?</a>', '', text, flags=re.I|re.S)
+              if text != original:
+                  homepage.write_text(text, encoding='utf-8')
+                  changed.append('index.html')
+
+          print('Changed files:')
+          for item in changed:
+              print(' -', item)
+
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "No changes needed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: mark legacy public assets and remove homepage exposure"
+          git push
