@@ -109,18 +109,49 @@
     new MutationObserver(update).observe(monthly,{childList:true,subtree:true,characterData:true});
   }
 
+  function injectPriorityEntrances(){
+    if(document.getElementById('sp-priority-entrances')) return;
+    var path = location.pathname;
+    var eligible = path === '/' || path === '/index.html' || path === '/live-lab.html' || path === '/product-router.html' || path === '/revenue-router.html' || path === '/passage-hub/' || path === '/return-gate/en/' || path.indexOf('/guides/') === 0 || path.indexOf('/systems/') === 0;
+    if(!eligible) return;
+
+    var main = document.querySelector('main') || document.body;
+    var strip = document.createElement('section');
+    strip.id = 'sp-priority-entrances';
+    strip.setAttribute('aria-label','Priority decision tools');
+    strip.style.cssText = 'width:min(1180px,calc(100% - 32px));margin:18px auto 32px;padding:14px;border:1px solid rgba(127,150,180,.24);border-radius:18px;background:rgba(255,255,255,.055);display:flex;gap:9px;align-items:center;flex-wrap:wrap;font:13px/1.4 Inter,system-ui,sans-serif';
+    strip.innerHTML = '<strong style="margin-right:4px">Start with the decision:</strong>'+
+      '<a href="/b2b/?utm_source=stratumpraxis&utm_medium=priority_entry&utm_campaign=revenue_entry&utm_content=workflow" data-priority-entry="workflow_diagnostic" style="padding:9px 12px;border:1px solid rgba(127,150,180,.3);border-radius:999px;text-decoration:none;color:inherit;background:rgba(255,255,255,.08)">Workflow diagnostic</a>'+
+      '<a href="/ai-agent-economics-calculator.html?utm_source=stratumpraxis&utm_medium=priority_entry&utm_campaign=revenue_entry&utm_content=economics" data-priority-entry="agent_economics" style="padding:9px 12px;border:1px solid rgba(127,150,180,.3);border-radius:999px;text-decoration:none;color:inherit;background:rgba(255,255,255,.08)">Agent economics</a>'+
+      '<a href="/agent-control-auditor.html?utm_source=stratumpraxis&utm_medium=priority_entry&utm_campaign=revenue_entry&utm_content=control" data-priority-entry="agent_control" style="padding:9px 12px;border:1px solid rgba(127,150,180,.3);border-radius:999px;text-decoration:none;color:inherit;background:rgba(255,255,255,.08)">Agent control</a>'+
+      '<a href="/revenue-router.html?utm_source=stratumpraxis&utm_medium=priority_entry&utm_campaign=revenue_entry&utm_content=revenue_router" data-priority-entry="revenue_router" style="padding:9px 12px;border:1px solid rgba(127,150,180,.3);border-radius:999px;text-decoration:none;color:inherit;background:rgba(255,255,255,.08)">Revenue Router</a>';
+
+    if(main.firstElementChild) main.insertBefore(strip, main.firstElementChild.nextSibling);
+    else main.appendChild(strip);
+    capture('priority_entry_exposure',{source_path:path,entries:'workflow_diagnostic,agent_economics,agent_control,revenue_router'});
+  }
+
   document.addEventListener('pointerdown',function(e){
     var link = e.target.closest('a[data-revenue-route]');
-    if(!link) return;
-    capture('revenue_route_click',{
-      route:link.dataset.revenueRoute || '',
-      paid:link.dataset.paid === 'true',
-      source_path:location.pathname,
-      destination_path:(function(){try{return new URL(link.href,location.href).pathname}catch(_){return ''}})()
-    });
+    if(link){
+      capture('revenue_route_click',{
+        route:link.dataset.revenueRoute || '',
+        paid:link.dataset.paid === 'true',
+        source_path:location.pathname,
+        destination_path:(function(){try{return new URL(link.href,location.href).pathname}catch(_){return ''}})()
+      });
+    }
+    var priority = e.target.closest('a[data-priority-entry]');
+    if(priority){
+      capture('priority_entry_click',{
+        entry:priority.dataset.priorityEntry || '',
+        source_path:location.pathname,
+        destination_path:(function(){try{return new URL(priority.href,location.href).pathname}catch(_){return ''}})()
+      });
+    }
   });
 
-  function boot(){ setupB2B(); setupEconomics(); }
+  function boot(){ setupB2B(); setupEconomics(); injectPriorityEntrances(); }
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded',boot,{once:true});
   else boot();
 })();
