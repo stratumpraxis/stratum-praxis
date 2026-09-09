@@ -4,6 +4,7 @@ on:
     paths:
       - 'b2b-experience-2026.css'
       - 'b2b-experience-2026.js'
+      - 'b2b-experience-trigger.txt'
       - '.github/workflows/apply-b2b-experience-2026.yml'
   workflow_dispatch:
 permissions:
