@@ -10,6 +10,7 @@ body.sp-brand-family {
   --sp-blue:#dfeeff;
   --sp-line:rgba(23,25,34,.12);
   --sp-ease:cubic-bezier(.2,.8,.2,1);
+  --sp-reveal-ease:cubic-bezier(.22,.78,.23,1);
   --sp-radius-sm:12px;
   --sp-radius-md:18px;
   --sp-radius-lg:24px;
@@ -40,6 +41,40 @@ body.sp-brand-family :is(.card,.resource-card,.panel,.hero-side,.diagnostic,.met
 }
 body.sp-brand-family :is(.resource-card,.hero-side,.metric):hover {
   transform:translateY(-2px);
+}
+
+/* Instagram/Reels-inspired reveal: soft fade + shallow rise + tiny scale.
+   JS adds .sp-reveal; content stays fully visible when JS is unavailable. */
+.sp-motion-ready body.sp-brand-family .sp-reveal {
+  opacity:0;
+  transform:translate3d(0,18px,0) scale(.992);
+  filter:blur(5px);
+  transition:
+    opacity .68s var(--sp-reveal-ease) var(--sp-reveal-delay,0ms),
+    transform .76s var(--sp-reveal-ease) var(--sp-reveal-delay,0ms),
+    filter .72s var(--sp-reveal-ease) var(--sp-reveal-delay,0ms);
+  will-change:opacity,transform,filter;
+}
+.sp-motion-ready body.sp-brand-family .sp-reveal.sp-reveal-in {
+  opacity:1;
+  transform:translate3d(0,0,0) scale(1);
+  filter:blur(0);
+  will-change:auto;
+}
+
+/* Gentle media-like crossfade between major sections without hard wipes. */
+body.sp-brand-family :is(.section,.method,.context) {
+  position:relative;
+}
+body.sp-brand-family :is(.section,.method,.context)::before {
+  content:"";
+  position:absolute;
+  inset:-1px 0 auto;
+  height:54px;
+  pointer-events:none;
+  opacity:.22;
+  background:linear-gradient(180deg,rgba(201,242,223,.16),rgba(232,222,254,.07),transparent);
+  mask-image:linear-gradient(to bottom,#000,transparent);
 }
 
 /* Stratum signature: a restrained signal edge rather than generic particles/glow. */
@@ -76,5 +111,10 @@ body.sp-brand-family :is(.result,.results,.result-card)::after {
     animation-iteration-count:1!important;
     scroll-behavior:auto!important;
     transition-duration:.001ms!important;
+  }
+  .sp-motion-ready body.sp-brand-family .sp-reveal{
+    opacity:1!important;
+    transform:none!important;
+    filter:none!important;
   }
 }
