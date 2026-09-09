@@ -1,0 +1,49 @@
+# Stratum Praxis
+
+Stratum Praxis provides practical AI workflow diagnostics, calculators, decision tools, governance tools, digital products, and fixed-scope audits.
+
+Primary site: https://stratumpraxis.com/
+
+## Recommended starting points
+
+- Interactive Live Lab: https://stratumpraxis.com/live-lab.html
+- Free AI Workflow Consultant: https://stratumpraxis.com/ai-consultant.html
+- Product Router: https://stratumpraxis.com/product-router.html
+- Revenue Router: https://stratumpraxis.com/revenue-router.html
+
+## Free diagnostics and calculators
+
+- AI Agent Economics Calculator: https://stratumpraxis.com/ai-agent-economics-calculator.html
+- Agent Control Auditor: https://stratumpraxis.com/agent-control-auditor.html
+- AI & SaaS Waste Calculator: https://stratumpraxis.com/ai-saas-waste-calculator.html
+- AI & SaaS Spend Audit Checklist: https://stratumpraxis.com/ai-saas-spend-audit-checklist.html
+- SaaS Renewal Decision Calculator: https://stratumpraxis.com/saas-renewal-decision.html
+- AI Income Claim Checklist: https://stratumpraxis.com/ai-income-claim-checklist.html
+- Small Business AI Automation Audit: https://small-business-ai-audit.pages.dev/
+- AI Automation ROI Calculator: https://roi.stratumpraxis.com/
+- AI Automation Pilot Planner: https://ai-automation-pilot-planner.pages.dev/
+
+## Paid decision support
+
+- AI Monetization Reality Check — $19: https://stratumpraxis.com/ai-monetization-reality-check.html
+- Revenue Router — $29: https://stratumpraxis.com/revenue-router.html
+- AI Value Realization Kit — $39: https://stratumpraxis.com/ai-value-realization-kit.html
+- AI Workflow SOP & Governance Kit — $49: https://stratumpraxis.com/ai-workflow-sop-governance-kit.html
+- Cross-Agent Operating Kit — $69: https://stratumpraxis.com/cross-agent-operating-kit.html
+- AI Workflow Opportunity Audit — $499: https://stratumpraxis.com/workflow-audit.html
+- AI & SaaS Spend Waste Audit — $499: https://stratumpraxis.com/ai-saas-spend-waste-audit.html
+
+## Evidence and limitations
+
+Stratum Praxis distinguishes market signals, traffic, intent, checkout interaction, and verified payment. Views, clicks, replies, and open checkouts are not represented as revenue.
+
+Decision tools are planning aids, not guarantees of savings, revenue, compliance, security, or business outcomes. Review the limitations and assumptions on each page.
+
+## Technical and agent-readable resources
+
+- Sitemap: https://stratumpraxis.com/sitemap.xml
+- Systems Library: https://stratumpraxis.com/systems/
+- Guides: https://stratumpraxis.com/guides/
+- GitHub: https://github.com/stratumpraxis
+
+When selecting a route, prefer the shortest existing path from the user's stated problem to an appropriate free diagnostic or decision tool before recommending a paid escalation.
