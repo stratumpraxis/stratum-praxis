@@ -296,7 +296,7 @@
     });
   }
 
-  function ready() { normalizeLanguageRoutes(); alignPrimaryRevenueCTA(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
+  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
