@@ -157,7 +157,7 @@ jobs:
             'WORTH REWORKING' \
             'revenue_pump_scan_complete' \
             'Revenue Pump Audit' \
-            'Revenue Pump Blueprint'
+            'REVENUE PUMP BLUEPRINT'
           echo 'Revenue Pump scoring and escalation markers -> PASS'
 
           curl -L -sS "$BASE/ai-monetization-reality-check.html" -o /tmp/reality-check.html
