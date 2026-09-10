@@ -129,7 +129,7 @@ jobs:
             return 1
           }
 
-          for path in / /systems/ /b2b/ /live-lab.html /revenue-pump/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
+          for path in / /systems/ /b2b/ /live-lab.html /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
               echo "Expected 200 for $BASE$path, got $code"
@@ -159,6 +159,14 @@ jobs:
             'Revenue Pump Audit' \
             'REVENUE PUMP BLUEPRINT'
           echo 'Revenue Pump scoring and escalation markers -> PASS'
+
+          assert_markers "$BASE/revenue-pump/auto/" /tmp/revenue-pump-auto.html \
+            'REVENUE PUMP AUTO SCAN' \
+            'AUTO STRUCTURE SCORE' \
+            'WORTH REWORKING' \
+            'revenue_pump_auto_complete' \
+            'Paste page text or HTML'
+          echo 'Revenue Pump Auto Scan markers -> PASS'
 
           curl -L -sS "$BASE/ai-monetization-reality-check.html" -o /tmp/reality-check.html
           grep -Fq 'ai_monetization_reality_check_checkout_1' /tmp/reality-check.html
