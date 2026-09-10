@@ -1,3 +1,4 @@
+/* Stratum Praxis AI Office v4 — production bootstrap */
 (() => {
   'use strict';
   const s=document.createElement('script');
