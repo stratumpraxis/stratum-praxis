@@ -1,0 +1,4 @@
+Revenue Pump MVP
+version: 2026-09-10-v1
+status: live-candidate
+canonical: https://stratumpraxis.com/revenue-pump/
