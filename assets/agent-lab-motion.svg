@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1920" role="img" aria-label="Agent Lab motion field">
+  <defs>
+    <radialGradient id="glow" cx="70%" cy="25%" r="70%">
+      <stop offset="0" stop-color="#6ee7f2" stop-opacity=".18"/>
+      <stop offset=".45" stop-color="#6ee7f2" stop-opacity=".04"/>
+      <stop offset="1" stop-color="#07090d" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="beam" x1="0" x2="1">
+      <stop stop-color="#6ee7f2" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#6ee7f2" stop-opacity=".95"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="blur"><feGaussianBlur stdDeviation="22"/></filter>
+    <style>
+      .grid{stroke:#fff;stroke-opacity:.045;stroke-width:1}
+      .node{fill:#0b0f14;stroke:#dce2ea;stroke-opacity:.38;stroke-width:2}
+      .hot{stroke:#6ee7f2;filter:drop-shadow(0 0 18px #6ee7f2)}
+      .bar{fill:#fff;fill-opacity:.08;transform-box:fill-box;transform-origin:center bottom;animation:pulse 2.8s ease-in-out infinite alternate}
+      .bar.hotbar{fill:#6ee7f2;filter:drop-shadow(0 0 20px #6ee7f2)}
+      .travel{animation:travel 4.2s linear infinite}
+      .float{animation:float 5s ease-in-out infinite alternate}
+      .spin{transform-origin:540px 1010px;animation:spin 18s linear infinite}
+      .fade{animation:fade 3.6s ease-in-out infinite alternate}
+      @keyframes pulse{0%{transform:scaleY(.45);opacity:.45}100%{transform:scaleY(1);opacity:1}}
+      @keyframes travel{0%{transform:translateX(-520px);opacity:0}20%{opacity:1}80%{opacity:1}100%{transform:translateX(520px);opacity:0}}
+      @keyframes float{0%{transform:translateY(-18px)}100%{transform:translateY(18px)}}
+      @keyframes spin{to{transform:rotate(360deg)}}
+      @keyframes fade{0%{opacity:.3}100%{opacity:1}}
+    </style>
+  </defs>
+  <rect width="1080" height="1920" fill="#07090d"/>
+  <rect width="1080" height="1920" fill="url(#glow)"/>
+  <g opacity=".65">
+    <path class="grid" d="M0 240H1080M0 480H1080M0 720H1080M0 960H1080M0 1200H1080M0 1440H1080M0 1680H1080"/>
+    <path class="grid" d="M180 0V1920M360 0V1920M540 0V1920M720 0V1920M900 0V1920"/>
+  </g>
+  <circle cx="760" cy="440" r="190" fill="#6ee7f2" opacity=".055" filter="url(#blur)" class="float"/>
+  <g transform="translate(150 1060)">
+    <rect class="bar" x="0" y="180" width="72" height="230" rx="24" style="animation-delay:-.2s"/>
+    <rect class="bar" x="108" y="110" width="72" height="300" rx="24" style="animation-delay:-.8s"/>
+    <rect class="bar" x="216" y="30" width="72" height="380" rx="24" style="animation-delay:-1.4s"/>
+    <rect class="bar" x="324" y="145" width="72" height="265" rx="24" style="animation-delay:-.4s"/>
+    <rect class="bar" x="432" y="70" width="72" height="340" rx="24" style="animation-delay:-1.8s"/>
+    <rect class="bar hotbar" x="540" y="0" width="72" height="410" rx="24" style="animation-delay:-1s"/>
+    <rect class="bar" x="648" y="95" width="72" height="315" rx="24" style="animation-delay:-2.2s"/>
+  </g>
+  <g class="spin" opacity=".9">
+    <circle cx="540" cy="1010" r="300" fill="none" stroke="#fff" stroke-opacity=".06" stroke-width="2" stroke-dasharray="8 34"/>
+    <circle cx="540" cy="710" r="13" fill="#6ee7f2" filter="url(#blur)"/>
+  </g>
+  <g transform="translate(90 815)" class="fade">
+    <line x1="80" y1="110" x2="820" y2="110" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+    <g transform="translate(40 50)"><circle class="node" cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="10" fill="#fff" opacity=".5"/></g>
+    <g transform="translate(220 50)"><circle class="node" cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="10" fill="#fff" opacity=".5"/></g>
+    <g transform="translate(400 50)"><circle class="node hot" cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="10" fill="#6ee7f2"/></g>
+    <g transform="translate(580 50)"><circle class="node" cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="10" fill="#fff" opacity=".5"/></g>
+    <g transform="translate(760 50)"><circle class="node hot" cx="60" cy="60" r="55"/><circle cx="60" cy="60" r="10" fill="#6ee7f2"/></g>
+  </g>
+  <rect x="160" y="955" width="760" height="4" rx="2" fill="url(#beam)" class="travel"/>
+  <g fill="#f3f4f6" font-family="Arial, sans-serif">
+    <text x="92" y="190" font-size="24" font-weight="700" letter-spacing="8" fill="#6ee7f2">AGENT LAB</text>
+    <text x="92" y="290" font-size="82" font-weight="800" letter-spacing="-2">TRACE. TEST. KEEP.</text>
+    <text x="92" y="352" font-size="28" fill="#a9b1bd" letter-spacing="1.5">FIELD NOTES / FAILURE PATTERNS / WORKING SYSTEMS</text>
+  </g>
+  <g transform="translate(92 1660)">
+    <rect width="896" height="118" rx="32" fill="#fff" fill-opacity=".04" stroke="#fff" stroke-opacity=".09"/>
+    <circle cx="64" cy="59" r="13" fill="#6ee7f2" class="fade"/>
+    <text x="106" y="70" fill="#f3f4f6" font-family="Arial, sans-serif" font-size="28" font-weight="700" letter-spacing="2">LIVE RESEARCH SURFACE</text>
+  </g>
+</svg>
