@@ -103,6 +103,32 @@ jobs:
           set -euo pipefail
           BASE="${DEPLOY_BASE:?Missing deployment-specific Pages URL}"
           echo "Verifying exact deployed revision at $BASE"
+
+          assert_markers() {
+            local url="$1"
+            local outfile="$2"
+            shift 2
+            local attempt marker missing
+            for attempt in 1 2 3 4 5 6; do
+              curl -L -sS "$url" -o "$outfile"
+              missing=0
+              for marker in "$@"; do
+                if ! grep -Fq "$marker" "$outfile"; then
+                  echo "Attempt $attempt missing marker at $url: $marker"
+                  missing=1
+                fi
+              done
+              if [ "$missing" -eq 0 ]; then
+                echo "Markers stable at $url on attempt $attempt"
+                return 0
+              fi
+              sleep 3
+            done
+            echo "Markers did not stabilize at $url"
+            head -c 1200 "$outfile" || true
+            return 1
+          }
+
           for path in / /systems/ /b2b/ /live-lab.html /revenue-pump/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
@@ -120,18 +146,18 @@ jobs:
           grep -Fq 'No purchase recommended for this workflow.' /tmp/b2b.html
           echo 'B2B decision diagnostic functional markers -> PASS'
 
-          curl -L -sS "$BASE/live-lab.html" -o /tmp/live-lab.html
-          grep -Fq 'Revenue Pump Scan' /tmp/live-lab.html
-          grep -Fq 'href="/revenue-pump/"' /tmp/live-lab.html
-          grep -Fq 'live_lab_revenue_pump' /tmp/live-lab.html
+          assert_markers "$BASE/live-lab.html" /tmp/live-lab.html \
+            'Revenue Pump Scan' \
+            'href="/revenue-pump/"' \
+            'live_lab_revenue_pump'
           echo 'Live Lab -> Revenue Pump entry markers -> PASS'
 
-          curl -L -sS "$BASE/revenue-pump/" -o /tmp/revenue-pump.html
-          grep -Fq 'REVENUE PUMP SCORE' /tmp/revenue-pump.html
-          grep -Fq 'WORTH REWORKING' /tmp/revenue-pump.html
-          grep -Fq 'revenue_pump_scan_complete' /tmp/revenue-pump.html
-          grep -Fq 'Revenue Pump Audit' /tmp/revenue-pump.html
-          grep -Fq 'Revenue Pump Blueprint' /tmp/revenue-pump.html
+          assert_markers "$BASE/revenue-pump/" /tmp/revenue-pump.html \
+            'REVENUE PUMP SCORE' \
+            'WORTH REWORKING' \
+            'revenue_pump_scan_complete' \
+            'Revenue Pump Audit' \
+            'Revenue Pump Blueprint'
           echo 'Revenue Pump scoring and escalation markers -> PASS'
 
           curl -L -sS "$BASE/ai-monetization-reality-check.html" -o /tmp/reality-check.html
