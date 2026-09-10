@@ -156,8 +156,8 @@ jobs:
             'REVENUE PUMP SCORE' \
             'WORTH REWORKING' \
             'revenue_pump_scan_complete' \
-            'Revenue Pump Audit' \
-            'REVENUE PUMP BLUEPRINT'
+            'Request Audit' \
+            'Ask about Blueprint'
           echo 'Revenue Pump scoring and escalation markers -> PASS'
 
           assert_markers "$BASE/revenue-pump/auto/" /tmp/revenue-pump-auto.html \
