@@ -1,8 +1,9 @@
 {
   "product": "Revenue Pump",
   "status": "live",
-  "version": "mvp-1.3",
+  "version": "mvp-1.4",
   "updated": "2026-09-10",
-  "deployment_verification": "exact-revision-with-marker-retry-aligned",
-  "canonical": "https://stratumpraxis.com/revenue-pump/"
+  "deployment_verification": "exact-revision-with-auto-scan",
+  "canonical": "https://stratumpraxis.com/revenue-pump/",
+  "auto_scan": "https://stratumpraxis.com/revenue-pump/auto/"
 }
