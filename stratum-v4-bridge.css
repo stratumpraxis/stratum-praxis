@@ -1,4 +1,4 @@
-/* Stratum AI Office v4 — compatibility and polish layer for active v3 decision/catalog pages. */
+/* Stratum AI Office v4 — compatibility and polish layer for active decision/catalog pages. */
 :root{--mint:var(--accent-soft,#d9e9e2);--shadow-float:var(--shadow,0 20px 64px rgba(37,34,28,.08));--ease:cubic-bezier(.2,.78,.2,1)}
 .brand-symbol svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:1.55;stroke-linecap:round;stroke-linejoin:round}
 .product-shell{width:min(1160px,calc(100% - 44px));padding-top:42px}
