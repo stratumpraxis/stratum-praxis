@@ -159,10 +159,11 @@ jobs:
           echo 'B2B decision diagnostic functional markers -> PASS'
 
           assert_markers "$BASE/live-lab.html" /tmp/live-lab.html \
-            'Revenue Pump Scan' \
-            'href="/revenue-pump/"' \
-            'live_lab_revenue_pump'
-          echo 'Live Lab -> Revenue Pump entry markers -> PASS'
+            'data-page="live_lab_v3"' \
+            'id="intent-buttons"' \
+            'id="inventory"' \
+            'href="/product-router.html"'
+          echo 'Live Lab current B2B inventory and product-route markers -> PASS'
 
           assert_markers "$BASE/revenue-pump/" /tmp/revenue-pump.html \
             'REVENUE PUMP SCORE' \
