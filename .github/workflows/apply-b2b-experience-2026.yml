@@ -6,6 +6,10 @@ on:
       - 'stratum-retrofit-2026.css'
       - 'b2b-experience-2026.css'
       - 'b2b-experience-2026.js'
+      - 'decision-artifact-2026.css'
+      - 'decision-artifact-2026.js'
+      - 'STRATUM-VISUAL-REVENUE-SKILL.md'
+      - '.claude/rules/design.md'
       - 'b2b-experience-trigger.txt'
       - '.github/workflows/apply-b2b-experience-2026.yml'
   workflow_dispatch:
@@ -28,6 +32,8 @@ jobs:
           css_new='<link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2>'
           css_retro='<link rel="stylesheet" href="/stratum-retrofit-2026.css" data-stratum-retrofit>'
           js='<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>'
+          artifact_css='<link rel="stylesheet" href="/decision-artifact-2026.css" data-decision-artifact-style>'
+          artifact_js='<script src="/decision-artifact-2026.js" defer data-decision-artifact-script></script>'
           forbidden_paths=['cross-agent-operating-kit.html','ai-council-builder.html','return-gate/','revenue-router.html','passage-hub/','passage-network/','ordlume/']
           changed=[]
           for name in targets:
@@ -36,12 +42,14 @@ jobs:
             s=p.read_text(encoding='utf-8'); old=s
             for marker,tag in [('b2b-experience-2026.css',css_old),('stratum-ui-v2.css',css_new),('stratum-retrofit-2026.css',css_retro)]:
               if marker not in s and '</head>' in s: s=s.replace('</head>',f'  {tag}\n</head>',1)
+            if name=='ai-agent-economics-calculator.html':
+              if 'decision-artifact-2026.css' not in s and '</head>' in s: s=s.replace('</head>',f'  {artifact_css}\n</head>',1)
+              if 'decision-artifact-2026.js' not in s: s=s.replace('</body>',f'  {artifact_js}\n</body>',1) if '</body>' in s else s+'\n'+artifact_js+'\n'
             if 'b2b-experience-2026.js' not in s: s=s.replace('</body>',f'  {js}\n</body>',1) if '</body>' in s else s+'\n'+js+'\n'
             m=re.search(r'<body\b[^>]*>',s)
             if m and 'sp-b2b-experience' not in m.group(0):
               tag=m.group(0); newtag=re.sub(r'class="([^"]*)"',lambda x:f'class="{x.group(1)} sp-b2b-experience"',tag,count=1) if 'class=' in tag else tag[:-1]+' class="sp-b2b-experience">'; s=s[:m.start()]+newtag+s[m.end():]
             if name=='agent-control-auditor.html': s=re.sub(r'\s*<!-- sp-related-route-v1 -->\s*<aside class="sp-related-route".*?</aside>\s*','\n',s,count=1,flags=re.S)
-            # Remove only anchors pointing at non-canonical/other-brand routes; keep surrounding content intact.
             for bad in forbidden_paths:
               s=re.sub(r'<a\b[^>]*href=["\'][^"\']*'+re.escape(bad)+r'[^"\']*["\'][^>]*>.*?</a>','',s,flags=re.I|re.S)
             if s!=old: p.write_text(s,encoding='utf-8'); changed.append(name)
