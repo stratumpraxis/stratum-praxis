@@ -1,4 +1,4 @@
-/* Stratum Praxis AI Office v4 — production bootstrap */
+/* Stratum Praxis AI Office v4 — production bootstrap. Verified-route deploy. */
 (() => {
   'use strict';
   const s=document.createElement('script');
