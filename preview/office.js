@@ -3,34 +3,44 @@
 
   const routes = {
     workflow: {
-      symbol: 'WF', chip: 'WORKFLOW', kind: 'FREE DIAGNOSTIC',
-      question: 'Where is this recurring workflow losing time or money?',
-      description: 'Start with one workflow. Identify rework, handoffs and delay before choosing automation.',
-      destination: 'Workflow Decision Diagnostic', href: '/b2b/'
+      symbol:'WF',chip:'WORKFLOW',href:'/b2b/',
+      copy:{
+        en:{kind:'FREE DIAGNOSTIC',question:'Where is this recurring workflow losing time or money?',description:'Start with one workflow. Identify rework, handoffs and delay before choosing automation.',destination:'Workflow Decision Diagnostic'},
+        ja:{kind:'無料診断',question:'この定常Workflowは、どこで時間やコストを失っていますか？',description:'まず1つのWorkflowに絞り、再作業・引き継ぎ・遅延を見える化してから自動化を判断します。',destination:'Workflow Decision Diagnostic'},
+        es:{kind:'DIAGNÓSTICO GRATIS',question:'¿Dónde pierde tiempo o dinero este workflow recurrente?',description:'Empieza con un workflow. Identifica retrabajo, transferencias y retrasos antes de automatizar.',destination:'Workflow Decision Diagnostic'}
+      }
     },
     cost: {
-      symbol: '$', chip: 'COST', kind: 'FREE CALCULATOR',
-      question: 'Is AI or SaaS spend producing enough operating value?',
-      description: 'Make cost assumptions visible before renewal, expansion or another tool purchase.',
-      destination: 'AI & SaaS Waste Calculator', href: '/ai-saas-waste-calculator.html'
+      symbol:'$',chip:'COST',href:'/ai-saas-waste-calculator.html',
+      copy:{
+        en:{kind:'FREE CALCULATOR',question:'Is AI or SaaS spend producing enough operating value?',description:'Make cost assumptions visible before renewal, expansion or another tool purchase.',destination:'AI & SaaS Waste Calculator'},
+        ja:{kind:'無料CALCULATOR',question:'AI・SaaSコストは、十分な業務価値を生んでいますか？',description:'更新・拡張・追加購入の前に、コスト前提とWasteを可視化します。',destination:'AI & SaaS Waste Calculator'},
+        es:{kind:'CALCULADORA GRATIS',question:'¿El gasto en AI o SaaS produce suficiente valor operativo?',description:'Haz visibles las hipótesis de coste antes de renovar, ampliar o comprar otra herramienta.',destination:'AI & SaaS Waste Calculator'}
+      }
     },
     agent: {
-      symbol: 'AG', chip: 'AGENT', kind: 'DECISION TOOL',
-      question: 'Does this agent make economic sense, and where should authority stop?',
-      description: 'Review cost, outcome economics and control boundaries before increasing autonomy.',
-      destination: 'AI Agent Economics', href: '/ai-agent-economics-calculator.html'
+      symbol:'AG',chip:'AGENT',href:'/ai-agent-economics-calculator.html',
+      copy:{
+        en:{kind:'DECISION TOOL',question:'Does this agent make economic sense, and where should authority stop?',description:'Review cost, outcome economics and control boundaries before increasing autonomy.',destination:'AI Agent Economics'},
+        ja:{kind:'DECISION TOOL',question:'このAgentは採算が合い、権限はどこで止めるべきですか？',description:'自律性を上げる前に、コスト・成果単価・Control境界を確認します。',destination:'AI Agent Economics'},
+        es:{kind:'HERRAMIENTA DE DECISIÓN',question:'¿Este agente tiene sentido económico y dónde debe terminar su autoridad?',description:'Revisa coste, economía del resultado y límites de control antes de aumentar autonomía.',destination:'AI Agent Economics'}
+      }
     },
     revenue: {
-      symbol: 'RV', chip: 'REVENUE', kind: 'B2B ROUTER',
-      question: 'Which existing route is most likely to turn evidence into business value?',
-      description: 'Use the product router after the problem is visible. Avoid adding another tool by default.',
-      destination: 'B2B Product Router', href: '/product-router.html'
+      symbol:'RV',chip:'REVENUE',href:'/product-router.html',
+      copy:{
+        en:{kind:'B2B ROUTER',question:'Which existing route is most likely to turn evidence into business value?',description:'Use the product router after the problem is visible. Avoid adding another tool by default.',destination:'B2B Product Router'},
+        ja:{kind:'B2B ROUTER',question:'どの既存ルートが、Evidenceを最も事業価値へつなげやすいですか？',description:'課題が見えた後にProduct Routerを使い、必要がない限り新しいToolを増やしません。',destination:'B2B Product Router'},
+        es:{kind:'ROUTER B2B',question:'¿Qué ruta existente puede convertir mejor la evidencia en valor de negocio?',description:'Usa Product Router cuando el problema ya sea visible. No añadas otra herramienta por defecto.',destination:'B2B Product Router'}
+      }
     },
     audit: {
-      symbol: 'AU', chip: 'AUDIT', kind: 'PROFESSIONAL · $499',
-      question: 'Is this workflow material enough for a company-specific written audit?',
-      description: 'Escalate only when recurring cost, delay or coordination burden is concrete enough to justify specialist review.',
-      destination: 'AI Workflow Opportunity Audit', href: './workflow-audit.html'
+      symbol:'AU',chip:'AUDIT',href:'./workflow-audit.html',
+      copy:{
+        en:{kind:'PROFESSIONAL · $499',question:'Is this workflow material enough for a company-specific written audit?',description:'Escalate only when recurring cost, delay or coordination burden is concrete enough to justify specialist review.',destination:'AI Workflow Opportunity Audit'},
+        ja:{kind:'PROFESSIONAL · $499',question:'このWorkflowは、会社固有の書面監査を行うほど重要ですか？',description:'定常コスト・遅延・調整負荷が十分に具体化した場合だけ専門監査へ進みます。',destination:'AI Workflow Opportunity Audit'},
+        es:{kind:'PROFESIONAL · $499',question:'¿Este workflow es suficientemente material para una auditoría escrita específica de la empresa?',description:'Escala solo cuando coste, retraso o carga de coordinación recurrente justifican una revisión especializada.',destination:'AI Workflow Opportunity Audit'}
+      }
     }
   };
 
@@ -50,6 +60,10 @@
   const storedLang = localStorage.getItem('sp-office-lang');
   let currentLang = ['en','ja','es'].includes(langFromUrl) ? langFromUrl : (['en','ja','es'].includes(storedLang) ? storedLang : 'en');
 
+  function activeRouteKey() {
+    return document.querySelector('.route.active[data-route]')?.dataset.route || localStorage.getItem('sp-office-route') || 'workflow';
+  }
+
   function applyLanguage(lang) {
     currentLang = lang;
     document.documentElement.lang = lang;
@@ -59,11 +73,13 @@
       const value = translations[lang]?.[el.dataset.i18n];
       if (value) el.textContent = value;
     });
+    updateRoute(activeRouteKey());
   }
 
   function updateRoute(key) {
     const route = routes[key];
     if (!route) return;
+    const copy = route.copy[currentLang] || route.copy.en;
     document.querySelectorAll('[data-route]').forEach(btn => {
       const active = btn.dataset.route === key;
       btn.classList.toggle('active', active);
@@ -78,30 +94,35 @@
     const link = document.querySelector('[data-route-link]');
     if (chip) chip.textContent = route.chip;
     if (symbol) symbol.textContent = route.symbol;
-    if (kind) kind.textContent = route.kind;
-    if (question) question.textContent = route.question;
-    if (description) description.textContent = route.description;
-    if (destination) destination.textContent = route.destination;
+    if (kind) kind.textContent = copy.kind;
+    if (question) question.textContent = copy.question;
+    if (description) description.textContent = copy.description;
+    if (destination) destination.textContent = copy.destination;
     if (link) { link.href = route.href; link.dataset.historyRoute = key; }
     localStorage.setItem('sp-office-route', key);
   }
 
   function calculateRoi() {
-    const hours = Number(document.getElementById('roi-hours')?.value);
-    const value = Number(document.getElementById('roi-value')?.value);
-    const cost = Number(document.getElementById('roi-cost')?.value);
+    const hoursEl = document.getElementById('roi-hours');
+    const valueEl = document.getElementById('roi-value');
+    const costEl = document.getElementById('roi-cost');
     const result = document.querySelector('.roi-result');
     const netEl = document.getElementById('roi-net');
     const roiEl = document.getElementById('roi-percent');
     const note = document.getElementById('roi-note');
-    const complete = [hours, value, cost].every(Number.isFinite) && document.getElementById('roi-hours').value !== '' && document.getElementById('roi-value').value !== '' && document.getElementById('roi-cost').value !== '';
+    if (!hoursEl || !valueEl || !costEl || !result || !netEl || !roiEl || !note) return;
+    const hours = Number(hoursEl.value);
+    const value = Number(valueEl.value);
+    const cost = Number(costEl.value);
+    const complete = [hours,value,cost].every(Number.isFinite) && hoursEl.value !== '' && valueEl.value !== '' && costEl.value !== '';
     if (!complete) {
       result.dataset.roiState = 'empty'; netEl.textContent = '—'; roiEl.textContent = '—'; note.textContent = translations[currentLang].roiEmpty; return;
     }
     const gross = hours * value;
     const net = gross - cost;
     const roi = cost > 0 ? (net / cost) * 100 : null;
-    const money = new Intl.NumberFormat(currentLang === 'ja' ? 'ja-JP' : currentLang === 'es' ? 'es-ES' : 'en-US', {style:'currency',currency:'USD',maximumFractionDigits:0});
+    const locale = currentLang === 'ja' ? 'ja-JP' : currentLang === 'es' ? 'es-ES' : 'en-US';
+    const money = new Intl.NumberFormat(locale,{style:'currency',currency:'USD',maximumFractionDigits:0});
     netEl.textContent = money.format(net);
     roiEl.textContent = roi === null ? '—' : `${Math.round(roi)}%`;
     result.dataset.roiState = net >= 0 ? 'positive' : 'negative';
@@ -115,8 +136,7 @@
   function writeHistory(items) { localStorage.setItem(historyKey, JSON.stringify(items.slice(0,4))); }
   function addHistory(key) {
     if (!routes[key]) return;
-    const now = new Date().toISOString();
-    const next = [{key, at:now}, ...readHistory().filter(item => item.key !== key)];
+    const next = [{key,at:new Date().toISOString()},...readHistory().filter(item => item.key !== key)];
     writeHistory(next); renderHistory();
   }
   function renderHistory() {
@@ -127,12 +147,14 @@
     list.innerHTML = '';
     empty.hidden = items.length > 0;
     list.hidden = items.length === 0;
+    const locale = currentLang === 'ja' ? 'ja-JP' : currentLang === 'es' ? 'es-ES' : 'en-US';
     items.forEach(item => {
       const r = routes[item.key];
+      const copy = r.copy[currentLang] || r.copy.en;
       const a = document.createElement('a');
       a.className = 'recent-item'; a.href = r.href;
-      const when = new Intl.DateTimeFormat(currentLang === 'ja' ? 'ja-JP' : currentLang === 'es' ? 'es-ES' : 'en-US', {month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(item.at));
-      a.innerHTML = `<span><b>${r.destination}</b><small>${when}</small></span><i>→</i>`;
+      const when = new Intl.DateTimeFormat(locale,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}).format(new Date(item.at));
+      a.innerHTML = `<span><b>${copy.destination}</b><small>${when}</small></span><i>→</i>`;
       list.appendChild(a);
     });
   }
@@ -148,7 +170,6 @@
   document.getElementById('clear-history')?.addEventListener('click', () => { localStorage.removeItem(historyKey); renderHistory(); });
 
   applyLanguage(currentLang);
-  updateRoute(localStorage.getItem('sp-office-route') || 'workflow');
   calculateRoi();
   renderHistory();
 })();
