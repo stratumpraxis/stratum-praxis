@@ -91,6 +91,9 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://stratum-praxis-site.pages.dev'
+          # Cloudflare Pages can report deployment complete a few seconds before
+          # the stable project alias serves the new revision everywhere.
+          sleep 8
           for path in / /systems/ /b2b/ /live-lab.html /revenue-pump/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
