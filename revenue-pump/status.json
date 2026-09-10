@@ -1,9 +1,10 @@
 {
   "product": "Revenue Pump",
   "status": "live",
-  "version": "mvp-1.4",
+  "version": "mvp-1.5",
   "updated": "2026-09-10",
-  "deployment_verification": "exact-revision-with-auto-scan",
+  "deployment_verification": "exact-revision-with-auto-scan-and-paid-fit-gate",
   "canonical": "https://stratumpraxis.com/revenue-pump/",
-  "auto_scan": "https://stratumpraxis.com/revenue-pump/auto/"
+  "auto_scan": "https://stratumpraxis.com/revenue-pump/auto/",
+  "revenue_loop": "auto-scan -> guided-check -> share -> paid-fit -> audit-or-blueprint"
 }
