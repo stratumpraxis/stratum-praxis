@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Stratum Praxis AI Office — Shadow Preview</title>
+  <meta name="description" content="Shadow preview of the Stratum Praxis B2B decision workspace.">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#f3f1eb">
+  <link rel="canonical" href="https://stratumpraxis.com/">
+  <link rel="stylesheet" href="./office.css">
+  <script src="./office.js" defer></script>
+</head>
+<body data-page="ai-office-preview">
+  <a class="skip" href="#workspace">Skip to workspace</a>
+  <header class="office-header">
+    <a class="brand" href="/" aria-label="Stratum Praxis home">
+      <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+      <span class="brand-copy"><strong>Stratum Praxis</strong><small>AI Office · B2B Decision Workspace</small></span>
+    </a>
+    <nav class="office-nav" aria-label="Primary">
+      <a href="/b2b/" data-analytics-id="preview_nav_diagnose" data-i18n="navDiagnose">Diagnose</a>
+      <a href="/live-lab.html" data-analytics-id="preview_nav_free" data-i18n="navFree">Free Tools</a>
+      <a href="/product-router.html" data-analytics-id="preview_nav_products" data-i18n="navProducts">Products</a>
+      <a href="./workflow-audit.html" data-analytics-id="preview_nav_audit" data-i18n="navAudit">Audit</a>
+    </nav>
+    <div class="header-tools">
+      <span class="b2b-badge"><i></i>B2B</span>
+      <div class="lang-switch" role="group" aria-label="Language">
+        <button type="button" data-lang="en" class="active">EN</button>
+        <button type="button" data-lang="ja">JA</button>
+        <button type="button" data-lang="es">ES</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="workspace" class="workspace-shell">
+    <section class="workspace-intro" aria-labelledby="workspace-title">
+      <div>
+        <p class="micro-label"><span class="status-dot"></span><span data-i18n="workspaceLabel">DECISION WORKSPACE</span></p>
+        <h1 id="workspace-title" data-i18n="workspaceTitle">What are we deciding today?</h1>
+      </div>
+      <p class="intro-note" data-i18n="workspaceNote">Choose one business question. The workspace routes you to the smallest useful next step.</p>
+    </section>
+
+    <section class="launcher-wrap" aria-label="Decision launcher">
+      <div class="launcher" role="tablist" aria-label="Decision routes">
+        <button class="route active" type="button" role="tab" aria-selected="true" data-route="workflow" data-analytics-id="preview_route_workflow">
+          <span class="route-symbol">WF</span><span><b data-i18n="routeWorkflow">Workflow</b><small data-i18n="routeWorkflowNote">Friction & automation</small></span><i>01</i>
+        </button>
+        <button class="route" type="button" role="tab" aria-selected="false" data-route="cost" data-analytics-id="preview_route_cost">
+          <span class="route-symbol">$</span><span><b data-i18n="routeCost">Cost</b><small data-i18n="routeCostNote">AI & SaaS spend</small></span><i>02</i>
+        </button>
+        <button class="route" type="button" role="tab" aria-selected="false" data-route="agent" data-analytics-id="preview_route_agent">
+          <span class="route-symbol">AG</span><span><b data-i18n="routeAgent">Agent</b><small data-i18n="routeAgentNote">Economics & control</small></span><i>03</i>
+        </button>
+        <button class="route" type="button" role="tab" aria-selected="false" data-route="revenue" data-analytics-id="preview_route_revenue">
+          <span class="route-symbol">RV</span><span><b data-i18n="routeRevenue">Revenue</b><small data-i18n="routeRevenueNote">Value & routing</small></span><i>04</i>
+        </button>
+        <button class="route" type="button" role="tab" aria-selected="false" data-route="audit" data-analytics-id="preview_route_audit">
+          <span class="route-symbol">AU</span><span><b data-i18n="routeAudit">Audit</b><small data-i18n="routeAuditNote">Professional review</small></span><i>05</i>
+        </button>
+      </div>
+    </section>
+
+    <section class="desk-grid" aria-live="polite">
+      <article class="module decision-module">
+        <div class="module-head"><span data-i18n="todayDecision">TODAY'S DECISION</span><b class="signal-chip" data-route-chip>WORKFLOW</b></div>
+        <div class="decision-body">
+          <span class="decision-stamp" data-route-symbol>WF</span>
+          <div>
+            <p class="module-kicker" data-route-kind>FREE DIAGNOSTIC</p>
+            <h2 data-route-question>Where is this recurring workflow losing time or money?</h2>
+            <p data-route-description>Start with one workflow. Identify rework, handoffs and delay before choosing automation.</p>
+          </div>
+        </div>
+        <div class="decision-next">
+          <div><small data-i18n="recommendedNext">RECOMMENDED NEXT</small><strong data-route-destination>Workflow Decision Diagnostic</strong></div>
+          <a class="action-btn" data-route-link href="/b2b/" data-analytics-id="preview_recommended_action"><span data-i18n="openRoute">Open route</span><b>→</b></a>
+        </div>
+      </article>
+
+      <article class="module roi-module">
+        <div class="module-head"><span data-i18n="roiSnapshot">ROI SNAPSHOT</span><b class="quiet-badge" data-i18n="yourInputs">YOUR INPUTS</b></div>
+        <p class="module-copy" data-i18n="roiIntro">Use your own assumptions. Nothing is pre-filled and no ROI is invented.</p>
+        <div class="roi-inputs">
+          <label><span data-i18n="hoursSaved">Hours saved / month</span><input id="roi-hours" type="number" min="0" step="0.5" inputmode="decimal" placeholder="—"></label>
+          <label><span data-i18n="hourValue">Value / hour (USD)</span><input id="roi-value" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
+          <label><span data-i18n="monthlyCost">Monthly cost (USD)</span><input id="roi-cost" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
+        </div>
+        <div class="roi-result" data-roi-state="empty">
+          <div><small data-i18n="netValue">NET VALUE</small><strong id="roi-net">—</strong></div>
+          <div><small>ROI</small><strong id="roi-percent">—</strong></div>
+          <span id="roi-note" data-i18n="roiEmpty">Enter all three values to calculate.</span>
+        </div>
+      </article>
+
+      <article class="module evidence-module">
+        <div class="module-head"><span data-i18n="evidencePulse">EVIDENCE PULSE</span><b class="quiet-badge" data-i18n="noFabrication">REAL DATA ONLY</b></div>
+        <div class="empty-state">
+          <span class="pulse-ring" aria-hidden="true"><i></i></span>
+          <div><strong data-i18n="noEvidence">No evidence loaded</strong><p data-i18n="noEvidenceNote">This preview does not display fabricated customers, growth, ROI or live market signals.</p></div>
+        </div>
+        <div class="evidence-legend"><span><i></i><b data-i18n="signal">Signal</b></span><span><i></i><b data-i18n="meaning">Meaning</b></span><span><i></i><b data-i18n="action">Action</b></span></div>
+      </article>
+
+      <article class="module recent-module">
+        <div class="module-head"><span data-i18n="recentDecision">RECENT DECISION</span><button class="text-button" id="clear-history" type="button" data-i18n="clear">Clear</button></div>
+        <div id="recent-empty" class="recent-empty"><strong data-i18n="nothingOpened">Nothing opened yet</strong><p data-i18n="nothingOpenedNote">Routes you open from this workspace appear here on this device.</p></div>
+        <div id="recent-list" class="recent-list" hidden></div>
+      </article>
+    </section>
+
+    <section class="revenue-route" aria-labelledby="route-title">
+      <div class="route-copy"><p class="micro-label" data-i18n="revenueRoute">REVENUE ROUTE</p><h2 id="route-title" data-i18n="routeTitle">Evidence first. Paid escalation only when it earns its place.</h2></div>
+      <ol class="route-flow">
+        <li><span>01</span><div><b data-i18n="flowProblem">Problem</b><small data-i18n="flowProblemNote">Choose the business question</small></div></li>
+        <li><span>02</span><div><b data-i18n="flowFree">Free evidence</b><small data-i18n="flowFreeNote">Diagnostic / calculator</small></div></li>
+        <li><span>03</span><div><b data-i18n="flowDecision">Decision</b><small data-i18n="flowDecisionNote">Make the signal legible</small></div></li>
+        <li><span>04</span><div><b data-i18n="flowAction">Recommended action</b><small data-i18n="flowActionNote">Use the smallest fitting route</small></div></li>
+        <li class="paid"><span>05</span><div><b data-i18n="flowPaid">Paid escalation</b><small data-i18n="flowPaidNote">Only when justified</small></div></li>
+      </ol>
+    </section>
+
+    <section class="four-paths" aria-labelledby="paths-title">
+      <div class="section-heading"><div><p class="micro-label" data-i18n="startHere">START HERE</p><h2 id="paths-title" data-i18n="pathsTitle">Four clear ways into Stratum.</h2></div><p data-i18n="pathsNote">Free, self-service paid and professional support are visually separated so the next step is obvious.</p></div>
+      <div class="path-grid">
+        <a href="/b2b/" class="path-card diagnose" data-analytics-id="preview_path_diagnose"><span class="path-icon">01</span><div><small data-i18n="pathDiagnoseType">START · FREE</small><strong data-i18n="pathDiagnose">Start B2B diagnosis</strong><p data-i18n="pathDiagnoseNote">Temporary verified entry: Workflow Decision Diagnostic. Offer Optimizer is not present in the current repository.</p></div><b>→</b></a>
+        <a href="/live-lab.html" class="path-card" data-analytics-id="preview_path_lab"><span class="path-icon">02</span><div><small data-i18n="pathFreeType">EXPLORE · FREE</small><strong data-i18n="pathFree">Try free tools</strong><p data-i18n="pathFreeNote">Use the Live Lab to test a business question before buying.</p></div><b>→</b></a>
+        <a href="/product-router.html" class="path-card paid" data-analytics-id="preview_path_products"><span class="path-icon">03</span><div><small data-i18n="pathProductsType">SELF-SERVICE · PAID</small><strong data-i18n="pathProducts">View B2B products</strong><p data-i18n="pathProductsNote">Route evidence to an existing implementation or governance asset.</p></div><b>→</b></a>
+        <a href="./workflow-audit.html" class="path-card pro" data-analytics-id="preview_path_audit"><span class="path-icon">04</span><div><small data-i18n="pathAuditType">PROFESSIONAL · $499</small><strong data-i18n="pathAudit">Request specialist audit</strong><p data-i18n="pathAuditNote">Escalate one material recurring workflow for a fixed-scope written decision.</p></div><b>→</b></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="office-footer">
+    <div><strong>Stratum Praxis</strong><small data-i18n="footerLine">B2B Intelligence · Decision · Revenue</small></div>
+    <nav><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="mailto:stratumpraxis@gmail.com" data-i18n="contact">Contact</a></nav>
+    <span>© 2026</span>
+  </footer>
+  <a class="mobile-start" href="/b2b/" data-analytics-id="preview_mobile_start"><span data-i18n="mobileStart">Start a decision</span><b>→</b></a>
+</body>
+</html>
