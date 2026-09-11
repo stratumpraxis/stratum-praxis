@@ -10,6 +10,18 @@ A page that is not in the canonical public sitemap must NOT be re-added to the h
 
 Do not delete excluded assets merely because they are excluded from the public surface. Preserve them as research, legacy, experimental, delivery, or internal assets as appropriate.
 
+## Canonical customer journey
+
+Stratum's public revenue flow is:
+
+1. Research free
+2. Choose the smallest fitting solution
+3. Buy through the active sales page / checkout
+4. Use through Buyer Workspace or the product-specific verified delivery path
+5. Escalate to Audit / Monitoring only when needed
+
+`/buyer-workspace.html` is a noindex access gateway for existing buyers. It may be linked from public sales/navigation surfaces because it improves post-purchase routing, but it must remain outside the canonical sitemap and must never contain private product assets itself.
+
 ## Canonical public revenue layers
 
 1. Free Evidence
@@ -25,15 +37,18 @@ Do not delete excluded assets merely because they are excluded from the public s
    - `/ai-value-realization-kit.html`
    - `/cross-agent-operating-kit.html`
 
-3. Specialist decision
+3. Buyer access gateway
+   - `/buyer-workspace.html` — noindex, not in sitemap, routes buyers only; no private assets
+
+4. Specialist decision
    - `/workflow-audit.html`
    - `/sample-workflow-audit.html`
    - `/ai-saas-spend-waste-audit.html`
 
-4. Recurring value
+5. Recurring value
    - `/ai-saas-spend-monitoring.html`
 
-5. Legal
+6. Legal
    - `/privacy.html`
    - `/terms.html`
 
@@ -98,11 +113,11 @@ The following categories are intentionally excluded from the main public revenue
 
 ### Buyer-only / delivery
 - `/cross-agent-operating-kit-access.html`
-- verified buyer workspaces
+- verified buyer workspaces behind purchase verification
 - payment verification endpoints
 - delivery-only pages
 
-These must remain outside general public discovery and search-oriented navigation.
+These must remain outside general public discovery and search-oriented navigation. The public `/buyer-workspace.html` gateway is not itself a private workspace; it only routes existing buyers into the appropriate protected delivery path.
 
 ## Revenue-surface test
 
@@ -112,6 +127,7 @@ Before adding any page to the public surface, require at least one of the follow
 - contains an active direct checkout for a current offer;
 - is a specialist paid service page;
 - is a recurring revenue / retention page;
-- is legally required support content.
+- is legally required support content;
+- is a noindex buyer gateway that routes an existing customer to a protected delivery layer without exposing private assets.
 
 If none apply, keep the page out of the public revenue surface.
