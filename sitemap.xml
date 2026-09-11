@@ -1,19 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://stratumpraxis.com/</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
-  <url><loc>https://stratumpraxis.com/live-lab.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://stratumpraxis.com/b2b/</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-saas-waste-calculator.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-saas-spend-audit-checklist.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.88</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-agent-economics-calculator.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://stratumpraxis.com/agent-control-auditor.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.95</priority></url>
-  <url><loc>https://stratumpraxis.com/product-router.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.96</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-value-realization-kit.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.96</priority></url>
-  <url><loc>https://stratumpraxis.com/cross-agent-operating-kit.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
-  <url><loc>https://stratumpraxis.com/workflow-audit.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
-  <url><loc>https://stratumpraxis.com/sample-workflow-audit.html</loc><lastmod>2026-09-11</lastmod><changefreq>monthly</changefreq><priority>0.80</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-saas-spend-waste-audit.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.98</priority></url>
-  <url><loc>https://stratumpraxis.com/ai-saas-spend-monitoring.html</loc><lastmod>2026-09-11</lastmod><changefreq>weekly</changefreq><priority>0.97</priority></url>
-  <url><loc>https://stratumpraxis.com/privacy.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.30</priority></url>
-  <url><loc>https://stratumpraxis.com/terms.html</loc><lastmod>2026-09-11</lastmod><changefreq>yearly</changefreq><priority>0.30</priority></url>
+  <url><loc>https://stratumpraxis.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://stratumpraxis.com/evidence.html</loc><changefreq>monthly</changefreq><priority>0.94</priority></url>
+  <url><loc>https://stratumpraxis.com/live-lab.html</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://stratumpraxis.com/product-router.html</loc><changefreq>weekly</changefreq><priority>0.96</priority></url>
+  <url><loc>https://stratumpraxis.com/systems/</loc><changefreq>monthly</changefreq><priority>0.82</priority></url>
+
+  <url><loc>https://stratumpraxis.com/ai-saas-waste-calculator.html</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-saas-spend-audit-checklist.html</loc><changefreq>monthly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-value-realization-kit.html</loc><changefreq>monthly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-saas-spend-waste-audit.html</loc><changefreq>monthly</changefreq><priority>0.92</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-saas-spend-monitoring.html</loc><changefreq>monthly</changefreq><priority>0.88</priority></url>
+
+  <url><loc>https://stratumpraxis.com/b2b/</loc><changefreq>weekly</changefreq><priority>0.95</priority></url>
+  <url><loc>https://stratumpraxis.com/sample-workflow-audit.html</loc><changefreq>monthly</changefreq><priority>0.86</priority></url>
+  <url><loc>https://stratumpraxis.com/workflow-audit.html</loc><changefreq>monthly</changefreq><priority>0.93</priority></url>
+
+  <url><loc>https://stratumpraxis.com/ai-agent-economics-calculator.html</loc><changefreq>weekly</changefreq><priority>0.94</priority></url>
+  <url><loc>https://stratumpraxis.com/agent-control-auditor.html</loc><changefreq>weekly</changefreq><priority>0.94</priority></url>
+  <url><loc>https://stratumpraxis.com/cross-agent-operating-kit.html</loc><changefreq>monthly</changefreq><priority>0.93</priority></url>
+
+  <url><loc>https://stratumpraxis.com/revenue-pump/</loc><changefreq>weekly</changefreq><priority>0.90</priority></url>
+  <url><loc>https://stratumpraxis.com/revenue-pump/auto/</loc><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-monetization-reality-check.html</loc><changefreq>monthly</changefreq><priority>0.76</priority></url>
+  <url><loc>https://stratumpraxis.com/ai-income-claim-checklist.html</loc><changefreq>monthly</changefreq><priority>0.78</priority></url>
+  <url><loc>https://stratumpraxis.com/rustchain-bounty-radar.html</loc><changefreq>weekly</changefreq><priority>0.72</priority></url>
+
+  <url><loc>https://stratumpraxis.com/money-resilience/</loc><changefreq>weekly</changefreq><priority>0.88</priority></url>
+  <url><loc>https://stratumpraxis.com/72-hour-household-readiness/</loc><changefreq>monthly</changefreq><priority>0.84</priority></url>
+
+  <url><loc>https://stratumpraxis.com/privacy.html</loc><changefreq>yearly</changefreq><priority>0.30</priority></url>
+  <url><loc>https://stratumpraxis.com/terms.html</loc><changefreq>yearly</changefreq><priority>0.30</priority></url>
 </urlset>
