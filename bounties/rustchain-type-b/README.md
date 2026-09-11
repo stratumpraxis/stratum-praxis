@@ -4,6 +4,8 @@ Bounty: Scottcjn/rustchain-bounties #16601
 Package type: B — YouTube script + storyboard kit
 Author credit: stratumpraxis
 
+Related Elyan Labs project: [RustChain](https://github.com/Scottcjn/Rustchain) is the protocol this package explains; linking the canonical repository gives readers the implementation and primary technical context behind the script.
+
 ## Files
 - `script.md` — 3–4 minute narration script
 - `storyboard.md` — timestamped shot plan
