@@ -1,0 +1,187 @@
+/* Stratum Praxis v5 — unified public B2B visual layer
+   Shared polish for linked decision pages. No business logic, routes, pricing or analytics are changed. */
+
+:root{
+  --sp5-paper:#f4f0e8;
+  --sp5-paper-hi:#fbf8f1;
+  --sp5-ink:#171a19;
+  --sp5-muted:#686f6c;
+  --sp5-line:rgba(25,29,27,.10);
+  --sp5-line-strong:rgba(25,29,27,.17);
+  --sp5-mint:#cfe7dd;
+  --sp5-mint-deep:#709b8b;
+  --sp5-peach:#efb89b;
+  --sp5-lilac:#c9bdd8;
+  --sp5-chartreuse:#cfbf2a;
+  --sp5-shadow:0 24px 70px rgba(43,39,32,.085),0 2px 8px rgba(43,39,32,.035);
+}
+
+body[data-page="live_lab_v4"],
+body[data-page="product_router_v4"],
+body[data-page="workflow_audit_v4"]{
+  background:
+    radial-gradient(circle at 4% 0%,rgba(207,231,221,.42),transparent 31rem),
+    radial-gradient(circle at 96% 16%,rgba(239,184,155,.16),transparent 30rem),
+    var(--sp5-paper);
+  color:var(--sp5-ink);
+}
+
+body[data-page="live_lab_v4"] .office-header,
+body[data-page="product_router_v4"] .office-header,
+body[data-page="workflow_audit_v4"] .office-header{
+  border-color:var(--sp5-line);
+  border-radius:999px;
+  background:rgba(250,247,240,.88);
+  box-shadow:0 12px 36px rgba(39,36,31,.06),inset 0 1px 0 rgba(255,255,255,.76);
+}
+body[data-page="live_lab_v4"] .office-nav,
+body[data-page="product_router_v4"] .office-nav,
+body[data-page="workflow_audit_v4"] .office-nav{
+  border-radius:999px;
+  background:rgba(255,255,255,.50);
+}
+body[data-page="live_lab_v4"] .office-nav a,
+body[data-page="product_router_v4"] .office-nav a,
+body[data-page="workflow_audit_v4"] .office-nav a{border-radius:999px;padding-inline:13px}
+body[data-page="live_lab_v4"] .office-nav a[aria-current="page"],
+body[data-page="product_router_v4"] .office-nav a[aria-current="page"],
+body[data-page="workflow_audit_v4"] .office-nav a[aria-current="page"]{
+  background:#fff;
+  box-shadow:0 5px 16px rgba(27,30,29,.065);
+}
+body[data-page="live_lab_v4"] .b2b-badge,
+body[data-page="product_router_v4"] .b2b-badge,
+body[data-page="workflow_audit_v4"] .b2b-badge{background:#dcece5;border-color:#c9ddd4;color:#30453e}
+
+/* Catalog pages */
+body[data-page="live_lab_v4"] .product-shell,
+body[data-page="product_router_v4"] .product-shell{width:min(1180px,calc(100% - 44px));padding-top:58px}
+body[data-page="live_lab_v4"] .page-topline,
+body[data-page="product_router_v4"] .page-topline{align-items:end;gap:48px;padding-bottom:28px}
+body[data-page="live_lab_v4"] .page-topline h1,
+body[data-page="product_router_v4"] .page-topline h1{
+  max-width:860px;
+  font-size:clamp(44px,6.2vw,76px)!important;
+  line-height:.94!important;
+  letter-spacing:-.064em!important;
+  font-weight:650!important;
+  text-wrap:balance;
+}
+body[data-page="live_lab_v4"] .page-topline>p,
+body[data-page="product_router_v4"] .page-topline>p{font-size:11.5px!important;line-height:1.75!important;color:var(--sp5-muted)!important}
+body[data-page="live_lab_v4"] .meta-chip,
+body[data-page="product_router_v4"] .meta-chip{padding:7px 10px!important;background:rgba(255,255,255,.58)!important;border-color:var(--sp5-line)!important}
+
+body[data-page="live_lab_v4"] .catalog-layout,
+body[data-page="product_router_v4"] .catalog-layout{grid-template-columns:300px minmax(0,1fr)!important;gap:15px!important}
+body[data-page="live_lab_v4"] .intent-panel,
+body[data-page="product_router_v4"] .intent-panel{
+  padding:18px!important;
+  border-radius:25px!important;
+  background:rgba(251,248,241,.78)!important;
+  border-color:var(--sp5-line)!important;
+  box-shadow:var(--sp5-shadow)!important;
+}
+body[data-page="live_lab_v4"] .intent-button,
+body[data-page="product_router_v4"] .intent-button{min-height:62px!important;border-radius:15px!important;padding:9px 10px!important}
+body[data-page="live_lab_v4"] .intent-button.active,
+body[data-page="product_router_v4"] .intent-button.active{background:#fff!important;box-shadow:0 8px 22px rgba(35,33,28,.055)!important}
+body[data-page="live_lab_v4"] .intent-button.active i,
+body[data-page="product_router_v4"] .intent-button.active i{background:var(--sp5-mint)!important}
+
+body[data-page="live_lab_v4"] .recommend-card,
+body[data-page="product_router_v4"] .recommend-card{
+  position:relative;
+  min-height:280px!important;
+  border-radius:30px!important;
+  border-color:var(--sp5-line)!important;
+  background:linear-gradient(135deg,#fbf8f1 0%,#f7f4ed 52%,#e2eee8 100%)!important;
+  box-shadow:var(--sp5-shadow)!important;
+  isolation:isolate;
+}
+body[data-page="live_lab_v4"] .recommend-card::after,
+body[data-page="product_router_v4"] .recommend-card::after{
+  content:"";position:absolute;z-index:-1;right:-7%;bottom:-44%;width:62%;height:78%;border-radius:52% 48% 0 0 / 55% 54% 0 0;
+  background:radial-gradient(ellipse at 18% 82%,var(--sp5-peach) 0 20%,transparent 20.5%),radial-gradient(ellipse at 50% 96%,#cad7b9 0 33%,transparent 33.5%),radial-gradient(ellipse at 85% 87%,var(--sp5-lilac) 0 27%,transparent 27.5%);opacity:.44;filter:saturate(.8);pointer-events:none;
+}
+body[data-page="live_lab_v4"] .recommend-body,
+body[data-page="product_router_v4"] .recommend-body{padding:30px!important;gap:30px!important}
+body[data-page="live_lab_v4"] .recommend-body h2,
+body[data-page="product_router_v4"] .recommend-body h2{font-size:clamp(28px,4vw,45px)!important;line-height:1!important;letter-spacing:-.048em!important}
+body[data-page="live_lab_v4"] .recommend-body p,
+body[data-page="product_router_v4"] .recommend-body p{font-size:10.5px!important;line-height:1.7!important}
+body[data-page="live_lab_v4"] .action-btn,
+body[data-page="product_router_v4"] .action-btn,
+body[data-page="workflow_audit_v4"] .action-btn{border-radius:999px!important;padding-inline:20px!important;min-height:49px!important}
+
+body[data-page="live_lab_v4"] .inventory,
+body[data-page="product_router_v4"] .inventory{border-radius:25px!important;background:rgba(251,248,241,.78)!important;border-color:var(--sp5-line)!important;box-shadow:var(--sp5-shadow)!important}
+body[data-page="live_lab_v4"] .inventory-row,
+body[data-page="product_router_v4"] .inventory-row{min-height:82px!important;padding:12px 16px!important}
+body[data-page="live_lab_v4"] .inventory-row:hover,
+body[data-page="product_router_v4"] .inventory-row:hover{background:#fff!important}
+body[data-page="live_lab_v4"] .inventory-row.is-recommended,
+body[data-page="product_router_v4"] .inventory-row.is-recommended{background:rgba(207,231,221,.32)!important}
+body[data-page="live_lab_v4"] .escalation-box,
+body[data-page="product_router_v4"] .escalation-box{padding:22px!important;border-radius:22px!important;background:linear-gradient(135deg,rgba(255,255,255,.70),rgba(232,224,239,.52))!important}
+
+/* Audit page */
+body[data-page="workflow_audit_v4"] .workspace-shell{width:min(1180px,calc(100% - 44px))}
+body[data-page="workflow_audit_v4"] .audit-stage{gap:16px}
+body[data-page="workflow_audit_v4"] .audit-summary,
+body[data-page="workflow_audit_v4"] .audit-brief,
+body[data-page="workflow_audit_v4"] .module,
+body[data-page="workflow_audit_v4"] .deliverable-grid article,
+body[data-page="workflow_audit_v4"] .process-grid article{
+  border-color:var(--sp5-line)!important;
+  box-shadow:var(--sp5-shadow)!important;
+}
+body[data-page="workflow_audit_v4"] .audit-summary{
+  position:relative;overflow:hidden;border-radius:32px!important;
+  background:linear-gradient(140deg,#fbf8f1 0%,#f8f4ec 60%,#e1eee8 100%)!important;
+}
+body[data-page="workflow_audit_v4"] .audit-summary::after{
+  content:"";position:absolute;right:-9%;bottom:-30%;width:52%;height:54%;border-radius:50% 50% 0 0;background:radial-gradient(ellipse at 15% 80%,#e98158 0 19%,transparent 19.5%),radial-gradient(ellipse at 48% 95%,#d1bd2a 0 28%,transparent 28.5%),radial-gradient(ellipse at 82% 84%,#b9abc9 0 25%,transparent 25.5%);opacity:.38;pointer-events:none}
+body[data-page="workflow_audit_v4"] .audit-summary h1{font-size:clamp(46px,6.2vw,78px)!important;line-height:.94!important;letter-spacing:-.064em!important;font-weight:650!important;max-width:850px}
+body[data-page="workflow_audit_v4"] .audit-summary .lead{font-size:13px!important;line-height:1.75!important;max-width:720px}
+body[data-page="workflow_audit_v4"] .audit-brief{border-radius:28px!important;background:linear-gradient(160deg,#19201e,#26322e)!important;color:#f8f5ef!important}
+body[data-page="workflow_audit_v4"] .brief-price strong{font-size:58px!important;letter-spacing:-.06em!important}
+body[data-page="workflow_audit_v4"] .audit-band{border-radius:22px!important;overflow:hidden;background:rgba(251,248,241,.72)!important}
+body[data-page="workflow_audit_v4"] .section-heading h2{font-size:clamp(31px,4.2vw,48px)!important;line-height:1!important;letter-spacing:-.05em!important}
+body[data-page="workflow_audit_v4"] .deliverable-grid article{border-radius:22px!important;background:rgba(255,255,255,.70)!important;min-height:182px!important}
+body[data-page="workflow_audit_v4"] .process-grid article{border-radius:20px!important;background:rgba(255,255,255,.62)!important}
+body[data-page="workflow_audit_v4"] .audit-final{border-radius:30px!important;background:linear-gradient(125deg,#ebe4d8,#f8f5ee 57%,#dcebe5)!important}
+
+body[data-page="live_lab_v4"] .office-footer,
+body[data-page="product_router_v4"] .office-footer,
+body[data-page="workflow_audit_v4"] .office-footer{margin-top:28px;border-top-color:var(--sp5-line);color:#69706d}
+
+@media(max-width:900px){
+  body[data-page="live_lab_v4"] .catalog-layout,
+  body[data-page="product_router_v4"] .catalog-layout{grid-template-columns:1fr!important}
+  body[data-page="live_lab_v4"] .intent-panel,
+  body[data-page="product_router_v4"] .intent-panel{position:relative!important;top:auto!important}
+  body[data-page="live_lab_v4"] .page-topline,
+  body[data-page="product_router_v4"] .page-topline{display:block!important}
+  body[data-page="live_lab_v4"] .page-topline>p,
+  body[data-page="product_router_v4"] .page-topline>p{margin-top:16px;max-width:700px!important}
+}
+@media(max-width:720px){
+  body[data-page="live_lab_v4"] .office-header,
+  body[data-page="product_router_v4"] .office-header,
+  body[data-page="workflow_audit_v4"] .office-header{border-radius:22px}
+  body[data-page="live_lab_v4"] .product-shell,
+  body[data-page="product_router_v4"] .product-shell,
+  body[data-page="workflow_audit_v4"] .workspace-shell{width:min(100% - 24px,1180px)}
+  body[data-page="live_lab_v4"] .page-topline h1,
+  body[data-page="product_router_v4"] .page-topline h1,
+  body[data-page="workflow_audit_v4"] .audit-summary h1{font-size:clamp(39px,12vw,58px)!important}
+  body[data-page="live_lab_v4"] .recommend-body,
+  body[data-page="product_router_v4"] .recommend-body{grid-template-columns:1fr!important;padding:22px!important}
+  body[data-page="live_lab_v4"] .recommend-body .action-btn,
+  body[data-page="product_router_v4"] .recommend-body .action-btn{width:100%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-page="live_lab_v4"] *,body[data-page="product_router_v4"] *,body[data-page="workflow_audit_v4"] *{transition:none!important;animation:none!important}
+}
