@@ -1,0 +1,213 @@
+name: Deploy Unified Site Kernel
+
+on:
+  workflow_run:
+    workflows: ["Deploy Trust SEO Layer"]
+    types: [completed]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stratum-praxis-unified-site-kernel
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 14
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Build one clean site runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'worker' \
+            --exclude 'node_modules' \
+            --exclude 'revenue-os' \
+            --exclude 'CNAME'
+
+          python - <<'PY'
+          from pathlib import Path
+          from html import escape
+          from xml.sax.saxutils import escape as xml_escape
+          import json, re, subprocess
+
+          root=Path('_site')
+          manifest=json.loads(Path('seo-route-manifest.json').read_text(encoding='utf-8'))
+          base=manifest['base_url'].rstrip('/')
+          routes=manifest['routes']
+          by_source={x['source']:x for x in routes}
+
+          css='<link rel="stylesheet" href="/stratum-site-kernel.css?v=20260911-v1" data-stratum-site-kernel-css>'
+          scripts=[
+            '<script defer src="/stratum-evolution-engine.js?v=20260911-v2" data-stratum-evolution></script>',
+            '<script defer src="/stratum-growth-ui.js?v=20260911-v1" data-stratum-growth-ui></script>',
+            '<script defer src="/stratum-trust-revenue-layer.js?v=20260911-v2" data-stratum-trust-revenue></script>',
+            '<script defer src="/stratum-site-kernel.js?v=20260911-v1" data-stratum-site-kernel></script>'
+          ]
+
+          pumps={
+            'core':[('Field Guides','/guides/'),('Free Tools','/live-lab.html'),('Revenue Routes','/product-router.html'),('Evidence','/evidence.html')],
+            'spend':[('Spend Guide','/guides/ai-saas-spend-audit.html'),('Waste Calculator','/ai-saas-waste-calculator.html'),('$39 Value Kit','/ai-value-realization-kit.html'),('$499 Spend Audit','/ai-saas-spend-waste-audit.html')],
+            'workflow':[('Workflow ROI Guide','/guides/workflow-automation-roi.html'),('Free Diagnostic','/b2b/'),('Sample Audit','/sample-workflow-audit.html'),('$499 Workflow Audit','/workflow-audit.html')],
+            'agent':[('Agent Guide','/guides/ai-agent-economics-governance.html'),('Economics','/ai-agent-economics-calculator.html'),('Control Auditor','/agent-control-auditor.html'),('Operating Kit','/cross-agent-operating-kit.html')],
+            'revenue':[('Revenue Pump','/revenue-pump/'),('Auto Scan','/revenue-pump/auto/'),('Revenue Routes','/product-router.html'),('Evidence','/evidence.html')],
+            'money':[('Evidence','/evidence.html'),('Home Readiness','/72-hour-household-readiness/'),('Privacy','/privacy.html')],
+            'household':[('Evidence','/evidence.html'),('Money Resilience','/money-resilience/'),('Privacy','/privacy.html')],
+            'legal':[('Home','/'),('Evidence','/evidence.html')]
+          }
+          pump_style='''<style data-stratum-route-pump-style>.sp-route-pump{box-sizing:border-box;width:min(1180px,calc(100% - 32px));margin:18px auto 46px;padding:12px 13px;border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:15px;background:color-mix(in srgb,currentColor 3%,transparent);color:inherit;font:650 11px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}.sp-route-pump strong{display:inline-block;margin-right:9px;font-size:9px;letter-spacing:.09em;text-transform:uppercase;opacity:.55}.sp-route-pump a{display:inline-flex;align-items:center;min-height:34px;margin:3px;padding:0 9px;border:1px solid color-mix(in srgb,currentColor 13%,transparent);border-radius:999px;color:inherit;text-decoration:none}.sp-route-pump a:hover{border-color:rgba(100,205,165,.45)}@media(max-width:640px){.sp-route-pump{width:calc(100% - 20px);margin-bottom:76px}.sp-route-pump strong{display:block;margin-bottom:6px}.sp-route-pump a{min-height:42px}}@media(prefers-reduced-motion:reduce){.sp-route-pump a{transition:none!important}}</style>'''
+
+          cleanup=[
+            r'<link[^>]+stratum-site-kernel\.css[^>]*>\s*',
+            r'<script[^>]+stratum-site-kernel\.js[^>]*>\s*</script>\s*',
+            r'<script[^>]+data-stratum-evolution[^>]*>\s*</script>\s*',
+            r'<script[^>]+data-stratum-growth-ui[^>]*>\s*</script>\s*',
+            r'<script[^>]+data-stratum-trust-revenue[^>]*>\s*</script>\s*',
+            r'<nav[^>]+data-stratum-route-pump[^>]*>.*?</nav>\s*',
+            r'<style[^>]+data-stratum-route-pump-style[^>]*>.*?</style>\s*'
+          ]
+
+          errors=[]
+          processed=0
+          for p in root.rglob('*.html'):
+            rel=p.relative_to(root).as_posix()
+            text=p.read_text(encoding='utf-8',errors='ignore')
+            if '</head>' not in text: continue
+            for pattern in cleanup:
+              text=re.sub(pattern,'',text,flags=re.I|re.S)
+            text=text.replace('</head>','  '+css+'\n  '+'\n  '.join(scripts)+'\n</head>',1)
+            route=by_source.get(rel)
+            if route:
+              if not re.search(r'<meta[^>]+property=["\']og:site_name["\']',text,re.I):
+                text=text.replace('</head>','  <meta property="og:site_name" content="Stratum Praxis">\n</head>',1)
+              fam=route.get('family','core')
+              links=pumps.get(fam,pumps['core'])
+              link_html=''.join(f'<a href="{escape(href)}" data-analytics-id="site_pump_{fam}_{i}">{escape(label)} →</a>' for i,(label,href) in enumerate(links,1))
+              nav=f'<nav class="sp-route-pump" data-stratum-route-pump aria-label="Related Stratum decision routes"><strong>Continue the decision</strong>{link_html}</nav>'
+              text=text.replace('</head>',pump_style+'\n</head>',1)
+              text=text.replace('</body>',nav+'\n</body>',1)
+            p.write_text(text,encoding='utf-8')
+            processed+=1
+
+          for item in routes:
+            p=root/item['source']
+            if not p.exists(): errors.append(f"Missing manifest source: {item['source']}"); continue
+            t=p.read_text(encoding='utf-8',errors='ignore')
+            low=t.lower()
+            if 'name="viewport"' not in low and "name='viewport'" not in low: errors.append(f"Missing viewport: {item['source']}")
+            if 'rel="canonical"' not in low and "rel='canonical'" not in low: errors.append(f"Missing canonical: {item['source']}")
+            if 'name="description"' not in low and "name='description'" not in low: errors.append(f"Missing description: {item['source']}")
+            if '<h1' not in low: errors.append(f"Missing H1: {item['source']}")
+            if re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\'][^"\']*noindex',t,re.I): errors.append(f"Indexable route is noindex: {item['source']}")
+            if 'data-stratum-site-kernel' not in t: errors.append(f"Kernel missing: {item['source']}")
+          if errors: raise SystemExit('\n'.join(errors))
+
+          def lastmod(source):
+            try:
+              v=subprocess.check_output(['git','log','-1','--format=%cs','--',source],text=True).strip(); return v or None
+            except Exception: return None
+          out=['<?xml version="1.0" encoding="UTF-8"?>','<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+          for item in routes:
+            loc=base+('/' if item['url']=='/' else item['url'])
+            out+=['  <url>',f'    <loc>{xml_escape(loc)}</loc>']
+            lm=lastmod(item['source'])
+            if lm: out.append(f'    <lastmod>{lm}</lastmod>')
+            if item.get('changefreq'): out.append(f'    <changefreq>{item["changefreq"]}</changefreq>')
+            if item.get('priority'): out.append(f'    <priority>{item["priority"]}</priority>')
+            out.append('  </url>')
+          out.append('</urlset>')
+          (root/'sitemap.xml').write_text('\n'.join(out)+'\n',encoding='utf-8')
+          robots=(root/'robots.txt').read_text(encoding='utf-8') if (root/'robots.txt').exists() else 'User-agent: *\nAllow: /\n'
+          if 'Sitemap: https://stratumpraxis.com/sitemap.xml' not in robots:
+            robots=robots.rstrip()+'\n\nSitemap: https://stratumpraxis.com/sitemap.xml\n'
+          (root/'robots.txt').write_text(robots,encoding='utf-8')
+          print(f'Unified runtime injected into {processed} HTML files')
+          print(f'Quality gate passed for {len(routes)} indexable routes')
+          PY
+
+          test -s _site/stratum-site-kernel.css
+          test -s _site/stratum-site-kernel.js
+          test -s _site/stratum-evolution-engine.js
+          test -s _site/stratum-growth-ui.js
+          test -s _site/stratum-trust-revenue-layer.js
+          grep -Fq 'data-stratum-site-kernel' _site/index.html
+          grep -Fq 'data-stratum-site-kernel' _site/buyer-workspace.html
+          grep -Fq 'data-stratum-site-kernel' _site/ai-value-realization-kit.html
+          grep -Fq 'guides/ai-saas-spend-audit.html' _site/sitemap.xml
+          grep -Fq 'guides/workflow-automation-roi.html' _site/sitemap.xml
+          grep -Fq 'guides/ai-agent-economics-governance.html' _site/sitemap.xml
+          ! grep -Fq 'buyer-workspace' _site/sitemap.xml
+          ! grep -Fq 'cross-agent-operating-kit-access' _site/sitemap.xml
+
+      - name: Deploy unified site
+        working-directory: _site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main | tee /tmp/kernel-deploy.log
+          deploy_url="$(grep -oE 'https://[a-z0-9]+\.stratum-praxis-site\.pages\.dev' /tmp/kernel-deploy.log | tail -n 1)"
+          test -n "$deploy_url"
+          echo "KERNEL_BASE=$deploy_url" >> "$GITHUB_ENV"
+          echo "Unified deployment: $deploy_url"
+
+      - name: Verify circulation, previews, mobile and SEO
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="${KERNEL_BASE:?Missing unified deployment URL}"
+          routes=(
+            / /guides/ /guides/ai-saas-spend-audit.html /guides/workflow-automation-roi.html /guides/ai-agent-economics-governance.html
+            /live-lab.html /product-router.html /buyer-workspace.html /systems/
+            /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-value-realization-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html
+            /b2b/ /workflow-audit.html /sample-workflow-audit.html
+            /ai-agent-economics-calculator.html /agent-control-auditor.html /cross-agent-operating-kit.html
+            /revenue-pump/ /revenue-pump/auto/ /money-resilience/ /72-hour-household-readiness/
+          )
+          for path in "${routes[@]}"; do
+            code="$(curl -L -sS -o /tmp/kernel-page.html -w '%{http_code}' "$BASE$path")"
+            test "$code" = "200" || { echo "Route failed: $path -> $code"; exit 1; }
+            grep -Fq 'data-stratum-site-kernel' /tmp/kernel-page.html || { echo "Kernel missing: $path"; exit 1; }
+            grep -Fq 'data-stratum-evolution' /tmp/kernel-page.html || { echo "Evolution missing: $path"; exit 1; }
+            grep -Fq 'data-stratum-growth-ui' /tmp/kernel-page.html || { echo "Growth UI missing: $path"; exit 1; }
+            echo "Unified route OK: $path"
+          done
+
+          curl -L -sS "$BASE/buyer-workspace.html" -o /tmp/buyer.html
+          grep -Fq 'Use what you bought.' /tmp/buyer.html
+          grep -Fq 'Every paid route returns to evidence.' /tmp/buyer.html
+          grep -Fq '/cross-agent-operating-kit-access.html' /tmp/buyer.html
+
+          curl -L -sS "$BASE/stratum-site-kernel.js?v=20260911-v1" -o /tmp/kernel.js
+          grep -Fq '__STRATUM_SITE_KERNEL__' /tmp/kernel.js
+          grep -Fq 'site_kernel_closed_loop' /tmp/kernel.js
+          grep -Fq 'INTERACTIVE PRODUCT PREVIEW' /tmp/kernel.js
+          grep -Fq 'DECISION CIRCULATION' /tmp/kernel.js
+
+          curl -L -sS "$BASE/stratum-site-kernel.css?v=20260911-v1" -o /tmp/kernel.css
+          grep -Fq 'spk-auto-touch' /tmp/kernel.css
+          grep -Fq 'spk-preview' /tmp/kernel.css
+
+          curl -L -sS "$BASE/sitemap.xml" -o /tmp/sitemap.xml
+          grep -Fq 'https://stratumpraxis.com/guides/ai-saas-spend-audit.html' /tmp/sitemap.xml
+          grep -Fq 'https://stratumpraxis.com/guides/workflow-automation-roi.html' /tmp/sitemap.xml
+          grep -Fq 'https://stratumpraxis.com/guides/ai-agent-economics-governance.html' /tmp/sitemap.xml
+          ! grep -Fq 'buyer-workspace' /tmp/sitemap.xml
+          echo 'Unified Design DNA / Buyer / Paid Preview / SEO Cluster / Mobile / Evolution Loop -> PASS'
