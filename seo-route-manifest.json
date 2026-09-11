@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-11-v2",
+  "version": "2026-09-11-v3",
   "base_url": "https://stratumpraxis.com",
   "routes": [
     {"url":"/","source":"index.html","family":"core","priority":"1.0","changefreq":"weekly"},
@@ -8,7 +8,10 @@
     {"url":"/product-router.html","source":"product-router.html","family":"core","priority":"0.96","changefreq":"weekly"},
     {"url":"/systems/","source":"systems/index.html","family":"core","priority":"0.82","changefreq":"monthly"},
 
-    {"url":"/guides/","source":"guides/index.html","family":"core","priority":"0.93","changefreq":"weekly"},
+    {"url":"/guides/","source":"guides/index.html","family":"core","priority":"0.94","changefreq":"weekly"},
+    {"url":"/guides/ai-saas-spend-audit.html","source":"guides/ai-saas-spend-audit.html","family":"spend","priority":"0.93","changefreq":"monthly"},
+    {"url":"/guides/workflow-automation-roi.html","source":"guides/workflow-automation-roi.html","family":"workflow","priority":"0.93","changefreq":"monthly"},
+    {"url":"/guides/ai-agent-economics-governance.html","source":"guides/ai-agent-economics-governance.html","family":"agent","priority":"0.93","changefreq":"monthly"},
     {"url":"/guides/ai-saas-renewal-cost-check.html","source":"guides/ai-saas-renewal-cost-check.html","family":"spend","priority":"0.90","changefreq":"monthly"},
     {"url":"/saas-renewal-decision.html","source":"saas-renewal-decision.html","family":"spend","priority":"0.91","changefreq":"weekly"},
     {"url":"/workflow-automation-comparison.html","source":"workflow-automation-comparison.html","family":"workflow","priority":"0.82","changefreq":"monthly"},
