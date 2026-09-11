@@ -43,6 +43,7 @@
       try{
         const r=await fetch("https://ai-consultant-verify.practicalaireport.workers.dev/cross-agent-kit/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sid.value.trim(),email:email.value.trim(),offer:"cross_"+lic})}),x=await r.json();
         if(!r.ok)throw Error(x.error||I18N[lang].failed);
+        window.scosMarkVerifiedAccess&&window.scosMarkVerifiedAccess({product:"cross_agent_operating_kit",license:lic,evidence_source:"server_purchase_verification"});
         window.scosCapture&&window.scosCapture("access_granted",{product:"cross_agent_operating_kit",license:lic});msg.textContent=I18N[lang].verified;location.href=x.workspace_url;
       }catch(e){window.scosCapture&&window.scosCapture("access_denied",{product:"cross_agent_operating_kit",license:lic,reason:String(e.message||"verification_failed").slice(0,120)});msg.textContent=e.message||I18N[lang].failed;go.disabled=false;}
     }
