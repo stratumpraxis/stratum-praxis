@@ -1,11 +1,17 @@
 name: MARKET external signal ingest
 
-# MARKET runtime: external events trigger ingestion. MARKET's own contracts are the
-# production gate; broader acquisition/site audits run separately so unrelated UI,
-# sitemap or publishing drift cannot stop revenue-signal processing.
+# MARKET runtime. External dispatch is accepted when available, but the system does
+# not depend on Make being able to call GitHub. A bounded hourly pulse independently
+# reads GitHub, PostHog and Stripe so MARKET keeps moving even when the event bus is
+# unavailable.
 on:
   repository_dispatch:
     types: [market_signal]
+  schedule:
+    - cron: '17 * * * *'
+  push:
+    paths:
+      - 'market/runtime-kick.txt'
   pull_request:
     paths:
       - 'market/**'
@@ -30,7 +36,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: market-ingest
+  group: market-ingest-${{ github.event_name }}
   cancel-in-progress: false
 
 jobs:
@@ -48,9 +54,8 @@ jobs:
       - name: Historical evidence is append-only
         run: node --test market/test/evidence-integrity.test.mjs
 
-  # Useful cross-system audit, but deliberately not a dependency of live MARKET
-  # ingestion. A sitemap or publishing-taxonomy mismatch must not stop payment and
-  # buyer signals from entering MARKET.
+  # Broader acquisition/site checks remain useful, but they are not allowed to stop
+  # live revenue-signal processing.
   acquisition-audit:
     name: Acquisition audit (non-blocking for MARKET runtime)
     if: github.event_name == 'pull_request'
@@ -69,10 +74,84 @@ jobs:
                       acquisition/media-engine/test/*.test.mjs \
                       acquisition/opportunity-engine/test/*.test.mjs
 
-  ingest:
-    name: Ingest external signals
+  # Autonomous pulse. Each source is isolated so one missing credential does not
+  # prevent the other sources from being observed. The durable-store guard remains:
+  # without Supabase/Make state credentials the run reports BLOCKED rather than
+  # pretending it persisted production state.
+  pulse:
+    name: MARKET pulse / ${{ matrix.source }}
     needs: contracts
-    if: github.event_name != 'pull_request' && needs.contracts.result == 'success'
+    if: (github.event_name == 'schedule' || github.event_name == 'push') && needs.contracts.result == 'success'
+    continue-on-error: true
+    strategy:
+      fail-fast: false
+      matrix:
+        source: [github, posthog, stripe]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read ${{ matrix.source }}
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          MARKET_LEDGER_TABLE: ${{ vars.MARKET_LEDGER_TABLE }}
+          MARKET_STATE_ENDPOINT: ${{ secrets.MARKET_STATE_ENDPOINT }}
+          MARKET_STATE_SECRET: ${{ secrets.MARKET_STATE_SECRET }}
+          GITHUB_TOKEN: ${{ github.token }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          SOURCE: ${{ matrix.source }}
+        shell: bash
+        run: |
+          set -o pipefail
+          echo "MARKET autonomous pulse source=$SOURCE trigger=${{ github.event_name }}"
+          set +e
+          node market/cli/ingest.mjs \
+            --source "$SOURCE" \
+            --owner "${{ github.repository_owner }}" \
+            --repo "${{ github.event.repository.name }}" \
+            --json | tee "/tmp/market-$SOURCE.json"
+          code=${PIPESTATUS[0]}
+          set -e
+
+          if [ "$code" = '2' ]; then
+            echo '::warning::MARKET durable state store is not configured; source read cannot be persisted yet.'
+            exit 0
+          fi
+          if [ "$code" != '0' ]; then
+            echo "::warning::MARKET source=$SOURCE returned code=$code; other sources continue independently."
+            exit "$code"
+          fi
+
+          node -e '
+            const fs = require("fs");
+            const p = `/tmp/market-${process.env.SOURCE}.json`;
+            const trace = JSON.parse(fs.readFileSync(p, "utf8"));
+            const revenue = Number(trace.verified_revenue ?? 0);
+            if (revenue > 0 && !trace.payment_evidence_present) process.exit(21);
+            if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) process.exit(22);
+            console.log(`OK source=${process.env.SOURCE} verified_revenue=${revenue}`);
+          '
+      - name: Upload source trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-pulse-${{ matrix.source }}-${{ github.run_id }}
+          path: /tmp/market-${{ matrix.source }}.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  # Event/manual path. This remains separate from the pulse so event payloads keep
+  # their strict refusal rules and manual diagnostics stay explicit.
+  ingest:
+    name: Ingest external signal
+    needs: contracts
+    if: (github.event_name == 'repository_dispatch' || github.event_name == 'workflow_dispatch') && needs.contracts.result == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -111,16 +190,11 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-
           EVENT_NAME='${{ github.event_name }}'
           TOP_SOURCE='${{ github.event.client_payload.source || '' }}'
           INPUT_SOURCE='${{ github.event.inputs.source || 'github' }}'
           LOCAL_FLAG='${{ github.event.client_payload.local || github.event.inputs.local || false }}'
 
-          # A repository_dispatch with a top-level source means "read that trusted
-          # provider now". Without one, the payload itself is the event and is
-          # handled by the restricted dispatch adapter. Manual test_payload follows
-          # the same dispatch path.
           if [ "$EVENT_NAME" = 'repository_dispatch' ] && [ -z "$TOP_SOURCE" ]; then
             SOURCE='dispatch'
             ARGS=( --source dispatch --payload-file /tmp/market-dispatch.json --dispatch-id "${{ github.run_id }}" )
@@ -142,7 +216,6 @@ jobs:
 
           if [ "$code" = '2' ]; then
             echo '::warning::MARKET durable state store is not configured; no production signal was persisted.'
-            echo 'Connect SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY to enable the durable ledger.'
             exit 0
           fi
           exit "$code"
@@ -156,14 +229,8 @@ jobs:
             const fs = require("fs");
             const trace = JSON.parse(fs.readFileSync("/tmp/market-run.json", "utf8"));
             const revenue = Number(trace.verified_revenue ?? 0);
-            if (revenue > 0 && !trace.payment_evidence_present) {
-              console.error("::error::verified revenue was reported with no payment-provider evidence");
-              process.exit(1);
-            }
-            if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) {
-              console.error("::error::verified revenue is not matched one-to-one by provider references");
-              process.exit(1);
-            }
+            if (revenue > 0 && !trace.payment_evidence_present) process.exit(21);
+            if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) process.exit(22);
             console.log(`OK verified_revenue=${revenue} refs=${JSON.stringify(trace.payment_refs ?? [])}`);
           '
 
@@ -175,9 +242,7 @@ jobs:
           node -e '
             const fs = require("fs");
             const trace = JSON.parse(fs.readFileSync("/tmp/market-run.json", "utf8"));
-            for (const r of trace.refused ?? []) {
-              console.log(`::warning::dispatch refused (${r.reason}): ${r.detail ?? r.id}`);
-            }
+            for (const r of trace.refused ?? []) console.log(`::warning::dispatch refused (${r.reason}): ${r.detail ?? r.id}`);
             console.log(`${(trace.refused ?? []).length} refused, ${trace.signals_new ?? 0} accepted`);
           '
 
@@ -185,7 +250,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: market-evidence
-          path: market/evidence/
+          name: market-evidence-${{ github.run_id }}
+          path: /tmp/market-run.json
           if-no-files-found: ignore
           retention-days: 30
