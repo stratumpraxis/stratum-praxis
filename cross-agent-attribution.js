@@ -2,125 +2,117 @@
   'use strict';
 
   const SESSION_KEY = 'sp_funnel_attribution_v2';
-  const LANGUAGE_KEY = 'sp_cross_agent_language_v1';
+  const LANGUAGE_KEY = 'sp_cross_agent_language_v2';
+  const PRODUCT_PATH = /\/cross-agent-operating-kit(?:\.html)?\/?$/;
+  const SUPPORTED = ['en', 'ja', 'ko', 'zh'];
   const params = new URLSearchParams(location.search);
   const explicitRoute = String(params.get('route_id') || '').trim().slice(0, 100);
-  const PERSONAL_CHECKOUT = 'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T';
-  const SUPPORTED_LANGS = ['en', 'ja', 'ko', 'zh'];
-  const originalText = new WeakMap();
 
   const meta = {
-    en: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: "Keep your AI team's operating brain portable across Claude Code, Codex, Cursor and other runtimes." },
-    ja: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: 'Claude Code、Codex、Cursorを切り替えても、ルール・権限・状態・安全境界を持ち運べるAI運用基盤キット。' },
-    ko: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: 'Claude Code, Codex, Cursor를 바꿔도 규칙, 권한, 상태, 안전 경계를 유지하는 AI 운영 인프라 키트.' },
-    zh: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: '切换 Claude Code、Codex、Cursor 时，仍可保留规则、权限、状态与安全边界的 AI 运营基础套件。' }
+    en: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: 'A portable operating layer for Claude Code, Codex, Cursor and other AI runtimes.' },
+    ja: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: 'Claude Code、Codex、Cursorなどを切り替えても、運用ルール・権限・状態・安全境界を維持できるAI運用基盤キット。' },
+    ko: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: 'Claude Code, Codex, Cursor를 바꿔도 운영 규칙, 권한, 상태와 안전 경계를 유지하는 AI 운영 키트.' },
+    zh: { title: 'Cross-Agent Operating Kit | Stratum Praxis', description: '切换 Claude Code、Codex、Cursor 等工具时，仍能保留运营规则、权限、状态与安全边界的 AI 运营套件。' }
   };
 
-  const COPY = {
-    'Main site': ['メインサイト','메인 사이트','主站'],
-    'Portable AI operating infrastructure · v1.0': ['持ち運べるAI運用基盤 · v1.0','이식 가능한 AI 운영 인프라 · v1.0','可迁移的 AI 运营基础设施 · v1.0'],
-    'Keep the': ['運用の','운영의','保留你的'],
-    'brain.': ['頭脳は残す。','두뇌는 유지하고.','运营大脑。'],
-    'Change the agent.': ['エージェントだけ変える。','에이전트만 바꾸세요.','只更换 Agent。'],
-    'Claude Code today. Codex tomorrow. Cursor for one developer. Your project rules, permissions, state and safety boundaries should survive the switch.': ['今日はClaude Code、明日はCodex。使うAgentが変わっても、ルール・権限・状態・安全境界は残せます。','오늘은 Claude Code, 내일은 Codex. Agent가 바뀌어도 규칙, 권한, 상태, 안전 경계는 유지됩니다.','今天用 Claude Code，明天换 Codex。无论 Agent 如何切换，规则、权限、状态和安全边界都能保留。'],
-    'Get Personal — $69 →': ['Personalを購入 — $69 →','Personal 구매 — $69 →','购买 Personal — $69 →'],
-    "See what's inside": ['内容を見る','구성 보기','查看内容'],
-    'One-time purchase · Verified buyer delivery · Markdown + YAML · No subscription': ['買い切り · 購入確認後に提供 · Markdown + YAML · サブスクなし','일회성 구매 · 구매 확인 후 제공 · Markdown + YAML · 구독 없음','一次性购买 · 验证付款后交付 · Markdown + YAML · 无订阅'],
-    'Agent Lab · ongoing field notes →': ['Agent Lab · 実践記録 →','Agent Lab · 실전 기록 →','Agent Lab · 实践记录 →'],
-    'Operating architecture': ['運用アーキテクチャ','운영 아키텍처','运营架构'],
-    'Portable': ['PORTABLE','PORTABLE','PORTABLE'],
-    'Owned by you': ['あなたが所有','사용자 소유','由你拥有'],
-    'Goals · rules · skills · state · permissions · stop conditions': ['目標 · ルール · スキル · 状態 · 権限 · 停止条件','목표 · 규칙 · 스킬 · 상태 · 권한 · 중지 조건','目标 · 规则 · 技能 · 状态 · 权限 · 停止条件'],
-    'Runtime adapter': ['ランタイムアダプター','런타임 어댑터','运行时适配器'],
-    'Execution layer': ['実行レイヤー','실행 레이어','执行层'],
-    'Repository · cloud · browser · test · publish · deploy': ['リポジトリ · クラウド · ブラウザ · テスト · 公開 · デプロイ','리포지토리 · 클라우드 · 브라우저 · 테스트 · 게시 · 배포','代码库 · 云端 · 浏览器 · 测试 · 发布 · 部署'],
-    'Portable policy': ['持ち運べるポリシー','이식 가능한 정책','可迁移策略'],
-    'One operating brain, multiple runtimes.': ['ひとつの運用頭脳を複数ランタイムで。','하나의 운영 두뇌를 여러 런타임에서.','一个运营大脑，对应多个运行环境。'],
-    'Human gates': ['Human Gate','Human Gate','Human Gate'],
-    'Define exactly where autonomy stops.': ['自律実行を止める境界を定義。','자율 실행의 중지 경계를 정의합니다.','明确自主执行的停止边界。'],
-    'Cost guards': ['コストガード','비용 가드','成本护栏'],
-    'Budget, token, quota and retry controls.': ['予算・トークン・クォータ・再試行を制御。','예산, 토큰, 할당량, 재시도를 제어합니다.','控制预算、Token、配额与重试。'],
-    'Migration ready': ['移行対応','마이그레이션 준비','迁移就绪'],
-    'Move state without moving every conversation.': ['会話全部ではなく、状態を引き継ぐ。','대화 전체가 아니라 상태를 이전합니다.','无需搬走全部对话，也能迁移状态。'],
-    'The kit': ['キット内容','키트 구성','套件内容'],
-    'Not a prompt pack.': ['プロンプト集ではない。','프롬프트 모음이 아닙니다.','不是提示词合集。'],
-    'An operating layer.': ['運用レイヤーです。','운영 레이어입니다.','而是一层运营系统。'],
-    'Everything is designed to be copied into a real project and adapted, not merely read.': ['読むためではなく、実プロジェクトへ入れて使うための構成です。','읽기보다 실제 프로젝트에 적용하도록 설계했습니다.','不是只供阅读，而是为了直接放进真实项目中使用。'],
-    '01 · MASTER POLICY': ['01 · マスターポリシー','01 · 마스터 정책','01 · 主策略'],
-    'Goals, source of truth, permissions, human gates, security, failure policy, cost policy, quality gates and Definition of Done.': ['目標、正本、権限、Human Gate、セキュリティ、失敗時・コスト・品質・完了条件を定義。','목표, 진실 기준, 권한, Human Gate, 보안, 실패·비용·품질·완료 조건을 정의합니다.','定义目标、事实来源、权限、Human Gate、安全、失败、成本、质量与完成条件。'],
-    '02 · ADAPTERS': ['02 · アダプター','02 · 어댑터','02 · 适配器'],
-    'Keep runtime-specific behavior at the edge instead of duplicating your company policy across tools.': ['共通ポリシーは一つ。各ツール固有の挙動だけを分離。','공통 정책은 하나로 두고 도구별 동작만 분리합니다.','共同策略保持一份，只分离各工具特有行为。'],
-    '03 · RELIABILITY': ['03 · 信頼性','03 · 신뢰성','03 · 可靠性'],
-    'Detect objective, permission, completion, cost, retry, truth, lock-in and duplicate-rule conflicts.': ['目的・権限・完了・コスト・再試行・正本・ロックイン・重複ルールの衝突を検出。','목표, 권한, 완료, 비용, 재시도, 진실 기준, 종속성, 중복 규칙 충돌을 감지합니다.','检测目标、权限、完成、成本、重试、事实来源、锁定与重复规则冲突。'],
-    '04 · CONTROL': ['04 · 制御','04 · 제어','04 · 控制'],
-    'L0 read-only through L5 human-only. Separate tool access from permission to perform high-impact actions.': ['L0読み取り専用からL5人間限定まで。アクセス権と高影響アクション権限を分離。','L0 읽기 전용부터 L5 사람 전용까지. 접근 권한과 고영향 작업 권한을 분리합니다.','从 L0 只读到 L5 仅限人工，将访问权与高影响操作权限分开。'],
-    '05 · GUARDRAILS': ['05 · ガードレール','05 · 가드레일','05 · 护栏'],
-    'Explicit retry limits, no silent paid fallback, circuit breakers and safe recovery sequence.': ['再試行上限、有料フォールバック禁止、サーキットブレーカー、安全な復旧順序。','재시도 제한, 자동 유료 폴백 금지, 회로 차단기, 안전한 복구 순서.','重试上限、禁止静默付费回退、熔断器与安全恢复顺序。'],
-    '06 · PORTABILITY': ['06 · ポータビリティ','06 · 이식성','06 · 可迁移性'],
-    'Cross-agent migration checklist, state handoff template and a 50-point policy maturity score.': ['Agent間移行チェックリスト、State Handoff、50点の成熟度スコア。','Agent 간 마이그레이션 체크리스트, 상태 인계, 50점 성숙도 점수.','跨 Agent 迁移清单、状态交接与 50 分成熟度评分。'],
-    'Personal license · purchase fit': ['Personalライセンス','Personal 라이선스','Personal 许可'],
-    'Know what happens after payment.': ['購入後の流れも明確に。','결제 후 흐름도 명확하게.','付款后的流程也很清楚。'],
-    'Personal is the shortest route for one operator applying the kit to their own projects. The files remain editable and local to the project; the buyer workspace is the delivery surface, not a recurring SaaS dependency.': ['Personalは、自分のプロジェクトで使う一人の運用者向け。ファイルは編集可能で、継続SaaSへの依存はありません。','Personal은 자신의 프로젝트에 적용하는 1인 운영자용입니다. 파일은 편집 가능하며 반복 SaaS 의존이 없습니다.','Personal 面向在自己项目中使用的单人运营者。文件可编辑，无需依赖持续订阅的 SaaS。'],
-    'Your first implementation': ['最初の導入','첫 구현','首次实施'],
-    'From purchase to a governed agent project.': ['購入から運用開始まで。','구매에서 운영 시작까지.','从购买到正式运行。'],
-    'Copy the master AGENTS.md policy into the project root.': ['AGENTS.mdをプロジェクト直下へ配置。','AGENTS.md를 프로젝트 루트에 배치.','将 AGENTS.md 放入项目根目录。'],
-    'Select the Claude, Codex or Cursor adapter used by that project.': ['使うClaude / Codex / Cursorアダプターを選択。','사용할 Claude / Codex / Cursor 어댑터 선택.','选择 Claude / Codex / Cursor 适配器。'],
-    'Set Human Gates and budget, token, quota and retry limits.': ['Human Gateと予算・トークン・クォータ・再試行上限を設定。','Human Gate와 예산·토큰·할당량·재시도 제한 설정.','设置 Human Gate 与预算、Token、配额、重试上限。'],
-    'Run the policy-conflict check before granting execution access.': ['実行権限を与える前にポリシー衝突を確認。','실행 권한 전에 정책 충돌 확인.','授予执行权限前先检查策略冲突。'],
-    'Use the migration checklist and state handoff when changing runtimes.': ['ランタイム変更時は移行チェックとState Handoffを使用。','런타임 변경 시 마이그레이션 체크와 상태 인계 사용.','切换运行环境时使用迁移清单与状态交接。'],
-    'Choose Personal if': ['Personal向け','Personal이 맞는 경우','适合 Personal 的情况'],
-    'The license fits this use.': ['この用途ならPersonal。','이 용도라면 Personal.','这种用途适合 Personal。'],
-    'One purchaser': ['購入者1名','구매자 1명','1 位购买者'],
-    'Your own projects': ['自分のプロジェクト','본인 프로젝트','自己的项目'],
-    'You want editable Markdown + YAML': ['編集できるMarkdown + YAMLが欲しい','편집 가능한 Markdown + YAML','需要可编辑的 Markdown + YAML'],
-    'You do not need client implementation rights': ['クライアント導入権は不要','클라이언트 구현 권한 불필요','不需要客户实施权'],
-    'Need to use the kit in client work? Choose Commercial or Agency below. Personal is not the correct license for that use.': ['クライアント案件で使う場合はCommercialまたはAgencyを選択。','클라이언트 업무에는 Commercial 또는 Agency를 선택하세요.','客户项目请选 Commercial 或 Agency。'],
-    'Before checkout': ['購入前','결제 전','购买前'],
-    'Know exactly what you are buying.': ['買うものを明確に。','무엇을 사는지 명확하게.','明确你购买的内容。'],
-    'The v1.0 kit is a reusable operating layer for real projects: master policy, runtime adapters, conflict checks, human-gate rules, cost guardrails and migration/state handoff. It is delivered through verified buyer access after Stripe confirms payment.': ['v1.0は実プロジェクト向けの再利用可能な運用レイヤー。ポリシー、アダプター、衝突チェック、Human Gate、コストガード、移行・状態引継ぎを含みます。','v1.0은 실제 프로젝트용 재사용 운영 레이어입니다. 정책, 어댑터, 충돌 검사, Human Gate, 비용 가드, 마이그레이션·상태 인계를 포함합니다.','v1.0 是可复用的真实项目运营层，包括策略、适配器、冲突检查、Human Gate、成本护栏、迁移与状态交接。'],
-    'Delivery model': ['提供形式','제공 방식','交付方式'],
-    'Owned files, not another locked dashboard.': ['ロックされた画面ではなく、所有できるファイル。','잠긴 대시보드가 아닌 소유 가능한 파일.','不是锁定面板，而是你拥有的文件。'],
-    'The operating layer stays editable and portable. The buyer workspace verifies access; the implementation itself lives with your project.': ['運用レイヤーは編集・移行可能。購入者画面はアクセス確認用で、実装はプロジェクト側に残ります。','운영 레이어는 편집·이식 가능하며 구현은 프로젝트에 남습니다.','运营层可编辑、可迁移，真正的实现留在你的项目中。'],
-    '6 operating components': ['6つの運用コンポーネント','6개 운영 구성 요소','6 个运营组件'],
-    'Policy, adapters, reliability, control, guardrails, portability.': ['Policy / Adapter / Reliability / Control / Guardrails / Portability','Policy / Adapter / Reliability / Control / Guardrails / Portability','Policy / Adapter / Reliability / Control / Guardrails / Portability'],
-    'Markdown + YAML': ['Markdown + YAML','Markdown + YAML','Markdown + YAML'],
-    'Editable project files, not a locked SaaS dashboard.': ['編集可能なプロジェクトファイル。','편집 가능한 프로젝트 파일.','可编辑的项目文件。'],
-    'One-time purchase': ['買い切り','일회성 구매','一次性购买'],
-    'No subscription for the v1.0 kit.': ['v1.0にサブスクなし。','v1.0 구독 없음.','v1.0 无订阅。'],
-    'Buyer access': ['購入者アクセス','구매자 액세스','购买者访问'],
-    'Payment confirmation routes to the verified access flow.': ['決済確認後に購入者アクセスへ。','결제 확인 후 구매자 액세스로 이동.','付款确认后进入购买者访问流程。'],
-    'One-time licenses': ['買い切りライセンス','일회성 라이선스','一次性许可'],
-    'Buy once. Own your operating layer.': ['一度買って、運用レイヤーを所有する。','한 번 구매하고 운영 레이어를 소유하세요.','一次购买，拥有你的运营层。'],
-    'Choose the license by how the kit will be used. The operating components stay the same; implementation rights change.': ['用途に合わせてライセンスを選択。中身は同じで、利用権だけが変わります。','용도에 맞춰 라이선스를 선택하세요. 구성은 같고 사용 권한만 다릅니다.','按用途选择许可。组件相同，实施权限不同。'],
-    'one-time': ['買い切り','일회성','一次性'],
-    'Full v1.0 operating kit': ['v1.0フルキット','v1.0 전체 키트','完整 v1.0 套件'],
-    'Verified buyer workspace': ['購入者用アクセス','구매자 전용 액세스','购买者专属访问'],
-    'Get Personal — $69 one-time →': ['Personal — $69・買い切り →','Personal — $69 일회성 →','Personal — $69 一次性 →'],
-    'Best for operators': ['運用者向け','운영자 추천','适合运营者'],
-    'One business / operator': ['1事業 / 1運用者','사업 1개 / 운영자 1명','1 个业务 / 1 位运营者'],
-    'Client implementation use': ['クライアント導入可','클라이언트 구현 가능','可用于客户实施'],
-    'Get Commercial →': ['Commercialを購入 →','Commercial 구매 →','购买 Commercial →'],
-    'One agency / team': ['1エージェンシー / チーム','에이전시 / 팀 1개','1 个机构 / 团队'],
-    'Multiple client projects': ['複数クライアント案件','여러 클라이언트 프로젝트','多个客户项目'],
-    'Get Agency →': ['Agencyを購入 →','Agency 구매 →','购买 Agency →'],
-    'The principle': ['原則','원칙','原则'],
-    'Models are replaceable.': ['モデルは交換できる。','모델은 교체할 수 있습니다.','模型可以替换。'],
-    'Your operating knowledge is an asset.': ['運用知識は資産として残す。','운영 지식은 자산으로 남습니다.','运营知识应作为资产保留。'],
-    'Keep Brain, Policy, Skills and State on your side of the boundary.': ['Brain / Policy / Skills / Stateは自分側に残す。','Brain / Policy / Skills / State는 사용자 쪽에 남기세요.','Brain / Policy / Skills / State 留在你这一侧。']
+  const T = {
+    choose_license_short: { en:'Choose license ↓', ja:'ライセンス ↓', ko:'라이선스 ↓', zh:'选择许可 ↓' },
+    kicker: { en:'Portable AI operating infrastructure · v1.0', ja:'持ち運べるAI運用基盤 · v1.0', ko:'이식 가능한 AI 운영 기반 · v1.0', zh:'可迁移的 AI 运营基础 · v1.0' },
+    headline_1: { en:'Keep the', ja:'運用の', ko:'운영의', zh:'保留' },
+    headline_2: { en:'brain.', ja:'頭脳は残す。', ko:'두뇌는 유지하고.', zh:'运营大脑。' },
+    headline_3: { en:'Change the agent.', ja:'エージェントだけ変える。', ko:'에이전트만 바꾸세요.', zh:'只更换 Agent。' },
+    purpose: { en:'Not a prompt pack. An operating layer.', ja:'プロンプト集ではなく、AI運用レイヤー。', ko:'프롬프트 모음이 아니라 운영 레이어입니다.', zh:'不是提示词合集，而是一层运营系统。' },
+    lead: { en:'Keep policy, permissions, state and safety rules portable when you switch between Claude Code, Codex, Cursor and other AI runtimes.', ja:'Claude Code、Codex、Cursorなどを切り替えても、ポリシー・権限・状態・安全ルールをプロジェクト側に残します。', ko:'Claude Code, Codex, Cursor 등을 바꿔도 정책, 권한, 상태와 안전 규칙을 프로젝트에 유지합니다.', zh:'切换 Claude Code、Codex、Cursor 等运行环境时，策略、权限、状态和安全规则仍留在你的项目中。' },
+    choose_license: { en:'Choose a license', ja:'ライセンスを選ぶ', ko:'라이선스 선택', zh:'选择许可' },
+    see_inside: { en:"See what's inside", ja:'中身を見る', ko:'구성 보기', zh:'查看内容' },
+    hero_note: { en:'One-time purchase · Editable files · Verified delivery · No subscription', ja:'買い切り · 編集可能ファイル · 決済確認後に提供 · サブスクなし', ko:'일회성 구매 · 편집 가능한 파일 · 결제 확인 후 제공 · 구독 없음', zh:'一次购买 · 可编辑文件 · 付款确认后交付 · 无订阅' },
+    fact_6: { en:'6 operating components', ja:'6つの運用コンポーネント', ko:'6개 운영 구성요소', zh:'6 个运营组件' },
+    fact_3: { en:'3 license levels', ja:'3種類のライセンス', ko:'3가지 라이선스', zh:'3 种许可' },
+    architecture: { en:'Operating architecture', ja:'運用アーキテクチャ', ko:'운영 아키텍처', zh:'运营架构' },
+    portable: { en:'Portable', ja:'移行可能', ko:'이식 가능', zh:'可迁移' },
+    owned_by_you: { en:'Owned by you', ja:'自分側で保有', ko:'사용자 소유', zh:'由你持有' },
+    brain_items: { en:'Goals · rules · skills · state · permissions · stop conditions', ja:'目標 · ルール · スキル · 状態 · 権限 · 停止条件', ko:'목표 · 규칙 · 스킬 · 상태 · 권한 · 중지 조건', zh:'目标 · 规则 · 技能 · 状态 · 权限 · 停止条件' },
+    execution: { en:'Execution layer', ja:'実行レイヤー', ko:'실행 레이어', zh:'执行层' },
+    proof_policy: { en:'Portable policy', ja:'持ち運べるポリシー', ko:'이식 가능한 정책', zh:'可迁移策略' },
+    proof_policy_desc: { en:'One operating brain, multiple runtimes.', ja:'1つの運用ルールを複数Agentで使う。', ko:'하나의 운영 규칙을 여러 런타임에서 사용합니다.', zh:'一套运营规则，对应多个运行环境。' },
+    proof_gate_desc: { en:'Define where autonomy must stop.', ja:'自律実行を止める境界を定義。', ko:'자율 실행이 멈춰야 할 지점을 정의합니다.', zh:'明确自主执行的停止边界。' },
+    proof_cost: { en:'Cost guards', ja:'コストガード', ko:'비용 가드', zh:'成本护栏' },
+    proof_cost_desc: { en:'Budget, token, quota and retry controls.', ja:'予算・Token・Quota・再試行を制御。', ko:'예산, 토큰, 할당량과 재시도를 제어합니다.', zh:'控制预算、Token、配额与重试。' },
+    proof_migration: { en:'Migration ready', ja:'移行対応', ko:'마이그레이션 준비', zh:'迁移就绪' },
+    proof_migration_desc: { en:'Move state without moving every conversation.', ja:'全会話ではなく、必要な状態を引き継ぐ。', ko:'전체 대화가 아니라 필요한 상태를 이전합니다.', zh:'无需搬走全部对话，也能迁移必要状态。' },
+    inside_kicker: { en:"What's inside", ja:'キット内容', ko:'키트 구성', zh:'套件内容' },
+    inside_title: { en:'Six files and frameworks you can put into a real project.', ja:'実プロジェクトへ入れて使える6つの実装要素。', ko:'실제 프로젝트에 넣어 사용할 수 있는 6개 구현 요소.', zh:'可直接放入真实项目的 6 个实施组件。' },
+    inside_intro: { en:'This is implementation material, not a reading-only prompt collection.', ja:'読むだけのPrompt集ではなく、コピーして編集する実装用素材です。', ko:'읽기 전용 프롬프트 모음이 아니라 복사하고 편집하는 구현 자료입니다.', zh:'不是只供阅读的提示词合集，而是可复制、编辑的实施材料。' },
+    c1: { en:'Goals, source of truth, permissions, Human Gates, security, failure policy, cost policy and Definition of Done.', ja:'目標、正本、権限、Human Gate、セキュリティ、失敗時ルール、コスト、完了条件を定義。', ko:'목표, 진실 기준, 권한, Human Gate, 보안, 실패 규칙, 비용과 완료 조건을 정의합니다.', zh:'定义目标、事实来源、权限、Human Gate、安全、失败规则、成本与完成条件。' },
+    c2: { en:'Keep tool-specific behavior at the edge instead of duplicating your core policy.', ja:'共通ポリシーは1つ。ツール固有の挙動だけを分離。', ko:'공통 정책은 하나로 두고 도구별 동작만 분리합니다.', zh:'共同策略保持一份，只分离各工具特有行为。' },
+    c3: { en:'Detect conflicts in objectives, permissions, completion, cost, retry and source of truth.', ja:'目的・権限・完了・コスト・再試行・正本の衝突を検出。', ko:'목표, 권한, 완료, 비용, 재시도와 진실 기준의 충돌을 감지합니다.', zh:'检测目标、权限、完成、成本、重试与事实来源之间的冲突。' },
+    c4: { en:'Separate tool access from permission to perform high-impact actions.', ja:'ツールへのアクセス権と、高影響アクションの実行権限を分離。', ko:'도구 접근 권한과 고영향 작업 실행 권한을 분리합니다.', zh:'将工具访问权与高影响操作的执行权限分开。' },
+    c5: { en:'Set retry limits, prevent silent paid fallback and define safe recovery.', ja:'再試行上限、有料フォールバック禁止、安全な復旧手順を定義。', ko:'재시도 제한, 자동 유료 폴백 방지, 안전한 복구 절차를 정의합니다.', zh:'设置重试上限、阻止静默付费回退并定义安全恢复流程。' },
+    c6: { en:'Migration checklist, state handoff template and a 50-point policy maturity score.', ja:'Agent間移行チェック、State Handoffテンプレート、50点の成熟度スコア。', ko:'Agent 간 마이그레이션 체크리스트, 상태 인계 템플릿, 50점 성숙도 점수.', zh:'跨 Agent 迁移清单、状态交接模板与 50 分成熟度评分。' },
+    delivery_kicker: { en:'After purchase', ja:'購入後', ko:'구매 후', zh:'购买后' },
+    delivery_title: { en:'Know what you receive and what happens next.', ja:'何が届くか、購入後どう進むかを明確に。', ko:'무엇을 받고 다음에 무엇이 일어나는지 명확하게.', zh:'明确你会收到什么，以及购买后如何进行。' },
+    delivery_intro: { en:'No vague “buyer access.” Payment is verified before the private delivery workspace opens.', ja:'「購入者用アクセス」で濁さず、決済確認後に専用の提供画面へ進みます。', ko:'모호한 구매자 액세스가 아니라 결제 확인 후 전용 제공 화면으로 이동합니다.', zh:'不是模糊的“购买者访问”，付款确认后进入专用交付页面。' },
+    package_label: { en:'Package', ja:'提供物', ko:'패키지', zh:'交付内容' },
+    package_title: { en:'Editable v1.0 operating files', ja:'編集可能なv1.0運用ファイル', ko:'편집 가능한 v1.0 운영 파일', zh:'可编辑的 v1.0 运营文件' },
+    package_desc: { en:'Master policy, adapters, conflict checks, Human Gate rules, cost guardrails and migration/state handoff.', ja:'Master Policy、Adapter、Conflict Check、Human Gate、Cost Guard、Migration / State Handoffを含みます。', ko:'Master Policy, Adapter, Conflict Check, Human Gate, Cost Guard, Migration / State Handoff를 포함합니다.', zh:'包含 Master Policy、Adapter、Conflict Check、Human Gate、Cost Guard、Migration / State Handoff。' },
+    editable_files: { en:'Editable project files', ja:'編集可能なプロジェクトファイル', ko:'편집 가능한 프로젝트 파일', zh:'可编辑的项目文件' },
+    verified_workspace: { en:'Verified buyer workspace', ja:'購入確認済み専用画面', ko:'구매 확인 전용 화면', zh:'付款验证专用页面' },
+    payment_check: { en:'Payment check before access', ja:'決済確認後にアクセス', ko:'결제 확인 후 액세스', zh:'付款确认后访问' },
+    scope_label: { en:'Purchase scope', ja:'買い切り範囲', ko:'구매 범위', zh:'购买范围' },
+    scope_title: { en:'Buy once. Keep v1.0.', ja:'一度買って、v1.0を保有。', ko:'한 번 구매하고 v1.0을 보유.', zh:'一次购买，保留 v1.0。' },
+    scope_desc: { en:'Your purchase includes permanent access to the v1.0 kit you bought. No recurring subscription. Future major versions, custom implementation and 1:1 support are separate unless stated otherwise.', ja:'購入したv1.0キットは継続課金なしで保持できます。将来のメジャー版、個別実装、1:1サポートは明記がない限り別料金です。', ko:'구매한 v1.0 키트는 구독 없이 계속 사용할 수 있습니다. 향후 메이저 버전, 맞춤 구현, 1:1 지원은 별도입니다.', zh:'购买的 v1.0 套件可永久访问，无持续订阅。未来的大版本、定制实施和 1:1 支持除非另有说明均为单独项目。' },
+    permanent: { en:'Permanent v1.0 access', ja:'v1.0へ継続アクセス', ko:'v1.0 영구 액세스', zh:'永久访问 v1.0' },
+    not_rental: { en:'Not a rental', ja:'レンタルではありません', ko:'대여가 아닙니다', zh:'不是租用' },
+    no_bundle: { en:'No implied services', ja:'追加サービス自動付帯なし', ko:'추가 서비스 자동 포함 없음', zh:'不默认附带额外服务' },
+    major_separate: { en:'Major upgrades and consulting are separate', ja:'メジャー更新・コンサルは別', ko:'메이저 업데이트·컨설팅 별도', zh:'大版本升级与咨询另计' },
+    flow_checkout: { en:'Checkout', ja:'決済', ko:'결제', zh:'付款' },
+    flow_checkout_desc: { en:'Choose a license and pay through Stripe.', ja:'ライセンスを選びStripeで決済。', ko:'라이선스를 선택하고 Stripe로 결제합니다.', zh:'选择许可并通过 Stripe 付款。' },
+    flow_verify: { en:'Verify', ja:'購入確認', ko:'구매 확인', zh:'验证' },
+    flow_verify_desc: { en:'The access page confirms the purchase.', ja:'アクセス画面で購入を確認。', ko:'액세스 화면에서 구매를 확인합니다.', zh:'访问页面确认购买。' },
+    flow_access: { en:'Access', ja:'専用画面', ko:'전용 화면', zh:'专用页面' },
+    flow_access_desc: { en:'Open the private buyer workspace.', ja:'購入者専用の提供画面を開く。', ko:'구매자 전용 제공 화면을 엽니다.', zh:'打开购买者专用交付页面。' },
+    flow_implement: { en:'Implement', ja:'導入', ko:'도입', zh:'实施' },
+    flow_implement_desc: { en:'Copy and adapt the files in your environment.', ja:'自分の環境へコピーして調整。', ko:'자신의 환경에 복사해 조정합니다.', zh:'复制到你的环境中并进行调整。' },
+    license_kicker: { en:'License rights', ja:'利用権', ko:'사용 권한', zh:'许可权限' },
+    license_title: { en:'The kit is the same. The usage rights are different.', ja:'中身は同じ。違うのは利用できる範囲。', ko:'키트는 같고 사용 권한이 다릅니다.', zh:'套件相同，不同的是使用权限。' },
+    license_intro: { en:'Choose by who will use the kit and whether client implementation is required.', ja:'誰が使うか、クライアント案件に導入するかで選びます。', ko:'누가 사용하는지, 클라이언트 업무에 적용하는지에 따라 선택하세요.', zh:'根据谁来使用，以及是否需要用于客户项目来选择。' },
+    personal_desc: { en:'For one person using the kit in their own projects or own business.', ja:'1名が自分のプロジェクト・自社運用で使うためのライセンス。', ko:'1명이 자신의 프로젝트나 사업에 사용하는 라이선스.', zh:'供 1 人在自己的项目或业务中使用。' },
+    one_person: { en:'One licensed person', ja:'利用者1名', ko:'라이선스 사용자 1명', zh:'1 位授权用户' },
+    own_projects: { en:'Own projects / own business', ja:'自分のプロジェクト / 自社運用', ko:'본인 프로젝트 / 본인 사업', zh:'自己的项目 / 自有业务' },
+    no_client: { en:'No client implementation rights', ja:'クライアント案件への導入不可', ko:'클라이언트 프로젝트 적용 불가', zh:'不可用于客户实施' },
+    commercial_desc: { en:'For one freelancer, consultant or independent operator using the kit in client work.', ja:'1名のフリーランサー・コンサルタント・独立運用者がクライアント案件でも使えるライセンス。', ko:'1명의 프리랜서, 컨설턴트 또는 독립 운영자가 클라이언트 업무에 사용하는 라이선스.', zh:'供 1 名自由职业者、顾问或独立运营者用于客户项目。' },
+    one_operator: { en:'One licensed operator', ja:'運用者1名', ko:'운영자 1명', zh:'1 位授权运营者' },
+    client_allowed: { en:'Client implementation allowed', ja:'クライアント案件への導入可', ko:'클라이언트 프로젝트 적용 가능', zh:'可用于客户实施' },
+    unlimited_projects: { en:'No client-project count limit', ja:'クライアント案件数の上限なし', ko:'클라이언트 프로젝트 수 제한 없음', zh:'客户项目数量不限' },
+    agency_desc: { en:'For one agency or organization with multiple internal users and client engagements.', ja:'1つの組織内で複数メンバーが使い、複数クライアント案件へ導入するためのライセンス。', ko:'하나의 조직에서 여러 구성원이 사용하고 여러 클라이언트 업무에 적용하는 라이선스.', zh:'供一个组织内多名成员使用，并可用于多个客户项目。' },
+    multiple_members: { en:'Multiple internal team members', ja:'組織内の複数メンバー', ko:'조직 내 여러 팀원', zh:'组织内多名成员' },
+    multiple_clients: { en:'Multiple client engagements', ja:'複数クライアント案件', ko:'여러 클라이언트 업무', zh:'多个客户项目' },
+    license_rule: { en:'All licenses prohibit reselling, redistributing, publicly mirroring or sublicensing the source kit itself.', ja:'全ライセンス共通：キットそのものの再販売・再配布・公開・サブライセンスは禁止です。', ko:'모든 라이선스 공통: 키트 자체의 재판매, 재배포, 공개 미러링, 재라이선스는 금지됩니다.', zh:'所有许可均禁止转售、再分发、公开镜像或再次许可套件本身。' },
+    pricing_kicker: { en:'One-time licenses', ja:'買い切りライセンス', ko:'일회성 라이선스', zh:'一次性许可' },
+    pricing_title: { en:'Choose the license that matches your use.', ja:'使い方に合うライセンスを選ぶ。', ko:'사용 방식에 맞는 라이선스를 선택하세요.', zh:'选择与你的使用方式匹配的许可。' },
+    pricing_intro: { en:'Same v1.0 kit. No subscription. Different implementation rights.', ja:'v1.0の中身は同じ。サブスクなし。導入権だけが変わります。', ko:'v1.0 구성은 동일하고 구독은 없습니다. 적용 권한만 다릅니다.', zh:'v1.0 内容相同，无订阅，仅实施权限不同。' },
+    one_time: { en:'one-time', ja:'買い切り', ko:'일회성', zh:'一次性' },
+    personal_short: { en:'One person · own projects', ja:'1名 · 自分のプロジェクト', ko:'1명 · 본인 프로젝트', zh:'1 人 · 自己的项目' },
+    full_kit: { en:'Full v1.0 kit', ja:'v1.0フルキット', ko:'v1.0 전체 키트', zh:'完整 v1.0 套件' },
+    operator_badge: { en:'Independent operator', ja:'個人事業・コンサル向け', ko:'독립 운영자용', zh:'适合独立运营者' },
+    commercial_short: { en:'One operator · client work allowed', ja:'運用者1名 · クライアント導入可', ko:'운영자 1명 · 클라이언트 적용 가능', zh:'1 位运营者 · 可用于客户项目' },
+    agency_short: { en:'One organization · multiple members', ja:'1組織 · 複数メンバー', ko:'조직 1개 · 여러 구성원', zh:'1 个组织 · 多名成员' },
+    legal: { en:'The source kit itself may not be resold, redistributed, publicly mirrored or sublicensed. Product names indicate compatibility only; this product is independent from those vendors.', ja:'キットそのものの再販売・再配布・公開・サブライセンスは禁止です。記載された製品名は互換性の説明用であり、本製品は各ベンダーの公式製品ではありません。', ko:'키트 자체의 재판매, 재배포, 공개 미러링, 재라이선스는 금지됩니다. 제품명은 호환성 설명용이며 각 벤더의 공식 제품이 아닙니다.', zh:'禁止转售、再分发、公开镜像或再次许可套件本身。所列产品名仅用于说明兼容性，本产品并非相关厂商的官方产品。' },
+    closing_kicker: { en:'Keep the operating knowledge', ja:'運用知識を残す', ko:'운영 지식을 유지하세요', zh:'保留运营知识' },
+    closing_title: { en:'Change the agent without rebuilding the operating rules.', ja:'Agentを変えても、運用ルールは作り直さない。', ko:'Agent를 바꿔도 운영 규칙을 다시 만들지 마세요.', zh:'更换 Agent，也无需重建运营规则。' },
+    closing_desc: { en:'Brain, Policy, Skills and State stay on your side of the boundary.', ja:'Brain / Policy / Skills / Stateを自分側に残します。', ko:'Brain / Policy / Skills / State를 사용자 쪽에 유지합니다.', zh:'Brain / Policy / Skills / State 留在你这一侧。' }
   };
 
-  function mapCopy(text, lang) {
-    if (lang === 'en' || !COPY[text]) return text;
-    const i = lang === 'ja' ? 0 : lang === 'ko' ? 1 : 2;
-    return COPY[text][i] || text;
+  function isProductPage() {
+    return PRODUCT_PATH.test(location.pathname);
   }
 
   function preferredLanguage() {
-    const urlLang = String(params.get('lang') || '').toLowerCase();
-    if (SUPPORTED_LANGS.includes(urlLang)) return urlLang;
+    const fromUrl = String(new URLSearchParams(location.search).get('lang') || '').toLowerCase();
+    if (SUPPORTED.includes(fromUrl)) return fromUrl;
     try {
       const saved = localStorage.getItem(LANGUAGE_KEY);
-      if (SUPPORTED_LANGS.includes(saved)) return saved;
+      if (SUPPORTED.includes(saved)) return saved;
     } catch (_) {}
     const browser = String(navigator.language || 'en').toLowerCase();
     if (browser.startsWith('ja')) return 'ja';
@@ -129,117 +121,50 @@
     return 'en';
   }
 
-  function translateNode(node, lang) {
-    if (node.nodeType !== Node.TEXT_NODE) return;
-    const raw = originalText.has(node) ? originalText.get(node) : node.nodeValue;
-    if (!originalText.has(node)) originalText.set(node, raw);
-    const trimmed = raw.trim();
-    if (!trimmed || !COPY[trimmed]) {
-      node.nodeValue = raw;
-      return;
-    }
-    const left = raw.match(/^\s*/)[0];
-    const right = raw.match(/\s*$/)[0];
-    node.nodeValue = left + mapCopy(trimmed, lang) + right;
-  }
-
-  function translatePage(lang) {
-    if (!SUPPORTED_LANGS.includes(lang)) lang = 'en';
+  function applyLanguage(lang) {
+    if (!SUPPORTED.includes(lang)) lang = 'en';
     document.documentElement.lang = lang === 'zh' ? 'zh-CN' : lang;
     document.documentElement.dataset.uiLanguage = lang;
     document.title = meta[lang].title;
     const desc = document.querySelector('meta[name="description"]');
     if (desc) desc.setAttribute('content', meta[lang].description);
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { translateNode(node, lang); });
+    document.querySelectorAll('[data-i18n]').forEach(function (el) {
+      const key = el.dataset.i18n;
+      if (T[key] && T[key][lang]) el.textContent = T[key][lang];
+    });
     document.querySelectorAll('[data-lang-choice]').forEach(function (button) {
       const active = button.dataset.langChoice === lang;
-      button.setAttribute('aria-pressed', active ? 'true' : 'false');
       button.classList.toggle('active', active);
+      button.setAttribute('aria-pressed', active ? 'true' : 'false');
     });
     try { localStorage.setItem(LANGUAGE_KEY, lang); } catch (_) {}
   }
 
-  function injectTypographyRelief() {
-    if (document.getElementById('cross-agent-text-relief')) return;
-    const style = document.createElement('style');
-    style.id = 'cross-agent-text-relief';
-    style.textContent = `
-      body[data-funnel="cross_agent_operating_kit"]{font-size:14.5px;line-height:1.76}
-      body[data-funnel="cross_agent_operating_kit"] .hero{min-height:620px;padding-top:72px;padding-bottom:72px;gap:72px}
-      body[data-funnel="cross_agent_operating_kit"] .hero h1{max-width:660px;font-size:clamp(44px,5.4vw,70px);line-height:1.03;letter-spacing:-.042em;font-weight:630;margin-bottom:28px}
-      body[data-funnel="cross_agent_operating_kit"] .lead{max-width:610px;font-size:clamp(15.5px,1.2vw,18px);line-height:1.72;color:#a2aea9}
-      body[data-funnel="cross_agent_operating_kit"] .kicker{font-size:9px;font-weight:680;letter-spacing:.11em;margin-bottom:24px;opacity:.9}
-      body[data-funnel="cross_agent_operating_kit"] .section{padding:118px 0}
-      body[data-funnel="cross_agent_operating_kit"] .section-tight{padding-top:88px}
-      body[data-funnel="cross_agent_operating_kit"] .section-head{gap:72px;margin-bottom:52px}
-      body[data-funnel="cross_agent_operating_kit"] .section h2{max-width:680px;font-size:clamp(32px,3.8vw,50px);line-height:1.12;letter-spacing:-.035em;font-weight:610}
-      body[data-funnel="cross_agent_operating_kit"] .section-intro{font-size:12.5px;line-height:1.78;max-width:430px;color:#84918c}
-      body[data-funnel="cross_agent_operating_kit"] .kit-grid{gap:16px}
-      body[data-funnel="cross_agent_operating_kit"] .kit-card{padding:28px;min-height:230px}
-      body[data-funnel="cross_agent_operating_kit"] .kit-card:nth-child(1),body[data-funnel="cross_agent_operating_kit"] .kit-card:nth-child(2){min-height:250px}
-      body[data-funnel="cross_agent_operating_kit"] .kit-card h3{font-size:clamp(18px,1.6vw,23px);line-height:1.24;font-weight:610;margin-top:36px;margin-bottom:12px}
-      body[data-funnel="cross_agent_operating_kit"] .kit-card p{font-size:11.5px;line-height:1.7;color:#84918c}
-      body[data-funnel="cross_agent_operating_kit"] .kit-no,body[data-funnel="cross_agent_operating_kit"] .mini-label{font-weight:650;letter-spacing:.1em}
-      body[data-funnel="cross_agent_operating_kit"] .fit-main,body[data-funnel="cross_agent_operating_kit"] .fit-side,body[data-funnel="cross_agent_operating_kit"] .buy-summary{padding:34px}
-      body[data-funnel="cross_agent_operating_kit"] .fit-card h3,body[data-funnel="cross_agent_operating_kit"] .buy-summary h3{font-size:22px;line-height:1.28;font-weight:610}
-      body[data-funnel="cross_agent_operating_kit"] .steps li,body[data-funnel="cross_agent_operating_kit"] .fit-list li{font-size:12px;line-height:1.65;padding-top:15px;padding-bottom:15px}
-      body[data-funnel="cross_agent_operating_kit"] .price-card{padding:30px;min-height:470px}
-      body[data-funnel="cross_agent_operating_kit"] .price-card h3{font-size:18px;font-weight:610}
-      body[data-funnel="cross_agent_operating_kit"] .amount{font-size:44px;font-weight:620;margin-top:22px;margin-bottom:30px}
-      body[data-funnel="cross_agent_operating_kit"] .price-card li{font-size:11.5px;line-height:1.6;padding-top:11px;padding-bottom:11px}
-      body[data-funnel="cross_agent_operating_kit"] .btn{font-size:12px;font-weight:700;min-height:48px;padding-left:17px;padding-right:17px}
-      body[data-funnel="cross_agent_operating_kit"] .principle{padding:clamp(40px,5vw,64px)}
-      body[data-funnel="cross_agent_operating_kit"] .principle h2{max-width:760px;font-size:clamp(36px,4.7vw,58px);line-height:1.08;font-weight:610}
-      html[data-ui-language="ja"] body,html[data-ui-language="ko"] body,html[data-ui-language="zh"] body{letter-spacing:.005em}
-      html[data-ui-language="ja"] .hero h1,html[data-ui-language="ko"] .hero h1,html[data-ui-language="zh"] .hero h1{line-height:1.13;letter-spacing:-.025em}
-      html[data-ui-language="ja"] .section h2,html[data-ui-language="ko"] .section h2,html[data-ui-language="zh"] .section h2{line-height:1.22;letter-spacing:-.02em}
-      .cross-agent-lang-switch{display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:10px;padding:3px;border:1px solid #253039;border-radius:999px;background:#0d1217}
-      .cross-agent-lang-switch button{min-width:34px;height:28px;padding:0 8px;border:0;border-radius:999px;background:transparent;color:#72807a;font:650 10px/1 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer}
-      .cross-agent-lang-switch button:hover{color:#d9e2de}
-      .cross-agent-lang-switch button.active{background:#18221e;color:#c8efe1}
-      #cross-agent-checkout-bar{font-size:12px!important}
-      @media(max-width:680px){
-        body[data-funnel="cross_agent_operating_kit"] .hero{padding-top:44px;padding-bottom:56px;gap:46px}
-        body[data-funnel="cross_agent_operating_kit"] .hero h1{font-size:clamp(40px,11vw,54px);line-height:1.08;margin-bottom:24px}
-        body[data-funnel="cross_agent_operating_kit"] .lead{font-size:15px;line-height:1.72}
-        body[data-funnel="cross_agent_operating_kit"] .section{padding:88px 0}
-        body[data-funnel="cross_agent_operating_kit"] .section h2{font-size:clamp(30px,8.6vw,42px)}
-        body[data-funnel="cross_agent_operating_kit"] .section-head{gap:20px;margin-bottom:38px}
-        body[data-funnel="cross_agent_operating_kit"] .kit-card{padding:24px;min-height:190px}
-        body[data-funnel="cross_agent_operating_kit"] .price-card{padding:26px;min-height:0}
-        .cross-agent-lang-switch{margin-right:4px;gap:2px;padding:2px}
-        .cross-agent-lang-switch button{min-width:30px;height:26px;padding:0 6px;font-size:9px}
-      }
-    `;
-    document.head.appendChild(style);
-  }
-
   function addLanguageSwitcher() {
-    if (location.pathname !== '/cross-agent-operating-kit.html') return;
-    const nav = document.querySelector('.topbar .nav');
-    if (!nav || document.getElementById('cross-agent-language-switcher')) return;
+    if (!isProductPage()) return;
+    const slot = document.getElementById('lang-slot');
+    if (!slot || document.getElementById('cross-agent-language-switcher')) return;
     const wrap = document.createElement('div');
     wrap.id = 'cross-agent-language-switcher';
     wrap.className = 'cross-agent-lang-switch';
+    wrap.setAttribute('role', 'group');
     wrap.setAttribute('aria-label', 'Language');
     [['en','EN'],['ja','JP'],['ko','KR'],['zh','中文']].forEach(function (item) {
       const button = document.createElement('button');
       button.type = 'button';
       button.dataset.langChoice = item[0];
       button.textContent = item[1];
+      button.setAttribute('aria-label', item[1]);
       button.addEventListener('click', function () {
-        translatePage(item[0]);
+        applyLanguage(item[0]);
         const url = new URL(location.href);
-        url.searchParams.set('lang', item[0]);
+        if (item[0] === 'en') url.searchParams.delete('lang');
+        else url.searchParams.set('lang', item[0]);
         history.replaceState(null, '', url.pathname + url.search + url.hash);
       });
       wrap.appendChild(button);
     });
-    const mainLink = nav.querySelector('.nav-link');
-    nav.insertBefore(wrap, mainLink || null);
+    slot.appendChild(wrap);
   }
 
   function applyExplicitRoute() {
@@ -249,7 +174,7 @@
       attribution.route_id = explicitRoute;
       ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function (key) {
         const value = String(params.get(key) || '').trim();
-        if (value) attribution[key] = value.slice(0, 160);
+        if (value) attribution[key] = value.slice(0,160);
       });
       attribution.landing_path = location.pathname;
       try { sessionStorage.setItem(SESSION_KEY, JSON.stringify(attribution)); } catch (_) {}
@@ -267,28 +192,6 @@
     });
   }
 
-  function addCompactCheckoutBar() {
-    if (location.pathname !== '/cross-agent-operating-kit.html') return;
-    if (document.getElementById('cross-agent-checkout-bar')) return;
-    const bar = document.createElement('div');
-    bar.id = 'cross-agent-checkout-bar';
-    bar.setAttribute('aria-label', 'Personal license checkout');
-    bar.style.cssText = 'position:fixed;left:12px;right:12px;bottom:12px;z-index:60;display:flex;align-items:center;justify-content:space-between;gap:12px;max-width:560px;margin:auto;padding:9px 10px 9px 14px;border:1px solid #2d3c36;border-radius:14px;background:rgba(8,12,14,.94);box-shadow:0 14px 42px rgba(0,0,0,.34);backdrop-filter:blur(12px);font:12px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif';
-    const label = document.createElement('strong');
-    label.style.cssText = 'color:#c9d5d0;font-weight:650;white-space:nowrap';
-    label.textContent = 'Personal · $69';
-    const link = document.createElement('a');
-    link.href = PERSONAL_CHECKOUT;
-    link.textContent = 'Checkout →';
-    link.dataset.analyticsId = 'cross_agent_personal_sticky_checkout';
-    link.dataset.product = 'cross_agent_personal';
-    link.setAttribute('data-primary-cta', 'true');
-    link.style.cssText = 'display:inline-flex;min-height:38px;align-items:center;justify-content:center;padding:0 13px;border-radius:9px;background:#eaf5f0;color:#0a1511;text-decoration:none;font-weight:750;white-space:nowrap';
-    bar.appendChild(label);
-    bar.appendChild(link);
-    document.body.appendChild(bar);
-  }
-
   function alignHomepageRoutes() {
     if (location.pathname !== '/' && location.pathname !== '/index.html') return;
     const heroDestination = '/cross-agent-operating-kit.html?utm_source=stratumpraxis&utm_medium=owned_web&utm_campaign=cross_agent_personal&utm_content=home_hero&route_id=owned_home_hero_cross_agent_personal_20260831';
@@ -299,11 +202,11 @@
       hero.textContent = 'Cross-Agent Operating Kit · $69';
       hero.dataset.analyticsId = 'cross_agent_personal_home_hero';
       hero.dataset.product = 'cross_agent_personal';
-      hero.setAttribute('data-primary-cta', 'true');
+      hero.setAttribute('data-primary-cta','true');
     }
     const nav = document.querySelector('#site-nav');
     if (!nav) return;
-    const links = Array.from(nav.querySelectorAll('a[href*="cross-agent-operating-kit.html"]'));
+    const links = Array.from(nav.querySelectorAll('a[href*="cross-agent-operating-kit"]'));
     let keeper = links[0];
     links.slice(1).forEach(function (link) { link.remove(); });
     if (!keeper) {
@@ -316,27 +219,30 @@
     keeper.dataset.product = 'cross_agent_personal';
   }
 
+  function removeLegacyBar() {
+    const old = document.getElementById('cross-agent-checkout-bar');
+    if (old) old.remove();
+  }
+
   function init() {
     applyExplicitRoute();
     alignHomepageRoutes();
-    if (location.pathname === '/cross-agent-operating-kit.html') {
-      injectTypographyRelief();
+    if (isProductPage()) {
+      removeLegacyBar();
       addLanguageSwitcher();
-      translatePage(preferredLanguage());
-      addCompactCheckoutBar();
+      applyLanguage(preferredLanguage());
     }
   }
 
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once: true });
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init, { once:true });
   else init();
 
   window.addEventListener('pageshow', function () {
     applyExplicitRoute();
-    if (location.pathname === '/cross-agent-operating-kit.html') {
-      injectTypographyRelief();
+    if (isProductPage()) {
+      removeLegacyBar();
       addLanguageSwitcher();
-      translatePage(preferredLanguage());
-      addCompactCheckoutBar();
+      applyLanguage(preferredLanguage());
     }
   });
 })();
