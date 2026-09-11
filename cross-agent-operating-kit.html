@@ -1,2 +1,840 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cross-Agent Operating Kit | Stratum Praxis</title><meta name="description" content="Keep your AI team's operating brain portable across Claude Code, Codex, Cursor and other runtimes. Policies, adapters, human gates, guardrails and migration tools."><link rel="canonical" href="https://stratumpraxis.com/cross-agent-operating-kit.html"><meta property="og:title" content="Cross-Agent Operating Kit"><meta property="og:description" content="Models change. Your operating knowledge should not."><meta property="og:type" content="product"><meta property="og:url" content="https://stratumpraxis.com/cross-agent-operating-kit.html"><script defer src="/scos-analytics.js"></script>
-  <script defer src="/cross-agent-attribution.js"></script><style>:root{--b:#070a10;--p:#101722;--l:#263248;--t:#f5f7fb;--m:#9da9ba;--c:#70d9ff;--v:#a58cff}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(900px 520px at 75% -120px,#142d55 0,transparent 68%),var(--b);color:var(--t);font:15.5px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}.w{width:min(1120px,calc(100% - 32px));margin:auto}.top{border-bottom:1px solid #182234;background:#070a10cc;backdrop-filter:blur(16px);position:sticky;top:0;z-index:20}.nav{height:62px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:11px;letter-spacing:.16em;font-weight:900}.nav a{color:var(--m);text-decoration:none}.hero{padding:84px 0 58px;display:grid;grid-template-columns:1.12fr .88fr;gap:44px;align-items:center}.ey{font-size:10px;letter-spacing:.17em;color:var(--c);font-weight:900}.hero h1{font-size:clamp(50px,7.5vw,92px);line-height:.92;letter-spacing:-.055em;margin:.2em 0}.grad{background:linear-gradient(100deg,#fff,#b8dfff 55%,#b9a8ff);-webkit-background-clip:text;background-clip:text;color:transparent}.lead{font-size:20px;color:var(--m);max-width:720px}.actions{display:flex;gap:9px;flex-wrap:wrap;margin:26px 0}.btn{display:inline-flex;min-height:50px;align-items:center;justify-content:center;padding:0 18px;border-radius:12px;text-decoration:none;font-weight:900;border:1px solid var(--l)}.primary{background:#f4f7fb;color:#08101a}.secondary{background:#111927}.diagram{border:1px solid #31415b;border-radius:26px;padding:18px;background:linear-gradient(160deg,#131d2c,#0a0f18);box-shadow:0 30px 90px #0008}.brain{text-align:center;font-size:12px;color:#b9c7d8;padding:18px}.layer{border:1px solid #31415b;border-radius:15px;padding:17px;margin:9px;background:#0e1623}.layer b{display:block;font-size:18px}.layer span{color:var(--m);font-size:12px}.section{padding:65px 0}.section h2{font-size:clamp(34px,5vw,58px);line-height:1;letter-spacing:-.04em;margin:.2em 0}.muted{color:var(--m)}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:13px}.card{border:1px solid var(--l);border-radius:20px;background:linear-gradient(180deg,#111925,#0c111a);padding:22px}.card h3{font-size:22px;margin:.4em 0}.tag{font-size:10px;color:var(--c);letter-spacing:.12em}.fit{display:grid;grid-template-columns:1.15fr .85fr;gap:14px;margin-top:26px}.fit-card{border:1px solid #34445e;border-radius:20px;background:linear-gradient(180deg,#111925,#0c111a);padding:24px}.fit-card h3{font-size:25px;margin:.2em 0 12px}.fit-card ol,.fit-card ul{padding-left:20px;color:#cbd3df}.fit-card li{margin:9px 0}.fit-card.avoid{border-color:#293449;background:#0b111a}.pricing{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.price{border:1px solid #34445e;border-radius:22px;background:#0f1723;padding:24px;display:flex;flex-direction:column}.price.featured{border-color:#7598c8;box-shadow:0 20px 60px #0006}.price h3{font-size:25px}.amount{font-size:48px;font-weight:900;line-height:1;margin:12px 0}.price ul{padding-left:18px;color:#cbd3df;min-height:145px}.price .btn{margin-top:auto}.fine{font-size:11px;color:#7f8b9c}.close{border:1px solid #33445e;border-radius:28px;background:radial-gradient(600px 300px at 80% -20%,#243f74 0,transparent 70%),#0d141f;padding:clamp(28px,5vw,52px);margin:40px 0 90px}.close h2{font-size:clamp(38px,6vw,70px);line-height:.95}.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--l);border:1px solid var(--l);border-radius:16px;overflow:hidden}.strip div{background:#0d141f;padding:16px}.strip b{display:block}.strip span{font-size:11px;color:var(--m)}footer{border-top:1px solid #182234;padding:28px 0 70px;color:var(--m);font-size:11px}@media(max-width:850px){.hero,.grid,.fit,.pricing{grid-template-columns:1fr}.hero{padding-top:50px}.strip{grid-template-columns:1fr 1fr}.price ul{min-height:0}}</style></head><body data-funnel="cross_agent_operating_kit"><header class="top"><div class="w nav"><div class="brand">STRATUM PRAXIS · SYSTEMS LIBRARY</div><a href="/">Main site</a></div></header><main class="w"><section class="hero"><div><div class="ey">PORTABLE AI OPERATING INFRASTRUCTURE · V1.0</div><h1>Keep the <span class="grad">brain.</span><br>Change the agent.</h1><p class="lead">Claude Code today. Codex tomorrow. Cursor for one developer. Your project rules, permissions, state and safety boundaries should survive the switch.</p><div class="actions"><a class="btn primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_hero" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a><a class="btn secondary" href="#inside">See what's inside</a></div><p class="fine">One-time purchase · Verified buyer delivery · Markdown + YAML · No subscription</p><p class="fine"><a href="/agent-lab/?utm_source=stratumpraxis&utm_medium=contextual_entry&utm_campaign=agent_lab_entry&utm_content=cross_agent" data-analytics-id="agent_lab_from_cross_agent" data-product="agent_lab_membership" style="color:#9ddfff;text-decoration:none;font-weight:800">Agent Lab · ongoing field notes →</a></p></div><div class="diagram"><div class="brain">COMPANY BRAIN · OWNED BY YOU</div><div class="layer"><b>BRAIN / POLICY</b><span>Goals · rules · skills · state · permissions · stop conditions</span></div><div class="layer"><b>RUNTIME / HARNESS</b><span>Claude Code · Codex · Cursor · API agents · future runtimes</span></div><div class="layer"><b>EXECUTION</b><span>Repository · cloud · browser · test · publish · deploy</span></div></div></section><div class="strip"><div><b>Portable policy</b><span>One operating brain, multiple runtimes.</span></div><div><b>Human gates</b><span>Define where autonomy stops.</span></div><div><b>Cost guards</b><span>Budget, token, quota and retry controls.</span></div><div><b>Migration ready</b><span>Move state without moving every conversation.</span></div></div><section class="section" id="inside"><div class="ey">THE KIT</div><h2>Not a prompt pack.<br>An operating layer.</h2><p class="muted">Everything is designed to be copied into a real project and adapted, not merely read.</p><div class="grid"><article class="card"><div class="tag">01 · MASTER POLICY</div><h3>AGENTS.md</h3><p class="muted">Goals, source of truth, permissions, human gates, security, failure policy, cost policy, quality gates and Definition of Done.</p></article><article class="card"><div class="tag">02 · ADAPTERS</div><h3>Claude / Codex / Cursor</h3><p class="muted">Keep runtime-specific behavior at the edge instead of duplicating your company policy across tools.</p></article><article class="card"><div class="tag">03 · RELIABILITY</div><h3>Policy Conflict Check</h3><p class="muted">Detect objective, permission, completion, cost, retry, truth, lock-in and duplicate-rule conflicts.</p></article><article class="card"><div class="tag">04 · CONTROL</div><h3>Human Gate Matrix</h3><p class="muted">L0 read-only through L5 human-only. Separate tool access from permission to perform high-impact actions.</p></article><article class="card"><div class="tag">05 · GUARDRAILS</div><h3>Budget / Token / Quota</h3><p class="muted">Explicit retry limits, no silent paid fallback, circuit breakers and safe recovery sequence.</p></article><article class="card"><div class="tag">06 · PORTABILITY</div><h3>Migration + Score</h3><p class="muted">Cross-agent migration checklist, state handoff template and a 50-point policy maturity score.</p></article></div></section><section class="section"><div class="ey">PERSONAL LICENSE · PURCHASE FIT</div><h2>Know what happens after payment.</h2><p class="muted">Personal is the shortest route for one operator applying the kit to their own projects. The files remain editable and local to the project; the buyer workspace is the delivery surface, not a recurring SaaS dependency.</p><div class="fit"><article class="fit-card"><div class="tag">YOUR FIRST IMPLEMENTATION</div><h3>From purchase to a governed agent project.</h3><ol><li>Copy the master <strong>AGENTS.md</strong> policy into the project root.</li><li>Select the Claude, Codex or Cursor adapter used by that project.</li><li>Set Human Gates and budget, token, quota and retry limits.</li><li>Run the policy-conflict check before granting execution access.</li><li>Use the migration checklist and state handoff when changing runtimes.</li></ol></article><article class="fit-card avoid"><div class="tag">CHOOSE PERSONAL IF</div><h3>The license fits this use.</h3><ul><li>One purchaser</li><li>Your own projects</li><li>You want editable Markdown + YAML</li><li>You do not need client implementation rights</li></ul><p class="fine">Need to use the kit in client work? Choose Commercial or Agency below. Personal is not the correct license for that use.</p></article></div></section><section class="section"><div class="ey">BEFORE CHECKOUT</div><h2>Know exactly what you are buying.</h2><p class="muted">The v1.0 kit is a reusable operating layer for real projects: master policy, runtime adapters, conflict checks, human-gate rules, cost guardrails and migration/state handoff. It is delivered through verified buyer access after Stripe confirms payment.</p><div class="strip"><div><b>6 operating components</b><span>Policy, adapters, reliability, control, guardrails, portability.</span></div><div><b>Markdown + YAML</b><span>Editable project files, not a locked SaaS dashboard.</span></div><div><b>One-time purchase</b><span>No subscription for the v1.0 kit.</span></div><div><b>Buyer access</b><span>Payment confirmation routes to the verified access flow.</span></div></div></section><section class="section" id="pricing"><div class="ey">ONE-TIME LICENSES</div><h2>Buy once. Own your operating layer.</h2><div class="pricing"><article class="price"><h3>Personal</h3><div class="amount">$69</div><ul><li>One purchaser</li><li>Your own projects</li><li>Full v1.0 operating kit</li><li>Verified buyer workspace</li></ul><a data-analytics-id="cross_agent_operating_kit_checkout_2" class="btn primary" data-primary-cta data-product="cross_agent_personal" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 one-time →</a></article><article class="price featured"><div class="tag">BEST FOR OPERATORS</div><h3>Commercial</h3><div class="amount">$149</div><ul><li>One business / operator</li><li>Client implementation use</li><li>Full v1.0 operating kit</li><li>Verified buyer workspace</li></ul><a data-analytics-id="cross_agent_operating_kit_checkout_3" class="btn primary" data-primary-cta data-product="cross_agent_commercial" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U">Get Commercial →</a></article><article class="price"><h3>Agency</h3><div class="amount">$299</div><ul><li>One agency / team</li><li>Multiple client projects</li><li>Full v1.0 operating kit</li><li>Verified buyer workspace</li></ul><a data-analytics-id="cross_agent_operating_kit_checkout_4" class="btn primary" data-primary-cta data-product="cross_agent_agency" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V">Get Agency →</a></article></div><p class="fine">Source-kit redistribution, resale, public mirroring and sublicensing are not included. Product names referenced describe compatibility/use context only; this product is independent and is not an official product of those vendors.</p></section><section class="close"><div class="ey">THE PRINCIPLE</div><h2>Models are replaceable.<br>Your operating knowledge is an asset.</h2><p class="lead">Keep Brain, Policy, Skills and State on your side of the boundary.</p><a class="btn primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a></section></main><footer><div class="w">© 2026 Stratum Praxis · Cross-Agent Operating Kit v1.0</div></footer></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Cross-Agent Operating Kit | Stratum Praxis</title>
+  <meta name="description" content="Keep your AI team's operating brain portable across Claude Code, Codex, Cursor and other runtimes. Policies, adapters, human gates, guardrails and migration tools.">
+  <link rel="canonical" href="https://stratumpraxis.com/cross-agent-operating-kit.html">
+  <meta property="og:title" content="Cross-Agent Operating Kit">
+  <meta property="og:description" content="Models change. Your operating knowledge should not.">
+  <meta property="og:type" content="product">
+  <meta property="og:url" content="https://stratumpraxis.com/cross-agent-operating-kit.html">
+  <script defer src="/scos-analytics.js"></script>
+  <script defer src="/cross-agent-attribution.js"></script>
+  <style>
+    :root{
+      color-scheme:dark;
+      --ink:#080b0f;
+      --ink-2:#0d1117;
+      --surface:#11161d;
+      --surface-2:#151b23;
+      --surface-3:#1a222c;
+      --line:#27313d;
+      --line-soft:#1b242e;
+      --text:#f3f6f4;
+      --muted:#9ca8a4;
+      --muted-2:#75817d;
+      --mint:#9de8cf;
+      --mint-2:#c3f5e5;
+      --lav:#c8c0f4;
+      --blue:#a8caec;
+      --amber:#e2c995;
+      --radius-sm:10px;
+      --radius-md:16px;
+      --radius-lg:24px;
+      --radius-xl:32px;
+      --shadow-lg:0 28px 80px rgba(0,0,0,.34);
+      --max:1180px;
+    }
+
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{
+      margin:0;
+      background:
+        radial-gradient(900px 560px at 82% -8%,rgba(157,232,207,.08),transparent 68%),
+        radial-gradient(760px 480px at 8% 10%,rgba(200,192,244,.055),transparent 68%),
+        var(--ink);
+      color:var(--text);
+      font:15.5px/1.68 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      -webkit-font-smoothing:antialiased;
+      text-rendering:optimizeLegibility;
+    }
+
+    a{color:inherit}
+    strong{color:#eef4f1}
+    ::selection{background:rgba(157,232,207,.23);color:#fff}
+
+    .shell{width:min(var(--max),calc(100% - 40px));margin-inline:auto}
+
+    .topbar{
+      position:sticky;
+      top:0;
+      z-index:30;
+      border-bottom:1px solid rgba(255,255,255,.06);
+      background:rgba(8,11,15,.78);
+      backdrop-filter:blur(18px) saturate(120%);
+    }
+    .nav{
+      min-height:66px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:20px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      color:#dce4e0;
+      text-decoration:none;
+      font-size:11px;
+      letter-spacing:.15em;
+      font-weight:780;
+      white-space:nowrap;
+    }
+    .brand-mark{
+      width:29px;
+      aspect-ratio:1;
+      border:1px solid #344239;
+      border-radius:8px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(145deg,#172019,#0d1210);
+      box-shadow:inset 0 1px rgba(255,255,255,.05);
+    }
+    .brand-mark::before{
+      content:"";
+      width:10px;
+      height:10px;
+      border:1px solid var(--mint);
+      border-radius:2px;
+      transform:rotate(45deg);
+      opacity:.9;
+    }
+    .nav-link{
+      color:var(--muted);
+      text-decoration:none;
+      font-size:12px;
+      font-weight:650;
+      transition:color .18s ease;
+    }
+    .nav-link:hover{color:var(--text)}
+
+    .hero{
+      min-height:680px;
+      padding:76px 0 62px;
+      display:grid;
+      grid-template-columns:minmax(0,1.06fr) minmax(420px,.94fr);
+      gap:64px;
+      align-items:center;
+    }
+    .kicker{
+      display:inline-flex;
+      align-items:center;
+      gap:9px;
+      margin-bottom:22px;
+      color:var(--mint);
+      font-size:10px;
+      line-height:1;
+      letter-spacing:.15em;
+      font-weight:800;
+      text-transform:uppercase;
+    }
+    .kicker::before{
+      content:"";
+      width:22px;
+      height:1px;
+      background:currentColor;
+      opacity:.75;
+    }
+    h1,h2,h3,p{margin-top:0}
+    .hero h1{
+      max-width:760px;
+      margin:0 0 24px;
+      font-size:clamp(52px,6.2vw,84px);
+      line-height:.96;
+      letter-spacing:-.055em;
+      font-weight:720;
+      text-wrap:balance;
+    }
+    .hero h1 em{
+      color:var(--mint-2);
+      font:inherit;
+    }
+    .lead{
+      max-width:690px;
+      margin-bottom:28px;
+      color:#aeb8b4;
+      font-size:clamp(17px,1.55vw,21px);
+      line-height:1.55;
+      text-wrap:pretty;
+    }
+    .actions{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 17px}
+    .btn{
+      min-height:50px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
+      padding:0 18px;
+      border:1px solid var(--line);
+      border-radius:12px;
+      text-decoration:none;
+      font-size:13px;
+      font-weight:780;
+      transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease;
+    }
+    .btn:hover{transform:translateY(-1px)}
+    .btn-primary{
+      border-color:#d3eee5;
+      background:#e9f6f1;
+      color:#0a1511;
+      box-shadow:0 10px 28px rgba(135,224,193,.12);
+    }
+    .btn-primary:hover{background:#f5fbf8;box-shadow:0 14px 34px rgba(135,224,193,.17)}
+    .btn-secondary{background:#11171d;color:#d5ded9}
+    .btn-secondary:hover{border-color:#3b4955;background:#151c23}
+    .fine{margin:0;color:var(--muted-2);font-size:11px;line-height:1.6}
+    .lab-link{margin-top:9px}
+    .lab-link a{color:#a9ddd0;text-decoration:none;font-weight:720}
+
+    .system-panel{
+      position:relative;
+      padding:20px;
+      border:1px solid #29343b;
+      border-radius:var(--radius-xl);
+      background:
+        linear-gradient(180deg,rgba(255,255,255,.025),transparent 25%),
+        #0d1217;
+      box-shadow:var(--shadow-lg),inset 0 1px rgba(255,255,255,.04);
+      overflow:hidden;
+      isolation:isolate;
+    }
+    .system-panel::after{
+      content:"";
+      position:absolute;
+      width:300px;
+      height:300px;
+      right:-150px;
+      top:-150px;
+      border-radius:50%;
+      background:rgba(157,232,207,.055);
+      filter:blur(6px);
+      z-index:-1;
+    }
+    .panel-head{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:15px;
+      padding:3px 4px 18px;
+      color:#aeb9b4;
+      font-size:10px;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      font-weight:780;
+    }
+    .status{
+      display:inline-flex;
+      align-items:center;
+      gap:7px;
+      letter-spacing:.04em;
+      color:#8da099;
+    }
+    .status::before{
+      content:"";
+      width:6px;
+      height:6px;
+      border-radius:50%;
+      background:var(--mint);
+      box-shadow:0 0 0 4px rgba(157,232,207,.08);
+    }
+    .brain-core{
+      position:relative;
+      border:1px solid #33413c;
+      border-radius:20px;
+      background:linear-gradient(145deg,#142019,#11171a);
+      padding:23px;
+      margin-bottom:11px;
+      overflow:hidden;
+    }
+    .brain-core::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:linear-gradient(90deg,transparent,rgba(157,232,207,.045),transparent);
+      transform:translateX(-100%);
+      animation:signal 6s ease-in-out infinite;
+      pointer-events:none;
+    }
+    .mini-label{color:#7f918a;font-size:9px;letter-spacing:.13em;text-transform:uppercase;font-weight:780}
+    .brain-core h3{margin:7px 0 5px;font-size:23px;letter-spacing:-.025em}
+    .brain-core p{margin:0;color:#9eaba5;font-size:12px}
+    .connector{
+      height:20px;
+      width:1px;
+      background:linear-gradient(var(--mint),#34413d);
+      margin:0 auto;
+      position:relative;
+      opacity:.55;
+    }
+    .connector::after{
+      content:"";
+      position:absolute;
+      bottom:-1px;
+      left:-3px;
+      width:7px;
+      height:7px;
+      border-right:1px solid #70857d;
+      border-bottom:1px solid #70857d;
+      transform:rotate(45deg);
+    }
+    .runtime-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+    .runtime{
+      padding:14px 12px;
+      border:1px solid #263039;
+      border-radius:12px;
+      background:#10161b;
+      min-height:75px;
+    }
+    .runtime b{display:block;margin-bottom:5px;font-size:12px;color:#d9e0dc}
+    .runtime span{display:block;color:#7d8a85;font-size:10px;line-height:1.4}
+    .execution{
+      margin-top:11px;
+      padding:14px 16px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      border:1px dashed #334038;
+      border-radius:12px;
+      color:#8e9d97;
+      font-size:10px;
+      letter-spacing:.05em;
+      text-transform:uppercase;
+    }
+    .execution strong{font-size:11px;letter-spacing:.08em}
+
+    .proof-strip{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      border:1px solid var(--line-soft);
+      border-radius:18px;
+      background:#0c1014;
+      overflow:hidden;
+    }
+    .proof{
+      position:relative;
+      padding:19px 20px;
+      min-height:100px;
+      border-right:1px solid var(--line-soft);
+    }
+    .proof:last-child{border-right:0}
+    .proof-index{display:block;margin-bottom:12px;color:#65716d;font-size:9px;letter-spacing:.13em}
+    .proof b{display:block;margin-bottom:3px;font-size:13px;color:#dce3df}
+    .proof span{color:#7f8b86;font-size:11px;line-height:1.45}
+
+    .section{padding:104px 0}
+    .section-tight{padding-top:78px}
+    .section-head{
+      display:grid;
+      grid-template-columns:minmax(0,.74fr) minmax(320px,.45fr);
+      gap:54px;
+      align-items:end;
+      margin-bottom:42px;
+    }
+    .section h2{
+      margin:0;
+      max-width:760px;
+      font-size:clamp(38px,4.7vw,62px);
+      line-height:1.02;
+      letter-spacing:-.045em;
+      font-weight:690;
+      text-wrap:balance;
+    }
+    .section-intro{margin:0;color:#8f9b96;font-size:14px;max-width:480px}
+
+    .kit-grid{
+      display:grid;
+      grid-template-columns:repeat(12,1fr);
+      gap:12px;
+    }
+    .kit-card{
+      position:relative;
+      min-height:240px;
+      padding:24px;
+      border:1px solid var(--line-soft);
+      border-radius:var(--radius-md);
+      background:linear-gradient(180deg,#11171d,#0e1318);
+      overflow:hidden;
+      transition:border-color .2s ease,transform .2s ease,background .2s ease;
+    }
+    .kit-card:hover{transform:translateY(-2px);border-color:#334039;background:linear-gradient(180deg,#131a20,#0f151a)}
+    .kit-card:nth-child(1),.kit-card:nth-child(2){grid-column:span 6;min-height:270px}
+    .kit-card:nth-child(n+3){grid-column:span 3}
+    .kit-no{color:#66736e;font-size:10px;letter-spacing:.13em}
+    .kit-card h3{margin:29px 0 9px;font-size:clamp(20px,2vw,27px);line-height:1.1;letter-spacing:-.025em}
+    .kit-card p{margin:0;color:#8e9a95;font-size:12px;max-width:420px}
+    .kit-icon{
+      position:absolute;
+      right:22px;
+      top:22px;
+      width:34px;
+      height:34px;
+      border:1px solid #2b3933;
+      border-radius:10px;
+      display:grid;
+      place-items:center;
+      color:var(--mint);
+      background:#111a16;
+    }
+    .kit-icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+
+    .fit-shell{
+      display:grid;
+      grid-template-columns:minmax(0,1.22fr) minmax(320px,.78fr);
+      gap:14px;
+      align-items:stretch;
+    }
+    .fit-card{
+      border:1px solid var(--line-soft);
+      border-radius:var(--radius-lg);
+      background:#0e1318;
+      overflow:hidden;
+    }
+    .fit-main{padding:31px}
+    .fit-side{padding:31px;background:linear-gradient(180deg,#101813,#0d1411);border-color:#25332d}
+    .fit-card h3{margin:7px 0 24px;font-size:26px;letter-spacing:-.03em}
+    .steps{margin:0;padding:0;list-style:none;counter-reset:step}
+    .steps li{
+      counter-increment:step;
+      display:grid;
+      grid-template-columns:34px 1fr;
+      gap:12px;
+      align-items:start;
+      padding:14px 0;
+      border-top:1px solid #1d252c;
+      color:#aab4b0;
+      font-size:13px;
+    }
+    .steps li::before{
+      content:"0" counter(step);
+      color:#74827c;
+      font-size:10px;
+      letter-spacing:.08em;
+      padding-top:3px;
+    }
+    .fit-list{padding:0;margin:0 0 22px;list-style:none}
+    .fit-list li{
+      position:relative;
+      padding:9px 0 9px 23px;
+      color:#afbbb5;
+      font-size:13px;
+    }
+    .fit-list li::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:16px;
+      width:7px;
+      height:7px;
+      border-radius:50%;
+      background:var(--mint);
+      box-shadow:0 0 0 4px rgba(157,232,207,.07);
+    }
+
+    .buying-proof{
+      display:grid;
+      grid-template-columns:1.15fr .85fr;
+      gap:14px;
+      align-items:stretch;
+    }
+    .buy-summary{
+      padding:32px;
+      border:1px solid var(--line-soft);
+      border-radius:var(--radius-lg);
+      background:#0e1318;
+    }
+    .buy-summary h3{margin:7px 0 12px;font-size:30px;letter-spacing:-.035em}
+    .buy-summary p{margin:0;color:#909c97;max-width:680px}
+    .specs{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:1px;
+      border:1px solid var(--line-soft);
+      border-radius:var(--radius-lg);
+      background:var(--line-soft);
+      overflow:hidden;
+    }
+    .spec{padding:21px;background:#0c1115;min-height:116px}
+    .spec b{display:block;margin:8px 0 4px;font-size:13px}
+    .spec span{color:#7e8a85;font-size:10.5px;line-height:1.45}
+
+    .pricing-wrap{
+      margin-top:40px;
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      align-items:stretch;
+    }
+    .price-card{
+      position:relative;
+      display:flex;
+      flex-direction:column;
+      min-height:500px;
+      padding:28px;
+      border:1px solid var(--line-soft);
+      border-radius:var(--radius-lg);
+      background:#0d1217;
+      overflow:hidden;
+    }
+    .price-card.featured{
+      border-color:#456358;
+      background:
+        radial-gradient(440px 240px at 50% -8%,rgba(157,232,207,.09),transparent 70%),
+        #101713;
+      box-shadow:0 24px 70px rgba(0,0,0,.25);
+    }
+    .badge{
+      align-self:flex-start;
+      margin-bottom:18px;
+      padding:6px 9px;
+      border:1px solid #365147;
+      border-radius:999px;
+      color:#aee8d5;
+      background:#122019;
+      font-size:9px;
+      letter-spacing:.1em;
+      font-weight:780;
+      text-transform:uppercase;
+    }
+    .price-card h3{margin:0;font-size:20px;letter-spacing:-.02em}
+    .amount{margin:18px 0 25px;font-size:52px;line-height:1;font-weight:690;letter-spacing:-.05em}
+    .amount small{font-size:11px;color:#6f7c77;font-weight:600;letter-spacing:0}
+    .price-card ul{margin:0 0 30px;padding:0;list-style:none}
+    .price-card li{
+      position:relative;
+      padding:9px 0 9px 22px;
+      border-bottom:1px solid #192127;
+      color:#99a6a0;
+      font-size:12px;
+    }
+    .price-card li::before{
+      content:"";
+      position:absolute;
+      left:0;
+      top:15px;
+      width:7px;
+      height:4px;
+      border-left:1px solid var(--mint);
+      border-bottom:1px solid var(--mint);
+      transform:rotate(-45deg);
+    }
+    .price-card .btn{width:100%;margin-top:auto}
+    .price-note{margin-top:18px;color:#727f7a;font-size:10.5px;line-height:1.55}
+
+    .principle{
+      position:relative;
+      margin:24px 0 92px;
+      padding:clamp(34px,5vw,60px);
+      border:1px solid #2c3934;
+      border-radius:var(--radius-xl);
+      background:
+        linear-gradient(115deg,rgba(157,232,207,.06),transparent 36%),
+        #0d1311;
+      overflow:hidden;
+    }
+    .principle::after{
+      content:"BRAIN / POLICY / SKILLS / STATE";
+      position:absolute;
+      right:-22px;
+      bottom:-9px;
+      color:rgba(213,236,226,.035);
+      font-size:clamp(42px,7vw,96px);
+      line-height:.75;
+      letter-spacing:-.06em;
+      font-weight:800;
+      white-space:nowrap;
+      pointer-events:none;
+    }
+    .principle h2{
+      position:relative;
+      z-index:1;
+      max-width:850px;
+      margin:0 0 20px;
+      font-size:clamp(42px,5.4vw,70px);
+      line-height:.99;
+      letter-spacing:-.05em;
+      font-weight:690;
+    }
+    .principle .lead{position:relative;z-index:1;margin-bottom:28px;font-size:17px}
+    .principle .btn{position:relative;z-index:1}
+
+    footer{border-top:1px solid var(--line-soft);padding:28px 0 62px;color:#65716d;font-size:10px}
+
+    @keyframes signal{0%,30%{transform:translateX(-110%)}65%,100%{transform:translateX(110%)}}
+
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr;gap:42px;min-height:auto;padding-top:64px}
+      .system-panel{max-width:720px}
+      .section-head{grid-template-columns:1fr;gap:18px;align-items:start}
+      .kit-card:nth-child(n){grid-column:span 6}
+      .fit-shell,.buying-proof{grid-template-columns:1fr}
+      .pricing-wrap{grid-template-columns:1fr 1fr}
+      .price-card:last-child{grid-column:1 / -1}
+      .price-card{min-height:0}
+    }
+
+    @media (max-width:680px){
+      .shell{width:min(100% - 28px,var(--max))}
+      .nav{min-height:60px}
+      .brand{font-size:9px;letter-spacing:.11em}
+      .brand-mark{width:26px}
+      .nav-link{font-size:11px}
+      .hero{padding:48px 0 42px}
+      .hero h1{font-size:clamp(46px,13vw,64px);line-height:.96}
+      .lead{font-size:16px}
+      .actions{display:grid;grid-template-columns:1fr}
+      .btn{width:100%;min-height:52px}
+      .system-panel{padding:14px;border-radius:22px}
+      .runtime-row{grid-template-columns:1fr}
+      .runtime{min-height:0}
+      .execution{align-items:flex-start;flex-direction:column}
+      .proof-strip{grid-template-columns:1fr 1fr}
+      .proof{border-bottom:1px solid var(--line-soft)}
+      .proof:nth-child(2){border-right:0}
+      .proof:nth-child(n+3){border-bottom:0}
+      .section{padding:76px 0}
+      .section h2{font-size:clamp(36px,10vw,50px)}
+      .kit-card:nth-child(n){grid-column:1 / -1;min-height:210px}
+      .fit-main,.fit-side,.buy-summary{padding:24px}
+      .specs{grid-template-columns:1fr}
+      .pricing-wrap{grid-template-columns:1fr}
+      .price-card:last-child{grid-column:auto}
+      .principle{margin-bottom:72px;padding:30px 24px}
+      .principle::after{display:none}
+    }
+
+    @media (prefers-reduced-motion:reduce){
+      html{scroll-behavior:auto}
+      *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+    }
+  </style>
+</head>
+<body data-funnel="cross_agent_operating_kit">
+  <header class="topbar">
+    <div class="shell nav">
+      <a class="brand" href="/" aria-label="Stratum Praxis main site">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>STRATUM PRAXIS · SYSTEMS LIBRARY</span>
+      </a>
+      <a class="nav-link" href="/">Main site</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="shell">
+      <section class="hero">
+        <div>
+          <div class="kicker">Portable AI operating infrastructure · v1.0</div>
+          <h1>Keep the <em>brain.</em><br>Change the agent.</h1>
+          <p class="lead">Claude Code today. Codex tomorrow. Cursor for one developer. Your project rules, permissions, state and safety boundaries should survive the switch.</p>
+          <div class="actions">
+            <a class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_hero" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a>
+            <a class="btn btn-secondary" href="#inside">See what's inside</a>
+          </div>
+          <p class="fine">One-time purchase · Verified buyer delivery · Markdown + YAML · No subscription</p>
+          <p class="fine lab-link"><a href="/agent-lab/?utm_source=stratumpraxis&utm_medium=contextual_entry&utm_campaign=agent_lab_entry&utm_content=cross_agent" data-analytics-id="agent_lab_from_cross_agent" data-product="agent_lab_membership">Agent Lab · ongoing field notes →</a></p>
+        </div>
+
+        <div class="system-panel" aria-label="Cross-agent operating layer diagram">
+          <div class="panel-head">
+            <span>Operating architecture</span>
+            <span class="status">Portable</span>
+          </div>
+          <div class="brain-core">
+            <div class="mini-label">Owned by you</div>
+            <h3>Company Brain / Policy</h3>
+            <p>Goals · rules · skills · state · permissions · stop conditions</p>
+          </div>
+          <div class="connector" aria-hidden="true"></div>
+          <div class="runtime-row">
+            <div class="runtime"><b>Claude Code</b><span>Runtime adapter</span></div>
+            <div class="runtime"><b>Codex</b><span>Runtime adapter</span></div>
+            <div class="runtime"><b>Cursor / API</b><span>Runtime adapter</span></div>
+          </div>
+          <div class="execution"><strong>Execution layer</strong><span>Repository · cloud · browser · test · publish · deploy</span></div>
+        </div>
+      </section>
+
+      <div class="proof-strip" aria-label="Key operating benefits">
+        <div class="proof"><span class="proof-index">01</span><b>Portable policy</b><span>One operating brain, multiple runtimes.</span></div>
+        <div class="proof"><span class="proof-index">02</span><b>Human gates</b><span>Define exactly where autonomy stops.</span></div>
+        <div class="proof"><span class="proof-index">03</span><b>Cost guards</b><span>Budget, token, quota and retry controls.</span></div>
+        <div class="proof"><span class="proof-index">04</span><b>Migration ready</b><span>Move state without moving every conversation.</span></div>
+      </div>
+
+      <section class="section" id="inside">
+        <div class="section-head">
+          <div>
+            <div class="kicker">The kit</div>
+            <h2>Not a prompt pack.<br>An operating layer.</h2>
+          </div>
+          <p class="section-intro">Everything is designed to be copied into a real project and adapted, not merely read.</p>
+        </div>
+
+        <div class="kit-grid">
+          <article class="kit-card">
+            <span class="kit-no">01 · MASTER POLICY</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v15H4V3h3Z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg></span>
+            <h3>AGENTS.md</h3>
+            <p>Goals, source of truth, permissions, human gates, security, failure policy, cost policy, quality gates and Definition of Done.</p>
+          </article>
+          <article class="kit-card">
+            <span class="kit-no">02 · ADAPTERS</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span>
+            <h3>Claude / Codex / Cursor</h3>
+            <p>Keep runtime-specific behavior at the edge instead of duplicating your company policy across tools.</p>
+          </article>
+          <article class="kit-card">
+            <span class="kit-no">03 · RELIABILITY</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><path d="M12 22a10 10 0 1 1 10-10"/></svg></span>
+            <h3>Policy Conflict Check</h3>
+            <p>Detect objective, permission, completion, cost, retry, truth, lock-in and duplicate-rule conflicts.</p>
+          </article>
+          <article class="kit-card">
+            <span class="kit-no">04 · CONTROL</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Z"/><path d="M9 12h6M12 9v6"/></svg></span>
+            <h3>Human Gate Matrix</h3>
+            <p>L0 read-only through L5 human-only. Separate tool access from permission to perform high-impact actions.</p>
+          </article>
+          <article class="kit-card">
+            <span class="kit-no">05 · GUARDRAILS</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span>
+            <h3>Budget / Token / Quota</h3>
+            <p>Explicit retry limits, no silent paid fallback, circuit breakers and safe recovery sequence.</p>
+          </article>
+          <article class="kit-card">
+            <span class="kit-no">06 · PORTABILITY</span>
+            <span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3M18 7l-3 3M6 17l3-3"/></svg></span>
+            <h3>Migration + Score</h3>
+            <p>Cross-agent migration checklist, state handoff template and a 50-point policy maturity score.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Personal license · purchase fit</div>
+            <h2>Know what happens after payment.</h2>
+          </div>
+          <p class="section-intro">Personal is the shortest route for one operator applying the kit to their own projects. The files remain editable and local to the project; the buyer workspace is the delivery surface, not a recurring SaaS dependency.</p>
+        </div>
+
+        <div class="fit-shell">
+          <article class="fit-card fit-main">
+            <div class="mini-label">Your first implementation</div>
+            <h3>From purchase to a governed agent project.</h3>
+            <ol class="steps">
+              <li><span>Copy the master <strong>AGENTS.md</strong> policy into the project root.</span></li>
+              <li><span>Select the Claude, Codex or Cursor adapter used by that project.</span></li>
+              <li><span>Set Human Gates and budget, token, quota and retry limits.</span></li>
+              <li><span>Run the policy-conflict check before granting execution access.</span></li>
+              <li><span>Use the migration checklist and state handoff when changing runtimes.</span></li>
+            </ol>
+          </article>
+          <article class="fit-card fit-side">
+            <div class="mini-label">Choose Personal if</div>
+            <h3>The license fits this use.</h3>
+            <ul class="fit-list">
+              <li>One purchaser</li>
+              <li>Your own projects</li>
+              <li>You want editable Markdown + YAML</li>
+              <li>You do not need client implementation rights</li>
+            </ul>
+            <p class="fine">Need to use the kit in client work? Choose Commercial or Agency below. Personal is not the correct license for that use.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section section-tight">
+        <div class="section-head">
+          <div>
+            <div class="kicker">Before checkout</div>
+            <h2>Know exactly what you are buying.</h2>
+          </div>
+          <p class="section-intro">The v1.0 kit is a reusable operating layer for real projects: master policy, runtime adapters, conflict checks, human-gate rules, cost guardrails and migration/state handoff. It is delivered through verified buyer access after Stripe confirms payment.</p>
+        </div>
+
+        <div class="buying-proof">
+          <article class="buy-summary">
+            <div class="mini-label">Delivery model</div>
+            <h3>Owned files, not another locked dashboard.</h3>
+            <p>The operating layer stays editable and portable. The buyer workspace verifies access; the implementation itself lives with your project.</p>
+          </article>
+          <div class="specs">
+            <div class="spec"><span class="mini-label">Components</span><b>6 operating components</b><span>Policy, adapters, reliability, control, guardrails, portability.</span></div>
+            <div class="spec"><span class="mini-label">Format</span><b>Markdown + YAML</b><span>Editable project files, not a locked SaaS dashboard.</span></div>
+            <div class="spec"><span class="mini-label">Billing</span><b>One-time purchase</b><span>No subscription for the v1.0 kit.</span></div>
+            <div class="spec"><span class="mini-label">Delivery</span><b>Buyer access</b><span>Payment confirmation routes to the verified access flow.</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section" id="pricing">
+        <div class="section-head">
+          <div>
+            <div class="kicker">One-time licenses</div>
+            <h2>Buy once. Own your operating layer.</h2>
+          </div>
+          <p class="section-intro">Choose the license by how the kit will be used. The operating components stay the same; implementation rights change.</p>
+        </div>
+
+        <div class="pricing-wrap">
+          <article class="price-card">
+            <h3>Personal</h3>
+            <div class="amount">$69 <small>one-time</small></div>
+            <ul>
+              <li>One purchaser</li>
+              <li>Your own projects</li>
+              <li>Full v1.0 operating kit</li>
+              <li>Verified buyer workspace</li>
+            </ul>
+            <a data-analytics-id="cross_agent_operating_kit_checkout_2" class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 one-time →</a>
+          </article>
+
+          <article class="price-card featured">
+            <div class="badge">Best for operators</div>
+            <h3>Commercial</h3>
+            <div class="amount">$149 <small>one-time</small></div>
+            <ul>
+              <li>One business / operator</li>
+              <li>Client implementation use</li>
+              <li>Full v1.0 operating kit</li>
+              <li>Verified buyer workspace</li>
+            </ul>
+            <a data-analytics-id="cross_agent_operating_kit_checkout_3" class="btn btn-primary" data-primary-cta data-product="cross_agent_commercial" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U">Get Commercial →</a>
+          </article>
+
+          <article class="price-card">
+            <h3>Agency</h3>
+            <div class="amount">$299 <small>one-time</small></div>
+            <ul>
+              <li>One agency / team</li>
+              <li>Multiple client projects</li>
+              <li>Full v1.0 operating kit</li>
+              <li>Verified buyer workspace</li>
+            </ul>
+            <a data-analytics-id="cross_agent_operating_kit_checkout_4" class="btn btn-primary" data-primary-cta data-product="cross_agent_agency" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V">Get Agency →</a>
+          </article>
+        </div>
+        <p class="price-note">Source-kit redistribution, resale, public mirroring and sublicensing are not included. Product names referenced describe compatibility/use context only; this product is independent and is not an official product of those vendors.</p>
+      </section>
+
+      <section class="principle">
+        <div class="kicker">The principle</div>
+        <h2>Models are replaceable.<br>Your operating knowledge is an asset.</h2>
+        <p class="lead">Keep Brain, Policy, Skills and State on your side of the boundary.</p>
+        <a class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Get Personal — $69 →</a>
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell">© 2026 Stratum Praxis · Cross-Agent Operating Kit v1.0</div>
+  </footer>
+</body>
+</html>
