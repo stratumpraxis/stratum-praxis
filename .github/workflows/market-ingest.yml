@@ -1,9 +1,8 @@
 name: MARKET external signal ingest
 
-# MARKET runtime. External dispatch is accepted when available, but the system does
-# not depend on Make being able to call GitHub. A bounded hourly pulse independently
-# reads GitHub, PostHog and Stripe so MARKET keeps moving even when the event bus is
-# unavailable.
+# MARKET runtime. External dispatch is accepted when available, but MARKET does not
+# depend on the Make -> GitHub hop. A bounded hourly pulse independently reads the
+# live sources and persists state through a short-lived GitHub OIDC identity.
 on:
   repository_dispatch:
     types: [market_signal]
@@ -34,6 +33,7 @@ on:
 
 permissions:
   contents: read
+  id-token: write
 
 concurrency:
   group: market-ingest-${{ github.event_name }}
@@ -54,8 +54,6 @@ jobs:
       - name: Historical evidence is append-only
         run: node --test market/test/evidence-integrity.test.mjs
 
-  # Broader acquisition/site checks remain useful, but they are not allowed to stop
-  # live revenue-signal processing.
   acquisition-audit:
     name: Acquisition audit (non-blocking for MARKET runtime)
     if: github.event_name == 'pull_request'
@@ -74,10 +72,9 @@ jobs:
                       acquisition/media-engine/test/*.test.mjs \
                       acquisition/opportunity-engine/test/*.test.mjs
 
-  # Autonomous pulse. Each source is isolated so one missing credential does not
-  # prevent the other sources from being observed. The durable-store guard remains:
-  # without Supabase/Make state credentials the run reports BLOCKED rather than
-  # pretending it persisted production state.
+  # Autonomous runtime. Each source is isolated so one source credential can fail
+  # without stopping the others. Durable state is held in Supabase; the runner uses
+  # the local adapter only as a short-lived working copy between hydrate and sync.
   pulse:
     name: MARKET pulse / ${{ matrix.source }}
     needs: contracts
@@ -89,18 +86,56 @@ jobs:
         source: [github, posthog, stripe]
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    env:
+      MARKET_STATE_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/market-state-github
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Get short-lived MARKET state credential
+        shell: bash
+        run: |
+          set -euo pipefail
+          response=$(curl -fsSL \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=stratum-market-state")
+          token=$(printf '%s' "$response" | node -e '
+            let s="";
+            process.stdin.on("data",d=>s+=d).on("end",()=>{
+              const v=JSON.parse(s).value;
+              if(!v) process.exit(1);
+              process.stdout.write(v);
+            });
+          ')
+          echo "::add-mask::$token"
+          echo "MARKET_OIDC_TOKEN=$token" >> "$GITHUB_ENV"
+
+      - name: Hydrate durable MARKET state
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p market/state
+          curl -fsS -X POST "$MARKET_STATE_URL" \
+            -H "Authorization: Bearer $MARKET_OIDC_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data '{"op":"list"}' > /tmp/market-state.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const remote = JSON.parse(fs.readFileSync('/tmp/market-state.json','utf8'));
+          if (!Array.isArray(remote.signals)) throw new Error('durable MARKET state did not return signals[]');
+          fs.writeFileSync('market/state/signals.local.json', JSON.stringify({
+            store_kind: 'LOCAL_FILE',
+            warning: 'Ephemeral working copy hydrated from the durable Supabase MARKET ledger.',
+            updated_at: new Date().toISOString(),
+            signals: remote.signals
+          }, null, 2) + '\n');
+          console.log(`hydrated ${remote.signals.length} durable MARKET signals`);
+          NODE
+
       - name: Read ${{ matrix.source }}
         env:
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          MARKET_LEDGER_TABLE: ${{ vars.MARKET_LEDGER_TABLE }}
-          MARKET_STATE_ENDPOINT: ${{ secrets.MARKET_STATE_ENDPOINT }}
-          MARKET_STATE_SECRET: ${{ secrets.MARKET_STATE_SECRET }}
           GITHUB_TOKEN: ${{ github.token }}
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
           POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID }}
@@ -115,14 +150,11 @@ jobs:
             --source "$SOURCE" \
             --owner "${{ github.repository_owner }}" \
             --repo "${{ github.event.repository.name }}" \
+            --local \
             --json | tee "/tmp/market-$SOURCE.json"
           code=${PIPESTATUS[0]}
           set -e
 
-          if [ "$code" = '2' ]; then
-            echo '::warning::MARKET durable state store is not configured; source read cannot be persisted yet.'
-            exit 0
-          fi
           if [ "$code" != '0' ]; then
             echo "::warning::MARKET source=$SOURCE returned code=$code; other sources continue independently."
             exit "$code"
@@ -130,24 +162,53 @@ jobs:
 
           node -e '
             const fs = require("fs");
-            const p = `/tmp/market-${process.env.SOURCE}.json`;
-            const trace = JSON.parse(fs.readFileSync(p, "utf8"));
+            const trace = JSON.parse(fs.readFileSync(`/tmp/market-${process.env.SOURCE}.json`, "utf8"));
             const revenue = Number(trace.verified_revenue ?? 0);
             if (revenue > 0 && !trace.payment_evidence_present) process.exit(21);
             if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) process.exit(22);
             console.log(`OK source=${process.env.SOURCE} verified_revenue=${revenue}`);
           '
+
+      - name: Sync durable MARKET state
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f market/state/signals.local.json || exit 0
+          node - <<'NODE' > /tmp/market-sync.json
+          const fs = require('fs');
+          const doc = JSON.parse(fs.readFileSync('market/state/signals.local.json','utf8'));
+          const signals = (doc.signals ?? []).map((signal) => {
+            const copy = {...signal};
+            delete copy.store_kind;
+            return copy;
+          });
+          process.stdout.write(JSON.stringify({op:'put_many', signals}));
+          NODE
+          count=$(node -e "const d=require('/tmp/market-sync.json'); console.log(d.signals.length)")
+          if [ "$count" = '0' ]; then
+            echo 'durable MARKET state unchanged (0 signals)'
+            exit 0
+          fi
+          curl -fsS -X POST "$MARKET_STATE_URL" \
+            -H "Authorization: Bearer $MARKET_OIDC_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @/tmp/market-sync.json > /tmp/market-sync-result.json
+          node -e "const r=require('/tmp/market-sync-result.json'); if(!r.ok) process.exit(1); console.log('durable MARKET sync count='+r.count)"
+
       - name: Upload source trace
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: market-pulse-${{ matrix.source }}-${{ github.run_id }}
-          path: /tmp/market-${{ matrix.source }}.json
+          path: |
+            /tmp/market-${{ matrix.source }}.json
+            /tmp/market-sync-result.json
           if-no-files-found: ignore
           retention-days: 14
 
-  # Event/manual path. This remains separate from the pulse so event payloads keep
-  # their strict refusal rules and manual diagnostics stay explicit.
+  # Event/manual path remains available independently. It is not required for the
+  # hourly autonomous pulse and therefore cannot stop MARKET from moving.
   ingest:
     name: Ingest external signal
     needs: contracts
@@ -215,7 +276,7 @@ jobs:
           set -e
 
           if [ "$code" = '2' ]; then
-            echo '::warning::MARKET durable state store is not configured; no production signal was persisted.'
+            echo '::warning::manual/event path has no durable store credential; autonomous pulse remains active.'
             exit 0
           fi
           exit "$code"
@@ -231,19 +292,7 @@ jobs:
             const revenue = Number(trace.verified_revenue ?? 0);
             if (revenue > 0 && !trace.payment_evidence_present) process.exit(21);
             if (revenue > 0 && (trace.payment_refs ?? []).length !== revenue) process.exit(22);
-            console.log(`OK verified_revenue=${revenue} refs=${JSON.stringify(trace.payment_refs ?? [])}`);
-          '
-
-      - name: Report dispatch refusals
-        if: success() && ((github.event_name == 'repository_dispatch' && !github.event.client_payload.source) || inputs.test_payload != '')
-        shell: bash
-        run: |
-          set -euo pipefail
-          node -e '
-            const fs = require("fs");
-            const trace = JSON.parse(fs.readFileSync("/tmp/market-run.json", "utf8"));
-            for (const r of trace.refused ?? []) console.log(`::warning::dispatch refused (${r.reason}): ${r.detail ?? r.id}`);
-            console.log(`${(trace.refused ?? []).length} refused, ${trace.signals_new ?? 0} accepted`);
+            console.log(`OK verified_revenue=${revenue}`);
           '
 
       - name: Upload run trace
