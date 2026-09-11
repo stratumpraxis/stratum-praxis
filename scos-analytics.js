@@ -279,7 +279,16 @@
     document.head.appendChild(script);
   }
 
-  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); loadRevenueRouter(); }
+  function loadAgentLabPortal() {
+    if (document.querySelector('script[data-sp-agent-lab-portal]')) return;
+    const script = document.createElement('script');
+    script.src = '/agent-lab-portal.js';
+    script.defer = true;
+    script.dataset.spAgentLabPortal = 'true';
+    document.head.appendChild(script);
+  }
+
+  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); loadRevenueRouter(); loadAgentLabPortal(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
