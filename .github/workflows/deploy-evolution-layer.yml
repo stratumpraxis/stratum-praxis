@@ -1,0 +1,103 @@
+name: Deploy Evolution Layer
+
+on:
+  workflow_run:
+    workflows: ["Deploy Free Public Site"]
+    types: [completed]
+  workflow_dispatch:
+
+concurrency:
+  group: stratum-praxis-evolution-layer
+  cancel-in-progress: true
+
+jobs:
+  evolve:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Prepare evolved static site
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf _site
+          mkdir -p _site
+          rsync -a ./ _site/ \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '_site' \
+            --exclude 'worker' \
+            --exclude 'node_modules' \
+            --exclude 'revenue-os' \
+            --exclude 'CNAME'
+
+          python - <<'PY'
+          from pathlib import Path
+          tag = '<script defer src="/stratum-evolution-engine.js?v=20260911" data-stratum-evolution></script>'
+          count = 0
+          for p in Path('_site').rglob('*.html'):
+              text = p.read_text(encoding='utf-8', errors='ignore')
+              if 'data-stratum-evolution' in text or '</head>' not in text:
+                  continue
+              text = text.replace('</head>', f'  {tag}\n</head>', 1)
+              p.write_text(text, encoding='utf-8')
+              count += 1
+          print(f'Injected evolution engine into {count} HTML files')
+          PY
+
+          test -s _site/stratum-evolution-engine.js
+          grep -Fq 'data-stratum-evolution' _site/index.html
+          grep -Fq 'data-stratum-evolution' _site/product-router.html
+          grep -Fq 'data-stratum-evolution' _site/live-lab.html
+          grep -Fq 'data-stratum-evolution' _site/money-resilience/index.html
+          grep -Fq 'data-stratum-evolution' _site/72-hour-household-readiness/index.html
+
+      - name: Deploy evolved site
+        working-directory: _site
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main | tee /tmp/evolution-deploy.log
+          deploy_url="$(grep -oE 'https://[a-z0-9]+\.stratum-praxis-site\.pages\.dev' /tmp/evolution-deploy.log | tail -n 1)"
+          test -n "$deploy_url"
+          echo "EVOLUTION_BASE=$deploy_url" >> "$GITHUB_ENV"
+          echo "Evolution deployment: $deploy_url"
+
+      - name: Verify evolution coverage
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="${EVOLUTION_BASE:?Missing evolved deployment URL}"
+          routes=(
+            / /product-router.html /live-lab.html /buyer-workspace.html /systems/
+            /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-value-realization-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html
+            /b2b/ /workflow-audit.html /sample-workflow-audit.html
+            /ai-agent-economics-calculator.html /agent-control-auditor.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html
+            /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /rustchain-bounty-radar.html
+            /money-resilience/ /72-hour-household-readiness/
+          )
+          for path in "${routes[@]}"; do
+            code="$(curl -L -sS -o /tmp/evo-page.html -w '%{http_code}' "$BASE$path")"
+            if [ "$code" != "200" ]; then
+              echo "Route failed: $path -> $code"; exit 1
+            fi
+            if ! grep -Fq 'data-stratum-evolution' /tmp/evo-page.html; then
+              echo "Evolution layer missing: $path"; exit 1
+            fi
+            echo "Evolution OK: $path"
+          done
+
+          curl -L -sS "$BASE/stratum-evolution-engine.js?v=20260911" -o /tmp/evolution.js
+          grep -Fq '__STRATUM_EVOLUTION_ENGINE__' /tmp/evolution.js
+          grep -Fq 'evolution_quality_snapshot' /tmp/evolution.js
+          grep -Fq 'evolution_action' /tmp/evolution.js
+          grep -Fq 'evolution_link_health' /tmp/evolution.js
+          echo 'Design / Quality / Revenue / Motion / Evolution layer -> PASS'
