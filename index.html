@@ -3,32 +3,35 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Stratum Praxis | B2B Revenue Intelligence & Decision System</title>
-  <meta name="description" content="B2B decision intelligence for workflow friction, AI and SaaS cost, agent economics, revenue routing and professional workflow audits.">
+  <title>Stratum Praxis | AI Spend, Workflow & Agent Decision Intelligence</title>
+  <meta name="description" content="Measure AI and SaaS spend, workflow friction and agent economics before another renewal, automation project or AI expansion decision. Free evidence first; fixed-scope specialist audit when justified.">
   <meta name="robots" content="index,follow,max-image-preview:large">
-  <meta name="theme-color" content="#f5f1ea">
+  <meta name="theme-color" content="#111618">
   <link rel="canonical" href="https://stratumpraxis.com/">
   <meta property="og:type" content="website">
-  <meta property="og:title" content="Stratum Praxis — B2B Decision Workspace">
-  <meta property="og:description" content="Diagnose the business question, create free evidence, and escalate only when the decision justifies it.">
+  <meta property="og:title" content="Stratum Praxis — Evidence before more AI spend">
+  <meta property="og:description" content="Measure AI spend, workflow friction and agent economics. Start free. Escalate only when the evidence supports it.">
   <meta property="og:url" content="https://stratumpraxis.com/">
   <meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/stratum-office-v4.css">
+  <link rel="stylesheet" href="/stratum-revenue-home.css?v=1">
+  <script>try{const r=localStorage.getItem('sp-office-route');if(!['cost','workflow','agent'].includes(r))localStorage.setItem('sp-office-route','cost')}catch(e){}</script>
   <script src="/scos-analytics.js" defer></script>
   <script defer src="/cross-agent-attribution.js"></script>
   <script src="/stratum-office-v4.js" defer></script>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/","email":"stratumpraxis@gmail.com","description":"B2B intelligence, decision tools and workflow audit services."}</script>
+  <script src="/stratum-revenue-home.js?v=1" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/","email":"stratumpraxis@gmail.com","description":"B2B AI spend, workflow and agent decision intelligence with free evidence tools, self-service implementation products and fixed-scope workflow audits."}</script>
 </head>
-<body data-page="stratum_home_v4" data-product="workflow_audit" data-theme="workflow">
+<body data-page="stratum_revenue_home_v1" data-product="workflow_audit" data-theme="cost">
   <a class="skip" href="#workspace">Skip to workspace</a>
+
   <header class="office-header">
     <a class="brand" href="/" aria-label="Stratum Praxis home">
       <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
-      <span class="brand-copy"><strong>Stratum Praxis</strong><small>AI Office · B2B Decision Workspace</small></span>
+      <span class="brand-copy"><strong>Stratum Praxis</strong><small>AI Office · B2B Decision Intelligence</small></span>
     </a>
     <nav class="office-nav" aria-label="Primary">
-      <a href="https://stratum-offer-optimizer.pages.dev/" data-i18n="navDiagnose" data-analytics-id="nav_offer_optimizer">Diagnose</a>
       <a href="/live-lab.html" data-i18n="navFree" data-analytics-id="nav_live_lab">Free Tools</a>
       <a href="/product-router.html" data-i18n="navProducts" data-analytics-id="nav_product_router">Products</a>
       <a href="/workflow-audit.html" data-i18n="navAudit" data-analytics-id="nav_workflow_audit">Audit</a>
@@ -43,122 +46,190 @@
     </div>
   </header>
 
-  <main id="workspace" class="workspace-shell">
-    <section class="workspace-intro" aria-labelledby="workspace-title">
-      <div class="intro-copy">
-        <p class="micro-label"><span class="status-dot"></span><span data-i18n="workspaceLabel">DECISION WORKSPACE</span></p>
-        <h1 id="workspace-title" data-i18n="workspaceTitle">What are we deciding today?</h1>
-        <p class="intro-note" data-i18n="workspaceNote">Choose one business question. Stratum routes you to the smallest useful next step.</p>
+  <main id="workspace" class="workspace-shell revenue-home">
+    <section class="rh-hero" aria-labelledby="rh-title">
+      <div class="rh-hero-copy">
+        <p class="rh-eyebrow"><i></i><span data-rh="eyebrow">B2B AI SPEND · WORKFLOW · AGENT CONTROL</span></p>
+        <h1 id="rh-title"><span data-rh="heroA">Stop buying AI</span> <span data-rh="heroB">without knowing</span> <em data-rh="heroC">what pays back.</em></h1>
+        <p class="rh-lead" data-rh="lead">Measure AI and SaaS spend, workflow friction, and agent economics before another renewal, automation project, or expansion decision.</p>
+        <div class="rh-actions">
+          <a class="rh-primary" href="/ai-saas-waste-calculator.html" data-analytics-id="home_hero_free_scan"><span data-rh="ctaFree">Run a free evidence scan</span><b>→</b></a>
+          <a class="rh-secondary" href="/workflow-audit.html" data-analytics-id="home_hero_audit"><span data-rh="ctaAudit">See the $499 specialist audit</span><b>↗</b></a>
+        </div>
+        <div class="rh-trustline" aria-label="Service facts">
+          <span data-rh="trust1">No signup to start</span>
+          <span data-rh="trust2">No invented ROI</span>
+          <span data-rh="trust3">No discovery call for audit</span>
+        </div>
       </div>
-      <div class="workspace-status" aria-label="Workspace status">
-        <div><small data-i18n="statusEntry">ENTRY</small><strong data-i18n="statusEntryValue">Free evidence first</strong></div>
-        <div><small data-i18n="statusData">DATA</small><strong data-i18n="statusDataValue">Your inputs only</strong></div>
-        <div><small data-i18n="statusEscalation">ESCALATION</small><strong>$499</strong></div>
-      </div>
+
+      <aside class="rh-hero-panel" aria-label="ROI calculator">
+        <div class="rh-value-card">
+          <div class="rh-card-head"><span data-rh="panelLabel">VALUE LEAK SNAPSHOT</span><b class="rh-live"><i></i><span data-rh="panelLive">YOUR INPUTS</span></b></div>
+          <h2 data-rh="panelTitle">Put a number on the decision.</h2>
+          <p data-rh="panelNote">Use your own assumptions. Stratum calculates; it does not fabricate outcomes.</p>
+          <div class="rh-mini-inputs">
+            <label><span data-i18n="hoursSaved">Hours saved / month</span><input id="roi-hours" type="number" min="0" step="0.5" inputmode="decimal" placeholder="—"></label>
+            <label><span data-i18n="hourValue">Value / hour (USD)</span><input id="roi-value" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
+            <label><span data-i18n="monthlyCost">Monthly cost (USD)</span><input id="roi-cost" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
+          </div>
+          <div class="rh-roi-output roi-result" data-roi-state="empty">
+            <div><small data-i18n="netValue">NET VALUE</small><strong id="roi-net">—</strong></div>
+            <div><small>ROI</small><strong id="roi-percent">—</strong></div>
+            <span id="roi-note" data-i18n="roiEmpty">Enter all three values to calculate.</span>
+          </div>
+        </div>
+      </aside>
     </section>
 
-    <section class="launcher-wrap" aria-label="Decision launcher">
-      <div class="launcher" role="tablist" aria-label="Decision routes">
-        <button class="route active" type="button" role="tab" aria-selected="true" data-route="workflow" data-analytics-id="home_route_workflow">
-          <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z"/><path d="M10 7.5h4M7.5 10v4M16.5 10v4M10 16.5h4"/></svg></span>
-          <span><b data-i18n="routeWorkflow">Workflow</b><small data-i18n="routeWorkflowNote">Friction & automation</small></span><i>01</i>
-        </button>
-        <button class="route" type="button" role="tab" aria-selected="false" data-route="cost" data-analytics-id="home_route_cost">
+    <section class="rh-proofbar" aria-label="Stratum operating model">
+      <div><small data-rh="proof1a">ENTRY</small><strong data-rh="proof1b">Free evidence first</strong></div>
+      <div><small data-rh="proof2a">FOCUS</small><strong data-rh="proof2b">3 decision lanes</strong></div>
+      <div><small data-rh="proof3a">PAID</small><strong data-rh="proof3b">Self-service routes</strong></div>
+      <div><small data-rh="proof4a">ESCALATION</small><strong data-rh="proof4b">$499 fixed-scope audit</strong></div>
+    </section>
+
+    <section class="rh-section" aria-labelledby="decision-lanes-title">
+      <div class="rh-section-head">
+        <div><p data-rh="section1">START WITH THE BUSINESS QUESTION</p><h2 id="decision-lanes-title" data-rh="section1Title">Three places AI investment usually needs a decision.</h2></div>
+        <p data-rh="section1Note">Choose the signal first. Products and professional support only appear after the problem is visible.</p>
+      </div>
+
+      <div class="rh-lanes launcher" role="tablist" aria-label="Decision routes">
+        <button class="route active" type="button" role="tab" aria-selected="true" data-route="cost" data-analytics-id="home_route_cost">
           <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18V8M9 18V5M14 18v-7M19 18V3"/><path d="M3 18h18"/></svg></span>
-          <span><b data-i18n="routeCost">Cost</b><small data-i18n="routeCostNote">AI & SaaS spend</small></span><i>02</i>
+          <span><b data-i18n="routeCost">Cost</b><small data-i18n="routeCostNote">AI & SaaS spend</small></span><i>01</i>
+        </button>
+        <button class="route" type="button" role="tab" aria-selected="false" data-route="workflow" data-analytics-id="home_route_workflow">
+          <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 5h5v5H5zM14 5h5v5h-5zM5 14h5v5H5zM14 14h5v5h-5z"/><path d="M10 7.5h4M7.5 10v4M16.5 10v4M10 16.5h4"/></svg></span>
+          <span><b data-i18n="routeWorkflow">Workflow</b><small data-i18n="routeWorkflowNote">Friction & automation</small></span><i>02</i>
         </button>
         <button class="route" type="button" role="tab" aria-selected="false" data-route="agent" data-analytics-id="home_route_agent">
           <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5 5l3 3M16 16l3 3M19 5l-3 3M8 16l-3 3"/></svg></span>
           <span><b data-i18n="routeAgent">Agent</b><small data-i18n="routeAgentNote">Economics & control</small></span><i>03</i>
         </button>
-        <button class="route" type="button" role="tab" aria-selected="false" data-route="revenue" data-analytics-id="home_route_revenue">
-          <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 16l5-5 4 3 7-8"/><path d="M16 6h4v4"/><path d="M4 20h16"/></svg></span>
-          <span><b data-i18n="routeRevenue">Revenue</b><small data-i18n="routeRevenueNote">Value & routing</small></span><i>04</i>
-        </button>
-        <button class="route" type="button" role="tab" aria-selected="false" data-route="audit" data-analytics-id="home_route_audit">
-          <span class="route-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10v18H7z"/><path d="M9.5 8h5M9.5 12h5M9.5 16h3"/><path d="M5 6H3v15h12v-2"/></svg></span>
-          <span><b data-i18n="routeAudit">Audit</b><small data-i18n="routeAuditNote">Professional review</small></span><i>05</i>
-        </button>
+      </div>
+
+      <div class="rh-decision-grid">
+        <article class="module decision-module" data-animate-panel>
+          <div class="module-head"><span data-i18n="todayDecision">TODAY'S DECISION</span><b class="signal-chip" data-route-chip>COST</b></div>
+          <div class="decision-content">
+            <div class="decision-copy">
+              <p class="module-kicker" data-route-kind>FREE CALCULATOR</p>
+              <h2 data-route-question>Is AI or SaaS spend producing enough operating value?</h2>
+              <p data-route-description>Make cost assumptions and waste exposure visible before renewal, expansion or another purchase.</p>
+              <div class="decision-next">
+                <div><small data-i18n="recommendedNext">RECOMMENDED NEXT</small><strong data-route-destination>AI & SaaS Waste Calculator</strong></div>
+                <a class="action-btn" data-route-link href="/ai-saas-waste-calculator.html" data-analytics-id="home_recommended_action"><span data-i18n="openRoute">Open route</span><b>→</b></a>
+              </div>
+            </div>
+            <div class="decision-map" aria-hidden="true">
+              <div class="map-orbit"></div>
+              <div class="map-step active"><span>01</span><b data-i18n="mapSignal">Signal</b></div><div class="map-link"><i></i></div>
+              <div class="map-step"><span>02</span><b data-i18n="mapMeasure">Measure</b></div><div class="map-link"><i></i></div>
+              <div class="map-step"><span>03</span><b data-i18n="mapAct">Act</b></div>
+              <div class="map-cursor" data-route-symbol>$</div>
+            </div>
+          </div>
+          <div class="decision-foot">
+            <div><span></span><small data-i18n="factNoSignup">No signup required to start</small></div>
+            <div><span></span><small data-i18n="factNoFake">No invented ROI or proof</small></div>
+            <div><span></span><small data-i18n="factOneNext">One recommended next step</small></div>
+          </div>
+        </article>
+
+        <aside class="rh-reason-card">
+          <small data-rh="reasonLabel">WHY THIS ROUTE</small>
+          <h3 data-rh="reasonTitle">Evidence before escalation.</h3>
+          <p data-rh="reasonNote">Stratum is built to prevent a common failure: buying another AI tool before the economic or operational problem is clear.</p>
+          <div class="rh-reason-list">
+            <div><span>01</span><p><strong data-rh="reason1">Measure the leak</strong><small data-rh="reason1n">Cost, delay, rework, overlap or weak utilization.</small></p></div>
+            <div><span>02</span><p><strong data-rh="reason2">Make the decision legible</strong><small data-rh="reason2n">Use your inputs and transparent assumptions.</small></p></div>
+            <div><span>03</span><p><strong data-rh="reason3">Escalate only when justified</strong><small data-rh="reason3n">Self-service when enough; specialist review when material.</small></p></div>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="command-deck" aria-live="polite">
-      <article class="module decision-module" data-animate-panel>
-        <div class="module-head"><span data-i18n="todayDecision">TODAY'S DECISION</span><b class="signal-chip" data-route-chip>WORKFLOW</b></div>
-        <div class="decision-content">
-          <div class="decision-copy">
-            <p class="module-kicker" data-route-kind>FREE DIAGNOSTIC</p>
-            <h2 data-route-question>Where is this recurring workflow losing time or money?</h2>
-            <p data-route-description>Start with one workflow. Identify rework, handoffs and delay before choosing automation.</p>
-            <div class="decision-next">
-              <div><small data-i18n="recommendedNext">RECOMMENDED NEXT</small><strong data-route-destination>Workflow Decision Diagnostic</strong></div>
-              <a class="action-btn" data-route-link href="/b2b/" data-analytics-id="home_recommended_action"><span data-i18n="openRoute">Open route</span><b>→</b></a>
-            </div>
-          </div>
-          <div class="decision-map" aria-hidden="true">
-            <div class="map-orbit"></div>
-            <div class="map-step active"><span>01</span><b data-i18n="mapSignal">Signal</b></div><div class="map-link"><i></i></div>
-            <div class="map-step"><span>02</span><b data-i18n="mapMeasure">Measure</b></div><div class="map-link"><i></i></div>
-            <div class="map-step"><span>03</span><b data-i18n="mapAct">Act</b></div>
-            <div class="map-cursor" data-route-symbol>WF</div>
-          </div>
-        </div>
-        <div class="decision-foot">
-          <div><span></span><small data-i18n="factNoSignup">No signup required to start</small></div>
-          <div><span></span><small data-i18n="factNoFake">No invented ROI or proof</small></div>
-          <div><span></span><small data-i18n="factOneNext">One recommended next step</small></div>
-        </div>
-      </article>
-
-      <aside class="side-stack">
-        <article class="module roi-module">
-          <div class="module-head"><span data-i18n="roiSnapshot">ROI SNAPSHOT</span><b class="quiet-badge" data-i18n="yourInputs">YOUR INPUTS</b></div>
-          <div class="roi-inputs">
-            <label><span data-i18n="hoursSaved">Hours saved / month</span><input id="roi-hours" type="number" min="0" step="0.5" inputmode="decimal" placeholder="—"></label>
-            <label><span data-i18n="hourValue">Value / hour (USD)</span><input id="roi-value" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
-            <label class="wide"><span data-i18n="monthlyCost">Monthly cost (USD)</span><input id="roi-cost" type="number" min="0" step="1" inputmode="decimal" placeholder="—"></label>
-          </div>
-          <div class="roi-result" data-roi-state="empty"><div><small data-i18n="netValue">NET VALUE</small><strong id="roi-net">—</strong></div><div><small>ROI</small><strong id="roi-percent">—</strong></div><span id="roi-note" data-i18n="roiEmpty">Enter all three values to calculate.</span></div>
+    <section class="rh-section" aria-labelledby="revenue-path-title">
+      <div class="rh-section-head">
+        <div><p data-rh="ladderLabel">REVENUE PATH</p><h2 id="revenue-path-title" data-rh="ladderTitle">One funnel. Three levels of commitment.</h2></div>
+        <p data-rh="ladderNote">The free layer proves relevance. Paid layers exist to execute a decision—not to create more browsing.</p>
+      </div>
+      <div class="rh-ladder">
+        <article class="rh-step">
+          <div class="rh-step-index"><span>01 · SIGNAL</span><b class="rh-step-badge" data-rh="step1Badge">FREE</b></div>
+          <h3 data-rh="step1Title">Measure</h3>
+          <p data-rh="step1Text">Use diagnostics and calculators to expose spend, friction or agent economics before buying.</p>
+          <div class="rh-step-meta"><span data-rh="step1Meta1">No signup</span><span data-rh="step1Meta2">Immediate</span></div>
+          <a href="/live-lab.html" data-analytics-id="home_ladder_free"><span data-rh="step1Cta">Open free tools</span><b>→</b></a>
         </article>
-
-        <article class="module pulse-module">
-          <div class="module-head"><span data-i18n="evidencePulse">EVIDENCE PULSE</span><b class="quiet-badge" data-i18n="realData">REAL DATA ONLY</b></div>
-          <div class="pulse-content"><span class="pulse-visual" aria-hidden="true"><i></i><i></i><i></i><b></b></span><div><strong data-i18n="pulseTitle">Nothing fabricated</strong><p data-i18n="pulseNote">Metrics appear only after you provide inputs or open a route.</p></div></div>
-          <div class="pulse-legend"><span><i></i><b data-i18n="signal">Signal</b></span><span><i></i><b data-i18n="meaning">Meaning</b></span><span><i></i><b data-i18n="action">Action</b></span></div>
+        <article class="rh-step">
+          <div class="rh-step-index"><span>02 · ACTION</span><b class="rh-step-badge" data-rh="step2Badge">SELF-SERVICE</b></div>
+          <h3 data-rh="step2Title">Implement</h3>
+          <p data-rh="step2Text">When the evidence is clear, route into the smallest existing B2B implementation, ROI, safety or governance asset.</p>
+          <div class="rh-step-meta"><span data-rh="step2Meta1">Existing products</span><span data-rh="step2Meta2">No forced bundle</span></div>
+          <a href="/product-router.html" data-analytics-id="home_ladder_products"><span data-rh="step2Cta">Find the right paid route</span><b>→</b></a>
         </article>
-      </aside>
+        <article class="rh-step featured">
+          <div class="rh-step-index"><span>03 · ESCALATE</span><b class="rh-step-badge" data-rh="step3Badge">PROFESSIONAL</b></div>
+          <h3 data-rh="step3Title">Get a written decision</h3>
+          <p data-rh="step3Text">For one recurring workflow with material cost, delay or coordination burden. Fixed scope, asynchronous by default.</p>
+          <div class="rh-step-meta"><span data-rh="step3Meta1">1 workflow</span><span data-rh="step3Meta2">3-business-day target</span></div>
+          <a href="/workflow-audit.html" data-analytics-id="home_ladder_audit"><span data-rh="step3Cta">Review the $499 audit</span><b>→</b></a>
+        </article>
+      </div>
     </section>
 
-    <section class="continuity-grid">
+    <section class="rh-audit-band" aria-label="Workflow Audit">
+      <div>
+        <small data-rh="auditLabel">PROFESSIONAL ESCALATION</small>
+        <h2 data-rh="auditTitle">One material workflow. One written decision.</h2>
+        <p data-rh="auditText">Workflow map, leak analysis, ranked opportunities, ROI scenarios, risk checkpoints and a 30-day action plan—without open-ended consulting.</p>
+      </div>
+      <div class="rh-audit-price">
+        <span data-rh="auditFixed">FIXED PRICE</span><strong>$499</strong><small>USD</small>
+        <a class="action-btn" href="/workflow-audit.html" data-analytics-id="home_audit_band"><span data-rh="auditCta">Review audit →</span></a>
+      </div>
+    </section>
+
+    <section class="rh-section" aria-labelledby="deliverables-title">
+      <div class="rh-section-head">
+        <div><p data-rh="receiveLabel">WHAT THE AUDIT TURNS INTO</p><h2 id="deliverables-title" data-rh="receiveTitle">Decision artifacts your team can actually use.</h2></div>
+        <p data-rh="receiveNote">The high-value offer is deliberately concrete: map the workflow, expose leaks, rank choices, define controls, then decide what happens next.</p>
+      </div>
+      <div class="rh-deliverables">
+        <article class="rh-deliverable"><span>01</span><strong data-rh="d1">Workflow Map</strong><p data-rh="d1n">Trigger, owners, systems and handoffs.</p></article>
+        <article class="rh-deliverable"><span>02</span><strong data-rh="d2">Leak Analysis</strong><p data-rh="d2n">Rework, delay and value loss.</p></article>
+        <article class="rh-deliverable"><span>03</span><strong data-rh="d3">Ranked Opportunities</strong><p data-rh="d3n">Impact, effort, reversibility and risk.</p></article>
+        <article class="rh-deliverable"><span>04</span><strong data-rh="d4">ROI Scenarios</strong><p data-rh="d4n">Transparent assumptions, not invented precision.</p></article>
+        <article class="rh-deliverable"><span>05</span><strong data-rh="d5">Human Checkpoints</strong><p data-rh="d5n">Where authority and review should remain.</p></article>
+        <article class="rh-deliverable"><span>06</span><strong data-rh="d6">30-Day Action Plan</strong><p data-rh="d6n">Test, validate, scale, redesign or stop.</p></article>
+      </div>
+    </section>
+
+    <section class="rh-recent-wrap" aria-label="Recent route">
       <article class="module recent-module">
         <div class="module-head"><span data-i18n="recentDecision">RECENT DECISION</span><button class="text-button" id="clear-history" type="button" data-i18n="clear">Clear</button></div>
         <div id="recent-empty" class="recent-empty"><span class="empty-mark">↗</span><div><strong data-i18n="nothingOpened">Nothing opened yet</strong><p data-i18n="nothingOpenedNote">Routes opened from this workspace appear here on this device.</p></div></div>
         <div id="recent-list" class="recent-list" hidden></div>
       </article>
-      <article class="module route-logic-module">
-        <div class="module-head"><span data-i18n="revenueRoute">REVENUE ROUTE</span><b class="quiet-badge" data-i18n="routeLogicBadge">EVIDENCE → ACTION</b></div>
-        <ol class="route-flow">
-          <li><span>01</span><div><b data-i18n="flowProblem">Problem</b><small data-i18n="flowProblemNote">Choose the business question</small></div></li>
-          <li><span>02</span><div><b data-i18n="flowFree">Free evidence</b><small data-i18n="flowFreeNote">Diagnostic / calculator</small></div></li>
-          <li><span>03</span><div><b data-i18n="flowDecision">Decision</b><small data-i18n="flowDecisionNote">Make the signal legible</small></div></li>
-          <li><span>04</span><div><b data-i18n="flowAction">Recommended action</b><small data-i18n="flowActionNote">Use the smallest fitting route</small></div></li>
-          <li class="paid"><span>05</span><div><b data-i18n="flowPaid">Paid escalation</b><small data-i18n="flowPaidNote">Only when justified</small></div></li>
-        </ol>
-      </article>
     </section>
 
-    <section class="four-paths" aria-labelledby="paths-title">
-      <div class="section-heading"><div><p class="micro-label" data-i18n="startHere">START HERE</p><h2 id="paths-title" data-i18n="pathsTitle">Four clear ways into Stratum.</h2></div><p data-i18n="pathsNote">Free, self-service paid and professional support are separated so the next step stays obvious.</p></div>
-      <div class="path-grid">
-        <a href="https://stratum-offer-optimizer.pages.dev/" class="path-card diagnose" data-analytics-id="home_path_diagnose"><span class="path-index">01</span><div><small data-i18n="pathDiagnoseType">START · FREE</small><strong data-i18n="pathDiagnose">Start B2B diagnosis</strong><p data-i18n="pathDiagnoseNote">Identify the workflow or decision that deserves attention first.</p></div><b>↗</b></a>
-        <a href="/live-lab.html" class="path-card" data-analytics-id="home_path_lab"><span class="path-index">02</span><div><small data-i18n="pathFreeType">EXPLORE · FREE</small><strong data-i18n="pathFree">Try free tools</strong><p data-i18n="pathFreeNote">Use calculators and diagnostics before buying.</p></div><b>↗</b></a>
-        <a href="/product-router.html" class="path-card paid" data-analytics-id="home_path_products"><span class="path-index">03</span><div><small data-i18n="pathProductsType">SELF-SERVICE · PAID</small><strong data-i18n="pathProducts">View B2B products</strong><p data-i18n="pathProductsNote">Match evidence to an existing implementation or governance asset.</p></div><b>↗</b></a>
-        <a href="/workflow-audit.html" class="path-card pro" data-analytics-id="home_path_audit"><span class="path-index">04</span><div><small data-i18n="pathAuditType">PROFESSIONAL · $499</small><strong data-i18n="pathAudit">Request specialist audit</strong><p data-i18n="pathAuditNote">Escalate one material recurring workflow for a fixed-scope written decision.</p></div><b>↗</b></a>
+    <section class="rh-final" aria-label="Start with evidence">
+      <div>
+        <small data-rh="finalLabel">TURN SIGNALS INTO A DECISION</small>
+        <h2 data-rh="finalTitle">Do not buy more AI until you know what the next dollar is supposed to do.</h2>
+        <p data-rh="finalText">Start free if the problem is still fuzzy. Use a paid implementation route when the evidence is enough. Escalate to the $499 audit when the workflow is material.</p>
       </div>
+      <a class="rh-primary" href="/live-lab.html" data-analytics-id="home_final_free"><span data-rh="finalCta">Start with free evidence</span><b>→</b></a>
     </section>
   </main>
 
-  <footer class="office-footer"><div><strong>Stratum Praxis</strong><small data-i18n="footerLine">B2B Intelligence · Decision · Revenue</small></div><nav><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="mailto:stratumpraxis@gmail.com" data-i18n="contact">Contact</a></nav><span>© 2026</span></footer>
-  <a class="mobile-start" data-route-link-mobile href="/b2b/" data-analytics-id="home_mobile_start"><span data-i18n="mobileStart">Start free</span><b>→</b></a>
+  <footer class="office-footer">
+    <div><strong>Stratum Praxis</strong><small data-i18n="footerLine">B2B Intelligence · Decision · Revenue</small></div>
+    <nav><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a><a href="mailto:stratumpraxis@gmail.com" data-i18n="contact">Contact</a></nav><span>© 2026</span>
+  </footer>
+  <a class="mobile-start" data-route-link-mobile href="/ai-saas-waste-calculator.html" data-analytics-id="home_mobile_start"><span data-i18n="mobileStart">Start free</span><b>→</b></a>
 </body>
 </html>
