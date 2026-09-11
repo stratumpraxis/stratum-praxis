@@ -1,0 +1,95 @@
+/* Stratum Praxis — Motion Engine v1
+   Kinetic depth, causal motion, and interaction energy without flattening product identities. */
+:root{
+  --spm-accent:#78dfb5;
+  --spm-accent2:#9fc7ff;
+  --spm-ease:cubic-bezier(.2,.78,.2,1);
+  --spm-ease-spring:cubic-bezier(.16,1,.3,1);
+  --spm-progress:0%;
+}
+html[data-spm-family="spend"]{--spm-accent:#83e2b9;--spm-accent2:#f1cf79}
+html[data-spm-family="workflow"]{--spm-accent:#9fc4ff;--spm-accent2:#c8b5ff}
+html[data-spm-family="agent"]{--spm-accent:#95e6ca;--spm-accent2:#b9b4ff}
+html[data-spm-family="money"]{--spm-accent:#7ce7c2;--spm-accent2:#83baff}
+html[data-spm-family="household"]{--spm-accent:#38ad68;--spm-accent2:#f1b34e}
+html[data-spm-family="revenue"]{--spm-accent:#a2d8ff;--spm-accent2:#cbbcff}
+
+/* Always-on but tiny scroll energy line. */
+.spm-progress{position:fixed;z-index:2147481500;left:0;top:0;width:var(--spm-progress);height:3px;background:linear-gradient(90deg,var(--spm-accent),var(--spm-accent2));box-shadow:0 0 18px color-mix(in srgb,var(--spm-accent) 50%,transparent);pointer-events:none;transform-origin:left center;transition:width .08s linear}
+
+/* Hero scene: spotlight follows intent; content stays readable. */
+.spm-scene{position:relative;isolation:isolate;--spm-x:72%;--spm-y:22%;--spm-rx:0deg;--spm-ry:0deg}
+.spm-spotlight{position:absolute;z-index:0;inset:-1px;border-radius:inherit;pointer-events:none;overflow:hidden;opacity:.78;transition:opacity .35s ease}
+.spm-spotlight:before,.spm-spotlight:after{content:"";position:absolute;border-radius:50%;filter:blur(2px);will-change:transform}
+.spm-spotlight:before{width:min(46vw,560px);height:min(46vw,560px);left:calc(var(--spm-x) - min(23vw,280px));top:calc(var(--spm-y) - min(23vw,280px));background:radial-gradient(circle,color-mix(in srgb,var(--spm-accent) 17%,transparent),transparent 68%);transform:translate3d(0,0,0);transition:left .18s linear,top .18s linear}
+.spm-spotlight:after{width:220px;height:220px;right:3%;bottom:-90px;border:1px solid color-mix(in srgb,var(--spm-accent2) 18%,transparent);box-shadow:0 0 70px color-mix(in srgb,var(--spm-accent2) 7%,transparent),inset 0 0 50px color-mix(in srgb,var(--spm-accent) 5%,transparent);animation:spmOrbit 8s ease-in-out infinite alternate}
+.spm-scene>*:not(.spm-spotlight){position:relative;z-index:1}
+
+/* Hero language arrives like a product interface, not a static poster. */
+.spm-hero-copy{animation:spmHeroIn .78s var(--spm-ease-spring) both}
+.spm-hero-title{animation:spmTitleIn .92s var(--spm-ease-spring) .04s both;transform-origin:left bottom}
+.spm-hero-support{animation:spmHeroIn .78s var(--spm-ease-spring) .13s both}
+.spm-hero-actions{animation:spmHeroIn .72s var(--spm-ease-spring) .2s both}
+
+/* Visual panels gain restrained physical depth. */
+.spm-depth{transform:perspective(1100px) rotateX(var(--spm-rx)) rotateY(var(--spm-ry)) translateZ(0);transform-style:preserve-3d;transition:transform .48s var(--spm-ease-spring),border-color .3s ease,box-shadow .3s ease;will-change:transform}
+.spm-depth:hover{box-shadow:0 30px 90px rgba(0,0,0,.16)}
+.spm-depth > *{transform:translateZ(7px)}
+
+/* Scroll scenes: stagger and clip instead of generic fade. */
+.spm-reveal{opacity:0;transform:translate3d(0,22px,0) scale(.988);clip-path:inset(0 0 12% 0 round 12px);transition:opacity .7s var(--spm-ease-spring),transform .85s var(--spm-ease-spring),clip-path .85s var(--spm-ease-spring)}
+.spm-reveal.spm-in{opacity:1;transform:none;clip-path:inset(0 0 0 0 round 0)}
+.spm-reveal[data-spm-order="1"]{transition-delay:.04s}.spm-reveal[data-spm-order="2"]{transition-delay:.09s}.spm-reveal[data-spm-order="3"]{transition-delay:.14s}.spm-reveal[data-spm-order="4"]{transition-delay:.19s}
+
+/* Flow animation: motion communicates direction / causality. */
+.spm-flow-runner{position:relative;overflow:hidden}
+.spm-flow-runner:after{content:"";position:absolute;pointer-events:none;inset:auto 0 0;height:2px;background:linear-gradient(90deg,transparent,var(--spm-accent),transparent);transform:translateX(-110%);animation:spmRunner 2.7s var(--spm-ease) infinite}
+.flow-link.spm-flow-runner:after{top:50%;bottom:auto}
+.spm-pulse-node{animation:spmNodePulse 3.6s ease-in-out infinite}
+.spm-pulse-node:nth-child(2n){animation-delay:.45s}.spm-pulse-node:nth-child(3n){animation-delay:.9s}
+
+/* Buttons feel alive but don't wobble layout. */
+.spm-magnetic{--spm-mx:0px;--spm-my:0px;transform:translate3d(var(--spm-mx),var(--spm-my),0);transition:transform .26s var(--spm-ease-spring),box-shadow .22s ease,border-color .22s ease;will-change:transform}
+.spm-magnetic :where(b,i,svg):last-child{transition:transform .28s var(--spm-ease-spring)}
+.spm-magnetic:hover :where(b,i):last-child{transform:translateX(4px)}
+.spm-magnetic:active{transform:translate3d(calc(var(--spm-mx) * .3),calc(var(--spm-my) * .3),0) scale(.975)}
+
+/* Interactive previews get a morphing active state rather than hard swapping. */
+.spk-tab,.bw-selector button,.route-tab,.tab{position:relative;overflow:hidden}
+.spk-tab:before,.bw-selector button:before,.route-tab:before,.tab:before{content:"";position:absolute;inset:auto 16% -2px;height:2px;border-radius:99px;background:linear-gradient(90deg,var(--spm-accent),var(--spm-accent2));transform:scaleX(0);transform-origin:center;transition:transform .38s var(--spm-ease-spring)}
+.spk-tab[aria-selected="true"]:before,.bw-selector button.active:before,.route-tab[aria-selected="true"]:before,.tab.active:before{transform:scaleX(1)}
+.spk-pane.is-active,.bw-product.active,.route-view.active{animation:spmPaneIn .52s var(--spm-ease-spring) both}
+
+/* Numeric / metric surfaces get a single visual confirmation when they change. */
+.spm-value-flash{animation:spmValueFlash .52s var(--spm-ease-spring)}
+
+/* Scroll-linked section marker: subtle ambient edge, especially on long pages. */
+.spm-section-live{position:relative}
+.spm-section-live:before{content:"";position:absolute;left:-1px;top:18%;bottom:18%;width:1px;background:linear-gradient(transparent,color-mix(in srgb,var(--spm-accent) 38%,transparent),transparent);opacity:.8;animation:spmSectionEdge .7s var(--spm-ease-spring) both;pointer-events:none}
+
+/* Kinetic route / audit / buyer surfaces. */
+:where(.live-map,.route-canvas,.spk-preview-body,.bw-products,.audit-workspace,.system-panel).spm-surface{transition:box-shadow .35s ease,border-color .35s ease,background-position .6s var(--spm-ease)}
+:where(.live-map,.route-canvas,.spk-preview-body,.bw-products,.audit-workspace,.system-panel).spm-surface:hover{box-shadow:0 24px 74px rgba(0,0,0,.11)}
+
+@keyframes spmHeroIn{from{opacity:0;transform:translate3d(0,16px,0)}to{opacity:1;transform:none}}
+@keyframes spmTitleIn{from{opacity:0;transform:translate3d(0,26px,0) skewY(.7deg);filter:blur(5px)}to{opacity:1;transform:none;filter:none}}
+@keyframes spmPaneIn{from{opacity:.15;transform:translate3d(10px,8px,0) scale(.995);filter:blur(2px)}to{opacity:1;transform:none;filter:none}}
+@keyframes spmRunner{0%{transform:translateX(-115%);opacity:0}18%{opacity:.8}70%{opacity:.65}100%{transform:translateX(115%);opacity:0}}
+@keyframes spmNodePulse{0%,100%{filter:none}50%{filter:drop-shadow(0 0 12px color-mix(in srgb,var(--spm-accent) 26%,transparent))}}
+@keyframes spmValueFlash{0%{transform:translateY(2px);opacity:.5;text-shadow:0 0 0 transparent}45%{opacity:1;text-shadow:0 0 22px color-mix(in srgb,var(--spm-accent) 35%,transparent)}100%{transform:none;text-shadow:none}}
+@keyframes spmSectionEdge{from{transform:scaleY(.1);opacity:0}to{transform:none;opacity:.8}}
+@keyframes spmOrbit{from{transform:translate3d(-8px,-5px,0) scale(.92)}to{transform:translate3d(16px,14px,0) scale(1.08)}}
+
+@media(max-width:760px){
+  .spm-progress{height:2px}
+  .spm-spotlight:after{width:150px;height:150px;right:-30px;bottom:-60px}
+  .spm-depth{transform:none!important}
+  .spm-magnetic{transform:none!important}
+  .spm-reveal{transform:translate3d(0,14px,0);clip-path:inset(0 0 8% 0 round 10px)}
+}
+@media(prefers-reduced-motion:reduce){
+  .spm-progress{transition:none!important}
+  .spm-spotlight:after,.spm-hero-copy,.spm-hero-title,.spm-hero-support,.spm-hero-actions,.spm-pulse-node,.spm-flow-runner:after,.spk-pane.is-active,.bw-product.active,.route-view.active,.spm-value-flash,.spm-section-live:before{animation:none!important}
+  .spm-reveal{opacity:1!important;transform:none!important;clip-path:none!important;transition:none!important}
+  .spm-depth,.spm-magnetic{transform:none!important;transition:none!important}
+}
