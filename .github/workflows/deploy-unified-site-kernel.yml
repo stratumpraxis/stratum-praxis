@@ -52,12 +52,16 @@ jobs:
           routes=manifest['routes']
           by_source={x['source']:x for x in routes}
 
-          css='<link rel="stylesheet" href="/stratum-site-kernel.css?v=20260911-v1" data-stratum-site-kernel-css>'
+          styles=[
+            '<link rel="stylesheet" href="/stratum-site-kernel.css?v=20260911-v1" data-stratum-site-kernel-css>',
+            '<link rel="stylesheet" href="/stratum-motion-engine.css?v=20260911-v1" data-stratum-motion-css>'
+          ]
           scripts=[
             '<script defer src="/stratum-evolution-engine.js?v=20260911-v2" data-stratum-evolution></script>',
             '<script defer src="/stratum-growth-ui.js?v=20260911-v1" data-stratum-growth-ui></script>',
             '<script defer src="/stratum-trust-revenue-layer.js?v=20260911-v2" data-stratum-trust-revenue></script>',
-            '<script defer src="/stratum-site-kernel.js?v=20260911-v1" data-stratum-site-kernel></script>'
+            '<script defer src="/stratum-site-kernel.js?v=20260911-v1" data-stratum-site-kernel></script>',
+            '<script defer src="/stratum-motion-engine.js?v=20260911-v1" data-stratum-motion></script>'
           ]
 
           pumps={
@@ -74,7 +78,9 @@ jobs:
 
           cleanup=[
             r'<link[^>]+stratum-site-kernel\.css[^>]*>\s*',
+            r'<link[^>]+stratum-motion-engine\.css[^>]*>\s*',
             r'<script[^>]+stratum-site-kernel\.js[^>]*>\s*</script>\s*',
+            r'<script[^>]+stratum-motion-engine\.js[^>]*>\s*</script>\s*',
             r'<script[^>]+data-stratum-evolution[^>]*>\s*</script>\s*',
             r'<script[^>]+data-stratum-growth-ui[^>]*>\s*</script>\s*',
             r'<script[^>]+data-stratum-trust-revenue[^>]*>\s*</script>\s*',
@@ -90,7 +96,7 @@ jobs:
             if '</head>' not in text: continue
             for pattern in cleanup:
               text=re.sub(pattern,'',text,flags=re.I|re.S)
-            text=text.replace('</head>','  '+css+'\n  '+'\n  '.join(scripts)+'\n</head>',1)
+            text=text.replace('</head>','  '+'\n  '.join(styles)+'\n  '+'\n  '.join(scripts)+'\n</head>',1)
             route=by_source.get(rel)
             if route:
               if not re.search(r'<meta[^>]+property=["\']og:site_name["\']',text,re.I):
@@ -115,6 +121,7 @@ jobs:
             if '<h1' not in low: errors.append(f"Missing H1: {item['source']}")
             if re.search(r'<meta[^>]+name=["\']robots["\'][^>]+content=["\'][^"\']*noindex',t,re.I): errors.append(f"Indexable route is noindex: {item['source']}")
             if 'data-stratum-site-kernel' not in t: errors.append(f"Kernel missing: {item['source']}")
+            if 'data-stratum-motion' not in t: errors.append(f"Motion engine missing: {item['source']}")
           if errors: raise SystemExit('\n'.join(errors))
 
           def lastmod(source):
@@ -142,12 +149,15 @@ jobs:
 
           test -s _site/stratum-site-kernel.css
           test -s _site/stratum-site-kernel.js
+          test -s _site/stratum-motion-engine.css
+          test -s _site/stratum-motion-engine.js
           test -s _site/stratum-evolution-engine.js
           test -s _site/stratum-growth-ui.js
           test -s _site/stratum-trust-revenue-layer.js
           grep -Fq 'data-stratum-site-kernel' _site/index.html
-          grep -Fq 'data-stratum-site-kernel' _site/buyer-workspace.html
-          grep -Fq 'data-stratum-site-kernel' _site/ai-value-realization-kit.html
+          grep -Fq 'data-stratum-motion' _site/index.html
+          grep -Fq 'data-stratum-motion' _site/buyer-workspace.html
+          grep -Fq 'data-stratum-motion' _site/ai-value-realization-kit.html
           grep -Fq 'guides/ai-saas-spend-audit.html' _site/sitemap.xml
           grep -Fq 'guides/workflow-automation-roi.html' _site/sitemap.xml
           grep -Fq 'guides/ai-agent-economics-governance.html' _site/sitemap.xml
@@ -168,7 +178,7 @@ jobs:
           echo "KERNEL_BASE=$deploy_url" >> "$GITHUB_ENV"
           echo "Unified deployment: $deploy_url"
 
-      - name: Verify circulation, previews, mobile and SEO
+      - name: Verify circulation, previews, motion, mobile and SEO
         shell: bash
         run: |
           set -euo pipefail
@@ -187,7 +197,8 @@ jobs:
             grep -Fq 'data-stratum-site-kernel' /tmp/kernel-page.html || { echo "Kernel missing: $path"; exit 1; }
             grep -Fq 'data-stratum-evolution' /tmp/kernel-page.html || { echo "Evolution missing: $path"; exit 1; }
             grep -Fq 'data-stratum-growth-ui' /tmp/kernel-page.html || { echo "Growth UI missing: $path"; exit 1; }
-            echo "Unified route OK: $path"
+            grep -Fq 'data-stratum-motion' /tmp/kernel-page.html || { echo "Motion engine missing: $path"; exit 1; }
+            echo "Unified kinetic route OK: $path"
           done
 
           curl -L -sS "$BASE/buyer-workspace.html" -o /tmp/buyer.html
@@ -205,9 +216,21 @@ jobs:
           grep -Fq 'spk-auto-touch' /tmp/kernel.css
           grep -Fq 'spk-preview' /tmp/kernel.css
 
+          curl -L -sS "$BASE/stratum-motion-engine.js?v=20260911-v1" -o /tmp/motion.js
+          grep -Fq '__STRATUM_MOTION_ENGINE__' /tmp/motion.js
+          grep -Fq 'motion_engine_ready' /tmp/motion.js
+          grep -Fq 'motion_scene_ready' /tmp/motion.js
+          grep -Fq 'motion_state_change' /tmp/motion.js
+
+          curl -L -sS "$BASE/stratum-motion-engine.css?v=20260911-v1" -o /tmp/motion.css
+          grep -Fq 'spm-progress' /tmp/motion.css
+          grep -Fq 'spm-depth' /tmp/motion.css
+          grep -Fq 'spm-flow-runner' /tmp/motion.css
+          grep -Fq 'prefers-reduced-motion' /tmp/motion.css
+
           curl -L -sS "$BASE/sitemap.xml" -o /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/ai-saas-spend-audit.html' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/workflow-automation-roi.html' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/ai-agent-economics-governance.html' /tmp/sitemap.xml
           ! grep -Fq 'buyer-workspace' /tmp/sitemap.xml
-          echo 'Unified Design DNA / Buyer / Paid Preview / SEO Cluster / Mobile / Evolution Loop -> PASS'
+          echo 'Unified Design DNA / Motion / Buyer / Paid Preview / SEO Cluster / Mobile / Evolution Loop -> PASS'
