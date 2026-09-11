@@ -1,0 +1,77 @@
+name: Patch Cross-Agent Agent Lab choice
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-cross-agent-agent-lab-choice.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Add recurring Agent Lab choice without disturbing kit checkout
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          p = Path('cross-agent-operating-kit.html')
+          s = p.read_text()
+          if 'cross_agent_agent_lab_checkout' in s:
+              print('Agent Lab choice already present; no-op.')
+              raise SystemExit(0)
+
+          css_anchor = "    .scope-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:12px;border:1px solid #1d282e;border-radius:14px;overflow:hidden;background:#1d282e}.scope-item{padding:15px;background:#0a1013}.scope-item b{display:block;margin-bottom:3px;color:#b5c0ba;font-size:10px}.scope-item span{color:#6e7b75;font-size:9px;line-height:1.45}\n"
+          css = """    .agent-lab-choice{position:relative;isolation:isolate;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:center;margin-top:16px;padding:24px;border:1px solid #315148;border-radius:18px;background:radial-gradient(circle at 12% 0%,rgba(157,232,207,.11),transparent 36%),#0b1211;box-shadow:0 18px 50px rgba(0,0,0,.2)}
+    .agent-lab-choice::after{content:\"\";position:absolute;z-index:-1;width:180px;height:180px;right:-80px;top:-95px;border-radius:50%;background:rgba(157,232,207,.08);filter:blur(4px);animation:agentLabDrift 7s ease-in-out infinite alternate}
+    .agent-lab-kicker{display:inline-flex;align-items:center;gap:7px;margin-bottom:7px;color:var(--mint);font-size:8.5px;font-weight:750;letter-spacing:.11em;text-transform:uppercase}.agent-lab-kicker::before{content:\"\";width:6px;height:6px;border-radius:50%;background:var(--mint);box-shadow:0 0 16px rgba(157,232,207,.65)}
+    .agent-lab-choice h3{margin:0 0 7px;font-size:22px;line-height:1.15;font-weight:610}.agent-lab-choice p{max-width:720px;margin:0;color:#82918b;font-size:10.5px;line-height:1.62}.agent-lab-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}.agent-lab-tags span{padding:5px 8px;border:1px solid #243b34;border-radius:999px;color:#789087;background:#0d1714;font-size:8.5px}.btn-lab{min-width:184px;background:#bdf1df;color:#08130f;border-color:#a7e4cf;box-shadow:0 10px 30px rgba(95,197,160,.08)}.btn-lab span{opacity:.7;font-size:10px}
+    @keyframes agentLabDrift{from{transform:translate3d(0,0,0) scale(.95)}to{transform:translate3d(-34px,26px,0) scale(1.12)}}
+"""
+          if css_anchor not in s:
+              raise SystemExit('CSS anchor not found')
+          s = s.replace(css_anchor, css + css_anchor, 1)
+
+          mobile_anchor = "    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}"
+          mobile = "    @media(max-width:720px){.agent-lab-choice{grid-template-columns:1fr;gap:17px;padding:20px}.btn-lab{width:100%;min-width:0}}\n    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.agent-lab-choice::after{animation:none}}"
+          if mobile_anchor not in s:
+              raise SystemExit('Reduced-motion anchor not found')
+          s = s.replace(mobile_anchor, mobile, 1)
+
+          html_anchor = "        <div class=\"scope-bar\" aria-label=\"License scope summary\">"
+          choice = """        <aside class=\"agent-lab-choice\" aria-label=\"Agent Lab recurring field research option\">
+          <div>
+            <span class=\"agent-lab-kicker\">Ongoing field research</span>
+            <h3>Need the live lab, not just the finished kit?</h3>
+            <p>Keep a one-time license when you want the completed implementation package. Choose Agent Lab for continuing experiments, failure traces, field notes and reusable operating patterns.</p>
+            <div class=\"agent-lab-tags\" aria-label=\"Agent Lab contents\"><span>Failure traces</span><span>Field notes</span><span>Experiments</span><span>Reusable workflows</span></div>
+          </div>
+          <a class=\"btn btn-lab\" data-analytics-id=\"cross_agent_agent_lab_checkout\" data-product=\"agent_lab_membership\" href=\"https://buy.stripe.com/5kQ3cwd3e0UHfAYdc76Zy0Y?utm_source=cross_agent_kit&amp;utm_medium=contextual_choice&amp;utm_campaign=agent_lab_founding\"><strong>Join Agent Lab</strong><span>$19/mo</span></a>
+        </aside>
+
+"""
+          if html_anchor not in s:
+              raise SystemExit('HTML anchor not found')
+          s = s.replace(html_anchor, choice + html_anchor, 1)
+          p.write_text(s)
+          PY
+      - name: Verify patch
+        run: |
+          grep -q 'cross_agent_agent_lab_checkout' cross-agent-operating-kit.html
+          grep -q 'Need the live lab, not just the finished kit?' cross-agent-operating-kit.html
+          grep -q 'agent-lab-choice' cross-agent-operating-kit.html
+      - name: Commit patch
+        run: |
+          if git diff --quiet; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'stratum-praxis-bot'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
+          git add cross-agent-operating-kit.html
+          git commit -m 'Add Agent Lab recurring choice to Cross-Agent kit'
+          git push
