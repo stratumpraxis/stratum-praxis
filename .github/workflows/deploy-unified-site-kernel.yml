@@ -77,6 +77,7 @@ jobs:
             'legal':[('Home','/'),('Evidence','/evidence.html')]
           }
           pump_style='''<style data-stratum-route-pump-style>.sp-route-pump{box-sizing:border-box;width:min(1180px,calc(100% - 32px));margin:18px auto 46px;padding:12px 13px;border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:15px;background:color-mix(in srgb,currentColor 3%,transparent);color:inherit;font:650 11px/1.4 system-ui,-apple-system,"Segoe UI",sans-serif}.sp-route-pump strong{display:inline-block;margin-right:9px;font-size:9px;letter-spacing:.09em;text-transform:uppercase;opacity:.55}.sp-route-pump a{display:inline-flex;align-items:center;min-height:34px;margin:3px;padding:0 9px;border:1px solid color-mix(in srgb,currentColor 13%,transparent);border-radius:999px;color:inherit;text-decoration:none}.sp-route-pump a:hover{border-color:rgba(100,205,165,.45)}@media(max-width:640px){.sp-route-pump{width:calc(100% - 20px);margin-bottom:76px}.sp-route-pump strong{display:block;margin-bottom:6px}.sp-route-pump a{min-height:42px}}@media(prefers-reduced-motion:reduce){.sp-route-pump a{transition:none!important}}</style>'''
+          market_style='''<style data-stratum-market-contract-style>.sp-market-contract{box-sizing:border-box;width:min(1180px,calc(100% - 32px));margin:12px auto 28px;padding:14px;border:1px solid color-mix(in srgb,currentColor 14%,transparent);border-radius:18px;background:color-mix(in srgb,currentColor 3.5%,transparent);color:inherit;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}.sp-market-contract>p{margin:0 0 10px;font-size:9px;font-weight:850;letter-spacing:.12em;text-transform:uppercase;opacity:.56}.sp-market-contract dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0}.sp-market-contract dl>div{min-height:86px;padding:11px;border:1px solid color-mix(in srgb,currentColor 10%,transparent);border-radius:12px;background:color-mix(in srgb,currentColor 2%,transparent)}.sp-market-contract dt{margin:0 0 6px;font-size:8.5px;font-weight:850;letter-spacing:.09em;text-transform:uppercase;opacity:.5}.sp-market-contract dd{margin:0;font-size:11px;line-height:1.48;font-weight:620}.sp-market-contract [data-market-key="price"] dd{font-size:14px;font-weight:850}.sp-market-contract [data-market-key="next"]{border-color:color-mix(in srgb,#75d8b0 34%,transparent)}@media(max-width:860px){.sp-market-contract dl{grid-template-columns:1fr 1fr}}@media(max-width:540px){.sp-market-contract{width:calc(100% - 20px);padding:10px}.sp-market-contract dl{grid-template-columns:1fr}.sp-market-contract dl>div{min-height:0}}</style>'''
 
           cleanup=[
             r'<link[^>]+stratum-site-kernel\.css[^>]*>\s*',
@@ -89,11 +90,30 @@ jobs:
             r'<script[^>]+data-stratum-growth-ui[^>]*>\s*</script>\s*',
             r'<script[^>]+data-stratum-trust-revenue[^>]*>\s*</script>\s*',
             r'<nav[^>]+data-stratum-route-pump[^>]*>.*?</nav>\s*',
-            r'<style[^>]+data-stratum-route-pump-style[^>]*>.*?</style>\s*'
+            r'<style[^>]+data-stratum-route-pump-style[^>]*>.*?</style>\s*',
+            r'<section[^>]+data-stratum-market-contract[^>]*>.*?</section>\s*',
+            r'<style[^>]+data-stratum-market-contract-style[^>]*>.*?</style>\s*',
+            r'<script[^>]+data-stratum-market-contract-json[^>]*>.*?</script>\s*'
           ]
+
+          required_contract_fields=['who','problem','free','price','deliverable','scope','timing','next','after']
+          labels=[('who','WHO'),('problem','BUYING TRIGGER'),('free','FREE FIRST'),('price','PRICE'),('deliverable','DELIVERABLE'),('scope','SCOPE'),('timing','TIMING'),('next','NEXT ACTION'),('after','AFTER PURCHASE')]
+
+          def market_contract_html(route):
+            contract=route.get('market_contract')
+            if not contract: return '', ''
+            missing=[k for k in required_contract_fields if not str(contract.get(k,'')).strip()]
+            if missing: raise SystemExit(f"Incomplete market contract for {route['source']}: {', '.join(missing)}")
+            cells=''.join(f'<div data-market-key="{key}"><dt>{label}</dt><dd>{escape(str(contract[key]))}</dd></div>' for key,label in labels)
+            section=f'<section class="sp-market-contract" data-stratum-market-contract data-product-id="{escape(str(contract.get("product_id", "")))}" aria-label="Offer decision facts"><p>MARKET VALIDATION · OFFER DECISION FACTS</p><dl>{cells}</dl></section>'
+            items=[{"@type":"ListItem","position":i+1,"name":label,"description":str(contract[key])} for i,(key,label) in enumerate(labels)]
+            structured={"@context":"https://schema.org","@type":"ItemList","name":"Offer decision facts","url":base+route['url'],"itemListElement":items}
+            script='<script type="application/ld+json" data-stratum-market-contract-json>'+json.dumps(structured,ensure_ascii=False,separators=(',',':'))+'</script>'
+            return section, script
 
           errors=[]
           processed=0
+          contract_count=0
           for p in root.rglob('*.html'):
             rel=p.relative_to(root).as_posix()
             text=p.read_text(encoding='utf-8',errors='ignore')
@@ -111,6 +131,27 @@ jobs:
               nav=f'<nav class="sp-route-pump" data-stratum-route-pump aria-label="Related Stratum decision routes"><strong>Continue the decision</strong>{link_html}</nav>'
               text=text.replace('</head>',pump_style+'\n</head>',1)
               text=text.replace('</body>',nav+'\n</body>',1)
+
+              section, structured = market_contract_html(route)
+              if section:
+                contract_count+=1
+                text=text.replace('</head>',market_style+'\n'+structured+'\n</head>',1)
+                product_id=route['market_contract'].get('product_id','')
+                if product_id:
+                  if re.search(r'<body\b[^>]*\bdata-product=["\'][^"\']*["\']',text,re.I):
+                    text=re.sub(r'(<body\b[^>]*\bdata-product=)["\'][^"\']*["\']',lambda m:m.group(1)+f'"{escape(product_id)}"',text,count=1,flags=re.I)
+                  else:
+                    text=re.sub(r'<body\b',f'<body data-product="{escape(product_id)}"',text,count=1,flags=re.I)
+                main_match=re.search(r'<main\b[^>]*>',text,re.I)
+                if main_match:
+                  end=text.find('</section>',main_match.end())
+                  if end!=-1:
+                    end+=len('</section>')
+                    text=text[:end]+'\n'+section+text[end:]
+                  else:
+                    text=text[:main_match.end()]+'\n'+section+text[main_match.end():]
+                else:
+                  text=text.replace('<body','<body',1).replace('>', '>\n'+section,1)
             p.write_text(text,encoding='utf-8')
             processed+=1
 
@@ -127,6 +168,27 @@ jobs:
             if 'data-stratum-site-kernel' not in t: errors.append(f"Kernel missing: {item['source']}")
             if 'data-stratum-motion' not in t: errors.append(f"Motion engine missing: {item['source']}")
             if 'data-stratum-cinematic' not in t: errors.append(f"Cinematic UI missing: {item['source']}")
+            if item.get('market_contract'):
+              if 'data-stratum-market-contract' not in t: errors.append(f"Market contract missing: {item['source']}")
+              for key,label in labels:
+                if label not in t or escape(str(item['market_contract'][key])) not in t: errors.append(f"Market contract field missing ({key}): {item['source']}")
+              pid=item['market_contract'].get('product_id','')
+              if pid and f'data-product="{pid}"' not in t: errors.append(f"Canonical product id missing: {item['source']}")
+
+          live=(root/'live-lab.html').read_text(encoding='utf-8',errors='ignore')
+          catalog=(root/'stratum-catalog-v3.js').read_text(encoding='utf-8',errors='ignore')
+          router=(root/'product-router.html').read_text(encoding='utf-8',errors='ignore')
+          analytics=(root/'scos-analytics.js').read_text(encoding='utf-8',errors='ignore')
+          terms=(root/'terms.html').read_text(encoding='utf-8',errors='ignore')
+          if re.search(r'four business decisions',live,re.I): errors.append('Live Lab still exposes four business decisions')
+          if 'not a fourth product line' not in live: errors.append('Live Lab guardrail positioning missing')
+          if "key:'cost'" not in catalog or "key:'workflow'" not in catalog or "key:'agent'" not in catalog: errors.append('Live Lab three decision intents missing')
+          if "key:'compliance'" in catalog: errors.append('Compliance resurfaced as a primary Live Lab intent')
+          if 'THREE DECISION SYSTEMS' not in router: errors.append('Revenue Route OS three-system marker missing')
+          for event in ['route_select','free_tool_start','free_tool_complete','paid_product_view','checkout_click','purchase','verified_access','buyer_return']:
+            if event not in analytics: errors.append(f'Canonical validation event missing: {event}')
+          if 'checkout_return' not in analytics: errors.append('Checkout-only return state missing')
+          if 'Operator and contact' not in terms or 'Cancellations and refunds' not in terms or 'Delivery and access' not in terms: errors.append('Trust terms boundary incomplete')
           if errors: raise SystemExit('\n'.join(errors))
 
           def lastmod(source):
@@ -150,6 +212,7 @@ jobs:
           (root/'robots.txt').write_text(robots,encoding='utf-8')
           print(f'Unified runtime injected into {processed} HTML files')
           print(f'Quality gate passed for {len(routes)} indexable routes')
+          print(f'Market validation contracts rendered for {contract_count} commercial routes')
           PY
 
           test -s _site/stratum-site-kernel.css
@@ -166,7 +229,11 @@ jobs:
           grep -Fq 'data-stratum-cinematic' _site/index.html
           grep -Fq 'data-stratum-cinematic' _site/product-router.html
           grep -Fq 'data-stratum-cinematic' _site/buyer-workspace.html
-          grep -Fq 'data-stratum-cinematic' _site/ai-value-realization-kit.html
+          grep -Fq 'data-stratum-market-contract' _site/ai-value-realization-kit.html
+          grep -Fq 'data-stratum-market-contract' _site/ai-saas-spend-waste-audit.html
+          grep -Fq 'data-stratum-market-contract' _site/ai-saas-spend-monitoring.html
+          grep -Fq 'data-stratum-market-contract' _site/workflow-audit.html
+          grep -Fq 'data-stratum-market-contract' _site/cross-agent-operating-kit.html
           grep -Fq 'guides/ai-saas-spend-audit.html' _site/sitemap.xml
           grep -Fq 'guides/workflow-automation-roi.html' _site/sitemap.xml
           grep -Fq 'guides/ai-agent-economics-governance.html' _site/sitemap.xml
@@ -187,11 +254,12 @@ jobs:
           echo "KERNEL_BASE=$deploy_url" >> "$GITHUB_ENV"
           echo "Unified deployment: $deploy_url"
 
-      - name: Verify circulation, previews, cinematic motion, mobile and SEO
+      - name: Verify market validation freeze, circulation, cinematic motion, mobile and SEO
         shell: bash
         run: |
           set -euo pipefail
           BASE="${KERNEL_BASE:?Missing unified deployment URL}"
+          fetch() { curl --retry 5 --retry-all-errors --retry-delay 2 -L -sS "$1" -o "$2"; }
           routes=(
             / /guides/ /guides/ai-saas-spend-audit.html /guides/workflow-automation-roi.html /guides/ai-agent-economics-governance.html
             /live-lab.html /product-router.html /buyer-workspace.html /systems/
@@ -201,58 +269,95 @@ jobs:
             /revenue-pump/ /revenue-pump/auto/ /money-resilience/ /72-hour-household-readiness/
           )
           for path in "${routes[@]}"; do
-            code="$(curl -L -sS -o /tmp/kernel-page.html -w '%{http_code}' "$BASE$path")"
+            code="$(curl --retry 5 --retry-all-errors --retry-delay 2 -L -sS -o /tmp/kernel-page.html -w '%{http_code}' "$BASE$path")"
             test "$code" = "200" || { echo "Route failed: $path -> $code"; exit 1; }
             grep -Fq 'data-stratum-site-kernel' /tmp/kernel-page.html || { echo "Kernel missing: $path"; exit 1; }
             grep -Fq 'data-stratum-evolution' /tmp/kernel-page.html || { echo "Evolution missing: $path"; exit 1; }
             grep -Fq 'data-stratum-growth-ui' /tmp/kernel-page.html || { echo "Growth UI missing: $path"; exit 1; }
             grep -Fq 'data-stratum-motion' /tmp/kernel-page.html || { echo "Motion engine missing: $path"; exit 1; }
             grep -Fq 'data-stratum-cinematic' /tmp/kernel-page.html || { echo "Cinematic UI missing: $path"; exit 1; }
-            echo "Unified cinematic route OK: $path"
+            echo "Unified route OK: $path"
           done
 
-          curl -L -sS "$BASE/buyer-workspace.html" -o /tmp/buyer.html
+          fetch "$BASE/live-lab.html" /tmp/live.html
+          grep -Fq 'three decision systems' /tmp/live.html
+          grep -Fq 'not a fourth product line' /tmp/live.html
+          ! grep -Fiq 'four business decisions' /tmp/live.html
+
+          fetch "$BASE/product-router.html" /tmp/router.html
+          grep -Fq 'THREE DECISION SYSTEMS' /tmp/router.html
+          grep -Fq 'data-route="spend"' /tmp/router.html
+          grep -Fq 'data-route="workflow"' /tmp/router.html
+          grep -Fq 'data-route="agent"' /tmp/router.html
+
+          fetch "$BASE/buyer-workspace.html" /tmp/buyer.html
           grep -Fq 'Use what you bought.' /tmp/buyer.html
           grep -Fq 'Every paid route returns to evidence.' /tmp/buyer.html
           grep -Fq '/cross-agent-operating-kit-access.html' /tmp/buyer.html
 
-          curl -L -sS "$BASE/stratum-site-kernel.js?v=20260911-v1" -o /tmp/kernel.js
+          for page in ai-value-realization-kit.html ai-saas-spend-waste-audit.html ai-saas-spend-monitoring.html workflow-audit.html cross-agent-operating-kit.html; do
+            fetch "$BASE/$page" /tmp/offer.html
+            grep -Fq 'data-stratum-market-contract' /tmp/offer.html
+            grep -Fq 'MARKET VALIDATION · OFFER DECISION FACTS' /tmp/offer.html
+            grep -Fq '>WHO<' /tmp/offer.html
+            grep -Fq '>BUYING TRIGGER<' /tmp/offer.html
+            grep -Fq '>FREE FIRST<' /tmp/offer.html
+            grep -Fq '>PRICE<' /tmp/offer.html
+            grep -Fq '>DELIVERABLE<' /tmp/offer.html
+            grep -Fq '>SCOPE<' /tmp/offer.html
+            grep -Fq '>TIMING<' /tmp/offer.html
+            grep -Fq '>NEXT ACTION<' /tmp/offer.html
+            grep -Fq '>AFTER PURCHASE<' /tmp/offer.html
+          done
+
+          fetch "$BASE/scos-analytics.js" /tmp/analytics.js
+          for event in route_select free_tool_start free_tool_complete paid_product_view checkout_click purchase verified_access buyer_return checkout_return; do grep -Fq "$event" /tmp/analytics.js; done
+          grep -Fq 'checkout_click_only' /tmp/analytics.js
+          grep -Fq 'verified_marker' /tmp/analytics.js
+
+          fetch "$BASE/terms.html" /tmp/terms.html
+          grep -Fq 'Operator and contact' /tmp/terms.html
+          grep -Fq 'Cancellations and refunds' /tmp/terms.html
+          grep -Fq 'Delivery and access' /tmp/terms.html
+          grep -Fq 'stratumpraxis@gmail.com' /tmp/terms.html
+
+          fetch "$BASE/stratum-site-kernel.js?v=20260911-v1" /tmp/kernel.js
           grep -Fq '__STRATUM_SITE_KERNEL__' /tmp/kernel.js
           grep -Fq 'site_kernel_closed_loop' /tmp/kernel.js
           grep -Fq 'INTERACTIVE PRODUCT PREVIEW' /tmp/kernel.js
           grep -Fq 'DECISION CIRCULATION' /tmp/kernel.js
 
-          curl -L -sS "$BASE/stratum-site-kernel.css?v=20260911-v1" -o /tmp/kernel.css
+          fetch "$BASE/stratum-site-kernel.css?v=20260911-v1" /tmp/kernel.css
           grep -Fq 'spk-auto-touch' /tmp/kernel.css
           grep -Fq 'spk-preview' /tmp/kernel.css
 
-          curl -L -sS "$BASE/stratum-motion-engine.js?v=20260911-v1" -o /tmp/motion.js
+          fetch "$BASE/stratum-motion-engine.js?v=20260911-v1" /tmp/motion.js
           grep -Fq '__STRATUM_MOTION_ENGINE__' /tmp/motion.js
           grep -Fq 'motion_engine_ready' /tmp/motion.js
           grep -Fq 'motion_scene_ready' /tmp/motion.js
           grep -Fq 'motion_state_change' /tmp/motion.js
 
-          curl -L -sS "$BASE/stratum-motion-engine.css?v=20260911-v1" -o /tmp/motion.css
+          fetch "$BASE/stratum-motion-engine.css?v=20260911-v1" /tmp/motion.css
           grep -Fq 'spm-progress' /tmp/motion.css
           grep -Fq 'spm-depth' /tmp/motion.css
           grep -Fq 'spm-flow-runner' /tmp/motion.css
           grep -Fq 'prefers-reduced-motion' /tmp/motion.css
 
-          curl -L -sS "$BASE/stratum-cinematic-ui.js?v=20260911-v1" -o /tmp/cinematic.js
+          fetch "$BASE/stratum-cinematic-ui.js?v=20260911-v1" /tmp/cinematic.js
           grep -Fq '__STRATUM_CINEMATIC_UI__' /tmp/cinematic.js
           grep -Fq 'cinematic_ui_ready' /tmp/cinematic.js
           grep -Fq 'cinematic_route_morph' /tmp/cinematic.js
           grep -Fq 'cinematic_preview_morph' /tmp/cinematic.js
 
-          curl -L -sS "$BASE/stratum-cinematic-ui.css?v=20260911-v1" -o /tmp/cinematic.css
+          fetch "$BASE/stratum-cinematic-ui.css?v=20260911-v1" /tmp/cinematic.css
           grep -Fq 'spc-story-rail' /tmp/cinematic.css
           grep -Fq 'spc-vector-layer' /tmp/cinematic.css
           grep -Fq 'spc-tab-indicator' /tmp/cinematic.css
           grep -Fq 'prefers-reduced-motion' /tmp/cinematic.css
 
-          curl -L -sS "$BASE/sitemap.xml" -o /tmp/sitemap.xml
+          fetch "$BASE/sitemap.xml" /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/ai-saas-spend-audit.html' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/workflow-automation-roi.html' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/guides/ai-agent-economics-governance.html' /tmp/sitemap.xml
           ! grep -Fq 'buyer-workspace' /tmp/sitemap.xml
-          echo 'Unified Design DNA / Motion / Cinematic UI / Buyer / Paid Preview / SEO Cluster / Mobile / Evolution Loop -> PASS'
+          echo 'Market Validation Freeze / Trust / Measurement / Offer Facts / Design DNA / Motion / Buyer / SEO / Mobile -> PASS'
