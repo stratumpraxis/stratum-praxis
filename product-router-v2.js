@@ -2,16 +2,20 @@
   const body=document.body;
   body.classList.add('route-os-enhanced');
 
+  const routeOrder=['spend','workflow','agent'];
   const routeData={
-    spend:{entry:'FREE',depth:'$39 → $499',outcome:'CONTROL',chain:['Detect','Prove','Recover','Monitor']},
-    workflow:{entry:'FREE',depth:'$39 → $499',outcome:'DECIDE',chain:['Diagnose','Validate','Audit']},
-    agent:{entry:'FREE',depth:'$69 → $299',outcome:'OPERATE',chain:['Economics','Control','Operate','Scale']}
+    spend:{entry:'FREE',depth:'$39 → $499',outcome:'CONTROL',chain:['Detect','Prove','Recover','Monitor'],label:'Spend & ROI'},
+    workflow:{entry:'FREE',depth:'$39 → $499',outcome:'DECIDE',chain:['Diagnose','Validate','Audit'],label:'Workflow'},
+    agent:{entry:'FREE',depth:'$69 → $299',outcome:'OPERATE',chain:['Economics','Control','Operate','Scale'],label:'Agent Operations'}
   };
 
   const tabs=[...document.querySelectorAll('.route-tab')];
   const views=[...document.querySelectorAll('.route-view')];
   const mapRows=[...document.querySelectorAll('.map-row')];
   const consoleLabel=document.querySelector('.console-head span');
+  const routeShell=document.querySelector('.route-shell');
+  const buyerNote=document.querySelector('.buyer-note');
+  if(buyerNote) buyerNote.id='buyer-access';
 
   views.forEach(view=>{
     const name=view.dataset.view;
@@ -48,8 +52,18 @@
     toastTimer=setTimeout(()=>toast.classList.remove('show'),1400);
   };
 
+  const pager=document.createElement('div');
+  pager.className='route-pager';
+  pager.setAttribute('aria-label','Slide between revenue routes');
+  pager.innerHTML=`
+    <button type="button" class="route-pager-arrow prev" aria-label="Previous route">←</button>
+    <div class="route-pager-center"><small>SWIPE / SLIDE ROUTES</small><div class="route-pager-dots">${routeOrder.map(name=>`<button type="button" data-pager-route="${name}" aria-label="Open ${routeData[name].label}"></button>`).join('')}</div></div>
+    <button type="button" class="route-pager-arrow next" aria-label="Next route">→</button>`;
+  if(routeShell) routeShell.after(pager);
+
   function syncRoute(name,{scroll=false,announceChange=false}={}){
-    tabs.forEach((tab,index)=>{
+    if(!routeData[name]) return;
+    tabs.forEach(tab=>{
       const active=tab.dataset.route===name;
       tab.setAttribute('aria-selected',String(active));
       tab.tabIndex=active?0:-1;
@@ -68,10 +82,21 @@
     });
 
     mapRows.forEach(row=>row.classList.toggle('is-active',row.classList.contains(name)));
+    pager.querySelectorAll('[data-pager-route]').forEach(dot=>{
+      const active=dot.dataset.pagerRoute===name;
+      dot.classList.toggle('is-active',active);
+      dot.setAttribute('aria-current',active?'true':'false');
+    });
     if(consoleLabel) consoleLabel.textContent=`${name.toUpperCase()} · DECISION MAP`;
     history.replaceState(null,'',`#${name}`);
     if(scroll) document.querySelector('#routes')?.scrollIntoView({behavior:'smooth',block:'start'});
-    if(announceChange) announce(`${name==='spend'?'Spend & ROI':name==='workflow'?'Workflow':'Agent Operations'} route selected`);
+    if(announceChange) announce(`${routeData[name].label} route selected`);
+  }
+
+  function moveRoute(delta,{announceChange=false}={}){
+    const current=routeOrder.findIndex(name=>document.querySelector(`.route-view[data-view="${name}"]`)?.classList.contains('active'));
+    const next=(current+delta+routeOrder.length)%routeOrder.length;
+    syncRoute(routeOrder[next],{announceChange});
   }
 
   tabs.forEach((tab,index)=>{
@@ -92,17 +117,59 @@
     const name=row.classList.contains('spend')?'spend':row.classList.contains('workflow')?'workflow':'agent';
     row.setAttribute('role','button');
     row.tabIndex=0;
-    row.setAttribute('aria-label',`Open ${name==='spend'?'Spend and ROI':name==='workflow'?'Workflow':'Agent Operations'} route`);
+    row.setAttribute('aria-label',`Open ${routeData[name].label} route`);
     const activate=()=>syncRoute(name,{scroll:true});
     row.addEventListener('click',activate);
     row.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();activate();}});
   });
+
+  pager.querySelector('.prev')?.addEventListener('click',()=>moveRoute(-1,{announceChange:true}));
+  pager.querySelector('.next')?.addEventListener('click',()=>moveRoute(1,{announceChange:true}));
+  pager.querySelectorAll('[data-pager-route]').forEach(dot=>dot.addEventListener('click',()=>syncRoute(dot.dataset.pagerRoute,{announceChange:true})));
+
+  let startX=0,startY=0,tracking=false;
+  if(routeShell){
+    routeShell.addEventListener('pointerdown',e=>{
+      if(e.pointerType==='mouse') return;
+      tracking=true;startX=e.clientX;startY=e.clientY;
+    },{passive:true});
+    routeShell.addEventListener('pointerup',e=>{
+      if(!tracking||e.pointerType==='mouse') return;
+      tracking=false;
+      const dx=e.clientX-startX,dy=e.clientY-startY;
+      if(Math.abs(dx)<48||Math.abs(dx)<=Math.abs(dy)*1.15) return;
+      moveRoute(dx<0?1:-1);
+      announce(dx<0?'Next route':'Previous route');
+    },{passive:true});
+    routeShell.addEventListener('pointercancel',()=>{tracking=false},{passive:true});
+  }
+
+  // Public route cards must never jump straight into protected buyer delivery.
+  const buyerOffer=document.querySelector('.offer.buyer');
+  if(buyerOffer){
+    buyerOffer.setAttribute('href','#buyer-access');
+    buyerOffer.setAttribute('aria-label','Go to buyer access gateway');
+    buyerOffer.addEventListener('click',e=>{
+      e.preventDefault();
+      buyerNote?.scrollIntoView({behavior:'smooth',block:'center'});
+      announce('Buyer-only access is routed through the purchase gateway');
+    });
+  }
+  const verifyLink=document.querySelector('[data-analytics-id="router_agent_verify"]');
+  if(verifyLink){
+    verifyLink.setAttribute('href','#buyer-access');
+    verifyLink.textContent='Buyer access →';
+    verifyLink.addEventListener('click',e=>{
+      e.preventDefault();
+      buyerNote?.scrollIntoView({behavior:'smooth',block:'center'});
+    });
+  }
 
   document.querySelectorAll('.offer,.start-card,.buyer-links a,.final-actions a').forEach(link=>{
     link.addEventListener('pointerenter',()=>link.setAttribute('data-ready','true'),{passive:true});
     link.addEventListener('pointerleave',()=>link.removeAttribute('data-ready'),{passive:true});
   });
 
-  const initial=['spend','workflow','agent'].includes(location.hash.slice(1))?location.hash.slice(1):'spend';
+  const initial=routeOrder.includes(location.hash.slice(1))?location.hash.slice(1):'spend';
   syncRoute(initial);
 })();
