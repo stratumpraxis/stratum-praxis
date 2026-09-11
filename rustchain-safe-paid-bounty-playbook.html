@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RustChain Paid Bounties: A Safety-First Workflow for AI Agents and Human Contributors</title>
+<meta name="description" content="A practical safety-first workflow for working on RustChain paid GitHub bounties without touching production systems or making unsupported reward claims.">
+<link rel="canonical" href="https://stratumpraxis.com/rustchain-safe-paid-bounty-playbook.html">
+<style>body{font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;max-width:860px;margin:48px auto;padding:0 22px;line-height:1.72;color:#111827;background:#fff}h1,h2{line-height:1.2}code,pre{background:#f3f4f6;border-radius:8px}code{padding:.15em .35em}pre{padding:16px;overflow:auto}a{color:#0f5cc0}.note{padding:16px;border:1px solid #d1d5db;border-radius:12px;background:#f9fafb}.meta{color:#6b7280}</style>
+</head>
+<body>
+<article>
+<p class="meta">Stratum Praxis · September 2026</p>
+<h1>RustChain Paid Bounties: A Safety-First Workflow for AI Agents and Human Contributors</h1>
+<p>RustChain is unusual among open-source projects because its GitHub ecosystem includes explicit paid bounties for code, documentation, testing, research, accessibility findings, integrations, and responsible security reports. That makes it attractive to both human contributors and AI-assisted workflows. It also creates an important discipline problem: the fastest way to ruin a bounty workflow is to optimize for “number of issues touched” instead of verified acceptance and payment.</p>
+<p>I approached RustChain through its public GitHub bounty system and source review rather than by attacking a live node. The useful lesson was simple: a safe contributor can move quickly by staying inside published scope, using public source code, producing reproducible evidence, and refusing to treat a possible reward as money until the maintainer confirms it.</p>
+<p>The core project is here: <a href="https://github.com/Scottcjn/Rustchain">github.com/Scottcjn/Rustchain</a>.</p>
+
+<h2>1. Start with reward evidence, not excitement</h2>
+<p>A bounty title is not payment evidence. A submission is not acceptance. An accepted finding is not necessarily a completed payout. I use a simple state machine:</p>
+<pre>Opportunity
+→ Claim or Contribution
+→ Maintainer Acceptance
+→ Reward Confirmed
+→ Payout
+→ Payment Evidence</pre>
+<p>This prevents a common accounting error in bounty hunting: adding every potential reward to an “earned” total. If a bug appears to fit a 50 RTC tier but the maintainer has not classified it, the correct number earned is still zero. The same rule applies to queued payouts and grants.</p>
+
+<h2>2. Prefer read-only and source-level work</h2>
+<p>The safest fast bounties are those that can be completed without modifying production state. Good examples include documentation corrections, SDK behavior reviews, accessibility checks, static analysis, reproducible local tests, and source-level bug reports.</p>
+<p>For a security bounty, the ideal workflow is:</p>
+<ol>
+<li>Read the published bounty scope and reporting rules.</li>
+<li>Inspect the current default-branch source.</li>
+<li>Search existing issues and pull requests for duplicates.</li>
+<li>Build the smallest non-destructive reproduction possible.</li>
+<li>Explain expected versus actual behavior.</li>
+<li>Include a narrow fix and regression test idea.</li>
+<li>Use private reporting or the maintainer’s designated email for exploitable findings.</li>
+</ol>
+<p>That approach is fast because it reduces ambiguity for the reviewer. A maintainer can say “valid” or “duplicate” without reverse-engineering your claim.</p>
+
+<h2>3. Do not fuzz production just because a bounty says “security”</h2>
+<p>Security programs often include live systems, but “in scope” does not mean “anything goes.” A conservative default is to avoid load testing, destructive payloads, credential guessing, wallet movement, or exploit chains on production unless the rules explicitly authorize that behavior.</p>
+<p>If a bug can be demonstrated from source plus a local regression test, that is usually better evidence anyway. It is repeatable, safer, and easier to merge into a fix.</p>
+<div class="note"><strong>Practical rule:</strong> if a test can be performed against a local fixture, mocked transport, static parser, or unit test, choose that before touching a public service.</div>
+
+<h2>4. Use the public API only for read-only verification</h2>
+<p>RustChain exposes public endpoints that can be useful for documentation and sanity checks. A minimal installation path documented by the ecosystem is:</p>
+<pre>pip install clawrtc</pre>
+<p>When performing bounty work, I separate read-only checks from state-changing actions. Read-only requests such as node health, current epoch, or public balance lookups can validate documentation without risking funds or network state.</p>
+<p>A contributor should still avoid claiming that a live endpoint “proved” something it did not prove. For example, a public balance response may confirm that a wallet identifier resolves, but it does not by itself prove ownership, payout causality, or spendability.</p>
+
+<h2>5. Search for duplicates before writing anything</h2>
+<p>“First valid reporter wins” changes the economics. A technically correct bug can be worth nothing if someone else already reported the same root cause. Before submitting, search:</p>
+<ul>
+<li>the bounty repository issues,</li>
+<li>the target repository issues,</li>
+<li>open and recently merged pull requests,</li>
+<li>tests whose names describe the same failure mode.</li>
+</ul>
+<p>The goal is not merely to avoid identical wording. Look for the same control-flow failure or missing invariant. Two reports can sound different while describing the same bug.</p>
+
+<h2>6. Optimize for reviewer acceptance time</h2>
+<p>The best bounty report is not the longest. It is the one that lets a maintainer decide quickly. I use this structure:</p>
+<pre>Title: one sentence naming the failed invariant
+Scope: exact file/function/commit
+Reproduction: minimal deterministic steps
+Expected: what the code should guarantee
+Actual: what happens instead
+Impact: bounded, no hype
+Fix: smallest safe change
+Regression test: one failing-before/passing-after case
+Disclosure: AI assistance if applicable
+Payout identity: exact handle/wallet requested by the program</pre>
+<p>This format works well for code quality and security because it turns the report into an almost-ready test plan.</p>
+
+<h2>7. Be strict about payout routing</h2>
+<p>Crypto-adjacent bounties create another risk: sending rewards to the wrong kind of address. Some programs pay to a hosted handle; others require a native address; still others support a bridge only after an operator step. Do not assume one payout route works for another bounty.</p>
+<p>Before submission, confirm:</p>
+<ul>
+<li>the accepted wallet format,</li>
+<li>whether a hosted handle is allowed,</li>
+<li>whether a hold or pending period exists,</li>
+<li>whether the bounty requires a native-chain address,</li>
+<li>whether bridging is separate from payout.</li>
+</ul>
+<p>If the requirements are ambiguous, ask before funds are sent. A reward stranded at an unusable address is not a successful payout.</p>
+
+<h2>8. Fast does not mean spam</h2>
+<p>The easiest way to destroy expected value is to submit five weak findings instead of one strong one. High-quality bounty work compounds: maintainers learn that your reports are reproducible, your severity claims are restrained, and your payout details are correct. Low-quality volume creates the opposite reputation.</p>
+<p>My preferred priority order for quick work is:</p>
+<ol>
+<li>Known paying maintainer.</li>
+<li>Clear reward tier.</li>
+<li>No claim lock or long approval gate.</li>
+<li>Small, verifiable scope.</li>
+<li>Source-level or read-only validation.</li>
+<li>Low duplicate probability.</li>
+<li>Clear payout route.</li>
+</ol>
+
+<h2>9. What “safe immediate bounty work” looks like</h2>
+<p>A good same-day task is often boring in the best way: a broken SDK parameter, an error path that returns the wrong status, a documentation mismatch that can mislead developers, a missing validation test, or an accessibility defect with a one-line semantic fix. These are useful, reviewable, and do not require pretending to be an attacker.</p>
+<p>The target is not maximum theoretical severity. The target is the shortest path from real work to maintainer acceptance to payment evidence.</p>
+
+<h2>Conclusion</h2>
+<p>RustChain’s bounty ecosystem rewards speed, but the durable advantage is disciplined speed: public scope, non-destructive verification, duplicate checks, compact evidence, exact payout routing, and conservative accounting. AI agents are especially good at this kind of work when they are used as structured reviewers rather than as automated issue-spam machines.</p>
+<p>If you want to explore the code and bounty ecosystem yourself, start with <a href="https://github.com/Scottcjn/Rustchain">RustChain on GitHub</a>. Treat every reward as unearned until it is accepted, every payout as unconfirmed until evidence exists, and every production system as something to leave untouched unless the rules clearly say otherwise.</p>
+</article>
+</body>
+</html>
