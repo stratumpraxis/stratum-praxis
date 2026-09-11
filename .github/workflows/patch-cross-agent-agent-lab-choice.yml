@@ -19,26 +19,28 @@ jobs:
           from pathlib import Path
           import base64
           p = Path('cross-agent-operating-kit.html')
-          s = p.read_text()
+          s = p.read_text(encoding='utf-8')
           if 'cross_agent_agent_lab_checkout' in s:
               print('Agent Lab choice already present; no-op.')
               raise SystemExit(0)
-          css_anchor = "    .scope-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:12px;border:1px solid #1d282e;border-radius:14px;overflow:hidden;background:#1d282e}.scope-item{padding:15px;background:#0a1013}.scope-item b{display:block;margin-bottom:3px;color:#b5c0ba;font-size:10px}.scope-item span{color:#6e7b75;font-size:9px;line-height:1.45}\n"
           css = base64.b64decode('ICAgIC5hZ2VudC1sYWItY2hvaWNle3Bvc2l0aW9uOnJlbGF0aXZlO2lzb2xhdGlvbjppc29sYXRlO292ZXJmbG93OmhpZGRlbjtkaXNwbGF5OmdyaWQ7Z3JpZC10ZW1wbGF0ZS1jb2x1bW5zOm1pbm1heCgwLDFmcikgYXV0bztnYXA6MjRweDthbGlnbi1pdGVtczpjZW50ZXI7bWFyZ2luLXRvcDoxNnB4O3BhZGRpbmc6MjRweDtib3JkZXI6MXB4IHNvbGlkICMzMTUxNDg7Ym9yZGVyLXJhZGl1czoxOHB4O2JhY2tncm91bmQ6cmFkaWFsLWdyYWRpZW50KGNpcmNsZSBhdCAxMiUgMCUscmdiYSgxNTcsMjMyLDIwNywuMTEpLHRyYW5zcGFyZW50IDM2JSksIzBiMTIxMTtib3gtc2hhZG93OjAgMThweCA1MHB4IHJnYmEoMCwwLDAsLjIpfQogICAgLmFnZW50LWxhYi1jaG9pY2U6OmFmdGVye2NvbnRlbnQ6IiI7cG9zaXRpb246YWJzb2x1dGU7ei1pbmRleDotMTt3aWR0aDoxODBweDtoZWlnaHQ6MTgwcHg7cmlnaHQ6LTgwcHg7dG9wOi05NXB4O2JvcmRlci1yYWRpdXM6NTAlO2JhY2tncm91bmQ6cmdiYSgxNTcsMjMyLDIwNywuMDgpO2ZpbHRlcjpibHVyKDRweCk7YW5pbWF0aW9uOmFnZW50TGFiRHJpZnQgN3MgZWFzZS1pbi1vdXQgaW5maW5pdGUgYWx0ZXJuYXRlfQogICAgLmFnZW50LWxhYi1raWNrZXJ7ZGlzcGxheTppbmxpbmUtZmxleDthbGlnbi1pdGVtczpjZW50ZXI7Z2FwOjdweDttYXJnaW4tYm90dG9tOjdweDtjb2xvcjp2YXIoLS1taW50KTtmb250LXNpemU6OC41cHg7Zm9udC13ZWlnaHQ6NzUwO2xldHRlci1zcGFjaW5nOi4xMWVtO3RleHQtdHJhbnNmb3JtOnVwcGVyY2FzZX0uYWdlbnQtbGFiLWtpY2tlcjo6YmVmb3Jle2NvbnRlbnQ6IiI7d2lkdGg6NnB4O2hlaWdodDo2cHg7Ym9yZGVyLXJhZGl1czo1MCU7YmFja2dyb3VuZDp2YXIoLS1taW50KTtib3gtc2hhZG93OjAgMCAxNnB4IHJnYmEoMTU3LDIzMiwyMDcsLjY1KX0KICAgIC5hZ2VudC1sYWItY2hvaWNlIGgze21hcmdpbjowIDAgN3B4O2ZvbnQtc2l6ZToyMnB4O2xpbmUtaGVpZ2h0OjEuMTU7Zm9udC13ZWlnaHQ6NjEwfS5hZ2VudC1sYWItY2hvaWNlIHB7bWF4LXdpZHRoOjcyMHB4O21hcmdpbjowO2NvbG9yOiM4MjkxOGI7Zm9udC1zaXplOjEwLjVweDtsaW5lLWhlaWdodDoxLjYyfS5hZ2VudC1sYWItdGFnc3tkaXNwbGF5OmZsZXg7ZmxleC13cmFwOndyYXA7Z2FwOjZweDttYXJnaW4tdG9wOjEycHh9LmFnZW50LWxhYi10YWdzIHNwYW57cGFkZGluZzo1cHggOHB4O2JvcmRlcjoxcHggc29saWQgIzI0M2IzNDtib3JkZXItcmFkaXVzOjk5OXB4O2NvbG9yOiM3ODkwODc7YmFja2dyb3VuZDojMGQxNzE0O2ZvbnQtc2l6ZTo4LjVweH0uYnRuLWxhYnttaW4td2lkdGg6MTg0cHg7YmFja2dyb3VuZDojYmRmMWRmO2NvbG9yOiMwODEzMGY7Ym9yZGVyLWNvbG9yOiNhN2U0Y2Y7Ym94LXNoYWRvdzowIDEwcHggMzBweCByZ2JhKDk1LDE5NywxNjAsLjA4KX0uYnRuLWxhYiBzcGFue29wYWNpdHk6Ljc7Zm9udC1zaXplOjEwcHh9CiAgICBAa2V5ZnJhbWVzIGFnZW50TGFiRHJpZnR7ZnJvbXt0cmFuc2Zvcm06dHJhbnNsYXRlM2QoMCwwLDApIHNjYWxlKC45NSl9dG97dHJhbnNmb3JtOnRyYW5zbGF0ZTNkKC0zNHB4LDI2cHgsMCkgc2NhbGUoMS4xMil9fQo=').decode()
-          if css_anchor not in s:
-              raise SystemExit('CSS anchor not found')
-          s = s.replace(css_anchor, css + css_anchor, 1)
-          mobile_anchor = "    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}"
-          mobile = "    @media(max-width:720px){.agent-lab-choice{grid-template-columns:1fr;gap:17px;padding:20px}.btn-lab{width:100%;min-width:0}}\n    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.agent-lab-choice::after{animation:none}}"
-          if mobile_anchor not in s:
-              raise SystemExit('Reduced-motion anchor not found')
-          s = s.replace(mobile_anchor, mobile, 1)
+          css_pos = s.find('    .scope-bar{')
+          if css_pos < 0:
+              raise SystemExit('scope-bar CSS marker not found')
+          s = s[:css_pos] + css + s[css_pos:]
+          style_end = s.find('  </style>')
+          if style_end < 0:
+              raise SystemExit('style end not found')
+          responsive = '    @media(max-width:720px){.agent-lab-choice{grid-template-columns:1fr;gap:17px;padding:20px}.btn-lab{width:100%;min-width:0}}\n    @media(prefers-reduced-motion:reduce){.agent-lab-choice::after{animation:none}}\n'
+          s = s[:style_end] + responsive + s[style_end:]
           html_anchor = '        <div class="scope-bar" aria-label="License scope summary">'
+          html_pos = s.find(html_anchor)
+          if html_pos < 0:
+              raise SystemExit('scope-bar HTML marker not found')
           choice = base64.b64decode('ICAgICAgICA8YXNpZGUgY2xhc3M9ImFnZW50LWxhYi1jaG9pY2UiIGFyaWEtbGFiZWw9IkFnZW50IExhYiByZWN1cnJpbmcgZmllbGQgcmVzZWFyY2ggb3B0aW9uIj4KICAgICAgICAgIDxkaXY+CiAgICAgICAgICAgIDxzcGFuIGNsYXNzPSJhZ2VudC1sYWIta2lja2VyIj5PbmdvaW5nIGZpZWxkIHJlc2VhcmNoPC9zcGFuPgogICAgICAgICAgICA8aDM+TmVlZCB0aGUgbGl2ZSBsYWIsIG5vdCBqdXN0IHRoZSBmaW5pc2hlZCBraXQ/PC9oMz4KICAgICAgICAgICAgPHA+S2VlcCBhIG9uZS10aW1lIGxpY2Vuc2Ugd2hlbiB5b3Ugd2FudCB0aGUgY29tcGxldGVkIGltcGxlbWVudGF0aW9uIHBhY2thZ2UuIENob29zZSBBZ2VudCBMYWIgZm9yIGNvbnRpbnVpbmcgZXhwZXJpbWVudHMsIGZhaWx1cmUgdHJhY2VzLCBmaWVsZCBub3RlcyBhbmQgcmV1c2FibGUgb3BlcmF0aW5nIHBhdHRlcm5zLjwvcD4KICAgICAgICAgICAgPGRpdiBjbGFzcz0iYWdlbnQtbGFiLXRhZ3MiIGFyaWEtbGFiZWw9IkFnZW50IExhYiBjb250ZW50cyI+PHNwYW4+RmFpbHVyZSB0cmFjZXM8L3NwYW4+PHNwYW4+RmllbGQgbm90ZXM8L3NwYW4+PHNwYW4+RXhwZXJpbWVudHM8L3NwYW4+PHNwYW4+UmV1c2FibGUgd29ya2Zsb3dzPC9zcGFuPjwvZGl2PgogICAgICAgICAgPC9kaXY+CiAgICAgICAgICA8YSBjbGFzcz0iYnRuIGJ0bi1sYWIiIGRhdGEtYW5hbHl0aWNzLWlkPSJjcm9zc19hZ2VudF9hZ2VudF9sYWJfY2hlY2tvdXQiIGRhdGEtcHJvZHVjdD0iYWdlbnRfbGFiX21lbWJlcnNoaXAiIGhyZWY9Imh0dHBzOi8vYnV5LnN0cmlwZS5jb20vNWtRM2N3ZDNlMFVIZkFZZGM3Nlp5MFk/dXRtX3NvdXJjZT1jcm9zc19hZ2VudF9raXQmYW1wO3V0bV9tZWRpdW09Y29udGV4dHVhbF9jaG9pY2UmYW1wO3V0bV9jYW1wYWlnbj1hZ2VudF9sYWJfZm91bmRpbmciPjxzdHJvbmc+Sm9pbiBBZ2VudCBMYWI8L3N0cm9uZz48c3Bhbj4kMTkvbW88L3NwYW4+PC9hPgogICAgICAgIDwvYXNpZGU+Cgo=').decode()
-          if html_anchor not in s:
-              raise SystemExit('HTML anchor not found')
-          s = s.replace(html_anchor, choice + html_anchor, 1)
-          p.write_text(s)
+          s = s[:html_pos] + choice + s[html_pos:]
+          p.write_text(s, encoding='utf-8')
+          print('patched')
           PY
       - name: Verify patch
         run: |
