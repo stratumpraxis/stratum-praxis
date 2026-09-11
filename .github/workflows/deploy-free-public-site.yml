@@ -129,27 +129,36 @@ jobs:
             return 1
           }
 
-          for path in / /systems/ /b2b/ /live-lab.html /product-router.html /workflow-audit.html /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /rustchain-bounty-radar.html; do
+          for path in / /systems/ /b2b/ /live-lab.html /product-router.html /buyer-workspace.html /workflow-audit.html /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html /rustchain-bounty-radar.html; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
               echo "Expected 200 for $BASE$path, got $code"
               head -c 500 /tmp/page.txt || true
               exit 1
             fi
-            echo "Public route OK: $BASE$path -> 200"
+            echo "Route OK: $BASE$path -> 200"
           done
 
           assert_markers "$BASE/" /tmp/home.html \
-            'data-page="stratum_home_v4"' \
-            'href="/stratum-office-v4.css"' \
-            'https://stratum-offer-optimizer.pages.dev/'
-          echo 'Stratum v4 homepage production markers -> PASS'
+            'data-page="stratum_revenue_home_v2"' \
+            'href="/stratum-revenue-home.css?v=1"' \
+            'href="/product-router.html"' \
+            'src="/stratum-revenue-home.js?v=1"'
+          echo 'Current Stratum revenue homepage markers -> PASS'
+
+          assert_markers "$BASE/buyer-workspace.html" /tmp/buyer-workspace.html \
+            'content="noindex,nofollow,noarchive"' \
+            'Use what you bought.' \
+            'href="/cross-agent-operating-kit-access.html"' \
+            'href="/workflow-audit.html"' \
+            'href="/ai-saas-spend-monitoring.html"'
+          echo 'Buyer Workspace gateway and protected-delivery routing -> PASS'
 
           assert_markers "$BASE/workflow-audit.html" /tmp/workflow-audit.html \
             'data-page="workflow_audit_v4"' \
             'href="/stratum-office-v4.css"' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
-          echo 'Stratum v4 workflow audit and checkout markers -> PASS'
+          echo 'Workflow audit and checkout markers -> PASS'
 
           assert_markers "$BASE/b2b/" /tmp/b2b.html \
             'data-page="workflow_diagnostic_v4"' \
@@ -157,21 +166,34 @@ jobs:
             'id="question-host"' \
             'Audit this workflow — $499' \
             'No purchase recommended for this workflow.'
-          echo 'B2B v4 decision diagnostic functional markers -> PASS'
+          echo 'B2B decision diagnostic functional markers -> PASS'
 
           assert_markers "$BASE/live-lab.html" /tmp/live-lab.html \
             'data-page="live_lab_v4"' \
             'id="intent-buttons"' \
             'id="inventory"' \
             'href="/product-router.html"'
-          echo 'Live Lab v4 inventory and product-route markers -> PASS'
+          echo 'Live Lab inventory and product-route markers -> PASS'
 
           assert_markers "$BASE/product-router.html" /tmp/product-router.html \
             'data-page="product_router_v4"' \
             'id="intent-buttons"' \
             'id="inventory"' \
+            '2 routes' \
+            'href="/buyer-workspace.html"' \
             'href="/workflow-audit.html"'
-          echo 'Product Router v4 inventory and audit-route markers -> PASS'
+          echo 'Product Router active inventory, buyer access and audit route -> PASS'
+
+          curl -L -sS "$BASE/stratum-catalog-v3.js" -o /tmp/catalog.js
+          grep -Fq "name:'AI Value Realization Kit'" /tmp/catalog.js
+          grep -Fq "name:'Cross-Agent Operating Kit'" /tmp/catalog.js
+          if grep -Fq "name:'AI Workflow SOP & Governance Kit'" /tmp/catalog.js; then
+            echo 'Legacy SOP product resurfaced in active catalog'; exit 1
+          fi
+          if grep -Fq "name:'AI Workspace Safety & Workflow Kit'" /tmp/catalog.js; then
+            echo 'Legacy workspace product resurfaced in active catalog'; exit 1
+          fi
+          echo 'Active paid catalog is limited to current direct-purchase routes -> PASS'
 
           assert_markers "$BASE/revenue-pump/" /tmp/revenue-pump.html \
             'REVENUE PUMP SCORE' \
