@@ -38,24 +38,35 @@ jobs:
 
           python - <<'PY'
           from pathlib import Path
-          tag = '<script defer src="/stratum-evolution-engine.js?v=20260911" data-stratum-evolution></script>'
+          tags = [
+              '<script defer src="/stratum-evolution-engine.js?v=20260911-v2" data-stratum-evolution></script>',
+              '<script defer src="/stratum-growth-ui.js?v=20260911-v1" data-stratum-growth-ui></script>'
+          ]
           count = 0
           for p in Path('_site').rglob('*.html'):
               text = p.read_text(encoding='utf-8', errors='ignore')
-              if 'data-stratum-evolution' in text or '</head>' not in text:
+              if '</head>' not in text:
                   continue
-              text = text.replace('</head>', f'  {tag}\n</head>', 1)
+              additions = []
+              if 'data-stratum-evolution' not in text:
+                  additions.append(tags[0])
+              if 'data-stratum-growth-ui' not in text:
+                  additions.append(tags[1])
+              if not additions:
+                  continue
+              text = text.replace('</head>', '  ' + '\n  '.join(additions) + '\n</head>', 1)
               p.write_text(text, encoding='utf-8')
               count += 1
-          print(f'Injected evolution engine into {count} HTML files')
+          print(f'Injected evolution/growth layers into {count} HTML files')
           PY
 
           test -s _site/stratum-evolution-engine.js
+          test -s _site/stratum-growth-ui.js
           grep -Fq 'data-stratum-evolution' _site/index.html
-          grep -Fq 'data-stratum-evolution' _site/product-router.html
-          grep -Fq 'data-stratum-evolution' _site/live-lab.html
-          grep -Fq 'data-stratum-evolution' _site/money-resilience/index.html
-          grep -Fq 'data-stratum-evolution' _site/72-hour-household-readiness/index.html
+          grep -Fq 'data-stratum-growth-ui' _site/index.html
+          grep -Fq 'data-stratum-growth-ui' _site/product-router.html
+          grep -Fq 'data-stratum-growth-ui' _site/money-resilience/index.html
+          grep -Fq 'data-stratum-growth-ui' _site/72-hour-household-readiness/index.html
 
       - name: Deploy evolved site
         working-directory: _site
@@ -92,12 +103,21 @@ jobs:
             if ! grep -Fq 'data-stratum-evolution' /tmp/evo-page.html; then
               echo "Evolution layer missing: $path"; exit 1
             fi
-            echo "Evolution OK: $path"
+            if ! grep -Fq 'data-stratum-growth-ui' /tmp/evo-page.html; then
+              echo "Growth UI missing: $path"; exit 1
+            fi
+            echo "Evolution + Growth UI OK: $path"
           done
 
-          curl -L -sS "$BASE/stratum-evolution-engine.js?v=20260911" -o /tmp/evolution.js
+          curl -L -sS "$BASE/stratum-evolution-engine.js?v=20260911-v2" -o /tmp/evolution.js
           grep -Fq '__STRATUM_EVOLUTION_ENGINE__' /tmp/evolution.js
           grep -Fq 'evolution_quality_snapshot' /tmp/evolution.js
           grep -Fq 'evolution_action' /tmp/evolution.js
           grep -Fq 'evolution_link_health' /tmp/evolution.js
-          echo 'Design / Quality / Revenue / Motion / Evolution layer -> PASS'
+
+          curl -L -sS "$BASE/stratum-growth-ui.js?v=20260911-v1" -o /tmp/growth-ui.js
+          grep -Fq '__STRATUM_GROWTH_UI__' /tmp/growth-ui.js
+          grep -Fq 'growth_nav_open' /tmp/growth-ui.js
+          grep -Fq 'growth_nav_action' /tmp/growth-ui.js
+          grep -Fq 'Existing routes only' /tmp/growth-ui.js
+          echo 'Design / Quality / Revenue / Trust / Navigation / Motion layers -> PASS'
