@@ -1,3 +1,4 @@
+# Stratum Praxis public site
 User-agent: *
 Allow: /
 
