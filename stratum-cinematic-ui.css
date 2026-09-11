@@ -1,0 +1,88 @@
+/* Stratum Praxis — Cinematic UI v1
+   Spatial storytelling, data-flow vectors and state morphs for the highest-value decision surfaces. */
+:root{
+  --spc-accent:#79dfb7;
+  --spc-accent-2:#9fc8ff;
+  --spc-ease:cubic-bezier(.22,.82,.2,1);
+  --spc-ease-out:cubic-bezier(.16,1,.3,1);
+}
+html[data-spc-active="true"]{scroll-behavior:smooth}
+body{--spc-rail-bg:color-mix(in srgb,currentColor 4%,transparent)}
+
+/* Fade sidebar: almost disappears until it is useful. */
+.spc-story-rail{position:fixed;left:max(10px,env(safe-area-inset-left));top:50%;z-index:78;display:grid;gap:5px;width:34px;padding:8px 5px;border:1px solid color-mix(in srgb,currentColor 11%,transparent);border-radius:17px;background:color-mix(in srgb,var(--spc-rail-bg) 88%,transparent);backdrop-filter:blur(18px) saturate(135%);-webkit-backdrop-filter:blur(18px) saturate(135%);box-shadow:0 12px 44px rgba(0,0,0,.08);opacity:.28;transform:translateY(-50%);transition:width .38s var(--spc-ease-out),opacity .3s ease,background .3s ease,box-shadow .3s ease;overflow:hidden}
+.spc-story-rail:hover,.spc-story-rail:focus-within{width:176px;opacity:.96;box-shadow:0 18px 56px rgba(0,0,0,.14)}
+.spc-story-track{position:absolute;left:16px;top:16px;bottom:16px;width:1px;background:color-mix(in srgb,currentColor 13%,transparent);pointer-events:none}
+.spc-story-fill{position:absolute;left:0;top:0;width:1px;height:var(--spc-story,0%);background:linear-gradient(var(--spc-accent),var(--spc-accent-2));box-shadow:0 0 12px color-mix(in srgb,var(--spc-accent) 60%,transparent);transition:height .55s var(--spc-ease)}
+.spc-story-item{position:relative;z-index:1;display:grid;grid-template-columns:22px 1fr;align-items:center;gap:7px;width:164px;min-height:32px;border:0;background:transparent;color:inherit;padding:0;text-align:left;cursor:pointer;font:700 10px/1.25 var(--spk-font,system-ui,sans-serif)}
+.spc-story-dot{display:grid;place-items:center;width:22px;height:22px;border-radius:50%}
+.spc-story-dot:before{content:"";width:5px;height:5px;border-radius:50%;background:color-mix(in srgb,currentColor 32%,transparent);box-shadow:0 0 0 4px transparent;transition:transform .3s var(--spc-ease),background .3s ease,box-shadow .3s ease}
+.spc-story-label{opacity:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transform:translateX(-5px);transition:opacity .22s ease,transform .32s var(--spc-ease)}
+.spc-story-rail:hover .spc-story-label,.spc-story-rail:focus-within .spc-story-label{opacity:.7;transform:none}
+.spc-story-item[aria-current="step"] .spc-story-dot:before{background:var(--spc-accent);box-shadow:0 0 0 5px color-mix(in srgb,var(--spc-accent) 14%,transparent),0 0 16px color-mix(in srgb,var(--spc-accent) 62%,transparent);transform:scale(1.25)}
+.spc-story-item[aria-current="step"] .spc-story-label{opacity:1;font-weight:850}
+
+/* Spatial section energy without turning the site into a generic dark template. */
+.spc-cinematic-section{position:relative;isolation:isolate}
+.spc-cinematic-section:after{content:"";position:absolute;z-index:-1;inset:-8% -4%;pointer-events:none;background:radial-gradient(circle at var(--spc-hot-x,50%) var(--spc-hot-y,48%),color-mix(in srgb,var(--spc-accent) 7%,transparent),transparent 38%);opacity:0;transition:opacity .7s ease}
+.spc-cinematic-section.spc-story-live:after{opacity:1}
+.spc-cinematic-title{animation:spcTitleIn .72s var(--spc-ease-out) both}
+@keyframes spcTitleIn{from{opacity:.2;transform:translateY(18px);clip-path:inset(35% 0 0 0)}to{opacity:1;transform:none;clip-path:inset(0 0 0 0)}}
+
+/* SVG data-flow layer. */
+.spc-vector-host{position:relative!important;isolation:isolate}
+.spc-vector-layer{position:absolute;z-index:0;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.spc-vector-layer path.spc-vector-base{fill:none;stroke:color-mix(in srgb,currentColor 10%,transparent);stroke-width:1.1;vector-effect:non-scaling-stroke}
+.spc-vector-layer path.spc-vector-energy{fill:none;stroke:url(#spcGradient);stroke-width:1.7;stroke-linecap:round;stroke-dasharray:7 13;vector-effect:non-scaling-stroke;filter:drop-shadow(0 0 5px color-mix(in srgb,var(--spc-accent) 34%,transparent));animation:spcDash 8s linear infinite}
+.spc-vector-dot{fill:var(--spc-accent);filter:drop-shadow(0 0 7px var(--spc-accent))}
+@keyframes spcDash{to{stroke-dashoffset:-160}}
+.spc-vector-host>:not(.spc-vector-layer){position:relative;z-index:1}
+
+/* State morphs: selections should feel like a system changing state, not a card swapping. */
+.spc-state-surface{transform-origin:50% 34%;transition:opacity .36s ease,transform .46s var(--spc-ease-out),filter .42s ease}
+.spc-state-surface.spc-switching{opacity:.68;transform:scale(.992) translateY(5px);filter:blur(3px) saturate(.86)}
+.spc-state-surface.spc-commit{animation:spcCommit .48s var(--spc-ease-out)}
+@keyframes spcCommit{0%{opacity:.66;transform:scale(.994) translateY(4px);filter:blur(2px)}55%{opacity:1;transform:scale(1.004);filter:none}100%{transform:none}}
+
+/* Active-tab beam / route morph indicator. */
+.spc-tab-host{position:relative!important}
+.spc-tab-indicator{position:absolute;z-index:8;bottom:0;left:0;height:2px;width:10px;border-radius:999px;background:linear-gradient(90deg,var(--spc-accent),var(--spc-accent-2));box-shadow:0 0 14px color-mix(in srgb,var(--spc-accent) 45%,transparent);transform:translateX(var(--spc-tab-x,0px));transition:width .42s var(--spc-ease-out),transform .42s var(--spc-ease-out),opacity .2s ease;pointer-events:none}
+
+/* Interactive preview progress: show that the user is moving through a decision model. */
+.spc-preview-status{display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:9px;margin:12px 0 2px;color:color-mix(in srgb,currentColor 62%,transparent);font:780 9px/1.2 var(--spk-font,system-ui,sans-serif);letter-spacing:.08em;text-transform:uppercase}
+.spc-preview-status-track{height:3px;border-radius:999px;background:color-mix(in srgb,currentColor 10%,transparent);overflow:hidden}
+.spc-preview-status-fill{display:block;height:100%;width:var(--spc-preview-progress,25%);border-radius:inherit;background:linear-gradient(90deg,var(--spc-accent),var(--spc-accent-2));box-shadow:0 0 12px color-mix(in srgb,var(--spc-accent) 38%,transparent);transition:width .45s var(--spc-ease-out)}
+
+/* Numeric tween feedback. */
+.spc-tweening{font-variant-numeric:tabular-nums;will-change:transform,filter;animation:spcNumber .42s var(--spc-ease-out)}
+@keyframes spcNumber{0%{transform:translateY(4px);opacity:.62;filter:blur(1px)}55%{transform:translateY(-1px) scale(1.025);opacity:1;filter:none}100%{transform:none}}
+
+/* Route / buyer / paid-preview targeted visual lift. */
+html[data-spc-page="router"] .route-canvas,
+html[data-spc-page="buyer"] .bw-products,
+html[data-spc-page="paid"] .spk-preview,
+html[data-spc-page="home"] .rh-decision-grid{transition:box-shadow .45s ease,border-color .45s ease}
+html[data-spc-page="router"] .route-view.active .route-canvas,
+html[data-spc-page="buyer"] .bw-products:focus-within,
+html[data-spc-page="paid"] .spk-preview:focus-within,
+html[data-spc-page="home"] .rh-decision-grid:focus-within{box-shadow:0 28px 90px rgba(18,35,29,.12)}
+html[data-spc-page="router"] .flow-node,
+html[data-spc-page="buyer"] .bw-step,
+html[data-spc-page="paid"] .spk-metric,
+html[data-spc-page="home"] .map-step{transition:transform .35s var(--spc-ease-out),border-color .3s ease,background .3s ease,box-shadow .3s ease}
+html[data-spc-page="router"] .flow-node:hover,
+html[data-spc-page="buyer"] .bw-step:hover,
+html[data-spc-page="paid"] .spk-metric:hover,
+html[data-spc-page="home"] .map-step:hover{transform:translateY(-3px);box-shadow:0 14px 34px rgba(0,0,0,.08)}
+
+@media(max-width:1179px){.spc-story-rail{display:none}}
+@media(max-width:760px){
+  html[data-spc-active="true"]{scroll-behavior:auto}
+  .spc-vector-layer path.spc-vector-energy{stroke-width:1.3;stroke-dasharray:5 11}
+  .spc-preview-status{margin-top:10px}
+}
+@media(prefers-reduced-motion:reduce){
+  html[data-spc-active="true"]{scroll-behavior:auto}
+  .spc-story-rail,.spc-story-fill,.spc-story-label,.spc-story-dot:before,.spc-state-surface,.spc-tab-indicator{transition:none!important}
+  .spc-cinematic-title,.spc-vector-layer path.spc-vector-energy,.spc-state-surface.spc-commit,.spc-tweening{animation:none!important}
+}
