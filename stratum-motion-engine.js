@@ -38,15 +38,15 @@
   }
 
   function heroScene(){
-    const scene=$('.hero,.sr-hero,.bw-hero,.page-topline,.mr-boot-inner,.product-shell > section:first-child,main > section:first-child');
+    const scene=$('.rh-hero,.hero,.sr-hero,.bw-hero,.page-topline,.mr-boot-inner,.product-shell > section:first-child,main > section:first-child');
     if(!scene)return;
     scene.classList.add('spm-scene');
     if(!$('.spm-spotlight',scene)){const spot=document.createElement('span');spot.className='spm-spotlight';spot.setAttribute('aria-hidden','true');scene.prepend(spot);}
     const title=$('h1',scene);if(title)title.classList.add('spm-hero-title');
-    const copy=$('.hero-copy,.bw-hero>div:first-of-type,.sr-hero>div:first-of-type,.page-topline>div:first-of-type',scene)||scene.firstElementChild;
+    const copy=$('.rh-hero-copy,.hero-copy,.bw-hero>div:first-of-type,.sr-hero>div:first-of-type,.page-topline>div:first-of-type',scene)||scene.firstElementChild;
     if(copy&&copy!==$('.spm-spotlight',scene))copy.classList.add('spm-hero-copy');
-    const support=$('.lead,.hero-lead,.sr-lead,.hero-sub,.bw-hero p,.page-topline>p',scene);if(support)support.classList.add('spm-hero-support');
-    const actions=$('.actions,.hero-actions,.sr-actions,.bw-actions',scene);if(actions)actions.classList.add('spm-hero-actions');
+    const support=$('.rh-lead,.lead,.hero-lead,.sr-lead,.hero-sub,.bw-hero p,.page-topline>p',scene);if(support)support.classList.add('spm-hero-support');
+    const actions=$('.rh-actions,.actions,.hero-actions,.sr-actions,.bw-actions',scene);if(actions)actions.classList.add('spm-hero-actions');
     if(mode==='full'&&fine){
       let raf=0;
       scene.addEventListener('pointermove',e=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;const r=scene.getBoundingClientRect();const x=Math.max(0,Math.min(100,(e.clientX-r.left)/Math.max(r.width,1)*100));const y=Math.max(0,Math.min(100,(e.clientY-r.top)/Math.max(r.height,1)*100));scene.style.setProperty('--spm-x',x.toFixed(1)+'%');scene.style.setProperty('--spm-y',y.toFixed(1)+'%');});},{passive:true});
@@ -55,7 +55,7 @@
   }
 
   function depth(){
-    const nodes=$$('.console,.sr-hero-card,.bw-state,.system-panel,.hero-visual,.mr-boot-visual,.machine,.recommend-card').slice(0,8);
+    const nodes=$$('.rh-hero-panel,.decision-map,.rh-reason-card,.console,.sr-hero-card,.bw-state,.system-panel,.hero-visual,.mr-boot-visual,.machine,.recommend-card').slice(0,12);
     nodes.forEach(el=>{
       el.classList.add('spm-depth');
       if(mode!=='full'||!fine)return;
@@ -67,7 +67,7 @@
 
   function reveal(){
     if(reduce)return;
-    const nodes=$$('main > section,main > article,.sr-section,.bw-section,.card,.sr-card,.offer,.spk-preview,.spk-circulation,.principle').filter(el=>!el.closest('[hidden]')).slice(0,72);
+    const nodes=$$('main > section,main > article,.rh-section,.sr-section,.bw-section,.card,.sr-card,.offer,.rh-step,.spk-preview,.spk-circulation,.principle').filter(el=>!el.closest('[hidden]')).slice(0,84);
     nodes.forEach((el,i)=>{el.classList.add('spm-reveal');el.dataset.spmOrder=String(i%4+1);});
     if(!('IntersectionObserver'in window)){nodes.forEach(el=>el.classList.add('spm-in'));return;}
     const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('spm-in');io.unobserve(entry.target);capture('motion_scene_view',{family,kind:(entry.target.className||'').toString().slice(0,100)});}}),{threshold:.08,rootMargin:'0px 0px -6% 0px'});
@@ -76,21 +76,21 @@
 
   function sectionEnergy(){
     if(!('IntersectionObserver'in window)||reduce)return;
-    const sections=$$('main > section,.sr-section,.bw-section').slice(0,30);
+    const sections=$$('main > section,.rh-section,.sr-section,.bw-section').slice(0,34);
     const io=new IntersectionObserver(entries=>entries.forEach(e=>{e.target.classList.toggle('spm-section-live',e.isIntersecting&&e.intersectionRatio>.24);}),{threshold:[.24,.55]});
     sections.forEach(s=>io.observe(s));
   }
 
   function flow(){
-    const runners=$$('.flow-link,.connector,.branch-line,.spk-circ-link,.start-card').slice(0,36);
+    const runners=$$('.flow-link,.connector,.branch-line,.map-link,.spk-circ-link,.start-card,.rh-step>a').slice(0,44);
     runners.forEach(x=>x.classList.add('spm-flow-runner'));
-    const nodes=$$('.map-row,.flow-node,.spk-flow>div,.bw-route>div,.kit-step,.deliverable').slice(0,44);
+    const nodes=$$('.map-row,.flow-node,.map-step,.spk-flow>div,.bw-route>div,.kit-step,.deliverable,.rh-step').slice(0,56);
     nodes.forEach(x=>x.classList.add('spm-pulse-node'));
-    $$('.live-map,.route-canvas,.spk-preview-body,.bw-products,.audit-workspace,.system-panel').forEach(x=>x.classList.add('spm-surface'));
+    $$('.live-map,.route-canvas,.decision-map,.spk-preview-body,.bw-products,.audit-workspace,.system-panel').forEach(x=>x.classList.add('spm-surface'));
   }
 
   function magnetic(){
-    const nodes=$$('a.btn,a.button,a.sr-btn,a.action-btn,a.bw-btn,a.go,a.start-card,[data-primary-cta]').slice(0,34);
+    const nodes=$$('a.rh-primary,a.rh-secondary,.rh-step>a,button.route,a.btn,a.button,a.sr-btn,a.action-btn,a.bw-btn,a.go,a.start-card,[data-primary-cta]').slice(0,42);
     nodes.forEach(el=>{
       el.classList.add('spm-magnetic');
       if(mode!=='full'||!fine)return;
@@ -101,7 +101,7 @@
   }
 
   function numericFeedback(){
-    const nodes=$$('.metric strong,.sr-metric strong,.spk-metric strong,.impact-main b,.donut strong,.pulse-card b,[data-live-value],#scoreValue,#annualSpend,#annualExposure').slice(0,40);
+    const nodes=$$('.metric strong,.sr-metric strong,.spk-metric strong,.impact-main b,.donut strong,.pulse-card b,[data-live-value],#scoreValue,#annualSpend,#annualExposure,#roi-net,#roi-percent').slice(0,46);
     nodes.forEach(node=>{
       let last=(node.textContent||'').trim();
       const mo=new MutationObserver(()=>{const next=(node.textContent||'').trim();if(next===last)return;last=next;if(reduce)return;node.classList.remove('spm-value-flash');void node.offsetWidth;node.classList.add('spm-value-flash');});
@@ -111,7 +111,7 @@
 
   function tabEnergy(){
     document.addEventListener('click',e=>{
-      const tab=e.target.closest('.spk-tab,.bw-selector button,.route-tab,.tab');if(!tab)return;
+      const tab=e.target.closest('.spk-tab,.bw-selector button,.route-tab,.route,.tab');if(!tab)return;
       capture('motion_state_change',{family,control:(tab.dataset.spkTab||tab.dataset.bwTab||tab.dataset.route||tab.textContent||'').trim().slice(0,80)});
     },{capture:true});
   }
