@@ -1,30 +1,201 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Stratum B2B Paid Routes | Product Router</title>
-<meta name="description" content="Choose a Stratum Praxis paid route by business problem: AI value and ROI, agent operations, or specialist workflow review.">
-<meta name="robots" content="index,follow,max-image-preview:large"><meta name="theme-color" content="#f5f1ea">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Stratum Praxis | Spend, Workflow & Agent Revenue Routes</title>
+<meta name="description" content="Choose the shortest Stratum Praxis route from free evidence to self-service, specialist audit, agent operations or recurring spend control.">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#101716">
 <link rel="canonical" href="https://stratumpraxis.com/product-router.html">
-<meta property="og:type" content="website"><meta property="og:title" content="Stratum B2B Paid Routes"><meta property="og:description" content="Route validated evidence into the smallest fitting paid layer, then use Buyer Workspace for delivery."><meta property="og:url" content="https://stratumpraxis.com/product-router.html"><meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png"><meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/stratum-office-v4.css"><link rel="stylesheet" href="/stratum-decision-v3.css"><link rel="stylesheet" href="/stratum-v4-bridge.css">
-<script src="/scos-analytics.js" defer></script><script src="/stratum-office-v3.js" defer></script><script src="/stratum-catalog-v3.js" defer></script>
-<link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience><link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2><link rel="stylesheet" href="/stratum-retrofit-2026.css" data-stratum-retrofit>
-<style>.journey{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 26px}.journey a,.journey span{display:block;padding:11px 12px;border:1px solid rgba(20,20,20,.14);border-radius:12px;text-decoration:none;color:inherit;font-size:.8rem;background:rgba(255,255,255,.4)}.journey b{display:block;font-size:.65rem;opacity:.48;margin-bottom:3px}.journey .active{background:#111;color:#fff;border-color:#111}@media(max-width:760px){.journey{grid-template-columns:1fr}}</style>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Stratum Praxis — Three routes from evidence to action">
+<meta property="og:description" content="Spend & ROI, Workflow, and Agent Operations. Start free, escalate only when the evidence supports it.">
+<meta property="og:url" content="https://stratumpraxis.com/product-router.html">
+<meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="/stratum-office-v4.css">
+<script src="/scos-analytics.js" defer></script>
+<script defer src="/cross-agent-attribution.js"></script>
+<style>
+:root{
+  --bg:#ece9e2;--paper:#f7f5ef;--paper-2:#f1eee7;--ink:#121817;--muted:#68736f;--line:rgba(18,24,23,.11);
+  --dark:#101716;--dark-2:#18221f;--mint:#a8d6c4;--mint-2:#dceee7;--blue:#9fc5dc;--violet:#c7b9df;--sand:#e8c7a8;
+  --shadow:0 28px 80px rgba(20,28,25,.10);--radius:30px;--max:1280px;
+}
+*{box-sizing:border-box;min-width:0}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:
+  radial-gradient(circle at 10% 0,rgba(168,214,196,.28),transparent 30rem),
+  radial-gradient(circle at 100% 18%,rgba(199,185,223,.20),transparent 32rem),
+  var(--bg);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+.skip{position:fixed;left:14px;top:10px;z-index:1000;transform:translateY(-160%);background:#fff;padding:10px 14px;border-radius:10px}.skip:focus{transform:none}
+.office-header{position:sticky;top:0;z-index:50;background:rgba(247,245,239,.84)!important;border-color:rgba(18,24,23,.08)!important;backdrop-filter:blur(18px) saturate(1.1);box-shadow:0 10px 30px rgba(22,28,26,.04)}
+.office-nav a{border-radius:999px;padding:8px 12px}.office-nav a[aria-current="page"]{background:#17201e;color:#fff}.b2b-badge{background:var(--mint-2)!important;color:#31483f!important;border-color:#cbded6!important}
+.shell{width:min(var(--max),calc(100% - 48px));margin:auto}
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:650px;margin:24px auto 14px;padding:70px 66px 56px;border:1px solid rgba(255,255,255,.08);border-radius:38px;background:
+  radial-gradient(circle at 82% 16%,rgba(168,214,196,.16),transparent 25rem),
+  linear-gradient(145deg,#101716,#17201e 62%,#1d2825);color:#f7f6f1;box-shadow:0 34px 100px rgba(18,24,23,.18)}
+.hero:before{content:"";position:absolute;z-index:-1;right:-180px;top:-220px;width:640px;height:640px;border:1px solid rgba(168,214,196,.13);border-radius:50%;box-shadow:0 0 0 68px rgba(168,214,196,.025),0 0 0 136px rgba(168,214,196,.014)}
+.hero:after{content:"";position:absolute;z-index:-1;left:-10%;right:-10%;bottom:-48%;height:72%;border-radius:50% 50% 0 0;background:
+  radial-gradient(ellipse at 18% 50%,rgba(232,199,168,.72),transparent 28%),
+  radial-gradient(ellipse at 49% 64%,rgba(168,214,196,.58),transparent 32%),
+  radial-gradient(ellipse at 78% 47%,rgba(199,185,223,.52),transparent 30%);filter:blur(6px);opacity:.8}
+.eyebrow{display:inline-flex;align-items:center;gap:9px;margin:0 0 26px;padding:8px 11px;border:1px solid rgba(255,255,255,.12);border-radius:999px;background:rgba(255,255,255,.05);color:#b7c5c0;font-size:10px;font-weight:800;letter-spacing:.13em;text-transform:uppercase}
+.eyebrow i{width:7px;height:7px;border-radius:50%;background:#9ee2c6;box-shadow:0 0 0 5px rgba(158,226,198,.08)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(330px,.58fr);gap:64px;align-items:end}
+.hero h1{max-width:920px;margin:0;font-size:clamp(54px,7.4vw,102px);line-height:.89;letter-spacing:-.068em;font-weight:630;text-wrap:balance}
+.hero h1 em{color:#b7e6d3;font-style:normal}
+.hero-lead{max-width:690px;margin:28px 0 0;color:#aebbb6;font-size:15px;line-height:1.75}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:31px}.btn{min-height:52px;display:inline-flex;align-items:center;justify-content:space-between;gap:26px;padding:0 19px;border:1px solid rgba(255,255,255,.12);border-radius:999px;text-decoration:none;font-size:11px;font-weight:780;transition:.2s ease}.btn:hover{transform:translateY(-2px)}.btn.primary{background:#f5f4ee;color:#101716;border-color:#f5f4ee}.btn.secondary{background:rgba(255,255,255,.055);color:#eff5f2}.btn.dark{background:#141b19;color:#fff;border-color:#141b19}.btn.light{background:#fff;color:#141b19;border-color:rgba(18,24,23,.09)}
+.hero-proof{display:grid;gap:8px}.hero-proof div{display:grid;grid-template-columns:36px 1fr;gap:12px;padding:14px 0;border-top:1px solid rgba(255,255,255,.1)}.hero-proof span{width:30px;height:30px;display:grid;place-items:center;border-radius:9px;background:rgba(168,214,196,.1);color:#b8e3d2;font-size:9px;font-weight:850}.hero-proof strong{display:block;font-size:12px}.hero-proof small{display:block;margin-top:4px;color:#81918b;font-size:9px;line-height:1.5}
+.pricebar{display:grid;grid-template-columns:repeat(5,1fr);margin:14px auto 60px;border:1px solid var(--line);border-radius:22px;background:rgba(250,248,243,.73);overflow:hidden;box-shadow:0 12px 36px rgba(28,33,31,.04)}.pricebar div{padding:16px 18px;border-right:1px solid var(--line)}.pricebar div:last-child{border-right:0}.pricebar small{display:block;color:#87908c;font-size:8px;font-weight:800;letter-spacing:.11em}.pricebar strong{display:block;margin-top:5px;font-size:11px}
+.section{margin:72px auto}.section-head{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.43fr);gap:50px;align-items:end;margin-bottom:22px}.micro{margin:0 0 9px;color:#75807b;font-size:9px;font-weight:850;letter-spacing:.14em;text-transform:uppercase}.section-head h2{max-width:850px;margin:0;font-size:clamp(38px,5.4vw,68px);line-height:.94;letter-spacing:-.059em;font-weight:620;text-wrap:balance}.section-head>p{margin:0;color:#6e7773;font-size:11px;line-height:1.75}
+.route-jump{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}.route-jump a{position:relative;overflow:hidden;min-height:148px;padding:20px;border:1px solid var(--line);border-radius:22px;background:rgba(250,248,243,.78);text-decoration:none;transition:.2s ease}.route-jump a:hover{transform:translateY(-4px);background:#fff;box-shadow:0 20px 55px rgba(28,33,31,.07)}.route-jump b{display:block;font-size:18px}.route-jump p{max-width:28ch;margin:8px 0 0;color:#707975;font-size:10px;line-height:1.55}.route-jump span{position:absolute;right:18px;top:18px;color:#88928e;font-size:10px}.route-jump i{display:block;width:44px;height:3px;margin-bottom:22px;border-radius:99px}.route-jump .spend i{background:#7fb89f}.route-jump .workflow i{background:#83aac1}.route-jump .agent i{background:#a393c6}
+.route-card{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(260px,.42fr) minmax(0,1fr);gap:38px;margin-top:14px;padding:34px;border:1px solid var(--line);border-radius:var(--radius);background:rgba(249,247,241,.88);box-shadow:0 20px 62px rgba(27,33,30,.055)}.route-card:before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}.route-card.spend:before{background:#79ae98}.route-card.workflow:before{background:#7da4bd}.route-card.agent:before{background:#9b8dbd}.route-intro{padding:8px 8px 8px 4px}.route-num{display:flex;align-items:center;justify-content:space-between;gap:12px}.route-num>span{color:#7a8580;font-size:9px;font-weight:850;letter-spacing:.13em}.route-badge{padding:6px 9px;border-radius:999px;font-size:7px;font-weight:850;letter-spacing:.08em}.spend .route-badge{background:#dcebe4;color:#466257}.workflow .route-badge{background:#dce8ef;color:#455d6c}.agent .route-badge{background:#e8e1f1;color:#5e5475}.route-intro h3{margin:36px 0 12px;font-size:clamp(31px,3.4vw,47px);line-height:.96;letter-spacing:-.052em;font-weight:620}.route-intro>p{margin:0;color:#68716d;font-size:11px;line-height:1.72}.route-entry{margin-top:24px;padding-top:20px;border-top:1px solid var(--line)}.route-entry small{display:block;color:#87908c;font-size:8px;letter-spacing:.11em}.route-entry a{display:inline-flex;align-items:center;gap:12px;margin-top:10px;text-decoration:none;font-size:11px;font-weight:800}.route-entry a:hover{text-decoration:underline}.route-entry a:after{content:"→"}
+.path{display:grid;gap:8px}.path-step{display:grid;grid-template-columns:50px minmax(0,1fr) auto;gap:14px;align-items:center;min-height:82px;padding:13px 14px;border:1px solid rgba(18,24,23,.09);border-radius:17px;background:rgba(255,255,255,.56);text-decoration:none;transition:.18s ease}.path-step:hover{transform:translateX(4px);background:#fff;border-color:rgba(18,24,23,.16)}.path-step .index{width:42px;height:42px;display:grid;place-items:center;border:1px solid rgba(18,24,23,.09);border-radius:13px;background:#f5f3ed;color:#7b8581;font-size:9px;font-weight:850}.path-step .copy strong{display:block;font-size:12px}.path-step .copy small{display:block;margin-top:4px;color:#7a8480;font-size:9px;line-height:1.45}.path-step .price{min-width:82px;text-align:right}.path-step .price b{display:block;font-size:11px}.path-step .price span{display:block;margin-top:3px;color:#89928e;font-size:8px}.path-step.paid{background:#171f1d;color:#f7f5ef;border-color:#171f1d}.path-step.paid .index{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.09);color:#b9c7c2}.path-step.paid .copy small,.path-step.paid .price span{color:#91a09b}.path-step.paid .price b{color:#c3eadb}.path-step.buyer{background:#eef2ed}.path-step.optional{border-style:dashed;background:transparent}
+.route-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:12px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}.route-foot p{max-width:520px;margin:0;color:#79827e;font-size:9px;line-height:1.6}.route-foot .mini-links{display:flex;flex-wrap:wrap;gap:7px}.route-foot .mini-links a{padding:7px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.6);text-decoration:none;font-size:8px;font-weight:760}
+.conversion{position:relative;overflow:hidden;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:40px;align-items:end;margin:78px auto 18px;padding:46px;border-radius:34px;background:#111816;color:#f5f4ef;box-shadow:0 30px 80px rgba(18,24,23,.16)}.conversion:after{content:"";position:absolute;right:-130px;top:-180px;width:480px;height:480px;border-radius:50%;border:1px solid rgba(168,214,196,.13);box-shadow:0 0 0 58px rgba(168,214,196,.03),0 0 0 116px rgba(168,214,196,.016)}.conversion>div,.conversion>.conversion-actions{position:relative;z-index:1}.conversion h2{max-width:800px;margin:10px 0 0;font-size:clamp(38px,5.5vw,68px);line-height:.94;letter-spacing:-.058em;font-weight:610}.conversion p{max-width:680px;margin:14px 0 0;color:#9eaaa5;font-size:11px;line-height:1.7}.conversion-actions{display:grid;gap:8px;min-width:240px}
+.buyer-note{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center;margin:14px auto 74px;padding:24px 28px;border:1px solid var(--line);border-radius:22px;background:rgba(249,247,241,.72)}.buyer-note h3{margin:0;font-size:17px}.buyer-note p{margin:6px 0 0;color:#727b77;font-size:9.5px;line-height:1.6}.buyer-links{display:flex;gap:8px;flex-wrap:wrap}.buyer-links a{padding:9px 12px;border:1px solid var(--line);border-radius:999px;background:#fff;text-decoration:none;font-size:9px;font-weight:780}
+.office-footer{margin-top:0!important}
+:focus-visible{outline:3px solid rgba(95,149,127,.34);outline-offset:3px}
+@media(max-width:980px){.hero-grid,.route-card,.section-head{grid-template-columns:1fr}.hero{padding:55px 42px}.hero-proof{max-width:620px}.pricebar{grid-template-columns:repeat(3,1fr)}.pricebar div:nth-child(3){border-right:0}.pricebar div:nth-child(-n+3){border-bottom:1px solid var(--line)}.route-card{gap:20px}.route-intro h3{margin-top:20px}.conversion{grid-template-columns:1fr}.conversion-actions{min-width:0;max-width:360px}.buyer-note{grid-template-columns:1fr}.buyer-links{justify-content:flex-start}}
+@media(max-width:720px){.shell{width:min(100% - 28px,var(--max))}.office-nav a:nth-child(1),.office-nav a:nth-child(4){display:none}.hero{min-height:0;margin-top:14px;padding:38px 22px 31px;border-radius:27px}.hero-grid{gap:35px}.hero h1{font-size:clamp(45px,13.5vw,66px)}.hero-lead{font-size:12px}.hero-actions{display:grid}.btn{width:100%}.pricebar{grid-template-columns:1fr 1fr;margin-bottom:46px}.pricebar div{border-bottom:1px solid var(--line)}.pricebar div:nth-child(odd){border-right:1px solid var(--line)}.pricebar div:nth-child(even){border-right:0}.pricebar div:last-child{grid-column:1/-1;border-bottom:0}.section{margin:52px auto}.section-head{gap:14px}.section-head h2{font-size:clamp(36px,11vw,51px)}.route-jump{grid-template-columns:1fr}.route-jump a{min-height:112px}.route-card{padding:24px 18px;border-radius:24px}.path-step{grid-template-columns:42px minmax(0,1fr);gap:11px}.path-step .index{width:38px;height:38px}.path-step .price{grid-column:2;text-align:left;display:flex;gap:8px;align-items:center}.path-step .price span{margin:0}.route-foot{display:block}.route-foot .mini-links{margin-top:12px}.conversion{padding:32px 22px;border-radius:26px}.conversion h2{font-size:clamp(38px,11vw,53px)}.buyer-note{padding:20px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.btn,.route-jump a,.path-step{transition:none!important}}
+</style>
 </head>
-<body data-page="product_router_v4" data-catalog="products" data-funnel="product_router_b2b" data-theme="revenue" class="sp-b2b-experience">
-<a class="skip" href="#catalog">Skip to product router</a>
-<header class="office-header"><a class="brand" href="/" aria-label="Stratum Praxis home"><span class="brand-symbol" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 18V8l5-3 4 3 7-3v13"/><path d="M4 18h16M8 18v-4h4v4M16 9v2M16 14v1"/></svg></span><span class="brand-copy"><strong>Stratum Praxis</strong><small>AI Office · B2B Decision Workspace</small></span></a><nav class="office-nav" aria-label="Primary"><a href="/b2b/">Diagnose</a><a href="/live-lab.html">Free Tools</a><a href="/product-router.html" aria-current="page">Products</a><a href="/buyer-workspace.html">Buyer Workspace</a><a href="/workflow-audit.html">Audit</a></nav><div class="header-tools"><span class="b2b-badge"><i></i>B2B</span></div></header>
-<main class="product-shell" id="catalog">
-<nav class="journey" aria-label="Stratum customer journey"><a href="/live-lab.html"><b>01</b>Research free</a><span class="active"><b>02</b>Choose solution</span><span><b>03</b>Buy</span><a href="/buyer-workspace.html"><b>04</b>Use in Buyer Workspace</a><a href="/ai-saas-spend-monitoring.html"><b>05</b>Audit / Monitoring</a></nav>
-<section class="page-topline"><div><p class="micro" data-c="label">B2B PAID ROUTES</p><h1 data-c="title">Choose the smallest paid layer that fits the evidence.</h1><div class="page-meta"><span class="meta-chip" data-c="rule">ACTIVE PAID ROUTES</span><span class="meta-chip" data-c="ruleNote">Direct purchase paths first; company-specific analysis remains separate.</span></div></div><p data-c="note">Only current direct-purchase self-service routes are listed here. Specialist review and monitoring stay separate.</p></section>
-<section class="catalog-layout"><aside class="intent-panel"><p class="micro" data-c="intent">WHAT DO YOU NEED TO SOLVE?</p><div class="intent-buttons" id="intent-buttons"></div><p class="intent-note" data-c="intentNote">Choose the business signal. Stratum keeps the shortest route to a decision.</p></aside><div class="catalog-main">
-<article class="recommend-card"><div class="recommend-head"><span data-c="recommended">RECOMMENDED NEXT</span><b class="quiet-badge">SELF-SERVICE</b></div><div class="recommend-body"><div><p class="micro" id="rec-tag">$39 · one-time</p><h2 id="rec-name">AI Value Realization Kit</h2><p id="rec-desc">Build an explainable ROI and business case before implementation spend.</p><div class="recommend-meta"><span>Direct purchase</span><span>Decision-matched</span><span>No invented fit</span></div></div><a class="action-btn" id="rec-link" href="/ai-value-realization-kit.html" data-analytics-id="product_router_recommended"><span>Open</span><b>→</b></a></div></article>
-<section class="inventory" aria-label="B2B product inventory"><div class="inventory-head"><span data-c="all">ALL AVAILABLE</span><small id="inventory-count">2 routes</small></div><div id="inventory"></div></section>
-<section class="escalation-box"><div><p class="micro">ALREADY PURCHASED</p><h2>Go straight to delivery.</h2><p>Buyer Workspace routes you to the correct purchase-verification or delivery path without sending you through the public catalog again.</p></div><a class="action-btn" href="/buyer-workspace.html" data-analytics-id="product_router_to_buyer_workspace"><span>Open Buyer Workspace</span><b>→</b></a></section>
-<section class="escalation-box"><div><p class="micro" data-c="audit">PROFESSIONAL ESCALATION</p><h2 data-c="auditTitle">Need company-specific analysis?</h2><p data-c="auditNote">Move to the $499 Workflow Audit only when one recurring workflow is material enough for specialist review.</p></div><a class="action-btn" href="/workflow-audit.html" data-analytics-id="product_router_to_audit"><span>Review $499 Workflow Audit</span><b>→</b></a></section>
-</div></section>
+<body>
+<a class="skip" href="#routes">Skip to revenue routes</a>
+<header class="office-header">
+  <a class="brand" href="/" aria-label="Stratum Praxis home">
+    <span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span>
+    <span class="brand-copy"><strong>Stratum Praxis</strong><small>AI Office · B2B Decision Intelligence</small></span>
+  </a>
+  <nav class="office-nav" aria-label="Primary">
+    <a href="/live-lab.html">Free Tools</a>
+    <a href="/product-router.html" aria-current="page">Paid Routes</a>
+    <a href="/buyer-workspace.html">Buyer Workspace</a>
+    <a href="/workflow-audit.html">Audit</a>
+  </nav>
+  <div class="header-tools"><span class="b2b-badge"><i></i>B2B</span></div>
+</header>
+
+<main>
+  <section class="hero shell" aria-labelledby="hero-title">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow"><i></i>EVIDENCE → DECISION → PAID EXECUTION</p>
+        <h1 id="hero-title">Choose the route. <em>Start with proof.</em></h1>
+        <p class="hero-lead">Three operating paths for AI spend, workflow decisions and agent operations. Start free when the problem is unclear. Move into self-service, a fixed-scope audit or recurring control only when the evidence supports it.</p>
+        <div class="hero-actions">
+          <a class="btn primary" href="#routes" data-analytics-id="router_hero_routes"><span>Choose a route</span><b>↓</b></a>
+          <a class="btn secondary" href="/live-lab.html" data-analytics-id="router_hero_free"><span>Start with free tools</span><b>→</b></a>
+        </div>
+      </div>
+      <aside class="hero-proof" aria-label="Purchase principles">
+        <div><span>01</span><p><strong>Free evidence first</strong><small>Use calculators, diagnostics and checklists before paying.</small></p></div>
+        <div><span>02</span><p><strong>Smallest paid layer</strong><small>$39 self-service, $69–299 agent operating kit, or $499 specialist audit.</small></p></div>
+        <div><span>03</span><p><strong>Delivery stays clear</strong><small>Existing buyers route through Buyer Workspace and purchase verification.</small></p></div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="pricebar shell" aria-label="Pricing ladder">
+    <div><small>ENTRY</small><strong>FREE</strong></div>
+    <div><small>SELF-SERVICE</small><strong>$39</strong></div>
+    <div><small>AGENT KIT</small><strong>$69 · $149 · $299</strong></div>
+    <div><small>SPECIALIST AUDIT</small><strong>$499</strong></div>
+    <div><small>RECURRING CONTROL</small><strong>15% / $199–499 MO</strong></div>
+  </section>
+
+  <section class="section shell" id="routes" aria-labelledby="routes-title">
+    <div class="section-head">
+      <div><p class="micro">THREE REVENUE ROUTES</p><h2 id="routes-title">Start with the business problem, not the product list.</h2></div>
+      <p>Each path keeps the free signal, paid decision layer and post-purchase destination visible at once. You should always know what the next step is—and why it exists.</p>
+    </div>
+
+    <nav class="route-jump" aria-label="Jump to a route">
+      <a class="spend" href="#spend"><i></i><b>Spend & ROI</b><p>Reduce AI and SaaS waste, prove value, then keep spend under control.</p><span>01 ↘</span></a>
+      <a class="workflow" href="#workflow"><i></i><b>Workflow</b><p>Decide what to automate, what to redesign and when specialist review is justified.</p><span>02 ↘</span></a>
+      <a class="agent" href="#agent"><i></i><b>Agent Operations</b><p>Check unit economics and control before moving into an operating kit.</p><span>03 ↘</span></a>
+    </nav>
+
+    <article class="route-card spend" id="spend" aria-labelledby="spend-title">
+      <div class="route-intro">
+        <div class="route-num"><span>01 · SPEND & ROI</span><b class="route-badge">COST CONTROL</b></div>
+        <h3 id="spend-title">Find the leak. Prove the value. Keep it from returning.</h3>
+        <p>For teams unsure whether AI and SaaS spend is earning its place. The path moves from free self-diagnosis into a fixed audit, verified recovery and recurring monitoring.</p>
+        <div class="route-entry"><small>BEST FIRST STEP</small><a href="/ai-saas-waste-calculator.html" data-analytics-id="router_spend_entry">Run the AI & SaaS Waste Calculator</a></div>
+      </div>
+      <div>
+        <div class="path" aria-label="Spend and ROI path">
+          <a class="path-step" href="/ai-saas-waste-calculator.html" data-analytics-id="router_spend_calculator"><span class="index">01</span><span class="copy"><strong>AI & SaaS Waste Calculator</strong><small>Quantify likely waste exposure before another renewal or tool purchase.</small></span><span class="price"><b>FREE</b><span>signal</span></span></a>
+          <a class="path-step" href="/ai-saas-spend-audit-checklist.html" data-analytics-id="router_spend_checklist"><span class="index">02</span><span class="copy"><strong>Spend Audit Checklist</strong><small>Run the internal review yourself and see whether escalation is warranted.</small></span><span class="price"><b>FREE</b><span>self-check</span></span></a>
+          <a class="path-step" href="/ai-value-realization-kit.html" data-analytics-id="router_spend_value_kit"><span class="index">03</span><span class="copy"><strong>AI Value Realization Kit</strong><small>Build the ROI case and decision logic internally before specialist spend.</small></span><span class="price"><b>$39</b><span>one-time</span></span></a>
+          <a class="path-step paid" href="/ai-saas-spend-waste-audit.html" data-analytics-id="router_spend_audit"><span class="index">04</span><span class="copy"><strong>AI & SaaS Spend Waste Audit</strong><small>Get a fixed-scope written review that connects software cost to operating value.</small></span><span class="price"><b>$499</b><span>one-time</span></span></a>
+          <a class="path-step paid" href="/ai-saas-spend-monitoring.html" data-analytics-id="router_spend_monitoring"><span class="index">05</span><span class="copy"><strong>Savings Recovery / Spend Monitoring</strong><small>Recover mutually verified savings, then prevent renewal and plan-size drift.</small></span><span class="price"><b>15% / $199–499</b><span>performance / month</span></span></a>
+        </div>
+        <div class="route-foot"><p>The recurring layer is intentionally downstream. It is not the default recommendation for a new visitor.</p><div class="mini-links"><a href="/ai-saas-spend-monitoring.html#monitoring">Monitoring plans</a></div></div>
+      </div>
+    </article>
+
+    <article class="route-card workflow" id="workflow" aria-labelledby="workflow-title">
+      <div class="route-intro">
+        <div class="route-num"><span>02 · WORKFLOW</span><b class="route-badge">AUTOMATION DECISION</b></div>
+        <h3 id="workflow-title">Diagnose the workflow before automating the mess.</h3>
+        <p>For recurring work with friction, rework or unclear AI fit. Start with the diagnostic, validate the opportunity, then pay for a written specialist decision only when the workflow is material.</p>
+        <div class="route-entry"><small>BEST FIRST STEP</small><a href="/b2b/" data-analytics-id="router_workflow_entry">Open the Workflow Decision Diagnostic</a></div>
+      </div>
+      <div>
+        <div class="path" aria-label="Workflow path">
+          <a class="path-step" href="/b2b/" data-analytics-id="router_workflow_diagnostic"><span class="index">01</span><span class="copy"><strong>Workflow Decision Diagnostic</strong><small>Identify the actual workflow problem and whether AI belongs in the answer.</small></span><span class="price"><b>FREE</b><span>diagnose</span></span></a>
+          <a class="path-step" href="/live-lab.html" data-analytics-id="router_workflow_lab"><span class="index">02</span><span class="copy"><strong>Live Lab</strong><small>Use the free tool layer to measure the signal before choosing a paid route.</small></span><span class="price"><b>FREE</b><span>measure</span></span></a>
+          <a class="path-step" href="/ai-value-realization-kit.html" data-analytics-id="router_workflow_value_kit"><span class="index">03</span><span class="copy"><strong>AI Value Realization Kit</strong><small>Own the business case internally when the team does not need specialist review.</small></span><span class="price"><b>$39</b><span>one-time</span></span></a>
+          <a class="path-step paid" href="/workflow-audit.html" data-analytics-id="router_workflow_audit"><span class="index">04</span><span class="copy"><strong>Workflow Audit</strong><small>Workflow map, leak analysis, ROI scenarios, controls and a 30-day action plan.</small></span><span class="price"><b>$499</b><span>fixed scope</span></span></a>
+          <a class="path-step optional" href="/sample-workflow-audit.html" data-analytics-id="router_workflow_sample"><span class="index">S</span><span class="copy"><strong>Sample Workflow Audit</strong><small>See the shape of the deliverable before deciding whether the audit fits.</small></span><span class="price"><b>SAMPLE</b><span>preview</span></span></a>
+        </div>
+        <div class="route-foot"><p>A free diagnostic can be the correct end state. The audit is for a recurring workflow with enough cost, delay or coordination burden to justify written analysis.</p></div>
+      </div>
+    </article>
+
+    <article class="route-card agent" id="agent" aria-labelledby="agent-title">
+      <div class="route-intro">
+        <div class="route-num"><span>03 · AGENT OPERATIONS</span><b class="route-badge">ECONOMICS + CONTROL</b></div>
+        <h3 id="agent-title">Make the agent economically legible before scaling the system.</h3>
+        <p>For agentic systems that need cost discipline, human checkpoints and a repeatable operating model. The operating kit is the core paid destination; Buyer Workspace handles the post-purchase route.</p>
+        <div class="route-entry"><small>BEST FIRST STEP</small><a href="/ai-agent-economics-calculator.html" data-analytics-id="router_agent_entry">Run the AI Agent Economics Calculator</a></div>
+      </div>
+      <div>
+        <div class="path" aria-label="Agent operations path">
+          <a class="path-step" href="/ai-agent-economics-calculator.html" data-analytics-id="router_agent_economics"><span class="index">01</span><span class="copy"><strong>AI Agent Economics Calculator</strong><small>Check whether the unit economics make sense before adding more agent activity.</small></span><span class="price"><b>FREE</b><span>economics</span></span></a>
+          <a class="path-step" href="/agent-control-auditor.html" data-analytics-id="router_agent_control"><span class="index">02</span><span class="copy"><strong>Agent Control Auditor</strong><small>Review authority, review points and control gaps before autonomous expansion.</small></span><span class="price"><b>FREE / PRO</b><span>control</span></span></a>
+          <a class="path-step paid" href="/cross-agent-operating-kit.html" data-analytics-id="router_agent_kit"><span class="index">03</span><span class="copy"><strong>Cross-Agent Operating Kit</strong><small>Move from ad-hoc agents into a reusable operating layer with the right usage license.</small></span><span class="price"><b>$69 · $149 · $299</b><span>one-time</span></span></a>
+          <a class="path-step buyer" href="/buyer-workspace.html" data-analytics-id="router_agent_workspace"><span class="index">04</span><span class="copy"><strong>Buyer Workspace</strong><small>Existing buyers go directly to delivery and the correct private access path.</small></span><span class="price"><b>BUYER</b><span>post-purchase</span></span></a>
+          <a class="path-step optional" href="/workflow-audit.html" data-analytics-id="router_agent_optional_audit"><span class="index">05</span><span class="copy"><strong>Workflow Audit — when needed</strong><small>Escalate only when one material workflow needs company-specific specialist review.</small></span><span class="price"><b>$499</b><span>optional</span></span></a>
+        </div>
+        <div class="route-foot"><p>Purchase verification remains behind the buyer layer rather than competing with the public sales CTA.</p><div class="mini-links"><a href="/cross-agent-operating-kit-access.html" data-analytics-id="router_agent_verify">Verify a Cross-Agent purchase</a></div></div>
+      </div>
+    </article>
+  </section>
+
+  <section class="conversion shell" aria-labelledby="conversion-title">
+    <div><p class="micro">START AT THE RIGHT DEPTH</p><h2 id="conversion-title">If the evidence is weak, start free. If the decision is clear, move.</h2><p>Stratum is designed to make the next paid action obvious without forcing every visitor into the same offer. The goal is not more browsing—it is a shorter path from a real operating problem to a defensible decision.</p></div>
+    <div class="conversion-actions">
+      <a class="btn light" href="/live-lab.html" data-analytics-id="router_final_free"><span>Open free tools</span><b>→</b></a>
+      <a class="btn secondary" href="/workflow-audit.html" data-analytics-id="router_final_audit"><span>Review $499 audit</span><b>↗</b></a>
+    </div>
+  </section>
+
+  <section class="buyer-note shell" aria-label="Buyer access">
+    <div><h3>Already purchased?</h3><p>Skip the public catalog. Buyer Workspace routes you to the correct delivery or verification layer.</p></div>
+    <div class="buyer-links"><a href="/buyer-workspace.html" data-analytics-id="router_buyer_workspace">Open Buyer Workspace →</a><a href="/cross-agent-operating-kit-access.html" data-analytics-id="router_buyer_verify">Cross-Agent verification →</a></div>
+  </section>
 </main>
-<footer class="office-footer"><div><strong>Stratum Praxis</strong><small>B2B Intelligence · Decision · Revenue</small></div><nav><a href="/buyer-workspace.html">Buyer Workspace</a><a href="/ai-saas-spend-monitoring.html">Monitoring</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav><span>© 2026</span></footer>
-<script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>
-</body></html>
+
+<footer class="office-footer">
+  <div><strong>Stratum Praxis</strong><small>B2B Intelligence · Decision · Revenue</small></div>
+  <nav><a href="/live-lab.html">Free Tools</a><a href="/buyer-workspace.html">Buyer Workspace</a><a href="/privacy.html">Privacy</a><a href="/terms.html">Terms</a></nav><span>© 2026</span>
+</footer>
+</body>
+</html>
