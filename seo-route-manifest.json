@@ -1,5 +1,5 @@
 {
-  "version": "2026-09-11-v1",
+  "version": "2026-09-11-v2",
   "base_url": "https://stratumpraxis.com",
   "routes": [
     {"url":"/","source":"index.html","family":"core","priority":"1.0","changefreq":"weekly"},
@@ -7,6 +7,13 @@
     {"url":"/live-lab.html","source":"live-lab.html","family":"core","priority":"0.95","changefreq":"weekly"},
     {"url":"/product-router.html","source":"product-router.html","family":"core","priority":"0.96","changefreq":"weekly"},
     {"url":"/systems/","source":"systems/index.html","family":"core","priority":"0.82","changefreq":"monthly"},
+
+    {"url":"/guides/","source":"guides/index.html","family":"core","priority":"0.93","changefreq":"weekly"},
+    {"url":"/guides/ai-saas-renewal-cost-check.html","source":"guides/ai-saas-renewal-cost-check.html","family":"spend","priority":"0.90","changefreq":"monthly"},
+    {"url":"/saas-renewal-decision.html","source":"saas-renewal-decision.html","family":"spend","priority":"0.91","changefreq":"weekly"},
+    {"url":"/workflow-automation-comparison.html","source":"workflow-automation-comparison.html","family":"workflow","priority":"0.82","changefreq":"monthly"},
+    {"url":"/ai-coding-assistant-comparison.html","source":"ai-coding-assistant-comparison.html","family":"agent","priority":"0.82","changefreq":"monthly"},
+    {"url":"/ai-agent-cost-roi-calculator.html","source":"ai-agent-cost-roi-calculator.html","family":"agent","priority":"0.90","changefreq":"weekly"},
 
     {"url":"/ai-saas-waste-calculator.html","source":"ai-saas-waste-calculator.html","family":"spend","priority":"0.95","changefreq":"weekly"},
     {"url":"/ai-saas-spend-audit-checklist.html","source":"ai-saas-spend-audit-checklist.html","family":"spend","priority":"0.90","changefreq":"monthly"},
