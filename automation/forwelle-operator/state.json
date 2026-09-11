@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49649213",
     "hn:49630931",
     "hn:49615537",
     "hn:49604257",
@@ -15,8 +16,8 @@
   ],
   "lastScoutAt": "2026-09-11T00:48:49.161Z",
   "lastRun": {
-    "id": "2026-09-10-iphone-duo-hn-49630931",
-    "at": "2026-09-10T00:49:22.079Z",
+    "id": "2026-09-11-openai-agents-api-hn-49649213",
+    "at": "2026-09-11T00:50:10.773Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
