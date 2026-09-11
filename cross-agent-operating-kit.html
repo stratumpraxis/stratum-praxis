@@ -2,261 +2,181 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <title>Cross-Agent Operating Kit | Stratum Praxis</title>
-  <meta name="description" content="Keep your AI team's operating brain portable across Claude Code, Codex, Cursor and other runtimes. Policies, adapters, human gates, guardrails and migration tools.">
+  <meta name="description" content="A portable operating layer for Claude Code, Codex, Cursor and other AI runtimes. Policies, human gates, cost controls and migration tools.">
   <link rel="canonical" href="https://stratumpraxis.com/cross-agent-operating-kit.html">
   <meta property="og:title" content="Cross-Agent Operating Kit">
-  <meta property="og:description" content="Models change. Your operating knowledge should not.">
+  <meta property="og:description" content="Keep your operating rules when the AI agent changes.">
   <meta property="og:type" content="product">
   <meta property="og:url" content="https://stratumpraxis.com/cross-agent-operating-kit.html">
   <script defer src="/scos-analytics.js"></script>
   <script defer src="/cross-agent-attribution.js"></script>
   <style>
-    :root{
-      color-scheme:dark;
-      --bg:#080b0f;
-      --panel:#0d1217;
-      --panel2:#10171c;
-      --line:#202a31;
-      --line2:#2d3b36;
-      --text:#eef3f0;
-      --muted:#8d9a95;
-      --soft:#66736e;
-      --mint:#9de8cf;
-      --mint2:#d5f6ea;
-      --yes:#a9e7d2;
-      --no:#69756f;
-      --max:1160px;
-    }
-    *{box-sizing:border-box}
-    html{scroll-behavior:smooth}
-    body{
-      margin:0;
-      background:#080b0f;
-      color:var(--text);
-      font:14px/1.72 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-      -webkit-font-smoothing:antialiased;
-    }
-    a{color:inherit}
-    svg{display:block}
+    :root{color-scheme:dark;--bg:#080b0f;--panel:#0d1317;--panel2:#101814;--line:#202c31;--line2:#30413a;--text:#f0f5f2;--muted:#a4b0ab;--soft:#82908a;--mint:#9de8cf;--mint2:#d9f6ec;--max:1120px}
+    *{box-sizing:border-box;min-width:0}
+    html{scroll-behavior:smooth;overflow-x:hidden}
+    body{margin:0;overflow-x:hidden;background:var(--bg);color:var(--text);font:14px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    a{color:inherit} svg{display:block}
     .shell{width:min(var(--max),calc(100% - 40px));margin:auto}
 
-    .topbar{position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(255,255,255,.055);background:rgba(8,11,15,.94);backdrop-filter:blur(14px)}
-    .nav{min-height:62px;display:flex;align-items:center;gap:14px}
-    .brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-size:10px;letter-spacing:.12em;font-weight:700;color:#cdd8d3;white-space:nowrap}
-    .brand-mark{width:27px;aspect-ratio:1;border:1px solid #304039;border-radius:8px;display:grid;place-items:center;background:#101713}
-    .brand-mark::before{content:"";width:9px;height:9px;border:1px solid var(--mint);border-radius:2px;transform:rotate(45deg)}
-    .nav-cta{margin-left:auto;padding:8px 11px;border:1px solid #27332e;border-radius:9px;color:#aebbb5;text-decoration:none;font-size:10px;font-weight:700}
+    .topbar{position:sticky;top:0;z-index:30;border-bottom:1px solid rgba(255,255,255,.06);background:rgba(8,11,15,.96);backdrop-filter:blur(14px)}
+    .nav{height:58px;display:flex;align-items:center;gap:12px}
+    .brand{display:flex;align-items:center;gap:9px;text-decoration:none;color:#d4ddd9;font-size:9px;font-weight:750;letter-spacing:.11em;white-space:nowrap}
+    .brand-mark{width:28px;height:28px;flex:0 0 28px;border:1px solid #304039;border-radius:8px;display:grid;place-items:center;background:#101713}
+    .brand-mark:before{content:"";width:9px;height:9px;border:1px solid var(--mint);border-radius:2px;transform:rotate(45deg)}
+    #lang-slot{margin-left:auto;display:flex;align-items:center}
+    .cross-agent-lang-switch{display:flex!important;align-items:center!important;gap:2px!important;margin:0!important;padding:2px!important;border:1px solid #253039!important;border-radius:999px!important;background:#0d1217!important;max-width:100%!important}
+    .cross-agent-lang-switch button{min-width:30px!important;height:27px!important;padding:0 7px!important;border:0!important;border-radius:999px!important;background:transparent!important;color:#82908a!important;font:700 9px/1 system-ui,-apple-system,"Segoe UI",sans-serif!important;cursor:pointer!important}
+    .cross-agent-lang-switch button.active{background:#18231e!important;color:#d8f5ea!important}
+    .nav-cta{padding:8px 10px;border:1px solid #29362f;border-radius:9px;color:#b4c0bb;text-decoration:none;font-size:10px;font-weight:700;white-space:nowrap}
 
-    .hero{padding:84px 0 56px;display:grid;grid-template-columns:minmax(0,1.02fr) minmax(400px,.98fr);gap:72px;align-items:center}
-    .kicker{margin:0 0 18px;color:var(--mint);font-size:9px;letter-spacing:.12em;text-transform:uppercase;font-weight:700}
-    .product-name{margin-bottom:12px;color:#82908a;font-size:12px;letter-spacing:.04em}
+    .hero{padding:76px 0 54px;display:grid;grid-template-columns:minmax(0,1.04fr) minmax(360px,.96fr);gap:58px;align-items:center}
+    .kicker{margin:0 0 15px;color:var(--mint);font-size:9px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    .product-name{margin:0 0 10px;color:#87958f;font-size:11px;letter-spacing:.04em}
     h1,h2,h3,p{margin-top:0}
-    .hero h1{margin:0 0 18px;max-width:700px;font-size:clamp(46px,5.6vw,72px);line-height:1.01;letter-spacing:-.045em;font-weight:620;text-wrap:balance}
+    .hero h1{margin:0 0 16px;max-width:650px;font-size:clamp(43px,5.3vw,68px);line-height:1.02;letter-spacing:-.045em;font-weight:650;text-wrap:balance}
     .hero h1 em{font:inherit;color:var(--mint2)}
-    .purpose{margin:0 0 15px;color:#d7dfdb;font-size:17px;font-weight:580}
-    .lead{max-width:620px;margin:0 0 28px;color:#9ba8a3;font-size:16px;line-height:1.72}
-    .actions{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:16px}
-    .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:0 17px;border:1px solid #2b353c;border-radius:11px;text-decoration:none;font-size:12px;font-weight:750}
-    .btn svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-    .btn-primary{background:#e9f6f1;color:#09130f;border-color:#d5eee5}
-    .btn-secondary{background:#10161b;color:#cad4cf}
-    .fine{margin:0;color:#6f7c77;font-size:10.5px}
-    .hero-facts{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
-    .hero-facts span{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid #1d282e;border-radius:999px;color:#82908a;background:#0b1014;font-size:10px}
-    .dot{width:5px;height:5px;border-radius:50%;background:#698177}
+    .purpose{margin:0 0 10px;color:#dce5e1;font-size:16px;font-weight:650}
+    .lead{max-width:610px;margin:0 0 24px;color:var(--muted);font-size:15px;line-height:1.68}
+    .actions{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:12px}
+    .btn{min-height:46px;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:0 16px;border:1px solid #2b373d;border-radius:10px;text-decoration:none;font-size:12px;font-weight:750}
+    .btn-primary{background:#eaf6f1;color:#09130f;border-color:#d8eee6}.btn-secondary{background:#10161b;color:#d1d9d5}
+    .fine{margin:0;color:#83908a;font-size:10.5px}.hero-facts{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px}.hero-facts span{padding:6px 9px;border:1px solid #1e292e;border-radius:999px;color:#929f9a;background:#0b1014;font-size:9.5px}
 
-    .system-panel{padding:20px;border:1px solid #273239;border-radius:24px;background:#0c1115;box-shadow:0 26px 70px rgba(0,0,0,.26)}
-    .panel-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;color:#7f8d87;font-size:9px;letter-spacing:.1em;text-transform:uppercase}
-    .status{display:flex;align-items:center;gap:7px}.status::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint)}
-    .brain-core{padding:22px;border:1px solid #314139;border-radius:17px;background:#111a16}
-    .mini-label{color:#73817b;font-size:8.5px;letter-spacing:.11em;text-transform:uppercase;font-weight:650}
-    .brain-core h3{margin:7px 0 4px;font-size:20px;font-weight:610}.brain-core p{margin:0;color:#8d9a95;font-size:11px}
-    .connector{width:1px;height:18px;margin:auto;background:#48645a}
-    .runtime-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-    .runtime{padding:13px;border:1px solid #222d33;border-radius:10px;background:#0e1418}.runtime b{display:block;margin-bottom:3px;font-size:11px}.runtime span{color:#74817c;font-size:9px}
-    .execution{margin-top:9px;padding:12px 14px;border:1px dashed #2e3b36;border-radius:10px;display:flex;justify-content:space-between;gap:12px;color:#74817c;font-size:9px;text-transform:uppercase;letter-spacing:.04em}.execution strong{color:#aeb9b4;font-size:9.5px}
+    .system-panel{padding:18px;border:1px solid #27343a;border-radius:20px;background:#0c1115;box-shadow:0 24px 60px rgba(0,0,0,.23)}
+    .panel-head{display:flex;justify-content:space-between;gap:12px;margin-bottom:13px;color:#87958f;font-size:8.5px;letter-spacing:.1em;text-transform:uppercase}.status{display:flex;align-items:center;gap:6px}.status:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--mint)}
+    .brain-core{padding:18px;border:1px solid #314139;border-radius:14px;background:#111a16}.mini-label{color:#85928d;font-size:8px;letter-spacing:.1em;text-transform:uppercase;font-weight:700}.brain-core h3{margin:6px 0 3px;font-size:18px;font-weight:650}.brain-core p{margin:0;color:#9aa7a2;font-size:10.5px}
+    .connector{width:1px;height:14px;margin:auto;background:#48645a}.runtime-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.runtime{padding:11px;border:1px solid #243037;border-radius:9px;background:#0e1418}.runtime b{display:block;margin-bottom:2px;font-size:10.5px}.runtime span{color:#85928d;font-size:8.5px}.execution{margin-top:7px;padding:10px 12px;border:1px dashed #304039;border-radius:9px;display:flex;justify-content:space-between;gap:12px;color:#87948f;font-size:8.5px;text-transform:uppercase;letter-spacing:.03em}.execution strong{color:#bdc7c2;font-size:9px}
 
-    .proof-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #192229;border-radius:16px;background:#0a0f13;overflow:hidden}
-    .proof{padding:18px 19px;border-right:1px solid #192229;min-height:90px}.proof:last-child{border-right:0}.proof-index{display:block;margin-bottom:9px;color:#56635f;font-size:8px}.proof b{display:block;margin-bottom:2px;font-size:12px;font-weight:600}.proof span:last-child{color:#77847f;font-size:10px;line-height:1.5}
+    .proof-strip{display:grid;grid-template-columns:repeat(4,1fr);border:1px solid #1c272c;border-radius:14px;background:#0a0f13;overflow:hidden}.proof{padding:15px 16px;border-right:1px solid #1c272c}.proof:last-child{border-right:0}.proof b{display:block;margin-bottom:2px;font-size:11px;font-weight:650}.proof span{color:#8c9994;font-size:9px;line-height:1.45}
 
-    .section{padding:98px 0}.section.compact{padding-top:70px}
-    .section-head{display:grid;grid-template-columns:minmax(0,.85fr) minmax(280px,.4fr);gap:56px;align-items:end;margin-bottom:40px}
-    .section h2{margin:0;max-width:720px;font-size:clamp(31px,3.8vw,49px);line-height:1.1;letter-spacing:-.036em;font-weight:610;text-wrap:balance}
-    .section-intro{margin:0;max-width:430px;color:#7f8c87;font-size:12px;line-height:1.75}
+    .section{padding:78px 0}.section.compact{padding-top:54px}.section-head{display:grid;grid-template-columns:minmax(0,.9fr) minmax(250px,.4fr);gap:42px;align-items:end;margin-bottom:28px}.section h2{margin:0;max-width:700px;font-size:clamp(29px,3.5vw,44px);line-height:1.12;letter-spacing:-.032em;font-weight:640;text-wrap:balance}.section-intro{margin:0;color:#96a39e;font-size:11.5px;line-height:1.65}
 
-    .kit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .kit-card{position:relative;padding:24px;min-height:210px;border:1px solid #1c262c;border-radius:15px;background:#0d1317}
-    .kit-card h3{margin:34px 0 9px;font-size:19px;line-height:1.2;font-weight:600}.kit-card p{margin:0;color:#7f8c87;font-size:11px;line-height:1.65}.kit-no{color:#5e6b66;font-size:8.5px;letter-spacing:.09em}.kit-icon{position:absolute;right:20px;top:20px;width:32px;height:32px;border:1px solid #26352f;border-radius:9px;display:grid;place-items:center;color:var(--mint);background:#101813}.kit-icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+    .component-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.component{display:grid;grid-template-columns:34px 1fr;gap:13px;padding:19px;border:1px solid #1e292e;border-radius:14px;background:#0d1317}.icon{width:34px;height:34px;border:1px solid #2c3c35;border-radius:9px;display:grid;place-items:center;color:var(--mint);background:#101813}.icon svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.component .ey{color:#7f8d87;font-size:8px;font-weight:750;letter-spacing:.08em;text-transform:uppercase}.component h3{margin:5px 0 5px;font-size:16px;line-height:1.2;font-weight:650}.component p{margin:0;color:#9ba7a2;font-size:10.5px;line-height:1.55}
 
-    .delivery{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .delivery-card{padding:29px;border:1px solid #1d282e;border-radius:20px;background:#0d1217}
-    .delivery-card h3{margin:8px 0 9px;font-size:23px;font-weight:610}.delivery-card p{margin:0;color:#83908b;font-size:11px;line-height:1.7}
-    .format-stack{display:grid;gap:8px;margin-top:20px}.format-row{display:flex;align-items:center;gap:12px;padding:12px;border:1px solid #1c272c;border-radius:11px;background:#0a1013}.format-icon{width:31px;height:31px;border:1px solid #2d3b36;border-radius:8px;display:grid;place-items:center;color:var(--mint)}.format-icon svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.format-row b{display:block;font-size:11px}.format-row span{color:#6f7c77;font-size:9px}
+    .delivery-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.delivery-card{padding:24px;border:1px solid #1e292e;border-radius:16px;background:#0d1217}.delivery-card h3{margin:6px 0 8px;font-size:20px;font-weight:650}.delivery-card p{margin:0;color:#9ba7a2;font-size:11px;line-height:1.65}.fact-list{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:17px}.fact{padding:11px;border:1px solid #1d292d;border-radius:10px;background:#0a1013}.fact b{display:block;margin-bottom:2px;font-size:10px}.fact span{color:#87948f;font-size:8.7px;line-height:1.4}
+    .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.flow-step{padding:15px;border:1px solid #1d292d;border-radius:12px;background:#0a1013}.flow-num{width:24px;height:24px;margin-bottom:10px;border:1px solid #355047;border-radius:7px;display:grid;place-items:center;color:var(--mint);font-size:9px;font-weight:800}.flow-step b{display:block;margin-bottom:3px;font-size:10.5px}.flow-step span{color:#8d9a95;font-size:9px;line-height:1.45}
 
-    .purchase-flow{margin-top:12px;padding:28px;border:1px solid #1d282e;border-radius:20px;background:#0a1013}
-    .flow-track{display:grid;grid-template-columns:repeat(4,1fr);position:relative}
-    .flow-track::before{content:"";position:absolute;left:8%;right:8%;top:19px;height:1px;background:#2c3b35}
-    .flow-step{position:relative;z-index:1;text-align:center;padding:0 10px}.flow-node{width:39px;height:39px;margin:0 auto 12px;border:1px solid #385047;border-radius:11px;background:#101813;display:grid;place-items:center;color:var(--mint)}.flow-node svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.flow-step b{display:block;margin-bottom:3px;font-size:11px}.flow-step span{display:block;color:#71807a;font-size:9px;line-height:1.45}
+    .license-defs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.license-def{padding:20px;border:1px solid #1e292e;border-radius:15px;background:#0d1217}.license-def.featured{border-color:#3f5c52;background:#0e1713}.license-top{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:13px}.license-def h3{margin:0;font-size:17px;font-weight:650}.license-price{color:#cfe4dc;font-size:12px;font-weight:750}.license-def p{margin:0 0 14px;color:#a0aca7;font-size:10.5px;line-height:1.55}.rights{display:grid;gap:7px}.right{display:grid;grid-template-columns:20px 1fr;gap:7px;align-items:start;color:#a5b0ab;font-size:10px;line-height:1.45}.mark{width:18px;height:18px;border:1px solid #335047;border-radius:50%;display:grid;place-items:center;color:var(--mint);font-size:9px}.mark.no{border-color:#343d3a;color:#7b8782}
+    .license-rule{margin-top:10px;padding:13px 15px;border:1px solid #27342f;border-radius:12px;background:#0b1110;color:#9da9a4;font-size:10px;line-height:1.55}
 
-    .license-map{margin-top:18px;border:1px solid #1d282e;border-radius:20px;overflow:hidden;background:#0a1013}
-    .matrix-head,.matrix-row{display:grid;grid-template-columns:1.25fr repeat(3,1fr)}
-    .matrix-head{background:#0f1519;border-bottom:1px solid #1d282e}.matrix-row{border-bottom:1px solid #192229}.matrix-row:last-child{border-bottom:0}
-    .matrix-cell{min-height:62px;padding:14px 16px;display:flex;align-items:center;gap:8px;border-right:1px solid #192229;font-size:10px;color:#83908b}.matrix-cell:last-child{border-right:0}.matrix-cell.label{color:#b4beb9;font-weight:650}.matrix-head .matrix-cell{min-height:58px;display:block}.matrix-head b{display:block;color:#e1e8e4;font-size:12px}.matrix-head span{color:#68756f;font-size:9px}.mark{width:20px;height:20px;flex:0 0 20px;border:1px solid #30453d;border-radius:50%;display:grid;place-items:center;color:var(--yes);font-size:11px}.mark.no{border-color:#28312f;color:var(--no)}
-    .license-note{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.license-note article{padding:17px;border:1px solid #1d282e;border-radius:14px;background:#0c1115}.license-note b{display:block;margin-bottom:5px;font-size:11px}.license-note p{margin:0;color:#72807a;font-size:9.5px;line-height:1.55}
+    .pricing-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.price-card{display:flex;flex-direction:column;padding:22px;border:1px solid #1e292e;border-radius:16px;background:#0d1217}.price-card.featured{border-color:#416056;background:#0f1714}.badge{align-self:flex-start;margin-bottom:10px;padding:4px 7px;border:1px solid #335047;border-radius:999px;color:#bce8d8;background:#111d18;font-size:7.5px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.price-card h3{margin:0;font-size:16px}.amount{margin:11px 0 7px;font-size:34px;line-height:1;font-weight:650;letter-spacing:-.035em}.amount small{font-size:9px;color:#85918c;font-weight:500;letter-spacing:0}.audience{margin:0 0 15px;color:#9ca8a3;font-size:10px;line-height:1.5}.price-card .rights{margin-bottom:18px}.price-card .btn{margin-top:auto;width:100%;justify-content:space-between}.legal{margin:13px 0 0;color:#87948f;font-size:9.5px;line-height:1.55}
 
-    .pricing-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}
-    .price-card{display:flex;flex-direction:column;min-height:500px;padding:27px;border:1px solid #1d272d;border-radius:20px;background:#0d1217}.price-card.featured{border-color:#3f5d52;background:#0f1613}.badge{align-self:flex-start;margin-bottom:16px;padding:5px 8px;border:1px solid #304b41;border-radius:999px;color:#a9dac9;background:#111d18;font-size:8px;letter-spacing:.08em;text-transform:uppercase}.price-card h3{margin:0;font-size:17px;font-weight:600}.amount{margin:18px 0 10px;font-size:42px;line-height:1;font-weight:610;letter-spacing:-.04em}.amount small{font-size:10px;color:#66736e;font-weight:500;letter-spacing:0}.audience{min-height:48px;margin:0 0 20px;color:#91a099;font-size:10.5px;line-height:1.5}.rights{display:grid;gap:7px;margin:0 0 24px}.right-row{display:flex;gap:8px;align-items:flex-start;color:#84918c;font-size:10.5px;line-height:1.5}.right-row .mark{width:17px;height:17px;flex-basis:17px;font-size:9px;margin-top:1px}.price-card .btn{margin-top:auto;width:100%}.price-note{margin:16px 0 0;color:#64716c;font-size:9.5px;line-height:1.6}
-    .scope-bar{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin-top:12px;border:1px solid #1d282e;border-radius:14px;overflow:hidden;background:#1d282e}.scope-item{padding:15px;background:#0a1013}.scope-item b{display:block;margin-bottom:3px;color:#b5c0ba;font-size:10px}.scope-item span{color:#6e7b75;font-size:9px;line-height:1.45}
+    .closing{margin:4px 0 70px;padding:28px;border:1px solid #293930;border-radius:18px;background:#0c1210}.closing-grid{display:grid;grid-template-columns:1fr .82fr;gap:28px;align-items:center}.closing h2{margin:0 0 8px;font-size:clamp(28px,3.6vw,43px);line-height:1.1;letter-spacing:-.035em;font-weight:640}.closing p{margin:0;color:#9aa7a2;font-size:11px}.final-options{display:grid;gap:7px}.final-options .btn{width:100%;justify-content:space-between}
+    footer{border-top:1px solid #182127;padding:24px 0 42px;color:#65726d;font-size:9px}
+    #cross-agent-checkout-bar{display:none!important}
 
-    .principle{margin:8px 0 88px;padding:44px;border:1px solid #26352f;border-radius:24px;background:#0c1210}.principle-grid{display:grid;grid-template-columns:1fr .78fr;gap:40px;align-items:end}.principle h2{margin:0 0 14px;max-width:760px;font-size:clamp(34px,4vw,52px);line-height:1.08;letter-spacing:-.04em;font-weight:610}.principle .lead{font-size:14px;margin-bottom:0}.final-options{display:grid;gap:8px}.final-options .btn{width:100%;justify-content:space-between}.final-options .btn span:last-child{opacity:.7}
-    footer{border-top:1px solid #182127;padding:27px 0 62px;color:#596660;font-size:9px}
-
-    @media(max-width:980px){.hero{grid-template-columns:1fr;gap:42px}.system-panel{max-width:720px}.kit-grid{grid-template-columns:1fr 1fr}.pricing-wrap{grid-template-columns:1fr 1fr}.price-card:last-child{grid-column:1/-1}.section-head{grid-template-columns:1fr;gap:16px;align-items:start}.principle-grid{grid-template-columns:1fr}.license-note{grid-template-columns:1fr 1fr}.license-note article:last-child{grid-column:1/-1}}
-    @media(max-width:760px){.matrix-head,.matrix-row{grid-template-columns:1.05fr repeat(3,1fr)}.matrix-cell{padding:12px 8px;font-size:9px}.flow-track{grid-template-columns:1fr 1fr;gap:24px 8px}.flow-track::before{display:none}}
-    @media(max-width:680px){.shell{width:min(var(--max),calc(100% - 28px))}.nav{min-height:58px}.brand{font-size:8px}.nav-cta{font-size:9px}.hero{padding:52px 0 44px}.hero h1{font-size:clamp(40px,12vw,54px)}.purpose{font-size:15px}.lead{font-size:14px}.actions{display:grid}.btn{width:100%}.hero-facts{gap:6px}.system-panel{padding:14px;border-radius:20px}.runtime-row{grid-template-columns:1fr}.execution{flex-direction:column}.proof-strip{grid-template-columns:1fr 1fr}.proof:nth-child(2){border-right:0}.proof:nth-child(-n+2){border-bottom:1px solid #192229}.section{padding:78px 0}.section h2{font-size:clamp(29px,9vw,39px)}.kit-grid{grid-template-columns:1fr}.kit-card{min-height:185px}.delivery{grid-template-columns:1fr}.flow-track{grid-template-columns:1fr}.flow-step{text-align:left;display:grid;grid-template-columns:45px 1fr;column-gap:10px}.flow-node{grid-row:1/3;margin:0}.matrix-head,.matrix-row{grid-template-columns:1.2fr repeat(3,.8fr)}.matrix-cell{padding:11px 6px;min-height:58px}.matrix-head .matrix-cell{min-height:55px}.matrix-head b{font-size:10px}.matrix-head span{font-size:8px}.matrix-cell:not(.label){justify-content:center;text-align:center}.matrix-cell:not(.label) .mark+span{display:none}.license-note{grid-template-columns:1fr}.license-note article:last-child{grid-column:auto}.pricing-wrap{grid-template-columns:1fr}.price-card:last-child{grid-column:auto}.price-card{min-height:0}.scope-bar{grid-template-columns:1fr}.principle{padding:30px 24px;margin-bottom:72px}.principle-grid{gap:24px}}
+    @media(max-width:900px){.hero{grid-template-columns:1fr;gap:34px}.system-panel{max-width:680px}.component-grid{grid-template-columns:1fr 1fr}.section-head{grid-template-columns:1fr;gap:10px}.license-defs,.pricing-wrap{grid-template-columns:1fr 1fr}.license-def:last-child,.price-card:last-child{grid-column:1/-1}.closing-grid{grid-template-columns:1fr}.delivery-grid{grid-template-columns:1fr}}
+    @media(max-width:680px){
+      body{font-size:14px;line-height:1.6}.shell{width:calc(100% - 28px)}
+      .nav{height:52px;gap:8px}.brand{gap:0}.brand span:last-child{display:none}.brand-mark{width:27px;height:27px;flex-basis:27px}.nav-cta{display:none}
+      #lang-slot{margin-left:auto}.cross-agent-lang-switch{gap:1px!important}.cross-agent-lang-switch button{min-width:28px!important;height:26px!important;padding:0 5px!important;font-size:8.5px!important}
+      .hero{padding:45px 0 34px!important;gap:27px!important;min-height:0!important}.product-name{font-size:10px}.kicker{margin-bottom:12px!important;font-size:8px!important}.hero h1{font-size:clamp(36px,10.5vw,47px)!important;line-height:1.06!important;margin-bottom:15px!important}.purpose{font-size:14.5px}.lead{font-size:13px!important;line-height:1.6!important;margin-bottom:20px}.actions{display:grid;grid-template-columns:1fr 1fr}.btn{width:100%;min-height:44px!important;font-size:11px!important}.fine{font-size:9.5px}.hero-facts{margin-top:13px}.hero-facts span{font-size:8.5px}
+      .system-panel{padding:13px;border-radius:16px}.brain-core{padding:14px}.brain-core h3{font-size:16px}.runtime-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.runtime{padding:8px 7px}.runtime b{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.runtime span{font-size:7.5px}.execution{padding:8px 9px;font-size:7.5px;flex-direction:column;gap:2px}
+      .proof-strip{grid-template-columns:1fr 1fr}.proof{padding:12px 13px;border-bottom:1px solid #1c272c}.proof:nth-child(2){border-right:0}.proof:nth-last-child(-n+2){border-bottom:0}.proof b{font-size:10.5px}.proof span{font-size:8.5px}
+      .section{padding:52px 0!important}.section.compact{padding-top:38px!important}.section-head{margin-bottom:20px!important;gap:8px!important}.section h2{font-size:clamp(26px,7.8vw,34px)!important;line-height:1.16!important}.section-intro{font-size:10.5px;line-height:1.55}
+      .component-grid{grid-template-columns:1fr;gap:7px}.component{grid-template-columns:31px 1fr;gap:11px;padding:15px!important;min-height:0!important;border-radius:12px}.icon{width:31px;height:31px}.component h3{margin:3px 0 4px;font-size:15px!important}.component p{font-size:11px!important;line-height:1.5;color:#a7b2ad}.component .ey{font-size:7.5px}
+      .delivery-card{padding:18px}.delivery-card h3{font-size:18px}.delivery-card p{font-size:10.5px}.fact-list{grid-template-columns:1fr 1fr}.fact{padding:9px}.flow{grid-template-columns:1fr 1fr;gap:7px}.flow-step{padding:12px}.flow-num{margin-bottom:7px}
+      .license-defs,.pricing-wrap{grid-template-columns:1fr;gap:8px}.license-def:last-child,.price-card:last-child{grid-column:auto}.license-def{padding:17px}.license-def p{font-size:10.5px}.right{font-size:10.5px}.price-card{padding:18px!important;min-height:0!important}.amount{font-size:31px}.audience{font-size:10.5px}.legal{font-size:9px}
+      .closing{padding:21px;margin-bottom:48px}.closing-grid{gap:18px}.closing h2{font-size:29px}.final-options{grid-template-columns:1fr}.final-options .btn{min-height:43px!important}
+      footer{padding-bottom:28px}
+    }
+    @media(max-width:390px){.actions{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.fact-list{grid-template-columns:1fr}.cross-agent-lang-switch button{min-width:26px!important;padding:0 4px!important}.hero h1{font-size:36px!important}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   </style>
 </head>
 <body data-funnel="cross_agent_operating_kit">
-  <header class="topbar">
-    <div class="shell nav">
-      <a class="brand" href="/" aria-label="Stratum Praxis main site"><span class="brand-mark" aria-hidden="true"></span><span>STRATUM PRAXIS · SYSTEMS LIBRARY</span></a>
-      <a class="nav-cta" href="#pricing">Choose license ↓</a>
-    </div>
-  </header>
+<header class="topbar">
+  <div class="shell nav">
+    <a class="brand" href="/" aria-label="Stratum Praxis main site"><span class="brand-mark" aria-hidden="true"></span><span>STRATUM PRAXIS · SYSTEMS LIBRARY</span></a>
+    <div id="lang-slot"></div>
+    <a class="nav-cta" href="#pricing" data-i18n="choose_license_short">Choose license ↓</a>
+  </div>
+</header>
 
-  <main>
-    <div class="shell">
-      <section class="hero">
-        <div>
-          <div class="kicker">Portable AI operating infrastructure · v1.0</div>
-          <div class="product-name">Cross-Agent Operating Kit</div>
-          <h1>Keep the <em>brain.</em><br>Change the agent.</h1>
-          <p class="purpose">Not a prompt pack. An operating layer.</p>
-          <p class="lead">Claude Code today. Codex tomorrow. Cursor for one developer. Keep policy, permissions, state and safety boundaries on your side of the tool switch.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="#pricing"><span>Choose a license</span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M7 14l5 5 5-5"/></svg></a>
-            <a class="btn btn-secondary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_hero" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T">Personal — $69</a>
-          </div>
-          <p class="fine">One-time purchase · Verified payment access · Markdown + YAML · No subscription</p>
-          <div class="hero-facts" aria-label="Product facts"><span><i class="dot"></i>6 operating components</span><span><i class="dot"></i>3 license levels</span><span><i class="dot"></i>Portable files</span></div>
-        </div>
-
-        <div class="system-panel" aria-label="Cross-agent operating layer diagram">
-          <div class="panel-head"><span>Operating architecture</span><span class="status">Portable</span></div>
-          <div class="brain-core"><div class="mini-label">Owned by you</div><h3>Company Brain / Policy</h3><p>Goals · rules · skills · state · permissions · stop conditions</p></div>
-          <div class="connector" aria-hidden="true"></div>
-          <div class="runtime-row"><div class="runtime"><b>Claude Code</b><span>Runtime adapter</span></div><div class="runtime"><b>Codex</b><span>Runtime adapter</span></div><div class="runtime"><b>Cursor / API</b><span>Runtime adapter</span></div></div>
-          <div class="execution"><strong>Execution layer</strong><span>Repository · cloud · browser · test · publish · deploy</span></div>
-        </div>
-      </section>
-
-      <div class="proof-strip" aria-label="Key operating benefits">
-        <div class="proof"><span class="proof-index">01</span><b>Portable policy</b><span>One operating brain, multiple runtimes.</span></div>
-        <div class="proof"><span class="proof-index">02</span><b>Human gates</b><span>Define where autonomy must stop.</span></div>
-        <div class="proof"><span class="proof-index">03</span><b>Cost guards</b><span>Budget, token, quota and retry controls.</span></div>
-        <div class="proof"><span class="proof-index">04</span><b>Migration ready</b><span>Move state without moving every conversation.</span></div>
+<main><div class="shell">
+  <section class="hero">
+    <div>
+      <div class="kicker" data-i18n="kicker">Portable AI operating infrastructure · v1.0</div>
+      <div class="product-name">Cross-Agent Operating Kit</div>
+      <h1><span data-i18n="headline_1">Keep the</span> <em data-i18n="headline_2">brain.</em><br><span data-i18n="headline_3">Change the agent.</span></h1>
+      <p class="purpose" data-i18n="purpose">Not a prompt pack. An operating layer.</p>
+      <p class="lead" data-i18n="lead">Keep policy, permissions, state and safety rules portable when you switch between Claude Code, Codex, Cursor and other AI runtimes.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="#pricing" data-i18n="choose_license">Choose a license</a>
+        <a class="btn btn-secondary" href="#inside" data-i18n="see_inside">See what's inside</a>
       </div>
-
-      <section class="section" id="inside">
-        <div class="section-head"><div><div class="kicker">The kit</div><h2>Six implementation components. No mystery bundle.</h2></div><p class="section-intro">The files are designed to be copied into a real project and adapted to your operating rules.</p></div>
-        <div class="kit-grid">
-          <article class="kit-card"><span class="kit-no">01 · MASTER POLICY</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h10l3 3v15H4V3h3Z"/><path d="M8 10h8M8 14h8M8 18h5"/></svg></span><h3>AGENTS.md</h3><p>Goals, source of truth, permissions, human gates, security, failure policy, cost policy, quality gates and Definition of Done.</p></article>
-          <article class="kit-card"><span class="kit-no">02 · ADAPTERS</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><h3>Claude / Codex / Cursor</h3><p>Keep runtime-specific behavior at the edge instead of duplicating company policy across tools.</p></article>
-          <article class="kit-card"><span class="kit-no">03 · RELIABILITY</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><path d="M12 22a10 10 0 1 1 10-10"/></svg></span><h3>Policy Conflict Check</h3><p>Detect objective, permission, completion, cost, retry, truth, lock-in and duplicate-rule conflicts.</p></article>
-          <article class="kit-card"><span class="kit-no">04 · CONTROL</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7l-8-4Z"/><path d="M9 12h6M12 9v6"/></svg></span><h3>Human Gate Matrix</h3><p>L0 read-only through L5 human-only. Separate tool access from permission to perform high-impact actions.</p></article>
-          <article class="kit-card"><span class="kit-no">05 · GUARDRAILS</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><h3>Budget / Token / Quota</h3><p>Explicit retry limits, no silent paid fallback, circuit breakers and a safe recovery sequence.</p></article>
-          <article class="kit-card"><span class="kit-no">06 · PORTABILITY</span><span class="kit-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3M18 7l-3 3M6 17l3-3"/></svg></span><h3>Migration + Score</h3><p>Cross-agent migration checklist, state handoff template and a 50-point policy maturity score.</p></article>
-        </div>
-      </section>
-
-      <section class="section compact" id="delivery">
-        <div class="section-head"><div><div class="kicker">What you receive</div><h2>Files you can use, plus a verified delivery path.</h2></div><p class="section-intro">“Buyer access” means a payment-verified access page that opens the private delivery workspace for the kit.</p></div>
-        <div class="delivery">
-          <article class="delivery-card">
-            <div class="mini-label">Implementation package</div><h3>v1.0 operating layer</h3><p>Master policy, runtime adapters, conflict checks, human-gate rules, cost guardrails and migration/state handoff.</p>
-            <div class="format-stack">
-              <div class="format-row"><span class="format-icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg></span><div><b>Markdown + YAML</b><span>Editable project files</span></div></div>
-              <div class="format-row"><span class="format-icon"><svg viewBox="0 0 24 24"><path d="M12 3 5 6v5c0 4.5 2.8 7.4 7 9 4.2-1.6 7-4.5 7-9V6z"/><path d="m9 12 2 2 4-5"/></svg></span><div><b>Verified buyer workspace</b><span>Payment check before delivery access</span></div></div>
-            </div>
-          </article>
-          <article class="delivery-card">
-            <div class="mini-label">Purchase scope</div><h3>Buy once. Keep v1.0.</h3><p>Your purchase covers permanent access to the v1.0 kit you bought. There is no recurring subscription. Future major versions, custom implementation and 1:1 support are separate unless explicitly stated.</p>
-            <div class="format-stack">
-              <div class="format-row"><span class="format-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><b>Permanent v1.0 access</b><span>Not a rental or recurring plan</span></div></div>
-              <div class="format-row"><span class="format-icon"><svg viewBox="0 0 24 24"><path d="M4 12h16M12 4v16"/></svg></span><div><b>No implied future services</b><span>Major upgrades or consulting are not bundled by default</span></div></div>
-            </div>
-          </article>
-        </div>
-
-        <div class="purchase-flow" aria-label="Purchase and delivery flow">
-          <div class="flow-track">
-            <div class="flow-step"><span class="flow-node"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18"/></svg></span><div><b>1. Checkout</b><span>Choose a license and pay through Stripe.</span></div></div>
-            <div class="flow-step"><span class="flow-node"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg></span><div><b>2. Verify</b><span>The access page confirms the purchase.</span></div></div>
-            <div class="flow-step"><span class="flow-node"><svg viewBox="0 0 24 24"><path d="M4 7h16v12H4zM8 7V5h8v2"/></svg></span><div><b>3. Access</b><span>Open the private buyer workspace.</span></div></div>
-            <div class="flow-step"><span class="flow-node"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5"/><path d="M5 20h14"/></svg></span><div><b>4. Implement</b><span>Copy and adapt the files in your environment.</span></div></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="section compact" id="license-rights">
-        <div class="section-head"><div><div class="kicker">License rights</div><h2>The price changes because the usage rights change.</h2></div><p class="section-intro">The v1.0 kit content is the same across plans. The difference is who can use it and where it can be implemented.</p></div>
-
-        <div class="license-map" role="table" aria-label="License comparison">
-          <div class="matrix-head" role="row"><div class="matrix-cell label" role="columnheader">Usage right</div><div class="matrix-cell" role="columnheader"><b>Personal</b><span>$69</span></div><div class="matrix-cell" role="columnheader"><b>Commercial</b><span>$149</span></div><div class="matrix-cell" role="columnheader"><b>Agency</b><span>$299</span></div></div>
-          <div class="matrix-row" role="row"><div class="matrix-cell label" role="rowheader">Your own projects</div><div class="matrix-cell"><span class="mark">✓</span><span>Yes</span></div><div class="matrix-cell"><span class="mark">✓</span><span>Yes</span></div><div class="matrix-cell"><span class="mark">✓</span><span>Yes</span></div></div>
-          <div class="matrix-row" role="row"><div class="matrix-cell label" role="rowheader">Client project implementation</div><div class="matrix-cell"><span class="mark no">—</span><span>No</span></div><div class="matrix-cell"><span class="mark">✓</span><span>Yes</span></div><div class="matrix-cell"><span class="mark">✓</span><span>Yes</span></div></div>
-          <div class="matrix-row" role="row"><div class="matrix-cell label" role="rowheader">Number of client projects</div><div class="matrix-cell"><span class="mark no">—</span><span>None</span></div><div class="matrix-cell"><span class="mark">∞</span><span>No project-count limit</span></div><div class="matrix-cell"><span class="mark">∞</span><span>No project-count limit</span></div></div>
-          <div class="matrix-row" role="row"><div class="matrix-cell label" role="rowheader">Multiple internal users</div><div class="matrix-cell"><span class="mark no">—</span><span>No</span></div><div class="matrix-cell"><span class="mark no">—</span><span>One licensed operator</span></div><div class="matrix-cell"><span class="mark">✓</span><span>Yes, within one organization</span></div></div>
-          <div class="matrix-row" role="row"><div class="matrix-cell label" role="rowheader">Redistribute the source kit</div><div class="matrix-cell"><span class="mark no">—</span><span>No</span></div><div class="matrix-cell"><span class="mark no">—</span><span>No</span></div><div class="matrix-cell"><span class="mark no">—</span><span>No</span></div></div>
-        </div>
-
-        <div class="license-note">
-          <article><b>Personal = one person, own work.</b><p>Use the kit for projects you personally or your own business operate. Client implementation is not included.</p></article>
-          <article><b>Commercial = one operator, client work allowed.</b><p>For a freelancer, consultant or independent operator. You may implement the kit across any number of client projects, but the license itself stays with you.</p></article>
-          <article><b>Agency = one organization, multiple members.</b><p>Internal team members may use the kit across the organization’s own work and multiple client engagements.</p></article>
-        </div>
-      </section>
-
-      <section class="section" id="pricing">
-        <div class="section-head"><div><div class="kicker">One-time licenses</div><h2>Choose by who will use the kit.</h2></div><p class="section-intro">Same v1.0 implementation kit. Different usage rights. No vague “business” tier.</p></div>
-        <div class="pricing-wrap">
-          <article class="price-card">
-            <h3>Personal</h3><div class="amount">$69 <small>one-time</small></div><p class="audience">For one person using the kit in their own projects.</p>
-            <div class="rights"><div class="right-row"><span class="mark">✓</span><span>One licensed person</span></div><div class="right-row"><span class="mark">✓</span><span>Own projects / own business</span></div><div class="right-row"><span class="mark">✓</span><span>Full v1.0 kit + verified buyer workspace</span></div><div class="right-row"><span class="mark no">—</span><span>No client implementation rights</span></div></div>
-            <a data-analytics-id="cross_agent_operating_kit_checkout_2" class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"><span>Personal</span><span>$69</span></a>
-          </article>
-          <article class="price-card featured">
-            <div class="badge">For independent operators</div><h3>Commercial</h3><div class="amount">$149 <small>one-time</small></div><p class="audience">For one freelancer, consultant or independent operator doing client work.</p>
-            <div class="rights"><div class="right-row"><span class="mark">✓</span><span>One licensed operator</span></div><div class="right-row"><span class="mark">✓</span><span>Own + client project implementation</span></div><div class="right-row"><span class="mark">∞</span><span>No client-project count limit</span></div><div class="right-row"><span class="mark">✓</span><span>Full v1.0 kit + verified buyer workspace</span></div></div>
-            <a data-analytics-id="cross_agent_operating_kit_checkout_3" class="btn btn-primary" data-primary-cta data-product="cross_agent_commercial" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"><span>Commercial</span><span>$149</span></a>
-          </article>
-          <article class="price-card">
-            <h3>Agency</h3><div class="amount">$299 <small>one-time</small></div><p class="audience">For one agency or organization with multiple internal users and client engagements.</p>
-            <div class="rights"><div class="right-row"><span class="mark">✓</span><span>Multiple internal team members</span></div><div class="right-row"><span class="mark">✓</span><span>Own + multiple client engagements</span></div><div class="right-row"><span class="mark">∞</span><span>No client-project count limit</span></div><div class="right-row"><span class="mark">✓</span><span>Full v1.0 kit + verified buyer workspace</span></div></div>
-            <a data-analytics-id="cross_agent_operating_kit_checkout_4" class="btn btn-primary" data-primary-cta data-product="cross_agent_agency" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"><span>Agency</span><span>$299</span></a>
-          </article>
-        </div>
-
-        <div class="scope-bar" aria-label="License scope summary"><div class="scope-item"><b>Permanent v1.0 access</b><span>Your purchased v1.0 kit remains accessible.</span></div><div class="scope-item"><b>No recurring fee</b><span>All three licenses are one-time purchases.</span></div><div class="scope-item"><b>No source-kit resale rights</b><span>The kit itself cannot be resold, republished, mirrored or sublicensed.</span></div></div>
-        <p class="price-note"><strong>License restriction:</strong> the kit itself may not be resold, redistributed, publicly mirrored or sublicensed. Client implementation under Commercial or Agency means using the kit to configure or operate a client project; it does not transfer the source kit or license to the client. Product names referenced on this page describe compatibility or use context only; this product is independent and is not an official product of those vendors.</p>
-      </section>
-
-      <section class="principle">
-        <div class="principle-grid">
-          <div><div class="kicker">Ready to implement</div><h2>Keep the operating knowledge. Choose the right usage rights.</h2><p class="lead">Checkout is the only next step here—no route maps, field-guide detours or unrelated links.</p></div>
-          <div class="final-options" aria-label="Final license choices">
-            <a class="btn btn-secondary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"><span>Personal</span><span>$69</span></a>
-            <a class="btn btn-primary" data-primary-cta data-product="cross_agent_commercial" data-analytics-id="cross_agent_commercial_product_close" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"><span>Commercial</span><span>$149</span></a>
-            <a class="btn btn-secondary" data-primary-cta data-product="cross_agent_agency" data-analytics-id="cross_agent_agency_product_close" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"><span>Agency</span><span>$299</span></a>
-          </div>
-        </div>
-      </section>
+      <p class="fine" data-i18n="hero_note">One-time purchase · Editable files · Verified delivery · No subscription</p>
+      <div class="hero-facts"><span data-i18n="fact_6">6 operating components</span><span data-i18n="fact_3">3 license levels</span><span>Markdown + YAML</span></div>
     </div>
-  </main>
 
-  <footer><div class="shell">© 2026 Stratum Praxis · Cross-Agent Operating Kit v1.0</div></footer>
+    <div class="system-panel" aria-label="Cross-agent operating layer diagram">
+      <div class="panel-head"><span data-i18n="architecture">Operating architecture</span><span class="status" data-i18n="portable">Portable</span></div>
+      <div class="brain-core"><div class="mini-label" data-i18n="owned_by_you">Owned by you</div><h3>Company Brain / Policy</h3><p data-i18n="brain_items">Goals · rules · skills · state · permissions · stop conditions</p></div>
+      <div class="connector"></div>
+      <div class="runtime-row"><div class="runtime"><b>Claude Code</b><span>Adapter</span></div><div class="runtime"><b>Codex</b><span>Adapter</span></div><div class="runtime"><b>Cursor / API</b><span>Adapter</span></div></div>
+      <div class="execution"><strong data-i18n="execution">Execution layer</strong><span>repo · browser · test · publish · deploy</span></div>
+    </div>
+  </section>
+
+  <div class="proof-strip">
+    <div class="proof"><b data-i18n="proof_policy">Portable policy</b><span data-i18n="proof_policy_desc">One operating brain, multiple runtimes.</span></div>
+    <div class="proof"><b>Human Gate</b><span data-i18n="proof_gate_desc">Define where autonomy must stop.</span></div>
+    <div class="proof"><b data-i18n="proof_cost">Cost guards</b><span data-i18n="proof_cost_desc">Budget, token, quota and retry controls.</span></div>
+    <div class="proof"><b data-i18n="proof_migration">Migration ready</b><span data-i18n="proof_migration_desc">Move state without moving every conversation.</span></div>
+  </div>
+
+  <section class="section" id="inside">
+    <div class="section-head"><div><div class="kicker" data-i18n="inside_kicker">What's inside</div><h2 data-i18n="inside_title">Six files and frameworks you can put into a real project.</h2></div><p class="section-intro" data-i18n="inside_intro">This is implementation material, not a reading-only prompt collection.</p></div>
+    <div class="component-grid">
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6"/></svg></span><div><span class="ey">01 · POLICY</span><h3>AGENTS.md</h3><p data-i18n="c1">Goals, source of truth, permissions, Human Gates, security, failure policy, cost policy and Definition of Done.</p></div></article>
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="M8 7 3 12l5 5M16 7l5 5-5 5M14 4l-4 16"/></svg></span><div><span class="ey">02 · ADAPTERS</span><h3>Claude / Codex / Cursor</h3><p data-i18n="c2">Keep tool-specific behavior at the edge instead of duplicating your core policy.</p></div></article>
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/><circle cx="12" cy="12" r="9"/></svg></span><div><span class="ey">03 · CHECK</span><h3>Policy Conflict Check</h3><p data-i18n="c3">Detect conflicts in objectives, permissions, completion, cost, retry and source of truth.</p></div></article>
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="M12 3 4 7v5c0 5 3.5 8 8 9 4.5-1 8-4 8-9V7z"/><path d="M9 12h6M12 9v6"/></svg></span><div><span class="ey">04 · CONTROL</span><h3>Human Gate Matrix</h3><p data-i18n="c4">Separate tool access from permission to perform high-impact actions.</p></div></article>
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="M4 19V9M10 19V5M16 19v-7M22 19H2"/></svg></span><div><span class="ey">05 · GUARDRAILS</span><h3>Budget / Token / Quota</h3><p data-i18n="c5">Set retry limits, prevent silent paid fallback and define safe recovery.</p></div></article>
+      <article class="component"><span class="icon"><svg viewBox="0 0 24 24"><path d="M7 7h11l-3-3M17 17H6l3 3M18 7l-3 3M6 17l3-3"/></svg></span><div><span class="ey">06 · PORTABILITY</span><h3>Migration + State Handoff</h3><p data-i18n="c6">Migration checklist, state handoff template and a 50-point policy maturity score.</p></div></article>
+    </div>
+  </section>
+
+  <section class="section compact" id="delivery">
+    <div class="section-head"><div><div class="kicker" data-i18n="delivery_kicker">After purchase</div><h2 data-i18n="delivery_title">Know what you receive and what happens next.</h2></div><p class="section-intro" data-i18n="delivery_intro">No vague “buyer access.” Payment is verified before the private delivery workspace opens.</p></div>
+    <div class="delivery-grid">
+      <article class="delivery-card"><div class="mini-label" data-i18n="package_label">Package</div><h3 data-i18n="package_title">Editable v1.0 operating files</h3><p data-i18n="package_desc">Master policy, adapters, conflict checks, Human Gate rules, cost guardrails and migration/state handoff.</p><div class="fact-list"><div class="fact"><b>Markdown + YAML</b><span data-i18n="editable_files">Editable project files</span></div><div class="fact"><b data-i18n="verified_workspace">Verified buyer workspace</b><span data-i18n="payment_check">Payment check before access</span></div></div></article>
+      <article class="delivery-card"><div class="mini-label" data-i18n="scope_label">Purchase scope</div><h3 data-i18n="scope_title">Buy once. Keep v1.0.</h3><p data-i18n="scope_desc">Your purchase includes permanent access to the v1.0 kit you bought. No recurring subscription. Future major versions, custom implementation and 1:1 support are separate unless stated otherwise.</p><div class="fact-list"><div class="fact"><b data-i18n="permanent">Permanent v1.0 access</b><span data-i18n="not_rental">Not a rental</span></div><div class="fact"><b data-i18n="no_bundle">No implied services</b><span data-i18n="major_separate">Major upgrades and consulting are separate</span></div></div></article>
+    </div>
+    <div class="flow">
+      <div class="flow-step"><span class="flow-num">01</span><b data-i18n="flow_checkout">Checkout</b><span data-i18n="flow_checkout_desc">Choose a license and pay through Stripe.</span></div>
+      <div class="flow-step"><span class="flow-num">02</span><b data-i18n="flow_verify">Verify</b><span data-i18n="flow_verify_desc">The access page confirms the purchase.</span></div>
+      <div class="flow-step"><span class="flow-num">03</span><b data-i18n="flow_access">Access</b><span data-i18n="flow_access_desc">Open the private buyer workspace.</span></div>
+      <div class="flow-step"><span class="flow-num">04</span><b data-i18n="flow_implement">Implement</b><span data-i18n="flow_implement_desc">Copy and adapt the files in your environment.</span></div>
+    </div>
+  </section>
+
+  <section class="section compact" id="licenses">
+    <div class="section-head"><div><div class="kicker" data-i18n="license_kicker">License rights</div><h2 data-i18n="license_title">The kit is the same. The usage rights are different.</h2></div><p class="section-intro" data-i18n="license_intro">Choose by who will use the kit and whether client implementation is required.</p></div>
+    <div class="license-defs">
+      <article class="license-def"><div class="license-top"><h3>Personal</h3><span class="license-price">$69</span></div><p data-i18n="personal_desc">For one person using the kit in their own projects or own business.</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="one_person">One licensed person</span></div><div class="right"><span class="mark">✓</span><span data-i18n="own_projects">Own projects / own business</span></div><div class="right"><span class="mark no">—</span><span data-i18n="no_client">No client implementation rights</span></div></div></article>
+      <article class="license-def featured"><div class="license-top"><h3>Commercial</h3><span class="license-price">$149</span></div><p data-i18n="commercial_desc">For one freelancer, consultant or independent operator using the kit in client work.</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="one_operator">One licensed operator</span></div><div class="right"><span class="mark">✓</span><span data-i18n="client_allowed">Client implementation allowed</span></div><div class="right"><span class="mark">∞</span><span data-i18n="unlimited_projects">No client-project count limit</span></div></div></article>
+      <article class="license-def"><div class="license-top"><h3>Agency</h3><span class="license-price">$299</span></div><p data-i18n="agency_desc">For one agency or organization with multiple internal users and client engagements.</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="multiple_members">Multiple internal team members</span></div><div class="right"><span class="mark">✓</span><span data-i18n="multiple_clients">Multiple client engagements</span></div><div class="right"><span class="mark">∞</span><span data-i18n="unlimited_projects">No client-project count limit</span></div></div></article>
+    </div>
+    <div class="license-rule" data-i18n="license_rule">All licenses prohibit reselling, redistributing, publicly mirroring or sublicensing the source kit itself.</div>
+  </section>
+
+  <section class="section" id="pricing">
+    <div class="section-head"><div><div class="kicker" data-i18n="pricing_kicker">One-time licenses</div><h2 data-i18n="pricing_title">Choose the license that matches your use.</h2></div><p class="section-intro" data-i18n="pricing_intro">Same v1.0 kit. No subscription. Different implementation rights.</p></div>
+    <div class="pricing-wrap">
+      <article class="price-card"><h3>Personal</h3><div class="amount">$69 <small data-i18n="one_time">one-time</small></div><p class="audience" data-i18n="personal_short">One person · own projects</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="full_kit">Full v1.0 kit</span></div><div class="right"><span class="mark">✓</span><span data-i18n="verified_workspace">Verified buyer workspace</span></div><div class="right"><span class="mark no">—</span><span data-i18n="no_client">No client implementation rights</span></div></div><a class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_operating_kit_checkout_2" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"><span>Personal</span><span>$69</span></a></article>
+      <article class="price-card featured"><div class="badge" data-i18n="operator_badge">Independent operator</div><h3>Commercial</h3><div class="amount">$149 <small data-i18n="one_time">one-time</small></div><p class="audience" data-i18n="commercial_short">One operator · client work allowed</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="client_allowed">Client implementation allowed</span></div><div class="right"><span class="mark">∞</span><span data-i18n="unlimited_projects">No client-project count limit</span></div><div class="right"><span class="mark">✓</span><span data-i18n="full_kit">Full v1.0 kit</span></div></div><a class="btn btn-primary" data-primary-cta data-product="cross_agent_commercial" data-analytics-id="cross_agent_operating_kit_checkout_3" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"><span>Commercial</span><span>$149</span></a></article>
+      <article class="price-card"><h3>Agency</h3><div class="amount">$299 <small data-i18n="one_time">one-time</small></div><p class="audience" data-i18n="agency_short">One organization · multiple members</p><div class="rights"><div class="right"><span class="mark">✓</span><span data-i18n="multiple_members">Multiple internal team members</span></div><div class="right"><span class="mark">✓</span><span data-i18n="multiple_clients">Multiple client engagements</span></div><div class="right"><span class="mark">✓</span><span data-i18n="full_kit">Full v1.0 kit</span></div></div><a class="btn btn-primary" data-primary-cta data-product="cross_agent_agency" data-analytics-id="cross_agent_operating_kit_checkout_4" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"><span>Agency</span><span>$299</span></a></article>
+    </div>
+    <p class="legal" data-i18n="legal">The source kit itself may not be resold, redistributed, publicly mirrored or sublicensed. Product names indicate compatibility only; this product is independent from those vendors.</p>
+  </section>
+
+  <section class="closing">
+    <div class="closing-grid"><div><div class="kicker" data-i18n="closing_kicker">Keep the operating knowledge</div><h2 data-i18n="closing_title">Change the agent without rebuilding the operating rules.</h2><p data-i18n="closing_desc">Brain, Policy, Skills and State stay on your side of the boundary.</p></div><div class="final-options"><a class="btn btn-primary" data-primary-cta data-product="cross_agent_personal" data-analytics-id="cross_agent_personal_product_close" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"><span>Personal</span><span>$69</span></a><a class="btn btn-secondary" data-primary-cta data-product="cross_agent_commercial" href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"><span>Commercial</span><span>$149</span></a><a class="btn btn-secondary" data-primary-cta data-product="cross_agent_agency" href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"><span>Agency</span><span>$299</span></a></div></div>
+  </section>
+</div></main>
+<footer><div class="shell">© 2026 Stratum Praxis · Cross-Agent Operating Kit v1.0</div></footer>
 </body>
 </html>
