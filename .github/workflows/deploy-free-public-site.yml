@@ -176,13 +176,16 @@ jobs:
           echo 'Live Lab inventory and product-route markers -> PASS'
 
           assert_markers "$BASE/product-router.html" /tmp/product-router.html \
-            'data-page="product_router_v4"' \
-            'id="intent-buttons"' \
-            'id="inventory"' \
-            '2 routes' \
+            'REVENUE ROUTE OS' \
+            'LIVE DECISION MAP' \
+            'MARKET LADDER' \
+            'THREE DECISION SYSTEMS' \
+            'data-route="spend"' \
+            'data-route="workflow"' \
+            'data-route="agent"' \
             'href="/buyer-workspace.html"' \
             'href="/workflow-audit.html"'
-          echo 'Product Router active inventory, buyer access and audit route -> PASS'
+          echo 'Revenue Route OS visual decision interface -> PASS'
 
           curl -L -sS "$BASE/stratum-catalog-v3.js" -o /tmp/catalog.js
           grep -Fq "name:'AI Value Realization Kit'" /tmp/catalog.js
