@@ -1,0 +1,50 @@
+/* Stratum Praxis — unified site DNA + mobile quality layer
+   Shared behavior, not shared visual identity. */
+:root{
+  --spk-font:Inter,"Hiragino Sans","Yu Gothic UI","Yu Gothic","Noto Sans JP",ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --spk-ease:cubic-bezier(.22,.78,.2,1);
+  --spk-radius:16px;
+  --spk-radius-lg:24px;
+  --spk-focus:rgba(104,214,173,.42);
+  --spk-mint:#7be0b7;
+  --spk-ink:#101816;
+}
+html{font-kerning:normal;text-rendering:optimizeLegibility;-webkit-text-size-adjust:100%}
+body{font-feature-settings:"kern" 1,"palt" 1;-webkit-font-smoothing:antialiased}
+h1,h2,h3,[class*="title"]{font-feature-settings:"kern" 1,"palt" 1;text-wrap:balance}
+p,li{line-break:auto}
+:where(a,button,input,select,textarea,summary):focus-visible{outline:3px solid var(--spk-focus)!important;outline-offset:3px!important}
+:where(img,video,canvas,svg){max-width:100%}
+:where(main,section,article,aside,nav,header,footer,div){min-width:0}
+[data-spk-circulation],.spk-preview{box-sizing:border-box;font-family:var(--spk-font)}
+
+/* Shared circulation surface. It deliberately adapts to both dark and light products. */
+.spk-circulation{width:min(1180px,calc(100% - 32px));margin:26px auto 72px;border:1px solid color-mix(in srgb,currentColor 15%,transparent);border-radius:var(--spk-radius-lg);padding:18px;background:color-mix(in srgb,currentColor 3.5%,transparent);color:inherit;position:relative;overflow:hidden}
+.spk-circulation:before{content:"";position:absolute;width:260px;height:260px;border-radius:50%;right:-130px;top:-160px;background:radial-gradient(circle,rgba(123,224,183,.14),transparent 70%);pointer-events:none}
+.spk-circ-head{display:flex;justify-content:space-between;gap:18px;align-items:end;position:relative}
+.spk-circ-kicker{font:800 10px/1.2 var(--spk-font);letter-spacing:.12em;text-transform:uppercase;opacity:.58}
+.spk-circ-head h2{margin:7px 0 0;font:680 clamp(22px,3vw,32px)/1.05 var(--spk-font);letter-spacing:-.035em}
+.spk-circ-head p{max-width:520px;margin:0;opacity:.66;font-size:12px;line-height:1.55}
+.spk-circ-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px;position:relative}
+.spk-circ-link{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:58px;padding:12px 14px;border:1px solid color-mix(in srgb,currentColor 13%,transparent);border-radius:15px;background:color-mix(in srgb,currentColor 3%,transparent);color:inherit;text-decoration:none;transition:transform .2s var(--spk-ease),border-color .2s ease,background .2s ease}
+.spk-circ-link:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--spk-mint) 42%,transparent);background:color-mix(in srgb,var(--spk-mint) 6%,transparent)}
+.spk-circ-link small{display:block;font:800 9px/1.2 var(--spk-font);letter-spacing:.08em;opacity:.5;text-transform:uppercase}.spk-circ-link b{display:block;margin-top:4px;font-size:12px}.spk-circ-link i{font-style:normal;color:var(--spk-mint);font-size:17px}
+
+/* Interactive paid-preview surface. */
+.spk-preview{width:min(1180px,calc(100% - 32px));margin:26px auto 46px;padding:22px;border:1px solid rgba(126,218,183,.18);border-radius:26px;background:linear-gradient(145deg,#0d1715,#111d1a 58%,#0a1211);color:#eef7f3;box-shadow:0 24px 70px rgba(0,0,0,.16);overflow:hidden;position:relative}
+.spk-preview:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.014) 1px,transparent 1px);background-size:32px 32px;mask-image:linear-gradient(120deg,#000,transparent 75%);pointer-events:none}
+.spk-preview>*{position:relative;z-index:1}.spk-preview-head{display:flex;align-items:end;justify-content:space-between;gap:20px}.spk-preview-kicker{font:800 10px/1.2 var(--spk-font);letter-spacing:.13em;text-transform:uppercase;color:#8ddfc1}.spk-preview h2{margin:7px 0 0;font:670 clamp(24px,3.5vw,38px)/1.03 var(--spk-font);letter-spacing:-.04em;color:#f0f7f4}.spk-preview-head p{max-width:480px;margin:0;color:#8fa39c;font-size:12px;line-height:1.6}.spk-tabs{display:flex;gap:6px;overflow:auto;padding:16px 0 10px;scrollbar-width:none}.spk-tabs::-webkit-scrollbar{display:none}.spk-tab{border:1px solid #253b34;background:#0c1413;color:#8fa39c;border-radius:999px;min-height:38px;padding:0 13px;font:750 11px/1 var(--spk-font);white-space:nowrap;cursor:pointer}.spk-tab[aria-selected="true"]{background:#dff7ed;color:#0b1813;border-color:#dff7ed}.spk-preview-body{border:1px solid #243731;border-radius:18px;background:#0a1211;padding:17px}.spk-pane{display:none}.spk-pane.is-active{display:block;animation:spkIn .32s var(--spk-ease)}.spk-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.spk-metric{padding:14px;border:1px solid #22342f;border-radius:13px;background:#0e1816}.spk-metric small{display:block;color:#788e86;font-size:9px;letter-spacing:.07em;text-transform:uppercase}.spk-metric strong{display:block;margin-top:7px;font-size:22px;letter-spacing:-.03em;font-variant-numeric:tabular-nums}.spk-metric span{display:block;margin-top:3px;color:#788e86;font-size:10px}.spk-form{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px}.spk-field{display:grid;gap:5px}.spk-field label{font-size:9px;letter-spacing:.04em;color:#8fa39c}.spk-field input,.spk-field select{width:100%;min-height:43px;border:1px solid #2a4039;border-radius:11px;background:#0f1a17;color:#f0f7f4;padding:0 11px;font:700 13px/1 var(--spk-font)}.spk-note{margin:10px 0 0;color:#81968e;font-size:10.5px;line-height:1.55}.spk-flow{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.spk-flow div{padding:14px;border:1px solid #22362f;border-radius:13px;background:#0e1816}.spk-flow small{display:block;color:#7be0b7;font-size:9px;letter-spacing:.08em}.spk-flow b{display:block;margin-top:18px;font-size:12px}.spk-runtime{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.spk-runtime button{min-height:45px;border:1px solid #2a4039;border-radius:12px;background:#0e1816;color:#9aada6;font-weight:750;cursor:pointer}.spk-runtime button.active{background:#dff7ed;color:#0b1813;border-color:#dff7ed}.spk-stack{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;margin-top:9px}.spk-stack div{padding:14px;border:1px solid #22362f;border-radius:12px;background:#0c1513}.spk-stack small{color:#7be0b7;font-size:9px}.spk-stack b{display:block;margin-top:6px;font-size:12px}.spk-watch{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.spk-watch button{min-height:70px;padding:11px;border:1px solid #293c36;border-radius:13px;background:#0d1715;color:#8fa39c;text-align:left;cursor:pointer}.spk-watch button.active{border-color:#65c9a4;background:#11231d;color:#eaf8f2}.spk-watch b{display:block;font-size:12px}.spk-watch small{display:block;margin-top:4px;font-size:9px;opacity:.7}.spk-watch-result{margin-top:8px;padding:12px 13px;border:1px solid #263a34;border-radius:12px;color:#a6b7b1;font-size:11px}
+
+/* Closed-loop runtime corrections: only safe, reversible UI fixes. */
+body.spk-auto-touch :where(.btn,.button,.action-btn,.sr-btn,.go,.offer,.start-card,[data-primary-cta],.office-nav a,.sr-navlinks a){min-height:44px}
+body.spk-auto-overflow{overflow-x:hidden}body.spk-auto-overflow :where(.office-nav,.sr-navlinks,.tabs,.route-tabs,.spk-tabs){max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+body.spk-auto-density :where(main p,.lead,.sr-lead,.section-intro){max-width:72ch}
+@keyframes spkIn{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+
+@media(max-width:760px){
+  .spk-circulation,.spk-preview{width:calc(100% - 20px);margin-left:auto;margin-right:auto;border-radius:21px;padding:16px}.spk-circ-head,.spk-preview-head{display:block}.spk-circ-head p,.spk-preview-head p{margin-top:9px}.spk-circ-grid{grid-template-columns:1fr}.spk-circ-link{min-height:52px}.spk-form{grid-template-columns:1fr 1fr}.spk-metrics{grid-template-columns:1fr 1fr}.spk-flow,.spk-stack,.spk-watch{grid-template-columns:1fr 1fr}
+  :where(.office-nav,.sr-navlinks,.route-tabs,.tabs){scrollbar-width:none;-webkit-overflow-scrolling:touch}.office-nav::-webkit-scrollbar,.sr-navlinks::-webkit-scrollbar,.route-tabs::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
+  :where(.office-nav a,.sr-navlinks a,.route-tab,.tab){min-height:42px}
+}
+@media(max-width:460px){.spk-form,.spk-metrics,.spk-flow,.spk-stack,.spk-watch{grid-template-columns:1fr}.spk-preview{padding:14px}.spk-circulation{margin-bottom:86px}}
+@media(prefers-reduced-motion:reduce){.spk-circ-link,.spk-pane.is-active{transition:none!important;animation:none!important}}
