@@ -2,6 +2,25 @@
   const body=document.body;
   body.classList.add('route-os-enhanced');
 
+  const enhancementStyle=document.createElement('style');
+  enhancementStyle.textContent=`
+    .route-shell{touch-action:pan-y}
+    .route-pager{display:grid;grid-template-columns:46px auto 46px;align-items:center;justify-content:center;gap:14px;margin:14px auto 0;padding:10px 12px;width:max-content;max-width:100%;border:1px solid rgba(17,24,22,.09);border-radius:999px;background:rgba(249,247,242,.82);box-shadow:0 10px 28px rgba(17,24,22,.045);backdrop-filter:blur(12px)}
+    .route-pager-arrow{width:38px;height:38px;display:grid;place-items:center;border:1px solid rgba(17,24,22,.1);border-radius:50%;background:#fff;color:#17201e;font-size:15px;cursor:pointer;transition:.18s ease}
+    .route-pager-arrow:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(17,24,22,.07)}
+    .route-pager-center{display:grid;justify-items:center;gap:6px;min-width:142px}
+    .route-pager-center small{font-size:6.5px;font-weight:850;letter-spacing:.12em;color:#87918d}
+    .route-pager-dots{display:flex;align-items:center;gap:7px}
+    .route-pager-dots button{width:18px;height:5px;padding:0;border:0;border-radius:999px;background:rgba(17,24,22,.12);cursor:pointer;transition:.18s ease}
+    .route-pager-dots button.is-active{width:34px;background:#17201e}
+    .offer.buyer{cursor:pointer}
+    .offer.buyer:after{content:'BUYER GATE';position:absolute;right:10px;top:10px;padding:4px 6px;border-radius:999px;background:rgba(17,24,22,.07);color:#64716b;font-size:6px;font-weight:850;letter-spacing:.07em}
+    #buyer-access{scroll-margin-top:110px}
+    @media(max-width:760px){.route-pager{position:sticky;bottom:12px;z-index:20;margin-top:10px;background:rgba(248,246,241,.92)}.route-pager-arrow{width:36px;height:36px}.route-pager-center small{font-size:6px}}
+    @media(prefers-reduced-motion:reduce){.route-pager-arrow,.route-pager-dots button{transition:none!important}}
+  `;
+  document.head.appendChild(enhancementStyle);
+
   const routeOrder=['spend','workflow','agent'];
   const routeData={
     spend:{entry:'FREE',depth:'$39 → $499',outcome:'CONTROL',chain:['Detect','Prove','Recover','Monitor'],label:'Spend & ROI'},
@@ -144,7 +163,7 @@
     routeShell.addEventListener('pointercancel',()=>{tracking=false},{passive:true});
   }
 
-  // Public route cards must never jump straight into protected buyer delivery.
+  // Public route cards never jump straight into protected buyer delivery.
   const buyerOffer=document.querySelector('.offer.buyer');
   if(buyerOffer){
     buyerOffer.setAttribute('href','#buyer-access');
