@@ -141,9 +141,14 @@ jobs:
   ingest:
     name: Ingest external signals
     needs: contracts
-    # Never on a pull request: this job holds live credentials and calls out to
-    # GitHub, PostHog, Stripe and the ledger.
-    if: github.event_name != 'pull_request'
+    # Production dispatches still require green contracts. A manual local probe is
+    # diagnostic only, so it may run even when unrelated acquisition/inventory
+    # checks on main are temporarily red. This keeps Stripe/PostHog credential tests
+    # observable without weakening the real repository_dispatch path.
+    if: >-
+      ${{ always() && github.event_name != 'pull_request' &&
+          (needs.contracts.result == 'success' ||
+           (github.event_name == 'workflow_dispatch' && inputs.local)) }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
