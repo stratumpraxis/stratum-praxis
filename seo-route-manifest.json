@@ -1,0 +1,37 @@
+{
+  "version": "2026-09-11-v1",
+  "base_url": "https://stratumpraxis.com",
+  "routes": [
+    {"url":"/","source":"index.html","family":"core","priority":"1.0","changefreq":"weekly"},
+    {"url":"/evidence.html","source":"evidence.html","family":"core","priority":"0.94","changefreq":"monthly"},
+    {"url":"/live-lab.html","source":"live-lab.html","family":"core","priority":"0.95","changefreq":"weekly"},
+    {"url":"/product-router.html","source":"product-router.html","family":"core","priority":"0.96","changefreq":"weekly"},
+    {"url":"/systems/","source":"systems/index.html","family":"core","priority":"0.82","changefreq":"monthly"},
+
+    {"url":"/ai-saas-waste-calculator.html","source":"ai-saas-waste-calculator.html","family":"spend","priority":"0.95","changefreq":"weekly"},
+    {"url":"/ai-saas-spend-audit-checklist.html","source":"ai-saas-spend-audit-checklist.html","family":"spend","priority":"0.90","changefreq":"monthly"},
+    {"url":"/ai-value-realization-kit.html","source":"ai-value-realization-kit.html","family":"spend","priority":"0.92","changefreq":"monthly"},
+    {"url":"/ai-saas-spend-waste-audit.html","source":"ai-saas-spend-waste-audit.html","family":"spend","priority":"0.92","changefreq":"monthly"},
+    {"url":"/ai-saas-spend-monitoring.html","source":"ai-saas-spend-monitoring.html","family":"spend","priority":"0.88","changefreq":"monthly"},
+
+    {"url":"/b2b/","source":"b2b/index.html","family":"workflow","priority":"0.95","changefreq":"weekly"},
+    {"url":"/sample-workflow-audit.html","source":"sample-workflow-audit.html","family":"workflow","priority":"0.86","changefreq":"monthly"},
+    {"url":"/workflow-audit.html","source":"workflow-audit.html","family":"workflow","priority":"0.93","changefreq":"monthly"},
+
+    {"url":"/ai-agent-economics-calculator.html","source":"ai-agent-economics-calculator.html","family":"agent","priority":"0.94","changefreq":"weekly"},
+    {"url":"/agent-control-auditor.html","source":"agent-control-auditor.html","family":"agent","priority":"0.94","changefreq":"weekly"},
+    {"url":"/cross-agent-operating-kit.html","source":"cross-agent-operating-kit.html","family":"agent","priority":"0.93","changefreq":"monthly"},
+
+    {"url":"/revenue-pump/","source":"revenue-pump/index.html","family":"revenue","priority":"0.90","changefreq":"weekly"},
+    {"url":"/revenue-pump/auto/","source":"revenue-pump/auto/index.html","family":"revenue","priority":"0.88","changefreq":"weekly"},
+    {"url":"/ai-monetization-reality-check.html","source":"ai-monetization-reality-check.html","family":"revenue","priority":"0.76","changefreq":"monthly"},
+    {"url":"/ai-income-claim-checklist.html","source":"ai-income-claim-checklist.html","family":"revenue","priority":"0.78","changefreq":"monthly"},
+    {"url":"/rustchain-bounty-radar.html","source":"rustchain-bounty-radar.html","family":"revenue","priority":"0.72","changefreq":"weekly"},
+
+    {"url":"/money-resilience/","source":"money-resilience/index.html","family":"money","priority":"0.88","changefreq":"weekly"},
+    {"url":"/72-hour-household-readiness/","source":"72-hour-household-readiness/index.html","family":"household","priority":"0.84","changefreq":"monthly"},
+
+    {"url":"/privacy.html","source":"privacy.html","family":"legal","priority":"0.30","changefreq":"yearly"},
+    {"url":"/terms.html","source":"terms.html","family":"legal","priority":"0.30","changefreq":"yearly"}
+  ]
+}
