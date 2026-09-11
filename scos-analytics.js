@@ -10,6 +10,15 @@
   const CHECKOUT_HOSTS = new Set(['buy.stripe.com', 'payhip.com', 'gumroad.com', 'stratumpraxis.gumroad.com']);
   const SOCIAL_HOSTS = ['x.com','twitter.com','instagram.com','tiktok.com','linkedin.com','facebook.com','threads.net','bsky.app'];
   const AGENT_LAB_ENTRY = '/agent-lab/?utm_source=stratumpraxis&utm_medium=owned_network&utm_campaign=agent_lab_entry';
+  const FREE_TOOL_PATHS = new Set([
+    '/ai-saas-waste-calculator.html','/ai-saas-spend-audit-checklist.html','/b2b/','/ai-agent-economics-calculator.html','/agent-control-auditor.html',
+    '/ai-monetization-reality-check.html','/ai-income-claim-checklist.html','/money-resilience/','/72-hour-household-readiness/'
+  ]);
+  const PAID_PRODUCT_PATHS = new Set([
+    '/ai-value-realization-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/workflow-audit.html','/cross-agent-operating-kit.html'
+  ]);
+  const CHECKOUT_MARKER_KEY = 'sp_checkout_clicked_v1';
+  const VERIFIED_MARKER_KEY = 'sp_verified_access_v1';
 
   function clean(value, limit) {
     return String(value || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, limit || 160);
@@ -84,6 +93,10 @@
       last_landing_path: clean(lastTouch.landing_path, 160),
       last_touched_at: clean(lastTouch.touched_at, 40)
     });
+  }
+
+  function normalizedPath() {
+    return location.pathname.replace(/\/index\.html$/, '/');
   }
 
   function funnelId() {
@@ -174,6 +187,14 @@
     sendEvent(name, props);
   };
   window.scosAttribution = attribution;
+  window.scosMarkPurchase = function (props) {
+    storageSet(VERIFIED_MARKER_KEY, { type: 'purchase', at: new Date().toISOString(), product: clean(props && props.product, 100) });
+    sendEvent('purchase', Object.assign({ evidence_source: 'explicit_site_hook' }, props || {}));
+  };
+  window.scosMarkVerifiedAccess = function (props) {
+    storageSet(VERIFIED_MARKER_KEY, { type: 'verified_access', at: new Date().toISOString(), product: clean(props && props.product, 100) });
+    sendEvent('verified_access', Object.assign({ evidence_source: 'explicit_site_hook' }, props || {}));
+  };
 
   function captureBeforeNavigation(name, props) {
     sendEvent(name, props);
@@ -270,6 +291,66 @@
     });
   }
 
+  function installMarketValidationEvents() {
+    const path = normalizedPath();
+    if (PAID_PRODUCT_PATHS.has(path)) {
+      sendEvent('paid_product_view', { product: clean(document.body && document.body.dataset.product || funnelId(), 100) });
+    }
+
+    if (path === '/buyer-workspace.html') {
+      const checkout = storageGet(CHECKOUT_MARKER_KEY);
+      const verified = storageGet(VERIFIED_MARKER_KEY);
+      if (checkout || verified) {
+        sendEvent('buyer_return', {
+          return_basis: verified ? clean(verified.type, 40) : 'checkout_click',
+          product: clean((verified && verified.product) || (checkout && checkout.product) || '', 100)
+        });
+      }
+    }
+
+    if (FREE_TOOL_PATHS.has(path)) {
+      let started = false;
+      let completed = false;
+      const start = function (event) {
+        if (started) return;
+        if (event && event.target && event.target.closest && event.target.closest('header,nav,footer,a[href]')) return;
+        started = true;
+        sendEvent('free_tool_start', { tool: funnelId() });
+      };
+      ['input','change','click','pointerdown'].forEach(function (name) {
+        document.addEventListener(name, start, { capture: true, passive: name === 'pointerdown' });
+      });
+
+      const resultSelectors = '#resultPanel,#results,#result-stage,.result-panel,.diag-result,[data-result],[data-result-panel],[aria-live="polite"],[aria-live="assertive"]';
+      const maybeComplete = function () {
+        if (completed) return;
+        const candidates = Array.from(document.querySelectorAll(resultSelectors));
+        const visible = candidates.find(function (node) {
+          const text = clean(node.textContent, 240);
+          if (text.length < 8) return false;
+          const style = getComputedStyle(node);
+          if (style.display === 'none' || style.visibility === 'hidden') return false;
+          const rect = node.getBoundingClientRect();
+          return rect.width > 0 && rect.height > 0;
+        });
+        if (!visible) return;
+        completed = true;
+        sendEvent('free_tool_complete', { tool: funnelId(), result_surface: clean(visible.id || visible.className || visible.getAttribute('aria-live'), 100) });
+      };
+      maybeComplete();
+      const observer = new MutationObserver(maybeComplete);
+      observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class','hidden','aria-hidden'] });
+    }
+
+    document.addEventListener('pointerdown', function (event) {
+      const route = event.target.closest('[data-route],[data-intent],.route-tab,.route,[role="tab"]');
+      if (!route) return;
+      const selection = clean(route.dataset.route || route.dataset.intent || route.dataset.spkTab || route.textContent, 100);
+      if (!selection) return;
+      sendEvent('route_select', { selection: selection, control: clean(route.className, 100) });
+    }, { capture: true });
+  }
+
   function loadRevenueRouter() {
     if (document.querySelector('script[data-sp-revenue-router]')) return;
     const script = document.createElement('script');
@@ -288,7 +369,7 @@
     document.head.appendChild(script);
   }
 
-  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); injectNetworkEntry(); loadRevenueRouter(); loadAgentLabPortal(); }
+  function ready() { normalizeLanguageRoutes(); decorateCheckoutLinks(); captureView(); installMarketValidationEvents(); injectNetworkEntry(); loadRevenueRouter(); loadAgentLabPortal(); }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
@@ -305,7 +386,10 @@
       product: clean(link.dataset.product || document.body.dataset.product || funnelId(), 100)
     };
     if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) captureBeforeNavigation('primary_cta_click', properties);
-    if (CHECKOUT_HOSTS.has(destination.hostname)) captureBeforeNavigation('checkout_click', properties);
+    if (CHECKOUT_HOSTS.has(destination.hostname)) {
+      storageSet(CHECKOUT_MARKER_KEY, { at: new Date().toISOString(), product: properties.product, destination_host: destination.hostname });
+      captureBeforeNavigation('checkout_click', properties);
+    }
     if (destination.origin !== location.origin && !CHECKOUT_HOSTS.has(destination.hostname)) {
       captureBeforeNavigation('external_route_click', Object.assign({}, properties, { external_category: externalCategory(destination.hostname) }));
     }
