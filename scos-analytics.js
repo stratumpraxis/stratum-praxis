@@ -17,6 +17,13 @@
   const PAID_PRODUCT_PATHS = new Set([
     '/ai-value-realization-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/workflow-audit.html','/cross-agent-operating-kit.html'
   ]);
+  const PAID_PRODUCT_IDS = {
+    '/ai-value-realization-kit.html': 'ai_value_realization_kit',
+    '/ai-saas-spend-waste-audit.html': 'ai_saas_spend_waste_audit',
+    '/ai-saas-spend-monitoring.html': 'ai_saas_spend_monitoring',
+    '/workflow-audit.html': 'workflow_audit',
+    '/cross-agent-operating-kit.html': 'cross_agent_operating_kit'
+  };
   const CHECKOUT_MARKER_KEY = 'sp_checkout_clicked_v1';
   const VERIFIED_MARKER_KEY = 'sp_verified_access_v1';
 
@@ -102,6 +109,17 @@
   function funnelId() {
     return clean(document.body && document.body.dataset.funnel, 100) ||
       location.pathname.replace(/^\/+/, '').replace(/(?:index)?\.html$/, '') || 'homepage';
+  }
+
+  function canonicalProductId() {
+    return PAID_PRODUCT_IDS[normalizedPath()] || '';
+  }
+
+  function productForLink(link) {
+    const canonical = canonicalProductId();
+    const explicit = clean(link && link.dataset && link.dataset.product, 100);
+    if (canonical === 'cross_agent_operating_kit' && explicit) return explicit;
+    return clean(canonical || explicit || (document.body && document.body.dataset.product) || funnelId(), 100);
   }
 
   function newAnonymousId() {
@@ -294,16 +312,22 @@
   function installMarketValidationEvents() {
     const path = normalizedPath();
     if (PAID_PRODUCT_PATHS.has(path)) {
-      sendEvent('paid_product_view', { product: clean(document.body && document.body.dataset.product || funnelId(), 100) });
+      sendEvent('paid_product_view', { product: canonicalProductId() || funnelId(), validation_contract: '2026-09-11-v2' });
     }
 
     if (path === '/buyer-workspace.html') {
       const checkout = storageGet(CHECKOUT_MARKER_KEY);
       const verified = storageGet(VERIFIED_MARKER_KEY);
-      if (checkout || verified) {
+      if (verified) {
         sendEvent('buyer_return', {
-          return_basis: verified ? clean(verified.type, 40) : 'checkout_click',
-          product: clean((verified && verified.product) || (checkout && checkout.product) || '', 100)
+          return_basis: clean(verified.type, 40),
+          product: clean(verified.product || '', 100),
+          evidence_source: 'verified_marker'
+        });
+      } else if (checkout) {
+        sendEvent('checkout_return', {
+          product: clean(checkout.product || '', 100),
+          evidence_source: 'checkout_click_only'
         });
       }
     }
@@ -311,11 +335,14 @@
     if (FREE_TOOL_PATHS.has(path)) {
       let started = false;
       let completed = false;
+      const startSelector = 'input,select,textarea,button:not([data-lang]),[role="radio"],[role="checkbox"],[data-answer],[data-choice],[data-option],[data-action]';
       const start = function (event) {
-        if (started) return;
-        if (event && event.target && event.target.closest && event.target.closest('header,nav,footer,a[href]')) return;
+        if (started || !event || !event.target || !event.target.closest) return;
+        if (event.target.closest('header,nav,footer,a[href]')) return;
+        const control = event.target.closest(startSelector);
+        if (!control) return;
         started = true;
-        sendEvent('free_tool_start', { tool: funnelId() });
+        sendEvent('free_tool_start', { tool: funnelId(), start_control: clean(control.id || control.name || control.className || control.tagName, 100) });
       };
       ['input','change','click','pointerdown'].forEach(function (name) {
         document.addEventListener(name, start, { capture: true, passive: name === 'pointerdown' });
@@ -323,13 +350,13 @@
 
       const resultSelectors = '#resultPanel,#results,#result-stage,.result-panel,.diag-result,[data-result],[data-result-panel],[aria-live="polite"],[aria-live="assertive"]';
       const maybeComplete = function () {
-        if (completed) return;
+        if (!started || completed) return;
         const candidates = Array.from(document.querySelectorAll(resultSelectors));
         const visible = candidates.find(function (node) {
           const text = clean(node.textContent, 240);
           if (text.length < 8) return false;
           const style = getComputedStyle(node);
-          if (style.display === 'none' || style.visibility === 'hidden') return false;
+          if (style.display === 'none' || style.visibility === 'hidden' || node.getAttribute('aria-hidden') === 'true') return false;
           const rect = node.getBoundingClientRect();
           return rect.width > 0 && rect.height > 0;
         });
@@ -337,15 +364,17 @@
         completed = true;
         sendEvent('free_tool_complete', { tool: funnelId(), result_surface: clean(visible.id || visible.className || visible.getAttribute('aria-live'), 100) });
       };
-      maybeComplete();
       const observer = new MutationObserver(maybeComplete);
       observer.observe(document.body, { childList: true, subtree: true, characterData: true, attributes: true, attributeFilter: ['class','hidden','aria-hidden'] });
+      document.addEventListener('input', maybeComplete, { capture: true });
+      document.addEventListener('change', maybeComplete, { capture: true });
+      document.addEventListener('click', function () { setTimeout(maybeComplete, 0); }, { capture: true });
     }
 
     document.addEventListener('pointerdown', function (event) {
-      const route = event.target.closest('[data-route],[data-intent],.route-tab,.route,[role="tab"]');
+      const route = event.target.closest('[data-route],[data-intent],.route-tab');
       if (!route) return;
-      const selection = clean(route.dataset.route || route.dataset.intent || route.dataset.spkTab || route.textContent, 100);
+      const selection = clean(route.dataset.route || route.dataset.intent || route.textContent, 100);
       if (!selection) return;
       sendEvent('route_select', { selection: selection, control: clean(route.className, 100) });
     }, { capture: true });
@@ -383,7 +412,8 @@
       cta_id: clean(link.dataset.analyticsId || link.dataset.funnel || link.textContent, 100),
       destination_host: destination.hostname,
       destination_path: destination.pathname,
-      product: clean(link.dataset.product || document.body.dataset.product || funnelId(), 100)
+      product: productForLink(link),
+      offer_path: normalizedPath()
     };
     if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) captureBeforeNavigation('primary_cta_click', properties);
     if (CHECKOUT_HOSTS.has(destination.hostname)) {
