@@ -1,215 +1,52 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <title>Cross-Agent Operating Kit | Buyer Access</title>
-    <script defer src="/scos-analytics.js"></script>
-    <style>
-      :root {
-        --b: #080b12;
-        --p: #111824;
-        --l: #2b374b;
-        --t: #f5f7fb;
-        --m: #9da9ba;
-        --a: #72d8ff;
-      }
-      * {
-        box-sizing: border-box;
-      }
-      body {
-        margin: 0;
-        background:
-          radial-gradient(
-            700px 400px at 70% -100px,
-            #19345f 0,
-            transparent 70%
-          ),
-          var(--b);
-        color: var(--t);
-        font:
-          15px/1.65 system-ui,
-          sans-serif;
-      }
-      .w {
-        width: min(720px, calc(100% - 30px));
-        margin: auto;
-        padding: 56px 0 80px;
-      }
-      .ey {
-        font-size: 10px;
-        letter-spacing: 0.16em;
-        color: var(--a);
-        font-weight: 900;
-      }
-      h1 {
-        font-size: clamp(40px, 8vw, 68px);
-        line-height: 1;
-        letter-spacing: -0.045em;
-      }
-      .m {
-        color: var(--m);
-      }
-      .card {
-        border: 1px solid var(--l);
-        border-radius: 22px;
-        background: #101722;
-        padding: 26px;
-        margin-top: 26px;
-      }
-      label {
-        display: block;
-        font-size: 12px;
-        font-weight: 800;
-        margin: 14px 0 6px;
-      }
-      input {
-        width: 100%;
-        min-height: 49px;
-        background: #080c13;
-        border: 1px solid #35445c;
-        border-radius: 11px;
-        color: #fff;
-        padding: 12px;
-        font: inherit;
-      }
-      button {
-        width: 100%;
-        min-height: 50px;
-        border: 0;
-        border-radius: 11px;
-        background: #f4f7fb;
-        color: #08101a;
-        font-weight: 900;
-        margin-top: 18px;
-      }
-      button:disabled {
-        opacity: 0.55;
-      }
-      .secure {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 7px;
-        margin-top: 16px;
-      }
-      .secure div {
-        border: 1px solid #28364a;
-        border-radius: 9px;
-        padding: 9px;
-        font-size: 10px;
-        color: #b2bdcc;
-      }
-      .back {
-        display: inline-block;
-        margin-top: 22px;
-        color: #aab5c4;
-        text-decoration: none;
-      }
-      @media (max-width: 560px) {
-        .secure {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-  </head>
-  <body
-    data-funnel="cross_agent_operating_kit_access"
-    data-product="cross_agent_operating_kit"
-  >
-    <main class="w">
-      <div class="ey">STRATUM PRAXIS · VERIFIED BUYER ACCESS</div>
-      <h1>Open your<br />Operating Kit.</h1>
-      <p class="m">
-        Your payment is checked server-side before the private workspace opens.
-      </p>
-      <section class="card">
-        <p class="m">
-          Use the same email entered at Stripe Checkout. The Checkout Session ID
-          is filled automatically after payment.
-        </p>
-        <label>Checkout Session ID</label
-        ><input id="sid" autocomplete="off" /><label>Checkout email</label
-        ><input id="email" type="email" autocomplete="email" /><button id="go">
-          Verify purchase →
-        </button>
-        <p id="msg" class="m" role="status"></p>
-        <div class="secure">
-          <div>✓ Stripe verification</div>
-          <div>✓ Email match</div>
-          <div>✓ Private workspace</div>
-        </div>
-      </section>
-      <a class="back" href="/cross-agent-operating-kit.html"
-        >← Back to product page</a
-      >
-    </main>
-    <script>
-      const q = new URLSearchParams(location.search),
-        lic = ["personal", "commercial", "agency"].includes(q.get("license"))
-          ? q.get("license")
-          : "personal",
-        sid = document.getElementById("sid"),
-        email = document.getElementById("email"),
-        go = document.getElementById("go"),
-      msg = document.getElementById("msg");
-    sid.value = q.get("session_id") || "";
-    window.addEventListener(
-      "load",
-      () =>
-        window.scosCapture &&
-        window.scosCapture("checkout_return", {
-          product: "cross_agent_operating_kit",
-          license: lic,
-          session_present: !!sid.value,
-        }),
-      { once: true },
-    );
-    async function run() {
-      msg.textContent = "Verifying purchase…";
-      go.disabled = true;
-      window.scosCapture &&
-        window.scosCapture("verification_submit", {
-          product: "cross_agent_operating_kit",
-          license: lic,
-        });
-      try {
-          const r = await fetch(
-              "https://ai-consultant-verify.practicalaireport.workers.dev/cross-agent-kit/login",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  session_id: sid.value.trim(),
-                  email: email.value.trim(),
-                  offer: "cross_" + lic,
-                }),
-              },
-            ),
-            x = await r.json();
-        if (!r.ok) throw Error(x.error || "Verification failed");
-        window.scosCapture &&
-          window.scosCapture("access_granted", {
-            product: "cross_agent_operating_kit",
-            license: lic,
-          });
-        msg.textContent = "Verified. Opening workspace…";
-        location.href = x.workspace_url;
-      } catch (e) {
-        window.scosCapture &&
-          window.scosCapture("access_denied", {
-            product: "cross_agent_operating_kit",
-            license: lic,
-            reason: String(e.message || "verification_failed").slice(0, 120),
-          });
-          msg.textContent = e.message || "Verification failed";
-          go.disabled = false;
-        }
-      }
-      go.onclick = run;
-      email.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") run();
-      });
-    </script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <meta name="theme-color" content="#08100f">
+  <title>Cross-Agent Operating Kit | Buyer Access</title>
+  <script defer src="/scos-analytics.js"></script>
+  <style>
+    :root{color-scheme:dark;--bg:#08100f;--panel:#0d1515;--panel2:#101a18;--line:#263a34;--line2:#3a574d;--text:#edf5f1;--muted:#a1aea9;--soft:#81918b;--mint:#96e6c9;--mint2:#daf6ec}
+    *{box-sizing:border-box;min-width:0}html,body{min-height:100%;background:var(--bg)}body{margin:0;color:var(--text);font:14.5px/1.65 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased;background:radial-gradient(circle at 74% 0,rgba(150,230,201,.06),transparent 32%),var(--bg)}button,input{font:inherit}.shell{width:min(1040px,calc(100% - 38px));margin:auto}.top{height:60px;display:flex;align-items:center;gap:12px;border-bottom:1px solid rgba(255,255,255,.06)}.brand{display:flex;align-items:center;gap:10px;color:#d6e0dc;font-size:11.5px;font-weight:760;letter-spacing:.07em}.mark{width:30px;height:30px;border:1px solid #344b43;border-radius:9px;display:grid;place-items:center;background:#101916}.mark:before{content:"";width:10px;height:10px;border:1px solid var(--mint);border-radius:2px;transform:rotate(45deg)}.langs{margin-left:auto;display:flex;gap:2px;padding:3px;border:1px solid #293d37;border-radius:999px;background:#0c1413}.langs button{height:27px;min-width:31px;padding:0 7px;border:0;border-radius:999px;background:transparent;color:#81918b;font-size:11px;font-weight:760;cursor:pointer}.langs button.active{background:#182722;color:#daf6ec}
+    main{padding:76px 0 88px}.layout{display:grid;grid-template-columns:.9fr 1.1fr;gap:62px;align-items:center}.ey{margin:0 0 15px;color:var(--mint);font-size:11.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}h1{margin:0 0 17px;font-size:clamp(42px,6vw,68px);line-height:1.02;letter-spacing:-.048em;font-weight:650;text-wrap:balance}.lead{margin:0 0 20px;max-width:470px;color:var(--muted);font-size:14px;line-height:1.72}.mini-flow{display:grid;gap:8px;max-width:450px}.mini-step{display:grid;grid-template-columns:26px 1fr;gap:10px;align-items:center;color:#9faca7;font-size:12px}.num{width:26px;height:26px;border:1px solid #365248;border-radius:7px;display:grid;place-items:center;color:var(--mint);font-size:10.5px;font-weight:800}.back{display:inline-flex;margin-top:24px;color:#9ba9a4;text-decoration:none;font-size:12px}.back:hover{color:#d9e4df}
+    .card{border:1px solid #2a4039;border-radius:20px;background:#0c1514;box-shadow:0 28px 70px rgba(0,0,0,.24);overflow:hidden}.card-head{padding:18px 20px;border-bottom:1px solid #243731;display:flex;align-items:center;justify-content:space-between;gap:12px}.card-head b{font-size:12.5px}.status{display:flex;align-items:center;gap:7px;color:#8fa09a;font-size:11.5px}.status:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--mint)}.card-body{padding:22px}.help{margin:0 0 17px;color:#96a49f;font-size:12.5px;line-height:1.65}.field{margin-top:13px}label{display:block;margin-bottom:6px;color:#c3cec9;font-size:12px;font-weight:700}input{width:100%;min-height:48px;padding:11px 12px;border:1px solid #334a43;border-radius:10px;outline:none;background:#091110;color:#eff6f3}input:focus{border-color:#5d8b7b;box-shadow:0 0 0 3px rgba(150,230,201,.07)}.verify{width:100%;min-height:49px;margin-top:17px;border:1px solid #dcefe8;border-radius:10px;background:#edf8f4;color:#08120e;font-weight:800;cursor:pointer}.verify:disabled{opacity:.52;cursor:wait}.message{min-height:24px;margin:10px 0 0;color:#9eada7;font-size:12px}.secure{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-top:15px}.secure div{padding:9px;border:1px solid #23362f;border-radius:9px;background:#0a1211;color:#9aa8a3;font-size:11.5px}.note{margin:14px 0 0;color:#788982;font-size:11.5px}
+    @media(max-width:780px){.layout{grid-template-columns:1fr;gap:34px}main{padding-top:48px}.intro{max-width:650px}.card{max-width:650px}.brand span:last-child{display:none}}
+    @media(max-width:520px){.shell{width:calc(100% - 28px)}.top{height:54px}.langs button{min-width:28px;padding:0 5px}.langs button[data-lang="ko"]{font-size:0}.langs button[data-lang="ko"]:after{content:"KR";font-size:11px}main{padding:42px 0 60px}h1{font-size:clamp(38px,12vw,50px)}.card-body{padding:18px}.secure{grid-template-columns:1fr}.mini-flow{gap:7px}}
+  </style>
+</head>
+<body data-funnel="cross_agent_operating_kit_access" data-product="cross_agent_operating_kit">
+  <header><div class="shell top"><div class="brand"><span class="mark" aria-hidden="true"></span><span>STRATUM PRAXIS · VERIFIED BUYER ACCESS</span></div><div class="langs" role="group" aria-label="Language"><button type="button" data-lang="en">EN</button><button type="button" data-lang="ja">JP</button><button type="button" data-lang="ko">한국어</button><button type="button" data-lang="zh">中文</button></div></div></header>
+  <main class="shell"><div class="layout">
+    <section class="intro" aria-labelledby="access-title"><p class="ey" data-t="ey">Verified buyer access</p><h1 id="access-title" data-t="title">Open your Operating Kit.</h1><p class="lead" data-t="lead">Your payment is checked server-side before the private workspace opens. No public download route is exposed here.</p><div class="mini-flow" aria-label="Access flow"><div class="mini-step"><span class="num">01</span><span data-t="step1">Stripe checkout completed</span></div><div class="mini-step"><span class="num">02</span><span data-t="step2">Purchase and email verified</span></div><div class="mini-step"><span class="num">03</span><span data-t="step3">Private buyer workspace opens</span></div></div><a class="back" href="/cross-agent-operating-kit.html" data-t="back">← Back to product page</a></section>
+
+    <section class="card" aria-labelledby="verify-title"><div class="card-head"><b id="verify-title" data-t="cardTitle">Verify your purchase</b><span class="status" data-t="secure">Server-side check</span></div><div class="card-body"><p class="help" data-t="help">Use the same email entered at Stripe Checkout. The Checkout Session ID is filled automatically after payment when available.</p><div class="field"><label for="sid" data-t="session">Checkout Session ID</label><input id="sid" autocomplete="off" spellcheck="false"></div><div class="field"><label for="email" data-t="email">Checkout email</label><input id="email" type="email" autocomplete="email"></div><button class="verify" id="go" type="button" data-t="verify">Verify purchase →</button><p id="msg" class="message" role="status" aria-live="polite"></p><div class="secure"><div data-t="proof1">✓ Stripe verification</div><div data-t="proof2">✓ Email match</div><div data-t="proof3">✓ Private workspace</div></div><p class="note" data-t="note">Access is granted only after the purchase check succeeds.</p></div></section>
+  </div></main>
+  <script>
+    const q=new URLSearchParams(location.search),lic=["personal","commercial","agency"].includes(q.get("license"))?q.get("license"):"personal",sid=document.getElementById("sid"),email=document.getElementById("email"),go=document.getElementById("go"),msg=document.getElementById("msg");
+    sid.value=q.get("session_id")||"";
+
+    const I18N={
+      en:{ey:"Verified buyer access",title:"Open your Operating Kit.",lead:"Your payment is checked server-side before the private workspace opens. No public download route is exposed here.",step1:"Stripe checkout completed",step2:"Purchase and email verified",step3:"Private buyer workspace opens",back:"← Back to product page",cardTitle:"Verify your purchase",secure:"Server-side check",help:"Use the same email entered at Stripe Checkout. The Checkout Session ID is filled automatically after payment when available.",session:"Checkout Session ID",email:"Checkout email",verify:"Verify purchase →",proof1:"✓ Stripe verification",proof2:"✓ Email match",proof3:"✓ Private workspace",note:"Access is granted only after the purchase check succeeds.",verifying:"Verifying purchase…",verified:"Verified. Opening workspace…",failed:"Verification failed"},
+      ja:{ey:"購入者アクセス",title:"Operating Kitを開く。",lead:"専用Workspaceを開く前に、サーバー側で決済を確認します。公開ダウンロードURLを置く方式ではありません。",step1:"Stripe決済完了",step2:"購入情報とEmailを確認",step3:"購入者専用Workspaceを開く",back:"← 商品ページへ戻る",cardTitle:"購入を確認",secure:"サーバー側で確認",help:"Stripe Checkoutで使用したものと同じEmailを入力してください。Checkout Session IDは決済後に取得できる場合、自動入力されます。",session:"Checkout Session ID",email:"決済時のEmail",verify:"購入を確認 →",proof1:"✓ Stripe決済確認",proof2:"✓ Email照合",proof3:"✓ 専用Workspace",note:"購入確認が成功した場合のみアクセスが許可されます。",verifying:"購入を確認中…",verified:"確認完了。Workspaceを開きます…",failed:"購入を確認できませんでした"},
+      ko:{ey:"구매자 전용 액세스",title:"Operating Kit를 여세요.",lead:"전용 Workspace를 열기 전에 서버에서 결제를 확인합니다. 공개 다운로드 경로는 제공하지 않습니다.",step1:"Stripe 결제 완료",step2:"구매 정보와 이메일 확인",step3:"구매자 전용 Workspace 열기",back:"← 제품 페이지로 돌아가기",cardTitle:"구매 확인",secure:"서버 확인",help:"Stripe Checkout에서 사용한 동일한 이메일을 입력하세요. Checkout Session ID는 결제 후 사용 가능한 경우 자동으로 입력됩니다.",session:"Checkout Session ID",email:"결제 이메일",verify:"구매 확인 →",proof1:"✓ Stripe 확인",proof2:"✓ 이메일 일치",proof3:"✓ 전용 Workspace",note:"구매 확인이 성공한 경우에만 액세스가 허용됩니다.",verifying:"구매 확인 중…",verified:"확인 완료. Workspace를 엽니다…",failed:"구매 확인에 실패했습니다"},
+      zh:{ey:"购买者专用访问",title:"打开你的 Operating Kit。",lead:"进入私人 Workspace 前会在服务器端验证付款。这里不会暴露公开下载路径。",step1:"完成 Stripe 付款",step2:"验证购买与邮箱",step3:"打开购买者私人 Workspace",back:"← 返回产品页",cardTitle:"验证购买",secure:"服务器端验证",help:"请输入 Stripe Checkout 使用的同一邮箱。付款后如果可用，Checkout Session ID 会自动填入。",session:"Checkout Session ID",email:"付款邮箱",verify:"验证购买 →",proof1:"✓ Stripe 验证",proof2:"✓ 邮箱匹配",proof3:"✓ 私人 Workspace",note:"只有购买验证成功后才会授予访问权限。",verifying:"正在验证购买…",verified:"验证成功，正在打开 Workspace…",failed:"验证失败"}
+    };
+    let lang=(q.get("lang")||"").toLowerCase();if(!I18N[lang]){const b=(navigator.language||"en").toLowerCase();lang=b.startsWith("ja")?"ja":b.startsWith("ko")?"ko":b.startsWith("zh")?"zh":"en";}
+    function setLang(next){if(!I18N[next])next="en";lang=next;document.documentElement.lang=next==="zh"?"zh-CN":next;document.querySelectorAll("[data-t]").forEach(el=>{const v=I18N[next][el.dataset.t];if(v)el.textContent=v;});document.querySelectorAll("[data-lang]").forEach(b=>b.classList.toggle("active",b.dataset.lang===next));const u=new URL(location.href);if(next==="en")u.searchParams.delete("lang");else u.searchParams.set("lang",next);history.replaceState(null,"",u.pathname+u.search+u.hash);}
+    document.querySelectorAll("[data-lang]").forEach(b=>b.addEventListener("click",()=>setLang(b.dataset.lang)));setLang(lang);
+
+    window.addEventListener("load",()=>window.scosCapture&&window.scosCapture("checkout_return",{product:"cross_agent_operating_kit",license:lic,session_present:!!sid.value}),{once:true});
+    async function run(){
+      msg.textContent=I18N[lang].verifying;go.disabled=true;window.scosCapture&&window.scosCapture("verification_submit",{product:"cross_agent_operating_kit",license:lic});
+      try{
+        const r=await fetch("https://ai-consultant-verify.practicalaireport.workers.dev/cross-agent-kit/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({session_id:sid.value.trim(),email:email.value.trim(),offer:"cross_"+lic})}),x=await r.json();
+        if(!r.ok)throw Error(x.error||I18N[lang].failed);
+        window.scosCapture&&window.scosCapture("access_granted",{product:"cross_agent_operating_kit",license:lic});msg.textContent=I18N[lang].verified;location.href=x.workspace_url;
+      }catch(e){window.scosCapture&&window.scosCapture("access_denied",{product:"cross_agent_operating_kit",license:lic,reason:String(e.message||"verification_failed").slice(0,120)});msg.textContent=e.message||I18N[lang].failed;go.disabled=false;}
+    }
+    go.onclick=run;email.addEventListener("keydown",e=>{if(e.key==="Enter")run();});
+  </script>
+</body>
 </html>
