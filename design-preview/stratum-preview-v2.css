@@ -1,29 +1,289 @@
-/* Shadow Preview V2 — zero-base visual layer. Isolated from production UI. */
-:root{--v2-bg:#ebe8df;--v2-paper:#f9f7f1;--v2-ink:#0d141a;--v2-slate:#53616a;--v2-line:rgba(13,20,26,.11);--v2-blue:#2f647d;--v2-teal:#267661;--v2-cyan:#7eb8c8;--v2-shadow:0 30px 90px rgba(20,31,38,.13)}
-body{background:var(--v2-bg)!important}
-.site-header{min-height:76px!important;padding-inline:max(24px,calc((100vw - 1320px)/2))!important;background:rgba(248,246,240,.9)!important;border-color:rgba(13,20,26,.08)!important}
-.brand-mark{border-radius:50%!important;background:var(--v2-ink)!important;border-color:var(--v2-ink)!important}.brand-mark i{background:#edf7f5!important}.brand strong{font-size:14px!important}.brand small{font-size:8px!important;letter-spacing:.15em!important}
-.desktop-nav a{font-size:11px!important;letter-spacing:.035em}.header-cta{border-radius:10px!important;padding:11px 15px!important;background:var(--v2-ink)!important}
-.hero{background:linear-gradient(120deg,#f8f6f0 0%,#efede6 44%,#e3eaeb 100%)!important;min-height:calc(100svh - 76px)}
-.hero-grid-bg{background-size:72px 72px!important;opacity:.78}.hero:before{content:"";position:absolute;left:-14vw;top:18%;width:55vw;height:55vw;border-radius:50%;border:1px solid rgba(47,100,125,.08);box-shadow:0 0 0 80px rgba(47,100,125,.018),0 0 0 160px rgba(47,100,125,.012);pointer-events:none}.hero:after{width:880px!important;height:880px!important;right:-360px!important;top:-430px!important;background:radial-gradient(circle,rgba(47,100,125,.17),rgba(38,118,97,.055) 42%,transparent 69%)!important}
-.hero-grid{min-height:780px!important;padding-top:78px!important;grid-template-columns:minmax(0,1.05fr) minmax(440px,.72fr)!important;gap:72px!important}.hero-copy{max-width:780px}.hero h1{font-size:clamp(62px,7.9vw,112px)!important;max-width:850px!important;line-height:.88!important;font-weight:650!important;letter-spacing:-.074em!important}.hero h1 em{color:var(--v2-blue)!important}.hero-lead{max-width:620px!important;font-size:clamp(17px,1.45vw,20px)!important;color:#59666d!important}.eyebrow span{background:#f8faf8!important;border-color:rgba(47,100,125,.16)!important}
-.btn{border-radius:10px!important;min-height:54px!important;padding-inline:19px!important}.btn.primary{background:var(--v2-ink)!important;box-shadow:0 18px 40px rgba(13,20,26,.15)!important}.btn.primary:hover{transform:translateY(-3px)!important;box-shadow:0 24px 50px rgba(13,20,26,.21)!important}
-.hero-facts{gap:0!important;border-top:1px solid var(--v2-line);border-bottom:1px solid var(--v2-line)}.hero-facts>div{border-top:0!important;background:transparent!important;padding:17px 16px!important;border-right:1px solid var(--v2-line)}.hero-facts>div:last-child{border-right:0}.hero-facts strong{font-size:32px!important;font-weight:650}.hero-facts span{color:#687880!important}
-.decision-console{padding:0!important;border-radius:26px!important;background:#121a21!important;color:#edf5f6!important;border-color:#121a21!important;box-shadow:0 40px 100px rgba(13,20,26,.24)!important;overflow:hidden!important;transform-origin:center center}.decision-console:before{background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px)!important;background-size:30px 30px!important}.console-top{padding:23px 23px 20px!important;border-color:rgba(255,255,255,.12)!important}.console-top small,.console-bottom,.console-kpis span{color:#8297a2!important}.console-top strong{font-size:22px!important}.live{color:#91c4b4!important}.console-kpis{margin:0!important;padding:18px 23px!important;gap:8px!important;background:rgba(255,255,255,.025)}.console-kpis>div{background:rgba(255,255,255,.045)!important;border-color:rgba(255,255,255,.10)!important;border-radius:12px!important}.console-kpis b{color:#f1f6f7!important;font-size:13px!important}.console-visual{margin:0 23px 18px!important;background:#e9eee9!important;color:#203038!important;padding:20px!important}.scale{background:#d4dcda!important}.scale i{background:linear-gradient(90deg,#2f647d,#4d9b82)!important}.signal-map{color:#667980!important}.signal-map b{background:linear-gradient(90deg,#64808d,#6f9f8f)!important}.console-bottom{padding:0 23px 21px!important}
-.problem-section{padding-top:118px!important}.section-head h2{font-weight:620!important;letter-spacing:-.062em!important}.problem-grid{gap:16px!important}.problem-card{min-height:420px!important;border-radius:24px!important;padding:26px!important;background:#fbfaf6!important;box-shadow:none!important}.problem-card:before{content:"";display:block;width:44px;height:2px;background:#bdc7c7;margin-bottom:24px}.problem-card.active:before{background:linear-gradient(90deg,var(--v2-blue),var(--v2-teal))}.problem-card:hover{transform:translateY(-7px)!important;box-shadow:0 26px 64px rgba(13,20,26,.10)!important}.problem-card h3{font-size:30px!important;font-weight:620!important;letter-spacing:-.045em!important}.decision-strip{background:#f0f2ee!important;border:0!important;border-radius:10px!important}.card-action{font-size:12px!important;border-top:1px solid var(--v2-line);margin-top:auto!important}
-.evidence-section{background:#dde3df!important;padding:120px 0!important}.evidence-layout{gap:96px!important}.evidence-copy h2{font-weight:620!important;letter-spacing:-.06em!important}.evidence-row{padding:25px 0!important}.evidence-row.active{background:#f4f5f0!important;border:1px solid rgba(13,20,26,.08)!important;margin-block:7px!important;padding-inline:18px!important}.evidence-row.paid{background:#172129!important;color:#eef5f6!important;border-radius:14px!important;padding-inline:18px!important;margin-top:7px!important}.evidence-row.paid p,.evidence-row.paid>span,.evidence-row.paid small,.evidence-row.paid>b{color:#91a4ad!important}.evidence-row.paid strong{color:#fff!important}
-.system-section{padding:116px 0!important}.system-grid{gap:14px!important}.system-grid article{border-radius:20px!important;min-height:260px!important;padding:24px!important}.system-grid article.paid{background:#111a21!important}.system-grid h3{font-size:23px!important}
-.audit-section{padding:122px 0!important;background:#d4d0c7!important}.audit-panel{border-radius:32px!important;padding:52px!important;background:#0f181f!important;box-shadow:0 36px 100px rgba(13,20,26,.25)!important}.audit-main h2{font-weight:620!important;letter-spacing:-.062em!important}.audit-facts dd{font-size:14px!important}
-.return-section{padding-block:100px!important}.return-grid nav a{transition:transform .2s ease,background .2s ease}.return-grid nav a:hover{transform:translateX(4px);background:rgba(255,255,255,.45)}
-.mobile-sticky{box-shadow:0 18px 50px rgba(13,20,26,.18)!important}
-@media(max-width:980px){.hero{min-height:auto}.hero-grid{grid-template-columns:1fr!important;min-height:auto!important;padding:68px 0!important}.decision-console{max-width:680px}.hero h1{font-size:clamp(58px,11vw,88px)!important}.hero-facts{grid-template-columns:repeat(2,1fr)!important}.hero-facts>div:nth-child(2){border-right:0}.hero-facts>div:nth-child(-n+2){border-bottom:1px solid var(--v2-line)}.problem-grid,.system-grid{grid-template-columns:1fr 1fr!important}.evidence-layout,.audit-panel{grid-template-columns:1fr!important}}
-@media(max-width:640px){
-.site-header{min-height:62px!important;padding-inline:14px!important}.brand small,.status,.header-cta{display:none!important}
-.hero{min-height:auto!important}.hero-grid{padding:34px 0 34px!important;gap:26px!important}.hero-copy{max-width:none!important}.eyebrow{margin-bottom:14px!important;gap:8px!important}.eyebrow span{padding:7px 10px!important}.eyebrow b{font-size:10px!important;line-height:1.35!important;letter-spacing:.08em!important}
-.hero h1{font-size:clamp(42px,12.2vw,54px)!important;line-height:.94!important;letter-spacing:-.062em!important;max-width:11.2ch!important;margin-bottom:18px!important;text-wrap:balance}.hero-lead{display:block!important;font-size:15px!important;line-height:1.5!important;max-width:34ch!important;margin-top:0!important;color:#5d686f!important}.hero-actions{align-items:stretch!important;gap:8px!important;margin-top:20px!important}.hero-actions .btn{width:100%!important;min-height:50px!important}.hero-actions .btn.text{min-height:auto!important;padding-block:8px!important}
-.hero-facts{margin-top:22px!important}.hero-facts>div{padding:12px 10px!important}.hero-facts strong{font-size:24px!important}.hero-facts small{font-size:8px!important;line-height:1.35!important}.hero-facts span{font-size:7px!important}
-.decision-console{border-radius:18px!important;box-shadow:0 22px 55px rgba(13,20,26,.18)!important}.console-top{padding:16px 16px 13px!important}.console-top strong{font-size:17px!important}.console-kpis{grid-template-columns:repeat(3,minmax(0,1fr))!important;padding:12px 16px 14px!important;gap:6px!important}.console-kpis>div{padding:10px 8px!important;min-width:0!important}.console-kpis span{font-size:7px!important}.console-kpis b{font-size:10px!important;line-height:1.25!important;overflow-wrap:anywhere}.console-visual{display:none!important}.console-bottom{padding:0 16px 15px!important;font-size:8px!important;gap:10px!important}
-.problem-section,.evidence-section,.system-section,.audit-section,.return-section{padding-block:70px!important}.section-head,.problem-grid,.system-grid{grid-template-columns:1fr!important}.section-head{gap:22px!important}.section-head h2,.evidence-copy h2,.audit-main h2,.return-grid h2{font-size:clamp(38px,12vw,52px)!important}.problem-card{min-height:350px!important}.evidence-layout{gap:42px!important}.evidence-row{grid-template-columns:36px 1fr!important}.evidence-row>b{grid-column:2}.audit-panel{padding:28px 22px!important;border-radius:22px!important}
-.mobile-sticky{left:14px!important;right:14px!important;bottom:max(10px,env(safe-area-inset-bottom))!important;min-height:54px!important;border-radius:16px!important;padding-inline:18px!important}
+/* Stratum Praxis — Production UI Renewal 2026-09
+   Presentation-only override for the existing revenue home.
+   Revenue routes, product ownership, prices, analytics hooks and destination URLs stay in HTML/JS. */
+
+:root{
+  --sp-bg:#0b100f;
+  --sp-bg-2:#101715;
+  --sp-ink:#101513;
+  --sp-paper:#f1efe7;
+  --sp-paper-2:#e8e5db;
+  --sp-surface:#faf8f1;
+  --sp-muted:#6e7772;
+  --sp-line:rgba(16,21,19,.14);
+  --sp-line-dark:rgba(240,245,240,.13);
+  --sp-signal:#b7ff5a;
+  --sp-signal-soft:#d9ffad;
+  --sp-teal:#79bba3;
+  --sp-warm:#f0a076;
+  --sp-radius:18px;
+  --sp-shadow:0 26px 80px rgba(0,0,0,.18);
+  --sp-ease:cubic-bezier(.2,.8,.2,1);
 }
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+html{background:var(--sp-bg);scroll-behavior:smooth}
+body[data-page="stratum_revenue_home_v1"],
+body[data-page="stratum_revenue_home_v2"]{
+  background:var(--sp-bg)!important;
+  color:var(--sp-ink);
+  font-family:"Aptos","Segoe UI Variable","SF Pro Display","Hiragino Sans","Yu Gothic UI",system-ui,-apple-system,sans-serif;
+}
+body[data-page="stratum_revenue_home_v2"]::before{
+  content:"";position:fixed;inset:0;z-index:-2;pointer-events:none;
+  background:
+    radial-gradient(circle at 7% 3%,rgba(121,187,163,.13),transparent 28rem),
+    radial-gradient(circle at 92% 17%,rgba(183,255,90,.055),transparent 26rem),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:auto,auto,72px 72px,72px 72px;
+}
+body[data-page="stratum_revenue_home_v2"] ::selection{background:var(--sp-signal);color:#0b100f}
+
+/* Header: compact operating bar */
+body[data-page="stratum_revenue_home_v2"] .office-header{
+  width:min(1480px,calc(100% - 30px));min-height:66px;margin:12px auto 0;padding:0 18px!important;
+  border:1px solid var(--sp-line-dark)!important;border-radius:16px!important;
+  background:rgba(12,18,16,.88)!important;color:#f5f3eb!important;
+  box-shadow:0 18px 55px rgba(0,0,0,.22)!important;
+  backdrop-filter:blur(20px) saturate(1.1);-webkit-backdrop-filter:blur(20px) saturate(1.1);
+}
+body[data-page="stratum_revenue_home_v2"] .brand{color:#f7f5ee!important}
+body[data-page="stratum_revenue_home_v2"] .brand-symbol{border-color:rgba(255,255,255,.18)!important;background:#151d1a!important}
+body[data-page="stratum_revenue_home_v2"] .brand-symbol i{background:var(--sp-signal)!important}
+body[data-page="stratum_revenue_home_v2"] .brand-copy strong{font-size:13px!important;letter-spacing:-.01em}
+body[data-page="stratum_revenue_home_v2"] .brand-copy small{color:#87968f!important;font-size:8px!important;letter-spacing:.1em!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav{gap:2px!important;padding:3px!important;border:1px solid rgba(255,255,255,.09)!important;border-radius:10px!important;background:rgba(255,255,255,.035)!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav a{padding:8px 12px!important;border-radius:7px!important;color:#aebbb5!important;font-size:10px!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav a:hover{background:#202a26!important;color:#fff!important;box-shadow:none!important;transform:none!important}
+body[data-page="stratum_revenue_home_v2"] .b2b-badge{border-color:rgba(183,255,90,.18)!important;background:rgba(183,255,90,.08)!important;color:var(--sp-signal)!important}
+body[data-page="stratum_revenue_home_v2"] .b2b-badge i{background:var(--sp-signal)!important}
+body[data-page="stratum_revenue_home_v2"] .lang-switch{border-color:rgba(255,255,255,.09)!important;background:rgba(255,255,255,.03)!important}
+body[data-page="stratum_revenue_home_v2"] .lang-switch button{color:#8f9c96!important}
+body[data-page="stratum_revenue_home_v2"] .lang-switch button.active{background:#f3f1e9!important;color:#111714!important}
+
+/* Main frame */
+body[data-page="stratum_revenue_home_v2"] .workspace-shell.revenue-home{max-width:1480px!important;padding:16px 15px 74px!important}
+.revenue-home h1,.revenue-home h2,.revenue-home h3{font-feature-settings:"kern" 1,"palt" 1;text-wrap:balance}
+.revenue-home p{text-wrap:pretty}
+
+/* Hero: command surface, not a generic SaaS splash */
+body[data-page="stratum_revenue_home_v2"] .rh-hero{
+  position:relative;display:grid;grid-template-columns:minmax(0,1.18fr) minmax(390px,.82fr);gap:56px;
+  min-height:690px;padding:76px 66px 58px;border:1px solid var(--sp-line-dark)!important;border-radius:22px!important;
+  background:
+    radial-gradient(circle at 80% 19%,rgba(183,255,90,.09),transparent 18rem),
+    radial-gradient(circle at 18% 84%,rgba(121,187,163,.11),transparent 24rem),
+    #0d1412!important;color:#f6f4ec!important;box-shadow:var(--sp-shadow)!important;overflow:hidden;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::before{
+  content:"";position:absolute;inset:auto -8% -32% 36%;height:67%;z-index:0;border-radius:50% 50% 0 0;
+  background:repeating-radial-gradient(ellipse at 50% 100%,transparent 0 34px,rgba(183,255,90,.085) 35px 36px,transparent 37px 68px)!important;
+  opacity:.8;filter:none!important;transform:none!important;pointer-events:none;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::after{
+  content:"";position:absolute;inset:0;z-index:0;pointer-events:none;
+  background:linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.027) 1px,transparent 1px)!important;
+  background-size:64px 64px!important;mask-image:linear-gradient(to bottom,rgba(0,0,0,.65),transparent 86%);
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero-copy,body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{position:relative;z-index:2}
+body[data-page="stratum_revenue_home_v2"] .rh-hero-copy{align-self:center;max-width:880px}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{margin-bottom:30px;padding:0;border:0!important;background:transparent!important;box-shadow:none!important;color:#93a29b!important;font-size:9px!important;letter-spacing:.17em!important}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow i{width:8px;height:8px;background:var(--sp-signal)!important;box-shadow:0 0 0 6px rgba(183,255,90,.07)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1{max-width:930px;font-size:clamp(60px,7vw,104px)!important;line-height:.86!important;letter-spacing:-.073em!important;font-weight:610!important;color:#f7f5ee!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em{display:inline!important;padding:0!important;background:none!important;color:var(--sp-signal)!important;font-style:normal!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lead{max-width:660px;margin-top:30px!important;color:#9eaaa4!important;font-size:15px!important;line-height:1.72!important}
+body[data-page="stratum_revenue_home_v2"] .rh-actions{gap:9px;margin-top:34px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-primary,body[data-page="stratum_revenue_home_v2"] .rh-secondary{min-height:54px;padding:0 18px!important;border-radius:10px!important;font-size:10px!important;letter-spacing:.02em;transition:transform .18s var(--sp-ease),background .18s ease,border-color .18s ease}
+body[data-page="stratum_revenue_home_v2"] .rh-primary{background:var(--sp-signal)!important;color:#0a100d!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-secondary{border:1px solid rgba(255,255,255,.15)!important;background:rgba(255,255,255,.04)!important;color:#e8ece8!important}
+body[data-page="stratum_revenue_home_v2"] .rh-primary:hover,body[data-page="stratum_revenue_home_v2"] .rh-secondary:hover{transform:translateY(-2px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-secondary:hover{background:rgba(255,255,255,.08)!important;border-color:rgba(255,255,255,.26)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline{gap:0;margin-top:30px!important;border-top:1px solid rgba(255,255,255,.09)}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline span{padding:13px 16px 0 0!important;margin-right:16px;border:0!important;border-radius:0!important;background:transparent!important;color:#78867f!important;font-size:8px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline span::before{background:var(--sp-teal)!important}
+
+/* ROI instrument */
+body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{align-self:center}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card{padding:26px!important;border:1px solid rgba(255,255,255,.12)!important;border-radius:16px!important;background:rgba(242,240,232,.97)!important;color:#121816!important;box-shadow:0 30px 90px rgba(0,0,0,.28)!important;transform:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-card-head{padding-bottom:15px!important;border-color:rgba(15,20,18,.12)!important;color:#63706a!important}
+body[data-page="stratum_revenue_home_v2"] .rh-live{background:#dcefdc!important;color:#355345!important}
+body[data-page="stratum_revenue_home_v2"] .rh-live i{background:#4f806a!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card h2{font-size:31px!important;line-height:1!important;color:#101513!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card>p{color:#68716d!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs label{color:#65706a!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs input{height:48px!important;border-color:rgba(17,23,20,.13)!important;border-radius:8px!important;background:#fffdf7!important;color:#111714!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs input:focus{border-color:#5e927b!important;background:#fff!important;box-shadow:0 0 0 3px rgba(94,146,123,.13)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output>div{border-color:rgba(17,23,20,.1)!important;border-radius:8px!important;background:#151c19!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output small{color:#819089!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output strong{color:var(--sp-signal-soft)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output>span{color:#78827d!important}
+
+/* Revenue distance strip */
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar{margin:12px 0 66px!important;border:1px solid var(--sp-line-dark)!important;border-radius:12px!important;background:#111816!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{padding:16px 18px!important;border-color:rgba(255,255,255,.08)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar small{color:#63726b!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar strong{color:#e9ece7!important;font-size:11px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div:first-child strong{color:var(--sp-signal)!important}
+
+/* Editorial light work surface */
+body[data-page="stratum_revenue_home_v2"] .rh-section{margin:0!important;padding:76px 50px;border-left:1px solid var(--sp-line);border-right:1px solid var(--sp-line);background:var(--sp-paper)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section+.rh-section{border-top:1px solid var(--sp-line)}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head{align-items:start;margin-bottom:28px!important;padding:0!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head p:first-child{color:#688078!important;font-size:8px!important;letter-spacing:.18em!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head h2{max-width:890px;font-size:clamp(36px,4.3vw,62px)!important;line-height:.94!important;letter-spacing:-.058em!important;font-weight:610!important;color:#111714!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head>p{max-width:380px;color:#66706b!important;font-size:11px!important;line-height:1.72!important}
+
+/* Decision lane switcher */
+body[data-page="stratum_revenue_home_v2"] .rh-lanes{gap:1px!important;padding:1px!important;border:1px solid #1b231f!important;border-radius:11px!important;background:#1b231f!important;box-shadow:none!important;overflow:hidden}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{min-height:92px;padding:16px!important;border:0!important;border-radius:9px!important;background:#f7f5ee!important;color:#18201d!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:hover{transform:none!important;background:#ece9df!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active{background:#121916!important;color:#f5f3eb!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active small{color:#87958e!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active>i{color:var(--sp-signal)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route-icon{border-radius:8px!important;background:rgba(92,123,109,.09)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active .route-icon{background:rgba(183,255,90,.08)!important;color:var(--sp-signal)!important}
+
+/* Main decision module */
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid{gap:12px!important;margin-top:12px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-module{border:1px solid rgba(255,255,255,.09)!important;border-radius:14px!important;background:#111816!important;color:#eff2ed!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .module-head{border-color:rgba(255,255,255,.09)!important;color:#829089!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .signal-chip{background:rgba(183,255,90,.08)!important;color:var(--sp-signal)!important;border-color:rgba(183,255,90,.17)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-copy h2{color:#f3f2eb!important;font-size:clamp(32px,3.3vw,49px)!important;letter-spacing:-.05em!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-copy>p{color:#8c9992!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-next{border-color:rgba(255,255,255,.1)!important;background:rgba(255,255,255,.035)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-next small{color:#6f7d76!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-next strong{color:#eef1ec!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .action-btn{border-radius:8px!important;background:var(--sp-signal)!important;color:#0d130f!important}
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-foot{border-color:rgba(255,255,255,.08)!important;color:#7f8d86!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card{border:1px solid rgba(16,21,19,.12)!important;border-radius:14px!important;background:#dedbd0!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card>small{color:#68766f!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card h3{font-size:30px!important;color:#141a17!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card>p{color:#606963!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list>div{border-color:rgba(16,21,19,.1)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list>div>span{color:#65746c!important}
+
+/* Commitment / revenue cards */
+body[data-page="stratum_revenue_home_v2"] .rh-ladder{gap:10px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step{min-height:310px;padding:24px!important;border:1px solid rgba(16,21,19,.14)!important;border-radius:12px!important;background:#f8f6ef!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#9eaaa4;opacity:.35}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured{background:#16201c!important;color:#f2f2e9!important;border-color:#16201c!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured::before{background:var(--sp-signal);opacity:1}
+body[data-page="stratum_revenue_home_v2"] .rh-step h3{font-size:27px!important;letter-spacing:-.035em!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step p{color:#68716d!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured p{color:#95a29c!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step-meta span{border-radius:5px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step a{border-radius:8px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured a{background:var(--sp-signal)!important;color:#0c120f!important}
+
+/* Audit escalation */
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band{margin:12px 0!important;padding:54px 50px!important;border:1px solid rgba(183,255,90,.13)!important;border-radius:14px!important;background:linear-gradient(120deg,#151f1b,#0e1512)!important;color:#f3f3eb!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band::before{content:"";position:absolute;right:0;top:0;width:44%;height:100%;background:repeating-linear-gradient(135deg,rgba(183,255,90,.055) 0 1px,transparent 1px 18px);pointer-events:none}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2{font-size:clamp(38px,4.6vw,65px)!important;line-height:.92!important;color:#f5f4ec!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band p{color:#95a39c!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-price strong{color:var(--sp-signal)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-price .action-btn{border-radius:8px!important;background:#f4f2e9!important;color:#101613!important}
+
+/* Deliverables: specification grid */
+body[data-page="stratum_revenue_home_v2"] .rh-deliverables{gap:1px!important;padding:1px!important;border:1px solid #c8c5bb!important;border-radius:10px!important;background:#c8c5bb!important;overflow:hidden}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable{min-height:180px;padding:23px!important;border:0!important;border-radius:0!important;background:#f7f5ee!important;box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable:hover{transform:none!important;background:#fffdf7!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable>span{color:#648177!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable strong{font-size:18px!important}
+
+/* Recent state */
+body[data-page="stratum_revenue_home_v2"] .rh-recent-wrap{margin:12px 0!important}
+body[data-page="stratum_revenue_home_v2"] .rh-recent-wrap .recent-module{border:1px solid var(--sp-line-dark)!important;border-radius:12px!important;background:#111816!important;color:#eef1ec!important}
+body[data-page="stratum_revenue_home_v2"] .rh-recent-wrap .module-head{border-color:rgba(255,255,255,.08)!important;color:#829089!important}
+body[data-page="stratum_revenue_home_v2"] .rh-recent-wrap .recent-empty p{color:#75837c!important}
+
+/* Final handoff */
+body[data-page="stratum_revenue_home_v2"] .rh-final{margin:12px 0!important;padding:64px 50px!important;border:1px solid var(--sp-line-dark)!important;border-radius:14px!important;background:#0f1613!important;color:#f3f2ea!important;box-shadow:none!important;overflow:hidden}
+body[data-page="stratum_revenue_home_v2"] .rh-final::before{content:"STRATUM / DECISION LAYER";position:absolute;right:28px;top:23px;color:#53625a;font-size:8px;letter-spacing:.17em}
+body[data-page="stratum_revenue_home_v2"] .rh-final::after{right:-140px!important;top:-230px!important;width:520px!important;height:520px!important;border-color:rgba(183,255,90,.1)!important;box-shadow:0 0 0 54px rgba(183,255,90,.022),0 0 0 108px rgba(183,255,90,.012)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final h2{max-width:870px!important;font-size:clamp(40px,5vw,68px)!important;color:#f5f4ec!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final p{color:#87958e!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final .rh-primary{background:var(--sp-signal)!important;color:#0c120f!important}
+
+/* Existing inbound surface: visually join the same operating system without changing routes */
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-route{margin:0!important;padding:76px 50px!important;border:1px solid var(--sp-line)!important;background:var(--sp-paper-2)!important;color:#111714!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-wrap{max-width:none!important;margin:0!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-kicker{color:#648177!important;font-size:9px!important;letter-spacing:.16em!important;text-transform:uppercase}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-wrap>h2{max-width:960px;font-size:clamp(37px,4.2vw,60px)!important;line-height:.95!important;letter-spacing:-.055em!important;color:#111714!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-wrap>p{max-width:740px;color:#66706b!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-grid{gap:8px!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-card{border:1px solid rgba(16,21,19,.13)!important;border-radius:10px!important;background:#f8f6ef!important;color:#151b18!important;box-shadow:none!important;transition:transform .18s var(--sp-ease),background .18s ease!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-card:hover{transform:translateY(-3px)!important;background:#fffdf7!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-card small{color:#668078!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-card em{color:#315c4b!important}
+
+/* Footer and mobile conversion surface */
+body[data-page="stratum_revenue_home_v2"] .office-footer{max-width:1480px!important;margin:0 auto 28px!important;padding:24px 20px!important;border:1px solid var(--sp-line-dark)!important;border-radius:12px!important;background:#0e1512!important;color:#dfe5e0!important}
+body[data-page="stratum_revenue_home_v2"] .office-footer small,body[data-page="stratum_revenue_home_v2"] .office-footer span,body[data-page="stratum_revenue_home_v2"] .office-footer a{color:#73817a!important}
+body[data-page="stratum_revenue_home_v2"] .mobile-start{border-radius:12px!important;background:var(--sp-signal)!important;color:#0b110e!important;box-shadow:0 18px 50px rgba(0,0,0,.28)!important}
+
+/* Keyboard / accessibility */
+body[data-page="stratum_revenue_home_v2"] :where(a,button,input):focus-visible{outline:3px solid var(--sp-signal)!important;outline-offset:3px!important}
+
+/* Responsive */
+@media(max-width:1080px){
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{grid-template-columns:1fr;min-height:0;padding:58px 44px;gap:42px}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{max-width:720px}
+  body[data-page="stratum_revenue_home_v2"] .rh-section,body[data-page="stratum_revenue_home_v2"] .sp-inbound-route{padding:64px 38px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band,body[data-page="stratum_revenue_home_v2"] .rh-final{padding:52px 38px!important}
+}
+
+@media(max-width:720px){
+  body[data-page="stratum_revenue_home_v2"] .office-header{width:calc(100% - 18px);min-height:60px;margin-top:8px;padding:0 11px!important;border-radius:12px!important}
+  body[data-page="stratum_revenue_home_v2"] .brand-copy small,body[data-page="stratum_revenue_home_v2"] .b2b-badge{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .office-nav{border:0!important;background:transparent!important;padding:0!important}
+  body[data-page="stratum_revenue_home_v2"] .office-nav a{padding:7px 8px!important;font-size:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .header-tools{gap:5px!important}
+  body[data-page="stratum_revenue_home_v2"] .lang-switch{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .workspace-shell.revenue-home{padding:10px 9px 74px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{padding:42px 22px 24px!important;border-radius:16px!important;gap:30px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero::before{left:15%;right:-55%;bottom:-12%;height:34%}
+  body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{margin-bottom:20px!important;font-size:7px!important;letter-spacing:.13em!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero h1{font-size:clamp(44px,13.4vw,64px)!important;line-height:.88!important;max-width:11ch}
+  body[data-page="stratum_revenue_home_v2"] .rh-lead{margin-top:22px!important;font-size:12px!important;line-height:1.65!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-actions{display:grid!important;margin-top:25px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-primary,body[data-page="stratum_revenue_home_v2"] .rh-secondary{width:100%;justify-content:space-between}
+  body[data-page="stratum_revenue_home_v2"] .rh-trustline{display:grid;grid-template-columns:1fr;margin-top:22px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-trustline span{padding-top:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-value-card{padding:18px!important;border-radius:12px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-value-card h2{font-size:25px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs label:last-child{grid-column:auto!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;padding:6px!important;gap:6px!important;margin-bottom:12px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{flex:0 0 74%;min-width:220px;border:1px solid rgba(255,255,255,.08)!important;border-radius:7px;scroll-snap-align:start}
+  body[data-page="stratum_revenue_home_v2"] .rh-section,body[data-page="stratum_revenue_home_v2"] .sp-inbound-route{padding:52px 19px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head{display:block!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head h2{font-size:clamp(34px,10.5vw,48px)!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head>p{margin-top:13px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;padding:1px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{flex:0 0 83%;min-width:235px;scroll-snap-align:start}
+  body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-content{grid-template-columns:1fr!important;padding:23px 18px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-map{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-decision-grid .decision-copy h2{font-size:34px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-reason-card{padding:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-ladder{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-step{min-height:260px;padding:21px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-step a{left:21px!important;right:21px!important;bottom:21px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band,body[data-page="stratum_revenue_home_v2"] .rh-final{padding:36px 20px!important;border-radius:12px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2,body[data-page="stratum_revenue_home_v2"] .rh-final h2{font-size:clamp(36px,11vw,50px)!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-deliverables{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .sp-inbound-wrap>h2{font-size:clamp(34px,10vw,47px)!important}
+  body[data-page="stratum_revenue_home_v2"] .sp-inbound-grid{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .office-footer{margin:0 9px 84px!important;border-radius:10px!important}
+}
+
+@media(max-width:430px){
+  body[data-page="stratum_revenue_home_v2"] .office-nav a:nth-child(2){display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-roi-output strong{font-size:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{flex-basis:82%}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{flex-basis:88%}
+}
+
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  body[data-page="stratum_revenue_home_v2"] *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
