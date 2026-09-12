@@ -3,10 +3,10 @@
   "content_id": "stratum-bluesky-ai-saas-waste-005",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "Adding another AI or SaaS tool is easy. Knowing whether it pays back is harder. Turn monthly spend into annual cost, then see what is worth reviewing before the next renewal.",
-  "hook": "Before adding another tool, check the annual cost.",
-  "cta": "Run the free AI & SaaS Waste Calculator",
-  "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=bluesky&utm_medium=organic_social&utm_campaign=ai_saas_waste_wave1&utm_content=bsky005&route_id=stratum_ai_saas_waste_bsky005",
+  "text": "Before adding another AI or SaaS tool, turn monthly spend into annual cost. See what deserves review before renewal.",
+  "hook": "Check annual cost before adding another tool.",
+  "cta": "Free calculator",
+  "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=bsky&utm_content=w1",
   "status": "QUEUED",
   "publish_trigger": "2026-09-13"
 }
