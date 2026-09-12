@@ -1,0 +1,39 @@
+name: Stratum Pinterest Board Setup
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/create_pinterest_board_official.mjs'
+      - '.github/workflows/stratum-pinterest-board.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Create or verify Stratum Pinterest board
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_EXPECTED_USERNAME: stratumpraxis
+        run: node scripts/create_pinterest_board_official.mjs
+      - name: Persist Pinterest board evidence
+        shell: bash
+        run: |
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add publishing/evidence/stratum-pinterest-board.json
+          if git diff --cached --quiet; then
+            echo 'No evidence changes'
+            exit 0
+          fi
+          git commit -m 'evidence: persist Stratum Pinterest board [skip social]'
+          git push
