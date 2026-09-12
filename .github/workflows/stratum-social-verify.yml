@@ -1,5 +1,5 @@
 name: Stratum Social Verify
-# verify-trigger: 2026-09-13-tiktok-retry
+# verify-trigger: 2026-09-13-tiktok-signal-path-002
 
 on:
   push:
@@ -20,8 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify retried TikTok status and public URL
+      - name: Verify current TikTok status and public URL
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_POST_IDS: 6aa5adf3130d0ea1a45b8482
+          BUFFER_POST_IDS: 6aa5c3a4bcabda92e19dcbb3
         run: node distribution/buffer-post-status.mjs
