@@ -1,10 +1,314 @@
-/* Stratum Praxis inbound revenue layer — 2026-09-09
-   Existing assets only. Free value -> decision -> paid escalation. */
-.sp-inbound-route{border-top:1px solid rgba(23,25,34,.10);border-bottom:1px solid rgba(23,25,34,.10);padding:72px 0;background:linear-gradient(180deg,rgba(223,238,255,.26),rgba(201,242,223,.18),transparent)}
-.sp-inbound-route .sp-inbound-wrap{width:min(1120px,calc(100% - 36px));margin:auto}.sp-inbound-kicker{font:800 11px/1.4 Inter,system-ui,sans-serif;letter-spacing:.1em;text-transform:uppercase;color:#64707d}.sp-inbound-route h2{font:750 clamp(32px,4.8vw,54px)/1.03 Inter,system-ui,sans-serif;letter-spacing:-.045em;color:#171922;max-width:800px;margin:10px 0 14px}.sp-inbound-route>div>p{max-width:760px;color:#66707b}.sp-inbound-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:30px}.sp-inbound-card{display:block;text-decoration:none;color:#171922;border:1px solid rgba(23,25,34,.11);background:rgba(255,255,255,.74);border-radius:20px;padding:22px;min-height:190px;box-shadow:0 12px 34px rgba(28,34,44,.05);transition:transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .2s cubic-bezier(.2,.8,.2,1)}.sp-inbound-card:hover{transform:translateY(-3px);box-shadow:0 18px 46px rgba(28,34,44,.08)}.sp-inbound-card small{display:block;font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#617487}.sp-inbound-card strong{display:block;font:760 20px/1.16 Inter,system-ui,sans-serif;letter-spacing:-.025em;margin:10px 0}.sp-inbound-card span{display:block;color:#69727c;font:14px/1.55 Inter,system-ui,sans-serif}.sp-inbound-card em{display:block;font-style:normal;font:750 12px/1.45 Inter,system-ui,sans-serif;color:#355f52;margin-top:15px}.sp-inbound-card[data-paid="true"]{background:#17243a;color:#f7f8fb}.sp-inbound-card[data-paid="true"] small,.sp-inbound-card[data-paid="true"] span{color:#b9c5d2}.sp-inbound-card[data-paid="true"] em{color:#c9f2df}.sp-inbound-note{margin-top:18px;font:12px/1.55 Inter,system-ui,sans-serif;color:#7b838b}.sp-related-route{width:min(1040px,calc(100% - 36px));margin:52px auto;padding:22px;border:1px solid rgba(23,25,34,.11);border-radius:20px;background:rgba(255,255,255,.66)}.sp-related-route b{display:block;font:760 16px/1.3 Inter,system-ui,sans-serif;color:#171922}.sp-related-route p{margin:6px 0 14px;color:#6c747c;font:13px/1.55 Inter,system-ui,sans-serif}.sp-related-links{display:flex;gap:8px;flex-wrap:wrap}.sp-related-links a{display:inline-flex;padding:9px 12px;border:1px solid rgba(23,25,34,.13);border-radius:999px;text-decoration:none;color:#17243a;background:#fff;font:720 12px/1.3 Inter,system-ui,sans-serif}.sp-related-links a[data-paid="true"]{background:#17243a;color:#fff;border-color:#17243a}
-.sp-decision-route{margin:16px 0;padding:20px;border:1px solid rgba(23,25,34,.12);border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(201,242,223,.24));box-shadow:0 12px 34px rgba(28,34,44,.06)}.sp-decision-route small{display:block;font:800 10px/1.4 Inter,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#617487}.sp-decision-route strong{display:block;margin:8px 0 6px;font:780 19px/1.2 Inter,system-ui,sans-serif;letter-spacing:-.02em;color:#171922}.sp-decision-route p{margin:0 0 14px!important;color:#66707b!important;font:13px/1.55 Inter,system-ui,sans-serif!important}.sp-decision-route a{display:inline-flex;align-items:center;border:1px solid rgba(23,25,34,.14);border-radius:12px;padding:11px 14px;text-decoration:none;background:#fff;color:#17243a;font:800 13px/1.3 Inter,system-ui,sans-serif;transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s cubic-bezier(.2,.8,.2,1)}.sp-decision-route a:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(28,34,44,.10)}.sp-decision-route a[data-paid="true"]{background:#17243a;color:#fff;border-color:#17243a}.sp-decision-route em{display:block;margin-top:10px;color:#7b838b;font:11px/1.5 Inter,system-ui,sans-serif;font-style:normal}
-@media(max-width:800px){.sp-inbound-grid{grid-template-columns:1fr}.sp-inbound-route{padding:56px 0}}
+/* Stratum Praxis — Inbound Revenue UI Renewal 2026-09
+   Shared presentation layer for free-entry routes, related routes and decision escalation.
+   Destination URLs, prices, products and analytics remain owned by HTML/JS. */
+
+:root{
+  --sp-inbound-bg:var(--sp-bg-2,#101715);
+  --sp-inbound-paper:var(--sp-paper,#f1efe7);
+  --sp-inbound-surface:var(--sp-surface,#faf8f1);
+  --sp-inbound-ink:var(--sp-ink,#101513);
+  --sp-inbound-signal:var(--sp-signal,#b7ff5a);
+  --sp-inbound-teal:var(--sp-teal,#79bba3);
+  --sp-inbound-line:rgba(255,255,255,.11);
+  --sp-inbound-line-light:rgba(16,21,19,.13);
+  --sp-inbound-ease:cubic-bezier(.2,.8,.2,1);
+}
+
+/* Inbound decision surface */
+.sp-inbound-route{
+  position:relative;
+  margin:0;
+  padding:88px 0 92px;
+  border-top:1px solid var(--sp-inbound-line);
+  border-bottom:1px solid var(--sp-inbound-line);
+  background:
+    radial-gradient(circle at 84% 18%,rgba(183,255,90,.075),transparent 22rem),
+    radial-gradient(circle at 12% 82%,rgba(121,187,163,.09),transparent 27rem),
+    linear-gradient(rgba(255,255,255,.022) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.022) 1px,transparent 1px),
+    var(--sp-inbound-bg);
+  background-size:auto,auto,64px 64px,64px 64px,auto;
+  color:#f4f2ea;
+  overflow:hidden;
+}
+.sp-inbound-route::before{
+  content:"";
+  position:absolute;
+  left:max(20px,calc((100% - 1220px)/2));
+  top:34px;
+  width:68px;
+  height:2px;
+  background:linear-gradient(90deg,var(--sp-inbound-signal),rgba(183,255,90,0));
+}
+.sp-inbound-route .sp-inbound-wrap{
+  position:relative;
+  z-index:1;
+  width:min(1220px,calc(100% - 44px));
+  margin:auto;
+}
+.sp-inbound-kicker{
+  margin:0 0 13px;
+  font:800 9px/1.4 "Aptos","Segoe UI Variable","SF Pro Display",system-ui,sans-serif;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--sp-inbound-signal);
+}
+.sp-inbound-route h2{
+  max-width:900px;
+  margin:0;
+  color:#f6f4ec;
+  font:610 clamp(38px,5.2vw,70px)/.94 "Aptos","Segoe UI Variable","SF Pro Display","Hiragino Sans","Yu Gothic UI",system-ui,sans-serif;
+  letter-spacing:-.06em;
+  text-wrap:balance;
+}
+.sp-inbound-route>div>p{
+  max-width:760px;
+  margin:20px 0 0;
+  color:#94a29b;
+  font:12px/1.72 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  text-wrap:pretty;
+}
+
+.sp-inbound-grid{
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:1px;
+  margin-top:34px;
+  padding:1px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:14px;
+  background:rgba(255,255,255,.08);
+  overflow:hidden;
+}
+.sp-inbound-card{
+  position:relative;
+  display:flex;
+  min-height:250px;
+  padding:24px;
+  flex-direction:column;
+  text-decoration:none;
+  color:#f5f3eb;
+  border:0;
+  border-radius:12px;
+  background:#121a17;
+  box-shadow:none;
+  overflow:hidden;
+  transition:background .18s ease,transform .18s var(--sp-inbound-ease),box-shadow .18s ease;
+}
+.sp-inbound-card::before{
+  content:"";
+  position:absolute;
+  inset:0 0 auto;
+  height:2px;
+  background:linear-gradient(90deg,var(--sp-inbound-teal),transparent 68%);
+  opacity:.5;
+  transition:opacity .18s ease,background .18s ease;
+}
+.sp-inbound-card:hover{
+  z-index:2;
+  transform:translateY(-3px);
+  background:#18231f;
+  box-shadow:0 22px 54px rgba(0,0,0,.22);
+}
+.sp-inbound-card:hover::before{
+  opacity:1;
+  background:linear-gradient(90deg,var(--sp-inbound-signal),var(--sp-inbound-teal),transparent 82%);
+}
+.sp-inbound-card small{
+  display:inline-flex;
+  width:max-content;
+  max-width:100%;
+  padding:6px 8px;
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:7px;
+  background:rgba(255,255,255,.035);
+  color:#8ea099;
+  font:800 8px/1.35 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+}
+.sp-inbound-card strong{
+  display:block;
+  margin:25px 0 10px;
+  color:#f6f4ed;
+  font:650 clamp(21px,2vw,27px)/1.04 "Aptos","Segoe UI Variable","SF Pro Display",system-ui,sans-serif;
+  letter-spacing:-.04em;
+}
+.sp-inbound-card span{
+  display:block;
+  color:#8e9b95;
+  font:12px/1.6 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+}
+.sp-inbound-card em{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-top:auto;
+  padding-top:24px;
+  color:var(--sp-inbound-signal);
+  font:800 10px/1.4 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  font-style:normal;
+  letter-spacing:.01em;
+}
+.sp-inbound-card em::after{content:"→";font-size:15px;line-height:1}
+
+.sp-inbound-card[data-paid="true"]{
+  background:var(--sp-inbound-paper);
+  color:var(--sp-inbound-ink);
+}
+.sp-inbound-card[data-paid="true"]::before{background:linear-gradient(90deg,#111714,var(--sp-inbound-teal),transparent)}
+.sp-inbound-card[data-paid="true"] small{border-color:rgba(16,21,19,.11);background:rgba(16,21,19,.035);color:#61706a}
+.sp-inbound-card[data-paid="true"] strong{color:#111714}
+.sp-inbound-card[data-paid="true"] span{color:#66716c}
+.sp-inbound-card[data-paid="true"] em{color:#315f4e}
+.sp-inbound-card[data-paid="true"]:hover{background:#faf8f1}
+
+.sp-inbound-note{
+  margin-top:18px!important;
+  max-width:900px!important;
+  color:#64746d!important;
+  font:10px/1.6 "Aptos","Segoe UI Variable",system-ui,sans-serif!important;
+}
+
+/* Related route: compact contextual handoff */
+.sp-related-route{
+  width:min(1080px,calc(100% - 36px));
+  margin:52px auto;
+  padding:24px;
+  border:1px solid var(--sp-inbound-line-light);
+  border-radius:14px;
+  background:var(--sp-inbound-surface);
+  box-shadow:0 18px 52px rgba(13,18,16,.055);
+}
+.sp-related-route b{
+  display:block;
+  color:#111714;
+  font:700 17px/1.25 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  letter-spacing:-.025em;
+}
+.sp-related-route p{
+  margin:7px 0 16px;
+  color:#69736e;
+  font:12px/1.6 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+}
+.sp-related-links{display:flex;gap:7px;flex-wrap:wrap}
+.sp-related-links a{
+  display:inline-flex;
+  align-items:center;
+  min-height:36px;
+  padding:8px 11px;
+  border:1px solid rgba(16,21,19,.13);
+  border-radius:8px;
+  background:#fffdf7;
+  color:#172019;
+  text-decoration:none;
+  font:750 10px/1.3 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  transition:transform .18s var(--sp-inbound-ease),border-color .18s ease,background .18s ease;
+}
+.sp-related-links a:hover{transform:translateY(-1px);border-color:rgba(16,21,19,.24);background:#fff}
+.sp-related-links a[data-paid="true"]{border-color:#121916;background:#121916;color:#f5f3eb}
+
+/* Decision escalation card */
+.sp-decision-route{
+  position:relative;
+  margin:18px 0;
+  padding:22px;
+  border:1px solid var(--sp-inbound-line-light);
+  border-radius:14px;
+  background:linear-gradient(145deg,#f8f6ef,#eeece3);
+  box-shadow:0 15px 44px rgba(20,27,23,.055);
+  overflow:hidden;
+}
+.sp-decision-route::after{
+  content:"";
+  position:absolute;
+  right:-56px;
+  top:-76px;
+  width:180px;
+  height:180px;
+  border:1px solid rgba(75,120,101,.08);
+  border-radius:50%;
+  box-shadow:0 0 0 28px rgba(75,120,101,.025),0 0 0 56px rgba(75,120,101,.015);
+}
+.sp-decision-route>*{position:relative;z-index:1}
+.sp-decision-route small{
+  display:block;
+  color:#5f766d;
+  font:800 8px/1.4 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+.sp-decision-route strong{
+  display:block;
+  margin:9px 0 7px;
+  color:#111714;
+  font:700 21px/1.15 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  letter-spacing:-.035em;
+}
+.sp-decision-route p{
+  margin:0 0 16px!important;
+  color:#66716c!important;
+  font:12px/1.6 "Aptos","Segoe UI Variable",system-ui,sans-serif!important;
+}
+.sp-decision-route a{
+  display:inline-flex;
+  align-items:center;
+  min-height:40px;
+  padding:10px 13px;
+  border:1px solid rgba(16,21,19,.14);
+  border-radius:8px;
+  background:#fffdf7;
+  color:#172019;
+  text-decoration:none;
+  font:800 11px/1.3 "Aptos","Segoe UI Variable",system-ui,sans-serif;
+  transition:transform .18s var(--sp-inbound-ease),box-shadow .18s ease,background .18s ease;
+}
+.sp-decision-route a:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(20,27,23,.09);background:#fff}
+.sp-decision-route a[data-paid="true"]{border-color:#121916;background:#121916;color:#f5f3eb}
+.sp-decision-route em{display:block;margin-top:10px;color:#79827e;font:10px/1.5 "Aptos","Segoe UI Variable",system-ui,sans-serif;font-style:normal}
+
+/* Keyboard accessibility */
+.sp-inbound-card:focus-visible,.sp-related-links a:focus-visible,.sp-decision-route a:focus-visible{
+  outline:3px solid rgba(183,255,90,.4);
+  outline-offset:3px;
+}
+
+/* Mobile: keep the route set horizontal to avoid a long vertical card stack. */
+@media(max-width:800px){
+  .sp-inbound-route{padding:68px 0 72px}
+  .sp-inbound-route .sp-inbound-wrap{width:min(100% - 28px,1220px)}
+  .sp-inbound-route h2{font-size:clamp(36px,10vw,52px)}
+  .sp-inbound-grid{
+    display:flex;
+    gap:8px;
+    margin-inline:-1px;
+    padding:7px;
+    overflow-x:auto;
+    overscroll-behavior-inline:contain;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    background:rgba(255,255,255,.035);
+  }
+  .sp-inbound-grid::-webkit-scrollbar{display:none}
+  .sp-inbound-card{flex:0 0 82%;min-width:245px;min-height:238px;scroll-snap-align:start;border:1px solid rgba(255,255,255,.08)}
+  .sp-inbound-card[data-paid="true"]{border-color:rgba(16,21,19,.11)}
+}
+
+@media(max-width:520px){
+  .sp-inbound-route{padding:58px 0 66px}
+  .sp-inbound-route::before{left:14px;top:27px;width:52px}
+  .sp-inbound-route .sp-inbound-wrap{width:calc(100% - 28px)}
+  .sp-inbound-card{flex-basis:88%;padding:20px}
+  .sp-related-route{width:calc(100% - 28px);margin:38px auto;padding:19px}
+  .sp-decision-route{padding:19px}
+}
+
 /* Production UI regression patch: keep language switching available on mobile. */
 @media(max-width:720px){body[data-page="stratum_revenue_home_v2"] .lang-switch{display:flex!important;transform:scale(.86);transform-origin:right center}}
 @media(max-width:430px){body[data-page="stratum_revenue_home_v2"] .lang-switch{transform:scale(.78)}}
-@media(prefers-reduced-motion:reduce){.sp-inbound-card,.sp-decision-route a{transition:none!important}}
+
+@media(prefers-reduced-motion:reduce){
+  .sp-inbound-card,.sp-related-links a,.sp-decision-route a{transition:none!important}
+  .sp-inbound-card:hover,.sp-related-links a:hover,.sp-decision-route a:hover{transform:none!important}
+}
