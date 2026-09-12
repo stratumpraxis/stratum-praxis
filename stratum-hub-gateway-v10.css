@@ -1,0 +1,54 @@
+/* Stratum Praxis Hub — Gateway Experience v10
+   Role: total entry surface. Do not turn this into the Lab or Product Router.
+   Guardrails: preserve products, prices, checkout destinations, analytics and revenue routes. */
+
+body[data-page="stratum_revenue_home_v2"]{--hub-signal:#9dff66;--hub-cyan:#63e6db;--hub-warm:#f0c86c;--hub-violet:#a89cff;--hub-quiet:#8ba09a}
+
+/* The Hub should feel like a gateway: fast orientation, three exits, very little catalog behavior. */
+body[data-page="stratum_revenue_home_v2"] .rh-hero{min-height:min(690px,76vh)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::before{filter:drop-shadow(0 0 64px rgba(var(--px-accent-rgb),.14)) blur(.1px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::after{opacity:.72!important}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{display:inline-flex!important;align-items:center!important;gap:8px!important;padding:7px 9px!important;border:1px solid rgba(255,255,255,.07)!important;border-radius:999px!important;background:rgba(255,255,255,.025)!important;color:#90a39d!important}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow i{width:5px!important;height:5px!important;background:var(--px-accent)!important;box-shadow:0 0 0 6px rgba(var(--px-accent-rgb),.07)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline{opacity:.82!important}
+
+/* Three intents read as exits from the hub, not as ordinary cards. */
+body[data-page="stratum_revenue_home_v2"] .rh-lanes{isolation:isolate!important;overflow:hidden!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes::before{content:"";position:absolute;inset:50% 8% auto;height:1px;z-index:0;background:linear-gradient(90deg,transparent,rgba(96,232,219,.2),rgba(152,255,92,.2),rgba(169,159,255,.18),transparent);pointer-events:none}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{position:relative!important;z-index:1!important;overflow:hidden!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route::before{content:"";position:absolute;inset:auto 12% -18px;height:28px;border-radius:50%;background:var(--route-glow,rgba(152,255,92,.18));filter:blur(20px);opacity:0;transition:opacity .22s ease;pointer-events:none}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[data-route="cost"]{--route-glow:rgba(152,255,92,.24)}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[data-route="workflow"]{--route-glow:rgba(96,232,219,.24)}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[data-route="agent"]{--route-glow:rgba(169,159,255,.24)}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[aria-selected="true"]::before{opacity:1}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[aria-selected="true"]{transform:translateY(-2px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route>i{font-variant-numeric:tabular-nums!important;opacity:.5!important}
+
+/* Decision surface reads as a directional instrument. */
+body[data-page="stratum_revenue_home_v2"] .decision-map{perspective:800px!important}
+body[data-page="stratum_revenue_home_v2"] .decision-map .map-step{transition:transform .2s var(--px-spring),border-color .2s ease,box-shadow .2s ease!important}
+body[data-page="stratum_revenue_home_v2"] .decision-map .map-step.active{transform:translateY(-3px) scale(1.02)!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next{position:relative!important;overflow:hidden!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next::after{content:"";position:absolute;left:0;bottom:0;width:32%;height:1px;background:linear-gradient(90deg,var(--px-accent),transparent);opacity:.7}
+
+/* Hub revenue ladder is deliberately quieter than Product Router. */
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="revenue-path-title"] .rh-ladder{opacity:.94!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="revenue-path-title"] .rh-step{box-shadow:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="revenue-path-title"] .rh-step:hover{border-color:rgba(var(--px-accent-rgb),.16)!important}
+
+/* The Hub should not out-shout specialist surfaces. */
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-route{margin-top:22px!important}
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-card{box-shadow:none!important}
+
+@media(max-width:720px){
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{min-height:300px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{padding:5px 7px!important;font-size:6.5px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes::before{left:10%;right:10%}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{min-width:0!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route,
+  body[data-page="stratum_revenue_home_v2"] .decision-map .map-step{transition:none!important;transform:none!important}
+}
