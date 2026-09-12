@@ -3,6 +3,30 @@
   'use strict';
   const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const capture=(name,props)=>{try{if(window.scosCapture)window.scosCapture(name,Object.assign({experience:'workflow_audit_v1',route:location.pathname},props||{}));}catch(_){}};
+  const ANON_KEY='sp_anonymous_id_v2';
+  const CHECKOUT_ROUTE='workflow_audit';
+
+  function referencePart(value,limit){return String(value||'').trim().slice(0,limit).replace(/[^a-zA-Z0-9_-]/g,'_').replace(/_+/g,'_').replace(/^_+|_+$/g,'')}
+  function correlatedReference(){
+    let buyer='';
+    try{buyer=referencePart(localStorage.getItem(ANON_KEY),80)}catch(_){}
+    if(!buyer)return'';
+    return `spb_${buyer}__spr_${CHECKOUT_ROUTE}`.slice(0,200);
+  }
+  function correlateCheckoutLinks(){
+    const apply=link=>{
+      let url;try{url=new URL(link.href,location.href)}catch(_){return}
+      if(url.hostname!=='buy.stripe.com')return;
+      const ref=correlatedReference();if(!ref)return;
+      url.searchParams.set('client_reference_id',ref);link.href=url.toString();
+    };
+    document.querySelectorAll('a[href^="https://buy.stripe.com/"]').forEach(link=>{
+      apply(link);
+      link.addEventListener('pointerup',()=>apply(link));
+      link.addEventListener('click',()=>apply(link));
+      link.addEventListener('auxclick',()=>apply(link));
+    });
+  }
 
   const panels={
     decision:{title:'Executive decision',lead:'A bounded recommendation appears first, so a team can understand the decision before reading the analysis.',body:'GO — pilot the missing-document follow-up loop first. Keep judgment-heavy responses human-led.',metrics:[['DECISION','GO','Narrow pilot first'],['PRIORITY','#1','Missing-document follow-up'],['WINDOW','30 days','Reversible pilot']]},
@@ -40,6 +64,7 @@
 
   function initAudit(){
     if(!/\/workflow-audit\.html$/.test(location.pathname))return;
+    correlateCheckoutLinks();
     const delivery=document.querySelector('.audit-delivery-section');
     if(!delivery||document.querySelector('[data-wa-preview]'))return;
     delivery.insertAdjacentHTML('beforebegin',previewMarkup());
