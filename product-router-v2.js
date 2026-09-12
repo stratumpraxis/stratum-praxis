@@ -24,7 +24,7 @@
   const routeOrder=['spend','workflow','agent'];
   const routeData={
     spend:{entry:'FREE',depth:'$39 → $499',outcome:'CONTROL',chain:['Detect','Prove','Recover','Monitor'],label:'Spend & ROI'},
-    workflow:{entry:'FREE',depth:'$39 → $499',outcome:'DECIDE',chain:['Diagnose','Validate','Audit'],label:'Workflow'},
+    workflow:{entry:'FREE',depth:'$499',outcome:'DECIDE',chain:['Diagnose','Measure','Audit'],label:'Workflow'},
     agent:{entry:'FREE',depth:'$69 → $299',outcome:'OPERATE',chain:['Economics','Control','Operate','Scale'],label:'Agent Operations'}
   };
 
@@ -35,6 +35,29 @@
   const routeShell=document.querySelector('.route-shell');
   const buyerNote=document.querySelector('.buyer-note');
   if(buyerNote) buyerNote.id='buyer-access';
+
+  // Keep only current, real paid routes in the public decision surface.
+  const spendLegacy=document.querySelector('[data-analytics-id="router_spend_value_kit"]');
+  if(spendLegacy){
+    spendLegacy.setAttribute('href','/ai-saas-spend-decision-kit.html');
+    spendLegacy.dataset.analyticsId='router_spend_decision_kit';
+    const strong=spendLegacy.querySelector('strong');
+    if(strong) strong.textContent='Spend Decision Kit';
+  }
+  const workflowLegacy=document.querySelector('[data-analytics-id="router_workflow_value_kit"]');
+  if(workflowLegacy) workflowLegacy.remove();
+  const workflowView=document.querySelector('.route-view[data-view="workflow"]');
+  if(workflowView){
+    const nodes=[...workflowView.querySelectorAll('.flow-node')];
+    if(nodes[1]){
+      const small=nodes[1].querySelector('small');
+      const strong=nodes[1].querySelector('strong');
+      const price=nodes[1].querySelector('b');
+      if(small) small.textContent='MEASURE';
+      if(strong) strong.textContent='Live evidence';
+      if(price) price.textContent='FREE';
+    }
+  }
 
   views.forEach(view=>{
     const name=view.dataset.view;
