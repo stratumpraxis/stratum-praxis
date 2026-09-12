@@ -1,10 +1,10 @@
 {
   "brand": "Stratum",
-  "content_id": "stratum-instagram-video-system-002",
+  "content_id": "stratum-instagram-saas-renewal-003",
   "platform": "instagram",
   "account_handle": "praxisstratum",
   "image_url": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/assets/stratum-social-roi.png",
-  "caption": "Before adding another AI tool, ask one question: what decision will it improve? Stratum Praxis connects market signal, evidence, buyer action and the shortest revenue route.",
-  "destination": "https://stratumpraxis.com/?utm_source=instagram&utm_medium=social&utm_campaign=video_system&utm_content=ig02",
+  "caption": "Before renewing another AI or SaaS tool, check four things first: ownership, actual usage, overlap, and renewal timing. A renewal should be a decision, not an automatic rollover.",
+  "destination": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=instagram&utm_medium=social&utm_campaign=saas_renewal_checklist_20260913&utm_content=ig03",
   "status": "QUEUED"
 }
