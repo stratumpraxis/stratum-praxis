@@ -1,0 +1,13 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mvdtt2or3z26",
+  "cid": "bafyreidtv2zckwyh7s7yz2zrovmdjbwxs2hpii537y3r5gi2zkconsjwhe",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mvdtt2or3z26",
+  "destination": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=bluesky&utm_medium=social&utm_campaign=aca&utm_content=bsky01",
+  "content_id": "stratum-bluesky-agent-control-001",
+  "published_at": "2026-09-12T19:45:39.042Z"
+}
