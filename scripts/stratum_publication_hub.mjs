@@ -12,6 +12,26 @@ const files = fs.readdirSync(CONTENT_DIR)
   .filter((f) => f.endsWith('.md'))
   .sort();
 
+const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+async function fetchWithRateLimitRetry(url, options = {}, label = 'DEV request') {
+  const maxAttempts = 4;
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const response = await fetch(url, options);
+    if (response.status !== 429) return response;
+    const retryAfter = Number(response.headers.get('retry-after'));
+    const waitMs = Number.isFinite(retryAfter) && retryAfter > 0
+      ? (retryAfter + 2) * 1000
+      : 35000;
+    const body = await response.text();
+    console.log(`${label}: rate limited on attempt ${attempt}/${maxAttempts}; waiting ${Math.round(waitMs / 1000)}s; ${body.slice(0, 160)}`);
+    if (attempt === maxAttempts) {
+      return new Response(body, { status: 429, headers: response.headers });
+    }
+    await sleep(waitMs);
+  }
+}
+
 const stripMd = (s) => s
   .replace(/```[\s\S]*?```/g, '')
   .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
@@ -45,7 +65,11 @@ async function devtoPublish(article) {
     ? `${process.env.GHOST_PUBLIC_BASE_URL.replace(/\/$/, '')}/${article.slug}/`
     : undefined;
 
-  const me = await fetch('https://dev.to/api/articles/me/all?per_page=1000', { headers });
+  const me = await fetchWithRateLimitRetry(
+    'https://dev.to/api/articles/me/all?per_page=1000',
+    { headers },
+    `DEV lookup ${article.slug}`
+  );
   if (!me.ok) throw new Error(`DEV lookup failed ${me.status}: ${await me.text()}`);
   const existing = (await me.json()).find((x) =>
     x.title === article.title || (canonicalUrl && x.canonical_url === canonicalUrl)
@@ -63,11 +87,15 @@ async function devtoPublish(article) {
   };
 
   const url = existing ? `https://dev.to/api/articles/${existing.id}` : 'https://dev.to/api/articles';
-  const r = await fetch(url, {
-    method: existing ? 'PUT' : 'POST',
-    headers,
-    body: JSON.stringify(payload)
-  });
+  const r = await fetchWithRateLimitRetry(
+    url,
+    {
+      method: existing ? 'PUT' : 'POST',
+      headers,
+      body: JSON.stringify(payload)
+    },
+    `DEV publish ${article.slug}`
+  );
   if (!r.ok) throw new Error(`DEV publish failed ${r.status}: ${await r.text()}`);
   const data = await r.json();
   return {
