@@ -1,7 +1,8 @@
 @import url('/stratum-command-v6.css?v=20260913a');
 @import url('/stratum-command-v7.css?v=20260913b');
+@import url('/stratum-command-v8.css?v=20260913c');
 
-/* Production loader — Command UI v7 owns the current presentation layer.
-   v6 remains the stable structural base; v7 supplies the interaction / visual upgrade.
+/* Production loader — Command UI v8 owns the current presentation layer.
+   v6 = stable structure, v7 = interaction/visual upgrade, v8 = Level 10 decision compression.
    Legacy cinematic/v4/v5 layers are intentionally not imported here.
    Revenue routes, prices, checkout destinations and analytics remain unchanged. */
