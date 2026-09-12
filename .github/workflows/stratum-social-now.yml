@@ -1,12 +1,10 @@
 name: Stratum Social Now
-# mode: tiktok-independent-retry
+# mode: verify-tiktok-retry
 
 on:
   push:
     branches: [main]
     paths:
-      - 'distribution/stratum-social-now.json'
-      - 'distribution/buffer-publisher.mjs'
       - '.github/workflows/stratum-social-now.yml'
   workflow_dispatch:
 
@@ -14,28 +12,16 @@ permissions:
   contents: read
 
 jobs:
-  publish:
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Safety audit
-        env:
-          BUFFER_QUEUE_FILE: stratum-social-now.json
-          MAX_SERVICES_PER_ITEM: '2'
-          REQUIRE_UTM: '1'
-          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
-        run: node distribution/safety-audit.mjs
-      - name: Publish immediately to verified Stratum TikTok
+      - name: Verify retried Stratum TikTok final status
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_TARGET_SERVICES: tiktok
-          BUFFER_QUEUE_FILE: stratum-social-now.json
-          BUFFER_SELECT_MODE: first
-          BUFFER_POST_MODE: shareNow
-          REQUIRE_ELIGIBLE_CHANNELS: '1'
-          REQUIRE_CHANNEL_NAME_CONTAINS: stratum
-        run: node distribution/buffer-publisher.mjs
+          BUFFER_POST_IDS: 6aa5adf3130d0ea1a45b8482
+        run: node distribution/buffer-post-status.mjs
