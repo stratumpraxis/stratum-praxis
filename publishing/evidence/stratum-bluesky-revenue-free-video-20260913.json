@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mve5vpiark2n",
+  "cid": "bafyreiaen3u6ufvmj2euhao3ql3hoim55zweacu4bjca677b22dk3telxm",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mve5vpiark2n",
+  "destination": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=bsky&utm_medium=video&utm_campaign=revenue_free_20260913",
+  "content_id": "stratum-bluesky-revenue-free-video-20260913",
+  "media_type": "video",
+  "video_bytes": 788254,
+  "published_at": "2026-09-12T22:46:04.854Z"
+}
