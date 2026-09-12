@@ -7,5 +7,6 @@
   "hook": "Check the economics before automating.",
   "cta": "Run the free AI Agent ROI Calculator",
   "destination": "https://icy-scene-001e.practicalaireport.workers.dev/?utm_source=bluesky&utm_medium=social&utm_campaign=roi&utm_content=bsky02",
-  "status": "QUEUED"
+  "status": "QUEUED",
+  "publish_trigger": "2026-09-13"
 }
