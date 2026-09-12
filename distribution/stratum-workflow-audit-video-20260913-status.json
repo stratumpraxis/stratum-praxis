@@ -1,0 +1,32 @@
+{
+  "checkedAt": "2026-09-12T22:11:18.541Z",
+  "destination": "https://stratumpraxis.com/workflow-audit.html",
+  "posts": {
+    "tiktok": {
+      "id": "6aa5cd74f7b1958d5cd748ba",
+      "channelId": "6a8e5d28ccaf649a671a13e7",
+      "channelService": "tiktok",
+      "status": "sent",
+      "dueAt": "2026-09-12T22:08:52.374Z",
+      "sentAt": "2026-09-12T22:10:37.286Z",
+      "sharedNow": true,
+      "externalLink": "https://tiktok.com/@stratumpraxis/video/7684774245397810453",
+      "error": null
+    },
+    "instagram": {
+      "id": "6aa5cd8066679b076f18f870",
+      "channelId": "6a8e5b5accaf649a671a0cd9",
+      "channelService": "instagram",
+      "status": "error",
+      "dueAt": "2026-09-12T22:09:04.689Z",
+      "sentAt": null,
+      "sharedNow": false,
+      "externalLink": null,
+      "error": {
+        "message": "It looks like Buffer has lost authorization to post on your behalf. Please refresh your channel to resume scheduling.",
+        "rawError": "Invalid Credentials",
+        "supportUrl": null
+      }
+    }
+  }
+}
