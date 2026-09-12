@@ -1,0 +1,54 @@
+name: Stratum Bluesky Direct Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'publishing/queue/stratum-bluesky-*.json'
+      - 'scripts/publish_bluesky_official.mjs'
+      - '.github/workflows/stratum-bluesky-publish.yml'
+  workflow_dispatch:
+    inputs:
+      package_path:
+        description: Publish package path
+        required: true
+        default: publishing/queue/stratum-bluesky-agent-control-001.json
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve package
+        id: package
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "path=${{ inputs.package_path }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "path=publishing/queue/stratum-bluesky-agent-control-001.json" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish to verified Stratum Bluesky account
+        env:
+          BSKY_IDENTIFIER: stratumpraxis.bsky.social
+          BSKY_APP_PASSWORD: ${{ secrets.BSKY_APP_PASSWORD }}
+        run: node scripts/publish_bluesky_official.mjs "${{ steps.package.outputs.path }}"
+      - name: Persist publication evidence
+        shell: bash
+        run: |
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add publishing/evidence/*.json
+          if git diff --cached --quiet; then
+            echo 'No evidence changes'
+            exit 0
+          fi
+          git commit -m 'evidence: persist Stratum Bluesky publication [skip social]'
+          git push
