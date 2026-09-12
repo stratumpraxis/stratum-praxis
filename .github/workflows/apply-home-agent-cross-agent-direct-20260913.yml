@@ -1,0 +1,50 @@
+name: Apply Home Agent Cross-Agent Direct Checkout
+
+on:
+  push:
+    paths:
+      - 'home-agent-cross-agent-direct.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Shorten Agent category to Cross-Agent checkout
+        shell: python
+        run: |
+          from pathlib import Path
+          page = Path('stratum-revenue-navigator.js')
+          s = page.read_text(encoding='utf-8')
+          old = '<a href="/cross-agent-operating-kit.html" data-analytics-id="home_nav_agent_cross"><span><b>Cross-Agent Operating Kit</b><small data-rnav="crossAgent">Cross-runtime operating layer</small></span><em>$69–299</em></a>'
+          new = '<a href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T" data-analytics-id="home_nav_agent_cross_checkout" data-product="cross_agent_personal" data-primary-cta="true"><span><b>Cross-Agent Operating Kit</b><small data-rnav="crossAgent">Cross-runtime operating layer</small></span><em>PERSONAL $69</em></a>'
+          if old not in s:
+              raise SystemExit('Expected Agent category Cross-Agent link not found; refusing broad edit')
+          s = s.replace(old, new, 1)
+          page.write_text(s, encoding='utf-8')
+      - name: Verify direct checkout and preserved details route
+        shell: bash
+        run: |
+          set -e
+          grep -q 'home_nav_agent_cross_checkout' stratum-revenue-navigator.js
+          grep -q 'data-product="cross_agent_personal"' stratum-revenue-navigator.js
+          grep -q 'PERSONAL $69' stratum-revenue-navigator.js
+          grep -q 'home_nav_products_cross' stratum-revenue-navigator.js
+          grep -q 'href="/cross-agent-operating-kit.html" data-analytics-id="home_nav_products_cross"' stratum-revenue-navigator.js
+      - name: Commit revenue-distance change
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add stratum-revenue-navigator.js
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+          else
+            git commit -m 'Shorten homepage agent route to Cross-Agent checkout'
+            git push
+          fi
