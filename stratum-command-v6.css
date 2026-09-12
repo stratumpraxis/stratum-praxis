@@ -1,0 +1,228 @@
+/* Stratum Praxis — Command UI v6
+   Mobile-first interaction surface. Presentation only.
+   Products, prices, checkout URLs, analytics IDs and revenue routes remain unchanged. */
+
+:root{
+  --v6-bg:#020809;
+  --v6-panel:#061214;
+  --v6-panel-2:#09191b;
+  --v6-ink:#f6faf7;
+  --v6-muted:#8fa49d;
+  --v6-line:rgba(103,236,215,.14);
+  --v6-lime:#9cff63;
+  --v6-cyan:#63eadf;
+  --v6-gold:#efc96d;
+  --v6-violet:#aaa1ff;
+  --v6-ease:cubic-bezier(.2,.8,.2,1);
+}
+
+/* Hard reset of legacy text-bearing hero art. */
+body[data-page="stratum_revenue_home_v2"] .rh-hero{
+  position:relative!important;
+  overflow:hidden!important;
+  background:
+    radial-gradient(circle at 77% 26%,rgba(99,234,223,.18),transparent 14rem),
+    radial-gradient(circle at 87% 10%,rgba(156,255,99,.13),transparent 12rem),
+    linear-gradient(135deg,#041012 0%,#061719 52%,#020809 100%)!important;
+  border:1px solid var(--v6-line)!important;
+  box-shadow:0 28px 84px rgba(0,0,0,.4)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::before{
+  content:""!important;
+  position:absolute!important;
+  inset:auto -8% -42% auto!important;
+  width:min(58vw,720px)!important;
+  aspect-ratio:1!important;
+  border-radius:50%!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 40% 36%,rgba(255,255,255,.35) 0 1px,transparent 2px),
+    radial-gradient(circle at 52% 48%,transparent 0 42%,rgba(99,234,223,.28) 42.4% 42.8%,transparent 43.1% 58%,rgba(156,255,99,.2) 58.4% 58.8%,transparent 59.1%),
+    conic-gradient(from 40deg,rgba(99,234,223,.02),rgba(156,255,99,.22),rgba(99,234,223,.03),rgba(170,161,255,.12),rgba(99,234,223,.02))!important;
+  filter:drop-shadow(0 0 54px rgba(99,234,223,.14))!important;
+  opacity:.92!important;
+  animation:v6-orbit 28s linear infinite!important;
+  transform:none!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background:
+    linear-gradient(rgba(99,234,223,.026) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(99,234,223,.026) 1px,transparent 1px)!important;
+  background-size:46px 46px!important;
+  mask-image:linear-gradient(115deg,#000 0%,transparent 72%)!important;
+  filter:none!important;
+}
+@keyframes v6-orbit{to{rotate:1turn}}
+body[data-page="stratum_revenue_home_v2"] .rh-hero-copy,
+body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{position:relative!important;z-index:2!important}
+
+/* Short-copy hierarchy. */
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{display:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 [data-rh="heroA"],
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 [data-rh="heroB"]{display:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]{display:block!important;font-size:0!important;padding:0!important;background:none!important;color:var(--v6-ink)!important;text-shadow:none!important}
+html[lang="en"] body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]::after{content:"Decide with evidence."}
+html[lang="ja"] body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]::after{content:"Evidenceで判断。"}
+html[lang="es"] body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]::after{content:"Decide con evidencia."}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]::after{
+  display:block!important;
+  max-width:520px!important;
+  font-size:clamp(34px,4.4vw,62px)!important;
+  line-height:.94!important;
+  letter-spacing:-.055em!important;
+  font-weight:760!important;
+  color:var(--v6-ink)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lead{font-size:0!important;max-width:480px!important;margin-top:13px!important}
+html[lang="en"] body[data-page="stratum_revenue_home_v2"] .rh-lead::after{content:"Spend · workflow · agents — compare before you buy."}
+html[lang="ja"] body[data-page="stratum_revenue_home_v2"] .rh-lead::after{content:"支出・業務・Agentを、買う前に比較。"}
+html[lang="es"] body[data-page="stratum_revenue_home_v2"] .rh-lead::after{content:"Gasto · workflow · agentes — compara antes de comprar."}
+body[data-page="stratum_revenue_home_v2"] .rh-lead::after{font-size:12px!important;line-height:1.5!important;color:var(--v6-muted)!important}
+
+/* Actions look like product controls, not sales banners. */
+body[data-page="stratum_revenue_home_v2"] .rh-actions{gap:8px!important;margin-top:18px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-primary,
+body[data-page="stratum_revenue_home_v2"] .rh-secondary{
+  min-height:46px!important;
+  border-radius:14px!important;
+  padding:0 16px!important;
+  font-size:10px!important;
+  font-weight:820!important;
+  transition:transform 140ms var(--v6-ease),box-shadow 180ms ease,background 140ms ease!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-primary{background:linear-gradient(110deg,#b6ff86,var(--v6-lime))!important;color:#051008!important;box-shadow:0 12px 28px rgba(156,255,99,.16)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-secondary{background:rgba(6,19,21,.72)!important;color:#eef7f3!important;border:1px solid rgba(99,234,223,.2)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline{display:none!important}
+
+/* Hero data card = secondary instrument, never the first thing to read. */
+body[data-page="stratum_revenue_home_v2"] .rh-value-card{
+  border-radius:18px!important;
+  border:1px solid rgba(99,234,223,.18)!important;
+  background:linear-gradient(150deg,rgba(8,28,30,.91),rgba(3,14,16,.94))!important;
+  box-shadow:0 20px 64px rgba(0,0,0,.34)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card>p{display:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card h2{font-size:18px!important;letter-spacing:-.035em!important}
+
+/* Dense but scannable revenue strip. */
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar{gap:7px!important;padding:7px!important;border:1px solid var(--v6-line)!important;border-radius:16px!important;background:rgba(4,16,18,.72)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar>div{padding:10px 12px!important;border-radius:11px!important;background:rgba(255,255,255,.025)!important;border:1px solid rgba(255,255,255,.045)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar small{font-size:6px!important;letter-spacing:.11em!important;color:#70867f!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar strong{font-size:11px!important}
+
+/* Route cards are the main interaction surface. */
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"]{padding-top:24px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] .rh-section-head>p{display:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] .rh-section-head>div>p{display:none!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes{gap:8px!important;padding:7px!important;border:1px solid var(--v6-line)!important;border-radius:16px!important;background:rgba(4,16,18,.76)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{
+  min-height:72px!important;
+  border-radius:12px!important;
+  border:1px solid rgba(255,255,255,.05)!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012))!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active,
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route[aria-selected="true"]{border-color:rgba(156,255,99,.3)!important;background:linear-gradient(145deg,rgba(156,255,99,.1),rgba(99,234,223,.05))!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route b{font-size:13px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route small{font-size:8px!important;color:#728a83!important}
+
+/* Reduce text pressure everywhere without removing decision context. */
+body[data-page="stratum_revenue_home_v2"] .rh-section-head h2{font-size:clamp(25px,3vw,42px)!important;line-height:1!important;letter-spacing:-.045em!important}
+body[data-page="stratum_revenue_home_v2"] .decision-copy h2{font-size:clamp(24px,2.6vw,38px)!important;line-height:1!important}
+body[data-page="stratum_revenue_home_v2"] .decision-copy>p,
+body[data-page="stratum_revenue_home_v2"] .rh-step>p,
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band p,
+body[data-page="stratum_revenue_home_v2"] .rh-final p{font-size:10px!important;line-height:1.5!important;color:#80958e!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2,
+body[data-page="stratum_revenue_home_v2"] .rh-final h2{font-size:clamp(26px,3.4vw,44px)!important;line-height:1!important;letter-spacing:-.045em!important}
+
+/* Motion: important → support → background. */
+body[data-page="stratum_revenue_home_v2"] :is(.rh-primary,.rh-secondary,.route,.rh-step,.action-btn){transition:transform 140ms var(--v6-ease),border-color 160ms ease,background 160ms ease,box-shadow 220ms ease!important}
+body[data-page="stratum_revenue_home_v2"] :is(.rh-primary,.route,.rh-step):hover{transform:translateY(-2px)!important}
+body[data-page="stratum_revenue_home_v2"] :is(a,button,input):focus-visible{outline:2px solid #c4ffa1!important;outline-offset:3px!important;scroll-margin-top:86px!important}
+
+/* MOBILE — one screen = identity + visual + action. */
+@media(max-width:720px){
+  body[data-page="stratum_revenue_home_v2"] .workspace-shell.revenue-home{display:flex!important;flex-direction:column!important;padding:6px 10px 68px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{order:1!important;display:block!important;min-height:390px!important;padding:20px 17px 16px!important;border-radius:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero::before{width:78vw!important;right:-24%!important;bottom:-20%!important;opacity:.8!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero::after{background-size:38px 38px!important;opacity:.65!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-copy{padding-top:102px!important;max-width:100%!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em[data-rh="heroC"]::after{font-size:clamp(28px,8.2vw,36px)!important;line-height:.96!important;max-width:280px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lead{max-width:270px!important;margin-top:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lead::after{font-size:9.5px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-actions{display:flex!important;gap:7px!important;margin-top:15px!important;max-width:330px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-primary{flex:1 1 auto!important;justify-content:space-between!important;min-width:0!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary{flex:0 0 46px!important;width:46px!important;min-width:46px!important;padding:0!important;font-size:0!important;justify-content:center!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary span{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary::before{content:"↗";font-size:16px;color:#edf7f3}
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary b{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{display:none!important}
+
+  /* Put the decision routes immediately after the hero. */
+  body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"]{order:2!important;padding:13px 0 22px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar{order:3!important;margin:0 0 10px!important;display:grid!important;grid-auto-flow:column!important;grid-auto-columns:42%!important;overflow-x:auto!important;scroll-snap-type:x proximity!important;scrollbar-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar::-webkit-scrollbar{display:none}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar>div{scroll-snap-align:start!important}
+  body[data-page="stratum_revenue_home_v2"] main.revenue-home>section:not(.rh-hero):not(.rh-proofbar):not([aria-labelledby="decision-lanes-title"]){order:10!important}
+
+  body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] .rh-section-head{margin-bottom:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] h2[data-rh="section1Title"]{font-size:0!important;margin:0!important}
+  html[lang="en"] body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] h2[data-rh="section1Title"]::after{content:"Choose a signal."}
+  html[lang="ja"] body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] h2[data-rh="section1Title"]::after{content:"判断先を選ぶ。"}
+  html[lang="es"] body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] h2[data-rh="section1Title"]::after{content:"Elige una señal."}
+  body[data-page="stratum_revenue_home_v2"] .rh-section[aria-labelledby="decision-lanes-title"] h2[data-rh="section1Title"]::after{display:block!important;font-size:18px!important;line-height:1!important;letter-spacing:-.035em!important;color:var(--v6-ink)!important}
+
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes{display:grid!important;grid-template-columns:repeat(3,1fr)!important;overflow:visible!important;gap:6px!important;padding:6px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{min-height:78px!important;padding:10px 8px!important;display:flex!important;flex-direction:column!important;align-items:flex-start!important;justify-content:space-between!important;gap:7px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route>i{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route-icon{width:26px!important;height:26px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route b{font-size:11px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route small{display:none!important}
+
+  /* Decision result is compact; no paragraph wall. */
+  body[data-page="stratum_revenue_home_v2"] .rh-decision-grid{grid-template-columns:1fr!important;margin-top:8px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-reason-card{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-module{border-radius:16px!important;padding:0!important}
+  body[data-page="stratum_revenue_home_v2"] .module-head{padding:10px 12px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-content{grid-template-columns:1fr!important;padding:14px 12px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-copy h2{font-size:18px!important;line-height:1.05!important;margin-bottom:8px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-copy>p{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-map{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-next{margin-top:10px!important;padding:10px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-next strong{font-size:11px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-foot{display:none!important}
+
+  /* Long explanatory copy is secondary on mobile. */
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head>p,
+  body[data-page="stratum_revenue_home_v2"] .rh-step>p,
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band p,
+  body[data-page="stratum_revenue_home_v2"] .rh-final p,
+  body[data-page="stratum_revenue_home_v2"] .sp-inbound-route>div>p:not(.sp-inbound-kicker){display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2,
+  body[data-page="stratum_revenue_home_v2"] .rh-final h2{font-size:24px!important;line-height:1!important}
+  body[data-page="stratum_revenue_home_v2"] .mobile-start{display:none!important}
+}
+
+/* 400% zoom / narrow layout: no overlap, no forced horizontal page scroll. */
+@media(max-width:420px){
+  body[data-page="stratum_revenue_home_v2"] .office-header{width:calc(100% - 16px)!important;padding-inline:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .brand-copy strong{font-size:13px!important}
+  body[data-page="stratum_revenue_home_v2"] .lang-switch button{min-width:30px!important;padding-inline:5px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{min-height:372px!important;padding-inline:14px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-copy{padding-top:94px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{min-height:54px!important;flex-direction:row!important;align-items:center!important;justify-content:flex-start!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route small{display:block!important;font-size:7.5px!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-page="stratum_revenue_home_v2"] .rh-hero::before{animation:none!important}
+  body[data-page="stratum_revenue_home_v2"] *,body[data-page="stratum_revenue_home_v2"] *::before,body[data-page="stratum_revenue_home_v2"] *::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
