@@ -1,11 +1,12 @@
 name: Stratum Social Verify
-# verify-trigger: 2026-09-13
+# verify-trigger: 2026-09-13-exact-errors
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/stratum-social-verify.yml'
+      - 'distribution/stratum-social-error-evidence.mjs'
   workflow_dispatch:
 
 permissions:
@@ -20,8 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Verify Buffer post status and external links
+      - name: Inspect exact Buffer errors
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_POST_IDS: 6aa5ad23eba7bc567783bb98,6aa5ad2f66679b076f167b99
-        run: node distribution/buffer-post-status.mjs
+        run: node distribution/stratum-social-error-evidence.mjs
