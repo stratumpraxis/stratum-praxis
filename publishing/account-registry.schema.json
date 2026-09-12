@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stratum Publishing Account Registry",
+  "type": "object",
+  "required": ["brand", "accounts"],
+  "properties": {
+    "brand": {"const": "Stratum"},
+    "accounts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["platform", "account_owner", "credential_state", "last_verified", "revenue_destination"],
+        "properties": {
+          "gmail": {"type": ["string", "null"]},
+          "platform": {"type": "string"},
+          "handle": {"type": ["string", "null"]},
+          "account_owner": {"const": "Stratum"},
+          "oauth_target": {"type": ["string", "null"]},
+          "primary_publisher": {"type": ["string", "null"]},
+          "fallback_publisher": {"type": ["string", "null"]},
+          "credential_state": {"enum": ["UNVERIFIED", "READY", "REAUTH_REQUIRED", "MANUAL_ONLY", "DISABLED"]},
+          "quota_limit": {"type": ["string", "null"]},
+          "last_verified": {"type": ["string", "null"]},
+          "revenue_destination": {"type": ["string", "null"]}
+        }
+      }
+    }
+  }
+}
