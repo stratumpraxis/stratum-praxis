@@ -1,4 +1,5 @@
 name: Stratum Social Now
+# mode: tiktok-independent-retry
 
 on:
   push:
@@ -28,10 +29,10 @@ jobs:
           REQUIRE_UTM: '1'
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
         run: node distribution/safety-audit.mjs
-      - name: Publish immediately to verified Stratum Instagram and TikTok
+      - name: Publish immediately to verified Stratum TikTok
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_TARGET_SERVICES: instagram,tiktok
+          BUFFER_TARGET_SERVICES: tiktok
           BUFFER_QUEUE_FILE: stratum-social-now.json
           BUFFER_SELECT_MODE: first
           BUFFER_POST_MODE: shareNow
