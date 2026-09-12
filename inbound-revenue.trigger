@@ -1,4 +1,4 @@
-apply=2026-09-09
+apply=2026-09-13
 scope=existing-stratum-revenue-assets
-source=user-market-signal
-attempt=2
+source=passive-inbound-revenue
+attempt=3
