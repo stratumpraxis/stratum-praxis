@@ -14,7 +14,7 @@
     "feed:openai-news:signal",
     "feed:google-ai:signal"
   ],
-  "lastScoutAt": "2026-09-11T00:48:49.161Z",
+  "lastScoutAt": "2026-09-12T00:52:21.521Z",
   "lastRun": {
     "id": "2026-09-11-openai-agents-api-hn-49649213",
     "at": "2026-09-11T00:50:10.773Z",
