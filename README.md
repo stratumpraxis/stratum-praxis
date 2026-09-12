@@ -14,6 +14,8 @@ Do not use Stratum as the default home for unrelated creator, consumer, publishi
 
 ## Primary B2B entry points
 
+- [AI & SaaS Spend Decision Hub](https://stratumpraxis.com/ai-saas-spend.html?utm_source=github&utm_medium=referral&utm_campaign=spend_decision_20260913&utm_content=repository_readme) — review overlap, unused tools, plan size and renewal economics before another AI/SaaS spend decision; continue to the $39 self-service kit or $499 specialist audit only when the evidence supports it.
+- [AI & SaaS Spend Decision Kit — $39 one-time](https://stratumpraxis.com/ai-saas-spend-decision-kit.html?utm_source=github&utm_medium=referral&utm_campaign=spend_decision_20260913&utm_content=repository_readme_39) — self-service decision support for teams that can own the spend decision internally. [Buy directly on Stripe](https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06).
 - [Product Router](https://stratumpraxis.com/product-router.html?utm_source=github&utm_medium=referral&utm_campaign=b2b_asset_base&utm_content=repository_readme) — route an existing business problem to the closest current tool, audit, or checkout path.
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate value before implementation spend.
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify a workflow worth examining.
