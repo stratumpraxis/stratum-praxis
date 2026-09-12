@@ -122,6 +122,7 @@
       card.dataset.product='ai_saas_spend_hub';
       grid.prepend(card);
     }
+    card.setAttribute('data-primary-cta','true');
     const lang=['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
     const t=COPY[lang]||COPY.en;
     card.innerHTML=`<small>${t.meta}</small><strong>${t.title}</strong><span>${t.text}</span><em>${t.cta}</em>`;
