@@ -1,12 +1,11 @@
 name: Stratum Social Verify
-# verify-trigger: 2026-09-13-exact-errors
+# verify-trigger: 2026-09-13-tiktok-retry
 
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/stratum-social-verify.yml'
-      - 'distribution/stratum-social-error-evidence.mjs'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +20,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Inspect exact Buffer errors
+      - name: Verify retried TikTok status and public URL
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-        run: node distribution/stratum-social-error-evidence.mjs
+          BUFFER_POST_IDS: 6aa5adf3130d0ea1a45b8482
+        run: node distribution/buffer-post-status.mjs
