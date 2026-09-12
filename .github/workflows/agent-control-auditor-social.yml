@@ -1,5 +1,5 @@
 name: Agent Control Auditor Social
-# launch-marker: 2026-09-13-stratum-instagram-tiktok-publish
+# launch-marker: 2026-09-13-stratum-tiktok-retry
 
 on:
   push:
@@ -60,15 +60,15 @@ jobs:
       - name: Existing distribution safety audit
         env:
           BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
-          MAX_SERVICES_PER_ITEM: '2'
+          MAX_SERVICES_PER_ITEM: '1'
           REQUIRE_UTM: '1'
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
         run: node distribution/safety-audit.mjs
 
-      - name: Publish one reviewed post through verified Stratum channels
+      - name: Publish one reviewed post through verified Stratum TikTok
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_TARGET_SERVICES: instagram,tiktok
+          BUFFER_TARGET_SERVICES: tiktok
           BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
           BUFFER_SELECT_MODE: first
           BUFFER_POST_MODE: shareNow
