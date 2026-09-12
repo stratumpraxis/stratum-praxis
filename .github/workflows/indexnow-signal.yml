@@ -20,6 +20,15 @@ on:
       - 'passage-network.html'
       - 'prompt-systems.html'
       - 'workflow-operator.html'
+      - 'ai-saas-spend.html'
+      - 'ai-saas-spend-decision-kit.html'
+      - 'ai-saas-spend-audit-checklist.html'
+      - 'ai-saas-waste-calculator.html'
+      - 'ai-saas-spend-waste-audit.html'
+      - 'ai-saas-spend-monitoring.html'
+      - 'saas-renewal-decision.html'
+      - 'product-router.html'
+      - 'revenue-router.html'
       - 'daily-edge/**'
       - 'stack-pulse/**'
       - 'sitemap.xml'
@@ -48,6 +57,15 @@ jobs:
               "keyLocation":"https://stratumpraxis.com/54b81c12e07af0e37b6ab0ac24469586.txt",
               "urlList":[
                 "https://stratumpraxis.com/",
+                "https://stratumpraxis.com/ai-saas-spend.html",
+                "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+                "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+                "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+                "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
+                "https://stratumpraxis.com/ai-saas-spend-monitoring.html",
+                "https://stratumpraxis.com/saas-renewal-decision.html",
+                "https://stratumpraxis.com/product-router.html",
+                "https://stratumpraxis.com/revenue-router.html",
                 "https://stratumpraxis.com/cross-agent-operating-kit.html",
                 "https://stratumpraxis.com/return-gate/",
                 "https://stratumpraxis.com/return-gate/en/",
