@@ -78,7 +78,7 @@ test('append is idempotent for the exact same analytics event', () => {
 });
 
 test('the qualified analytics allowlist stays intentionally narrow', () => {
-  assert.deepEqual(QUALIFIED_BUYER_ANALYTICS_EVENTS.sort(), [
+  assert.deepEqual([...QUALIFIED_BUYER_ANALYTICS_EVENTS].sort(), [
     'advisor_checkout',
     'b2b_diagnostic_audit_click',
     'checkout_click',
