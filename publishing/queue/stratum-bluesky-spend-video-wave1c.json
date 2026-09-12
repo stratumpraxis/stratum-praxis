@@ -1,0 +1,16 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-spend-video-wave1c",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Before your next AI or SaaS renewal, check whether the stack still earns its place.",
+  "hook": "Find waste before renewal.",
+  "cta": "Free spend check",
+  "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=bsky&utm_medium=video&utm_campaign=wave1c",
+  "video_url": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789253135451-016e6b87-fcb5-4fab-a367-94de31f07d26.mp4",
+  "video_width": 1080,
+  "video_height": 1920,
+  "video_alt": "Stratum Praxis vertical demo showing AI and SaaS spend inputs, utilization, duplicate tools and estimated review opportunity, ending with a free spend check call to action.",
+  "status": "QUEUED",
+  "publish_trigger": "2026-09-13"
+}
