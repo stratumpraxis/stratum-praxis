@@ -1,0 +1,72 @@
+name: Stratum TikTok Revenue Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/stratum-tiktok-revenue-queue.json'
+      - 'distribution/stratum-tiktok-once.mjs'
+      - '.github/workflows/stratum-tiktok-revenue-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-tiktok-revenue-publish
+  cancel-in-progress: false
+
+jobs:
+  publish-once:
+    if: github.event_name != 'push' || !contains(github.event.head_commit.message, '[skip stratum-tiktok]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Factual, safety and quality review
+        env:
+          BUFFER_QUEUE_FILE: stratum-tiktok-revenue-queue.json
+        run: node distribution/triple-review.mjs
+
+      - name: Distribution safety audit
+        env:
+          BUFFER_QUEUE_FILE: stratum-tiktok-revenue-queue.json
+          MAX_SERVICES_PER_ITEM: '1'
+          REQUIRE_UTM: '1'
+          ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
+        run: node distribution/safety-audit.mjs
+
+      - name: Publish once to verified Stratum TikTok and verify externally
+        id: publish
+        continue-on-error: true
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: node distribution/stratum-tiktok-once.mjs
+
+      - name: Persist publication evidence and duplicate-stop state
+        if: always()
+        shell: bash
+        run: |
+          if [ -z "$(git status --porcelain -- distribution/stratum-tiktok-revenue-queue.json distribution/stratum-tiktok-revenue-evidence.json)" ]; then
+            echo 'No publication state changes to persist.'
+            exit 0
+          fi
+          git config user.name 'stratum-tiktok-revenue-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add distribution/stratum-tiktok-revenue-queue.json
+          if [ -f distribution/stratum-tiktok-revenue-evidence.json ]; then
+            git add -f distribution/stratum-tiktok-revenue-evidence.json
+          fi
+          git commit -m 'chore(distribution): persist Stratum TikTok publication evidence [skip stratum-tiktok]'
+          git push
+
+      - name: Require verified publication result
+        if: steps.publish.outcome == 'failure'
+        run: exit 1
