@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-cross-agent-003",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Claude Code → Codex → Cursor shouldn't reset your operating rules. Keep permissions, human gates, cost guards and handoff state portable.",
+  "hook": "Keep operating rules portable across AI agents.",
+  "cta": "Cross-Agent Operating Kit",
+  "destination": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=bluesky&utm_medium=social&utm_campaign=ca&utm_content=bsky01",
+  "status": "QUEUED"
+}
