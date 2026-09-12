@@ -65,14 +65,19 @@ for (const channel of channels) {
   if (!candidates.length) continue;
   const item = selectItem(candidates);
   const text = `${item.text}\n\n${item.url}`.trim();
+  if (item.videoUrl && item.imageUrl) throw new Error(`Item ${item.id} must not set both videoUrl and imageUrl`);
   if (service === 'pinterest' && !item.imageUrl) throw new Error(`Pinterest item ${item.id} requires an approved imageUrl`);
   let metadata = '';
-  if (service === 'instagram') metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
-  else if (service === 'tiktok') {
-    const title = String(item.title || 'AI Agent ROI Planning Check').slice(0,100);
-    metadata = `metadata:{tiktok:{title:${q(title)}}},`;
+  if (service === 'instagram') {
+    metadata = item.videoUrl
+      ? 'metadata:{instagram:{type:reel,shouldShareToFeed:true,isAiGenerated:true}},'
+      : 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
+  } else if (service === 'tiktok') {
+    metadata = item.videoUrl
+      ? 'metadata:{tiktok:{isAiGenerated:true}},'
+      : `metadata:{tiktok:{title:${q(String(item.title || 'AI Agent ROI Planning Check').slice(0,100))}}},`;
   } else if (service === 'pinterest') {
-    const detail = await gql(`query { channel(input:{id:${q(channel.id)}}){ metadata { ... on PinterestMetadata { boards { serviceId name } } } } }`);
+    const detail = await gql(`query { channel(input:{id:${q(channel.id)}}){ metadata { ... on PinterestMetadata { boards { serviceId name } } } }`);
     const boards = detail.channel?.metadata?.boards || [];
     if (boards.length !== 1) throw new Error(`Pinterest channel requires exactly one unambiguous board for autonomous posting; found ${boards.length}`);
     const board = boards[0];
@@ -81,8 +86,13 @@ for (const channel of channels) {
   }
   if (dryRun) { console.log(`[DRY RUN] ${service} / ${item.id} / ${postMode} -> ${text}`); continue; }
   let assets = '';
-  if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
-  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${postMode},${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
+  if (item.videoUrl) {
+    const offset = Number.isInteger(item.thumbnailOffsetMs) ? item.thumbnailOffsetMs : 2000;
+    assets = `assets:[{video:{url:${q(item.videoUrl)},metadata:{thumbnailOffset:${offset}}}}],`;
+  } else if (item.imageUrl) {
+    assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
+  }
+  const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${postMode},${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status assets { source mimeType } } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
   console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result},null,2));
