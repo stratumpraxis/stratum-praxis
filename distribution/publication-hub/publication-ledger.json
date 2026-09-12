@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-09-12T22:07:23.323Z",
+  "article_count": 5,
+  "articles": [
+    {
+      "source": "ai-agent-operating-constitution-ja.md",
+      "slug": "ai-agent-operating-constitution-ja",
+      "title": "AI社員を増やす前に、権限と停止条件を決める",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "waiting_for_secret"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-agent-operating-constitution-ja.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
+      },
+      "checked_at": "2026-09-12T22:07:23.321Z"
+    },
+    {
+      "source": "ai-handoff-system-ja.md",
+      "slug": "ai-handoff-system-ja",
+      "title": "AIを増やす前に、引き継ぎを作る",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "waiting_for_secret"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-handoff-system-ja.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
+      },
+      "checked_at": "2026-09-12T22:07:23.322Z"
+    },
+    {
+      "source": "ai-is-not-your-bottleneck.md",
+      "slug": "ai-is-not-your-bottleneck",
+      "title": "AI Is Not Your Bottleneck. Your Organization Is.",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "waiting_for_secret"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-is-not-your-bottleneck.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
+      },
+      "checked_at": "2026-09-12T22:07:23.322Z"
+    },
+    {
+      "source": "ai-revenue-pipeline-diagnosis-ja.md",
+      "slug": "ai-revenue-pipeline-diagnosis-ja",
+      "title": "AIで作る前に、Revenueの詰まりを直す",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "waiting_for_secret"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-revenue-pipeline-diagnosis-ja.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
+      },
+      "checked_at": "2026-09-12T22:07:23.322Z"
+    },
+    {
+      "source": "codex-revenue-company-ja.md",
+      "slug": "codex-revenue-company-ja",
+      "title": "AI codingは速いのに売上が増えない理由",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "waiting_for_secret"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/codex-revenue-company-ja.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
+      },
+      "checked_at": "2026-09-12T22:07:23.323Z"
+    }
+  ]
+}
