@@ -27,8 +27,8 @@ jobs:
           TIKTOK_POST_ID: 6aa5cd74f7b1958d5cd748ba
           INSTAGRAM_POST_ID: 6aa5cd8066679b076f18f870
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
+          node --input-type=module - <<'NODE'
+          import fs from 'node:fs';
           const API = 'https://api.buffer.com';
           const key = process.env.BUFFER_API_KEY;
           if (!key) throw new Error('BUFFER_API_KEY missing');
