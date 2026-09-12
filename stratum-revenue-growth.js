@@ -134,3 +134,35 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
+
+/* Social revenue bridge: existing social traffic gets a lower-friction paid option above the fold. */
+(() => {
+  'use strict';
+  const CHECKOUT='https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06';
+  const SOCIAL_SOURCES=new Set(['tiktok','bluesky','instagram','pinterest','threads','bsky','facebook']);
+  const LABELS={
+    en:'Buy the $39 Decision Kit',
+    ja:'$39 Decision Kitを購入',
+    es:'Comprar Decision Kit — $39'
+  };
+  const source=(new URLSearchParams(location.search).get('utm_source')||'').trim().toLowerCase();
+  if(!SOCIAL_SOURCES.has(source))return;
+  const apply=()=>{
+    const hero=document.querySelector('a[data-analytics-id="home_hero_audit"],a[data-analytics-id="home_hero_audit_checkout"],a[data-analytics-id="home_social_decision_kit_checkout"]');
+    if(!hero)return;
+    const lang=['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
+    hero.href=CHECKOUT;
+    hero.dataset.analyticsId='home_social_decision_kit_checkout';
+    hero.dataset.product='ai_saas_spend_decision_kit';
+    hero.dataset.revenueBridge='social_39';
+    hero.setAttribute('data-primary-cta','true');
+    const label=hero.querySelector('[data-rh="ctaAudit"]');
+    if(label)label.textContent=LABELS[lang]||LABELS.en;
+  };
+  const boot=()=>{
+    apply();
+    document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setTimeout(apply,0)));
+    new MutationObserver(m=>{if(m.some(x=>x.attributeName==='lang'))apply()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  };
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
+})();
