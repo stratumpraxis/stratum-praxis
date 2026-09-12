@@ -10,10 +10,7 @@ const requireChannelNameContains = (process.env.REQUIRE_CHANNEL_NAME_CONTAINS ||
 const postMode = process.env.BUFFER_POST_MODE || 'addToQueue';
 const allowedPostModes = new Set(['addToQueue', 'shareNow']);
 
-if (!allowedPostModes.has(postMode)) {
-  throw new Error(`Unsupported BUFFER_POST_MODE: ${postMode}`);
-}
-
+if (!allowedPostModes.has(postMode)) throw new Error(`Unsupported BUFFER_POST_MODE: ${postMode}`);
 if (!key) {
   const message = 'BUFFER_API_KEY is not configured';
   if (requireEligibleChannels) throw new Error(message);
@@ -22,24 +19,17 @@ if (!key) {
 }
 
 async function gql(query) {
-  const r = await fetch(API, {
-    method: 'POST',
-    headers: {'Content-Type':'application/json','Authorization':`Bearer ${key}`},
-    body: JSON.stringify({query})
-  });
+  const r = await fetch(API, {method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
   const j = await r.json();
   if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
   return j.data;
 }
-
 function q(s){ return JSON.stringify(String(s)); }
 function dayNumberUTC(){ return Math.floor(Date.now() / 86400000); }
 function selectItem(candidates){
   if (itemIndexRaw !== undefined && itemIndexRaw !== '') {
     const idx = Number(itemIndexRaw);
-    if (!Number.isInteger(idx) || idx < 0 || idx >= candidates.length) {
-      throw new Error(`BUFFER_ITEM_INDEX out of range: ${itemIndexRaw} for ${candidates.length} candidates`);
-    }
+    if (!Number.isInteger(idx) || idx < 0 || idx >= candidates.length) throw new Error(`BUFFER_ITEM_INDEX out of range: ${itemIndexRaw} for ${candidates.length} candidates`);
     return candidates[idx];
   }
   return selectMode === 'first' ? candidates[0] : candidates[dayNumberUTC() % candidates.length];
@@ -48,21 +38,17 @@ function selectItem(candidates){
 const acct = await gql(`query { account { organizations { id name } } }`);
 const org = acct.account?.organizations?.[0];
 if (!org) throw new Error('No Buffer organization found');
-
 const data = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
-let channels = (data.channels || []).filter(c => targetServices.includes(String(c.service).toLowerCase()) && !c.isQueuePaused);
-
+const allChannels = data.channels || [];
+console.log('BUFFER_CHANNEL_AUDIT:', JSON.stringify(allChannels.map(c=>({id:c.id,service:c.service,name:c.name,displayName:c.displayName,isQueuePaused:c.isQueuePaused}))));
+let channels = allChannels.filter(c => targetServices.includes(String(c.service).toLowerCase()) && !c.isQueuePaused);
 if (requireChannelNameContains) {
   const rejected = channels.filter(c => !`${c.displayName || ''} ${c.name || ''}`.toLowerCase().includes(requireChannelNameContains));
-  if (rejected.length) {
-    console.log('Rejected non-Stratum channels:', rejected.map(c=>`${c.service}:${c.displayName||c.name}`).join(', '));
-  }
+  if (rejected.length) console.log('Rejected non-Stratum channels:', rejected.map(c=>`${c.service}:${c.displayName||c.name}`).join(', '));
   channels = channels.filter(c => `${c.displayName || ''} ${c.name || ''}`.toLowerCase().includes(requireChannelNameContains));
 }
-
 const queue = JSON.parse(await (await import('node:fs/promises')).readFile(new URL(`./${queueFile}`, import.meta.url), 'utf8'));
 const active = queue.filter(x => x.active !== false && Array.isArray(x.services));
-
 console.log('Queue file:', queueFile, 'select mode:', selectMode, 'item index:', itemIndexRaw ?? 'auto', 'post mode:', postMode);
 console.log('Eligible channels:', channels.map(c=>`${c.service}:${c.displayName||c.name}`).join(', ') || 'none');
 if (!channels.length) {
@@ -71,49 +57,32 @@ if (!channels.length) {
   console.log(`${message}. Safe no-op.`);
   process.exit(0);
 }
-if (!active.length) {
-  console.log('No active queue items. Safe no-op.');
-  process.exit(0);
-}
+if (!active.length) { console.log('No active queue items. Safe no-op.'); process.exit(0); }
 
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
   const candidates = active.filter(x => x.services.includes(service));
   if (!candidates.length) continue;
-
   const item = selectItem(candidates);
   const text = `${item.text}\n\n${item.url}`.trim();
-
-  if (service === 'pinterest' && !item.imageUrl) {
-    throw new Error(`Pinterest item ${item.id} requires an approved imageUrl`);
-  }
-
+  if (service === 'pinterest' && !item.imageUrl) throw new Error(`Pinterest item ${item.id} requires an approved imageUrl`);
   let metadata = '';
-  if (service === 'instagram') {
-    metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
-  } else if (service === 'pinterest') {
+  if (service === 'instagram') metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
+  else if (service === 'pinterest') {
     const detail = await gql(`query { channel(input:{id:${q(channel.id)}}){ metadata { ... on PinterestMetadata { boards { serviceId name } } } } }`);
     const boards = detail.channel?.metadata?.boards || [];
-    if (boards.length !== 1) {
-      throw new Error(`Pinterest channel requires exactly one unambiguous board for autonomous posting; found ${boards.length}`);
-    }
+    if (boards.length !== 1) throw new Error(`Pinterest channel requires exactly one unambiguous board for autonomous posting; found ${boards.length}`);
     const board = boards[0];
-    const title = String(item.title || item.text || 'Stratum Praxis').split(/[.!?\n]/)[0].trim().slice(0, 100) || 'Stratum Praxis';
+    const title = String(item.title || item.text || 'Stratum Praxis').split(/[.!?\n]/)[0].trim().slice(0,100) || 'Stratum Praxis';
     metadata = `metadata:{pinterest:{boardServiceId:${q(board.serviceId)},title:${q(title)},url:${q(item.url)}}},`;
-    console.log(`Pinterest board selected: ${board.name} (${board.serviceId})`);
   }
-
-  if (dryRun) {
-    console.log(`[DRY RUN] ${service} / ${item.id} / ${postMode} -> ${text}`);
-    continue;
-  }
-
+  if (dryRun) { console.log(`[DRY RUN] ${service} / ${item.id} / ${postMode} -> ${text}`); continue; }
   let assets = '';
   if (item.imageUrl) assets = `assets:[{image:{url:${q(item.imageUrl)}}}],`;
   const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${postMode},${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
-  console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result}, null, 2));
+  console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result},null,2));
   if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
   if (!result?.post?.id) throw new Error(`Buffer did not return a post id for ${service}`);
   await new Promise(r=>setTimeout(r,1500));
