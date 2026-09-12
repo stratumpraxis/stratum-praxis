@@ -4,7 +4,8 @@
     "active": true,
     "services": ["bluesky", "threads", "linkedin"],
     "text": "AI agent risk often starts with authority mismatch: the job is narrow, but the agent can act beyond it. Audit intent against capability before production.",
-    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca01"
+    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca01",
+    "publish_trigger": "2026-09-13T02:00:00+09:00"
   },
   {
     "id": "aca-02",
