@@ -1,0 +1,23 @@
+name: Stratum Social Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/buffer-post-evidence.mjs'
+      - '.github/workflows/stratum-social-evidence.yml'
+  workflow_dispatch:
+
+jobs:
+  verify-publication:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Buffer destination evidence
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: node distribution/buffer-post-evidence.mjs
