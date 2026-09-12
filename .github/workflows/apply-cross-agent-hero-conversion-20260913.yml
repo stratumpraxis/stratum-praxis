@@ -1,0 +1,59 @@
+name: Apply Cross-Agent Hero Conversion
+
+on:
+  push:
+    paths:
+      - 'cross-agent-hero-conversion.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Shorten Cross-Agent path to checkout
+        shell: python
+        run: |
+          from pathlib import Path
+
+          page = Path('cross-agent-operating-kit.html')
+          s = page.read_text(encoding='utf-8')
+          old = '''      <div class="actions">
+        <a class="btn btn-primary" href="#pricing" data-i18n="choose_license">Choose a license</a>
+        <a class="btn btn-secondary" href="#preview" data-i18n="see_inside">See what's inside</a>
+      </div>'''
+          new = '''      <div class="actions">
+        <a class="btn btn-primary" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T" data-analytics-id="cross_agent_operating_kit_hero_personal" data-product="cross_agent_personal" data-price="69" data-currency="USD" data-location="hero"><span class="locale locale-en">Personal · $69</span><span class="locale locale-ja">Personal · $69</span><span class="locale locale-ko">Personal · $69</span><span class="locale locale-zh">Personal · $69</span></a>
+        <a class="btn btn-secondary" href="#pricing"><span class="locale locale-en">Compare licenses</span><span class="locale locale-ja">ライセンス比較</span><span class="locale locale-ko">라이선스 비교</span><span class="locale locale-zh">比较许可</span></a>
+      </div>'''
+          if old not in s:
+              raise SystemExit('Expected hero action block not found; refusing broad edit')
+          s = s.replace(old, new, 1)
+          page.write_text(s, encoding='utf-8')
+      - name: Verify checkout and license invariants
+        shell: bash
+        run: |
+          set -e
+          grep -q 'cross_agent_operating_kit_hero_personal' cross-agent-operating-kit.html
+          grep -q 'href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"' cross-agent-operating-kit.html
+          grep -q 'data-product="cross_agent_personal"' cross-agent-operating-kit.html
+          grep -q 'Compare licenses' cross-agent-operating-kit.html
+          grep -q 'href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"' cross-agent-operating-kit.html
+          grep -q 'href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"' cross-agent-operating-kit.html
+          grep -q 'id="pricing"' cross-agent-operating-kit.html
+      - name: Commit conversion-path change
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cross-agent-operating-kit.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+          else
+            git commit -m 'Shorten Cross-Agent hero path to checkout'
+            git push
+          fi
