@@ -80,6 +80,22 @@ jobs:
           fi
           echo "Paid Insights invalid-login guard OK: 400"
 
+          code="$(curl -sS -o /tmp/music-login.txt -w '%{http_code}' -X POST "$BASE/music-stock-pack-v1/login" -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com"}')"
+          if [ "$code" != '400' ]; then
+            echo "Expected 400 for invalid Music Stock Pack login, got $code"
+            cat /tmp/music-login.txt
+            exit 1
+          fi
+          echo "Music Stock Pack invalid-login guard OK: 400"
+
+          code="$(curl -sS -o /tmp/music-delivery.txt -w '%{http_code}' "$BASE/music-stock-pack-v1/delivery")"
+          if [ "$code" != '401' ]; then
+            echo "Expected 401 for Music Stock Pack delivery without buyer token, got $code"
+            cat /tmp/music-delivery.txt
+            exit 1
+          fi
+          echo "Music Stock Pack buyer-delivery guard OK: 401"
+
           code="$(curl -sS -o /tmp/stripe-webhook.txt -w '%{http_code}' -X POST "$BASE/stripe/webhook" -H 'Content-Type: application/json' --data '{}')"
           if [ "$code" != '400' ] && [ "$code" != '503' ]; then
             echo "Expected 400 (signature guard) or 503 (secret not configured) for unsigned webhook, got $code"
