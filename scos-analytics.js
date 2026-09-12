@@ -275,7 +275,7 @@
       link.style.cssText = primary
         ? 'display:inline-block;border:1px solid rgba(190,205,225,.65);border-radius:999px;padding:9px 13px;color:#080b10;text-decoration:none;background:#f5f7fb;font-weight:850'
         : 'display:inline-block;border:1px solid rgba(127,150,180,.4);border-radius:999px;padding:9px 13px;color:inherit;text-decoration:none;background:rgba(10,16,27,.5)';
-      link.addEventListener('pointerdown', function () {
+      link.addEventListener('click', function () {
         captureBeforeNavigation('network_route_click', { source_funnel: funnelId(), destination_path: href, route_id: analyticsId });
         if (analyticsId.indexOf('return_gate') >= 0) captureBeforeNavigation('return_gate_entry_click', { source_funnel: funnelId(), destination_path: href });
         if (analyticsId.indexOf('agent_lab') >= 0) captureBeforeNavigation('agent_lab_entry_click', { source_funnel: funnelId(), destination_path: href, entry_type: 'field_lab' });
@@ -402,7 +402,7 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', ready, { once: true });
   else ready();
 
-  document.addEventListener('pointerdown', function (event) {
+  document.addEventListener('click', function (event) {
     const link = event.target.closest('a[href]');
     if (!link) return;
     decorateCheckoutLink(link);
