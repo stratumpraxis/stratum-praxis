@@ -68,7 +68,10 @@ for (const channel of channels) {
   if (service === 'pinterest' && !item.imageUrl) throw new Error(`Pinterest item ${item.id} requires an approved imageUrl`);
   let metadata = '';
   if (service === 'instagram') metadata = 'metadata:{instagram:{type:post,shouldShareToFeed:true,isAiGenerated:true}},';
-  else if (service === 'pinterest') {
+  else if (service === 'tiktok') {
+    const title = String(item.title || 'AI Agent ROI Planning Check').slice(0,100);
+    metadata = `metadata:{tiktok:{title:${q(title)}}},`;
+  } else if (service === 'pinterest') {
     const detail = await gql(`query { channel(input:{id:${q(channel.id)}}){ metadata { ... on PinterestMetadata { boards { serviceId name } } } } }`);
     const boards = detail.channel?.metadata?.boards || [];
     if (boards.length !== 1) throw new Error(`Pinterest channel requires exactly one unambiguous board for autonomous posting; found ${boards.length}`);
