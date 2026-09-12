@@ -1,0 +1,11 @@
+[
+  {
+    "id": "stratum-tiktok-roi-001",
+    "active": true,
+    "services": ["tiktok"],
+    "title": "Check AI agent economics before automating",
+    "text": "Before automating a workflow with an AI agent, check the economics first. Hours saved × hourly rate is not enough. Include review time, recurring model cost, implementation cost, and realistic automation coverage.",
+    "url": "https://stratumpraxis.com/?utm_source=tiktok&utm_medium=social&utm_campaign=ai_agent_roi&utm_content=tiktok01",
+    "imageUrl": "https://stratumpraxis.com/assets/stratum-social-agent-control-1080.png"
+  }
+]
