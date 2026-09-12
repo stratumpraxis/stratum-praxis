@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mve6tm7onc24",
+  "cid": "bafyreib6p3otznft3ebsao3kt4fxwzyj67h46kvdkppxgtni5lixhl2rxy",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mve6tm7onc24",
+  "destination": "https://stratumpraxis.com/music-stock-pack-v1.html?utm_source=bluesky&utm_medium=organic&utm_campaign=music_v1",
+  "content_id": "stratum-bluesky-music-stock-pack-v1-wave1",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-09-12T23:02:48.590Z"
+}
