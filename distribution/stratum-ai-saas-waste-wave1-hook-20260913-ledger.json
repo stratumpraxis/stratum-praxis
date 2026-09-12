@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "items": {
+    "stratum-ai-saas-waste-wave1-hook-20260913": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-09-12T22:27:27.337Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789251924375-d3d262d5-dbf5-4c87-a047-994b848d2f57.mp4",
+        "postId": "6aa5d1c5130d0ea1a45e32e0",
+        "dueAt": "2026-09-12T22:27:17.140Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      },
+      "instagram": {
+        "status": "error",
+        "at": "2026-09-12T22:27:30.724Z",
+        "channelId": "6a8e5b5accaf649a671a0cd9",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789251924375-d3d262d5-dbf5-4c87-a047-994b848d2f57.mp4",
+        "postId": "6aa5d1d166679b076f193ae5",
+        "dueAt": "2026-09-12T22:27:29.602Z",
+        "sentAt": null,
+        "sharedNow": false,
+        "externalLink": null
+      }
+    }
+  }
+}
