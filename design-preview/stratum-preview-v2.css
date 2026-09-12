@@ -2,9 +2,12 @@
 @import url('/stratum-command-v7.css?v=20260913b');
 @import url('/stratum-command-v8.css?v=20260913c');
 @import url('/stratum-premium-experience-v9.css?v=20260913d');
+@import url('/stratum-hub-gateway-v10.css?v=20260913e');
 
-/* Production loader — Premium Product Experience v9 owns the current presentation layer.
+/* Production loader — Stratum Hub Gateway v10 owns the current HOME presentation.
    v6 = stable mobile structure, v7 = interaction/visual foundation,
-   v8 = Level 10 decision compression, v9 = premium visual/motion/data integration.
-   Legacy cinematic/v4/v5 layers remain intentionally excluded.
+   v8 = decision compression, v9 = premium visual/motion/data integration,
+   v10 = total-entry gateway specialization.
+   Live Lab and Product Router intentionally keep independent UI systems.
+   Legacy cinematic/v4/v5 layers remain excluded.
    Revenue routes, prices, checkout destinations, product IDs and analytics remain unchanged. */
