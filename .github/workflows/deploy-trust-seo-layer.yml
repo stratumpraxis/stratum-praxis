@@ -61,7 +61,7 @@ jobs:
 
           pump_links = {
               'core': [('Free tools','/live-lab.html'),('Revenue routes','/product-router.html'),('Evidence standard','/evidence.html')],
-              'spend': [('Waste Calculator','/ai-saas-waste-calculator.html'),('Audit Checklist','/ai-saas-spend-audit-checklist.html'),('Value Kit','/ai-value-realization-kit.html'),('Spend Audit','/ai-saas-spend-waste-audit.html')],
+              'spend': [('Waste Calculator','/ai-saas-waste-calculator.html'),('Audit Checklist','/ai-saas-spend-audit-checklist.html'),('Decision Kit','/ai-saas-spend-decision-kit.html'),('Spend Audit','/ai-saas-spend-waste-audit.html')],
               'workflow': [('Workflow Diagnostic','/b2b/'),('Sample Audit','/sample-workflow-audit.html'),('Workflow Audit','/workflow-audit.html'),('Evidence standard','/evidence.html')],
               'agent': [('Agent Economics','/ai-agent-economics-calculator.html'),('Control Auditor','/agent-control-auditor.html'),('Operating Kit','/cross-agent-operating-kit.html'),('Evidence standard','/evidence.html')],
               'revenue': [('Revenue Pump','/revenue-pump/'),('Auto Scan','/revenue-pump/auto/'),('Revenue Routes','/product-router.html'),('Evidence standard','/evidence.html')],
@@ -153,6 +153,8 @@ jobs:
           grep -Fq 'revenue-pump' _site/sitemap.xml
           grep -Fq '/systems/' _site/sitemap.xml
           grep -Fq '/evidence.html' _site/sitemap.xml
+          grep -Fq '/ai-saas-spend-decision-kit.html' _site/sitemap.xml
+          ! grep -Fq '/ai-value-realization-kit.html' _site/sitemap.xml
           ! grep -Fq 'buyer-workspace' _site/sitemap.xml
           ! grep -Fq 'cross-agent-operating-kit-access' _site/sitemap.xml
 
@@ -177,7 +179,7 @@ jobs:
           BASE="${TRUST_SEO_BASE:?Missing trust SEO deployment URL}"
           routes=(
             / /evidence.html /live-lab.html /product-router.html /systems/
-            /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-value-realization-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html
+            /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-saas-spend-decision-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html
             /b2b/ /sample-workflow-audit.html /workflow-audit.html
             /ai-agent-economics-calculator.html /agent-control-auditor.html /cross-agent-operating-kit.html
             /revenue-pump/ /revenue-pump/auto/ /money-resilience/ /72-hour-household-readiness/
@@ -197,6 +199,8 @@ jobs:
           grep -Fq 'https://stratumpraxis.com/evidence.html' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/money-resilience/' /tmp/sitemap.xml
           grep -Fq 'https://stratumpraxis.com/revenue-pump/' /tmp/sitemap.xml
+          grep -Fq 'https://stratumpraxis.com/ai-saas-spend-decision-kit.html' /tmp/sitemap.xml
+          ! grep -Fq 'https://stratumpraxis.com/ai-value-realization-kit.html' /tmp/sitemap.xml
           ! grep -Fq 'buyer-workspace' /tmp/sitemap.xml
 
           curl -L -sS "$BASE/robots.txt" -o /tmp/robots.txt
