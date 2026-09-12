@@ -61,7 +61,7 @@ jobs:
           grep -F 'One operating policy.' cross-agent-operating-kit.html
           grep -F 'Get Personal Kit · $69' cross-agent-operating-kit.html
           grep -F 'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T' cross-agent-operating-kit.html
-          grep -F "choose_license: { en:'Get Personal Kit · $69'" cross-agent-attribution.js
+          grep -F "choose_license: { en:'Get Personal Kit · \$69'" cross-agent-attribution.js
 
       - name: Commit focused conversion change
         run: |
