@@ -1,5 +1,8 @@
 {
-  "used_ids": ["aca-01"],
-  "last_used_at": "2026-08-30T03:13:14.414Z",
-  "last_used_id": "aca-01"
+  "used_ids": [
+    "aca-01",
+    "stratum-roi-igtt-20260913-02"
+  ],
+  "last_used_at": "2026-09-12T18:21:04.326Z",
+  "last_used_id": "stratum-roi-igtt-20260913-02"
 }

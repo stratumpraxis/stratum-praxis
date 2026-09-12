@@ -1,13 +1,14 @@
 [
   {
-    "id": "aca-02",
+    "id": "stratum-roi-igtt-20260913-02",
     "active": true,
     "services": [
-      "bluesky",
-      "threads",
-      "linkedin"
+      "instagram",
+      "tiktok"
     ],
-    "text": "Give every AI agent an authority ceiling: what it may read, recommend, execute, and when a human must step in. Audit that boundary before deployment.",
-    "url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=buffer&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=aca02"
+    "text": "Before automating an AI workflow, compare task volume, human review, recurring model cost, implementation cost, and realistic coverage. Use the ROI calculator to plan.",
+    "url": "https://stratumpraxis.com/?utm_source=social&utm_medium=organic&utm_campaign=ai_agent_roi&utm_content=roi_igtt_20260913",
+    "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/stratum-social-publish-roi/public/media/stratum-roi-social.png",
+    "publish_trigger": "2026-09-13T03:11:00+09:00"
   }
 ]
