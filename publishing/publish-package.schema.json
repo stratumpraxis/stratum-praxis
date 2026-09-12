@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Stratum Publish Package",
+  "type": "object",
+  "required": ["brand", "content_id", "platform", "hook", "cta", "destination", "status"],
+  "properties": {
+    "brand": {"const": "Stratum"},
+    "content_id": {"type": "string"},
+    "source_asset": {"type": ["string", "null"]},
+    "buyer": {"type": ["string", "null"]},
+    "platform": {"type": "string"},
+    "hook": {"type": "string"},
+    "body": {"type": "string"},
+    "visual": {"type": ["string", "null"]},
+    "video": {"type": ["string", "null"]},
+    "cta": {"type": "string"},
+    "destination": {"type": "string"},
+    "utm": {"type": ["string", "null"]},
+    "status": {"enum": ["DRAFT", "VALIDATED", "QUEUED", "SUBMITTED", "PUBLISHED", "FAILED", "MANUAL_GATE"]},
+    "post_id": {"type": ["string", "null"]},
+    "public_url": {"type": ["string", "null"]},
+    "published_at": {"type": ["string", "null"]},
+    "evidence": {
+      "type": "object",
+      "properties": {
+        "platform_accepted": {"type": "boolean"},
+        "account_verified": {"type": "boolean"},
+        "destination_verified": {"type": "boolean"},
+        "cta_verified": {"type": "boolean"},
+        "qualified_traffic": {"type": ["number", "null"]},
+        "qualified_buyer_action": {"type": ["number", "null"]},
+        "checkout_or_contract": {"type": ["number", "null"]},
+        "payment": {"type": ["number", "null"]}
+      }
+    }
+  }
+}
