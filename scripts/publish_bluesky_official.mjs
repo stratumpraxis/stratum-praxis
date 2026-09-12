@@ -10,8 +10,8 @@ if (pkg.brand !== 'Stratum') fail('BRAND_CHECK failed');
 if ((pkg.platform || '').toLowerCase() !== 'bluesky') fail('CHANNEL_CHECK failed');
 if (!pkg.destination || !pkg.cta || !pkg.text) fail('DESTINATION/CTA/content missing');
 
-const identifier = process.env.BSKY_IDENTIFIER;
-const appPassword = process.env.BSKY_APP_PASSWORD;
+const identifier = (process.env.BSKY_IDENTIFIER || '').trim();
+const appPassword = (process.env.BSKY_APP_PASSWORD || '').trim();
 if (!identifier || !appPassword) fail('Bluesky credentials missing');
 if (!pkg.account_handle) fail('ACCOUNT_CHECK: account_handle missing');
 if (pkg.account_handle.toLowerCase() !== identifier.toLowerCase()) fail('ACCOUNT_CHECK: package handle does not match authenticated handle');
@@ -20,7 +20,12 @@ const login = await fetch('https://bsky.social/xrpc/com.atproto.server.createSes
   method: 'POST', headers: {'content-type':'application/json'},
   body: JSON.stringify({identifier, password: appPassword})
 });
-if (!login.ok) fail(`OAuth/session failed ${login.status}`);
+if (!login.ok) {
+  let detail = '';
+  try { detail = await login.text(); } catch {}
+  const safeDetail = detail.replace(/\s+/g, ' ').slice(0, 300);
+  fail(`OAuth/session failed ${login.status}${safeDetail ? `: ${safeDetail}` : ''}`);
+}
 const session = await login.json();
 
 const now = new Date().toISOString();
