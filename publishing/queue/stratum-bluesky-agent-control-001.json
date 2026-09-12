@@ -3,9 +3,9 @@
   "content_id": "stratum-bluesky-agent-control-001",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "AI agent risk often starts with authority mismatch: the job is narrow, but the agent can act beyond it. Audit intent against capability before production.",
+  "text": "AI agent risk often starts with authority mismatch. Audit intent against capability before production.",
   "hook": "Audit intent against capability before production.",
   "cta": "Run the Agent Control Auditor",
-  "destination": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=bluesky&utm_medium=social&utm_campaign=agent_control_auditor&utm_content=stratum_bluesky_001",
+  "destination": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=bluesky&utm_medium=social&utm_campaign=aca&utm_content=bsky01",
   "status": "QUEUED"
 }
