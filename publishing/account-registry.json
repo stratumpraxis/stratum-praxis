@@ -1,0 +1,63 @@
+{
+  "brand": "Stratum Praxis",
+  "official_site": "https://stratumpraxis.com/",
+  "accounts": [
+    {
+      "platform": "bluesky",
+      "handle": "stratumpraxis.bsky.social",
+      "profile_url": "https://bsky.app/profile/stratumpraxis.bsky.social",
+      "identity_state": "VERIFIED",
+      "publishing_state": "ENABLED"
+    },
+    {
+      "platform": "instagram",
+      "handle": "praxisstratum",
+      "profile_url": "https://www.instagram.com/praxisstratum",
+      "identity_state": "VERIFIED",
+      "publishing_state": "ENABLED"
+    },
+    {
+      "platform": "tiktok",
+      "handle": "stratumpraxis",
+      "profile_url": null,
+      "identity_state": "CONNECTED_HANDLE_VERIFIED",
+      "publishing_state": "ENABLED_AFTER_PROFILE_URL_VERIFY"
+    },
+    {
+      "platform": "pinterest",
+      "handle": "stratumpraxis",
+      "profile_url": null,
+      "identity_state": "CONNECTED_HANDLE_VERIFIED",
+      "publishing_state": "ENABLED_AFTER_PROFILE_URL_VERIFY"
+    },
+    {
+      "platform": "x",
+      "handle": "stratumpraxis",
+      "profile_url": null,
+      "identity_state": "BANNED",
+      "publishing_state": "DISABLED"
+    },
+    {
+      "platform": "facebook",
+      "handle": null,
+      "profile_url": null,
+      "identity_state": "RECHECK",
+      "publishing_state": "DISABLED_UNTIL_VERIFIED"
+    },
+    {
+      "platform": "linkedin",
+      "handle": null,
+      "profile_url": null,
+      "identity_state": "RECHECK",
+      "publishing_state": "DISABLED_UNTIL_VERIFIED"
+    }
+  ],
+  "forbidden_substitutes": [
+    "Vector Praxis",
+    "GWR",
+    "Forwelle",
+    "MARKET common account",
+    "Arven"
+  ],
+  "completion_rule": "PUBLISHED requires verified Stratum account + platform acceptance + post_id + public_url"
+}
