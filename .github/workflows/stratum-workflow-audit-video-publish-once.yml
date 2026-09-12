@@ -48,6 +48,9 @@ jobs:
           console.log('STRATUM_PREFLIGHT=PASS');
           NODE
 
+      - name: Install media QA runtime
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
       - name: Verify public MP4 before Buffer
         run: |
           set -euo pipefail
