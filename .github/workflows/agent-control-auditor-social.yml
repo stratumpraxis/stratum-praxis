@@ -1,5 +1,5 @@
 name: Agent Control Auditor Social
-# launch-marker: 2026-08-30-c
+# launch-marker: 2026-09-13-stratum-direct-publish
 
 on:
   push:
@@ -9,6 +9,7 @@ on:
       - 'distribution/triple-review.mjs'
       - 'distribution/social-writer.mjs'
       - 'distribution/fallback-selector.mjs'
+      - 'distribution/buffer-publisher.mjs'
       - '.github/workflows/agent-control-auditor-social.yml'
   schedule:
     - cron: '47 2 * * *'
@@ -64,13 +65,15 @@ jobs:
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
         run: node distribution/safety-audit.mjs
 
-      - name: Publish one reviewed post through Buffer
+      - name: Publish one reviewed post through verified Stratum channels
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: ${{ vars.BUFFER_TARGET_SERVICES }}
           BUFFER_QUEUE_FILE: agent-control-auditor-generated-queue.json
           BUFFER_SELECT_MODE: first
+          BUFFER_POST_MODE: shareNow
           REQUIRE_ELIGIBLE_CHANNELS: '1'
+          REQUIRE_CHANNEL_NAME_CONTAINS: Stratum
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
