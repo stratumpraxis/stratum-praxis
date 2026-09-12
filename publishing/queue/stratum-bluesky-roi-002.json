@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-roi-002",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Before automating a workflow with an AI agent, check the economics first. Hours saved × hourly rate is not enough.",
+  "hook": "Check the economics before automating.",
+  "cta": "Run the free AI Agent ROI Calculator",
+  "destination": "https://icy-scene-001e.practicalaireport.workers.dev/?utm_source=bluesky&utm_medium=social&utm_campaign=roi&utm_content=bsky02",
+  "status": "QUEUED"
+}
