@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mve5wcyjm72t",
+  "cid": "bafyreidmlae3kcz2j6vlcr4gbvamcj3tcrc3tyavmq23gvsopnihfw6dni",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mve5wcyjm72t",
+  "destination": "https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=bsky&utm_medium=video&utm_campaign=wave1c",
+  "content_id": "stratum-bluesky-spend-video-wave1c",
+  "media_type": "video",
+  "video_bytes": 549487,
+  "published_at": "2026-09-12T22:46:25.677Z"
+}
