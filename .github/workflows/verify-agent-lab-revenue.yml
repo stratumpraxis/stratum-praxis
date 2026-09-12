@@ -1,4 +1,5 @@
 name: Verify Agent Lab Revenue Loop
+# Production QA runs after Agent Lab checkout-stack changes.
 
 on:
   push:
