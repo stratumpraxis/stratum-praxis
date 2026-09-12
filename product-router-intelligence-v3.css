@@ -1,0 +1,58 @@
+/* Stratum Product Router — Decision Intelligence v3
+   Role: judgment + product selection. Intentionally distinct from Hub and Live Lab. */
+
+body[data-page="revenue_route_os_v2"]{--router-ink:#101513;--router-paper:#f1efe7;--router-night:#0c1311;--router-signal:#b7ff5a;--router-teal:#7dbba5;--router-warm:#f0a076;--router-violet:#a99fff}
+
+/* Decision brief sits between route selection and offers: Value + Evidence + Cost + Risk + Next Action. */
+body[data-page="revenue_route_os_v2"] .route-decision-brief{display:grid;grid-template-columns:minmax(230px,.8fr) minmax(0,1.8fr) auto;gap:18px;align-items:center;margin:12px 0 0;padding:18px;border:1px solid rgba(16,21,19,.12);border-radius:13px;background:#e7e4da}
+body[data-page="revenue_route_os_v2"] .route-decision-brief>div:first-child small{display:block;color:#66766f;font-size:7px;font-weight:850;letter-spacing:.13em}
+body[data-page="revenue_route_os_v2"] .route-decision-brief>div:first-child strong{display:block;margin-top:7px;color:#111816;font-size:19px;line-height:1;letter-spacing:-.035em}
+body[data-page="revenue_route_os_v2"] .brief-signals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;border:1px solid rgba(16,21,19,.1);border-radius:9px;overflow:hidden;background:rgba(16,21,19,.09)}
+body[data-page="revenue_route_os_v2"] .brief-signals>div{min-height:58px;padding:10px;background:#f5f2e9}
+body[data-page="revenue_route_os_v2"] .brief-signals small{display:block;color:#7b8881;font-size:6.5px;font-weight:850;letter-spacing:.1em}
+body[data-page="revenue_route_os_v2"] .brief-signals b{display:block;margin-top:5px;color:#17201d;font-size:9px;line-height:1.25}
+body[data-page="revenue_route_os_v2"] .brief-actions{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+body[data-page="revenue_route_os_v2"] .brief-actions a,body[data-page="revenue_route_os_v2"] .brief-actions button{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 12px;border:1px solid #18211d;border-radius:8px;background:#111816;color:#f5f3eb;font:850 8px/1 inherit;text-decoration:none;cursor:pointer}
+body[data-page="revenue_route_os_v2"] .brief-actions .brief-primary{background:var(--router-signal);color:#0b100f;border-color:var(--router-signal)}
+
+/* Cross-route comparison is intentionally compact and on demand. */
+body[data-page="revenue_route_os_v2"] .route-compare-panel{display:none;margin-top:10px;border:1px solid #18211d;border-radius:13px;overflow:hidden;background:#18211d}
+body[data-page="revenue_route_os_v2"] .route-compare-panel.is-open{display:block}
+body[data-page="revenue_route_os_v2"] .route-compare-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;background:#111816;color:#f5f3eb}
+body[data-page="revenue_route_os_v2"] .route-compare-head small{font-size:7px;font-weight:850;letter-spacing:.12em;color:#84948c}
+body[data-page="revenue_route_os_v2"] .route-compare-head button{border:0;background:transparent;color:#a7b4ae;font:800 9px/1 inherit;cursor:pointer}
+body[data-page="revenue_route_os_v2"] .route-compare-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#18211d}
+body[data-page="revenue_route_os_v2"] .route-compare-card{display:grid;grid-template-rows:auto auto 1fr auto;min-height:230px;padding:18px;background:#f8f6ef;color:#111714}
+body[data-page="revenue_route_os_v2"] .route-compare-card.is-recommended{background:#eef3e9;box-shadow:inset 0 3px var(--router-signal)}
+body[data-page="revenue_route_os_v2"] .route-compare-card>small{color:#687870;font-size:7px;font-weight:850;letter-spacing:.1em}
+body[data-page="revenue_route_os_v2"] .route-compare-card h3{margin:8px 0;color:#111714;font-size:21px;line-height:1;letter-spacing:-.04em}
+body[data-page="revenue_route_os_v2"] .route-compare-list{display:grid;gap:7px;margin:7px 0 13px;padding:0;list-style:none}
+body[data-page="revenue_route_os_v2"] .route-compare-list li{display:grid;grid-template-columns:70px 1fr;gap:8px;color:#5e6c65;font-size:8px;line-height:1.4}
+body[data-page="revenue_route_os_v2"] .route-compare-list li span{color:#87938e;font-weight:800}
+body[data-page="revenue_route_os_v2"] .route-compare-card button{min-height:40px;border:1px solid rgba(16,21,19,.12);border-radius:8px;background:#111816;color:#f5f3eb;font:850 8px/1 inherit;cursor:pointer}
+body[data-page="revenue_route_os_v2"] .route-compare-card.is-recommended button{background:#17201d;color:var(--router-signal)}
+
+/* Explicit-continuity hint: only based on a route the visitor actually chose. */
+body[data-page="revenue_route_os_v2"] .route-context-note{display:none;align-items:center;gap:8px;margin:0 0 10px;padding:9px 11px;border:1px solid rgba(183,255,90,.18);border-radius:9px;background:rgba(183,255,90,.06);color:#4c6658;font-size:8px;font-weight:780}
+body[data-page="revenue_route_os_v2"] .route-context-note.is-visible{display:flex}
+body[data-page="revenue_route_os_v2"] .route-context-note i{width:6px;height:6px;border-radius:50%;background:#5e8a70;box-shadow:0 0 0 5px rgba(94,138,112,.08)}
+
+/* More legible active route without adding glow everywhere. */
+body[data-page="revenue_route_os_v2"] .route-tab[aria-selected="true"]{position:relative}
+body[data-page="revenue_route_os_v2"] .route-tab[aria-selected="true"]::before{content:"RECOMMENDED ROUTE";position:absolute;right:10px;top:9px;color:#789087;font-size:5.5px;font-weight:900;letter-spacing:.09em}
+body[data-page="revenue_route_os_v2"] .route-view.active .route-context{border-color:rgba(16,21,19,.1)}
+
+@media(max-width:980px){
+  body[data-page="revenue_route_os_v2"] .route-decision-brief{grid-template-columns:1fr}
+  body[data-page="revenue_route_os_v2"] .brief-actions{justify-content:flex-start}
+}
+@media(max-width:760px){
+  body[data-page="revenue_route_os_v2"] .route-decision-brief{padding:12px;border-radius:11px}
+  body[data-page="revenue_route_os_v2"] .brief-signals{grid-template-columns:repeat(2,minmax(0,1fr))}
+  body[data-page="revenue_route_os_v2"] .route-compare-grid{grid-template-columns:1fr}
+  body[data-page="revenue_route_os_v2"] .route-compare-card{min-height:0}
+  body[data-page="revenue_route_os_v2"] .route-compare-list li{grid-template-columns:62px 1fr}
+}
+@media(prefers-reduced-motion:reduce){
+  body[data-page="revenue_route_os_v2"] .route-decision-brief *,body[data-page="revenue_route_os_v2"] .route-compare-panel *{transition:none!important;scroll-behavior:auto!important}
+}
