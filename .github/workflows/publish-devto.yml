@@ -1,0 +1,53 @@
+name: Publish Stratum Articles to DEV.to
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/ghost/*.md'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 13 * * *'
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    env:
+      DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+      CANONICAL_BASE_URL: ${{ secrets.GHOST_PUBLIC_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check DEV.to connection
+        id: ready
+        shell: bash
+        run: |
+          if [ -n "$DEVTO_API_KEY" ]; then
+            echo 'ready=true' >> "$GITHUB_OUTPUT"
+            echo 'DEVTO_CONNECTION=PRESENT'
+          else
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            echo 'DEVTO_CONNECTION=MISSING — safe skip'
+          fi
+
+      - name: Setup Node
+        if: steps.ready.outputs.ready == 'true'
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Publish Stratum article queue to DEV.to
+        if: steps.ready.outputs.ready == 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS= read -r -d '' file; do
+            echo "Publishing $file"
+            PUBLISH_SOURCE_PATH="$file" node scripts/publish_devto_post.mjs
+            count=$((count+1))
+          done < <(find content/ghost -type f -name '*.md' -print0 | sort -z)
+          echo "DEVTO_SOURCE_COUNT=$count"
