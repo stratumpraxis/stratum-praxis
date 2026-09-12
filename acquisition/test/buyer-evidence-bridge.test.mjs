@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 
 import {
   appendCheckoutSessionToBuyerLedger,
-  buyerReactionFromCheckoutSession
+  appendCheckoutStageToBuyerLedger,
+  buyerReactionFromCheckoutSession,
+  checkoutReactionFromCheckoutSession
 } from '../lib/buyer-evidence-bridge.mjs';
 
 const created = Math.floor(Date.parse('2026-09-13T00:00:00.000Z') / 1000);
@@ -34,6 +36,44 @@ function paidSession(overrides = {}) {
   };
 }
 
+test('a real attributed Stripe Checkout Session proves checkout before payment', () => {
+  const decision = checkoutReactionFromCheckoutSession(paidSession({
+    payment_status: 'unpaid',
+    payment_intent: null,
+    status: 'open'
+  }));
+  assert.equal(decision.accepted, true);
+  assert.equal(decision.reason, 'VERIFIED_CHECKOUT_EVIDENCE');
+  assert.equal(decision.reaction.stage, 'checkout');
+  assert.equal(decision.reaction.revenue_distance, 2);
+  assert.equal(decision.reaction.evidence_ref, 'stripe-session:cs_test_paid_1');
+  assert.equal(decision.reaction.evidence_source, 'stripe-checkout-session');
+});
+
+test('checkout stage requires one-time mode, attribution, buyer key and time', () => {
+  assert.equal(checkoutReactionFromCheckoutSession(paidSession({ mode: 'subscription' })).accepted, false);
+  assert.equal(checkoutReactionFromCheckoutSession(paidSession({
+    metadata: { attribution_route_id: undefined },
+    client_reference_id: null
+  })).reason, 'ATTRIBUTED_ROUTE_MISSING');
+  assert.equal(checkoutReactionFromCheckoutSession(paidSession({ customer: null })).reason, 'OPAQUE_BUYER_KEY_MISSING');
+  assert.equal(checkoutReactionFromCheckoutSession(paidSession({ created: null })).reason, 'CHECKOUT_TIME_MISSING');
+});
+
+test('checkout-stage append is idempotent and stays distinct from payment evidence', () => {
+  let result = appendCheckoutStageToBuyerLedger({ version: 1, records: [] }, paidSession());
+  assert.equal(result.accepted, true);
+  assert.equal(result.ledger.records.length, 1);
+  result = appendCheckoutStageToBuyerLedger(result.ledger, paidSession());
+  assert.equal(result.ledger.records.length, 1);
+  assert.equal(result.ledger.records[0].event_id, 'stripe-checkout-stage:cs_test_paid_1');
+
+  const paid = appendCheckoutSessionToBuyerLedger(result.ledger, paidSession());
+  assert.equal(paid.ledger.records.length, 2);
+  assert.equal(paid.ledger.records.some((record) => record.stage === 'checkout'), true);
+  assert.equal(paid.ledger.records.some((record) => record.stage === 'payment_evidence'), true);
+});
+
 test('a verified paid Stripe Checkout Session becomes payment evidence at distance zero', () => {
   const decision = buyerReactionFromCheckoutSession(paidSession());
   assert.equal(decision.accepted, true);
@@ -57,7 +97,7 @@ test('explicit opaque buyer metadata takes precedence over Stripe customer id', 
   assert.equal(decision.reaction.buyer_key, 'buyer:account-42');
 });
 
-test('unpaid, subscription-mode or unattributed sessions never enter the buyer ledger', () => {
+test('unpaid, subscription-mode or unattributed sessions never become payment evidence', () => {
   assert.equal(buyerReactionFromCheckoutSession(paidSession({ payment_status: 'unpaid' })).accepted, false);
   assert.equal(buyerReactionFromCheckoutSession(paidSession({ mode: 'subscription' })).accepted, false);
   assert.equal(buyerReactionFromCheckoutSession(paidSession({
@@ -88,7 +128,7 @@ test('payment time is required rather than invented', () => {
   assert.equal(decision.reason, 'PAYMENT_TIME_MISSING');
 });
 
-test('append is idempotent for a repeated Stripe session', () => {
+test('append is idempotent for a repeated paid Stripe session', () => {
   let result = appendCheckoutSessionToBuyerLedger({ version: 1, records: [] }, paidSession());
   assert.equal(result.accepted, true);
   assert.equal(result.ledger.records.length, 1);
@@ -99,7 +139,7 @@ test('append is idempotent for a repeated Stripe session', () => {
   assert.equal(result.ledger.records[0].event_id, 'stripe-checkout:cs_test_paid_1');
 });
 
-test('rejected sessions leave the ledger byte-for-byte equivalent in data shape', () => {
+test('rejected payment sessions leave the ledger byte-for-byte equivalent in data shape', () => {
   const ledger = { version: 1, records: [] };
   const result = appendCheckoutSessionToBuyerLedger(ledger, paidSession({ payment_status: 'unpaid' }));
   assert.equal(result.accepted, false);
