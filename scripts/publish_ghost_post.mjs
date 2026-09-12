@@ -1,15 +1,25 @@
 import fs from 'node:fs';
+import path from 'node:path';
 import crypto from 'node:crypto';
 import { marked } from 'marked';
 
 const apiUrl = process.env.GHOST_ADMIN_API_URL?.replace(/\/$/, '');
 const adminKey = process.env.GHOST_ADMIN_API_KEY;
-const sourcePath = process.env.GHOST_SOURCE_PATH || 'content/ghost/ai-is-not-your-bottleneck.md';
-const slug = process.env.GHOST_POST_SLUG || 'ai-is-not-your-bottleneck';
+const sourcePath = process.env.GHOST_SOURCE_PATH;
 
 if (!apiUrl || !adminKey) {
   throw new Error('Missing GHOST_ADMIN_API_URL or GHOST_ADMIN_API_KEY');
 }
+if (!sourcePath) {
+  throw new Error('Missing GHOST_SOURCE_PATH');
+}
+if (!fs.existsSync(sourcePath)) {
+  throw new Error(`Ghost source not found: ${sourcePath}`);
+}
+
+const slug = (process.env.GHOST_POST_SLUG || path.basename(sourcePath, path.extname(sourcePath)))
+  .trim()
+  .toLowerCase();
 
 const [keyId, keySecret] = adminKey.split(':');
 if (!keyId || !keySecret) throw new Error('Invalid Ghost Admin API key format');
@@ -24,8 +34,22 @@ const token = `${unsigned}.${signature}`;
 
 const markdown = fs.readFileSync(sourcePath, 'utf8').trim();
 const lines = markdown.split('\n');
-const title = lines[0].replace(/^#\s+/, '').trim();
-const bodyMarkdown = lines.slice(1).join('\n').trim();
+const firstHeading = lines.findIndex((line) => /^#\s+/.test(line));
+const titleIndex = firstHeading >= 0 ? firstHeading : 0;
+const title = lines[titleIndex].replace(/^#\s+/, '').trim();
+if (!title) throw new Error(`Missing article title in ${sourcePath}`);
+
+const bodyMarkdown = lines.filter((_, index) => index !== titleIndex).join('\n').trim();
+const plainBody = bodyMarkdown
+  .replace(/```[\s\S]*?```/g, ' ')
+  .replace(/`([^`]+)`/g, '$1')
+  .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
+  .replace(/\[([^\]]+)\]\([^)]*\)/g, '$1')
+  .replace(/^#{1,6}\s+/gm, '')
+  .replace(/[>*_~#-]/g, ' ')
+  .replace(/\s+/g, ' ')
+  .trim();
+const excerpt = plainBody.slice(0, 240) || title;
 
 const revenueCta = slug === 'ai-is-not-your-bottleneck'
   ? `
@@ -38,8 +62,6 @@ const revenueCta = slug === 'ai-is-not-your-bottleneck'
   : '';
 
 const html = `${marked.parse(bodyMarkdown)}${revenueCta}`;
-const excerpt = 'AI can now produce more work than many organizations can absorb. The next competitive advantage is not generation. It is organizational throughput.';
-
 const headers = {
   Authorization: `Ghost ${token}`,
   'Accept-Version': 'v5.0',
@@ -84,6 +106,14 @@ if (!response.ok) {
 
 const data = await response.json();
 const published = data.posts?.[0];
-console.log(`GHOST_PUBLIC_URL=${published?.url || `${apiUrl}/${slug}/`}`);
-console.log(`GHOST_POST_ID=${published?.id || ''}`);
-console.log(`GHOST_STATUS=${published?.status || 'published'}`);
+const evidence = {
+  source: sourcePath,
+  slug,
+  id: published?.id || null,
+  status: published?.status || 'published',
+  url: published?.url || `${apiUrl}/${slug}/`,
+  published_at: published?.published_at || null,
+  checked_at: new Date().toISOString()
+};
+console.log(`GHOST_EVIDENCE=${JSON.stringify(evidence)}`);
+console.log(`GHOST_PUBLIC_URL=${evidence.url}`);
