@@ -6,6 +6,7 @@ on:
     paths:
       - '.github/workflows/indexnow-signal.yml'
       - 'signal/**'
+      - 'cross-agent-operating-kit.html'
       - 'ai-council-builder.html'
       - 'ai-council-builder-ja.html'
       - 'smartphone-income-blueprint.html'
@@ -47,6 +48,7 @@ jobs:
               "keyLocation":"https://stratumpraxis.com/54b81c12e07af0e37b6ab0ac24469586.txt",
               "urlList":[
                 "https://stratumpraxis.com/",
+                "https://stratumpraxis.com/cross-agent-operating-kit.html",
                 "https://stratumpraxis.com/return-gate/",
                 "https://stratumpraxis.com/return-gate/en/",
                 "https://stratumpraxis.com/social-revenue-pathfinder.html",
