@@ -1,0 +1,82 @@
+name: Apply AI Agent ROI Inbound P0
+
+on:
+  push:
+    paths:
+      - 'agent-roi-inbound-p0.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Prioritize proven AI agent ROI inbound route
+        shell: python
+        run: |
+          from pathlib import Path
+
+          page = Path('ai-agent-cost-roi-calculator.html')
+          s = page.read_text(encoding='utf-8')
+          s = s.replace(
+              '<title>AI Agent Cost & ROI Calculator 2026 | Payback, Human Review & Run Cost</title>',
+              '<title>AI Agent Cost & ROI Calculator 2026 | Payback & Run Cost</title>'
+          )
+          s = s.replace(
+              '<meta name="description" content="Free AI agent cost and ROI calculator for 2026. Estimate monthly savings, human-review overhead, run cost, payback period and first-year ROI before approving an AI agent project.">',
+              '<meta name="description" content="Free AI agent cost and ROI calculator. Estimate run cost, human review, payback and first-year ROI before approving an agent project.">'
+          )
+          s = s.replace(
+              '<a href="mailto:stratumpraxis@gmail.com">Contact</a>',
+              '<a href="ai-saas-spend-decision-kit.html">$39 Decision Kit</a>'
+          )
+          page.write_text(s, encoding='utf-8')
+
+          home = Path('index.html')
+          h = home.read_text(encoding='utf-8')
+          h = h.replace(
+              'href="/ai-agent-economics-calculator.html" data-analytics-id="inbound_agent_economics" data-product="agent_economics"',
+              'href="/ai-agent-cost-roi-calculator.html" data-analytics-id="inbound_agent_cost_roi" data-product="agent_cost_roi"',
+              1
+          )
+          h = h.replace(
+              '<span>For teams already estimating model, retry, tooling, failure, and human-review costs.</span><em>Calculate cost per successful outcome →</em>',
+              '<span>For teams deciding whether agent run cost, review overhead and payback justify approval.</span><em>Calculate AI agent cost & ROI →</em>',
+              1
+          )
+          home.write_text(h, encoding='utf-8')
+
+          guide = Path('guides/ai-agent-economics-governance.html')
+          g = guide.read_text(encoding='utf-8')
+          g = g.replace(
+              '<a href="/ai-agent-economics-calculator.html"><b>FREE · 01</b>Model economics</a>',
+              '<a href="/ai-agent-cost-roi-calculator.html"><b>FREE · 01</b>Model cost & ROI</a>',
+              1
+          )
+          guide.write_text(g, encoding='utf-8')
+      - name: Verify revenue and SEO invariants
+        shell: bash
+        run: |
+          set -e
+          grep -q 'AI Agent Cost & ROI Calculator 2026 | Payback & Run Cost' ai-agent-cost-roi-calculator.html
+          grep -q 'ai_agent_cost_roi_calculator_checkout_1' ai-agent-cost-roi-calculator.html
+          grep -q 'buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' ai-agent-cost-roi-calculator.html
+          ! grep -q 'mailto:stratumpraxis@gmail.com' ai-agent-cost-roi-calculator.html
+          grep -q 'inbound_agent_cost_roi' index.html
+          grep -q '/ai-agent-cost-roi-calculator.html' guides/ai-agent-economics-governance.html
+      - name: Commit P0 inbound optimization
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html ai-agent-cost-roi-calculator.html guides/ai-agent-economics-governance.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+          else
+            git commit -m 'Prioritize AI agent ROI inbound revenue route'
+            git push
+          fi
