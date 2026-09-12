@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-09-12T22:30:58.084Z",
+  "checked_at": "2026-09-12T22:32:25.338Z",
   "route_id": "stratum_ai_saas_waste_wave1_hook",
   "channels": {
     "tiktok": [
@@ -9,7 +9,8 @@
         "dueAt": "2026-09-12T22:28:33.235Z",
         "status": "sent",
         "sentAt": "2026-09-12T22:30:22.519Z",
-        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684779282341874964"
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684779282341874964",
+        "error": null
       },
       {
         "id": "6aa5d1c5130d0ea1a45e32e0",
@@ -17,7 +18,8 @@
         "dueAt": "2026-09-12T22:27:17.140Z",
         "status": "sent",
         "sentAt": "2026-09-12T22:29:00.204Z",
-        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684778984176880916"
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684778984176880916",
+        "error": null
       }
     ],
     "instagram": [
@@ -27,7 +29,12 @@
         "dueAt": "2026-09-12T22:28:45.615Z",
         "status": "error",
         "sentAt": null,
-        "externalLink": null
+        "externalLink": null,
+        "error": {
+          "message": "It looks like Buffer has lost authorization to post on your behalf. Please refresh your channel to resume scheduling.",
+          "rawError": "Invalid Credentials",
+          "supportUrl": null
+        }
       },
       {
         "id": "6aa5d1d166679b076f193ae5",
@@ -35,7 +42,12 @@
         "dueAt": "2026-09-12T22:27:29.602Z",
         "status": "error",
         "sentAt": null,
-        "externalLink": null
+        "externalLink": null,
+        "error": {
+          "message": "It looks like Buffer has lost authorization to post on your behalf. Please refresh your channel to resume scheduling.",
+          "rawError": "Invalid Credentials",
+          "supportUrl": null
+        }
       }
     ]
   }
