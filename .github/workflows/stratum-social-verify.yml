@@ -1,0 +1,26 @@
+name: Stratum Social Verify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stratum-social-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify Buffer post status and external links
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_POST_IDS: 6aa5ad23eba7bc567783bb98,6aa5ad2f66679b076f167b99
+        run: node distribution/buffer-post-status.mjs
