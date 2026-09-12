@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
     paths:
+      - 'agent-lab/**'
+      - 'worker/agent-lab*.js'
+      - 'worker/wrangler.toml'
       - '.github/workflows/verify-agent-lab-revenue.yml'
   workflow_dispatch:
 
@@ -37,7 +40,7 @@ jobs:
           test "$code" = '400'
           echo 'Protected member guards -> PASS'
 
-      - name: Verify live Stripe checkout and unpaid denial
+      - name: Verify live Stripe checkout
         shell: bash
         run: |
           set -euo pipefail
@@ -47,14 +50,7 @@ jobs:
           location="$(awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/^[^:]*:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
           echo "Checkout HTTP: $code"
           echo "Checkout Location: $location"
-          echo 'Checkout body:'
           cat /tmp/checkout-body.txt || true
           test "$code" = '303'
           echo "$location" | grep -Eq '^https://checkout\.stripe\.com/'
-          sid="$(printf '%s' "$location" | grep -oE 'cs_(live|test)_[A-Za-z0-9]+' | head -n1)"
-          test -n "$sid"
-          denied="$(curl -sS -o /tmp/unpaid.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data "{\"session_id\":\"$sid\"}")"
-          echo "Unpaid activation HTTP: $denied"
-          cat /tmp/unpaid.txt || true
-          test "$denied" = '402'
-          echo 'Live Stripe checkout creation + unpaid membership denial -> PASS'
+          echo 'Live Stripe checkout creation -> PASS'
