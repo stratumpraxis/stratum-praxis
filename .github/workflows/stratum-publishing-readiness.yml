@@ -1,0 +1,35 @@
+name: Stratum Publishing Readiness
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stratum-publishing-readiness.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  readiness:
+    runs-on: ubuntu-latest
+    env:
+      DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+      HASHNODE_PAT: ${{ secrets.HASHNODE_PAT }}
+      HASHNODE_PUBLICATION_ID: ${{ secrets.HASHNODE_PUBLICATION_ID }}
+      MEDIUM_INTEGRATION_TOKEN: ${{ secrets.MEDIUM_INTEGRATION_TOKEN }}
+      GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+      GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+    steps:
+      - name: Report safe readiness flags only
+        shell: bash
+        run: |
+          set -euo pipefail
+          present(){ if [ -n "${1:-}" ]; then echo PRESENT; else echo MISSING; fi; }
+          echo "GHOST_URL=$(present "$GHOST_ADMIN_API_URL")"
+          echo "GHOST_KEY=$(present "$GHOST_ADMIN_API_KEY")"
+          echo "DEVTO_KEY=$(present "$DEVTO_API_KEY")"
+          echo "HASHNODE_PAT=$(present "$HASHNODE_PAT")"
+          echo "HASHNODE_PUBLICATION_ID=$(present "$HASHNODE_PUBLICATION_ID")"
+          echo "MEDIUM_TOKEN=$(present "$MEDIUM_INTEGRATION_TOKEN")"
+          echo "No secret values are printed by this workflow."
