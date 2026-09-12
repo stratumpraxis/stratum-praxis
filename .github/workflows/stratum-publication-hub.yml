@@ -1,0 +1,70 @@
+name: Stratum Unified Publication Hub
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/ghost/**'
+      - 'scripts/stratum_publication_hub.mjs'
+      - 'scripts/publish_ghost_post.mjs'
+      - '.github/workflows/stratum-publication-hub.yml'
+  workflow_dispatch:
+  schedule:
+    - cron: '17 22 * * *'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-unified-publication
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install markdown renderer
+        run: npm install --no-save marked
+
+      - name: Publish all Stratum articles to Ghost
+        env:
+          GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
+          GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS= read -r -d '' file; do
+            GHOST_SOURCE_PATH="$file" node scripts/publish_ghost_post.mjs
+            count=$((count + 1))
+          done < <(find content/ghost -type f -name '*.md' -print0 | sort -z)
+          test "$count" -gt 0
+          echo "GHOST_PUBLISHED_COUNT=$count"
+
+      - name: Build publication packets and publish DEV.to when connected
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+          GHOST_PUBLIC_BASE_URL: ${{ secrets.GHOST_PUBLIC_BASE_URL }}
+        run: node scripts/stratum_publication_hub.mjs
+
+      - name: Persist publication ledger and ready-to-publish packets
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-publication-bot'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add distribution/publication-hub
+          if git diff --cached --quiet; then
+            echo 'No publication packet changes.'
+            exit 0
+          fi
+          git commit -m 'publishing: refresh publication hub evidence and packets'
+          git pull --rebase origin main
+          git push origin HEAD:main
