@@ -52,3 +52,42 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
+
+/* High-intent B2B path: keep discovery routes, but let ready buyers reach checkout in one click. */
+(() => {
+  'use strict';
+  const WORKFLOW_AUDIT_CHECKOUT='https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02';
+  const LABELS={
+    en:{hero:'Start the $499 workflow audit',mobile:'Start $499 audit'},
+    ja:{hero:'$499 Workflow Auditを開始',mobile:'$499 Auditを開始'},
+    es:{hero:'Iniciar auditoría de workflow — $499',mobile:'Iniciar auditoría — $499'}
+  };
+  const apply=()=>{
+    const lang=['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
+    const text=LABELS[lang]||LABELS.en;
+    const hero=document.querySelector('a[data-analytics-id="home_hero_audit"],a[data-analytics-id="home_hero_audit_checkout"]');
+    if(hero){
+      hero.href=WORKFLOW_AUDIT_CHECKOUT;
+      hero.dataset.analyticsId='home_hero_audit_checkout';
+      hero.dataset.product='workflow_audit';
+      hero.setAttribute('data-primary-cta','true');
+      const label=hero.querySelector('[data-rh="ctaAudit"]');
+      if(label)label.textContent=text.hero;
+    }
+    const mobile=document.querySelector('.mobile-start');
+    if(mobile){
+      mobile.href=WORKFLOW_AUDIT_CHECKOUT;
+      mobile.dataset.analyticsId='home_mobile_audit_checkout';
+      mobile.dataset.product='workflow_audit';
+      mobile.setAttribute('data-primary-cta','true');
+      const label=mobile.querySelector('span');
+      if(label)label.textContent=text.mobile;
+    }
+  };
+  const boot=()=>{
+    apply();
+    document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setTimeout(apply,0)));
+    new MutationObserver(m=>{if(m.some(x=>x.attributeName==='lang'))apply()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  };
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
+})();
