@@ -1,12 +1,12 @@
 {
   "brand": "Stratum",
-  "content_id": "stratum-bluesky-signal-path-004",
+  "content_id": "stratum-bluesky-video-system-005",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "AI output is easy to produce. The hard part is knowing what deserves action. Stratum Praxis connects market signal → evidence → buyer → revenue route.",
+  "text": "Before adding another AI tool, ask one question: what decision will it improve? Stratum Praxis maps signal → evidence → buyer action → revenue route.",
   "hook": "Turn signal into action.",
   "cta": "See the system",
-  "destination": "https://stratumpraxis.com/?utm_source=bluesky&utm_medium=social&utm_campaign=signal_path&utm_content=bsky04",
+  "destination": "https://stratumpraxis.com/?utm_source=bluesky&utm_medium=social&utm_campaign=video_system&utm_content=bsky05",
   "status": "QUEUED",
   "publish_trigger": "2026-09-13"
 }
