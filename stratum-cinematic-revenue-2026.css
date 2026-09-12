@@ -1,0 +1,530 @@
+/* Stratum Praxis — Cinematic Revenue Visual Layer 2026-09
+   Presentation-only upgrade for the existing revenue home.
+   No product, price, checkout, attribution, canonical product ID or revenue-route changes. */
+
+:root{
+  --cin-bg:#050a0c;
+  --cin-bg-2:#081315;
+  --cin-panel:#0b1718;
+  --cin-panel-2:#0e1d1d;
+  --cin-ink:#f5f7f2;
+  --cin-muted:#96a8a5;
+  --cin-line:rgba(166,236,220,.14);
+  --cin-lime:#9bff66;
+  --cin-lime-2:#c7ff91;
+  --cin-aqua:#58e6d8;
+  --cin-gold:#f2c66d;
+  --cin-violet:#aaa0ff;
+  --cin-danger:#ff9a73;
+  --cin-shadow:0 34px 110px rgba(0,0,0,.38);
+  --cin-glow:0 0 34px rgba(155,255,102,.18);
+  --cin-ease:cubic-bezier(.2,.8,.2,1);
+}
+
+body[data-page="stratum_revenue_home_v2"]{
+  background:
+    radial-gradient(circle at 12% 0%,rgba(88,230,216,.09),transparent 34rem),
+    radial-gradient(circle at 92% 8%,rgba(155,255,102,.065),transparent 30rem),
+    var(--cin-bg)!important;
+  color:var(--cin-ink)!important;
+}
+body[data-page="stratum_revenue_home_v2"]::before{
+  background:
+    radial-gradient(circle at 12% 4%,rgba(88,230,216,.08),transparent 28rem),
+    radial-gradient(circle at 90% 13%,rgba(155,255,102,.06),transparent 26rem),
+    linear-gradient(rgba(100,230,215,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(100,230,215,.025) 1px,transparent 1px)!important;
+  background-size:auto,auto,84px 84px,84px 84px!important;
+}
+
+/* Premium floating header */
+body[data-page="stratum_revenue_home_v2"] .office-header{
+  width:min(1480px,calc(100% - 28px))!important;
+  min-height:70px!important;
+  margin-top:10px!important;
+  padding:0 18px!important;
+  border:1px solid rgba(141,218,201,.16)!important;
+  border-radius:20px!important;
+  background:linear-gradient(180deg,rgba(9,20,21,.92),rgba(6,14,16,.87))!important;
+  box-shadow:0 18px 70px rgba(0,0,0,.35)!important;
+  backdrop-filter:blur(24px) saturate(1.18)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(1.18)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .brand-symbol{
+  background:linear-gradient(145deg,rgba(155,255,102,.14),rgba(88,230,216,.05))!important;
+  border-color:rgba(155,255,102,.34)!important;
+  box-shadow:0 0 0 1px rgba(155,255,102,.05),0 0 26px rgba(155,255,102,.12)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .brand-symbol i{background:var(--cin-lime)!important}
+body[data-page="stratum_revenue_home_v2"] .brand-copy strong{font-size:15px!important;color:#fbfcf7!important}
+body[data-page="stratum_revenue_home_v2"] .brand-copy small{color:#73918b!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav{background:rgba(255,255,255,.025)!important;border-color:rgba(255,255,255,.07)!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav a{color:#a9b9b5!important}
+body[data-page="stratum_revenue_home_v2"] .office-nav a:hover{background:rgba(88,230,216,.08)!important;color:#fff!important}
+body[data-page="stratum_revenue_home_v2"] .b2b-badge{background:rgba(155,255,102,.08)!important;border-color:rgba(155,255,102,.22)!important;color:var(--cin-lime)!important}
+
+/* Home frame */
+body[data-page="stratum_revenue_home_v2"] .workspace-shell.revenue-home{max-width:1480px!important;padding:14px 14px 76px!important}
+
+/* HERO — image-led instead of typography-led */
+body[data-page="stratum_revenue_home_v2"] .rh-hero{
+  position:relative!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,.9fr) minmax(470px,1.1fr)!important;
+  align-items:center!important;
+  gap:34px!important;
+  min-height:720px!important;
+  padding:68px 58px 58px!important;
+  border:1px solid rgba(120,205,187,.18)!important;
+  border-radius:26px!important;
+  background:
+    linear-gradient(90deg,rgba(4,10,12,.98) 0%,rgba(4,11,13,.93) 37%,rgba(3,10,12,.48) 65%,rgba(3,9,11,.28) 100%),
+    linear-gradient(180deg,rgba(3,10,12,.04),rgba(3,10,12,.72)),
+    url('/media/pinterest/ai-workflow-checklist-v1-cover.png') right 42% / min(58%,760px) auto no-repeat,
+    radial-gradient(circle at 78% 42%,rgba(88,230,216,.15),transparent 25rem),
+    #071012!important;
+  box-shadow:var(--cin-shadow)!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background:
+    radial-gradient(circle at 80% 30%,rgba(155,255,102,.11),transparent 13rem),
+    linear-gradient(115deg,transparent 54%,rgba(88,230,216,.08) 55%,transparent 56%),
+    linear-gradient(rgba(88,230,216,.025) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(88,230,216,.025) 1px,transparent 1px)!important;
+  background-size:auto,auto,58px 58px,58px 58px!important;
+  opacity:1!important;
+  filter:none!important;
+  transform:none!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero::after{
+  content:""!important;
+  position:absolute!important;
+  right:-5%!important;
+  bottom:-23%!important;
+  width:66%!important;
+  height:58%!important;
+  z-index:0!important;
+  pointer-events:none!important;
+  background:radial-gradient(ellipse at 50% 0%,rgba(155,255,102,.14),transparent 61%)!important;
+  filter:blur(10px)!important;
+  mask-image:none!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero-copy,
+body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{position:relative!important;z-index:2!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero-copy{max-width:650px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{
+  display:inline-flex!important;
+  width:max-content!important;
+  max-width:100%!important;
+  margin:0 0 22px!important;
+  padding:8px 11px!important;
+  border:1px solid rgba(88,230,216,.16)!important;
+  border-radius:999px!important;
+  background:rgba(7,24,24,.52)!important;
+  color:#a4c8c1!important;
+  letter-spacing:.15em!important;
+  backdrop-filter:blur(12px)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-eyebrow i{background:var(--cin-aqua)!important;box-shadow:0 0 16px rgba(88,230,216,.5)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1{
+  max-width:650px!important;
+  margin:0!important;
+  color:#f8faf5!important;
+  font-size:clamp(54px,5.7vw,82px)!important;
+  line-height:.91!important;
+  letter-spacing:-.067em!important;
+  font-weight:690!important;
+  text-shadow:0 8px 34px rgba(0,0,0,.34)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-hero h1 em{color:var(--cin-lime)!important;text-shadow:0 0 34px rgba(155,255,102,.18)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lead{max-width:570px!important;margin-top:25px!important;color:#adbbb7!important;font-size:15px!important;line-height:1.64!important}
+body[data-page="stratum_revenue_home_v2"] .rh-actions{margin-top:30px!important;gap:10px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-primary,
+body[data-page="stratum_revenue_home_v2"] .rh-secondary{
+  min-height:54px!important;
+  border-radius:999px!important;
+  padding:0 20px!important;
+  font-size:11px!important;
+  font-weight:850!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-primary{
+  background:linear-gradient(110deg,#baff82,#82f95d)!important;
+  color:#07100b!important;
+  box-shadow:0 0 0 1px rgba(200,255,170,.34),0 13px 36px rgba(126,244,85,.2)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-primary:hover{box-shadow:0 0 0 1px rgba(215,255,188,.52),0 18px 44px rgba(126,244,85,.27)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-secondary{
+  background:rgba(5,18,19,.58)!important;
+  color:#eef5f2!important;
+  border-color:rgba(124,211,194,.28)!important;
+  backdrop-filter:blur(14px)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline{border-top:0!important;margin-top:21px!important;display:flex!important;flex-wrap:wrap!important;gap:7px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-trustline span{
+  margin:0!important;
+  padding:7px 10px!important;
+  border:1px solid rgba(255,255,255,.07)!important;
+  border-radius:999px!important;
+  background:rgba(5,16,17,.46)!important;
+  color:#829a94!important;
+  font-size:8px!important;
+  backdrop-filter:blur(12px)!important;
+}
+
+/* ROI card becomes a floating glass instrument over the visual field */
+body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{align-self:end!important;justify-self:end!important;width:min(100%,440px)!important;margin-bottom:8px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card{
+  padding:20px!important;
+  border:1px solid rgba(140,231,211,.22)!important;
+  border-radius:20px!important;
+  background:linear-gradient(145deg,rgba(8,28,28,.86),rgba(5,17,19,.91))!important;
+  color:#eff7f4!important;
+  box-shadow:0 26px 78px rgba(0,0,0,.44),0 0 34px rgba(88,230,216,.07)!important;
+  backdrop-filter:blur(24px) saturate(1.1)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(1.1)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-card-head{border-color:rgba(255,255,255,.08)!important;color:#7ea19a!important}
+body[data-page="stratum_revenue_home_v2"] .rh-live{background:rgba(155,255,102,.11)!important;color:var(--cin-lime)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-live i{background:var(--cin-lime)!important;box-shadow:0 0 12px rgba(155,255,102,.45)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card h2{color:#f5f8f4!important;font-size:25px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-value-card>p{color:#8ea39e!important;font-size:10px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs{gap:7px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs label{color:#8ea39e!important;font-size:8px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs input{
+  height:43px!important;
+  border-color:rgba(122,211,194,.16)!important;
+  background:rgba(255,255,255,.055)!important;
+  color:#f5f8f5!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs input:focus{border-color:rgba(88,230,216,.48)!important;background:rgba(255,255,255,.08)!important;box-shadow:0 0 0 3px rgba(88,230,216,.09)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output>div{
+  border-color:rgba(255,255,255,.06)!important;
+  background:linear-gradient(145deg,rgba(155,255,102,.08),rgba(88,230,216,.045))!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output small{color:#7d9690!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output strong{color:var(--cin-lime)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-roi-output>span{color:#788e88!important}
+
+/* Revenue strip = compact visual status rail */
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar{
+  margin:12px 0 24px!important;
+  padding:1px!important;
+  border:1px solid rgba(120,210,191,.14)!important;
+  border-radius:17px!important;
+  background:linear-gradient(90deg,rgba(88,230,216,.08),rgba(155,255,102,.045),rgba(242,198,109,.055))!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{position:relative!important;padding:17px 20px!important;background:rgba(6,15,17,.87)!important;border-color:rgba(255,255,255,.06)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div::before{content:"";display:inline-block;width:7px;height:7px;margin-right:8px;border-radius:50%;background:var(--cin-aqua);box-shadow:0 0 13px rgba(88,230,216,.34)}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div:nth-child(2)::before{background:var(--cin-lime);box-shadow:0 0 13px rgba(155,255,102,.3)}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div:nth-child(3)::before{background:var(--cin-gold);box-shadow:0 0 13px rgba(242,198,109,.3)}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar div:nth-child(4)::before{background:var(--cin-violet);box-shadow:0 0 13px rgba(170,160,255,.3)}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar small{color:#657c76!important}
+body[data-page="stratum_revenue_home_v2"] .rh-proofbar strong{color:#eaf1ee!important}
+
+/* All primary sections remain cinematic rather than switching to a text-heavy paper canvas. */
+body[data-page="stratum_revenue_home_v2"] .rh-section{
+  margin:0 0 12px!important;
+  padding:72px 46px!important;
+  border:1px solid rgba(120,210,191,.12)!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 90% 7%,rgba(88,230,216,.055),transparent 22rem),
+    linear-gradient(145deg,#091416,#071012)!important;
+  color:#eff5f2!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-section+.rh-section{border-top:1px solid rgba(120,210,191,.12)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head p:first-child{color:var(--cin-aqua)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head h2{color:#f5f8f5!important;font-size:clamp(35px,4vw,58px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-section-head>p{color:#839994!important}
+
+/* Route cards feel like app destinations */
+body[data-page="stratum_revenue_home_v2"] .rh-lanes{
+  gap:10px!important;
+  padding:0!important;
+  border:0!important;
+  background:transparent!important;
+  overflow:visible!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{
+  position:relative!important;
+  min-height:120px!important;
+  padding:18px!important;
+  border:1px solid rgba(120,210,191,.12)!important;
+  border-radius:18px!important;
+  background:linear-gradient(145deg,rgba(12,29,30,.9),rgba(7,17,19,.96))!important;
+  color:#edf4f1!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route::after{
+  content:""!important;
+  position:absolute!important;
+  inset:auto -12% -45% 42%!important;
+  height:130%!important;
+  border-radius:50%!important;
+  pointer-events:none!important;
+  opacity:.7!important;
+  background:radial-gradient(circle,rgba(88,230,216,.16),transparent 63%)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:nth-child(2)::after{background:radial-gradient(circle,rgba(155,255,102,.16),transparent 63%)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:nth-child(3)::after{background:radial-gradient(circle,rgba(170,160,255,.18),transparent 63%)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:hover{transform:translateY(-3px)!important;background:linear-gradient(145deg,rgba(15,37,37,.96),rgba(8,21,22,.98))!important;box-shadow:0 20px 52px rgba(0,0,0,.22)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route.active{
+  border-color:rgba(155,255,102,.42)!important;
+  background:linear-gradient(145deg,rgba(24,52,39,.96),rgba(7,22,19,.98))!important;
+  box-shadow:inset 0 0 0 1px rgba(155,255,102,.06),0 0 32px rgba(155,255,102,.07)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route small{color:#758c86!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route-icon{
+  position:relative!important;z-index:2!important;
+  background:rgba(88,230,216,.07)!important;
+  border:1px solid rgba(88,230,216,.12)!important;
+  color:var(--cin-aqua)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:nth-child(2) .route-icon{color:var(--cin-lime)!important;background:rgba(155,255,102,.07)!important;border-color:rgba(155,255,102,.13)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route:nth-child(3) .route-icon{color:var(--cin-violet)!important;background:rgba(170,160,255,.07)!important;border-color:rgba(170,160,255,.14)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-lanes .route>i{color:#627a74!important}
+
+/* Featured decision gets a real existing Stratum visual asset, never a fabricated dashboard. */
+body[data-page="stratum_revenue_home_v2"] .rh-decision-grid{gap:12px!important;margin-top:12px!important}
+body[data-page="stratum_revenue_home_v2"] .decision-module{
+  position:relative!important;
+  border:1px solid rgba(120,210,191,.16)!important;
+  border-radius:21px!important;
+  background:
+    linear-gradient(90deg,rgba(7,19,20,.98) 0%,rgba(7,19,20,.91) 54%,rgba(7,19,20,.54) 100%),
+    url('/media/stratum-roi-social.png') right center / 46% auto no-repeat,
+    #081416!important;
+  color:#eef5f2!important;
+  box-shadow:0 24px 64px rgba(0,0,0,.22)!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .decision-module::after{content:""!important;position:absolute!important;inset:0!important;pointer-events:none!important;background:linear-gradient(120deg,transparent 38%,rgba(88,230,216,.055) 66%,transparent 72%)!important}
+body[data-page="stratum_revenue_home_v2"] .module-head{border-color:rgba(255,255,255,.07)!important;color:#81958f!important}
+body[data-page="stratum_revenue_home_v2"] .signal-chip{background:rgba(155,255,102,.1)!important;color:var(--cin-lime)!important;border-color:rgba(155,255,102,.14)!important}
+body[data-page="stratum_revenue_home_v2"] .decision-copy{position:relative!important;z-index:2!important}
+body[data-page="stratum_revenue_home_v2"] .decision-copy h2{color:#f6f8f5!important;font-size:clamp(31px,3.6vw,50px)!important}
+body[data-page="stratum_revenue_home_v2"] .decision-copy>p{color:#8ea39e!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next{background:rgba(5,16,18,.68)!important;border-color:rgba(255,255,255,.07)!important;backdrop-filter:blur(12px)!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next small{color:#6f8881!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next strong{color:#edf4f1!important}
+body[data-page="stratum_revenue_home_v2"] .decision-next .action-btn{background:var(--cin-lime)!important;color:#06100b!important}
+body[data-page="stratum_revenue_home_v2"] .decision-map{opacity:.48!important}
+body[data-page="stratum_revenue_home_v2"] .decision-foot{border-color:rgba(255,255,255,.06)!important}
+body[data-page="stratum_revenue_home_v2"] .decision-foot small{color:#748b85!important}
+body[data-page="stratum_revenue_home_v2"] .decision-foot span{background:var(--cin-aqua)!important}
+
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card{
+  border:1px solid rgba(170,160,255,.14)!important;
+  border-radius:21px!important;
+  background:
+    radial-gradient(circle at 85% 12%,rgba(170,160,255,.12),transparent 16rem),
+    linear-gradient(145deg,#0d181c,#081116)!important;
+  color:#eff3f4!important;
+  box-shadow:none!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card>small{color:var(--cin-violet)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card h3{color:#f5f7f6!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-card>p,
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list small{color:#7e9290!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list>div{border-color:rgba(255,255,255,.06)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list>div>span{color:var(--cin-violet)!important;background:rgba(170,160,255,.08)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-reason-list strong{color:#e8efec!important}
+
+/* Revenue path cards: visual, compact, price hierarchy obvious */
+body[data-page="stratum_revenue_home_v2"] .rh-ladder{gap:12px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step{
+  min-height:318px!important;
+  border:1px solid rgba(120,210,191,.12)!important;
+  border-radius:19px!important;
+  background:
+    radial-gradient(circle at 82% 8%,rgba(88,230,216,.09),transparent 14rem),
+    linear-gradient(150deg,#0c1a1b,#071113)!important;
+  color:#edf4f1!important;
+  box-shadow:none!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-step:nth-child(2){background:radial-gradient(circle at 82% 8%,rgba(155,255,102,.09),transparent 14rem),linear-gradient(150deg,#0e1d19,#071113)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured{border-color:rgba(242,198,109,.25)!important;background:radial-gradient(circle at 84% 7%,rgba(242,198,109,.14),transparent 15rem),linear-gradient(150deg,#20190d,#0c1111)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step-index{border-color:rgba(255,255,255,.06)!important;color:#718780!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step-badge{background:rgba(255,255,255,.05)!important;border-color:rgba(255,255,255,.08)!important;color:var(--cin-aqua)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step:nth-child(2) .rh-step-badge{color:var(--cin-lime)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step.featured .rh-step-badge{color:var(--cin-gold)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step h3{color:#f4f7f4!important;font-size:27px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step p{color:#82958f!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step-meta span{background:rgba(255,255,255,.035)!important;border-color:rgba(255,255,255,.06)!important;color:#789089!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step>a{border-color:rgba(120,210,191,.13)!important;background:rgba(4,14,16,.55)!important;color:#e9f2ee!important}
+body[data-page="stratum_revenue_home_v2"] .rh-step>a:hover{background:rgba(155,255,102,.08)!important;border-color:rgba(155,255,102,.24)!important;color:var(--cin-lime)!important}
+
+/* $499 specialist band = gold revenue moment, not another paragraph block */
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band{
+  margin:0 0 12px!important;
+  padding:52px 48px!important;
+  border:1px solid rgba(242,198,109,.25)!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 84% 42%,rgba(242,198,109,.15),transparent 21rem),
+    linear-gradient(115deg,#17160f,#0b1112 62%,#101714)!important;
+  box-shadow:0 26px 80px rgba(0,0,0,.24)!important;
+  color:#f7f4ea!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band small{color:var(--cin-gold)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2{color:#faf7ef!important;font-size:clamp(36px,4.2vw,62px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-band p{color:#a69f8d!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-price{border-color:rgba(242,198,109,.2)!important;background:rgba(31,25,12,.54)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-price strong{color:#fff2c6!important}
+body[data-page="stratum_revenue_home_v2"] .rh-audit-price .action-btn{background:linear-gradient(110deg,#f7db8d,#e7b854)!important;color:#171005!important}
+
+/* Deliverables become icon-like tiles rather than a wall of text. */
+body[data-page="stratum_revenue_home_v2"] .rh-deliverables{gap:10px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable{
+  min-height:170px!important;
+  padding:18px!important;
+  border:1px solid rgba(120,210,191,.11)!important;
+  border-radius:16px!important;
+  background:linear-gradient(145deg,#0c191a,#071113)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable:nth-child(3n+2){background:linear-gradient(145deg,#101b17,#071113)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable:nth-child(3n){background:linear-gradient(145deg,#111720,#071113)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable>span{
+  display:grid!important;place-items:center!important;width:42px!important;height:42px!important;border-radius:50%!important;
+  background:rgba(88,230,216,.08)!important;border:1px solid rgba(88,230,216,.15)!important;color:var(--cin-aqua)!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable:nth-child(3n+2)>span{background:rgba(155,255,102,.07)!important;border-color:rgba(155,255,102,.14)!important;color:var(--cin-lime)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable:nth-child(3n)>span{background:rgba(170,160,255,.07)!important;border-color:rgba(170,160,255,.14)!important;color:var(--cin-violet)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable strong{color:#eef5f1!important}
+body[data-page="stratum_revenue_home_v2"] .rh-deliverable p{color:#748b85!important}
+
+/* Recent state + closing surface */
+body[data-page="stratum_revenue_home_v2"] .rh-recent-wrap{background:transparent!important;margin:0 0 12px!important;padding:0!important}
+body[data-page="stratum_revenue_home_v2"] .recent-module{border-color:rgba(120,210,191,.11)!important;border-radius:19px!important;background:#081315!important;color:#e8f1ed!important}
+body[data-page="stratum_revenue_home_v2"] .recent-empty strong{color:#eaf1ee!important}
+body[data-page="stratum_revenue_home_v2"] .recent-empty p{color:#728983!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final{
+  position:relative!important;
+  margin:0 0 12px!important;
+  min-height:360px!important;
+  padding:58px 48px!important;
+  border:1px solid rgba(120,210,191,.16)!important;
+  border-radius:24px!important;
+  background:
+    linear-gradient(90deg,rgba(5,15,17,.98) 0%,rgba(5,15,17,.91) 52%,rgba(5,15,17,.42) 100%),
+    url('/media/pinterest/ai-workflow-checklist-v1-cover.png') right 48% / 48% auto no-repeat,
+    #071113!important;
+  box-shadow:0 24px 72px rgba(0,0,0,.24)!important;
+  color:#f3f7f4!important;
+  overflow:hidden!important;
+}
+body[data-page="stratum_revenue_home_v2"] .rh-final small{color:var(--cin-aqua)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final h2{max-width:780px!important;color:#f7f9f6!important;font-size:clamp(37px,4.4vw,62px)!important}
+body[data-page="stratum_revenue_home_v2"] .rh-final p{max-width:670px!important;color:#879a95!important}
+
+/* Inbound route: keep content, add more visual differentiation. */
+body[data-page="stratum_revenue_home_v2"] .sp-inbound-route{
+  margin:0!important;
+  border:1px solid rgba(120,210,191,.12)!important;
+  border-radius:24px!important;
+  background:
+    radial-gradient(circle at 82% 10%,rgba(155,255,102,.06),transparent 22rem),
+    radial-gradient(circle at 12% 80%,rgba(170,160,255,.06),transparent 24rem),
+    linear-gradient(145deg,#081416,#050d0f)!important;
+}
+
+/* Mobile: lead with visual atmosphere, not a giant text wall. */
+@media(max-width:900px){
+  body[data-page="stratum_revenue_home_v2"] .workspace-shell.revenue-home{padding-inline:9px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{
+    display:block!important;
+    min-height:0!important;
+    padding:270px 22px 24px!important;
+    background:
+      linear-gradient(180deg,rgba(4,10,12,.08) 0%,rgba(4,10,12,.2) 25%,rgba(4,10,12,.96) 46%,rgba(4,10,12,.99) 100%),
+      url('/media/pinterest/ai-workflow-checklist-v1-cover.png') center 10% / 100% auto no-repeat,
+      #061012!important;
+  }
+  body[data-page="stratum_revenue_home_v2"] .rh-hero::before{
+    background:radial-gradient(circle at 72% 16%,rgba(155,255,102,.12),transparent 13rem),linear-gradient(rgba(88,230,216,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(88,230,216,.022) 1px,transparent 1px)!important;
+    background-size:auto,54px 54px,54px 54px!important;
+  }
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-copy{max-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero h1{max-width:680px!important;font-size:clamp(45px,10vw,66px)!important;line-height:.92!important;letter-spacing:-.061em!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lead{font-size:13px!important;line-height:1.58!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero-panel{width:100%!important;margin:18px 0 0!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-value-card{max-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar::-webkit-scrollbar{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{flex:0 0 210px!important;scroll-snap-align:start!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section{padding:54px 20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes::-webkit-scrollbar{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{flex:0 0 72%!important;min-width:220px!important;scroll-snap-align:start!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-decision-grid{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-module{background:linear-gradient(180deg,rgba(7,19,20,.95),rgba(7,19,20,.98)),url('/media/stratum-roi-social.png') center top / 100% auto no-repeat!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-ladder{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-ladder::-webkit-scrollbar{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-step{flex:0 0 82%!important;min-width:265px!important;scroll-snap-align:start!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band{grid-template-columns:1fr!important;padding:42px 22px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-final{padding:44px 22px 270px!important;background:linear-gradient(180deg,rgba(5,15,17,.98) 0%,rgba(5,15,17,.96) 53%,rgba(5,15,17,.25) 82%,rgba(5,15,17,.18) 100%),url('/media/pinterest/ai-workflow-checklist-v1-cover.png') center bottom / 100% auto no-repeat,#071113!important}
+}
+
+@media(max-width:620px){
+  body[data-page="stratum_revenue_home_v2"] .office-header{width:calc(100% - 16px)!important;min-height:62px!important;margin-top:7px!important;padding:0 11px!important;border-radius:17px!important}
+  body[data-page="stratum_revenue_home_v2"] .brand-copy small{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .b2b-badge{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .office-nav{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{padding:245px 17px 20px!important;border-radius:20px!important;background-size:auto,100% auto,auto!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-eyebrow{margin-bottom:16px!important;padding:6px 8px!important;font-size:7px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero h1{font-size:clamp(40px,12.2vw,54px)!important;line-height:.91!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lead{margin-top:17px!important;font-size:12.5px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-actions{display:grid!important;grid-template-columns:1fr!important;gap:7px!important;margin-top:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-primary,
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary{width:100%!important;justify-content:space-between!important;min-height:49px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-trustline{gap:5px!important;margin-top:14px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-trustline span{font-size:7px!important;padding:6px 8px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-value-card{padding:16px!important;border-radius:16px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-value-card h2{font-size:21px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs{grid-template-columns:1fr 1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs label:last-child{grid-column:1/-1!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar{margin-top:8px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-proofbar div{flex-basis:175px!important;padding:14px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section{padding:44px 16px!important;border-radius:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head h2{font-size:clamp(31px,9.4vw,44px)!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-section-head>p{font-size:10px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{flex-basis:83%!important;min-height:108px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-copy h2{font-size:31px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-map{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-next{display:block!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-next .action-btn{width:100%!important;margin-top:12px!important}
+  body[data-page="stratum_revenue_home_v2"] .decision-foot{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-step{flex-basis:88%!important;min-height:290px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band{padding:36px 18px!important;border-radius:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-audit-band h2{font-size:37px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-deliverables{display:flex!important;overflow-x:auto!important;scroll-snap-type:x mandatory!important;scrollbar-width:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-deliverables::-webkit-scrollbar{display:none!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-deliverable{flex:0 0 78%!important;min-width:235px!important;scroll-snap-align:start!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-final{padding:38px 18px 235px!important;border-radius:20px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-final h2{font-size:35px!important}
+}
+
+@media(max-width:420px){
+  body[data-page="stratum_revenue_home_v2"] .rh-hero{padding-top:220px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-hero h1{font-size:42px!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs{grid-template-columns:1fr!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-mini-inputs label:last-child{grid-column:auto!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route{flex-basis:88%!important}
+  body[data-page="stratum_revenue_home_v2"] .rh-step{flex-basis:92%!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-page="stratum_revenue_home_v2"] .rh-primary,
+  body[data-page="stratum_revenue_home_v2"] .rh-secondary,
+  body[data-page="stratum_revenue_home_v2"] .rh-lanes .route,
+  body[data-page="stratum_revenue_home_v2"] .rh-step>a{transition:none!important}
+}
