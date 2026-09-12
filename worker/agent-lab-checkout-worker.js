@@ -8,6 +8,10 @@ function ref(value) {
   return cleaned || 'agent_lab_direct';
 }
 
+function safeMessage(value) {
+  return String(value || '').slice(0, 300).replace(/sk_(live|test)_[A-Za-z0-9]+/g, '[redacted]');
+}
+
 export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
@@ -44,6 +48,8 @@ export default {
         error: 'Checkout could not be created.',
         stripe_type: String(value?.error?.type || ''),
         stripe_code: String(value?.error?.code || ''),
+        stripe_message: safeMessage(value?.error?.message),
+        stripe_param: String(value?.error?.param || ''),
       }, { status: 500 });
     }
     return Response.redirect(value.url, 303);
