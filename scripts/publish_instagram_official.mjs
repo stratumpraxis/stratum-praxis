@@ -7,7 +7,9 @@ const p = JSON.parse(fs.readFileSync(pkgPath, 'utf8'));
 if (p.brand !== 'Stratum') fail('brand must be Stratum');
 if (p.platform !== 'instagram') fail('platform must be instagram');
 if (p.account_handle !== 'praxisstratum') fail('account must be praxisstratum');
-if (!p.image_url || !p.caption || !p.destination) fail('image_url, caption, destination required');
+if (!p.caption || !p.destination) fail('caption and destination required');
+if (!p.image_url && !p.video_url) fail('image_url or video_url required');
+if (p.image_url && p.video_url) fail('choose one media asset only');
 
 const token = (process.env.INSTAGRAM_ACCESS_TOKEN || '').trim();
 const igUserId = (process.env.INSTAGRAM_USER_ID || '').trim();
@@ -23,9 +25,21 @@ const profile = JSON.parse(meBody);
 if (String(profile.id) !== igUserId) fail('authenticated Instagram user ID mismatch');
 if ((profile.username || '').toLowerCase() !== p.account_handle.toLowerCase()) fail(`authenticated username mismatch: ${profile.username || 'unknown'}`);
 
+const mediaPayload = p.video_url
+  ? {
+      media_type: 'REELS',
+      video_url: p.video_url,
+      caption: `${p.caption}\n\n${p.destination}`,
+      share_to_feed: true
+    }
+  : {
+      image_url: p.image_url,
+      caption: `${p.caption}\n\n${p.destination}`
+    };
+
 const create = await fetch(`${api}/v24.0/${igUserId}/media`, {
   method: 'POST', headers: { ...auth, 'Content-Type': 'application/json' },
-  body: JSON.stringify({ image_url: p.image_url, caption: `${p.caption}\n\n${p.destination}` })
+  body: JSON.stringify(mediaPayload)
 });
 const createBody = await create.text();
 if (!create.ok) fail(`media container failed ${create.status}: ${createBody}`);
@@ -33,7 +47,7 @@ const creationId = JSON.parse(createBody).id;
 if (!creationId) fail('media container returned no id');
 
 let ready = false;
-for (let i=0; i<12; i++) {
+for (let i=0; i<24; i++) {
   const s = await fetch(`${api}/v24.0/${creationId}?fields=status_code,status`, { headers: auth });
   const sb = await s.text();
   if (!s.ok) fail(`container status failed ${s.status}: ${sb}`);
@@ -53,7 +67,7 @@ if (!publish.ok) fail(`media_publish failed ${publish.status}: ${publishBody}`);
 const mediaId = JSON.parse(publishBody).id;
 if (!mediaId) fail('media_publish returned no id');
 
-const media = await fetch(`${api}/v24.0/${mediaId}?fields=id,permalink,username,timestamp`, { headers: auth });
+const media = await fetch(`${api}/v24.0/${mediaId}?fields=id,permalink,username,timestamp,media_type`, { headers: auth });
 const mediaBody = await media.text();
 if (!media.ok) fail(`published media verification failed ${media.status}: ${mediaBody}`);
 const m = JSON.parse(mediaBody);
@@ -64,6 +78,7 @@ const evidence = {
   brand:'Stratum', platform:'instagram', account_handle:p.account_handle,
   platform_accepted:true, account_verified:true, post_id:mediaId,
   public_url:m.permalink, destination:p.destination, content_id:p.content_id,
+  media_type:m.media_type || (p.video_url ? 'VIDEO' : 'IMAGE'),
   published_at:m.timestamp || new Date().toISOString()
 };
 fs.mkdirSync('publishing/evidence', { recursive:true });
