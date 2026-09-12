@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Agent Lab · Member Access</title>
+  <meta name="description" content="Activate or open Agent Lab member access.">
+  <script defer src="/scos-analytics.js"></script>
+  <style>
+    :root{--b:#06090e;--p:#0a1018;--l:#25344a;--f:#f5f7fb;--m:#8794a5;--a:#72e8c9;--c:#79d9ff;--v:#aa9bff}
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:var(--b);color:var(--f);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+    body{min-height:100svh;display:grid;place-items:center;padding:18px;background:radial-gradient(700px 520px at 50% 12%,#12364166,transparent 65%),var(--b)}
+    .shell{width:min(620px,100%);border:1px solid var(--l);border-radius:30px;background:#091018;overflow:hidden;box-shadow:0 30px 90px #000a}
+    .art{height:250px;position:relative;display:grid;place-items:center;background-image:linear-gradient(#ffffff07 1px,transparent 1px),linear-gradient(90deg,#ffffff07 1px,transparent 1px);background-size:42px 42px}
+    .core{width:102px;height:102px;border-radius:30px;border:1px solid #72e8c955;display:grid;place-items:center;font-size:11px;font-weight:900;letter-spacing:.17em;box-shadow:0 0 70px #72e8c922;z-index:2}
+    .orbit{position:absolute;width:190px;height:190px;border:1px solid #ffffff12;border-radius:50%;animation:spin 9s linear infinite}.orbit:after{content:"";position:absolute;left:50%;top:-4px;width:8px;height:8px;border-radius:50%;background:var(--a);box-shadow:0 0 18px var(--a)}
+    .orbit.two{width:145px;height:145px;animation-duration:7s;animation-direction:reverse}.orbit.two:after{background:var(--c);box-shadow:0 0 18px var(--c)}
+    .body{padding:24px}.k{font-size:9px;letter-spacing:.17em;color:var(--a);font-weight:900}.body h1{font-size:clamp(36px,9vw,58px);line-height:.94;letter-spacing:-.055em;margin:.2em 0}.body p{color:var(--m);margin:0;max-width:500px}.state{margin:20px 0 0;border:1px solid #26374d;border-radius:16px;padding:14px 15px;color:#c7d1dd;background:#0c131d;font-size:12px}.state.ok{border-color:#72e8c94a;color:#c8fff0}.state.bad{border-color:#ff8c8c45;color:#ffcaca}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.a{min-height:44px;padding:0 14px;display:inline-flex;align-items:center;justify-content:center;border-radius:11px;border:1px solid var(--l);color:var(--f);text-decoration:none;font-size:12px;font-weight:900}.a.primary{background:var(--f);color:#071019;border-color:var(--f)}.fine{font-size:9px;color:#5f6d7d;margin-top:12px}@keyframes spin{to{rotate:360deg}}@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="art" aria-hidden="true"><div class="orbit"></div><div class="orbit two"></div><div class="core">MEMBER</div></section>
+    <section class="body">
+      <div class="k">AGENT LAB · ACCESS</div>
+      <h1 id="title">Checking access.</h1>
+      <p id="copy">A successful $19/month checkout activates the private Member Field Desk.</p>
+      <div class="state" id="state">VERIFYING STRIPE…</div>
+      <div class="actions">
+        <a class="a primary" id="member" href="https://ai-consultant-verify.practicalaireport.workers.dev/agent-lab/workspace">OPEN MEMBER →</a>
+        <a class="a" id="join" href="https://ai-consultant-verify.practicalaireport.workers.dev/agent-lab/checkout?route_id=agent_lab_access">JOIN · $19</a>
+        <a class="a" href="/agent-lab/">PUBLIC LAB</a>
+      </div>
+      <div class="fine">Member access is verified against the live Stripe subscription. Inactive subscriptions cannot open protected content.</div>
+    </section>
+  </main>
+  <script>
+    const WORKER='https://ai-consultant-verify.practicalaireport.workers.dev';
+    const state=document.getElementById('state');
+    const title=document.getElementById('title');
+    const copy=document.getElementById('copy');
+    const params=new URLSearchParams(location.search);
+    const sid=params.get('session_id')||'';
+    async function activate(){
+      if(!sid){
+        title.textContent='Member access.';
+        copy.textContent='Already active? Open the Member Desk. New here? Join and Stripe will return you here automatically.';
+        state.textContent='READY';
+        state.className='state';
+        return;
+      }
+      history.replaceState({},'',location.pathname);
+      try{
+        const response=await fetch(WORKER+'/agent-lab/activate',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({session_id:sid})});
+        const result=await response.json();
+        if(!response.ok||!result.claim_url) throw new Error(result.error||'Membership could not be verified.');
+        state.textContent='PAYMENT VERIFIED · OPENING MEMBER DESK';
+        state.className='state ok';
+        title.textContent='You’re in.';
+        copy.textContent='Stripe confirmed an active Agent Lab membership.';
+        if(window.scosMarkPurchase) window.scosMarkPurchase({product:'agent_lab_membership',price_usd:19,billing:'monthly',evidence_source:'stripe_server_verified'});
+        setTimeout(()=>location.replace(result.claim_url),450);
+      }catch(error){
+        title.textContent='Access not active.';
+        copy.textContent='The checkout is not paid and active, or verification could not complete.';
+        state.textContent=String(error.message||error).toUpperCase();
+        state.className='state bad';
+      }
+    }
+    activate();
+  </script>
+</body>
+</html>
