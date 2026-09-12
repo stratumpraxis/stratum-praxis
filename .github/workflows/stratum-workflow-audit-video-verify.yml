@@ -1,0 +1,66 @@
+name: Stratum Workflow Audit Video Verify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/triggers/stratum-workflow-audit-video-verify.txt'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read-only Buffer verification
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TIKTOK_POST_ID: 6aa5cd74f7b1958d5cd748ba
+          INSTAGRAM_POST_ID: 6aa5cd8066679b076f18f870
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const API = 'https://api.buffer.com';
+          const key = process.env.BUFFER_API_KEY;
+          if (!key) throw new Error('BUFFER_API_KEY missing');
+          const q = s => JSON.stringify(String(s));
+          async function gql(query) {
+            const r = await fetch(API, {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
+            const j = await r.json();
+            if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+            return j.data;
+          }
+          const ids = {tiktok:process.env.TIKTOK_POST_ID, instagram:process.env.INSTAGRAM_POST_ID};
+          const result = {checkedAt:new Date().toISOString(), destination:'https://stratumpraxis.com/workflow-audit.html', posts:{}};
+          for (const [service,id] of Object.entries(ids)) {
+            try {
+              const d = await gql(`query { post(input:{id:${q(id)}}){ id channelId channelService status dueAt sentAt sharedNow externalLink error { message rawError supportUrl } } }`);
+              result.posts[service] = d.post || {id, status:'not_found'};
+            } catch (e) {
+              result.posts[service] = {id, status:'verify_error', error:String(e)};
+            }
+          }
+          fs.writeFileSync('distribution/stratum-workflow-audit-video-20260913-status.json', JSON.stringify(result,null,2)+'\n');
+          console.log('STRATUM_WORKFLOW_AUDIT_VIDEO_STATUS=' + JSON.stringify(result));
+          NODE
+      - name: Persist verification evidence
+        run: |
+          git config user.name 'stratum-workflow-audit-video-verifier'
+          git config user.email 'actions@users.noreply.github.com'
+          git add distribution/stratum-workflow-audit-video-20260913-status.json
+          if git diff --cached --quiet; then
+            echo 'No verification change.'
+          else
+            git commit -m 'chore(distribution): persist Workflow Audit social verification [skip social]'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
