@@ -1,9 +1,9 @@
 [
   {
-    "id": "stratum-roi-igtt-20260913-01",
+    "id": "stratum-roi-igtt-20260913-02",
     "active": true,
     "services": ["instagram", "tiktok"],
-    "text": "Before automating a workflow with an AI agent, check the economics first. Hours saved × hourly rate is not enough—include human review, failed automation, recurring model cost, implementation cost, and realistic coverage. Run the free ROI sanity check. Planning tool only — not an ROI guarantee.",
+    "text": "Before automating an AI workflow, compare task volume, human review, recurring model cost, implementation cost, and realistic coverage. Use the ROI calculator to plan.",
     "url": "https://stratumpraxis.com/?utm_source=social&utm_medium=organic&utm_campaign=ai_agent_roi&utm_content=roi_igtt_20260913",
     "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/stratum-social-publish-roi/public/media/stratum-roi-social.png",
     "publish_trigger": "2026-09-13T03:11:00+09:00"
