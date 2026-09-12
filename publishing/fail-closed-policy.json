@@ -1,0 +1,46 @@
+{
+  "brand": "Stratum",
+  "checks": [
+    "BRAND_CHECK",
+    "ACCOUNT_CHECK",
+    "CHANNEL_CHECK",
+    "DESTINATION_CHECK",
+    "CTA_CHECK",
+    "EVIDENCE_CHECK"
+  ],
+  "publish_rule": "DENY_UNLESS_ALL_PASS",
+  "manual_only": {
+    "x": ["post", "schedule", "reply", "dm", "follow", "like", "repost"]
+  },
+  "human_gates": [
+    "new_price",
+    "new_product",
+    "new_checkout",
+    "important_brand_change",
+    "personal_dm",
+    "high_risk_claim",
+    "new_oauth_authorization",
+    "permission_review_after_terms_change"
+  ],
+  "success_requires": [
+    "platform_accepted",
+    "post_id",
+    "public_url",
+    "account_verified"
+  ],
+  "scheduled_is_published": false,
+  "failure_route": [
+    "classify_failure",
+    "stop_infinite_retry",
+    "try_official_api_or_allowed_fallback",
+    "human_gate_if_reauth_needed",
+    "reexecute_once_verified"
+  ],
+  "evaluation_order": [
+    "payment",
+    "checkout_or_contract",
+    "qualified_buyer_action",
+    "qualified_traffic",
+    "reach"
+  ]
+}
