@@ -42,13 +42,19 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
-          curl -sS -D /tmp/headers.txt -o /dev/null "$BASE/agent-lab/checkout?route_id=qa_agent_lab_final"
+          curl -sS -D /tmp/headers.txt -o /tmp/checkout-body.txt "$BASE/agent-lab/checkout?route_id=qa_agent_lab_final"
           code="$(awk 'NR==1{print $2}' /tmp/headers.txt)"
           location="$(awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/^[^:]*:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          echo "Checkout HTTP: $code"
+          echo "Checkout Location: $location"
+          echo 'Checkout body:'
+          cat /tmp/checkout-body.txt || true
           test "$code" = '303'
           echo "$location" | grep -Eq '^https://checkout\.stripe\.com/'
           sid="$(printf '%s' "$location" | grep -oE 'cs_(live|test)_[A-Za-z0-9]+' | head -n1)"
           test -n "$sid"
           denied="$(curl -sS -o /tmp/unpaid.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data "{\"session_id\":\"$sid\"}")"
+          echo "Unpaid activation HTTP: $denied"
+          cat /tmp/unpaid.txt || true
           test "$denied" = '402'
           echo 'Live Stripe checkout creation + unpaid membership denial -> PASS'
