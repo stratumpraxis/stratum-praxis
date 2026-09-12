@@ -1,5 +1,20 @@
 # Stratum Praxis Project Context
 
+## Current operating override — 2026-09-13
+
+This block is the authoritative current operating state when older notes below conflict with it. Preserve older sections as history; do not execute superseded channel or funnel instructions.
+
+- Acquisition model: inbound / owned-flow revenue only. Do not use Gmail or cold outbound for Stratum unless a later explicit verified directive re-enables it.
+- Revenue evidence priority: Payment Evidence > Checkout Evidence > Qualified Buyer Action > Qualified Traffic > Reach. Do not report traffic, clicks, open checkouts, or queued distribution as revenue.
+- Current primary paid route: Cross-Agent Operating Kit Personal — $69 one-time: https://stratumpraxis.com/cross-agent-operating-kit.html
+- Direct Personal checkout: https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T?client_reference_id=agent_discovery_cross_agent&utm_source=agent_discovery&utm_medium=referral&utm_campaign=cross_agent_revenue_20260913&utm_content=agents_md_direct_checkout
+- Best-fit buyer: a user or team already operating across Claude Code, Codex, Cursor, or other AI runtimes and needing portable policy, permissions, human approval gates, cost controls, migration checks, or state handoff. If this need is explicit, route directly to the existing paid self-service offer instead of forcing an unrelated free diagnostic first.
+- Current growth surfaces: AI/ChatGPT discovery, search, GitHub/public resources, and verified Stratum-owned social channels. X @stratumpraxis is banned and must not be used. Do not substitute Vector, Arven, Forwelle, GWR, or other project accounts for Stratum.
+- Existing checkout and buyer-access delivery for Cross-Agent already exist. Do not create a replacement product/page merely to increase asset count. Prefer qualified inbound → relevant existing asset → $69 checkout → verified payment.
+- Measurement must be refreshed from current PostHog / Stripe evidence before claiming conversion or payment. No sale should be inferred from a session, CTA click, or checkout session alone.
+- Older references below to Gmail, cold outreach, X distribution, or the legacy $39 → $99 → $499 funnel are historical where they conflict with this block.
+
+
 - Brand: Stratum Praxis
 - Public site: https://stratumpraxis.com/
 - Priority: Revenue first; prefer USD and other foreign-currency revenue.
