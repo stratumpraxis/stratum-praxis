@@ -1,11 +1,11 @@
 [
   {
-    "id": "stratum-tiktok-roi-001",
+    "id": "stratum-tiktok-signal-path-002",
     "active": true,
     "services": ["tiktok"],
-    "title": "Check AI agent economics before automating",
-    "text": "Before automating a workflow with an AI agent, check the economics first. Hours saved × hourly rate is not enough. Include review time, recurring model cost, implementation cost, and realistic automation coverage.",
-    "url": "https://stratumpraxis.com/?utm_source=tiktok&utm_medium=social&utm_campaign=ai_agent_roi&utm_content=tiktok01",
+    "title": "Turn market signal into qualified action",
+    "text": "More AI output is not the goal. The goal is a shorter path from market signal to evidence, buyer intent, and qualified action.",
+    "url": "https://stratumpraxis.com/?utm_source=tiktok&utm_medium=social&utm_campaign=signal_path&utm_content=tiktok02",
     "imageUrl": "https://stratumpraxis.com/assets/stratum-social-agent-control-1080.png"
   }
 ]
