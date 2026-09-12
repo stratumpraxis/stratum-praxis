@@ -1,0 +1,38 @@
+name: Stratum Publishing Preflight
+
+on:
+  workflow_dispatch:
+    inputs:
+      package_path:
+        description: Path to publish package JSON
+        required: true
+        default: publishing/queue/example.json
+  pull_request:
+    paths:
+      - 'publishing/**'
+      - 'scripts/validate_publish_package.py'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate requested package
+        if: github.event_name == 'workflow_dispatch'
+        run: python scripts/validate_publish_package.py "${{ inputs.package_path }}"
+      - name: Validate changed publish packages
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          set -euo pipefail
+          files=$(git diff --name-only "${{ github.event.pull_request.base.sha }}" "${{ github.sha }}" -- 'publishing/queue/*.json' || true)
+          if [ -z "$files" ]; then
+            echo "No publish queue packages changed."
+            exit 0
+          fi
+          while IFS= read -r f; do
+            python scripts/validate_publish_package.py "$f"
+          done <<< "$files"
