@@ -1,0 +1,16 @@
+{
+  "checked_at": "2026-09-12T16:23:58Z",
+  "success": true,
+  "project_name": "stratum-praxis-site",
+  "subdomain": "stratum-praxis-site.pages.dev",
+  "domains": [
+    "stratum-praxis-site.pages.dev"
+  ],
+  "production_branch": "main",
+  "latest_production": {
+    "id": "e98801bf-6f8a-425f-a708-98d8d479b4b5",
+    "url": "https://e98801bf.stratum-praxis-site.pages.dev",
+    "environment": "production",
+    "created_on": "2026-09-12T16:21:44.882422Z"
+  }
+}
