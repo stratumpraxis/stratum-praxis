@@ -19,6 +19,7 @@ Do not use Stratum as the default home for unrelated creator, consumer, publishi
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify a workflow worth examining.
 - [AI Automation Pilot Planner](https://ai-automation-pilot-planner.pages.dev/) — turn one repetitive task into a bounded pilot.
 - [Agent Control Auditor](https://stratumpraxis.com/agent-control-auditor.html?utm_source=github&utm_medium=referral&utm_campaign=b2b_asset_base&utm_content=agent_control_auditor) — review operating boundaries and controls before expanding agent authority.
+- [Cross-Agent Operating Kit](https://stratumpraxis.com/cross-agent-operating-kit.html) — portable operating controls for teams that work across multiple AI runtimes.
 - [AI Tool Stack Renewal Guide 2026](https://stratumpraxis.com/ai-tool-stack-renewal-guide-2026.html) — review AI/SaaS renewals and consolidation decisions.
 - [SaaS Renewal Decision Calculator](https://stratumpraxis.com/saas-renewal-decision.html) — pressure-test a software renewal, seat increase, AI add-on, or build-vs-buy decision.
 - [AI & SaaS Spend Waste Audit](https://stratumpraxis.com/ai-saas-spend-waste-audit.html) — connect software spend with workflow value.
