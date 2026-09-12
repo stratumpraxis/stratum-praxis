@@ -188,8 +188,12 @@ jobs:
           echo 'Revenue Route OS visual decision interface -> PASS'
 
           curl -L -sS "$BASE/stratum-catalog-v3.js" -o /tmp/catalog.js
-          grep -Fq "name:'AI Value Realization Kit'" /tmp/catalog.js
+          grep -Fq "name:'AI & SaaS Spend Decision Kit'" /tmp/catalog.js
+          grep -Fq "href:'/ai-saas-spend-decision-kit.html'" /tmp/catalog.js
           grep -Fq "name:'Cross-Agent Operating Kit'" /tmp/catalog.js
+          if grep -Fq "name:'AI Value Realization Kit'" /tmp/catalog.js; then
+            echo 'Legacy $39 Value Realization Kit resurfaced in active catalog'; exit 1
+          fi
           if grep -Fq "name:'AI Workflow SOP & Governance Kit'" /tmp/catalog.js; then
             echo 'Legacy SOP product resurfaced in active catalog'; exit 1
           fi
@@ -226,11 +230,14 @@ jobs:
           echo 'Spend Decision Kit conversion page -> PASS'
 
           assert_markers "$BASE/ai-value-realization-kit.html" /tmp/value-kit.html \
-            'href="/spend-roi-v6.css"' \
-            'SELF-SERVICE · $39 ONE-TIME' \
-            'https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00' \
-            'href="/ai-saas-spend-waste-audit.html"'
-          echo 'Spend & ROI V6 $39 conversion page -> PASS'
+            'content="noindex,follow"' \
+            'href="https://stratumpraxis.com/ai-saas-spend-decision-kit.html"' \
+            'content="2;url=/ai-saas-spend-decision-kit.html"' \
+            'href="/ai-saas-spend-decision-kit.html"'
+          if grep -Fq 'https://buy.stripe.com/9B6bJ22oA6f160oegb6Zy00' /tmp/value-kit.html; then
+            echo 'Legacy $39 checkout resurfaced on continuity route'; exit 1
+          fi
+          echo 'Legacy $39 URL is continuity-only and routes to current Decision Kit -> PASS'
 
           assert_markers "$BASE/ai-saas-spend-waste-audit.html" /tmp/spend-audit.html \
             'href="/spend-roi-v6.css"' \
