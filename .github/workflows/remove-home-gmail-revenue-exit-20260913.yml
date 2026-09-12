@@ -1,0 +1,46 @@
+name: Remove Home Gmail Revenue Exit
+
+on:
+  push:
+    paths:
+      - 'home-no-gmail.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Remove Gmail from public home funnel
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(',"email":"stratumpraxis@gmail.com"', '')
+          s = s.replace('<a href="mailto:stratumpraxis@gmail.com" data-i18n="contact">Contact</a>', '<a href="/ai-value-realization-kit.html" data-analytics-id="footer_39_kit">$39 Kit</a>')
+          p.write_text(s, encoding='utf-8')
+      - name: Verify no Gmail revenue exit remains on home
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Fq 'mailto:stratumpraxis@gmail.com' index.html
+          ! grep -Fq '"email":"stratumpraxis@gmail.com"' index.html
+          grep -Fq 'footer_39_kit' index.html
+          grep -Fq 'href="/ai-value-realization-kit.html"' index.html
+      - name: Commit home funnel cleanup
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add index.html
+          if git diff --cached --quiet; then
+            echo 'No changes needed'
+          else
+            git commit -m 'Remove Gmail exit from Stratum home funnel'
+            git push
+          fi
