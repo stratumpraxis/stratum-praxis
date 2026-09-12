@@ -1,0 +1,32 @@
+name: Stratum TikTok Direct Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/stratum-tiktok-direct-queue.json'
+      - '.github/workflows/stratum-tiktok-direct-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Publish to verified Stratum TikTok
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: tiktok
+          BUFFER_QUEUE_FILE: stratum-tiktok-direct-queue.json
+          BUFFER_SELECT_MODE: first
+          BUFFER_POST_MODE: shareNow
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
+          REQUIRE_CHANNEL_NAME_CONTAINS: stratumpraxis
+        run: node distribution/buffer-publisher.mjs
