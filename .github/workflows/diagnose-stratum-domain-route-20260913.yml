@@ -1,0 +1,41 @@
+name: Diagnose Stratum Domain Route
+
+on:
+  push:
+    paths:
+      - 'domain-route-diagnostic.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Read Cloudflare Pages project routing
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .github/diagnostics
+          api="https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/pages/projects/stratum-praxis-site"
+          curl -fsS -H "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" -H 'Content-Type: application/json' "$api" -o /tmp/project.json
+          jq '{checked_at:(now|todate), success, project_name:.result.name, subdomain:.result.subdomain, domains:(.result.domains // []), production_branch:.result.production_branch, latest_production:{id:.result.canonical_deployment.id,url:.result.canonical_deployment.url,environment:.result.canonical_deployment.environment,created_on:.result.canonical_deployment.created_on}}' /tmp/project.json > .github/diagnostics/cloudflare-pages-domain-status.json
+          cat .github/diagnostics/cloudflare-pages-domain-status.json
+      - name: Commit sanitized routing status
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/diagnostics/cloudflare-pages-domain-status.json
+          if git diff --cached --quiet; then
+            echo 'No diagnostic change'
+          else
+            git commit -m 'Record Stratum Pages domain routing status'
+            git push
+          fi
