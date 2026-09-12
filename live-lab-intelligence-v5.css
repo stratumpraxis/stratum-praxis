@@ -1,0 +1,66 @@
+/* Stratum Live Lab — Exploration Intelligence v5
+   Role: exploration + free evidence. Intentionally not the Hub or Product Router UI. */
+
+body[data-page="live_lab_v4"]{--lab-search:#d9ffad;--lab-focus:#b7ff5a;--lab-blue:#8bd7ff}
+
+/* Command strip: search and compare without turning the Lab into a catalog wall. */
+body[data-page="live_lab_v4"] .lab-command{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;margin-bottom:12px;padding:10px;border:1px solid rgba(16,21,19,.12);border-radius:14px;background:#e8e5db}
+body[data-page="live_lab_v4"] .lab-searchbox{position:relative;display:grid;grid-template-columns:34px minmax(0,1fr) auto;align-items:center;min-height:50px;border:1px solid rgba(16,21,19,.12);border-radius:10px;background:#fffdf7;overflow:hidden}
+body[data-page="live_lab_v4"] .lab-searchbox>span{display:grid;place-items:center;color:#50645b;font-size:15px}
+body[data-page="live_lab_v4"] .lab-searchbox input{width:100%;min-width:0;height:48px;padding:0;border:0;outline:0;background:transparent;color:#101513;font:650 12px/1.2 inherit}
+body[data-page="live_lab_v4"] .lab-searchbox input::placeholder{color:#829089}
+body[data-page="live_lab_v4"] .lab-searchbox kbd{margin-right:9px;padding:4px 6px;border:1px solid rgba(16,21,19,.1);border-radius:6px;background:#f1efe7;color:#75827b;font:750 7px/1 inherit}
+body[data-page="live_lab_v4"] .lab-searchbox:focus-within{border-color:rgba(76,112,93,.45);box-shadow:0 0 0 3px rgba(121,187,163,.10)}
+
+body[data-page="live_lab_v4"] .lab-command-actions{display:flex;gap:6px;align-items:stretch}
+body[data-page="live_lab_v4"] .lab-command-btn{min-height:50px;padding:0 14px;border:1px solid #18211d;border-radius:10px;background:#111816;color:#f5f3eb;font:850 9px/1 inherit;letter-spacing:.03em;cursor:pointer}
+body[data-page="live_lab_v4"] .lab-command-btn span{color:var(--lab-focus)}
+body[data-page="live_lab_v4"] .lab-command-btn[aria-expanded="true"]{background:#203128;border-color:#2e493b}
+
+body[data-page="live_lab_v4"] .lab-result-status{grid-column:1/-1;display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:20px;padding:0 3px;color:#6d7b74;font-size:8px}
+body[data-page="live_lab_v4"] .lab-result-status strong{color:#2e493b;font-size:8px}
+body[data-page="live_lab_v4"] .lab-clear-search{padding:3px 0;border:0;background:transparent;color:#486557;font:800 8px/1 inherit;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* Compare is a temporary decision surface, not a second permanent catalog. */
+body[data-page="live_lab_v4"] .lab-compare{grid-column:1/-1;display:none;padding:12px;border:1px solid rgba(16,21,19,.11);border-radius:12px;background:#111816;color:#f5f3eb}
+body[data-page="live_lab_v4"] .lab-compare.is-open{display:block}
+body[data-page="live_lab_v4"] .lab-compare-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px}
+body[data-page="live_lab_v4"] .lab-compare-head small{color:#81928a;font-size:7px;font-weight:850;letter-spacing:.12em}
+body[data-page="live_lab_v4"] .lab-compare-head button{border:0;background:transparent;color:#9eaaa4;font:800 9px/1 inherit;cursor:pointer}
+body[data-page="live_lab_v4"] .lab-compare-picks{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}
+body[data-page="live_lab_v4"] .lab-compare-picks::-webkit-scrollbar{display:none}
+body[data-page="live_lab_v4"] .lab-compare-pick{flex:0 0 auto;min-height:34px;padding:0 10px;border:1px solid rgba(255,255,255,.08);border-radius:999px;background:rgba(255,255,255,.035);color:#aab7b1;font:800 8px/1 inherit;cursor:pointer}
+body[data-page="live_lab_v4"] .lab-compare-pick[aria-pressed="true"]{border-color:rgba(183,255,90,.28);background:rgba(183,255,90,.09);color:var(--lab-focus)}
+body[data-page="live_lab_v4"] .lab-compare-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;margin-top:10px;border:1px solid rgba(255,255,255,.08);border-radius:10px;overflow:hidden;background:rgba(255,255,255,.08)}
+body[data-page="live_lab_v4"] .lab-compare-card{min-height:152px;padding:14px;background:#151d1a}
+body[data-page="live_lab_v4"] .lab-compare-card small{color:#7f9188;font-size:7px;font-weight:850;letter-spacing:.08em}
+body[data-page="live_lab_v4"] .lab-compare-card h3{margin:9px 0 7px;color:#f5f3eb;font-size:14px;line-height:1.08;letter-spacing:-.025em}
+body[data-page="live_lab_v4"] .lab-compare-card p{margin:0;color:#93a098;font-size:9px;line-height:1.55}
+body[data-page="live_lab_v4"] .lab-compare-card a{display:inline-flex;align-items:center;gap:8px;margin-top:12px;color:var(--lab-focus);font-size:9px;font-weight:850;text-decoration:none}
+body[data-page="live_lab_v4"] .lab-compare-empty{padding:16px 4px 4px;color:#8c9a93;font-size:9px;line-height:1.55}
+
+/* Search result semantics. */
+body[data-page="live_lab_v4"] .inventory-row[data-search-hidden="true"]{display:none!important}
+body[data-page="live_lab_v4"] .inventory-row.is-search-match{box-shadow:inset 3px 0 var(--lab-teal)!important}
+body[data-page="live_lab_v4"] .inventory-row.is-search-best{box-shadow:inset 3px 0 var(--lab-focus)!important;background:#edf3e9!important}
+body[data-page="live_lab_v4"] .lab-empty-recovery{display:none;padding:20px;border-top:1px solid var(--lab-line);background:#fffdf7;color:#65736c;text-align:center;font-size:10px;line-height:1.6}
+body[data-page="live_lab_v4"] .lab-empty-recovery.is-visible{display:block}
+body[data-page="live_lab_v4"] .lab-empty-recovery button{margin-top:9px;padding:9px 12px;border:1px solid rgba(16,21,19,.12);border-radius:8px;background:#111816;color:#f5f3eb;font:800 8px/1 inherit;cursor:pointer}
+
+/* Recommended card becomes an instrument when a search has a strong match. */
+body[data-page="live_lab_v4"] .recommend-card[data-search-active="true"]{border-color:rgba(183,255,90,.26)!important}
+body[data-page="live_lab_v4"] .recommend-card[data-search-active="true"] .recommend-head::after{content:"SEARCH MATCH";margin-left:auto;color:var(--lab-focus);font-size:7px;letter-spacing:.1em}
+
+@media(max-width:720px){
+  body[data-page="live_lab_v4"] .lab-command{grid-template-columns:1fr;padding:7px;border-radius:12px}
+  body[data-page="live_lab_v4"] .lab-command-actions{display:grid;grid-template-columns:1fr}
+  body[data-page="live_lab_v4"] .lab-command-btn{min-height:42px}
+  body[data-page="live_lab_v4"] .lab-result-status{font-size:7.5px}
+  body[data-page="live_lab_v4"] .lab-compare-grid{grid-template-columns:1fr}
+  body[data-page="live_lab_v4"] .lab-compare-card{min-height:0}
+  body[data-page="live_lab_v4"] .lab-searchbox kbd{display:none}
+}
+
+@media(prefers-reduced-motion:reduce){
+  body[data-page="live_lab_v4"] .lab-command *,body[data-page="live_lab_v4"] .inventory-row{scroll-behavior:auto!important;transition:none!important}
+}
