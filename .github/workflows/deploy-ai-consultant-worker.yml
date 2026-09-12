@@ -96,6 +96,22 @@ jobs:
           fi
           echo "Music Stock Pack buyer-delivery guard OK: 401"
 
+          code="$(curl -sS -D /tmp/music-checkout-headers.txt -o /dev/null -w '%{http_code}' "$BASE/music-stock-pack-v1/checkout")"
+          if [ "$code" != '303' ]; then
+            echo "Expected 303 for Music Stock Pack checkout, got $code"
+            cat /tmp/music-checkout-headers.txt
+            exit 1
+          fi
+          location="$(tr -d '\r' < /tmp/music-checkout-headers.txt | awk 'BEGIN{IGNORECASE=1} /^location:/{sub(/^[^:]*:[[:space:]]*/, ""); print; exit}')"
+          case "$location" in
+            https://checkout.stripe.com/*) ;;
+            *)
+              echo "Expected Stripe Checkout redirect, got: $location"
+              exit 1
+              ;;
+          esac
+          echo "Music Stock Pack live checkout redirect OK: 303 -> checkout.stripe.com"
+
           code="$(curl -sS -o /tmp/stripe-webhook.txt -w '%{http_code}' -X POST "$BASE/stripe/webhook" -H 'Content-Type: application/json' --data '{}')"
           if [ "$code" != '400' ] && [ "$code" != '503' ]; then
             echo "Expected 400 (signature guard) or 503 (secret not configured) for unsigned webhook, got $code"
