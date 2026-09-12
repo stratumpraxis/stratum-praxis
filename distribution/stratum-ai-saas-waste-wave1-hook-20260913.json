@@ -1,0 +1,16 @@
+{
+  "id": "stratum-ai-saas-waste-wave1-hook-20260913",
+  "revision": 1,
+  "title": "そのAI、本当に元が取れてる？",
+  "summary": "AIやSaaSを増やす前に、年間コストと見直し余地を数字で確認する無料入口。",
+  "publish": {
+    "services": ["tiktok", "instagram"],
+    "mode": "shareNow",
+    "title": "そのAI、本当に元が取れてる？",
+    "caption": "AIやSaaS、増やす前に『元が取れているか』を数字で確認。\n\n月額コストを年額に直して、見直し対象を可視化する無料 AI & SaaS Waste Calculator。\n\n無料で確認 → https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=social&utm_medium=organic_video&utm_campaign=ai_saas_waste_wave1&utm_content=hook&route_id=stratum_ai_saas_waste_wave1_hook\n\n#AI #SaaS #Automation #StratumPraxis",
+    "channelAllowlist": {
+      "tiktok": ["6a8e5d28ccaf649a671a13e7", "stratumpraxis", "@stratumpraxis"],
+      "instagram": ["6a8e5b5accaf649a671a0cd9", "praxisstratum", "@praxisstratum"]
+    }
+  }
+}
