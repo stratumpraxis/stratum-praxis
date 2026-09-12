@@ -1,4 +1,5 @@
 name: Stratum Social Verify
+# verify-trigger: 2026-09-13
 
 on:
   push:
