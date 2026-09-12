@@ -1,27 +1,19 @@
 name: Stratum Social Now
-# mode: verify-tiktok-retry
+# policy: OFFICIAL_API_ONLY
+# Buffer dependency disabled. Use platform-native official APIs/OAuth only.
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - '.github/workflows/stratum-social-now.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 jobs:
-  verify:
+  official-api-only:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-      - name: Verify retried Stratum TikTok final status
-        env:
-          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
-          BUFFER_POST_IDS: 6aa5adf3130d0ea1a45b8482
-        run: node distribution/buffer-post-status.mjs
+      - name: Fail closed until an official platform adapter is selected
+        run: |
+          echo 'Stratum social publishing is OFFICIAL_API_ONLY.'
+          echo 'Buffer-based publishing is disabled.'
+          echo 'Use direct official adapters for Bluesky / Instagram / TikTok / LinkedIn / Facebook / Pinterest / YouTube.'
