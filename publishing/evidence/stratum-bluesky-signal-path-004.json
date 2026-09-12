@@ -1,0 +1,13 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mvdzckedip2l",
+  "cid": "bafyreibyq4wcks55yafywczvklayuaomivfm6kh7vi6ndl7slvixngkqli",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mvdzckedip2l",
+  "destination": "https://stratumpraxis.com/?utm_source=bluesky&utm_medium=social&utm_campaign=signal_path&utm_content=bsky04",
+  "content_id": "stratum-bluesky-signal-path-004",
+  "published_at": "2026-09-12T21:23:47.497Z"
+}

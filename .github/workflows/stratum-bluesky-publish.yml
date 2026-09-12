@@ -6,7 +6,6 @@ on:
     paths:
       - 'publishing/queue/stratum-bluesky-*.json'
       - 'scripts/publish_bluesky_official.mjs'
-      - '.github/workflows/stratum-bluesky-publish.yml'
   workflow_dispatch:
     inputs:
       package_path:
@@ -58,4 +57,5 @@ jobs:
             exit 0
           fi
           git commit -m 'evidence: persist Stratum Bluesky publication [skip social]'
-          git push
+          git pull --rebase origin main
+          git push origin main
