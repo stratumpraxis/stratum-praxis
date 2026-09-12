@@ -1,0 +1,88 @@
+name: Stratum AI SaaS Waste Wave1 Numbers Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/stratum-ai-saas-waste-wave1-numbers-20260913.json'
+      - '.github/workflows/stratum-ai-saas-waste-wave1-numbers-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-ai-saas-waste-wave1-numbers-20260913
+  cancel-in-progress: false
+
+jobs:
+  publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      MANIFEST: distribution/stratum-ai-saas-waste-wave1-numbers-20260913.json
+      LEDGER: distribution/stratum-ai-saas-waste-wave1-numbers-20260913-ledger.json
+      VIDEO_URL: https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789252465578-e46b9a43-e319-4015-8956-0e7f0ba72d94.mp4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fail-closed Stratum destination preflight
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const m = JSON.parse(fs.readFileSync(process.env.MANIFEST, 'utf8'));
+          const services = m.publish?.services || [];
+          if (services.length !== 1 || String(services[0]).toLowerCase() !== 'tiktok') throw new Error('Only Stratum TikTok is allowed');
+          const a = m.publish?.channelAllowlist || {};
+          if (!Array.isArray(a.tiktok) || !a.tiktok.includes('6a8e5d28ccaf649a671a13e7') || !a.tiktok.includes('stratumpraxis')) throw new Error('Stratum TikTok allowlist missing');
+          const caption = String(m.publish?.caption || '');
+          if (!caption.includes('https://stratumpraxis.com/ai-saas-waste-calculator.html')) throw new Error('Revenue destination mismatch');
+          if (!caption.includes('route_id=stratum_ai_saas_waste_wave1_numbers')) throw new Error('Route ID mismatch');
+          if (/vector|forwelle|arven|gwr/i.test(caption)) throw new Error('Cross-brand text detected');
+          console.log('STRATUM_PREFLIGHT=PASS');
+          NODE
+
+      - name: Install media QA runtime
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+
+      - name: Verify public MP4 before publish
+        run: |
+          set -euo pipefail
+          code=$(curl --fail --silent --show-error --location -o /tmp/video.mp4 -w '%{http_code}' "$VIDEO_URL")
+          bytes=$(wc -c < /tmp/video.mp4)
+          echo "PUBLIC_VIDEO_HTTP=$code BYTES=$bytes"
+          test "$code" = '200'
+          test "$bytes" -gt 50000
+          ffprobe -v error -show_entries stream=codec_name,width,height -show_entries format=duration,size -of json /tmp/video.mp4
+
+      - name: Publish only to allowlisted Stratum TikTok
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: ${{ env.MANIFEST }}
+          TREND_VIDEO_URL: ${{ env.VIDEO_URL }}
+          VIDEO_PUBLISH_LEDGER: ${{ env.LEDGER }}
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Persist publication evidence
+        if: always()
+        run: |
+          if [ ! -f "$LEDGER" ]; then
+            echo 'No ledger produced.'
+            exit 0
+          fi
+          git config user.name 'stratum-ai-saas-waste-video-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add "$LEDGER"
+          if git diff --cached --quiet; then
+            echo 'No evidence change.'
+          else
+            git commit -m 'evidence: record Stratum AI SaaS waste numbers video publication [skip social]'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
