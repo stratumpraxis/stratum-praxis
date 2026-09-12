@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "items": {
+    "stratum-ai-saas-waste-wave1-ladder-20260913": {
+      "tiktok": {
+        "status": "scheduled",
+        "at": "2026-09-12T22:37:24.251Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789252607322-c7c0a07d-1637-408b-bfdf-2189a4c371a3.mp4",
+        "postId": "6aa5d424eba7bc5677869863",
+        "dueAt": "2026-09-13T23:10:00.000Z",
+        "sentAt": null,
+        "sharedNow": false,
+        "externalLink": null,
+        "error": null
+      }
+    }
+  }
+}
