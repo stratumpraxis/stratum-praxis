@@ -1,0 +1,79 @@
+name: Fix Homepage Search Snippet
+
+on:
+  push:
+    paths:
+      - 'home-search-snippet.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update homepage search metadata only
+        shell: python
+        run: |
+          from pathlib import Path
+          import json, re
+
+          p = Path('index.html')
+          s = p.read_text(encoding='utf-8')
+
+          s = re.sub(
+              r'<title>[^<]*</title>',
+              '<title>AI & SaaS Spend Decision Tools | Stratum Praxis</title>',
+              s,
+              count=1,
+          )
+          s = re.sub(
+              r'<meta name="description" content="[^"]*">',
+              '<meta name="description" content="Measure AI and SaaS spend, workflow friction and agent economics with free decision tools. Use paid audits only when the evidence supports them.">',
+              s,
+              count=1,
+          )
+
+          pattern = re.compile(r'(<script type="application/ld\+json">)(.*?)(</script>)', re.S)
+          def patch_schema(match):
+              raw = match.group(2)
+              try:
+                  data = json.loads(raw)
+              except Exception:
+                  return match.group(0)
+              if isinstance(data, dict) and data.get('@type') == 'Organization' and data.get('name') == 'Stratum Praxis':
+                  data['logo'] = 'https://stratumpraxis.com/media/og/stratum-praxis-og-default.png'
+                  return match.group(1) + json.dumps(data, ensure_ascii=False, separators=(',', ':')) + match.group(3)
+              return match.group(0)
+          s = pattern.sub(patch_schema, s, count=1)
+
+          p.write_text(s, encoding='utf-8')
+
+      - name: Verify search and revenue invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          grep -Fq '<title>AI & SaaS Spend Decision Tools | Stratum Praxis</title>' index.html
+          grep -Fq 'Measure AI and SaaS spend, workflow friction and agent economics with free decision tools.' index.html
+          grep -Fq '"logo":"https://stratumpraxis.com/media/og/stratum-praxis-og-default.png"' index.html
+          grep -Fq 'href="/ai-saas-waste-calculator.html"' index.html
+          grep -Fq 'href="/workflow-audit.html"' index.html
+          grep -Fq 'sp-inbound-route-v1' index.html
+
+      - name: Commit homepage search fix
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "stratumpraxis"
+          git config user.email "stratumpraxis@gmail.com"
+          git add index.html
+          if git diff --cached --quiet; then
+            echo "No changes needed"
+          else
+            git commit -m "Improve homepage search snippet and organization schema"
+            git push
+          fi
