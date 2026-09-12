@@ -5,7 +5,10 @@ on:
     branches: [main]
     paths:
       - 'distribution/revenue-strike-queue.json'
-      - 'distribution/revenue-performance.json'
+      - 'distribution/revenue-evidence-policy.json'
+      - 'distribution/revenue-evidence-collector.mjs'
+      - 'distribution/revenue-next-action.mjs'
+      - 'distribution/revenue-capability-gate.mjs'
       - 'distribution/revenue-winner-selector.mjs'
       - '.github/workflows/revenue-strike-launch.yml'
   schedule:
@@ -31,7 +34,34 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate revenue automation syntax
+        run: |
+          node --check distribution/revenue-evidence-collector.mjs
+          node --check distribution/revenue-next-action.mjs
+          node --check distribution/revenue-winner-selector.mjs
+          node --check distribution/revenue-capability-gate.mjs
+
+      - name: Collect trusted live revenue evidence
+        env:
+          POSTHOG_HOST: https://us.posthog.com
+          POSTHOG_PROJECT_ID: ${{ vars.POSTHOG_PROJECT_ID || '573335' }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          REVENUE_WINDOW_DAYS: '30'
+        run: node distribution/revenue-evidence-collector.mjs
+
+      - name: Generate autonomous next action
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
+        run: node distribution/revenue-next-action.mjs
+
       - name: Select revenue winners with exploration fallback
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
         run: node distribution/revenue-winner-selector.mjs
 
       - name: Selected revenue queue safety audit
@@ -42,29 +72,73 @@ jobs:
           ALLOWED_REVENUE_DOMAINS: stratumpraxis.com
         run: node distribution/safety-audit.mjs
 
+      - name: Refresh live Buffer channel capability
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        run: node distribution/buffer-channel-audit.mjs
+
+      - name: Build capability-aware dispatch plan
+        env:
+          REVENUE_PERFORMANCE_FILE: ./revenue-performance.runtime.json
+          REVENUE_BRAND_CHANNEL_NAMES: stratumpraxis,praxisstratum
+          REVENUE_TEXT_PUBLISHER_SERVICES: linkedin,threads,bluesky,mastodon
+        run: node distribution/revenue-capability-gate.mjs
+
+      - name: Export dispatch eligibility
+        id: dispatch
+        run: |
+          node -e "const fs=require('fs');const p=JSON.parse(fs.readFileSync('distribution/revenue-dispatch-plan.json','utf8'));for(const s of ['linkedin','threads','bluesky'])console.log(s+'='+p.dispatchable.some(x=>x.service===s));console.log('any='+Boolean(p.dispatchable.length));" >> "$GITHUB_OUTPUT"
+
+      - name: Explain safe no-op when no route is dispatchable
+        if: steps.dispatch.outputs.any != 'true'
+        run: |
+          echo 'No revenue route is both evidence-ready, brand-connected and compatible with the text publisher.'
+          cat distribution/revenue-next-action.json
+          cat distribution/revenue-dispatch-plan.json
+
       - name: Agent Control Auditor -> LinkedIn
+        if: steps.dispatch.outputs.linkedin == 'true'
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: linkedin
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
       - name: AI Value / SaaS Spend -> Threads
+        if: steps.dispatch.outputs.threads == 'true'
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: threads
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
       - name: Cross-Agent Operating Kit -> Bluesky
+        if: steps.dispatch.outputs.bluesky == 'true'
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: bluesky
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
+
+      - name: Preserve decision evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: revenue-strike-evidence-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 14
+          path: |
+            distribution/revenue-performance.runtime.json
+            distribution/revenue-next-action.json
+            distribution/revenue-strike-selected.json
+            distribution/revenue-dispatch-plan.json
+            distribution/buffer-channel-audit-result.json

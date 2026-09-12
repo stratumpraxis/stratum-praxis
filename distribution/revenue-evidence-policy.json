@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "purpose": "Prevent QA, bots and automation from being learned as buyer intent. Only trusted market evidence may influence revenue winner selection.",
+  "market_evidence": {
+    "accepted_traffic_types": ["Regular"],
+    "excluded_utm_sources": ["codex", "codex_qa"],
+    "excluded_client_reference_prefixes": ["qa_"],
+    "legacy_metrics": "exploration_only",
+    "purchase_truth": ["stripe_completed", "gumroad_sale", "payhip_sale"]
+  },
+  "scoring": {
+    "regular_pageview": 1,
+    "regular_primary_cta_click": 4,
+    "regular_checkout_start": 12,
+    "verified_paid_purchase": 80,
+    "contribution_profit_usd": 2,
+    "reliability": 5,
+    "asset_reuse": 3,
+    "human_effort_minute_penalty": 0.5
+  },
+  "gates": {
+    "minimum_score": 8,
+    "minimum_trusted_signals": 3,
+    "max_human_effort_minutes_per_cycle": 15,
+    "reject_unverified_purchase_claims": true,
+    "prefer_existing_assets": true
+  }
+}
