@@ -58,9 +58,9 @@
   'use strict';
   const WORKFLOW_AUDIT_CHECKOUT='https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02';
   const LABELS={
-    en:{hero:'Start the $499 workflow audit',mobile:'Start $499 audit'},
-    ja:{hero:'$499 Workflow Auditを開始',mobile:'$499 Auditを開始'},
-    es:{hero:'Iniciar auditoría de workflow — $499',mobile:'Iniciar auditoría — $499'}
+    en:{hero:'Start the $499 workflow audit',band:'Start the audit — $499 →',mobile:'Start $499 audit'},
+    ja:{hero:'$499 Workflow Auditを開始',band:'Auditを開始 — $499 →',mobile:'$499 Auditを開始'},
+    es:{hero:'Iniciar auditoría de workflow — $499',band:'Iniciar auditoría — $499 →',mobile:'Iniciar auditoría — $499'}
   };
   const apply=()=>{
     const lang=['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
@@ -73,6 +73,15 @@
       hero.setAttribute('data-primary-cta','true');
       const label=hero.querySelector('[data-rh="ctaAudit"]');
       if(label)label.textContent=text.hero;
+    }
+    const band=document.querySelector('a[data-analytics-id="home_audit_band"],a[data-analytics-id="home_audit_band_checkout"]');
+    if(band){
+      band.href=WORKFLOW_AUDIT_CHECKOUT;
+      band.dataset.analyticsId='home_audit_band_checkout';
+      band.dataset.product='workflow_audit';
+      band.setAttribute('data-primary-cta','true');
+      const label=band.querySelector('[data-rh="auditCta"]');
+      if(label)label.textContent=text.band;
     }
     const mobile=document.querySelector('.mobile-start');
     if(mobile){
