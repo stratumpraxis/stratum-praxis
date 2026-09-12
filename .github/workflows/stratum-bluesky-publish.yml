@@ -1,5 +1,6 @@
 name: Stratum Bluesky Direct Publish
 
+# trigger-current-main: 2026-09-13
 on:
   push:
     branches: [main]
