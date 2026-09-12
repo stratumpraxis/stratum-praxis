@@ -1,0 +1,76 @@
+name: Tighten Cross-Agent Hero for Revenue
+
+on:
+  push:
+    paths:
+      - '.github/workflows/tighten-cross-agent-hero-20260913.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  tighten:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Tighten Cross-Agent buyer-facing hero
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          html = Path('cross-agent-operating-kit.html')
+          js = Path('cross-agent-attribution.js')
+
+          h = html.read_text()
+          j = js.read_text()
+
+          html_replacements = {
+            '<span data-i18n="headline_1">Keep the</span> <em data-i18n="headline_2">brain.</em><br><span data-i18n="headline_3">Change the agent.</span>': '<span data-i18n="headline_1">One operating policy.</span> <em data-i18n="headline_2">Multiple AI agents.</em><br><span data-i18n="headline_3">No rebuild every switch.</span>',
+            '<p class="purpose" data-i18n="purpose">Not a prompt pack. An operating layer.</p>': '<p class="purpose" data-i18n="purpose">Master policy + human gates + cost guards + state handoff.</p>',
+            '<p class="lead" data-i18n="lead">Keep policy, permissions, state and safety rules portable when you switch between Claude Code, Codex, Cursor and other AI runtimes.</p>': '<p class="lead" data-i18n="lead">Use one editable operating kit across Claude Code, Codex and Cursor so permissions, stop conditions, budgets and handoff state do not disappear when the agent changes.</p>',
+            'data-i18n="choose_license">Personal · $69</a>': 'data-i18n="choose_license">Get Personal Kit · $69</a>',
+            '<div class="hero-facts"><span data-i18n="fact_6">6 operating components</span><span data-i18n="fact_3">3 license levels</span><span>Markdown + YAML</span></div>': '<div class="hero-facts"><span>Master AGENTS.md</span><span>Human Gate Matrix</span><span>Migration + State Handoff</span></div>'
+          }
+          for old, new in html_replacements.items():
+            if old not in h:
+              raise SystemExit(f'Expected HTML text not found: {old[:80]}')
+            h = h.replace(old, new, 1)
+
+          js_replacements = {
+            "headline_1: { en:'Keep the', ja:'運用の', ko:'운영의', zh:'保留' }": "headline_1: { en:'One operating policy.', ja:'運用ポリシーは1つ。', ko:'운영 정책은 하나.', zh:'一套运营策略。' }",
+            "headline_2: { en:'brain.', ja:'頭脳は残す。', ko:'두뇌는 유지하고.', zh:'运营大脑。' }": "headline_2: { en:'Multiple AI agents.', ja:'複数のAI Agentで使う。', ko:'여러 AI 에이전트에서 사용.', zh:'用于多个 AI Agent。' }",
+            "headline_3: { en:'Change the agent.', ja:'エージェントだけ変える。', ko:'에이전트만 바꾸세요.', zh:'只更换 Agent。' }": "headline_3: { en:'No rebuild every switch.', ja:'切替のたびに作り直さない。', ko:'전환할 때마다 다시 만들지 않습니다.', zh:'切换时无需重建。' }",
+            "purpose: { en:'Not a prompt pack. An operating layer.', ja:'プロンプト集ではなく、AI運用レイヤー。', ko:'프롬프트 모음이 아니라 운영 레이어입니다.', zh:'不是提示词合集，而是一层运营系统。' }": "purpose: { en:'Master policy + human gates + cost guards + state handoff.', ja:'Master Policy + Human Gate + Cost Guard + State Handoff。', ko:'Master Policy + Human Gate + Cost Guard + State Handoff.', zh:'Master Policy + Human Gate + Cost Guard + State Handoff。' }",
+            "lead: { en:'Keep policy, permissions, state and safety rules portable when you switch between Claude Code, Codex, Cursor and other AI runtimes.', ja:'Claude Code、Codex、Cursorなどを切り替えても、ポリシー・権限・状態・安全ルールをプロジェクト側に残します。', ko:'Claude Code, Codex, Cursor 등을 바꿔도 정책, 권한, 상태와 안전 규칙을 프로젝트에 유지합니다.', zh:'切换 Claude Code、Codex、Cursor 等运行环境时，策略、权限、状态和安全规则仍留在你的项目中。' }": "lead: { en:'Use one editable operating kit across Claude Code, Codex and Cursor so permissions, stop conditions, budgets and handoff state do not disappear when the agent changes.', ja:'Claude Code・Codex・Cursorを1つの編集可能な運用キットでつなぎ、権限・停止条件・予算・引継ぎ状態をAgent切替後も残します。', ko:'Claude Code, Codex, Cursor를 하나의 편집 가능한 운영 키트로 연결해 권한, 중지 조건, 예산, 인계 상태를 에이전트 전환 후에도 유지합니다.', zh:'用一套可编辑运营套件连接 Claude Code、Codex 与 Cursor，在切换 Agent 后仍保留权限、停止条件、预算和交接状态。' }",
+            "choose_license: { en:'Personal · $69', ja:'Personal · $69', ko:'Personal · $69', zh:'Personal · $69' }": "choose_license: { en:'Get Personal Kit · $69', ja:'Personal Kitを購入 · $69', ko:'Personal Kit 구매 · $69', zh:'购买 Personal Kit · $69' }"
+          }
+          for old, new in js_replacements.items():
+            if old not in j:
+              raise SystemExit(f'Expected JS text not found: {old[:80]}')
+            j = j.replace(old, new, 1)
+
+          html.write_text(h)
+          js.write_text(j)
+          PY
+
+      - name: Verify revenue hero and preserved Stripe route
+        run: |
+          grep -F 'One operating policy.' cross-agent-operating-kit.html
+          grep -F 'Get Personal Kit · $69' cross-agent-operating-kit.html
+          grep -F 'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T' cross-agent-operating-kit.html
+          grep -F "choose_license: { en:'Get Personal Kit · $69'" cross-agent-attribution.js
+
+      - name: Commit focused conversion change
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add cross-agent-operating-kit.html cross-agent-attribution.js
+          if git diff --cached --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git commit -m 'Tighten Cross-Agent hero for qualified checkout intent'
+          git push
