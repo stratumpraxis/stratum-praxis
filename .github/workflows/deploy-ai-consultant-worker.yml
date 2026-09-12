@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
-          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace /cross-agent-kit/workspace /paid-insights/workspace; do
+          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace /cross-agent-kit/workspace /paid-insights/workspace /agent-lab/workspace; do
             code="$(curl -sS -o /tmp/worker-response.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '401' ]; then
               echo "Expected 401 for unauthenticated $path, got $code"
@@ -47,6 +47,14 @@ jobs:
             fi
             echo "Protected route OK: $path -> 401 without buyer token"
           done
+
+          code="$(curl -sS -o /tmp/agent-lab-activate.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data '{"session_id":"invalid"}')"
+          if [ "$code" != '400' ]; then
+            echo "Expected 400 for invalid Agent Lab activation, got $code"
+            cat /tmp/agent-lab-activate.txt
+            exit 1
+          fi
+          echo "Agent Lab invalid-activation guard OK: 400"
 
           code="$(curl -sS -o /tmp/prompt-login.txt -w '%{http_code}' -X POST "$BASE/prompt-store/login" -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com"}')"
           if [ "$code" != '400' ]; then
