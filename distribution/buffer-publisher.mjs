@@ -6,6 +6,7 @@ const selectMode = process.env.BUFFER_SELECT_MODE || 'daily';
 const itemIndexRaw = process.env.BUFFER_ITEM_INDEX;
 const targetServices = (process.env.BUFFER_TARGET_SERVICES || 'bluesky,threads,linkedin').split(',').map(s=>s.trim().toLowerCase()).filter(Boolean);
 const requireEligibleChannels = process.env.REQUIRE_ELIGIBLE_CHANNELS === '1';
+const requireChannelNameContains = (process.env.REQUIRE_CHANNEL_NAME_CONTAINS || '').trim().toLowerCase();
 const postMode = process.env.BUFFER_POST_MODE || 'addToQueue';
 const allowedPostModes = new Set(['addToQueue', 'shareNow']);
 
@@ -49,14 +50,23 @@ const org = acct.account?.organizations?.[0];
 if (!org) throw new Error('No Buffer organization found');
 
 const data = await gql(`query { channels(input:{organizationId:${q(org.id)},filter:{isLocked:false}}){id name displayName service isQueuePaused} }`);
-const channels = (data.channels || []).filter(c => targetServices.includes(String(c.service).toLowerCase()) && !c.isQueuePaused);
+let channels = (data.channels || []).filter(c => targetServices.includes(String(c.service).toLowerCase()) && !c.isQueuePaused);
+
+if (requireChannelNameContains) {
+  const rejected = channels.filter(c => !`${c.displayName || ''} ${c.name || ''}`.toLowerCase().includes(requireChannelNameContains));
+  if (rejected.length) {
+    console.log('Rejected non-Stratum channels:', rejected.map(c=>`${c.service}:${c.displayName||c.name}`).join(', '));
+  }
+  channels = channels.filter(c => `${c.displayName || ''} ${c.name || ''}`.toLowerCase().includes(requireChannelNameContains));
+}
+
 const queue = JSON.parse(await (await import('node:fs/promises')).readFile(new URL(`./${queueFile}`, import.meta.url), 'utf8'));
 const active = queue.filter(x => x.active !== false && Array.isArray(x.services));
 
 console.log('Queue file:', queueFile, 'select mode:', selectMode, 'item index:', itemIndexRaw ?? 'auto', 'post mode:', postMode);
 console.log('Eligible channels:', channels.map(c=>`${c.service}:${c.displayName||c.name}`).join(', ') || 'none');
 if (!channels.length) {
-  const message = `No eligible Buffer channels for requested services: ${targetServices.join(', ') || 'none'}`;
+  const message = `No eligible verified Stratum channels for requested services: ${targetServices.join(', ') || 'none'}`;
   if (requireEligibleChannels) throw new Error(message);
   console.log(`${message}. Safe no-op.`);
   process.exit(0);
@@ -103,7 +113,7 @@ for (const channel of channels) {
   const mutation = `mutation { createPost(input:{text:${q(text)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${postMode},${assets}aiAssisted:false}) { ... on PostActionSuccess { post { id text dueAt status } } ... on MutationError { message } } }`;
   const out = await gql(mutation);
   const result = out.createPost;
-  console.log(JSON.stringify({channel:service,item:item.id,postMode,result}, null, 2));
+  console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result}, null, 2));
   if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
   if (!result?.post?.id) throw new Error(`Buffer did not return a post id for ${service}`);
   await new Promise(r=>setTimeout(r,1500));
