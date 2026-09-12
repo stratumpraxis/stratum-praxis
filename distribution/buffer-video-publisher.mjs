@@ -24,6 +24,8 @@ const mode = publish.mode === 'addToQueue' ? 'addToQueue' : 'shareNow';
 const title = String(publish.title || manifest.title || 'Trend signal').slice(0, 95);
 const caption = String(publish.caption || manifest.summary || title).trim();
 const channelAllowlist = publish.channelAllowlist || {};
+const routeMatch = caption.match(/(?:[?&]|\b)route_id=([^&\s]+)/i);
+const routeId = routeMatch?.[1] || null;
 
 let ledger = { version: 1, items: {} };
 try { ledger = JSON.parse(await fs.readFile(ledgerFile, 'utf8')); } catch {}
@@ -70,12 +72,25 @@ function channelMatchesAllowlist(channel, service) {
   return rules.some(rule => values.includes(String(rule).trim().toLowerCase()));
 }
 
+async function recentPosts(orgId, channelId) {
+  const data = await gql(`query { posts(first:50,input:{organizationId:${q(orgId)},filter:{channelIds:[${q(channelId)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink error { message rawError supportUrl } } } } }`);
+  return (data.posts?.edges || []).map(e => e?.node).filter(Boolean);
+}
+
+async function findRemoteExistingPost(orgId, channel) {
+  const nodes = await recentPosts(orgId, channel.id);
+  return nodes.find(p => {
+    const text = String(p.text || '');
+    if (routeId && text.includes(`route_id=${routeId}`)) return true;
+    return text === caption;
+  }) || null;
+}
+
 async function refreshPriorPost(orgId, channel, prior) {
   if (!prior?.postId) return false;
   const service = String(channel.service).toLowerCase();
   try {
-    const data = await gql(`query { posts(first:25,input:{organizationId:${q(orgId)},filter:{channelIds:[${q(channel.id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
-    const nodes = (data.posts?.edges || []).map(e => e?.node).filter(Boolean);
+    const nodes = await recentPosts(orgId, channel.id);
     const post = nodes.find(p => p.id === prior.postId);
     if (!post) {
       console.log(`Prior ${service} post ${prior.postId} not found in recent Buffer results; no retry.`);
@@ -87,7 +102,8 @@ async function refreshPriorPost(orgId, channel, prior) {
       at: now(),
       dueAt: post.dueAt || prior.dueAt || null,
       sentAt: post.sentAt || prior.sentAt || null,
-      externalLink: post.externalLink || prior.externalLink || null
+      externalLink: post.externalLink || prior.externalLink || null,
+      error: post.error || prior.error || null
     };
     console.log(JSON.stringify({ channel: service, manifest: manifest.id, refreshedPost: post }, null, 2));
     await saveLedger();
@@ -141,8 +157,40 @@ if (!channels.length) {
 
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
-  const prior = ledger.items[manifest.id][service];
 
+  // Remote idempotency is authoritative. This protects reruns even when the job
+  // checks out a commit from before the local ledger was written.
+  try {
+    const existing = await findRemoteExistingPost(org.id, channel);
+    if (existing) {
+      ledger.items[manifest.id][service] = {
+        ...(ledger.items[manifest.id][service] || {}),
+        status: existing.status || 'remote-existing',
+        at: now(),
+        channelId: channel.id,
+        videoUrl,
+        postId: existing.id,
+        dueAt: existing.dueAt || null,
+        sentAt: existing.sentAt || null,
+        externalLink: existing.externalLink || null,
+        error: existing.error || null,
+        dedupeSource: routeId ? 'remote-route-id' : 'remote-exact-caption'
+      };
+      console.log(JSON.stringify({ channel: service, manifest: manifest.id, remoteExistingPost: existing, action: 'SKIP_CREATE' }, null, 2));
+      await saveLedger();
+      continue;
+    }
+  } catch (error) {
+    console.error(`Remote dedupe check failed for ${service}; fail closed, no create:`, String(error));
+    ledger.items[manifest.id][service] = {
+      ...(ledger.items[manifest.id][service] || {}),
+      status: 'blocked-dedupe-check-failed', at: now(), message: String(error)
+    };
+    await saveLedger();
+    continue;
+  }
+
+  const prior = ledger.items[manifest.id][service];
   const nonRetryStates = ['attempted', 'accepted', 'buffer', 'scheduled', 'sending', 'sent', 'unknown'];
   if (prior && nonRetryStates.includes(prior.status)) {
     if (['scheduled', 'sending', 'accepted', 'buffer', 'sent'].includes(prior.status) && prior.postId) {
@@ -160,7 +208,7 @@ for (const channel of channels) {
 
   const video = `assets:[{video:{url:${q(videoUrl)},metadata:{thumbnailOffset:1000,title:${q(title)}}}}],`;
   const metadata = metadataFor(service);
-  const mutation = `mutation { createPost(input:{text:${q(caption)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${mode},${video}aiAssisted:true}) { ... on PostActionSuccess { post { id text dueAt status sentAt sharedNow externalLink } } ... on MutationError { message } } }`;
+  const mutation = `mutation { createPost(input:{text:${q(caption)},channelId:${q(channel.id)},${metadata}schedulingType:automatic,mode:${mode},${video}aiAssisted:true}) { ... on PostActionSuccess { post { id text dueAt status sentAt sharedNow externalLink error { message rawError supportUrl } } } ... on MutationError { message } } }`;
 
   try {
     const out = await gql(mutation);
@@ -177,7 +225,8 @@ for (const channel of channels) {
         status: result.post.status || 'accepted', at: now(),
         postId: result.post.id, dueAt: result.post.dueAt || null,
         sentAt: result.post.sentAt || null, sharedNow: result.post.sharedNow || false,
-        externalLink: result.post.externalLink || null
+        externalLink: result.post.externalLink || null,
+        error: result.post.error || null
       };
       console.log(JSON.stringify({ channel: service, manifest: manifest.id, post: result.post }, null, 2));
     } else {
