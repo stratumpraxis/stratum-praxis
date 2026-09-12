@@ -1,0 +1,75 @@
+name: Diagnose Stratum Live Origin
+
+on:
+  push:
+    paths:
+      - 'live-origin-diagnostic.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Inspect DNS and live response
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p .github/diagnostics
+          target='https://stratumpraxis.com/ai-agent-cost-roi-calculator.html'
+          dig +short A stratumpraxis.com > /tmp/a.txt || true
+          dig +short AAAA stratumpraxis.com > /tmp/aaaa.txt || true
+          dig +short CNAME stratumpraxis.com > /tmp/cname.txt || true
+          dig +short NS stratumpraxis.com > /tmp/ns.txt || true
+          dig +short CNAME www.stratumpraxis.com > /tmp/wwwcname.txt || true
+          curl -LfsS -D /tmp/headers.txt "$target" -o /tmp/live.html
+          title="$(python - <<'PY'
+          import re
+          s=open('/tmp/live.html',encoding='utf-8',errors='replace').read()
+          m=re.search(r'<title>(.*?)</title>',s,re.I|re.S)
+          print(re.sub(r'\s+',' ',m.group(1)).strip() if m else '')
+          PY
+          )"
+          meta="$(python - <<'PY'
+          import re,html
+          s=open('/tmp/live.html',encoding='utf-8',errors='replace').read()
+          m=re.search(r'<meta\s+name=[\"\']description[\"\']\s+content=[\"\'](.*?)[\"\']',s,re.I|re.S)
+          print(html.unescape(m.group(1)).strip() if m else '')
+          PY
+          )"
+          has_mailto=false; grep -Fq 'mailto:stratumpraxis@gmail.com' /tmp/live.html && has_mailto=true || true
+          has_new_title=false; grep -Fq 'AI Agent Cost & ROI Calculator 2026 | Payback & Run Cost' /tmp/live.html && has_new_title=true || true
+          has_stripe=false; grep -Fq 'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' /tmp/live.html && has_stripe=true || true
+          server="$(awk 'BEGIN{IGNORECASE=1} /^server:/{sub(/^[^:]+:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          via="$(awk 'BEGIN{IGNORECASE=1} /^via:/{sub(/^[^:]+:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          cf_ray="$(awk 'BEGIN{IGNORECASE=1} /^cf-ray:/{sub(/^[^:]+:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          x_github="$(awk 'BEGIN{IGNORECASE=1} /^x-github-request-id:/{sub(/^[^:]+:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          etag="$(awk 'BEGIN{IGNORECASE=1} /^etag:/{sub(/^[^:]+:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          jq -n \
+            --arg checked_at "$(date -u +%FT%TZ)" \
+            --argjson a "$(jq -Rsc 'split("\n")|map(select(length>0))' /tmp/a.txt)" \
+            --argjson aaaa "$(jq -Rsc 'split("\n")|map(select(length>0))' /tmp/aaaa.txt)" \
+            --argjson cname "$(jq -Rsc 'split("\n")|map(select(length>0))' /tmp/cname.txt)" \
+            --argjson ns "$(jq -Rsc 'split("\n")|map(select(length>0))' /tmp/ns.txt)" \
+            --argjson www_cname "$(jq -Rsc 'split("\n")|map(select(length>0))' /tmp/wwwcname.txt)" \
+            --arg title "$title" --arg meta "$meta" --arg server "$server" --arg via "$via" --arg cf_ray "$cf_ray" --arg x_github "$x_github" --arg etag "$etag" \
+            --argjson has_mailto "$has_mailto" --argjson has_new_title "$has_new_title" --argjson has_stripe "$has_stripe" \
+            '{checked_at:$checked_at,dns:{A:$a,AAAA:$aaaa,CNAME:$cname,NS:$ns,www_CNAME:$www_cname},http:{server:$server,via:$via,cf_ray:$cf_ray,x_github_request_id:$x_github,etag:$etag},live_page:{title:$title,meta_description:$meta,has_gmail_mailto:$has_mailto,has_new_title:$has_new_title,has_stripe_39:$has_stripe}}' \
+            > .github/diagnostics/live-origin-status.json
+          cat .github/diagnostics/live-origin-status.json
+      - name: Commit sanitized origin status
+        shell: bash
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .github/diagnostics/live-origin-status.json
+          if git diff --cached --quiet; then
+            echo 'No diagnostic change'
+          else
+            git commit -m 'Record Stratum live origin status'
+            git push
+          fi
