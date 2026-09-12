@@ -202,9 +202,12 @@ jobs:
             'href="/spend-roi-v6.css"' \
             'Put a number on <em>software drift.</em>' \
             'id="annual"' \
-            'href="/ai-value-realization-kit.html"' \
+            'id="calcResultSummary"' \
+            'data-product="ai_saas_spend_decision_kit"' \
+            'href="/ai-saas-spend-decision-kit.html"' \
+            'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' \
             'href="/ai-saas-spend-waste-audit.html"'
-          echo 'Spend & ROI V6 calculator -> PASS'
+          echo 'Spend & ROI V6 calculator decision routing and evidence surface -> PASS'
 
           assert_markers "$BASE/ai-saas-spend-audit-checklist.html" /tmp/spend-checklist.html \
             'href="/spend-roi-v6.css"' \
