@@ -129,7 +129,7 @@ jobs:
             return 1
           }
 
-          for path in / /systems/ /b2b/ /live-lab.html /product-router.html /buyer-workspace.html /workflow-audit.html /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-value-realization-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html /rustchain-bounty-radar.html /spend-roi-v6.css; do
+          for path in / /systems/ /b2b/ /live-lab.html /product-router.html /buyer-workspace.html /workflow-audit.html /revenue-pump/ /revenue-pump/auto/ /ai-monetization-reality-check.html /ai-income-claim-checklist.html /cross-agent-operating-kit.html /cross-agent-operating-kit-access.html /agent-control-auditor.html /ai-agent-economics-calculator.html /ai-saas-waste-calculator.html /ai-saas-spend-audit-checklist.html /ai-saas-spend-decision-kit.html /ai-value-realization-kit.html /ai-saas-spend-waste-audit.html /ai-saas-spend-monitoring.html /rustchain-bounty-radar.html /spend-roi-v6.css; do
             code="$(curl -L -sS -o /tmp/page.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '200' ]; then
               echo "Expected 200 for $BASE$path, got $code"
@@ -213,8 +213,17 @@ jobs:
             'href="/spend-roi-v6.css"' \
             '12 questions. No essay.' \
             'KEEP' \
-            'href="/ai-value-realization-kit.html"'
-          echo 'Spend & ROI V6 checklist -> PASS'
+            'data-product="ai_saas_spend_decision_kit"' \
+            'href="/ai-saas-spend-decision-kit.html"' \
+            'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06'
+          echo 'Spend & ROI V6 checklist and Decision Kit route -> PASS'
+
+          assert_markers "$BASE/ai-saas-spend-decision-kit.html" /tmp/spend-decision-kit.html \
+            'AI & SaaS Spend Decision Kit — $39' \
+            'Get the Spend Decision Kit — $39' \
+            'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' \
+            'href="ai-saas-spend-waste-audit.html"'
+          echo 'Spend Decision Kit conversion page -> PASS'
 
           assert_markers "$BASE/ai-value-realization-kit.html" /tmp/value-kit.html \
             'href="/spend-roi-v6.css"' \
