@@ -1,0 +1,112 @@
+name: Spend & ROI Revenue Regression Gate
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ai-saas-waste-calculator.html'
+      - 'ai-saas-spend-decision-kit.html'
+      - 'ai-saas-spend-audit-checklist.html'
+      - 'ai-saas-spend-waste-audit.html'
+      - 'ai-saas-spend-monitoring.html'
+      - 'scos-analytics.js'
+      - '.github/workflows/spend-roi-revenue-regression.yml'
+  pull_request:
+    paths:
+      - 'ai-saas-waste-calculator.html'
+      - 'ai-saas-spend-decision-kit.html'
+      - 'ai-saas-spend-audit-checklist.html'
+      - 'ai-saas-spend-waste-audit.html'
+      - 'ai-saas-spend-monitoring.html'
+      - 'scos-analytics.js'
+      - '.github/workflows/spend-roi-revenue-regression.yml'
+  workflow_dispatch:
+    inputs:
+      live_url_verification:
+        description: 'Also verify the live calculator and $39 product page'
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+concurrency:
+  group: spend-roi-revenue-regression-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  source-contract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Verify Spend & ROI revenue contracts
+        run: |
+          node <<'NODE'
+          const fs = require('node:fs');
+          const fail = (message) => { console.error('FAIL: ' + message); process.exitCode = 1; };
+          const ok = (message) => console.log('OK: ' + message);
+          const read = (path) => fs.readFileSync(path, 'utf8');
+
+          const calculator = read('ai-saas-waste-calculator.html');
+          const kit = read('ai-saas-spend-decision-kit.html');
+          const analytics = read('scos-analytics.js');
+          const checkout = 'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06';
+          const product = 'ai_saas_spend_decision_kit';
+
+          const expect = (condition, message) => condition ? ok(message) : fail(message);
+
+          expect(calculator.includes('data-ace-version="001"'), 'calculator carries ACE version marker');
+          expect(calculator.includes('data-result-panel'), 'calculator exposes a completion result surface');
+          expect(calculator.includes('aria-live="polite"'), 'calculator result is accessible/live-detectable');
+          expect(calculator.includes('recommended_route:'), 'calculator emits the recommended revenue route');
+          expect(calculator.includes(checkout), 'calculator retains the real $39 Stripe checkout');
+          expect(calculator.includes(`data-product="${product}"`), 'calculator checkout is attributed to the canonical $39 product');
+
+          const calculatorCheckoutTags = calculator.match(/<a\b[^>]*href="https:\/\/buy\.stripe\.com\/cNi00kgfq7j5ewUfkf6Zy06"[^>]*>/g) || [];
+          expect(calculatorCheckoutTags.length >= 2, 'calculator exposes checkout at result/offer surfaces');
+          for (const tag of calculatorCheckoutTags) {
+            expect(tag.includes(`data-product="${product}"`), 'every calculator checkout link has canonical product attribution');
+          }
+
+          expect(kit.includes(`data-product="${product}"`), '$39 product page declares the canonical product id');
+          expect(kit.includes("scosCapture('paid_product_view'"), '$39 product page emits paid_product_view evidence');
+          expect(kit.includes(checkout), '$39 product page retains the real Stripe checkout');
+
+          const kitCheckoutTags = kit.match(/<a\b[^>]*href="https:\/\/buy\.stripe\.com\/cNi00kgfq7j5ewUfkf6Zy06"[^>]*>/g) || [];
+          expect(kitCheckoutTags.length >= 3, '$39 product page keeps repeated checkout access');
+
+          expect(analytics.includes("'checkout_click'"), 'shared analytics retains checkout_click evidence');
+          expect(analytics.includes('decorateCheckoutLink'), 'shared analytics retains Stripe attribution decoration');
+          expect(analytics.includes('client_reference_id'), 'Stripe checkout retains client_reference_id attribution');
+
+          if (process.exitCode) process.exit(process.exitCode);
+          NODE
+
+      - name: Revenue route summary
+        run: |
+          echo 'SOURCE CONTRACT PASS'
+          echo 'Calculator -> Result -> $39 Decision Kit -> Stripe checkout remains measurable.'
+
+  live-contract:
+    if: github.event_name == 'workflow_dispatch' && inputs.live_url_verification
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify live calculator and product page
+        run: |
+          set -euo pipefail
+          calc="$(curl --fail --silent --show-error --location --retry 3 --retry-delay 2 https://stratumpraxis.com/ai-saas-waste-calculator.html)"
+          kit="$(curl --fail --silent --show-error --location --retry 3 --retry-delay 2 https://stratumpraxis.com/ai-saas-spend-decision-kit.html)"
+          grep -Fq 'data-ace-version="001"' <<<"$calc"
+          grep -Fq 'data-result-panel' <<<"$calc"
+          grep -Fq 'data-product="ai_saas_spend_decision_kit"' <<<"$calc"
+          grep -Fq 'data-product="ai_saas_spend_decision_kit"' <<<"$kit"
+          grep -Fq 'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' <<<"$kit"
+          echo 'LIVE CONTRACT PASS'
+          echo 'The production calculator and $39 product page expose the expected revenue path.'
