@@ -1,5 +1,6 @@
 @import url('/stratum-cinematic-revenue-2026.css');
 @import url('/stratum-command-v4.css');
+@import url('/stratum-command-v5.css');
 
-/* Production loader — Command UI v4 owns the current presentation layer.
+/* Production loader — Command UI v5 owns the current presentation layer.
    Revenue routes, prices, checkout destinations and analytics remain unchanged. */
