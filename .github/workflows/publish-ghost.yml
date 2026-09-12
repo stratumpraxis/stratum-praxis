@@ -1,10 +1,10 @@
-name: Publish Ghost Article
+name: Publish Ghost Articles
 
 on:
   push:
     branches: [main]
     paths:
-      - 'content/ghost/ai-is-not-your-bottleneck.md'
+      - 'content/ghost/**/*.md'
       - 'scripts/publish_ghost_post.mjs'
       - '.github/workflows/publish-ghost.yml'
   workflow_dispatch:
@@ -12,9 +12,14 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: stratum-ghost-auto-publish
+  cancel-in-progress: false
+
 jobs:
   publish:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -22,15 +27,23 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install markdown renderer
         run: npm install --no-save marked
 
-      - name: Publish article to Ghost
+      - name: Publish all queued Ghost articles
         env:
           GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
           GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
-          GHOST_SOURCE_PATH: content/ghost/ai-is-not-your-bottleneck.md
-          GHOST_POST_SLUG: ai-is-not-your-bottleneck
-        run: node scripts/publish_ghost_post.mjs
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          while IFS= read -r -d '' file; do
+            echo "Publishing $file"
+            GHOST_SOURCE_PATH="$file" node scripts/publish_ghost_post.mjs
+            count=$((count + 1))
+          done < <(find content/ghost -type f -name '*.md' -print0 | sort -z)
+          test "$count" -gt 0
+          echo "GHOST_ARTICLE_COUNT=$count"
