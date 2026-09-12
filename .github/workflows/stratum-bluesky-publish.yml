@@ -1,6 +1,5 @@
 name: Stratum Bluesky Direct Publish
 
-# trigger-current-main: 2026-09-13
 on:
   push:
     branches: [main]
@@ -24,6 +23,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -34,7 +35,12 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "path=${{ inputs.package_path }}" >> "$GITHUB_OUTPUT"
           else
-            echo "path=publishing/queue/stratum-bluesky-agent-control-001.json" >> "$GITHUB_OUTPUT"
+            path=$(git diff-tree --no-commit-id --name-only -r HEAD -- 'publishing/queue/stratum-bluesky-*.json' | head -n 1)
+            if [ -z "$path" ]; then
+              echo 'No changed Bluesky publish package found; fail closed.' >&2
+              exit 1
+            fi
+            echo "path=$path" >> "$GITHUB_OUTPUT"
           fi
       - name: Publish to verified Stratum Bluesky account
         env:
