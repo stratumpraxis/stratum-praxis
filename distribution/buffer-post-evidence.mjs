@@ -3,7 +3,7 @@ const key = process.env.BUFFER_API_KEY;
 if (!key) throw new Error('BUFFER_API_KEY is not configured');
 
 const posts = [
-  { platform: 'tiktok', account: 'stratumpraxis', id: '6aa599169a7f0553d170670e' },
+  { platform: 'tiktok', account: 'stratumpraxis', id: '6aa59a1fef23d0656aecb8da' },
 ];
 
 async function gql(query) {
