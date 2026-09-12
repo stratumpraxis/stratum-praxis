@@ -55,7 +55,7 @@
           <div class="rh-route-links">
             <a href="/ai-agent-economics-calculator.html" data-analytics-id="home_nav_agent_economics"><span><b>Agent Economics</b><small data-rnav="agentEconomics">Model cost per successful outcome</small></span><em>FREE</em></a>
             <a href="/agent-control-auditor.html" data-analytics-id="home_nav_agent_control"><span><b>Agent Control Auditor</b><small data-rnav="agentControl">Free control check · optional Pro</small></span><em>FREE / $29</em></a>
-            <a href="/cross-agent-operating-kit.html" data-analytics-id="home_nav_agent_cross"><span><b>Cross-Agent Operating Kit</b><small data-rnav="crossAgent">Cross-runtime operating layer</small></span><em>$69–299</em></a>
+            <a href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T" data-analytics-id="home_nav_agent_cross_checkout" data-product="cross_agent_personal" data-primary-cta="true"><span><b>Cross-Agent Operating Kit</b><small data-rnav="crossAgent">Cross-runtime operating layer</small></span><em>PERSONAL $69</em></a>
           </div>
         </article>
         <article class="rh-route-slide" data-category="product">
