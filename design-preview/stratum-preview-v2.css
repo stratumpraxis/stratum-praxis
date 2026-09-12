@@ -1,2 +1,17 @@
-@import url('/design-preview/stratum-preview-v2-base.css');
-@import url('/stratum-mobile-hotfix-2026.css');
+@import url('/stratum-cinematic-revenue-2026.css');
+
+/* emergency mobile clarity patch; preserves existing routes */
+@media(max-width:900px){
+  html body[data-page="stratum_revenue_home_v2"] main.workspace-shell.revenue-home .rh-hero{
+    display:block!important;min-height:0!important;padding:38px 22px 24px!important;
+    background:radial-gradient(circle at 82% 11%,rgba(155,255,102,.18),transparent 11rem),radial-gradient(circle at 12% 38%,rgba(88,230,216,.11),transparent 13rem),radial-gradient(circle at 92% 72%,rgba(170,160,255,.09),transparent 14rem),linear-gradient(rgba(88,230,216,.024) 1px,transparent 1px),linear-gradient(90deg,rgba(88,230,216,.024) 1px,transparent 1px),linear-gradient(145deg,#071113,#050b0d)!important;
+    background-size:auto,auto,auto,54px 54px,54px 54px,auto!important;
+  }
+  html body[data-page="stratum_revenue_home_v2"] main.workspace-shell.revenue-home .decision-module{background:radial-gradient(circle at 85% 12%,rgba(88,230,216,.11),transparent 12rem),linear-gradient(145deg,#081416,#071012)!important}
+  html body[data-page="stratum_revenue_home_v2"] main.workspace-shell.revenue-home .rh-final{padding-bottom:44px!important;background:radial-gradient(circle at 82% 10%,rgba(155,255,102,.09),transparent 14rem),linear-gradient(145deg,#071113,#050d0f)!important}
+}
+@media(max-width:620px){
+  html body[data-page="stratum_revenue_home_v2"] main.workspace-shell.revenue-home .rh-hero{padding:30px 17px 20px!important}
+  html body[data-page="stratum_revenue_home_v2"] main.workspace-shell.revenue-home .rh-hero h1{font-size:clamp(39px,11.2vw,50px)!important;line-height:.92!important}
+  html body[data-page="stratum_revenue_home_v2"] a.mobile-start{left:auto!important;right:12px!important;bottom:calc(env(safe-area-inset-bottom,0px) + 10px)!important;width:auto!important;max-width:190px!important;min-width:138px!important;min-height:44px!important;height:44px!important;padding:0 14px!important;border:1px solid rgba(155,255,102,.30)!important;border-radius:999px!important;background:rgba(8,21,17,.94)!important;color:#c8ff9e!important;box-shadow:0 10px 34px rgba(0,0,0,.34),0 0 24px rgba(155,255,102,.08)!important;backdrop-filter:blur(18px)!important;-webkit-backdrop-filter:blur(18px)!important;font-size:11px!important;font-weight:850!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important;z-index:50!important}
+}
