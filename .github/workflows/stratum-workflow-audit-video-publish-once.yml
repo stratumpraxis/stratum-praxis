@@ -1,0 +1,85 @@
+name: Stratum Workflow Audit Video Publish Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/stratum-workflow-audit-video-20260913.json'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-workflow-audit-video-20260913
+  cancel-in-progress: false
+
+jobs:
+  publish-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      MANIFEST: distribution/stratum-workflow-audit-video-20260913.json
+      LEDGER: distribution/stratum-workflow-audit-video-20260913-ledger.json
+      VIDEO_URL: https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789250639384-f021c5ce-0084-467b-a48c-6f1aaaf22273.mp4
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Fail-closed Stratum destination preflight
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const m = JSON.parse(fs.readFileSync(process.env.MANIFEST, 'utf8'));
+          const services = m.publish?.services || [];
+          const allowed = new Set(['tiktok','instagram']);
+          if (services.length !== 2 || services.some(s => !allowed.has(String(s).toLowerCase()))) throw new Error('Only Stratum TikTok + Instagram are allowed');
+          const a = m.publish?.channelAllowlist || {};
+          if (!Array.isArray(a.tiktok) || !a.tiktok.includes('6a8e5d28ccaf649a671a13e7') || !a.tiktok.includes('stratumpraxis')) throw new Error('Stratum TikTok allowlist missing');
+          if (!Array.isArray(a.instagram) || !a.instagram.includes('6a8e5b5accaf649a671a0cd9') || !a.instagram.includes('praxisstratum')) throw new Error('Stratum Instagram allowlist missing');
+          const caption = String(m.publish?.caption || '');
+          if (!caption.includes('https://stratumpraxis.com/workflow-audit.html')) throw new Error('Revenue destination mismatch');
+          if (/vector|forwelle|arven/i.test(caption)) throw new Error('Cross-brand text detected');
+          console.log('STRATUM_PREFLIGHT=PASS');
+          NODE
+
+      - name: Verify public MP4 before Buffer
+        run: |
+          set -euo pipefail
+          code=$(curl --fail --silent --show-error --location -o /tmp/video.mp4 -w '%{http_code}' "$VIDEO_URL")
+          bytes=$(wc -c < /tmp/video.mp4)
+          echo "PUBLIC_VIDEO_HTTP=$code BYTES=$bytes"
+          test "$code" = '200'
+          test "$bytes" -gt 500000
+          ffprobe -v error -show_entries stream=codec_name,width,height -show_entries format=duration,size -of json /tmp/video.mp4
+
+      - name: Publish only to allowlisted Stratum channels
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: ${{ env.MANIFEST }}
+          TREND_VIDEO_URL: ${{ env.VIDEO_URL }}
+          VIDEO_PUBLISH_LEDGER: ${{ env.LEDGER }}
+        run: node distribution/buffer-video-publisher.mjs
+
+      - name: Persist publication evidence
+        if: always()
+        run: |
+          if [ ! -f "$LEDGER" ]; then
+            echo 'No ledger produced.'
+            exit 0
+          fi
+          git config user.name 'stratum-workflow-audit-video-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add "$LEDGER"
+          if git diff --cached --quiet; then
+            echo 'No evidence change.'
+          else
+            git commit -m 'chore(distribution): record Stratum Workflow Audit video publication [skip social]'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
