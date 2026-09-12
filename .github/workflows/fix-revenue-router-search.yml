@@ -1,0 +1,72 @@
+name: Fix Revenue Router Search
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-router-search.trigger'
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Update Revenue Router search metadata
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('revenue-router.html')
+          text = path.read_text()
+
+          old_meta = '<meta name="description" content="Revenue Router is a $29 browser-based decision tool that helps you check an AI signal, weigh its value, and route it toward the strongest existing revenue action.">'
+          new_meta = '<meta name="description" content="Turn AI signals into the strongest next revenue action. Revenue Router checks evidence, value, confidence and fit before you act. $29 once.">'
+          if old_meta not in text:
+              raise SystemExit('Expected meta description not found; refusing to modify.')
+          text = text.replace(old_meta, new_meta, 1)
+
+          old_schema = '"description":"Browser-based decision tool for verifying, scoring and routing AI research signals into prioritized revenue actions.","brand"'
+          new_schema = '"description":"Browser-based decision tool for verifying, scoring and routing AI research signals into prioritized revenue actions.","image":"https://stratumpraxis.com/media/og/stratum-praxis-og-default.png","brand"'
+          if old_schema not in text:
+              raise SystemExit('Expected Product schema segment not found; refusing to modify.')
+          text = text.replace(old_schema, new_schema, 1)
+
+          path.write_text(text)
+          PY
+
+      - name: Verify revenue invariants
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          text = Path('revenue-router.html').read_text()
+          checks = {
+            'new meta': 'Turn AI signals into the strongest next revenue action. Revenue Router checks evidence, value, confidence and fit before you act. $29 once.',
+            'real schema image': '"image":"https://stratumpraxis.com/media/og/stratum-praxis-og-default.png"',
+            'Stripe checkout': 'https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08',
+            'Product price': '"price":"29"',
+            'Revenue Router title': 'Revenue Router | Know What to Do Next With an AI Signal',
+          }
+          missing = [name for name, value in checks.items() if value not in text]
+          if missing:
+              raise SystemExit('Invariant failure: ' + ', '.join(missing))
+          PY
+          git diff --check
+          git diff -- revenue-router.html
+
+      - name: Commit Revenue Router search fix
+        run: |
+          if git diff --quiet -- revenue-router.html; then
+            echo 'No changes to commit.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add revenue-router.html
+          git commit -m 'Fix Revenue Router search snippet and product schema'
+          git push
