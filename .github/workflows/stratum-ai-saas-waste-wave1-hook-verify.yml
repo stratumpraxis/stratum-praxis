@@ -27,29 +27,31 @@ jobs:
         run: |
           node - <<'NODE'
           const fs = require('fs');
-          const key = process.env.BUFFER_API_KEY;
-          if (!key) throw new Error('BUFFER_API_KEY missing');
-          const API='https://api.buffer.com';
-          const q=s=>JSON.stringify(String(s));
-          async function gql(query){
-            const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json','authorization':`Bearer ${key}`},body:JSON.stringify({query})});
-            const j=await r.json();
-            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
-            return j.data;
-          }
-          const acct=await gql('query { account { organizations { id name } } }');
-          const org=acct.account?.organizations?.[0];
-          if(!org) throw new Error('No organization');
-          const channelIds={tiktok:'6a8e5d28ccaf649a671a13e7',instagram:'6a8e5b5accaf649a671a0cd9'};
-          const out={checked_at:new Date().toISOString(),route_id:'stratum_ai_saas_waste_wave1_hook',channels:{}};
-          for(const [service,id] of Object.entries(channelIds)){
-            const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
-            const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean).filter(p=>String(p.text||'').includes('stratum_ai_saas_waste_wave1_hook'));
-            out.channels[service]=posts;
-          }
-          fs.mkdirSync('distribution',{recursive:true});
-          fs.writeFileSync('distribution/stratum-ai-saas-waste-wave1-hook-buffer-status.json',JSON.stringify(out,null,2)+'\n');
-          console.log(JSON.stringify(out,null,2));
+          (async () => {
+            const key = process.env.BUFFER_API_KEY;
+            if (!key) throw new Error('BUFFER_API_KEY missing');
+            const API='https://api.buffer.com';
+            const q=s=>JSON.stringify(String(s));
+            async function gql(query){
+              const r=await fetch(API,{method:'POST',headers:{'content-type':'application/json','authorization':`Bearer ${key}`},body:JSON.stringify({query})});
+              const j=await r.json();
+              if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+              return j.data;
+            }
+            const acct=await gql('query { account { organizations { id name } } }');
+            const org=acct.account?.organizations?.[0];
+            if(!org) throw new Error('No organization');
+            const channelIds={tiktok:'6a8e5d28ccaf649a671a13e7',instagram:'6a8e5b5accaf649a671a0cd9'};
+            const out={checked_at:new Date().toISOString(),route_id:'stratum_ai_saas_waste_wave1_hook',channels:{}};
+            for(const [service,id] of Object.entries(channelIds)){
+              const data=await gql(`query { posts(first:25,input:{organizationId:${q(org.id)},filter:{channelIds:[${q(id)}]},sort:[{field:createdAt,direction:desc}]}) { edges { node { id text dueAt status sentAt externalLink } } } }`);
+              const posts=(data.posts?.edges||[]).map(e=>e?.node).filter(Boolean).filter(p=>String(p.text||'').includes('stratum_ai_saas_waste_wave1_hook'));
+              out.channels[service]=posts;
+            }
+            fs.mkdirSync('distribution',{recursive:true});
+            fs.writeFileSync('distribution/stratum-ai-saas-waste-wave1-hook-buffer-status.json',JSON.stringify(out,null,2)+'\n');
+            console.log(JSON.stringify(out,null,2));
+          })().catch(err => { console.error(err); process.exit(1); });
           NODE
       - name: Persist read-only evidence
         run: |
