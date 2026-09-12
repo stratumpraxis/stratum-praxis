@@ -1,7 +1,7 @@
 # Music Stock Pack v1 — Revenue Launch Checkpoint
 
-Date: 2026-09-12
-State: CHECKOUT_BLOCKED
+Date: 2026-09-13
+State: CHECKOUT_CREATE_BLOCKED_BY_CONNECTOR_SURFACE
 Target metric: first verified checkout start, then first verified payment
 
 ## Existing asset
@@ -38,27 +38,43 @@ Candidate price: USD $9 one-time for the 3-track pack.
 Sales page implementation:
 - branch: `music-stock-pack-v1-launch`
 - path: `/music-stock-pack-v1.html`
-- CTA is intentionally non-clickable until a verified live checkout URL exists.
+- CTA remains intentionally non-clickable until a verified live checkout URL exists.
+
+## Verified Stripe state
+
+Stripe Live account `small-business-ai-audit.pages.dev` is connected and readable.
+
+Verified on 2026-09-13:
+- Live account visibility: yes
+- Existing Music Stock Pack v1 Product: not found
+- Existing Music Stock Pack v1 Price: not found
+- Existing Music Stock Pack v1 Payment Link: not found
+- Product search/read operations: available
+- Price search/read operations: available
+- Payment Link read operations: available
+- Product/Price/Payment Link create operations through the current connector surface: not exposed
+
+Re-consent is no longer treated as the current blocker.
 
 ## Current bottleneck
 
-The connected Stripe Live account is visible, but the current ChatGPT connector session exposes read/search operations rather than live Payment Link creation. Do not fabricate a checkout destination.
+A real live USD $9 one-time Product/Price/Payment Link must be created through a write-capable Stripe surface. Do not fabricate a checkout destination and do not reuse an unrelated existing Payment Link.
 
-HUMAN_GATE:
-1. Re-consent the Stripe connection with the needed write permission from the Stripe access page supplied in the active ChatGPT session.
-2. Return to the session and confirm completion.
-3. Create or verify the live $9 one-time Payment Link.
-4. Replace both disabled launch-gate buttons on `music-stock-pack-v1.html` with the verified URL and analytics IDs.
-5. Validate checkout opens in live mode.
-6. Validate buyer delivery path without exposing the Drive master folder publicly before payment.
-7. Merge only after checkout and delivery validation.
+NEXT GATE:
+1. Create or verify a live USD $9 one-time Music Stock Pack v1 Payment Link.
+2. Replace both disabled launch-gate buttons on `music-stock-pack-v1.html` with that exact verified URL and analytics IDs.
+3. Validate checkout opens in live mode.
+4. Validate protected buyer delivery without exposing the Drive master folder publicly before payment.
+5. Merge only after checkout and delivery validation.
 
-## Next evidence states
+## Evidence state
 
 Asset Evidence ✅
 Sales Page Implementation ✅ (branch only)
+Stripe Live Read Access ✅
+Live Music Product/Price/Payment Link ⬜
 Checkout Evidence ⬜
 Qualified Buyer Action ⬜
 Payment Evidence ⬜
 
-Do not count page creation, impressions or clicks as revenue success.
+Do not count page creation, impressions, preview plays or clicks as revenue success.
