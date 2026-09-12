@@ -1,0 +1,19 @@
+{
+  "version": 1,
+  "items": {
+    "stratum-ai-saas-waste-wave1-proof-20260913": {
+      "tiktok": {
+        "status": "scheduled",
+        "at": "2026-09-12T22:35:00.294Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789252439232-98bda8b5-155d-41bf-beeb-5b1351ad7f66.mp4",
+        "postId": "6aa5d3947da3ee968d0622a3",
+        "dueAt": "2026-09-13T00:48:00.000Z",
+        "sentAt": null,
+        "sharedNow": false,
+        "externalLink": null,
+        "error": null
+      }
+    }
+  }
+}
