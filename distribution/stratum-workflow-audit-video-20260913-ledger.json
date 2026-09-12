@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "items": {
+    "stratum-workflow-audit-video-20260913-v1": {
+      "tiktok": {
+        "status": "sending",
+        "at": "2026-09-12T22:09:02.607Z",
+        "channelId": "6a8e5d28ccaf649a671a13e7",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789250639384-f021c5ce-0084-467b-a48c-6f1aaaf22273.mp4",
+        "postId": "6aa5cd74f7b1958d5cd748ba",
+        "dueAt": "2026-09-12T22:08:52.374Z",
+        "sentAt": null,
+        "sharedNow": true,
+        "externalLink": null
+      },
+      "instagram": {
+        "status": "error",
+        "at": "2026-09-12T22:09:05.837Z",
+        "channelId": "6a8e5b5accaf649a671a0cd9",
+        "videoUrl": "https://files.simplepost.social/uploads/XbN6hFEslEz1c8ESSMoAgWRYVNaQDrW2/1789250639384-f021c5ce-0084-467b-a48c-6f1aaaf22273.mp4",
+        "postId": "6aa5cd8066679b076f18f870",
+        "dueAt": "2026-09-12T22:09:04.689Z",
+        "sentAt": null,
+        "sharedNow": false,
+        "externalLink": null
+      }
+    }
+  }
+}
