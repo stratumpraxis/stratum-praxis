@@ -1,0 +1,23 @@
+/* Stratum Hub — intent handoff intelligence v10 */
+body[data-page="stratum_revenue_home_v2"] .hub-handoff{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;margin:10px 0 0;padding:10px;border:1px solid rgba(96,232,219,.12);border-radius:14px;background:rgba(3,13,15,.76);box-shadow:inset 0 1px rgba(255,255,255,.02)}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-copy{display:flex;align-items:center;gap:10px;min-width:0}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-mark{display:grid;place-items:center;flex:0 0 auto;width:30px;height:30px;border-radius:9px;background:rgba(var(--px-accent-rgb),.08);color:var(--px-accent);font-size:12px;font-weight:900}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-copy small{display:block;color:#6f857e;font-size:6.5px;font-weight:900;letter-spacing:.12em}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-copy strong{display:block;margin-top:3px;color:#eff7f1;font-size:11px;line-height:1.2}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions{display:flex;gap:6px;justify-content:flex-end}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 11px;border:1px solid rgba(255,255,255,.07);border-radius:9px;background:rgba(255,255,255,.03);color:#eaf2ed;font-size:8px;font-weight:850;text-decoration:none;white-space:nowrap}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions a:first-child{border-color:rgba(var(--px-accent-rgb),.18);color:var(--px-accent);background:rgba(var(--px-accent-rgb),.045)}
+body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions a:focus-visible{outline:2px solid #c9ffa8;outline-offset:3px}
+
+/* The old six-slide site navigator is now secondary discovery, never the first decision surface. */
+body[data-page="stratum_revenue_home_v2"] .rh-route-navigator{margin-top:18px!important;filter:saturate(.88)}
+body[data-page="stratum_revenue_home_v2"] .rh-route-nav-head{padding-top:22px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-route-nav-lead{max-width:620px!important}
+body[data-page="stratum_revenue_home_v2"] .rh-route-slide{box-shadow:none!important}
+
+@media(max-width:720px){
+  body[data-page="stratum_revenue_home_v2"] .hub-handoff{grid-template-columns:1fr;padding:8px}
+  body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions{display:grid;grid-template-columns:1fr 1fr}
+  body[data-page="stratum_revenue_home_v2"] .hub-handoff-actions a{white-space:normal;text-align:center}
+  body[data-page="stratum_revenue_home_v2"] .rh-route-navigator{margin-top:12px!important}
+}
