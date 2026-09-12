@@ -39,19 +39,29 @@ jobs:
           test "$code" = '401'
           code="$(curl -sS -o /tmp/activate.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data '{"session_id":"invalid"}')"
           test "$code" = '400'
+          code="$(curl -sS -o /tmp/pending.txt -w '%{http_code}' "$BASE/agent-lab/pending?ref=invalid")"
+          test "$code" = '400'
           echo 'Protected member guards -> PASS'
 
-      - name: Verify live Stripe checkout
+      - name: Verify tracked Stripe checkout bridge
         shell: bash
         run: |
           set -euo pipefail
           BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
-          curl -sS -D /tmp/headers.txt -o /tmp/checkout-body.txt "$BASE/agent-lab/checkout?route_id=qa_agent_lab_final"
-          code="$(awk 'NR==1{print $2}' /tmp/headers.txt)"
-          location="$(awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/^[^:]*:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
-          echo "Checkout HTTP: $code"
-          echo "Checkout Location: $location"
-          cat /tmp/checkout-body.txt || true
-          test "$code" = '303'
-          echo "$location" | grep -Eq '^https://checkout\.stripe\.com/'
-          echo 'Live Stripe checkout creation -> PASS'
+          ok=''
+          for attempt in $(seq 1 20); do
+            curl -sS -D /tmp/headers.txt -o /tmp/checkout-body.txt "$BASE/agent-lab/checkout?route_id=qa_agent_lab_final"
+            code="$(awk 'NR==1{print $2}' /tmp/headers.txt)"
+            if [ "$code" = '200' ] && grep -Fq 'OPEN SECURE CHECKOUT' /tmp/checkout-body.txt && grep -Fq 'client_reference_id=al_' /tmp/checkout-body.txt; then
+              ok='yes'
+              break
+            fi
+            echo "Waiting for tracked checkout bridge deploy (attempt $attempt, HTTP $code)"
+            sleep 3
+          done
+          test "$ok" = 'yes'
+          grep -Fq 'https://buy.stripe.com/5kQ3cwd3e0UHfAYdc76Zy0Y' /tmp/checkout-body.txt
+          grep -Fq 'WAITING FOR STRIPE' /tmp/checkout-body.txt
+          grep -Fq '/agent-lab/pending?ref=' /tmp/checkout-body.txt
+          grep -Eq '^set-cookie: sp_agent_lab_pending=al_' <(tr '[:upper:]' '[:lower:]' < /tmp/headers.txt)
+          echo 'Tracked Payment Link + post-payment claim bridge -> PASS'
