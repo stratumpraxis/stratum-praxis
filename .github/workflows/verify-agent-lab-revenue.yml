@@ -1,0 +1,54 @@
+name: Verify Agent Lab Revenue Loop
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-agent-lab-revenue.yml'
+  workflow_dispatch:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public Agent Lab and access page
+        shell: bash
+        run: |
+          set -euo pipefail
+          SITE='https://stratum-praxis-site.pages.dev'
+          curl -L -fsS "$SITE/agent-lab/" -o /tmp/lab.html
+          grep -Fq 'LIVE FIELD LAB' /tmp/lab.html
+          grep -Fq 'ai-consultant-verify.practicalaireport.workers.dev/agent-lab/checkout' /tmp/lab.html
+          grep -Fq 'href="/agent-lab/access.html"' /tmp/lab.html
+          curl -L -fsS "$SITE/agent-lab/access.html" -o /tmp/access.html
+          grep -Fq '/agent-lab/activate' /tmp/access.html
+          grep -Fq 'OPEN MEMBER' /tmp/access.html
+          echo 'Public Agent Lab + member activation surface -> PASS'
+
+      - name: Verify protected member guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
+          code="$(curl -sS -o /tmp/member.txt -w '%{http_code}' "$BASE/agent-lab/workspace")"
+          test "$code" = '401'
+          code="$(curl -sS -o /tmp/activate.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data '{"session_id":"invalid"}')"
+          test "$code" = '400'
+          echo 'Protected member guards -> PASS'
+
+      - name: Verify live Stripe checkout and unpaid denial
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
+          curl -sS -D /tmp/headers.txt -o /dev/null "$BASE/agent-lab/checkout?route_id=qa_agent_lab_final"
+          code="$(awk 'NR==1{print $2}' /tmp/headers.txt)"
+          location="$(awk 'BEGIN{IGNORECASE=1}/^location:/{sub(/^[^:]*:[[:space:]]*/,"");gsub(/\r/,"");print;exit}' /tmp/headers.txt)"
+          test "$code" = '303'
+          echo "$location" | grep -Eq '^https://checkout\.stripe\.com/'
+          sid="$(printf '%s' "$location" | grep -oE 'cs_(live|test)_[A-Za-z0-9]+' | head -n1)"
+          test -n "$sid"
+          denied="$(curl -sS -o /tmp/unpaid.txt -w '%{http_code}' -X POST "$BASE/agent-lab/activate" -H 'Content-Type: application/json' --data "{\"session_id\":\"$sid\"}")"
+          test "$denied" = '402'
+          echo 'Live Stripe checkout creation + unpaid membership denial -> PASS'
