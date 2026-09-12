@@ -68,8 +68,8 @@ jobs:
         shell: bash
         run: |
           set -e
-          grep -q 'Open the Live Lab' index.html
-          grep -q 'Take the Free AI Consultant' index.html
+          grep -q 'home_ladder_free' index.html
+          grep -q 'home_hero_audit' index.html
           grep -q 'sp-inbound-route-v1' index.html
           grep -q 'buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02' b2b/index.html
           grep -q 'agent_economics_to_499_audit' ai-agent-economics-calculator.html
