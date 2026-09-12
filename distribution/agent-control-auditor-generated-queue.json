@@ -1,14 +1,13 @@
 [
   {
-    "id": "stratum-roi-igtt-20260913-02",
+    "id": "stratum-roi-tiktok-retry-20260913-01",
     "active": true,
     "services": [
-      "instagram",
       "tiktok"
     ],
     "text": "Before automating an AI workflow, compare task volume, human review, recurring model cost, implementation cost, and realistic coverage. Use the ROI calculator to plan.",
-    "url": "https://stratumpraxis.com/?utm_source=social&utm_medium=organic&utm_campaign=ai_agent_roi&utm_content=roi_igtt_20260913",
+    "url": "https://stratumpraxis.com/?utm_source=tiktok&utm_medium=organic&utm_campaign=ai_agent_roi&utm_content=roi_tiktok_retry_20260913",
     "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/stratum-social-publish-roi/public/media/stratum-roi-social.png",
-    "publish_trigger": "2026-09-13T03:11:00+09:00"
+    "publish_trigger": "2026-09-13T03:23:00+09:00"
   }
 ]
