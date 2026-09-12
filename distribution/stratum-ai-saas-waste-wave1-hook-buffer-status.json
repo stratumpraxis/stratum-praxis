@@ -1,0 +1,42 @@
+{
+  "checked_at": "2026-09-12T22:30:58.084Z",
+  "route_id": "stratum_ai_saas_waste_wave1_hook",
+  "channels": {
+    "tiktok": [
+      {
+        "id": "6aa5d211f7b1958d5cd78faf",
+        "text": "AIやSaaS、増やす前に『元が取れているか』を数字で確認。\n\n月額コストを年額に直して、見直し対象を可視化する無料 AI & SaaS Waste Calculator。\n\n無料で確認 → https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=social&utm_medium=organic_video&utm_campaign=ai_saas_waste_wave1&utm_content=hook&route_id=stratum_ai_saas_waste_wave1_hook\n\n#AI #SaaS #Automation #StratumPraxis",
+        "dueAt": "2026-09-12T22:28:33.235Z",
+        "status": "sent",
+        "sentAt": "2026-09-12T22:30:22.519Z",
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684779282341874964"
+      },
+      {
+        "id": "6aa5d1c5130d0ea1a45e32e0",
+        "text": "AIやSaaS、増やす前に『元が取れているか』を数字で確認。\n\n月額コストを年額に直して、見直し対象を可視化する無料 AI & SaaS Waste Calculator。\n\n無料で確認 → https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=social&utm_medium=organic_video&utm_campaign=ai_saas_waste_wave1&utm_content=hook&route_id=stratum_ai_saas_waste_wave1_hook\n\n#AI #SaaS #Automation #StratumPraxis",
+        "dueAt": "2026-09-12T22:27:17.140Z",
+        "status": "sent",
+        "sentAt": "2026-09-12T22:29:00.204Z",
+        "externalLink": "https://tiktok.com/@stratumpraxis/video/7684778984176880916"
+      }
+    ],
+    "instagram": [
+      {
+        "id": "6aa5d21deba7bc5677867a3c",
+        "text": "AIやSaaS、増やす前に『元が取れているか』を数字で確認。\n\n月額コストを年額に直して、見直し対象を可視化する無料 AI & SaaS Waste Calculator。\n\n無料で確認 → https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=social&utm_medium=organic_video&utm_campaign=ai_saas_waste_wave1&utm_content=hook&route_id=stratum_ai_saas_waste_wave1_hook\n\n#AI #SaaS #Automation #StratumPraxis",
+        "dueAt": "2026-09-12T22:28:45.615Z",
+        "status": "error",
+        "sentAt": null,
+        "externalLink": null
+      },
+      {
+        "id": "6aa5d1d166679b076f193ae5",
+        "text": "AIやSaaS、増やす前に『元が取れているか』を数字で確認。\n\n月額コストを年額に直して、見直し対象を可視化する無料 AI & SaaS Waste Calculator。\n\n無料で確認 → https://stratumpraxis.com/ai-saas-waste-calculator.html?utm_source=social&utm_medium=organic_video&utm_campaign=ai_saas_waste_wave1&utm_content=hook&route_id=stratum_ai_saas_waste_wave1_hook\n\n#AI #SaaS #Automation #StratumPraxis",
+        "dueAt": "2026-09-12T22:27:29.602Z",
+        "status": "error",
+        "sentAt": null,
+        "externalLink": null
+      }
+    ]
+  }
+}
