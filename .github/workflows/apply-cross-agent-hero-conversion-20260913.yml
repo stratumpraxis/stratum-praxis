@@ -22,18 +22,25 @@ jobs:
 
           page = Path('cross-agent-operating-kit.html')
           s = page.read_text(encoding='utf-8')
-          old = '''      <div class="actions">
-        <a class="btn btn-primary" href="#pricing" data-i18n="choose_license">Choose a license</a>
-        <a class="btn btn-secondary" href="#preview" data-i18n="see_inside">See what's inside</a>
-      </div>'''
-          new = '''      <div class="actions">
-        <a class="btn btn-primary" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T" data-analytics-id="cross_agent_operating_kit_hero_personal" data-product="cross_agent_personal" data-price="69" data-currency="USD" data-location="hero"><span class="locale locale-en">Personal · $69</span><span class="locale locale-ja">Personal · $69</span><span class="locale locale-ko">Personal · $69</span><span class="locale locale-zh">Personal · $69</span></a>
-        <a class="btn btn-secondary" href="#pricing"><span class="locale locale-en">Compare licenses</span><span class="locale locale-ja">ライセンス比較</span><span class="locale locale-ko">라이선스 비교</span><span class="locale locale-zh">比较许可</span></a>
-      </div>'''
-          if old not in s:
-              raise SystemExit('Expected hero action block not found; refusing broad edit')
-          s = s.replace(old, new, 1)
+          old_primary = '<a class="btn btn-primary" href="#pricing" data-i18n="choose_license">Choose a license</a>'
+          new_primary = '<a class="btn btn-primary" href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T" data-analytics-id="cross_agent_operating_kit_hero_personal" data-product="cross_agent_personal" data-price="69" data-currency="USD" data-location="hero" data-i18n="choose_license">Personal · $69</a>'
+          old_secondary = "<a class=\"btn btn-secondary\" href=\"#preview\" data-i18n=\"see_inside\">See what's inside</a>"
+          new_secondary = '<a class="btn btn-secondary" href="#pricing" data-i18n="see_inside">Compare licenses</a>'
+          if old_primary not in s or old_secondary not in s:
+              raise SystemExit('Expected hero links not found; refusing broad edit')
+          s = s.replace(old_primary, new_primary, 1).replace(old_secondary, new_secondary, 1)
           page.write_text(s, encoding='utf-8')
+
+          js = Path('cross-agent-attribution.js')
+          j = js.read_text(encoding='utf-8')
+          old_choose = "choose_license: { en:'Choose a license', ja:'ライセンスを選ぶ', ko:'라이선스 선택', zh:'选择许可' },"
+          new_choose = "choose_license: { en:'Personal · $69', ja:'Personal · $69', ko:'Personal · $69', zh:'Personal · $69' },"
+          old_compare = "see_inside: { en:\"See what's inside\", ja:'中身を見る', ko:'구성 보기', zh:'查看内容' },"
+          new_compare = "see_inside: { en:'Compare licenses', ja:'ライセンス比較', ko:'라이선스 비교', zh:'比较许可' },"
+          if old_choose not in j or old_compare not in j:
+              raise SystemExit('Expected translation keys not found; refusing broad edit')
+          j = j.replace(old_choose, new_choose, 1).replace(old_compare, new_compare, 1)
+          js.write_text(j, encoding='utf-8')
       - name: Verify checkout and license invariants
         shell: bash
         run: |
@@ -41,7 +48,7 @@ jobs:
           grep -q 'cross_agent_operating_kit_hero_personal' cross-agent-operating-kit.html
           grep -q 'href="https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T"' cross-agent-operating-kit.html
           grep -q 'data-product="cross_agent_personal"' cross-agent-operating-kit.html
-          grep -q 'Compare licenses' cross-agent-operating-kit.html
+          grep -q 'Compare licenses' cross-agent-attribution.js
           grep -q 'href="https://buy.stripe.com/28EeVe5AMcDp74sdc76Zy0U"' cross-agent-operating-kit.html
           grep -q 'href="https://buy.stripe.com/dRmcN65AMcDp0G46NJ6Zy0V"' cross-agent-operating-kit.html
           grep -q 'id="pricing"' cross-agent-operating-kit.html
@@ -50,7 +57,7 @@ jobs:
         run: |
           git config user.name 'github-actions[bot]'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add cross-agent-operating-kit.html
+          git add cross-agent-operating-kit.html cross-agent-attribution.js
           if git diff --cached --quiet; then
             echo 'No changes needed'
           else
