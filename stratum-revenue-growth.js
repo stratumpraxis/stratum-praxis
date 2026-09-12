@@ -100,3 +100,36 @@
   };
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
+
+/* Qualified traffic bridge: route homepage spend/renewal intent into the existing Spend Decision Hub. */
+(() => {
+  'use strict';
+  const HUB='/ai-saas-spend.html';
+  const COPY={
+    en:{meta:'Spend & Renewal · Decision Hub',title:'What should we keep, cut, or resize?',text:'For AI and SaaS renewals, tool overlap, unused seats, plan size and spend decisions that need evidence before another purchase.',cta:'Open Spend Decision Hub →'},
+    ja:{meta:'Spend & Renewal · Decision Hub',title:'何を残し、削り、縮小するべきか？',text:'AI・SaaS更新、機能重複、未使用席、プランサイズ、追加購入前の支出判断を一つの入口で整理。',cta:'Spend Decision Hubを開く →'},
+    es:{meta:'Spend & Renewal · Decision Hub',title:'¿Qué conviene mantener, recortar o reducir?',text:'Para renovaciones de AI y SaaS, solapamiento, asientos sin uso, tamaño de plan y decisiones de gasto basadas en evidencia.',cta:'Abrir Spend Decision Hub →'}
+  };
+  const apply=()=>{
+    const grid=document.querySelector('.sp-inbound-grid');
+    if(!grid)return;
+    let card=grid.querySelector('[data-analytics-id="inbound_spend_decision_hub"]');
+    if(!card){
+      card=document.createElement('a');
+      card.className='sp-inbound-card';
+      card.href=HUB;
+      card.dataset.analyticsId='inbound_spend_decision_hub';
+      card.dataset.product='ai_saas_spend_hub';
+      grid.prepend(card);
+    }
+    const lang=['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
+    const t=COPY[lang]||COPY.en;
+    card.innerHTML=`<small>${t.meta}</small><strong>${t.title}</strong><span>${t.text}</span><em>${t.cta}</em>`;
+  };
+  const boot=()=>{
+    apply();
+    document.querySelectorAll('[data-lang]').forEach(b=>b.addEventListener('click',()=>setTimeout(apply,0)));
+    new MutationObserver(m=>{if(m.some(x=>x.attributeName==='lang'))apply()}).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+  };
+  document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
+})();
