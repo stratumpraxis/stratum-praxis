@@ -1,0 +1,78 @@
+name: Stratum AI SaaS Waste Wave1 Queue
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/stratum-ai-saas-waste-wave1-proof-20260913.json'
+      - 'distribution/stratum-ai-saas-waste-wave1-demo-20260913.json'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stratum-ai-saas-waste-wave1-queue
+  cancel-in-progress: false
+
+jobs:
+  queue-video:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve changed manifest
+        id: manifest
+        shell: bash
+        run: |
+          path=$(git diff-tree --no-commit-id --name-only -r HEAD -- 'distribution/stratum-ai-saas-waste-wave1-*-20260913.json' | head -n 1)
+          if [ -z "$path" ]; then echo 'No wave1 manifest changed.' >&2; exit 1; fi
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+          url=$(node -e "const m=require('./$path'); process.stdout.write(m.videoUrl||'')")
+          if [[ "$url" != https://* ]]; then echo 'Missing public video URL.' >&2; exit 1; fi
+          echo "video_url=$url" >> "$GITHUB_OUTPUT"
+          id=$(node -e "const m=require('./$path'); process.stdout.write(m.id||'')")
+          echo "manifest_id=$id" >> "$GITHUB_OUTPUT"
+      - name: Fail-closed Stratum TikTok preflight
+        env:
+          MANIFEST: ${{ steps.manifest.outputs.path }}
+        run: |
+          node - <<'NODE'
+          const m=require('./'+process.env.MANIFEST);
+          const s=m.publish?.services||[];
+          if(s.length!==1||s[0]!=='tiktok') throw new Error('Wave1 queued variants must target TikTok only until Instagram auth is restored');
+          const a=m.publish?.channelAllowlist?.tiktok||[];
+          if(!a.includes('6a8e5d28ccaf649a671a13e7')||!a.includes('stratumpraxis')) throw new Error('Stratum TikTok allowlist missing');
+          if(m.publish?.mode!=='addToQueue') throw new Error('Queued variants must use addToQueue');
+          if(!String(m.publish?.caption||'').includes('https://stratumpraxis.com/ai-saas-waste-calculator.html')) throw new Error('Revenue destination mismatch');
+          NODE
+      - name: Verify public video
+        env:
+          VIDEO_URL: ${{ steps.manifest.outputs.video_url }}
+        run: |
+          set -euo pipefail
+          code=$(curl --fail --silent --show-error --location -o /tmp/video.mp4 -w '%{http_code}' "$VIDEO_URL")
+          bytes=$(wc -c < /tmp/video.mp4)
+          echo "VIDEO_HTTP=$code BYTES=$bytes"
+          test "$code" = '200'
+          test "$bytes" -gt 400000
+      - name: Queue on official Stratum TikTok
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          TREND_VIDEO_MANIFEST: ${{ steps.manifest.outputs.path }}
+          TREND_VIDEO_URL: ${{ steps.manifest.outputs.video_url }}
+          VIDEO_PUBLISH_LEDGER: distribution/${{ steps.manifest.outputs.manifest_id }}-ledger.json
+        run: node distribution/buffer-video-publisher.mjs
+      - name: Persist queue evidence
+        run: |
+          git config user.name 'stratum-video-queue-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add distribution/*-ledger.json
+          if git diff --cached --quiet; then exit 0; fi
+          git commit -m 'evidence: record Stratum wave1 queued video [skip social]'
+          git pull --rebase origin main
+          git push origin HEAD:main
