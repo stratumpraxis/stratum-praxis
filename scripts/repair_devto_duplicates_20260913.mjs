@@ -5,16 +5,6 @@ if (!apiKey) throw new Error('DEVTO_API_KEY missing');
 
 const targets = [
   {
-    file: 'content/ghost/ai-agent-operating-constitution-ja.md',
-    originalSlug: 'aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-agent-operating-constitution-51od',
-    accidentalId: 4643229
-  },
-  {
-    file: 'content/ghost/ai-handoff-system-ja.md',
-    originalSlug: 'aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-4pgg',
-    accidentalId: 4643230
-  },
-  {
     file: 'content/ghost/ai-revenue-pipeline-diagnosis-ja.md',
     originalSlug: 'aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3l8j',
     accidentalId: 4643235
@@ -30,7 +20,7 @@ const headers = {
   'api-key': apiKey,
   'Content-Type': 'application/json',
   'Accept': 'application/vnd.forem.api-v1+json',
-  'user-agent': 'Stratum-Praxis-Repair/3.0'
+  'user-agent': 'Stratum-Praxis-Repair/4.0'
 };
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
@@ -65,16 +55,17 @@ for (const target of targets) {
   const original = JSON.parse(originalText);
   if (!original.id) throw new Error(`Original article missing id: ${target.originalSlug}`);
 
-  const updatePayload = {
-    article: {
-      title: source.title,
-      body_markdown: source.body,
-      published: true,
-      tags: ['ai','automation','productivity','business']
-    }
-  };
   const update = await req(`https://dev.to/api/articles/${original.id}`, {
-    method: 'PUT', headers, body: JSON.stringify(updatePayload)
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({
+      article: {
+        title: source.title,
+        body_markdown: source.body,
+        published: true,
+        tags: ['ai','automation','productivity','business']
+      }
+    })
   });
   const updateText = await update.text();
   if (!update.ok) throw new Error(`Original update failed ${original.id}: ${update.status} ${updateText}`);
@@ -83,7 +74,9 @@ for (const target of targets) {
   await sleep(32000);
 
   const retire = await req(`https://dev.to/api/articles/${target.accidentalId}`, {
-    method: 'PUT', headers, body: JSON.stringify({ article: { published: false } })
+    method: 'PUT',
+    headers,
+    body: JSON.stringify({ article: { published: false } })
   });
   const retireText = await retire.text();
   if (!retire.ok) throw new Error(`Accidental article retire failed ${target.accidentalId}: ${retire.status} ${retireText}`);
