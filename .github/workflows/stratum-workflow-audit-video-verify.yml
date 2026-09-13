@@ -25,6 +25,7 @@ jobs:
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           TIKTOK_POST_ID: 6aa5cd74f7b1958d5cd748ba
+          TIKTOK_CHANNEL_ID: 6a8e5d28ccaf649a671a13e7
           INSTAGRAM_POST_ID: 6aa5cd8066679b076f18f870
         run: |
           node --input-type=module - <<'NODE'
@@ -40,10 +41,16 @@ jobs:
             return j.data;
           }
           const ids = {tiktok:process.env.TIKTOK_POST_ID, instagram:process.env.INSTAGRAM_POST_ID};
-          const result = {checkedAt:new Date().toISOString(), destination:'https://stratumpraxis.com/workflow-audit.html', posts:{}};
+          const result = {checkedAt:new Date().toISOString(), destination:'https://stratumpraxis.com/workflow-audit.html', channel:null, posts:{}};
+          try {
+            const c = await gql(`query { channel(input:{id:${q(process.env.TIKTOK_CHANNEL_ID)}}){ id name displayName service externalLink isDisconnected isLocked type } }`);
+            result.channel = c.channel || null;
+          } catch (e) {
+            result.channel = {id:process.env.TIKTOK_CHANNEL_ID, status:'verify_error', error:String(e)};
+          }
           for (const [service,id] of Object.entries(ids)) {
             try {
-              const d = await gql(`query { post(input:{id:${q(id)}}){ id channelId channelService status dueAt sentAt sharedNow externalLink error { message rawError supportUrl } } }`);
+              const d = await gql(`query { post(input:{id:${q(id)}}){ id channelId channelService status dueAt sentAt sharedNow externalLink metrics { type name value unit } metricsUpdatedAt error { message rawError supportUrl } } }`);
               result.posts[service] = d.post || {id, status:'not_found'};
             } catch (e) {
               result.posts[service] = {id, status:'verify_error', error:String(e)};
