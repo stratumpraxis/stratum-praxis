@@ -26,6 +26,50 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Verify Stripe live credential target
+        shell: bash
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
+            echo "::error::Repository secret STRIPE_SECRET_KEY is not configured."
+            exit 1
+          fi
+          case "$STRIPE_SECRET_KEY" in
+            sk_live_*|rk_live_*) ;;
+            *)
+              echo "::error::STRIPE_SECRET_KEY is not a live-mode Stripe secret."
+              exit 1
+              ;;
+          esac
+          status="$(curl -sS -o /tmp/stripe-account.json -w '%{http_code}' https://api.stripe.com/v1/account -u "$STRIPE_SECRET_KEY:")"
+          if [ "$status" != '200' ]; then
+            echo "::error::Stripe credential validation failed with HTTP $status."
+            python - <<'PY'
+          import json
+          try:
+              data=json.load(open('/tmp/stripe-account.json'))
+              err=data.get('error') or {}
+              print('Stripe error type:', err.get('type','unknown'))
+              print('Stripe error code:', err.get('code','unknown'))
+              print('Stripe error message:', err.get('message','unknown'))
+          except Exception:
+              print('Stripe returned a non-JSON credential error.')
+          PY
+            exit 1
+          fi
+          account_id="$(python - <<'PY'
+          import json
+          print(json.load(open('/tmp/stripe-account.json')).get('id',''))
+          PY
+          )"
+          if [ "$account_id" != 'acct_1U0vFWJMK7zFs997' ]; then
+            echo "::error::Stripe credential targets unexpected account: $account_id"
+            exit 1
+          fi
+          echo "Stripe live credential target OK: $account_id"
+
       - name: Deploy Worker
         working-directory: worker
         env:
@@ -42,10 +86,6 @@ jobs:
           STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
         run: |
           set -euo pipefail
-          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
-            echo "::error::Repository secret STRIPE_SECRET_KEY is not configured. Live Checkout cannot be deployed safely."
-            exit 1
-          fi
           printf '%s' "$STRIPE_SECRET_KEY" | npx --yes wrangler@latest secret put STRIPE_SECRET_KEY
 
       - name: Smoke-test protected routes
