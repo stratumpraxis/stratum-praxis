@@ -4,6 +4,8 @@ Stratum Praxis is the B2B asset base inside the broader Digital Index Base struc
 
 **Public domain:** https://stratumpraxis.com/
 
+**Start free:** [Run the 12-point AI & SaaS renewal check](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=github&utm_medium=referral&utm_campaign=readme_free_entry&utm_content=top_start) — decide whether each recurring tool should be **KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL** before the next renewal.
+
 Its role is practical B2B decision support: workflow audits, ROI/economics tools, AI/SaaS spend and renewal decisions, governance, implementation planning, and fixed-scope paid support for businesses and professional-service firms.
 
 ## Current operating boundary
@@ -14,8 +16,9 @@ Do not use Stratum as the default home for unrelated creator, consumer, publishi
 
 ## Primary B2B entry points
 
-- [AI & SaaS Spend Decision Hub](https://stratumpraxis.com/ai-saas-spend.html) — review overlap, unused tools, plan size and renewal economics before another AI/SaaS spend decision; continue to the $39 self-service kit or $499 specialist audit only when the evidence supports it.
-- [AI & SaaS Spend Decision Kit — $39 one-time](https://stratumpraxis.com/ai-saas-spend-decision-kit.html) — self-service decision support for teams that can own the spend decision internally. [Buy directly on Stripe](https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06).
+- [Free AI & SaaS Spend Audit Checklist](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=github&utm_medium=referral&utm_campaign=readme_free_entry&utm_content=primary_entry) — 12 questions before renewal; continue to paid decision support only when the evidence justifies it.
+- [AI & SaaS Spend Decision Hub](https://stratumpraxis.com/ai-saas-spend.html?utm_source=github&utm_medium=referral&utm_campaign=readme_spend_hub&utm_content=primary_entry) — review overlap, unused tools, plan size and renewal economics before another AI/SaaS spend decision; continue to the $39 self-service kit or $499 specialist audit only when the evidence supports it.
+- [AI & SaaS Spend Decision Kit — $39 one-time](https://stratumpraxis.com/ai-saas-spend-decision-kit.html?utm_source=github&utm_medium=referral&utm_campaign=readme_spend_kit&utm_content=primary_entry) — self-service decision support for teams that can own the spend decision internally. [Buy directly on Stripe](https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06?client_reference_id=github_readme_spend_kit).
 - [Product Router](https://stratumpraxis.com/product-router.html) — route an existing business problem to the closest current tool, audit, or checkout path.
 - [AI Automation ROI Calculator](https://roi.stratumpraxis.com/) — estimate value before implementation spend.
 - [Small Business AI Automation Audit](https://small-business-ai-audit.pages.dev/) — identify a workflow worth examining.
