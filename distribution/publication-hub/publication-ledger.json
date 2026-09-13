@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-13T09:42:05.657Z",
+  "generated_at": "2026-09-13T10:51:27.968Z",
   "article_count": 6,
   "articles": [
     {
@@ -12,9 +12,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4642954,
-        "url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-2ffj",
-        "canonical_url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-2ffj"
+        "id": 4643229,
+        "url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-18cg",
+        "canonical_url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-18cg"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -24,7 +24,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-13T09:40:47.760Z"
+      "checked_at": "2026-09-13T10:50:46.714Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -36,9 +36,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4642955,
-        "url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-4306",
-        "canonical_url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-4306"
+        "id": 4643230,
+        "url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-3lb3",
+        "canonical_url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-3lb3"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -48,7 +48,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-13T09:40:48.549Z"
+      "checked_at": "2026-09-13T10:50:50.276Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -72,7 +72,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-13T09:40:52.507Z"
+      "checked_at": "2026-09-13T10:50:51.065Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -84,9 +84,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4642960,
-        "url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3blh",
-        "canonical_url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3blh"
+        "id": 4643235,
+        "url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-1jp0",
+        "canonical_url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-1jp0"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -96,7 +96,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-13T09:41:28.857Z"
+      "checked_at": "2026-09-13T10:51:23.846Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -120,7 +120,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-13T09:41:29.443Z"
+      "checked_at": "2026-09-13T10:51:24.327Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -132,9 +132,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4642962,
-        "url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-12jp",
-        "canonical_url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-12jp"
+        "id": 4643236,
+        "url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-4k58",
+        "canonical_url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-4k58"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -144,7 +144,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-13T09:42:05.657Z"
+      "checked_at": "2026-09-13T10:51:27.968Z"
     }
   ]
 }
