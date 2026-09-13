@@ -11,7 +11,11 @@ export default {
       return Response.redirect(url.toString(), 301);
     }
 
-    const response = await env.ASSETS.fetch(request);
+    // Preserve static directory routes such as /systems/, /b2b/ and /revenue-pump/.
+    const assetUrl = new URL(request.url);
+    if (assetUrl.pathname.endsWith('/')) assetUrl.pathname += 'index.html';
+    const assetRequest = new Request(assetUrl.toString(), request);
+    const response = await env.ASSETS.fetch(assetRequest);
 
     if (request.method !== 'GET') return response;
 
