@@ -10,16 +10,20 @@ concurrency:
   group: stratum-praxis-evolution-layer
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   evolve:
-    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion != 'cancelled' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 12
     steps:
       - name: Checkout current main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7.0.1
         with:
           ref: main
+          persist-credentials: false
 
       - name: Prepare evolved static site
         shell: bash
@@ -76,11 +80,28 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main | tee /tmp/evolution-deploy.log
+          npx --yes wrangler@latest pages deploy . --project-name stratum-praxis-site --branch main --commit-dirty=true | tee /tmp/evolution-deploy.log
           deploy_url="$(grep -oE 'https://[a-z0-9]+\.stratum-praxis-site\.pages\.dev' /tmp/evolution-deploy.log | tail -n 1)"
           test -n "$deploy_url"
           echo "EVOLUTION_BASE=$deploy_url" >> "$GITHUB_ENV"
           echo "Evolution deployment: $deploy_url"
+
+      - name: Wait for preview routing readiness
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE="${EVOLUTION_BASE:?Missing evolved deployment URL}"
+          for attempt in $(seq 1 18); do
+            code="$(curl -L -sS --connect-timeout 10 --max-time 20 -o /tmp/evo-root.html -w '%{http_code}' "$BASE/" || true)"
+            if [ "$code" = "200" ]; then
+              echo "Preview root ready on attempt $attempt"
+              exit 0
+            fi
+            echo "Preview root not ready yet: attempt $attempt/18 -> ${code:-curl-error}"
+            sleep 5
+          done
+          echo "Preview root never became ready: $BASE/"
+          exit 1
 
       - name: Verify evolution coverage
         shell: bash
@@ -96,9 +117,18 @@ jobs:
             /money-resilience/ /72-hour-household-readiness/
           )
           for path in "${routes[@]}"; do
-            code="$(curl -L -sS -o /tmp/evo-page.html -w '%{http_code}' "$BASE$path")"
-            if [ "$code" != "200" ]; then
-              echo "Route failed: $path -> $code"; exit 1
+            ok=0
+            for attempt in $(seq 1 5); do
+              code="$(curl -L -sS --connect-timeout 10 --max-time 20 -o /tmp/evo-page.html -w '%{http_code}' "$BASE$path" || true)"
+              if [ "$code" = "200" ]; then
+                ok=1
+                break
+              fi
+              echo "Route warming: $path attempt $attempt/5 -> ${code:-curl-error}"
+              sleep 3
+            done
+            if [ "$ok" != "1" ]; then
+              echo "Route failed after retries: $path -> ${code:-curl-error}"; exit 1
             fi
             if ! grep -Fq 'data-stratum-evolution' /tmp/evo-page.html; then
               echo "Evolution layer missing: $path"; exit 1
@@ -109,13 +139,13 @@ jobs:
             echo "Evolution + Growth UI OK: $path"
           done
 
-          curl -L -sS "$BASE/stratum-evolution-engine.js?v=20260911-v2" -o /tmp/evolution.js
+          curl -L -fSs --retry 4 --retry-all-errors --retry-delay 3 "$BASE/stratum-evolution-engine.js?v=20260911-v2" -o /tmp/evolution.js
           grep -Fq '__STRATUM_EVOLUTION_ENGINE__' /tmp/evolution.js
           grep -Fq 'evolution_quality_snapshot' /tmp/evolution.js
           grep -Fq 'evolution_action' /tmp/evolution.js
           grep -Fq 'evolution_link_health' /tmp/evolution.js
 
-          curl -L -sS "$BASE/stratum-growth-ui.js?v=20260911-v1" -o /tmp/growth-ui.js
+          curl -L -fSs --retry 4 --retry-all-errors --retry-delay 3 "$BASE/stratum-growth-ui.js?v=20260911-v1" -o /tmp/growth-ui.js
           grep -Fq '__STRATUM_GROWTH_UI__' /tmp/growth-ui.js
           grep -Fq 'growth_nav_open' /tmp/growth-ui.js
           grep -Fq 'growth_nav_action' /tmp/growth-ui.js
