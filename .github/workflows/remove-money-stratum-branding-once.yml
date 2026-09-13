@@ -1,0 +1,63 @@
+name: Remove Money Resilience Stratum Branding Once
+
+on:
+  push:
+    paths:
+      - '.github/workflows/remove-money-stratum-branding-once.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout current main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Remove visible Stratum branding
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('money-resilience/market-pulse.js')
+          s = p.read_text()
+          replacements = {
+              '<small>Stratum Praxis</small>': '<small>Financial Resilience Utility</small>',
+              '<small>STRATUM PRAXIS</small>': '<small>MONEY RESILIENCE</small>',
+          }
+          for old, new in replacements.items():
+              if old not in s:
+                  raise SystemExit(f'missing expected market-pulse marker: {old}')
+              s = s.replace(old, new)
+          p.write_text(s)
+
+          p = Path('money-resilience/index.html')
+          s = p.read_text()
+          old = '<meta property="og:site_name" content="Stratum Praxis">'
+          new = '<meta property="og:site_name" content="Money Resilience">'
+          if old not in s:
+              raise SystemExit('missing expected og:site_name marker')
+          p.write_text(s.replace(old, new))
+          PY
+
+      - name: Verify public-facing Stratum text is gone
+        run: |
+          ! grep -nE 'Stratum Praxis|STRATUM PRAXIS' money-resilience/market-pulse.js
+          ! grep -n 'og:site_name" content="Stratum Praxis' money-resilience/index.html
+
+      - name: Commit cleanup
+        run: |
+          if git diff --quiet; then
+            echo 'No changes needed.'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add money-resilience/market-pulse.js money-resilience/index.html
+          git commit -m 'Remove visible Stratum branding from Money Resilience'
+          git pull --rebase origin main
+          git push origin HEAD:main
