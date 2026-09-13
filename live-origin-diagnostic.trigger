@@ -1,3 +1,3 @@
-check=2026-09-13
+check=2026-09-14
 scope=stratumpraxis.com-live-origin
-reason=identify-production-host-before-routing-change
+reason=confirm-production-host-before-deploy-consolidation
