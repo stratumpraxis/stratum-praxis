@@ -1,0 +1,64 @@
+name: Stratum DEV Direct Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'publishing/queue/stratum-devto-*.json'
+  workflow_dispatch:
+    inputs:
+      package_path:
+        description: DEV publish package path
+        required: true
+        default: publishing/queue/stratum-devto-ai-saas-spend-001.json
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Resolve package
+        id: package
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "path=${{ inputs.package_path }}" >> "$GITHUB_OUTPUT"
+          else
+            path=$(git diff-tree --no-commit-id --name-only -r HEAD -- 'publishing/queue/stratum-devto-*.json' | head -n 1)
+            if [ -z "$path" ]; then
+              echo 'No changed DEV publish package found; fail closed.' >&2
+              exit 1
+            fi
+            echo "path=$path" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Publish to DEV
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: node scripts/publish_devto_official.mjs "${{ steps.package.outputs.path }}"
+      - name: Persist publication evidence
+        shell: bash
+        run: |
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add publishing/evidence/*.json
+          if git diff --cached --quiet; then
+            echo 'No evidence changes'
+            exit 0
+          fi
+          git commit -m 'evidence: persist Stratum DEV publication [skip social]'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main && git push origin main && exit 0
+            echo "Evidence push attempt $attempt failed; retrying..." >&2
+            sleep $((attempt * 3))
+          done
+          echo 'Evidence persistence failed after 3 attempts.' >&2
+          exit 1
