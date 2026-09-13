@@ -13,6 +13,16 @@ const targets = [
     file: 'content/ghost/ai-handoff-system-ja.md',
     originalSlug: 'aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-4pgg',
     accidentalId: 4643230
+  },
+  {
+    file: 'content/ghost/ai-revenue-pipeline-diagnosis-ja.md',
+    originalSlug: 'aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3l8j',
+    accidentalId: 4643235
+  },
+  {
+    file: 'content/ghost/codex-revenue-company-ja.md',
+    originalSlug: 'ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-pc8',
+    accidentalId: 4643236
   }
 ];
 
@@ -20,7 +30,7 @@ const headers = {
   'api-key': apiKey,
   'Content-Type': 'application/json',
   'Accept': 'application/vnd.forem.api-v1+json',
-  'user-agent': 'Stratum-Praxis-Repair/2.0'
+  'user-agent': 'Stratum-Praxis-Repair/3.0'
 };
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
