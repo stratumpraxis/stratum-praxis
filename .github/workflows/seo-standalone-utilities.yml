@@ -1,0 +1,144 @@
+name: SEO standalone utilities
+on:
+  push:
+    paths:
+      - '.github/workflows/seo-standalone-utilities.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  seo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Apply clean SEO improvements
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          home = Path('72-hour-household-readiness/index.html')
+          money = Path('money-resilience/index.html')
+          pulse = Path('money-resilience/market-pulse.js')
+
+          hs = home.read_text()
+          hs = hs.replace(
+              '<title>暮らし防衛チェック | Home Readiness Utility</title>',
+              '<title>防災・備蓄チェック｜72時間の家庭備えを2分で確認</title>'
+          )
+          hs = hs.replace(
+              '<meta name="description" content="無料・登録不要。震災、停電、物価高、制度、家計防衛まで、約2分で家庭の備えを確認。">',
+              '<meta name="description" content="無料・登録不要。地震や停電に備える水・食料・電源・衛生・家族連絡など10項目を約2分で確認し、不足と次の3手を整理できる家庭向け防災・備蓄チェック。">'
+          )
+          if 'data-seo-utility-head="home"' not in hs:
+              marker = '<meta name="theme-color" content="#0d7f43">'
+              schema = {
+                  '@context': 'https://schema.org',
+                  '@type': 'WebApplication',
+                  'name': '防災・備蓄チェック',
+                  'alternateName': 'Home Readiness Utility',
+                  'url': 'https://stratumpraxis.com/72-hour-household-readiness/',
+                  'applicationCategory': 'LifestyleApplication',
+                  'operatingSystem': 'Any',
+                  'inLanguage': 'ja',
+                  'isAccessibleForFree': True,
+                  'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'JPY'},
+                  'description': '水・食料・電源・衛生・家族連絡など家庭の72時間の備えを確認し、不足と次の行動を整理する無料ツール。',
+                  'featureList': ['家庭の備え10項目チェック', '準備スコア', '不足から次の3手を表示', '印刷・PDF保存']
+              }
+              extra = marker + '\n' + (
+                  '<link rel="icon" href="/utility-favicon.svg" type="image/svg+xml" data-seo-utility-head="home">\n'
+                  '<meta property="og:type" content="website">\n'
+                  '<meta property="og:title" content="防災・備蓄チェック｜72時間の家庭備えを2分で確認">\n'
+                  '<meta property="og:description" content="家庭の備え10項目を約2分で確認し、不足と次の3手を整理。無料・登録不要。">\n'
+                  '<meta property="og:url" content="https://stratumpraxis.com/72-hour-household-readiness/">\n'
+                  '<meta name="twitter:card" content="summary">\n'
+                  '<script type="application/ld+json">' + json.dumps(schema, ensure_ascii=False, separators=(',', ':')) + '</script>'
+              )
+              if marker not in hs:
+                  raise SystemExit('home theme marker not found')
+              hs = hs.replace(marker, extra, 1)
+          if 'data-seo-related="money"' not in hs:
+              marker = '<footer class="footer"><span>Home Readiness Utility</span><span>無料・登録不要・ブラウザ内保存</span></footer>'
+              related = (
+                  '<nav data-seo-related="money" aria-label="関連する無料ツール" '
+                  'style="margin:18px 0 0;padding:14px 16px;border:1px solid rgba(16,34,29,.11);border-radius:14px;background:rgba(255,255,255,.68);display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;font-size:12px">'
+                  '<span style="color:#68766f">関連する無料ツール</span>'
+                  '<a href="/money-resilience/" style="color:#176b4a;font-weight:900;text-decoration:none">お金の耐久力チェック →</a>'
+                  '</nav>\n' + marker
+              )
+              if marker not in hs:
+                  raise SystemExit('home footer marker not found')
+              hs = hs.replace(marker, related, 1)
+          home.write_text(hs)
+
+          ms = money.read_text()
+          ms = ms.replace(
+              '<title>お金の耐久力チェック | Money Resilience Utility</title>',
+              '<title>お金の耐久力チェック｜家計ストレステスト</title>'
+          )
+          if '/utility-favicon.svg' not in ms:
+              marker = '<link rel="canonical" href="https://stratumpraxis.com/money-resilience/">'
+              if marker not in ms:
+                  raise SystemExit('money canonical marker not found')
+              ms = ms.replace(marker, marker + '\n<link rel="icon" href="/utility-favicon.svg" type="image/svg+xml">', 1)
+          ms = ms.replace(
+              '<noscript><main style="max-width:720px;margin:80px auto;padding:24px"><h1>Money Resilience Utility</h1>',
+              '<noscript><main style="max-width:720px;margin:80px auto;padding:24px"><h2>Money Resilience Utility</h2>'
+          )
+          if 'data-seo-preload="money"' not in ms:
+              marker = '<p class="mr-boot-line">Market change → Your exposure → Your resilience</p>'
+              preload = marker + (
+                  '<div class="mr-boot-seo" data-seo-preload="money">'
+                  '<span>現金余力</span><span>物価・為替・金利</span><span>海外決済・送金コスト</span>'
+                  '<a href="/72-hour-household-readiness/">72時間の暮らしの備えも確認 →</a>'
+                  '</div>'
+              )
+              if marker not in ms:
+                  raise SystemExit('money boot line marker not found')
+              ms = ms.replace(marker, preload, 1)
+              css_marker = '#return-gate-entry{display:none}'
+              css = '.mr-boot-seo{margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;align-items:center}.mr-boot-seo span{font-size:10px;padding:6px 9px;border:1px solid rgba(208,230,224,.12);border-radius:999px;color:#91a29d}.mr-boot-seo a{font-size:10px;color:#7ce7c2;text-decoration:none;margin-left:auto}.mr-boot-seo a:hover{text-decoration:underline}'
+              if css_marker not in ms:
+                  raise SystemExit('money css marker not found')
+              ms = ms.replace(css_marker, css + css_marker, 1)
+          money.write_text(ms)
+
+          ps = pulse.read_text()
+          if 'data-seo-home-readiness' not in ps:
+              marker = '<div class="mr-drawer-foot"><small>STRATUM PRAXIS</small><b>Calm Futuristic Finance</b></div>'
+              replacement = '<div class="mr-drawer-foot"><small>STRATUM PRAXIS</small><b>Calm Futuristic Finance</b><a data-seo-home-readiness href="/72-hour-household-readiness/" style="margin-top:8px;color:#9fdbc6;text-decoration:none;font-size:10px">72H Home Readiness ↗</a></div>'
+              if marker not in ps:
+                  raise SystemExit('money drawer marker not found')
+              ps = ps.replace(marker, replacement, 1)
+          pulse.write_text(ps)
+          PY
+      - name: Guard SEO scope
+        run: |
+          git diff --name-only
+          python - <<'PY'
+          import subprocess
+          allowed={
+            '72-hour-household-readiness/index.html',
+            'money-resilience/index.html',
+            'money-resilience/market-pulse.js'
+          }
+          changed=set(subprocess.check_output(['git','diff','--name-only'], text=True).splitlines())
+          bad=changed-allowed
+          if bad:
+            raise SystemExit('Unexpected SEO scope: '+', '.join(sorted(bad)))
+          PY
+      - name: Commit SEO improvements
+        run: |
+          if git diff --quiet; then
+            echo 'No changes'
+            exit 0
+          fi
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add 72-hour-household-readiness/index.html money-resilience/index.html money-resilience/market-pulse.js
+          git commit -m 'Improve standalone utility SEO without donation cross-promotion'
+          git push origin HEAD:main
