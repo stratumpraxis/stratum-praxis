@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-13T00:02:07.504Z",
-  "article_count": 5,
+  "generated_at": "2026-09-13T09:42:05.657Z",
+  "article_count": 6,
   "articles": [
     {
       "source": "ai-agent-operating-constitution-ja.md",
@@ -12,9 +12,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4641348,
-        "url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-agent-operating-constitution-1hh3",
-        "canonical_url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-agent-operating-constitution-1hh3"
+        "id": 4642954,
+        "url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-2ffj",
+        "canonical_url": "https://dev.to/stratumpraxis/aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-2ffj"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -24,7 +24,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-13T00:01:26.165Z"
+      "checked_at": "2026-09-13T09:40:47.760Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -36,9 +36,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4641349,
-        "url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-47c8",
-        "canonical_url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-47c8"
+        "id": 4642955,
+        "url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-4306",
+        "canonical_url": "https://dev.to/stratumpraxis/aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-4306"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -48,7 +48,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-13T00:01:26.948Z"
+      "checked_at": "2026-09-13T09:40:48.549Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -72,7 +72,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-13T00:01:27.633Z"
+      "checked_at": "2026-09-13T09:40:52.507Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -84,9 +84,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4641356,
-        "url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3b3p",
-        "canonical_url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3b3p"
+        "id": 4642960,
+        "url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3blh",
+        "canonical_url": "https://dev.to/stratumpraxis/aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3blh"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -96,7 +96,31 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-13T00:02:03.727Z"
+      "checked_at": "2026-09-13T09:41:28.857Z"
+    },
+    {
+      "source": "ai-saas-renewal-check.md",
+      "slug": "ai-saas-renewal-check",
+      "title": "AI and SaaS Renewal Checklist: 12 Questions Before You Pay Again",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "published",
+        "id": 4642961,
+        "url": "https://dev.to/stratumpraxis/ai-and-saas-renewal-checklist-12-questions-before-you-pay-again-4eol",
+        "canonical_url": "https://dev.to/stratumpraxis/ai-and-saas-renewal-checklist-12-questions-before-you-pay-again-4eol"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-saas-renewal-check.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
+      },
+      "checked_at": "2026-09-13T09:41:29.443Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -108,9 +132,9 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "id": 4641357,
-        "url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-18ej",
-        "canonical_url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-18ej"
+        "id": 4642962,
+        "url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-12jp",
+        "canonical_url": "https://dev.to/stratumpraxis/ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-12jp"
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -120,7 +144,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-13T00:02:07.504Z"
+      "checked_at": "2026-09-13T09:42:05.657Z"
     }
   ]
 }
