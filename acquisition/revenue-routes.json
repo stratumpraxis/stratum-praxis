@@ -30,7 +30,7 @@
     },
     {
       "route_id": "stratum_spend_calculator_to_decision_kit_v1",
-      "state": "ACTIVE_CURRENT_ROUTE",
+      "state": "HOLD_NO_POST_RESCUE_HUMAN_EVIDENCE",
       "source": "stratum_praxis",
       "medium": "onsite_utility",
       "campaign": "spend_roi_revenue_validation_20260913",
@@ -41,17 +41,26 @@
       "offer": "ai_saas_spend_decision_kit",
       "price_usd": 39,
       "historical_claim": false,
-      "stage": "TRAFFIC_WITHOUT_QUALIFIED_ACTION",
+      "stage": "ACTION_WITHOUT_CTA",
       "evidence": {
-        "window": "last_7_days_as_of_2026-09-13",
+        "window": "last_7_days_as_of_2026-09-14",
         "regular_pageviews_on_source": 8,
+        "last_regular_pageview_date": "2026-09-08",
+        "regular_calculator_input_events": 4,
+        "regular_calculator_preset_events": 4,
+        "last_regular_calculator_action_date": "2026-09-07",
+        "verified_regular_primary_cta_clicks": 0,
         "verified_regular_checkout_clicks": 0,
         "verified_paid_checkout_sessions": 0,
         "automation_events_extend_route_life": false
       },
+      "rescue_count": 1,
+      "rescue_executed_date": "2026-09-13",
+      "rescue_result": "No new verified human visit, CTA, checkout, or payment evidence observed after rescue.",
       "success_condition": "verified_paid_checkout_sessions >= 1",
-      "next_bottleneck": "qualified_human_action",
-      "rescue_policy": "Do not create a new product or change price. Keep the existing calculator -> $39 Decision Kit route intact and evaluate only verified human progression. One evidence-backed rescue action is allowed if human traffic continues without qualified action; otherwise HOLD.",
+      "next_bottleneck": "qualified_human_cta_progression",
+      "hold_reason": "The deepest verified human action was on 2026-09-07 and the last verified human visit was on 2026-09-08. Both evidence lifetimes expired before the 2026-09-13 rescue. The rescue did not produce new external human evidence, so the route is held rather than receiving a second rescue or more internal changes.",
+      "rescue_policy": "Rescue budget exhausted. Do not modify this route again unless new verified external human evidence reopens it or a provider-side checkout/delivery defect is independently verified.",
       "on_success": [
         "verify_payment",
         "verify_fulfillment_or_access",
@@ -60,7 +69,8 @@
         "mark_win_candidate",
         "amplify_only_after_repeatable_evidence"
       ],
-      "activated_at": "2026-09-13"
+      "activated_at": "2026-09-13",
+      "held_at": "2026-09-14T02:52:44+09:00"
     }
   ]
 }
