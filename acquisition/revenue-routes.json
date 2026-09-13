@@ -71,6 +71,32 @@
       ],
       "activated_at": "2026-09-13",
       "held_at": "2026-09-14T02:52:44+09:00"
+    },
+    {
+      "route_id": "stratum_instagram_to_spend_calculator_v1",
+      "state": "HUMAN_GATE_DISTRIBUTION_APPROVAL",
+      "source": "stratum_praxis",
+      "medium": "instagram",
+      "campaign": "shadow_ai_spend_accountability",
+      "content": "shadow_ai_spend_and_quarterly_cost_accou_v1",
+      "destination_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "asset_id": "ai-saas-waste-calculator",
+      "historical_claim": false,
+      "stage": "DISTRIBUTION_WITHOUT_FRESH_TRAFFIC",
+      "evidence": {
+        "regular_commercial_actions_last_7d": 0,
+        "latest_verified_regular_stratum_visit": "2026-09-08",
+        "distribution_queue_id": "ai-saas-waste-calculator-instagram-v1",
+        "queue_status": "DRAFT",
+        "approval_status": "PENDING_HUMAN",
+        "safety_status": "UNCHECKED",
+        "stratum_instagram_identity_verified_in_policy": true
+      },
+      "next_bottleneck": "approved_distribution",
+      "safety_state": "HUMAN_GATE",
+      "human_gate_reason": "The existing Stratum-owned Instagram route is not approved for publication. Queue policy requires HUMAN_APPROVED before scheduling or publishing, and the queue notes an in-flight same-destination collision guard that must be resolved first.",
+      "safe_auto_limit": "Do not schedule, publish, create new creative, change price, or bypass collision/approval gates. Re-evaluate only after explicit approval or verified state change.",
+      "created_at": "2026-09-14T07:51:50+09:00"
     }
   ]
 }
