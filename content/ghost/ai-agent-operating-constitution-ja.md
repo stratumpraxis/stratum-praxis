@@ -137,6 +137,14 @@ Detect → Stop → Preserve → Classify → Rollback → Learn → Resume
 
 を持たせることです。
 
+## Claude Code・Codex・Cursorへ実装する場合
+
+考え方だけでなく、実際のプロジェクトへ入れられる運用ファイルから始めたい場合は、Stratum Praxisの **Cross-Agent Operating Kit** を使えます。
+
+Master `AGENTS.md`、Claude / Codex / Cursor用Adapter、Human Gate Matrix、Policy Conflict Check、Budget / Token / Quota Guard、Migration / State Handoffなど、**13個の編集可能ファイル**を1つの運用キットにまとめています。Personalは **$69買い切り・サブスクなし**です。
+
+[Cross-Agent Operating Kitを見る](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=publication&utm_medium=article&utm_campaign=cross_agent_operating_kit&utm_content=agent_constitution&route_id=publication_agent_constitution_cross_agent_20260913)
+
 完全版のAgent Role Charter、Permission Matrix、Approval Gate、Evidence Contract、Failure / Rollback Protocolは既存noteへ追記しています。
 
 https://note.com/deft_eel6718/n/nfce5ac047c15
