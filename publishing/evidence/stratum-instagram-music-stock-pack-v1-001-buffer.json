@@ -1,0 +1,18 @@
+{
+  "brand": "Stratum",
+  "asset": "Music Stock Pack v1",
+  "platform": "instagram",
+  "account_handle": "praxisstratum",
+  "buffer_post_id": "6aa6ca94eba7bc56779b9ac2",
+  "status": "error",
+  "sent_at": null,
+  "public_url": null,
+  "channel_id": "6a8e5b5accaf649a671a0cd9",
+  "channel_service": "instagram",
+  "error": {
+    "message": "It looks like Buffer has lost authorization to post on your behalf. Please refresh your channel to resume scheduling.",
+    "supportUrl": null
+  },
+  "destination": "https://stratumpraxis.com/music-stock-pack-v1.html?utm_source=instagram&utm_medium=social&utm_campaign=music_v1_instagram01",
+  "verified_at": "2026-09-13T16:10:09.693Z"
+}
