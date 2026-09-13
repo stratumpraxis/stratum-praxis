@@ -1,0 +1,12 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-devto-ai-saas-spend-001",
+  "platform": "devto",
+  "title": "A 12-point pre-renewal check for AI and SaaS spend",
+  "source_path": "content/dev/ai-saas-renewal-check.md",
+  "canonical_url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html",
+  "description": "A compact pre-renewal framework for deciding which AI and SaaS tools to keep, reduce, consolidate, review or cancel.",
+  "tags": ["ai", "saas", "productivity", "business"],
+  "published": true,
+  "status": "READY_AUTH"
+}
