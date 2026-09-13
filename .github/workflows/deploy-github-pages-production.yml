@@ -22,6 +22,7 @@ on:
       - 'workflow-audit.html'
       - 'workflow-operator.html'
       - 'guides/**'
+      - 'money-resilience/**'
       - 'styles.css'
       - 'scos-analytics.js'
       - 'stratum-catalog-v3.js'
