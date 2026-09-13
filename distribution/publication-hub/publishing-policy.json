@@ -1,0 +1,80 @@
+{
+  "schema_version": "1.0",
+  "project": "Stratum",
+  "public_brand": "Stratum Praxis",
+  "goal": "Signal -> Existing Asset -> Content -> Platform Selection -> Brand/Account Check -> Publish -> Public Evidence -> Traffic -> CTA -> Checkout/Contract -> Revenue -> Learning",
+  "success_priority": [
+    "PAYMENT",
+    "CHECKOUT_OR_CONTRACT",
+    "QUALIFIED_BUYER_ACTION",
+    "QUALIFIED_TRAFFIC",
+    "REACH"
+  ],
+  "publisher_priority": [
+    "OFFICIAL_API_OR_OAUTH",
+    "STABLE_PROJECT_OWNED_PUBLISHER",
+    "MANUAL_GATE"
+  ],
+  "preflight_checks": [
+    "BRAND_CHECK",
+    "ACCOUNT_CHECK",
+    "CHANNEL_CHECK",
+    "DESTINATION_CHECK",
+    "CTA_CHECK",
+    "EVIDENCE_CHECK"
+  ],
+  "fail_closed": true,
+  "scheduled_is_published": false,
+  "publication_complete_when": [
+    "PLATFORM_ACCEPTED",
+    "PUBLIC_ID_CAPTURED",
+    "PUBLIC_URL_CONFIRMED",
+    "ACCOUNT_CONFIRMED"
+  ],
+  "content_transformation": {
+    "inputs": ["SIGNAL", "ARTICLE", "RESEARCH", "EXISTING_ASSET"],
+    "outputs": ["LONG_ARTICLE", "SHORT_POST", "VISUAL", "VIDEO", "CAROUSEL", "SEO", "LOCALIZATION"],
+    "rule": "Do not copy identical content to every platform. Adapt Hook, Length, Visual, CTA and Destination per platform."
+  },
+  "failure_route": [
+    "CLASSIFY_FAILURE",
+    "DO_NOT_INFINITE_RETRY_SAME_ROUTE",
+    "TRY_APPROVED_ALTERNATIVE_ROUTE",
+    "USE_MANUAL_GATE_WHEN_REQUIRED",
+    "REEXECUTE_WITH_NEW_EVIDENCE"
+  ],
+  "failure_classes": {
+    "OAUTH_EXPIRED": "HUMAN_GATE_REAUTH",
+    "API_UNSUPPORTED": "ALTERNATIVE_APPROVED_PUBLISHER_OR_MANUAL_GATE",
+    "PUBLISHER_PAID_LIMIT": "OFFICIAL_API_OR_ALTERNATIVE_ROUTE",
+    "PLATFORM_CONSTRAINT": "ALTERNATIVE_PLATFORM_OR_MANUAL_GATE",
+    "ACCOUNT_UNVERIFIED": "FAIL_CLOSED",
+    "DESTINATION_UNVERIFIED": "FAIL_CLOSED"
+  },
+  "x_policy": {
+    "mode": "MANUAL_ONLY",
+    "automated_actions_forbidden": ["post", "schedule", "reply", "dm", "follow", "like", "repost"],
+    "ai_allowed": ["CONTENT_PACKAGE_GENERATION"]
+  },
+  "human_gates": [
+    "NEW_PRICE",
+    "NEW_PRODUCT",
+    "NEW_CHECKOUT",
+    "IMPORTANT_BRAND_CHANGE",
+    "PERSONAL_DM",
+    "HIGH_RISK_EXPRESSION",
+    "NEW_OAUTH_AUTHORIZATION",
+    "PERMISSION_REVIEW_AFTER_TERMS_CHANGE"
+  ],
+  "evidence_contract": {
+    "published_requires": ["platform_accepted", "post_or_article_id", "public_url", "account_verified"],
+    "scheduled_requires": ["scheduled_at"],
+    "analytics_should_store": ["utm", "post_or_article_id", "destination"]
+  },
+  "identity_isolation": {
+    "other_project_gmail_forbidden": true,
+    "other_project_social_account_forbidden": true,
+    "other_project_oauth_forbidden": true,
+    "github_owner_is_not_public_brand": true
+  }
+}
