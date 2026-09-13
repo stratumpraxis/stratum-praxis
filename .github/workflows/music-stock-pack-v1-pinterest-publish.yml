@@ -1,0 +1,44 @@
+name: Music Stock Pack v1 Pinterest Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/music-stock-pack-v1-pinterest.json'
+      - '.github/workflows/music-stock-pack-v1-pinterest-publish.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Preflight verified Stratum Pinterest identity and board
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: pinterest
+          BUFFER_QUEUE_FILE: music-stock-pack-v1-pinterest.json
+          BUFFER_SELECT_MODE: first
+          BUFFER_POST_MODE: shareNow
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
+          REQUIRE_CHANNEL_NAME_CONTAINS: stratum
+          DRY_RUN: '1'
+        run: node distribution/buffer-publisher.mjs
+      - name: Publish Music Stock Pack to verified Stratum Pinterest
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          BUFFER_TARGET_SERVICES: pinterest
+          BUFFER_QUEUE_FILE: music-stock-pack-v1-pinterest.json
+          BUFFER_SELECT_MODE: first
+          BUFFER_POST_MODE: shareNow
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
+          REQUIRE_CHANNEL_NAME_CONTAINS: stratum
+          DRY_RUN: '0'
+        run: node distribution/buffer-publisher.mjs
