@@ -5,7 +5,7 @@
   "routes": [
     {
       "route_id": "vpj_hub_cross_agent_v1",
-      "state": "ACTIVE_CURRENT_ROUTE",
+      "state": "HOLD_PROJECT_BOUNDARY",
       "source": "vector_praxis",
       "medium": "hub",
       "campaign": "revenue_validation_20260830",
@@ -24,7 +24,9 @@
         "infer_purchase_reason_only_from_observed_evidence",
         "amplify_winning_route_only"
       ],
-      "pre_sale_rule": "Do not create a new product. Improve only distribution, route clarity, attribution, checkout continuity, or buyer confidence when evidence supports the change."
+      "pre_sale_rule": "Do not create a new product. Improve only distribution, route clarity, attribution, checkout continuity, or buyer confidence when evidence supports the change.",
+      "boundary_note": "Held by Stratum Safe Revenue Heartbeat because the source belongs to Vector Praxis. Cross-project acquisition routes must not be auto-used by Stratum.",
+      "held_at": "2026-09-13T21:20:00+09:00"
     }
   ]
 }
