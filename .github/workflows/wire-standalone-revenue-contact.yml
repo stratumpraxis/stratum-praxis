@@ -1,0 +1,74 @@
+name: Wire standalone revenue contact
+on:
+  push:
+    paths:
+      - 'standalone-revenue-contact.js'
+      - 'STANDALONE-REVENUE-SITES.md'
+      - '.github/workflows/wire-standalone-revenue-contact.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire contact layer into standalone utilities
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          targets=[
+            Path('72-hour-household-readiness/index.html'),
+            Path('72-hour-household-readiness/gear.html'),
+            Path('72-hour-household-readiness/plan.html'),
+            Path('money-resilience/index.html'),
+          ]
+          tag='<script defer src="/standalone-revenue-contact.js" data-standalone-revenue-contact></script>'
+          changed=[]
+          for p in targets:
+            if not p.exists():
+              raise SystemExit(f'Missing standalone utility: {p}')
+            s=p.read_text(encoding='utf-8')
+            if 'standalone-revenue-contact.js' in s:
+              continue
+            if '</body>' not in s:
+              raise SystemExit(f'No body close in {p}')
+            s=s.replace('</body>',f'{tag}\n</body>',1)
+            p.write_text(s,encoding='utf-8')
+            changed.append(str(p))
+          print('wired:', ', '.join(changed) if changed else 'already wired')
+          PY
+      - name: Guard standalone scope and contact
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import subprocess
+          allowed={
+            '72-hour-household-readiness/index.html',
+            '72-hour-household-readiness/gear.html',
+            '72-hour-household-readiness/plan.html',
+            'money-resilience/index.html',
+          }
+          touched=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          unexpected=touched-allowed
+          if unexpected:
+            raise SystemExit('Unexpected files modified: '+', '.join(sorted(unexpected)))
+          for name in allowed:
+            s=Path(name).read_text(encoding='utf-8')
+            if '/standalone-revenue-contact.js' not in s:
+              raise SystemExit(f'Contact layer missing from {name}')
+          source=Path('STANDALONE-REVENUE-SITES.md').read_text(encoding='utf-8')
+          if 'ordlume.contact@gmail.com' not in source:
+            raise SystemExit('Canonical standalone contact missing from source of truth')
+          print('Standalone contact guard passed')
+          PY
+      - name: Commit wiring
+        run: |
+          if git diff --quiet; then echo "No wiring changes"; exit 0; fi
+          git config user.name "stratumpraxis-bot"
+          git config user.email "ordlume.contact@gmail.com"
+          git add 72-hour-household-readiness/index.html 72-hour-household-readiness/gear.html 72-hour-household-readiness/plan.html money-resilience/index.html
+          git commit -m "Apply standalone revenue contact identity"
+          git push
