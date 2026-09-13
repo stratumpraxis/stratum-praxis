@@ -1,0 +1,57 @@
+name: Apply Home Readiness V2
+on:
+  push:
+    paths:
+      - '72-hour-household-readiness/readiness-v2.css'
+      - '72-hour-household-readiness/readiness-v2.js'
+      - '.github/workflows/apply-home-readiness-v2.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire V2 into Home Readiness Utility
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('72-hour-household-readiness/index.html')
+          s=p.read_text(encoding='utf-8')
+          old=s
+          css='<link rel="stylesheet" href="/72-hour-household-readiness/readiness-v2.css" data-readiness-v2>'
+          js='<script src="/72-hour-household-readiness/readiness-v2.js" defer data-readiness-v2></script>'
+          if 'readiness-v2.css' not in s:
+              s=s.replace('</head>',css+'\n</head>',1)
+          if 'readiness-v2.js' not in s:
+              s=s.replace('</body>',js+'\n</body>',1)
+          if s!=old:
+              p.write_text(s,encoding='utf-8')
+              print('wired readiness v2')
+          else:
+              print('already wired')
+          PY
+      - name: Guard site ownership
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          s=Path('72-hour-household-readiness/index.html').read_text(encoding='utf-8')
+          assert 'readiness-v2.css' in s
+          assert 'readiness-v2.js' in s
+          # Keep this legacy utility isolated from the formal Stratum B2B navigation.
+          forbidden=['/revenue-router.html','/passage-hub/','/passage-network/','/ordlume/']
+          for x in forbidden:
+              assert x not in s, f'forbidden route found: {x}'
+          print('guard passed')
+          PY
+      - name: Commit V2 wiring
+        run: |
+          if git diff --quiet; then echo "No wiring changes"; exit 0; fi
+          git config user.name "stratumpraxis-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          git add 72-hour-household-readiness/index.html
+          git commit -m "Apply Home Readiness Utility V2"
+          git push
