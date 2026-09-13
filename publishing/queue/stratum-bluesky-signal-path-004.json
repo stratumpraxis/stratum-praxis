@@ -1,12 +1,12 @@
 {
   "brand": "Stratum",
-  "content_id": "stratum-bluesky-video-system-005",
+  "content_id": "stratum-bluesky-spend-decision-006",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "Before adding another AI tool, ask one question: what decision will it improve? Stratum Praxis maps signal → evidence → buyer action → revenue route.",
-  "hook": "Turn signal into action.",
-  "cta": "See the system",
-  "destination": "https://stratumpraxis.com/?utm_source=bluesky&utm_medium=social&utm_campaign=video_system&utm_content=bsky05",
+  "text": "AI/SaaS renewal due? Don’t ask which tool is best. Mark each cost KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL.",
+  "hook": "Stop default renewals.",
+  "cta": "Run the free 12-point check",
+  "destination": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=bluesky&utm_medium=social&utm_campaign=spend_decision_wave2&utm_content=bsky06",
   "status": "QUEUED",
   "publish_trigger": "2026-09-13"
 }
