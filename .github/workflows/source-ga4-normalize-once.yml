@@ -1,0 +1,96 @@
+name: Source GA4 Normalize Once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ga4-source-sync.trigger'
+      - '.github/workflows/source-ga4-normalize-once.yml'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-ga4-normalize-once
+  cancel-in-progress: true
+
+jobs:
+  normalize:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Inject GA4 once and normalize homepage references
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY'
+          from pathlib import Path
+
+          GA_ID = 'G-QXTYRB4TWY'
+          CONFIG = "gtag('config', 'G-QXTYRB4TWY');"
+          TAG = '''<!-- Google tag (gtag.js) -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QXTYRB4TWY');
+          </script>'''
+
+          excluded = {'.git', 'node_modules', '_site'}
+          html_files = [p for p in Path('.').rglob('*.html') if not any(part in excluded for part in p.parts)]
+          if not html_files:
+              raise SystemExit('No HTML files found')
+
+          changed = 0
+          for path in sorted(html_files):
+              html = path.read_text(encoding='utf-8')
+              original = html
+              html = html.replace('href="/index.html"', 'href="/"')
+              html = html.replace("href='/index.html'", "href='/'")
+              html = html.replace('https://stratumpraxis.com/index.html', 'https://stratumpraxis.com/')
+
+              if GA_ID not in html:
+                  idx = html.lower().find('</head>')
+                  if idx < 0:
+                      raise SystemExit(f'Missing </head> in {path}')
+                  html = html[:idx] + TAG + '\n' + html[idx:]
+
+              if html.count(CONFIG) != 1:
+                  raise SystemExit(f'GA4 duplicate/missing config in {path}')
+
+              if html != original:
+                  path.write_text(html, encoding='utf-8')
+                  changed += 1
+
+          top = Path('index.html').read_text(encoding='utf-8')
+          canonical = '<link rel="canonical" href="https://stratumpraxis.com/">'
+          if top.count(canonical) != 1:
+              raise SystemExit('Homepage canonical is not exactly https://stratumpraxis.com/')
+
+          for path in html_files:
+              html = path.read_text(encoding='utf-8')
+              if 'href="/index.html"' in html or "href='/index.html'" in html:
+                  raise SystemExit(f'Legacy /index.html internal link remains in {path}')
+
+          print(f'Normalized {len(html_files)} HTML files; changed {changed}')
+          PY
+
+      - name: Commit source normalization if needed
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- '*.html'; then
+            echo 'Source HTML already normalized.'
+            exit 0
+          fi
+          git config user.name 'stratumpraxis'
+          git config user.email 'stratumpraxis@gmail.com'
+          git add -A -- '*.html'
+          git commit -m 'Install GA4 once across source HTML and normalize home links'
+          git push origin HEAD:main
