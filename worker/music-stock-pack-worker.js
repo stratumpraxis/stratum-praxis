@@ -7,9 +7,26 @@ const ROUTE = 'music_stock_pack_v1';
 const AMOUNT = 900;
 const CURRENCY = 'usd';
 const PRODUCT_NAME = 'Music Stock Pack v1';
-const DELIVERY_URL = 'https://drive.google.com/file/d/144J1PYWrt3API48scIEk4ZFYMMd2TiXl/view?usp=drivesdk';
-const DELIVERY_FILE = 'Music_Stock_Pack_v1_PAID_DELIVERY_2026-09-13.zip';
-const DELIVERY_SHA256 = '131910f3a150f9d3b3fa5bff3939a2bd375722cd9e13420b2542df0596a74dec';
+const DELIVERY_FILES = [
+  {
+    name: 'Music_Stock_Pack_v1_PAID_DELIVERY_2026-09-13.zip',
+    sha256: '131910f3a150f9d3b3fa5bff3939a2bd375722cd9e13420b2542df0596a74dec',
+    url: 'https://drive.google.com/file/d/144J1PYWrt3API48scIEk4ZFYMMd2TiXl/view?usp=drivesdk',
+    contents: 'MSV1-001 to MSV1-003',
+  },
+  {
+    name: 'MSV1-004_Modulation_Maze_Delivery.zip',
+    sha256: '7ff6fd4038f5e321f52cd79ba2f29452bd134d163699a89891e69d79fc4421eb',
+    url: 'https://drive.google.com/file/d/16tY-dwRX9w9r0wt6TqSF0y85yamDk72E/view?usp=drivesdk',
+    contents: 'MSV1-004 · 60s + 30s + 15s WAV',
+  },
+  {
+    name: 'Chromatic_Relay_02_Product_Bundle.zip',
+    sha256: 'bb9acfd9b326a68bc7386515fd3c80b24caa1d4dee6bbc071ca27cdf0e0ae195',
+    url: 'https://drive.google.com/file/d/15JPXD7jIZu5niHuMieBMs4fml_Iw_oTI/view?usp=drivesdk',
+    contents: 'MSV1-005 · 60s + 30s + 15s WAV plus preview and metadata',
+  },
+];
 const te = new TextEncoder();
 const td = new TextDecoder();
 
@@ -118,7 +135,7 @@ async function createCheckout(env) {
     'line_items[0][price_data][currency]': CURRENCY,
     'line_items[0][price_data][unit_amount]': String(AMOUNT),
     'line_items[0][price_data][product_data][name]': PRODUCT_NAME,
-    'line_items[0][price_data][product_data][description]': '3 original instrumental tracks · 60s + 30s + 15s edits · 48 kHz / 24-bit stereo WAV',
+    'line_items[0][price_data][product_data][description]': '5 original instrumental tracks · 60s + 30s + 15s edits · 48 kHz / 24-bit stereo WAV',
     'line_items[0][quantity]': '1',
     customer_creation: 'always',
     success_url: `${PUBLIC_ORIGIN}/music-stock-pack-v1-access.html?session_id={CHECKOUT_SESSION_ID}`,
@@ -199,10 +216,12 @@ export default {
         return json({
           authorized: true,
           buyer_email: claim.email,
-          file_name: DELIVERY_FILE,
-          sha256: DELIVERY_SHA256,
-          delivery_url: DELIVERY_URL,
-          delivery_mode: 'private_google_drive',
+          track_count: 5,
+          delivery_files: DELIVERY_FILES,
+          file_name: DELIVERY_FILES[0].name,
+          sha256: DELIVERY_FILES[0].sha256,
+          delivery_url: DELIVERY_FILES[0].url,
+          delivery_mode: 'private_google_drive_multi_file',
         }, 200, corsHeaders);
       }
 
