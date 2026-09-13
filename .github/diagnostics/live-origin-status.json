@@ -1,11 +1,11 @@
 {
-  "checked_at": "2026-09-12T16:24:40Z",
+  "checked_at": "2026-09-13T16:12:01Z",
   "dns": {
     "A": [
       "185.199.109.153",
-      "185.199.108.153",
+      "185.199.110.153",
       "185.199.111.153",
-      "185.199.110.153"
+      "185.199.108.153"
     ],
     "AAAA": [],
     "CNAME": [],
@@ -21,8 +21,8 @@
     "server": "GitHub.com",
     "via": "1.1 varnish",
     "cf_ray": "",
-    "x_github_request_id": "17AA:209FCE:2416BD:276B29:6AA57CC7",
-    "etag": "\"6aa57c7d-41d6\""
+    "x_github_request_id": "932E:3B841E:11C15FE:16D48C2:6AA6CB50",
+    "etag": "\"6aa6cb19-42f5\""
   },
   "live_page": {
     "title": "AI Agent Cost & ROI Calculator 2026 | Payback & Run Cost",
