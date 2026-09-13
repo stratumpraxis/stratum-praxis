@@ -1,0 +1,12 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-spend-check-007",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "AI/SaaS renewal check: Who owns the result? What breaks if the tool disappears for 30 days? Is another paid tool doing the same job? Fuzzy answers mean review before renewal.",
+  "hook": "Three questions before auto-renewal.",
+  "cta": "Free 12-point check",
+  "destination": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=bluesky&utm_campaign=check3",
+  "status": "QUEUED",
+  "publish_trigger": "2026-09-13"
+}
