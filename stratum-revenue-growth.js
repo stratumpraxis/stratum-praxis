@@ -139,14 +139,25 @@
 (() => {
   'use strict';
   const CHECKOUT='https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06';
-  const SOCIAL_SOURCES=new Set(['tiktok','bluesky','instagram','pinterest','threads','bsky','facebook']);
+  const SOCIAL_SOURCES=new Set([
+    'tiktok','tiktok.com',
+    'bluesky','bsky','bsky.app',
+    'instagram','instagram.com',
+    'pinterest','pinterest.com',
+    'threads','threads.net',
+    'facebook','facebook.com',
+    'x','x.com','twitter','twitter.com',
+    'linkedin','linkedin.com'
+  ]);
   const LABELS={
     en:'Buy Spend Decision Kit — $39',
     ja:'$39 Spend Decision Kitを購入',
     es:'Comprar Spend Decision Kit — $39'
   };
-  const source=(new URLSearchParams(location.search).get('utm_source')||'').trim().toLowerCase();
-  if(!SOCIAL_SOURCES.has(source))return;
+  const utmSource=(new URLSearchParams(location.search).get('utm_source')||'').trim().toLowerCase();
+  const attributionSource=String((window.scosAttribution&&window.scosAttribution.utm_source)||'').trim().toLowerCase();
+  const source=SOCIAL_SOURCES.has(utmSource)?utmSource:(SOCIAL_SOURCES.has(attributionSource)?attributionSource:'');
+  if(!source)return;
   const apply=()=>{
     const hero=document.querySelector('a[data-analytics-id="home_hero_audit"],a[data-analytics-id="home_hero_audit_checkout"],a[data-analytics-id="home_social_decision_kit_checkout"]');
     if(!hero)return;
@@ -155,6 +166,7 @@
     hero.dataset.analyticsId='home_social_decision_kit_checkout';
     hero.dataset.product='ai_saas_spend_decision_kit';
     hero.dataset.revenueBridge='social_39';
+    hero.dataset.revenueSource=source;
     hero.setAttribute('data-primary-cta','true');
     const label=hero.querySelector('[data-rh="ctaAudit"]');
     if(label)label.textContent=LABELS[lang]||LABELS.en;
