@@ -1,0 +1,186 @@
+{
+  "schema_version": "1.0",
+  "project": "Stratum",
+  "public_brand": "Stratum Praxis",
+  "ownership_rule": "STRATUM_DEDICATED_ONLY",
+  "dedicated_identity": {
+    "gmail": {
+      "address": null,
+      "state": "HUMAN_GATE_UNVERIFIED",
+      "note": "Dedicated Stratum Gmail must be verified explicitly. Do not infer it from GitHub commit metadata or another project."
+    }
+  },
+  "publisher_priority": [
+    "OFFICIAL_API_OR_OAUTH",
+    "STABLE_PROJECT_OWNED_PUBLISHER",
+    "MANUAL_GATE"
+  ],
+  "allowed_destination_hosts": [
+    "stratumpraxis.com",
+    "www.stratumpraxis.com"
+  ],
+  "platforms": {
+    "ghost": {
+      "platform": "Ghost",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "GHOST_ADMIN_API",
+      "primary_publisher": "Ghost Admin API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "PRESENT_IN_ACTIONS_SECRETS",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": true,
+      "evidence_required": ["platform_accepted", "public_url"]
+    },
+    "devto": {
+      "platform": "DEV.to",
+      "handle": "stratumpraxis",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "DEVTO_API_KEY",
+      "primary_publisher": "Forem / DEV Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "PRESENT_IN_ACTIONS_SECRETS",
+      "quota_limit": "PLATFORM_DEFAULT_RATE_LIMITED",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": true,
+      "identity_map": "distribution/publication-hub/devto-map.json",
+      "evidence_required": ["article_id", "public_url"]
+    },
+    "tips": {
+      "platform": "Tips",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "https://tips.jp/mcp",
+      "primary_publisher": "Tips MCP after explicit authorization",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "HUMAN_GATE_OAUTH_REQUIRED",
+      "quota_limit": "UNKNOWN",
+      "last_verified": null,
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false,
+      "ready_assets": "distribution/publication-hub/tips-ready/"
+    },
+    "medium": {
+      "platform": "Medium",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": null,
+      "primary_publisher": "USER_INITIATED_IMPORT",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "MANUAL_ONLY",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "bluesky": {
+      "platform": "Bluesky",
+      "handle": "stratumpraxis.bsky.social",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "BLUESKY_OFFICIAL_ADAPTER",
+      "primary_publisher": "Bluesky Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "VERIFIED",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": true
+    },
+    "instagram": {
+      "platform": "Instagram",
+      "handle": "praxisstratum",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "META_GRAPH_API",
+      "primary_publisher": "Instagram Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "MISSING_ACCESS_TOKEN",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "pinterest": {
+      "platform": "Pinterest",
+      "handle": "stratumpraxis",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "PINTEREST_OFFICIAL_API",
+      "primary_publisher": "Pinterest Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "READ_VERIFIED_WRITE_SCOPE_MISSING",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": "2026-09-12",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false,
+      "missing_scopes": ["boards:write", "pins:write"]
+    },
+    "tiktok": {
+      "platform": "TikTok",
+      "handle": "stratumpraxis",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "TIKTOK_CONTENT_POSTING_API",
+      "primary_publisher": "TikTok Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "OFFICIAL_ADAPTER_OR_OAUTH_PENDING",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": null,
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "youtube": {
+      "platform": "YouTube",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "YOUTUBE_DATA_API",
+      "primary_publisher": "YouTube Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "ACCOUNT_IDENTITY_UNVERIFIED",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": null,
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "linkedin": {
+      "platform": "LinkedIn",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "LINKEDIN_OFFICIAL_API",
+      "primary_publisher": "LinkedIn Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "ACCOUNT_IDENTITY_UNVERIFIED",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": null,
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "facebook": {
+      "platform": "Facebook",
+      "handle": null,
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": "META_GRAPH_API",
+      "primary_publisher": "Facebook Official API",
+      "fallback_publisher": "MANUAL_GATE",
+      "credential_state": "ACCOUNT_IDENTITY_UNVERIFIED",
+      "quota_limit": "PLATFORM_DEFAULT",
+      "last_verified": null,
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false
+    },
+    "x": {
+      "platform": "X",
+      "handle": "stratumpraxis",
+      "account_owner": "Stratum Praxis",
+      "oauth_connection": null,
+      "primary_publisher": "MANUAL_ONLY",
+      "fallback_publisher": "NONE",
+      "credential_state": "DISABLED_OR_BANNED",
+      "quota_limit": "NOT_APPLICABLE",
+      "last_verified": "2026-09-13",
+      "revenue_destination": "https://stratumpraxis.com/",
+      "automation_allowed": false,
+      "manual_only_actions": ["post", "schedule", "reply", "dm", "follow", "like", "repost"]
+    }
+  }
+}
