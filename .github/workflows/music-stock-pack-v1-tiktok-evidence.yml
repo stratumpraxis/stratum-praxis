@@ -1,0 +1,67 @@
+name: Music Stock Pack v1 TikTok Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/music-stock-pack-v1-tiktok-evidence.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+      BUFFER_POST_ID: 6aa680f27da3ee968d138987
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Query Buffer post evidence
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const api = 'https://api.buffer.com';
+          const key = process.env.BUFFER_API_KEY;
+          const id = process.env.BUFFER_POST_ID;
+          if (!key || !id) throw new Error('BUFFER_API_KEY and BUFFER_POST_ID required');
+          const query = `query { post(input:{id:${JSON.stringify(id)}}) { id status sentAt externalLink channelId channelService text } }`;
+          const r = await fetch(api, {method:'POST', headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`}, body:JSON.stringify({query})});
+          const j = await r.json();
+          if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+          const post = j.data && j.data.post;
+          if (!post) throw new Error('Buffer post not found');
+          const evidence = {
+            brand: 'Stratum',
+            asset: 'Music Stock Pack v1',
+            platform: 'tiktok',
+            account_handle: 'stratumpraxis',
+            buffer_post_id: id,
+            status: post.status,
+            sent_at: post.sentAt || null,
+            public_url: post.externalLink || null,
+            channel_id: post.channelId,
+            channel_service: post.channelService,
+            destination: 'https://stratumpraxis.com/music-stock-pack-v1.html?utm_source=tiktok&utm_medium=social&utm_campaign=music_v1_tiktok01',
+            verified_at: new Date().toISOString()
+          };
+          console.log('BUFFER_PUBLICATION_EVIDENCE:', JSON.stringify(evidence));
+          fs.mkdirSync('publishing/evidence', {recursive:true});
+          fs.writeFileSync('publishing/evidence/stratum-tiktok-music-stock-pack-v1-001-buffer.json', JSON.stringify(evidence,null,2)+'\n');
+          if (post.status === 'error') throw new Error('Buffer reports publication error');
+          NODE
+      - name: Persist evidence
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add publishing/evidence/stratum-tiktok-music-stock-pack-v1-001-buffer.json
+          git diff --cached --quiet && exit 0
+          git commit -m 'evidence: record Music Stock Pack v1 TikTok Buffer status [skip social]'
+          git pull --rebase origin main
+          git push origin HEAD:main
