@@ -15,9 +15,10 @@
     '/ai-monetization-reality-check.html','/ai-income-claim-checklist.html','/money-resilience/','/72-hour-household-readiness/'
   ]);
   const PAID_PRODUCT_PATHS = new Set([
-    '/ai-value-realization-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/workflow-audit.html','/cross-agent-operating-kit.html'
+    '/ai-saas-spend-decision-kit.html','/ai-value-realization-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/workflow-audit.html','/cross-agent-operating-kit.html'
   ]);
   const PAID_PRODUCT_IDS = {
+    '/ai-saas-spend-decision-kit.html': 'ai_saas_spend_decision_kit',
     '/ai-value-realization-kit.html': 'ai_value_realization_kit',
     '/ai-saas-spend-waste-audit.html': 'ai_saas_spend_waste_audit',
     '/ai-saas-spend-monitoring.html': 'ai_saas_spend_monitoring',
@@ -176,6 +177,29 @@
     disable_session_recording: true
   });
 
+  const GA4_FUNNEL_EVENTS = new Set([
+    'funnel_view','route_select','internal_route_click','free_tool_start','free_tool_complete',
+    'paid_product_view','primary_cta_click','checkout_click','lab_tool_open','router_route_selected','spend_calculator_result'
+  ]);
+
+  function mirrorGa4(name, props) {
+    if (!GA4_FUNNEL_EVENTS.has(name) || typeof window.gtag !== 'function') return;
+    const allowed = new Set([
+      'path','funnel','product','cta_id','destination_path','selection','route','intent','tool','source',
+      'paid_depth','match_count','search_active','recommended_route','audit_eligible','annual_spend','review_exposure',
+      'illustrative_reducible','utm_source','utm_medium','utm_campaign','first_utm_source','last_utm_source','offer_path'
+    ]);
+    const out = {};
+    Object.keys(props || {}).forEach(function (key) {
+      if (!allowed.has(key)) return;
+      const value = props[key];
+      if (typeof value === 'string') out[key] = clean(value, 100);
+      else if (typeof value === 'number' && Number.isFinite(value)) out[key] = value;
+      else if (typeof value === 'boolean') out[key] = value;
+    });
+    try { window.gtag('event', name, out); } catch (_) {}
+  }
+
   function sendEvent(name, props) {
     const properties = Object.assign({}, attribution, {
       path: location.pathname,
@@ -185,6 +209,7 @@
     delete properties.email;
     delete properties.purchaser_email;
     delete properties.session_id;
+    mirrorGa4(name, properties);
     const payload = JSON.stringify({ api_key: TOKEN, distinct_id: anonymousId, event: name, properties });
     try {
       if (navigator.sendBeacon(HOST + '/i/v0/e/', new Blob([payload], { type: 'application/json' }))) return true;
@@ -416,6 +441,7 @@
       offer_path: normalizedPath()
     };
     if (link.matches('[data-primary-cta], .button-primary, .cta:not(.secondary)')) captureBeforeNavigation('primary_cta_click', properties);
+    if (destination.origin === location.origin && link.dataset.analyticsId) captureBeforeNavigation('internal_route_click', properties);
     if (CHECKOUT_HOSTS.has(destination.hostname)) {
       storageSet(CHECKOUT_MARKER_KEY, { at: new Date().toISOString(), product: properties.product, destination_host: destination.hostname });
       captureBeforeNavigation('checkout_click', properties);
