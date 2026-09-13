@@ -8,7 +8,7 @@
 <meta name="theme-color" content="#090d12">
 <title>Music Stock Pack v1 | Buyer Delivery</title>
 <style>
-:root{color-scheme:dark;--bg:#090d12;--panel:#111822;--line:#2a3748;--text:#f5f7fb;--muted:#9da9b8;--good:#bff0cf;--bad:#ffb6b6}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(circle at 68% -10%,rgba(103,156,212,.16),transparent 34%),var(--bg);color:var(--text);font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}.shell{width:min(760px,calc(100% - 30px));margin:auto;padding:64px 0 86px}.ey{font-size:11px;font-weight:850;letter-spacing:.13em;color:#a9c4e3}h1{margin:.25em 0 .35em;font-size:clamp(42px,8vw,68px);line-height:1;letter-spacing:-.045em}.muted{color:var(--muted)}.card{margin-top:28px;padding:clamp(20px,5vw,30px);border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#141c27,#0e141c)}.row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid #253140;font-size:12px}.row span:last-child{color:#d9e1eb;text-align:right;overflow-wrap:anywhere}.button{display:inline-flex;min-height:50px;align-items:center;justify-content:center;margin-top:20px;padding:0 18px;border-radius:11px;background:#eef4fb;color:#0b1017;text-decoration:none;font-weight:900}.good{color:var(--good)}.bad{color:var(--bad)}.hidden{display:none}.note{margin-top:16px;padding:12px 13px;border:1px solid #2a3748;border-radius:11px;color:#9da9b8;font-size:12px}</style>
+:root{color-scheme:dark;--bg:#090d12;--panel:#111822;--line:#2a3748;--text:#f5f7fb;--muted:#9da9b8;--good:#bff0cf;--bad:#ffb6b6}*{box-sizing:border-box}body{margin:0;min-height:100svh;background:radial-gradient(circle at 68% -10%,rgba(103,156,212,.16),transparent 34%),var(--bg);color:var(--text);font:15px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}.shell{width:min(820px,calc(100% - 30px));margin:auto;padding:64px 0 86px}.ey{font-size:11px;font-weight:850;letter-spacing:.13em;color:#a9c4e3}h1{margin:.25em 0 .35em;font-size:clamp(42px,8vw,68px);line-height:1;letter-spacing:-.045em}.muted{color:var(--muted)}.card{margin-top:28px;padding:clamp(20px,5vw,30px);border:1px solid var(--line);border-radius:20px;background:linear-gradient(180deg,#141c27,#0e141c)}.row{display:flex;justify-content:space-between;gap:18px;padding:11px 0;border-bottom:1px solid #253140;font-size:12px}.row span:last-child{color:#d9e1eb;text-align:right;overflow-wrap:anywhere}.delivery-list{display:grid;gap:12px;margin-top:18px}.delivery-item{padding:16px;border:1px solid #2a3748;border-radius:13px;background:#0b1118}.delivery-item h2{margin:0 0 5px;font-size:16px}.delivery-item p{margin:4px 0;color:var(--muted);font-size:12px;overflow-wrap:anywhere}.button{display:inline-flex;min-height:46px;align-items:center;justify-content:center;margin-top:12px;padding:0 16px;border-radius:10px;background:#eef4fb;color:#0b1017;text-decoration:none;font-weight:900}.good{color:var(--good)}.bad{color:var(--bad)}.hidden{display:none}.note{margin-top:16px;padding:12px 13px;border:1px solid #2a3748;border-radius:11px;color:#9da9b8;font-size:12px}</style>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
 <script>
@@ -21,33 +21,43 @@
 <body data-page="music_stock_pack_v1_delivery">
 <main class="shell">
   <p class="ey">STRATUM PRAXIS · BUYER DELIVERY</p>
-  <h1>Your pack is gated by the paid session.</h1>
-  <p class="muted">This page asks the verification Worker to re-check the signed buyer token and the live Stripe Checkout Session before exposing the delivery destination.</p>
+  <h1>Your five-track pack is gated by the paid session.</h1>
+  <p class="muted">This page re-checks the signed buyer token and live Stripe Checkout Session before exposing the private delivery files.</p>
   <section class="card">
     <p id="state" class="muted" role="status" aria-live="polite">Re-checking purchase…</p>
     <div id="details" class="hidden">
-      <div class="row"><span>Product</span><span>Music Stock Pack v1</span></div>
-      <div class="row"><span>Delivery file</span><span id="file"></span></div>
+      <div class="row"><span>Product</span><span>Music Stock Pack v1 · 5 tracks</span></div>
       <div class="row"><span>Buyer email</span><span id="email"></span></div>
-      <div class="row"><span>SHA256</span><span id="sha"></span></div>
-      <a id="download" class="button" href="#" target="_blank" rel="noopener noreferrer">Open buyer delivery →</a>
-      <p class="note">The Drive file itself remains private. Buyer permission is matched to the verified checkout email; if Drive asks for access, use the same email used at Stripe Checkout.</p>
+      <div id="files" class="delivery-list"></div>
+      <p class="note">The Drive files remain private. If Drive asks for access, request access using the same email used at Stripe Checkout. The original three-track archive and the two new modulation-track deliveries together make up the five-track pack.</p>
     </div>
   </section>
 </main>
 <script>
 const API='https://ai-consultant-verify.practicalaireport.workers.dev/music-stock-pack-v1/delivery';
-const q=new URLSearchParams(location.search),token=q.get('token')||'',state=document.getElementById('state'),details=document.getElementById('details');
+const q=new URLSearchParams(location.search),token=q.get('token')||'',state=document.getElementById('state'),details=document.getElementById('details'),files=document.getElementById('files');
+function safeText(v){return String(v||'');}
 async function load(){
   if(!token){state.innerHTML='<span class="bad">Buyer access token is missing.</span>';return;}
   try{
     const r=await fetch(API+'?token='+encodeURIComponent(token),{cache:'no-store'}),x=await r.json();
     if(!r.ok||!x.authorized||!x.delivery_url)throw new Error(x.error||'Buyer delivery could not be verified');
-    state.innerHTML='<span class="good">Purchase verified. Buyer delivery unlocked.</span>';
-    document.getElementById('file').textContent=x.file_name||'';
+    state.innerHTML='<span class="good">Purchase verified. Five-track buyer delivery unlocked.</span>';
     document.getElementById('email').textContent=x.buyer_email||'';
-    document.getElementById('sha').textContent=x.sha256||'';
-    document.getElementById('download').href=x.delivery_url;
+    const deliveries=Array.isArray(x.delivery_files)&&x.delivery_files.length?x.delivery_files:[{name:x.file_name,sha256:x.sha256,url:x.delivery_url,contents:'Paid delivery'}];
+    deliveries.forEach((item,index)=>{
+      const box=document.createElement('article');
+      box.className='delivery-item';
+      const title=document.createElement('h2');
+      title.textContent=(index+1)+'. '+safeText(item.name);
+      const contents=document.createElement('p');
+      contents.textContent=safeText(item.contents||'Paid delivery file');
+      const sha=document.createElement('p');
+      sha.textContent='SHA256 · '+safeText(item.sha256);
+      const a=document.createElement('a');
+      a.className='button';a.target='_blank';a.rel='noopener noreferrer';a.href=safeText(item.url);a.textContent='Open delivery file →';
+      box.append(title,contents,sha,a);files.appendChild(box);
+    });
     details.classList.remove('hidden');
   }catch(e){state.innerHTML='<span class="bad">'+String(e.message||'Buyer delivery could not be verified').replace(/[<>&]/g,'')+'</span>';}
 }
