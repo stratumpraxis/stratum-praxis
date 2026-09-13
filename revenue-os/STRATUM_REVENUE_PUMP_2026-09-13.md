@@ -1,133 +1,127 @@
-# Stratum Revenue Pump — 2026-09-13
+# Stratum Revenue Pump — 2026-09-13 再編版
 
-## Role
+> 現行の運用Source of Truthは `revenue-os/STRATUM_SAFE_REVENUE_HEARTBEAT.md`。この文書はStratum固有のRevenue Pumpとして、その判断原則と既存導線を定義する。
 
-Stratum is the revenue orchestration and routing layer. It is not a content factory, generic asset warehouse, or replacement for MARKET, publishing, video, GWR, checkout, or measurement functions.
+## 役割
 
-Core chain:
+Stratumは独立したRevenue Executionプロジェクトである。MARKET、GWR、Vector、Forwelle、Arven等の別プロジェクトを内部部署・上位司令塔・配信依存先として扱わない。
 
-`Market Signal → Buyer → Existing Asset → Revenue Distance → Best Route → CTA → Checkout → Payment Evidence → Learning`
+Stratum内部で必要な機能は、Demand/Research、Asset Inventory、Production、Publishing/Distribution、Revenue Router、Checkout/Commerce、Fulfillment、Measurement、Learning/Controlとして完結させる。
 
-## First principle: Existing Asset First
+基本連鎖:
 
-Before creating a new product, page, utility, article, video, diagnostic, or offer, inspect existing assets and live routes.
+`Demand → Buyer → Existing Stratum Asset → Revenue Distance → Best Route → CTA → Checkout → Payment → Fulfillment → Evidence → Learning`
 
-Prefer:
+## Existing Asset First
 
-`Existing Utility / Diagnostic / Article / Video / Offer / Checkout / Buyer Reaction / Traffic Evidence → Buyer Match → Revenue Route`
+新商品・新ページ・新Utility・新動画を作る前に、既存Assetと実Revenue Routeを確認する。
 
-Create only when the current assets cannot absorb validated demand, the CTA or destination is missing/broken, checkout is broken, or evidence identifies a real conversion gap.
+優先:
 
-## Decision priority
+`Existing Utility / Diagnostic / Article / Video / Proof / Offer / Checkout / Buyer Reaction / Traffic Evidence → Buyer Match → Revenue Route`
 
-Rank work by:
+新規制作は、既存Assetが確認済み需要を受け止められない、CTA/Revenue Destinationが欠けている、Checkout/Deliveryが壊れている、または実Evidenceが具体的なConversion Gapを示す場合だけ候補にする。
 
-`Current Demand × Buyer Relevance × Existing Asset Fit × Revenue Distance × First-party Evidence × Route Availability`
+## 判断順位
 
-Evidence priority:
+`Payment / Reward > Verified Checkout > Qualified Human Action > CTA > Qualified Traffic > Reach`
 
-`Payment Evidence > Checkout Evidence > Qualified Buyer Action > Qualified Traffic > Reach`
+ページ数、記事数、動画数、投稿数、フォロワー、再生数、Draft完了、Actions成功をRevenue outcomeにしない。
 
-Do not treat page count, article count, video count, post count, followers, views, likes, or completed drafts as revenue outcomes.
+Bot・自己テスト・QA・監視・synthetic accessはQualified Human Evidenceから除外する。
 
 ## Revenue Router
 
-For each qualified human signal, select the shortest verified route using available evidence for need, intent, urgency, budget, current stage, and buyer fit.
+実在するHuman Signalごとに、Need / Intent / Urgency / Budget / Stage / Buyer Fitを確認し、最短の既存Routeを1本選ぶ。
 
-`Buyer / Human Signal → Intent → Problem → Revenue Distance → Existing Asset Match → CTA → Offer → Checkout → Payment`
+`Human Signal → Intent → Problem → Existing Asset → CTA → Existing Offer → Verified Checkout → Payment`
 
-Internal comparison may consider multiple routes. Final execution should normally choose one best route, not present a menu of equivalent actions.
+比較は複数Routeでよいが、実行は原則TOP1。メニューを増やして判断距離を伸ばさない。
 
-## Reuse multiplication
+## 1回1ボトルネック
 
-One strong existing asset may support multiple buyer-specific routes, but expansion follows evidence rather than indiscriminate duplication.
+現在もっとも深く到達したFunnel地点の次の1段だけを直す。
 
-`Existing Asset → Buyer A Route / Buyer B Route / Utility Entry / Diagnostic Entry / Direct Offer / Audit / Service / Localization`
+`No Traffic → Distribution`
+`Traffic / No Action → Buyer Fit・Hook・Positioning`
+`Action / No CTA → Value・Trust・UX`
+`CTA / No Checkout → Offer・Trust・Pricing Friction・Checkout Route`
+`Checkout / No Purchase → Payment・Buyer Intent・Final Trust`
+`Purchase / No Repeat → Delivery・Value・Retention`
 
-Do not mass-repost identical copy. When a signal is reused across surfaces, adapt Buyer, Hook, Angle, Visual, CTA, and Destination to the surface.
+下流を先に直さない。
+
+## Checkout Guard
+
+Revenue-bearing pageは、Traffic拡大前に必ず以下を確認する。
+
+`Landing → CTA → Destination → Active Checkout → After-completion Delivery → Attribution`
+
+Checkout分類:
+
+- `ACTIVE_VERIFIED`
+- `LEGACY_REDIRECT`
+- `INACTIVE`
+- `MISMATCHED`
+- `UNVERIFIED`
+
+`INACTIVE / MISMATCHED` はP0。意味あるTrafficがある高リスク `UNVERIFIED` も追加集客より先に検証する。
 
 ## Production Freeze
 
-If an existing asset can already receive the buyer and move them toward a verified revenue destination, stop endless improvement and prioritize distribution, routing, measurement, and evidence collection.
+既存SurfaceがBuyerを実Revenue Destinationまで運べる状態なら、見た目や好みだけの追加改修を止める。
 
-Additional production is justified only when:
+追加制作より:
 
-- buyer intent cannot be served by current assets;
-- CTA is materially weak or missing;
-- revenue destination does not exist;
-- checkout or delivery is broken;
-- evidence identifies a specific drop-off that requires a new asset.
+`Distribution → Qualified Human Evidence → CTA → Checkout → Payment → Measurement`
 
-## Department routing
+を優先する。
 
-Keep role boundaries intact:
+## Rescue / Stop Control
 
-- MARKET: external market demand and circulation.
-- MARKET Publishing: acquire qualified buyers from external surfaces.
-- GWR: opportunity and external-intent discovery.
-- Video / Production: create or adapt media only when the revenue route needs it.
-- GitHub / implementation: technical execution.
-- Checkout / commerce: purchase completion.
-- Measurement: source → action → checkout → payment evidence.
-- Stratum: choose the best existing asset and shortest verified revenue route, then hand off execution to the right owner.
+外部Evidenceが増えないRouteは、現在ボトルネックへ直接効く安全・可逆・既存承認済み救命Actionを最大1回だけ実施する。
 
-## Stratum-owned SNS boundary
+救命Action自体はRoute延命Evidenceではない。Human Evidenceが増えなければ `HOLD / KILL`。
 
-Authorized Stratum brand surfaces currently recorded:
+無限リトライしない。
 
-- TikTok: `@stratumpraxis`
-- Instagram: `@praxisstratum`
-- Bluesky: `stratumpraxis.bsky.social`
-- X: `@Stratumpraxis` is listed in the repository project context.
+## WIN
 
-Shared existing video, music, images, and production assets may be reused after adapting them to Stratum branding and a verified Stratum revenue destination.
+Verified Checkoutは未購入Route中の最優先。PAIDはWIN。
 
-Do not use Vector, Arven, Forwelle, or another project's account, brand identity, CTA, or revenue route for Stratum distribution unless the owner explicitly changes this boundary.
+WIN後は、Buyer / Pain / Asset / Hook / Source / CTA / Price / Timing / Checkout / Fulfillmentを保存し、同一Stratum内の承認済み面で再現性を確認してから増幅する。
 
-Follower growth is not the current primary objective. Use owned social as an acquisition surface:
+## Stratum所有面
 
-`Follower / Viewer → Qualified Traffic → Qualified Buyer Action → Revenue Destination → Checkout → Payment Evidence`
+Stratum専用として所有・接続が確認できた面だけを使う。停止・BAN・未確認アカウントは自動配信先にしない。
 
-## Destination rule
+SNSの目的はフォロワー数ではなく:
 
-Every publication or routed asset should have a verified destination. Examples:
+`Viewer → Qualified Visit → Qualified Action → Revenue Destination → Checkout → Payment`
 
-`Content → Free Utility → Paid Kit → Audit → Monitoring / Service → Payment`
+投稿量だけで成功判定しない。
 
-or
+## 現行の既存Revenue Route
 
-`Content → Existing Product → Checkout → Payment`
+既存実装にはすでに複数の入口がある。
 
-A destinationless publication is not a completed revenue action.
+- Workflow Diagnostic / ROI系 → `AI Workflow Opportunity Audit`
+- Agent Economics / Spend系 → AI & SaaS関連の既存有料導線
+- Agent Control Auditor → 既存Operating Kit系導線
+- Revenue Router / claim-check系 → Buyer Fitに合う既存Revenue Route
 
-## Evidence chain
+既存の高価値Routeとして `$499 AI Workflow Opportunity Audit` があり、公開先は `https://stratumpraxis.com/workflow-audit.html`、Proof Assetは `https://stratumpraxis.com/sample-workflow-audit.html`。ただし毎回固定で押すのではなく、Demand × Buyer Fit × Revenue Distance × Checkout HealthでTOP1を決める。
 
-Where supported, record:
+## 安全境界
 
-`Source → Buyer → Publication → Asset View → CTA → Checkout → Payment → Delivery / Next Step`
+自動で進めてよいのは、Stratum所有範囲・既存権限内・可逆・規約準拠の観測、計測、Route更新、重複除去、既存AssetへのRouting、承認済みWorkflow再開、価格/決済条件を変えない明白な低リスク修復。
 
-A published post is not distribution success by itself. Reach is useful only as upstream evidence; the decision metric is how far qualified humans move toward payment.
+新商品、価格/割引、広告費・支出、契約、法務/規約判断、秘密情報/2FA/本人確認、未承認公開先、大量/コールド送信、破壊的削除、別プロジェクト資産流用、Checkout/Payment設定変更はHuman Gate。
 
-## Failure handling
+## 最終ループ
 
-Do not infinitely retry a broken route.
+`Demand → Human Evidence → Existing Stratum Asset → Best Revenue Route → CTA → Checkout → Payment → Fulfillment → Evidence → Route Optimization → Repeat`
 
-`Failure → Cause Classification → Bottleneck → Alternate Route → Execution → Public / Revenue Evidence`
+Stratumの目的は「もっと作ること」ではない。
 
-Preserve failures as learning:
-
-`Failure → Cause → Avoidance → Next automatic check`
-
-## Current execution state
-
-- Stratum follower-growth phase is considered complete; current focus is downstream revenue movement.
-- Existing finished social asset: `Stratum_Workflow_Audit_Social_v1.mp4` stored in the shared revenue video stock.
-- Existing high-value revenue destination in project context: `$499 AI Workflow Opportunity Audit` at `https://stratumpraxis.com/workflow-audit.html`.
-- Existing proof asset: `https://stratumpraxis.com/sample-workflow-audit.html`.
-- Do not create another workflow-audit offer merely to support this campaign; route qualified buyers into the existing live path.
-
-## Final operating loop
-
-`Demand → Human Signal → Stratum → Existing Asset → Revenue Route → CTA → Checkout → Payment → Evidence → Route Optimization → Amplification`
-
-The purpose of Stratum is not to make more things. It is to reduce the unnecessary distance between validated demand, existing strong assets, and verified payment.
+**確認済み需要と既存の強い資産の間にある、Paymentまでの不要な距離を削ること。**
