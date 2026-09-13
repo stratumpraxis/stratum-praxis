@@ -10,9 +10,9 @@
 <meta property="og:title" content="Music Stock Pack v1 — 3 Original Instrumental Tracks">
 <meta property="og:description" content="Three original instrumental tracks with 60s, 30s and 15s edits for product demos, tutorials, coding/study content and social video.">
 <meta property="og:url" content="https://stratumpraxis.com/music-stock-pack-v1.html">
-<meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+<meta property="og:image" content="https://stratumpraxis.com/assets/music-stock-pack-v1-instagram.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+<meta name="twitter:image" content="https://stratumpraxis.com/assets/music-stock-pack-v1-instagram.png">
 <link rel="stylesheet" href="styles.css">
 <link rel="stylesheet" href="/b2b-experience-2026.css" data-sp-b2b-experience>
 <link rel="stylesheet" href="/stratum-ui-v2.css" data-stratum-ui-v2>
@@ -30,7 +30,7 @@
 }
 </script>
 </head>
-<body class="sp-b2b-experience" data-page="music_stock_pack_v1" data-funnel="music_stock">
+<body class="sp-b2b-experience" data-page="music_stock_pack_v1" data-funnel="music_stock" data-product="music_stock_pack_v1">
 <main>
 <section class="hero">
   <div class="container">
@@ -38,7 +38,7 @@
     <h1>Clean instrumental music for product videos that should not sound generic.</h1>
     <p class="hero-text">Music Stock Pack v1 contains three original instrumental tracks designed for SaaS demos, tutorials, coding and study content, AI and app walkthroughs, presentations and short-form video.</p>
     <div class="button-row">
-      <a class="button button-primary" href="https://ai-consultant-verify.practicalaireport.workers.dev/music-stock-pack-v1/checkout" data-analytics-id="music_pack_v1_checkout">Buy the 3-track pack · $9</a>
+      <a class="button button-primary" href="https://ai-consultant-verify.practicalaireport.workers.dev/music-stock-pack-v1/checkout" data-analytics-id="music_pack_v1_checkout" data-product="music_stock_pack_v1">Buy the 3-track pack · $9</a>
       <a class="button button-secondary" href="#tracks" data-analytics-id="music_pack_v1_view_tracks">See the 3 tracks</a>
     </div>
     <p class="fine">One-time digital purchase. 3 tracks × 60s master + 30s edit + 15s edit. 48 kHz / 24-bit stereo WAV. No third-party audio samples, copied recordings, vocals, voice clones or artist imitation used in the source assets.</p>
@@ -87,12 +87,42 @@
     <p class="eyebrow">Secure delivery</p>
     <h2>Checkout first. Buyer access second.</h2>
     <p>Stripe returns a Checkout Session ID after payment. The purchase, amount and checkout email are verified server-side before the buyer delivery screen opens. The paid ZIP is not linked from this public page.</p>
-    <a class="button button-primary" href="https://ai-consultant-verify.practicalaireport.workers.dev/music-stock-pack-v1/checkout" data-analytics-id="music_pack_v1_checkout_bottom">Buy Music Stock Pack v1 · $9</a>
+    <a class="button button-primary" href="https://ai-consultant-verify.practicalaireport.workers.dev/music-stock-pack-v1/checkout" data-analytics-id="music_pack_v1_checkout_bottom" data-product="music_stock_pack_v1">Buy Music Stock Pack v1 · $9</a>
   </div>
 </section>
 </main>
 <footer class="site-footer"><div class="container footer-inner"><p>© 2026 Stratum Praxis</p><div><a href="/">Home</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a> · <a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a></div></div></footer>
 <script>if(new URLSearchParams(location.search).get('checkout')==='cancelled')document.getElementById('checkout-note').hidden=false;</script>
+<script>
+window.addEventListener('DOMContentLoaded', function () {
+  var params = new URLSearchParams(location.search);
+  var evidence = {
+    product: 'music_stock_pack_v1',
+    offer: '9_wav_pack',
+    price_usd: 9,
+    currency: 'USD',
+    source: params.get('utm_source') || 'direct',
+    campaign: params.get('utm_campaign') || ''
+  };
+
+  if (window.scosCapture) {
+    window.scosCapture('paid_product_view', evidence);
+    if (params.get('checkout') === 'cancelled') {
+      window.scosCapture('checkout_cancelled', Object.assign({}, evidence, { checkout_route: 'worker_verified_checkout' }));
+    }
+  }
+
+  document.querySelectorAll('a[data-analytics-id^="music_pack_v1_checkout"]').forEach(function (link) {
+    link.addEventListener('pointerdown', function () {
+      if (!window.scosCapture) return;
+      window.scosCapture('checkout_click', Object.assign({}, evidence, {
+        checkout_route: 'worker_verified_checkout',
+        analytics_id: link.dataset.analyticsId || ''
+      }));
+    });
+  });
+});
+</script>
 <script src="/b2b-experience-2026.js" defer data-sp-b2b-experience></script>
 </body>
 </html>
