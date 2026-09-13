@@ -58,4 +58,11 @@ jobs:
           fi
           git commit -m 'evidence: persist Stratum Bluesky publication [skip social]'
           git pull --rebase origin main
-          git push origin main
+          for attempt in 1 2 3; do
+            if git push origin main; then
+              exit 0
+            fi
+            sleep $((attempt * 4))
+            git pull --rebase origin main
+          done
+          exit 1
