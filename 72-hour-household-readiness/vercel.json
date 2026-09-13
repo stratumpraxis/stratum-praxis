@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    { "source": "/72-hour-household-readiness/readiness-v2.css", "destination": "/readiness-v2.css" },
+    { "source": "/72-hour-household-readiness/readiness-v2.js", "destination": "/readiness-v2.js" }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ]
+}
