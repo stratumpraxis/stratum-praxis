@@ -8,13 +8,21 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: home-readiness-v2-main
+  cancel-in-progress: false
 jobs:
   apply:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
+          ref: main
           fetch-depth: 0
+      - name: Sync latest main
+        run: |
+          git checkout main
+          git pull --ff-only origin main
       - name: Wire V2 into Home Readiness Utility
         run: |
           python3 - <<'PY'
@@ -41,7 +49,6 @@ jobs:
           s=Path('72-hour-household-readiness/index.html').read_text(encoding='utf-8')
           assert 'readiness-v2.css' in s
           assert 'readiness-v2.js' in s
-          # Keep this legacy utility isolated from the formal Stratum B2B navigation.
           forbidden=['/revenue-router.html','/passage-hub/','/passage-network/','/ordlume/']
           for x in forbidden:
               assert x not in s, f'forbidden route found: {x}'
@@ -54,4 +61,5 @@ jobs:
           git config user.email "stratumpraxis@gmail.com"
           git add 72-hour-household-readiness/index.html
           git commit -m "Apply Home Readiness Utility V2"
-          git push
+          git pull --rebase origin main
+          git push origin main
