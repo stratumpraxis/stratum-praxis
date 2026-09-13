@@ -1,0 +1,64 @@
+name: Wire resilience utility V3
+on:
+  push:
+    paths:
+      - 'resilience-utility-v3.css'
+      - 'resilience-utility-v3.js'
+      - '.github/workflows/wire-resilience-v3.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wire V3 assets
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          targets=[
+            Path('72-hour-household-readiness/index.html'),
+            Path('72-hour-household-readiness/gear.html'),
+            Path('72-hour-household-readiness/plan.html'),
+            Path('money-resilience/index.html'),
+          ]
+          css='<link rel="stylesheet" href="/resilience-utility-v3.css" data-resilience-utility-v3>'
+          js='<script src="/resilience-utility-v3.js" defer data-resilience-utility-v3></script>'
+          changed=[]
+          for p in targets:
+            if not p.exists():
+              print('missing',p); continue
+            s=p.read_text(encoding='utf-8'); old=s
+            if 'resilience-utility-v3.css' not in s and '</head>' in s:
+              s=s.replace('</head>',f'{css}\n</head>',1)
+            if 'resilience-utility-v3.js' not in s and '</body>' in s:
+              s=s.replace('</body>',f'{js}\n</body>',1)
+            if s!=old:
+              p.write_text(s,encoding='utf-8'); changed.append(str(p))
+          print('wired:', ', '.join(changed) if changed else 'none')
+          PY
+      - name: Guard scope
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          allowed={
+            '72-hour-household-readiness/index.html',
+            '72-hour-household-readiness/gear.html',
+            '72-hour-household-readiness/plan.html',
+            'money-resilience/index.html',
+          }
+          touched=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          bad=sorted(touched-allowed)
+          if bad:
+            raise SystemExit('Unexpected files touched: '+', '.join(bad))
+          print('scope guard passed')
+          PY
+      - name: Commit V3 wiring
+        run: |
+          if git diff --quiet; then echo "No wiring changes"; exit 0; fi
+          git config user.name "stratumpraxis-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          git add 72-hour-household-readiness/index.html 72-hour-household-readiness/gear.html 72-hour-household-readiness/plan.html money-resilience/index.html
+          git commit -m "Apply resilience utility V3 experience"
+          git push
