@@ -1,0 +1,47 @@
+name: Music Stock Pack v1 Pinterest Official Publish
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'scripts/publish_music_stock_pack_pinterest_official.mjs'
+      - '.github/workflows/music-stock-pack-v1-pinterest-official.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify official Stratum Pinterest and publish Music Stock Pack v1
+        env:
+          PINTEREST_ACCESS_TOKEN: ${{ secrets.PINTEREST_ACCESS_TOKEN }}
+          PINTEREST_EXPECTED_USERNAME: stratumpraxis
+        run: node scripts/publish_music_stock_pack_pinterest_official.mjs
+      - name: Persist verified Pinterest publication evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          persist=/tmp/pinterest-music-evidence
+          rm -rf "$persist" && mkdir -p "$persist"
+          file=publishing/evidence/stratum-pinterest-music-stock-pack-v1-001.json
+          cp --parents "$file" "$persist"
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp -a "$persist"/. .
+            git add "$file"
+            if git diff --cached --quiet; then exit 0; fi
+            git commit -m 'evidence: record Music Stock Pack v1 Pinterest publication [skip social]'
+            if git push origin HEAD:main; then exit 0; fi
+          done
+          exit 1
