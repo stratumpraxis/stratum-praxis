@@ -1,11 +1,13 @@
 {
   "ai-agent-operating-constitution-ja": {
     "username": "stratumpraxis",
-    "path_slug": "aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-agent-operating-constitution-51od"
+    "path_slug": "aishe-yuan-wozeng-yasuqian-ni-quan-xian-toting-zhi-tiao-jian-wojue-meru-agent-operating-constitution-51od",
+    "article_id": 4641092
   },
   "ai-handoff-system-ja": {
     "username": "stratumpraxis",
-    "path_slug": "aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-4pgg"
+    "path_slug": "aiwozeng-yasuqian-ni-yin-kiji-giwozuo-ru-chatgptclaudecodexwozhi-menaihandoffshe-ji-4pgg",
+    "article_id": 4641093
   },
   "ai-is-not-your-bottleneck": {
     "username": "stratumpraxis",
@@ -14,7 +16,8 @@
   },
   "ai-revenue-pipeline-diagnosis-ja": {
     "username": "stratumpraxis",
-    "path_slug": "aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3l8j"
+    "path_slug": "aidezuo-ruqian-ni-revenuenojie-mariwozhi-su-mai-renaipaipunozhen-duan-fa-3l8j",
+    "article_id": 4641099
   },
   "ai-saas-renewal-check": {
     "username": "stratumpraxis",
@@ -23,6 +26,7 @@
   },
   "codex-revenue-company-ja": {
     "username": "stratumpraxis",
-    "path_slug": "ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-pc8"
+    "path_slug": "ai-codinghasu-inonimai-shang-gazeng-enaili-you-codexworevenue-loophejie-sok-suru-pc8",
+    "article_id": 4641102
   }
 }
