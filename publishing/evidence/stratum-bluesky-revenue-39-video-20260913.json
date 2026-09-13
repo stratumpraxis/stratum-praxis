@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mvg2zgxl6v25",
+  "cid": "bafyreifrfhb7pvou653l4btpn7nddbskk247guh5atxbd7qmg7srr7evqy",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mvg2zgxl6v25",
+  "destination": "https://stratumpraxis.com/ai-value-realization-kit.html?utm_source=bsky&utm_medium=video&utm_campaign=revenue_39_20260913",
+  "content_id": "stratum-bluesky-revenue-39-video-20260913",
+  "media_type": "video",
+  "video_bytes": 1156005,
+  "published_at": "2026-09-13T16:59:48.895Z"
+}
