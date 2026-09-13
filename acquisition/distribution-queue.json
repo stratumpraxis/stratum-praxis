@@ -38,8 +38,15 @@
       "signal_ref": "shadow-ai-spend-accountability-2026-08",
       "signal_claim_strength": "EVIDENCE_BACKED",
       "attempts": 0,
-      "notes": "Instagram already carries an in-flight ai_saas_cost_review run for this same destination (distribution/launch-now.json). The cross-lane collision guard is expected to block this item until that run is confirmed published or failed.",
-      "history": []
+      "notes": "Collision recheck 2026-09-14: distribution/launch-now.json contains no active ai_saas_cost_review or same-destination Instagram run. The previous collision note was stale. Publication remains blocked by safety_status UNCHECKED and approval_status PENDING_HUMAN; do not schedule or publish without HUMAN_APPROVED.",
+      "history": [
+        {
+          "at": "2026-09-14",
+          "event": "STALE_COLLISION_NOTE_CLEARED",
+          "evidence": "distribution/launch-now.json has only the active Pinterest workflow-reliability item; no same-destination Instagram run is present.",
+          "revenue_evidence": false
+        }
+      ]
     },
     {
       "queue_id": "ai-agent-cost-roi-calculator-youtube-v1",
