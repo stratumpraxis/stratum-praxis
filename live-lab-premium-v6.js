@@ -14,6 +14,8 @@
   };
 
   function capture(name,props){try{window.scosCapture?.(name,Object.assign({surface:'live_lab'},props||{}));}catch(_){}}
+  function currentIntent(){return q('#intent-buttons .intent-button.active')?.dataset.intent||'cost';}
+  function updateHandoff(){const link=q('[data-analytics-id="live_lab_to_products"]');if(link)link.href=`/product-router.html?intent=${encodeURIComponent(currentIntent())}`;}
 
   function buildVisual(){
     const hero=q('.page-topline');
@@ -69,31 +71,33 @@
     if(!input||!match)return;
     const term=input.value.trim().toLocaleLowerCase();
     const rows=qa('#inventory .inventory-row');let visible=0;
-    rows.forEach(row=>{
-      const show=!term||row.textContent.toLocaleLowerCase().includes(term);
-      row.hidden=!show;if(show)visible++;
-    });
+    rows.forEach(row=>{const show=!term||row.textContent.toLocaleLowerCase().includes(term);row.hidden=!show;if(show)visible++;});
     const c=copy[lang()]||copy.en;match.textContent=`${visible} ${c.matches}`;
     empty?.classList.toggle('show',visible===0);
     if(!silent)capture('lab_search',{query_length:term.length,match_count:visible});
   }
 
   function syncIntent(){
-    const active=q('#intent-buttons .intent-button.active');
-    const intent=active?.dataset.intent;
+    const intent=currentIntent();
     qa('.lab-route-node').forEach(n=>n.classList.toggle('is-active',n.dataset.intent===intent));
+    updateHandoff();
+  }
+
+  function applyIncomingIntent(){
+    const incoming=new URLSearchParams(location.search).get('intent');
+    if(!['cost','workflow','agent'].includes(incoming))return;
+    const target=q(`#intent-buttons [data-intent="${incoming}"]`);
+    if(target&&!target.classList.contains('active')){target.click();capture('lab_explicit_intent_continued',{intent:incoming,source:'query'});}
   }
 
   function watch(){
     const buttons=q('#intent-buttons'),inventory=q('#inventory');
-    if(buttons)new MutationObserver(()=>{syncIntent();}).observe(buttons,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
+    if(buttons)new MutationObserver(()=>syncIntent()).observe(buttons,{subtree:true,childList:true,attributes:true,attributeFilter:['class']});
     if(inventory)new MutationObserver(()=>applyFilter(true)).observe(inventory,{childList:true,subtree:false});
     new MutationObserver(()=>localizeSearch()).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
-    document.addEventListener('click',e=>{
-      const row=e.target.closest('#inventory .inventory-row');if(row)capture('lab_tool_open',{destination:row.getAttribute('href')||'',search_active:!!q('.lab-search input')?.value.trim()});
-    },{capture:true});
+    document.addEventListener('click',e=>{const row=e.target.closest('#inventory .inventory-row');if(row)capture('lab_tool_open',{destination:row.getAttribute('href')||'',search_active:!!q('.lab-search input')?.value.trim(),intent:currentIntent()});},{capture:true});
   }
 
-  function init(){buildVisual();buildSearch();watch();syncIntent();setTimeout(()=>{syncIntent();applyFilter(true);},120);}
+  function init(){buildVisual();buildSearch();watch();applyIncomingIntent();syncIntent();setTimeout(()=>{applyIncomingIntent();syncIntent();applyFilter(true);},120);}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
 })();
