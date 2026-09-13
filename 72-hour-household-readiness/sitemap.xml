@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://ordlume.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://ordlume.vercel.app/gear.html</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/plan.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ordlume.vercel.app/water/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/food/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/blackout/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/battery/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ordlume.vercel.app/toilet/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ordlume.vercel.app/solo/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/family/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://ordlume.vercel.app/pet/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
