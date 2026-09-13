@@ -1,14 +1,33 @@
 {
   "rewrites": [
-    { "source": "/72-hour-household-readiness/readiness-v2.css", "destination": "/readiness-v2.css" },
-    { "source": "/72-hour-household-readiness/readiness-v2.js", "destination": "/readiness-v2.js" }
+    { "source": "/72-hour-household-readiness/:path*", "destination": "/:path*" }
   ],
   "headers": [
+    {
+      "source": "/",
+      "headers": [
+        { "key": "Link", "value": "<https://ordlume.vercel.app/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/gear.html",
+      "headers": [
+        { "key": "Link", "value": "<https://ordlume.vercel.app/gear.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/plan.html",
+      "headers": [
+        { "key": "Link", "value": "<https://ordlume.vercel.app/plan.html>; rel=\"canonical\"" }
+      ]
+    },
     {
       "source": "/(.*)",
       "headers": [
         { "key": "X-Content-Type-Options", "value": "nosniff" },
-        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy", "value": "camera=(), microphone=(), geolocation=()" },
+        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
       ]
     }
   ]
