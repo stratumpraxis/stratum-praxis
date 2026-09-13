@@ -93,3 +93,4 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-tool],[dat
 
 capture('money_resilience_vnext_polish_loaded',{motion:reduced?'reduced':'full'});
 })();
+;(()=>{if(document.querySelector('script[data-resilience-utility-bridge]'))return;const s=document.createElement('script');s.src='/resilience-utility-bridge.js';s.defer=true;s.dataset.resilienceUtilityBridge='';document.head.appendChild(s)})();

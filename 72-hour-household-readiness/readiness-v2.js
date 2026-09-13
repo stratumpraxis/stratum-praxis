@@ -80,3 +80,4 @@ function openPlan(){
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',ready,{once:true});else ready();
 })();
+;(()=>{if(document.querySelector('script[data-resilience-utility-bridge]'))return;const s=document.createElement('script');s.src='/resilience-utility-bridge.js';s.defer=true;s.dataset.resilienceUtilityBridge='';document.head.appendChild(s)})();
