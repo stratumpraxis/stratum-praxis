@@ -1,28 +1,49 @@
 name: Stratum Publishing Preflight
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'distribution/publication-hub/account-registry.json'
+      - 'distribution/publication-hub/publishing-policy.json'
+      - 'scripts/validate_publication_system.py'
+      - 'scripts/validate_publish_package.py'
+      - '.github/workflows/stratum-publishing-preflight.yml'
   workflow_dispatch:
     inputs:
       package_path:
-        description: Path to publish package JSON
-        required: true
-        default: publishing/queue/example.json
+        description: Optional path to publish package JSON
+        required: false
+        default: ''
   pull_request:
     paths:
       - 'publishing/**'
+      - 'distribution/publication-hub/account-registry.json'
+      - 'distribution/publication-hub/publishing-policy.json'
+      - 'scripts/validate_publication_system.py'
       - 'scripts/validate_publish_package.py'
+
+permissions:
+  contents: read
 
 jobs:
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+
+      - name: Validate Stratum publication governance
+        run: python scripts/validate_publication_system.py
+
       - name: Validate requested package
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' && inputs.package_path != ''
         run: python scripts/validate_publish_package.py "${{ inputs.package_path }}"
+
       - name: Validate changed publish packages
         if: github.event_name == 'pull_request'
         shell: bash
