@@ -1,41 +1,57 @@
-# Standalone Revenue Sites — Contact Source of Truth
+# Standalone Revenue Sites — Operating Source of Truth
 
 Updated: 2026-09-14
 
-## Canonical contact
+## Canonical operating contact
 
 `ordlume.contact@gmail.com`
 
-Use this address for standalone revenue surfaces such as:
+Use this address behind the scenes for standalone revenue surfaces such as:
 
-- donation / support pages
-- fundraising pages
+- optional support / tip pages
+- fundraising-style pages where the purpose is explicitly stated
 - one-page utilities with their own revenue path
-- small independent public tools that are intentionally separate from the Stratum B2B buyer journey
+- small independent public tools intentionally separate from the Stratum B2B buyer journey
 
 ## Boundary
 
 Do **not** use this address as the default contact for the Stratum B2B site, B2B audits, enterprise buyer routes, or other project brands unless explicitly reassigned.
 
+## Public UX rule
+
+The operating email is **not a default public UI element**.
+
+Do not add a contact strip, operator directory, or email CTA merely for consistency. A standalone utility should stay focused on:
+
+`useful result → next action → optional support`
+
+Only expose a contact address when a real user need, legal requirement, partnership route, or explicit support workflow makes it necessary.
+
 ## Current utility family
 
-The following independent utility surfaces use this contact identity:
+Independent utility surfaces include:
 
 - `/72-hour-household-readiness/`
 - `/72-hour-household-readiness/gear.html`
 - `/72-hour-household-readiness/plan.html`
 - `/money-resilience/`
 
-The utilities may link to each other for continuation, but they remain independent products. Do not merge their user inputs or scores across pages.
-
-## UX rule
-
-The contact address should be visible but low-pressure. Place it near the end of the experience or in a trust/contact strip. It must not compete with the page's primary action, donation/support CTA, diagnostic result, or next-decision route.
-
-Preferred label:
-
-`運営・掲載・寄付に関する連絡 / Contact`
+They may link for genuine utility continuation, but they remain independent products. Do not merge user inputs, scores, payment framing, or support asks across pages.
 
 ## Revenue integrity
 
-A donation or support CTA is optional support, not a condition for receiving the free result. Do not imply that a donation changes the score, unlocks public-safety information, or improves eligibility for any public service.
+Preferred monetization for these utilities is transparent optional support / tip / one-time contribution after useful value has already been delivered.
+
+Rules:
+
+- free result is available without payment
+- support does not change a score or diagnostic result
+- support does not unlock public-safety information
+- do not imply donations go to disaster victims, charities, public agencies, or third parties unless that is literally true
+- describe what the money supports on that specific page
+- do not route one support CTA into a carousel of unrelated donation asks
+- keep payment destinations distinguishable by utility when practical
+
+## SEO / distribution
+
+Search discovery may be shared through the same domain infrastructure, but each utility should be measured and optimized separately by its own search intent, landing page, and user value.
