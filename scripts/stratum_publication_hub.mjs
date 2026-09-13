@@ -5,12 +5,17 @@ const CONTENT_DIR = 'content/ghost';
 const OUT_DIR = 'distribution/publication-hub';
 const TIPS_DIR = path.join(OUT_DIR, 'tips-ready');
 const SOCIAL_DIR = path.join(OUT_DIR, 'social-ready');
+const DEV_MAP_PATH = path.join(OUT_DIR, 'devto-map.json');
 fs.mkdirSync(TIPS_DIR, { recursive: true });
 fs.mkdirSync(SOCIAL_DIR, { recursive: true });
 
 const files = fs.readdirSync(CONTENT_DIR)
   .filter((f) => f.endsWith('.md'))
   .sort();
+
+const devMap = fs.existsSync(DEV_MAP_PATH)
+  ? JSON.parse(fs.readFileSync(DEV_MAP_PATH, 'utf8'))
+  : {};
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -43,13 +48,39 @@ const stripMd = (s) => s
 function parseArticle(file) {
   const source = fs.readFileSync(path.join(CONTENT_DIR, file), 'utf8').trim();
   const lines = source.split('\n');
-  const titleLine = lines.find((l) => /^#\s+/.test(l)) || `# ${path.basename(file, '.md')}`;
+  const titleIndex = lines.findIndex((l) => /^#\s+/.test(l));
+  const titleLine = titleIndex >= 0 ? lines[titleIndex] : `# ${path.basename(file, '.md')}`;
   const title = titleLine.replace(/^#\s+/, '').trim();
   const slug = path.basename(file, '.md');
-  const body = lines.filter((l) => l !== titleLine).join('\n').trim();
+  const body = titleIndex >= 0 ? lines.slice(titleIndex + 1).join('\n').trim() : source;
   const plain = stripMd(body);
   const excerpt = plain.slice(0, 220);
   return { file, source, title, slug, body, excerpt };
+}
+
+function saveDevMap() {
+  fs.writeFileSync(DEV_MAP_PATH, JSON.stringify(devMap, null, 2) + '\n');
+}
+
+async function resolveMappedArticle(article, headers) {
+  const mapped = devMap[article.slug];
+  if (!mapped) return null;
+  if (mapped.article_id) return { id: Number(mapped.article_id), source: 'map_id' };
+  if (!mapped.username || !mapped.path_slug) return null;
+
+  const r = await fetchWithRateLimitRetry(
+    `https://dev.to/api/articles/${encodeURIComponent(mapped.username)}/${encodeURIComponent(mapped.path_slug)}`,
+    { headers },
+    `DEV mapped resolve ${article.slug}`
+  );
+  if (r.status === 404) return null;
+  const text = await r.text();
+  if (!r.ok) throw new Error(`DEV mapped resolve failed ${r.status}: ${text}`);
+  const data = JSON.parse(text);
+  if (!data.id) return null;
+  mapped.article_id = Number(data.id);
+  saveDevMap();
+  return { id: Number(data.id), source: 'map_path' };
 }
 
 async function devtoPublish(article) {
@@ -59,21 +90,28 @@ async function devtoPublish(article) {
   const headers = {
     'api-key': apiKey,
     'Content-Type': 'application/json',
-    'Accept': 'application/vnd.forem.api-v1+json'
+    'Accept': 'application/vnd.forem.api-v1+json',
+    'user-agent': 'Stratum-Praxis-Publisher/3.0'
   };
   const canonicalUrl = process.env.GHOST_PUBLIC_BASE_URL
     ? `${process.env.GHOST_PUBLIC_BASE_URL.replace(/\/$/, '')}/${article.slug}/`
     : undefined;
 
-  const me = await fetchWithRateLimitRetry(
-    'https://dev.to/api/articles/me/all?per_page=1000',
-    { headers },
-    `DEV lookup ${article.slug}`
-  );
-  if (!me.ok) throw new Error(`DEV lookup failed ${me.status}: ${await me.text()}`);
-  const existing = (await me.json()).find((x) =>
-    x.title === article.title || (canonicalUrl && x.canonical_url === canonicalUrl)
-  );
+  let existing = await resolveMappedArticle(article, headers);
+
+  if (!existing) {
+    const me = await fetchWithRateLimitRetry(
+      'https://dev.to/api/articles/me?per_page=1000',
+      { headers },
+      `DEV lookup ${article.slug}`
+    );
+    if (!me.ok) throw new Error(`DEV lookup failed ${me.status}: ${await me.text()}`);
+    const list = await me.json();
+    const found = list.find((x) =>
+      x.title === article.title || (canonicalUrl && x.canonical_url === canonicalUrl)
+    );
+    if (found?.id) existing = { id: Number(found.id), source: 'published_lookup' };
+  }
 
   const payload = {
     article: {
@@ -86,9 +124,9 @@ async function devtoPublish(article) {
     }
   };
 
-  const url = existing ? `https://dev.to/api/articles/${existing.id}` : 'https://dev.to/api/articles';
+  const endpoint = existing ? `https://dev.to/api/articles/${existing.id}` : 'https://dev.to/api/articles';
   const r = await fetchWithRateLimitRetry(
-    url,
+    endpoint,
     {
       method: existing ? 'PUT' : 'POST',
       headers,
@@ -98,9 +136,23 @@ async function devtoPublish(article) {
   );
   if (!r.ok) throw new Error(`DEV publish failed ${r.status}: ${await r.text()}`);
   const data = await r.json();
+
+  let publicPathSlug = data.slug || '';
+  if (!publicPathSlug && data.url) {
+    try { publicPathSlug = new URL(data.url).pathname.split('/').filter(Boolean).pop() || ''; } catch {}
+  }
+  devMap[article.slug] = {
+    username: 'stratumpraxis',
+    path_slug: publicPathSlug || devMap[article.slug]?.path_slug || '',
+    article_id: Number(data.id)
+  };
+  saveDevMap();
+
   return {
     platform: 'devto',
     status: 'published',
+    mode: existing ? 'updated' : 'created',
+    identity_source: existing?.source || 'new_article',
     id: data.id,
     url: data.url,
     canonical_url: data.canonical_url || canonicalUrl || null
@@ -146,6 +198,7 @@ for (const file of files) {
   });
 }
 
+saveDevMap();
 fs.writeFileSync(path.join(OUT_DIR, 'publication-ledger.json'), JSON.stringify({
   generated_at: new Date().toISOString(),
   article_count: ledger.length,
@@ -154,5 +207,6 @@ fs.writeFileSync(path.join(OUT_DIR, 'publication-ledger.json'), JSON.stringify({
 
 console.log(`PUBLICATION_HUB_ARTICLES=${ledger.length}`);
 console.log(`DEVTO_READY=${Boolean(process.env.DEVTO_API_KEY)}`);
+console.log('DEV_IDENTITY_MAP=ENFORCED');
 console.log('TIPS_PACKETS=READY');
 console.log('SOCIAL_PACKETS=READY');
