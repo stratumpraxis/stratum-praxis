@@ -4,6 +4,8 @@ Stratum Praxis is the B2B asset base inside the broader Digital Index Base struc
 
 **Public domain:** https://stratumpraxis.com/
 
+**For AI agent teams:** [See the Cross-Agent Operating Kit](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=github&utm_medium=referral&utm_campaign=github_cross_agent_winner&utm_content=readme_top&route_id=github_readme_top_cross_agent_20260913) — keep one operating policy, human gates, cost guards and state handoff across Claude Code, Codex and Cursor. **Personal · $69 one-time.**
+
 **Start free:** [Run the 12-point AI & SaaS renewal check](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=github&utm_medium=referral&utm_campaign=readme_free_entry&utm_content=top_start) — decide whether each recurring tool should be **KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL** before the next renewal.
 
 Its role is practical B2B decision support: workflow audits, ROI/economics tools, AI/SaaS spend and renewal decisions, governance, implementation planning, and fixed-scope paid support for businesses and professional-service firms.
