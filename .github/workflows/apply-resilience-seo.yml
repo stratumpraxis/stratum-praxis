@@ -1,0 +1,78 @@
+name: Apply resilience utility SEO
+
+on:
+  push:
+    paths:
+      - '.github/workflows/apply-resilience-seo.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Improve static SEO and remove public contact layer
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          paths = [
+              Path('72-hour-household-readiness/index.html'),
+              Path('72-hour-household-readiness/gear.html'),
+              Path('72-hour-household-readiness/plan.html'),
+              Path('money-resilience/index.html'),
+          ]
+
+          for p in paths:
+              s = p.read_text()
+              s = s.replace('<script defer src="/standalone-revenue-contact.js" data-standalone-revenue-contact></script>\n','')
+              s = s.replace('<script src="/standalone-revenue-contact.js" defer data-standalone-revenue-contact></script>\n','')
+              p.write_text(s)
+
+          # 72H: stronger static metadata, schema and real internal utility links.
+          p = Path('72-hour-household-readiness/index.html')
+          s = p.read_text()
+          old = '<meta name="description" content="無料・登録不要。震災、停電、物価高、制度、家計防衛まで、約2分で家庭の備えを確認。">'
+          new = '<meta name="description" content="無料・登録不要。震災や停電に備え、水・食料・電源・衛生・家族計画など10項目を約2分で確認。不足を3つに絞り、今日・今週・今月の備え方と公的情報への導線を表示します。">'
+          s = s.replace(old, new)
+          if '"name":"Home Readiness Utility"' not in s:
+              schema = '''<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Home Readiness Utility","alternateName":"暮らし防衛チェック","url":"https://stratumpraxis.com/72-hour-household-readiness/","applicationCategory":"LifestyleApplication","operatingSystem":"Any","inLanguage":"ja","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"JPY"},"description":"震災や停電に備え、水・食料・電源・衛生・家族計画など家庭の基本10項目を確認し、不足と次の行動を整理する無料の判断補助ツール。"}</script>\n'''
+              s = s.replace('</head>', schema + '</head>')
+          if 'id="seo-readiness-guide"' not in s:
+              css = '''<style data-resilience-seo>.seo-readiness-guide{margin:18px 14px 8px;padding:20px;border:1px solid rgba(16,34,29,.11);border-radius:20px;background:rgba(255,255,255,.72)}.seo-readiness-guide h2{margin:0 0 8px;font-size:18px}.seo-readiness-guide p{margin:6px 0;color:#617068;font-size:13px;line-height:1.75}.seo-readiness-links{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.seo-readiness-links a{display:inline-flex;padding:9px 11px;border:1px solid rgba(16,34,29,.13);border-radius:999px;color:#176b4a;background:#fff;text-decoration:none;font-size:12px;font-weight:900}@media(max-width:580px){.seo-readiness-guide{margin-inline:10px;padding:16px}}</style>\n'''
+              s = s.replace('</head>', css + '</head>')
+              guide = '''<section class="seo-readiness-guide" id="seo-readiness-guide" aria-label="72時間の備えについて"><h2>72時間の備えを、買いすぎずに整える</h2><p>このチェックは、防災用品をたくさん買うためではなく、家庭にすでにある物を確認し、不足している基本項目だけを順番に整えるための無料Utilityです。まず水・食料・照明・電源・衛生・救急・情報・重要書類・医療・家族の連絡計画を確認し、足りないものを3つ以内に絞ります。</p><p>結果は家庭用プランとして印刷・PDF保存できます。金融面の余力は別のMoney Resilience Utilityで確認できます。どちらのツールも登録不要で、入力内容を相互に引き継ぎません。</p><nav class="seo-readiness-links" aria-label="関連する無料Utility"><a href="./plan.html">家庭用 備えプラン</a><a href="./gear.html">不足別 防災用品ガイド</a><a href="/money-resilience/">お金の耐久力チェック</a></nav></section>'''
+              s = s.replace('<footer class="footer">', guide + '<footer class="footer">')
+          p.write_text(s)
+
+          # Money: remove duplicate static H1, add crawlable explanation + internal link.
+          p = Path('money-resilience/index.html')
+          s = p.read_text()
+          s = s.replace('<noscript><main style="max-width:720px;margin:80px auto;padding:24px"><h1>Money Resilience Utility</h1>', '<noscript><main style="max-width:720px;margin:80px auto;padding:24px"><h2>Money Resilience Utility</h2>')
+          if 'id="mr-static-guide"' not in s:
+              css = '''<style data-money-seo>.mr-static-guide{max-width:1180px;margin:20px auto 72px;padding:0 18px;color:#dce6e2}.mr-static-guide-inner{border:1px solid rgba(208,230,224,.12);border-radius:22px;background:rgba(15,23,23,.72);padding:22px}.mr-static-guide h2{margin:0 0 9px;font-size:20px;letter-spacing:-.02em}.mr-static-guide p{margin:7px 0;color:#8fa09b;font-size:13px;line-height:1.8}.mr-static-guide ul{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;list-style:none;padding:0;margin:16px 0}.mr-static-guide li{padding:11px 12px;border:1px solid rgba(208,230,224,.09);border-radius:12px;background:rgba(255,255,255,.018);font-size:12px;color:#c7d4d0}.mr-static-guide a{color:#7ce7c2;text-decoration:none;font-weight:800}@media(max-width:720px){.mr-static-guide{margin-bottom:82px}.mr-static-guide ul{grid-template-columns:1fr}}</style>\n'''
+              s = s.replace('</head>', css + '</head>')
+              guide = '''<section class="mr-static-guide" id="mr-static-guide" aria-label="Money Resilience Utilityについて"><div class="mr-static-guide-inner"><h2>市場の変化が、家計にどこまで響くかを整理する</h2><p>Money Resilience Utilityは、円安・物価・金利・暗号資産などの変化を仮定し、毎月の負担、現金余力、支出後の余白、海外決済や送金コストをブラウザ内で確認する無料の判断補助ツールです。将来の相場を予測したり、金融商品を推奨したりするものではありません。</p><ul><li>収入・必須支出・現金余力から耐久力を確認</li><li>軽度・標準・強めのStress条件を比較</li><li>結果をCopy / Print / PDFで保存して再確認</li></ul><p>災害や停電に対する生活面の備えは、別の <a href="/72-hour-household-readiness/">72H Home Readiness Utility</a> で確認できます。2つのUtility間で金融入力値やチェック内容は送信しません。</p></div></section>'''
+              s = s.replace('<div id="return-gate-entry" aria-hidden="true"></div>', '<div id="return-gate-entry" aria-hidden="true"></div>\n' + guide)
+          p.write_text(s)
+          PY
+      - name: Guard scope
+        run: |
+          git diff --name-only | grep -Ev '^(72-hour-household-readiness/(index|gear|plan)\.html|money-resilience/index\.html)$' && exit 1 || true
+          grep -q 'WebApplication' 72-hour-household-readiness/index.html
+          grep -q 'mr-static-guide' money-resilience/index.html
+          ! grep -q 'standalone-revenue-contact.js' 72-hour-household-readiness/index.html
+          ! grep -q 'standalone-revenue-contact.js' money-resilience/index.html
+      - name: Commit SEO improvements
+        run: |
+          if git diff --quiet; then exit 0; fi
+          git config user.name 'stratumpraxis-bot'
+          git config user.email 'ordlume.contact@gmail.com'
+          git add 72-hour-household-readiness/index.html 72-hour-household-readiness/gear.html 72-hour-household-readiness/plan.html money-resilience/index.html
+          git commit -m 'Improve resilience utility SEO and simplify public identity'
+          git push
