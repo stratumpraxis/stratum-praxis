@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/deploy-github-pages-production.yml'
+      - '**/*.html'
       - 'CNAME'
       - 'index.html'
       - 'robots.txt'
@@ -68,6 +69,7 @@ jobs:
             --exclude 'node_modules' \
             --exclude 'revenue-os'
 
+          # Source HTML is normalized too; this remains a fail-closed production guard.
           python3 <<'PY'
           from pathlib import Path
 
