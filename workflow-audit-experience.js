@@ -38,6 +38,21 @@
     inner+='</div>'; host.innerHTML=inner;
   }
 
+  function initCheckoutRescue(){
+    if(!/\/workflow-audit\.html$/.test(location.pathname))return;
+    const row=document.querySelector('.audit-cta-row');
+    if(!row||row.querySelector('[data-wa-checkout-sample]'))return;
+    const sample=document.createElement('a');
+    sample.className='text-link';
+    sample.href='/sample-workflow-audit.html';
+    sample.dataset.waCheckoutSample='true';
+    sample.dataset.i18n='sampleLink';
+    sample.textContent='Open interactive sample →';
+    const free=row.querySelector('a[href="/b2b/"]');
+    row.insertBefore(sample,free||null);
+    sample.addEventListener('click',()=>capture('workflow_audit_sample_near_checkout_click',{source:'hero_checkout_rescue'}));
+  }
+
   function initAudit(){
     if(!/\/workflow-audit\.html$/.test(location.pathname))return;
     const delivery=document.querySelector('.audit-delivery-section');
@@ -76,6 +91,6 @@
     capture('sample_audit_experience_ready');
   }
 
-  const boot=()=>{initAudit();initSample();};
+  const boot=()=>{initCheckoutRescue();initAudit();initSample();};
   document.readyState==='loading'?document.addEventListener('DOMContentLoaded',boot,{once:true}):boot();
 })();
