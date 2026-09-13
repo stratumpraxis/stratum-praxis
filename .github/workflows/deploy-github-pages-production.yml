@@ -67,12 +67,63 @@ jobs:
             --exclude 'worker' \
             --exclude 'node_modules' \
             --exclude 'revenue-os'
+
+          python3 <<'PY'
+          from pathlib import Path
+
+          GA_ID = 'G-QXTYRB4TWY'
+          TAG = '''<!-- Google tag (gtag.js) -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+          <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-QXTYRB4TWY');
+          </script>'''
+
+          html_files = sorted(Path('_site').rglob('*.html'))
+          if not html_files:
+              raise SystemExit('No HTML files found for GA4 injection')
+
+          for path in html_files:
+              html = path.read_text(encoding='utf-8')
+              html = html.replace('href="/index.html"', 'href="/"')
+              html = html.replace("href='/index.html'", "href='/'")
+              html = html.replace('https://stratumpraxis.com/index.html', 'https://stratumpraxis.com/')
+
+              if GA_ID not in html:
+                  marker = '</head>'
+                  idx = html.lower().find(marker)
+                  if idx < 0:
+                      raise SystemExit(f'Missing </head> in {path}')
+                  html = html[:idx] + TAG + '\n' + html[idx:]
+
+              if html.count("gtag('config', 'G-QXTYRB4TWY');") != 1:
+                  raise SystemExit(f'GA4 duplicate/missing config in {path}')
+
+              path.write_text(html, encoding='utf-8')
+
+          top = Path('_site/index.html').read_text(encoding='utf-8')
+          canonical = '<link rel="canonical" href="https://stratumpraxis.com/">'
+          if top.count(canonical) != 1:
+              raise SystemExit('Homepage canonical is not exactly https://stratumpraxis.com/')
+
+          for path in html_files:
+              html = path.read_text(encoding='utf-8')
+              if 'href="/index.html"' in html or "href='/index.html'" in html:
+                  raise SystemExit(f'Legacy /index.html internal link remains in {path}')
+
+          print(f'GA4 injected exactly once into {len(html_files)} HTML pages')
+          print('Homepage canonical/internal-link normalization -> PASS')
+          PY
+
           touch _site/.nojekyll
           test -s _site/CNAME
           test "$(tr -d '\r\n' < _site/CNAME)" = 'stratumpraxis.com'
           grep -Fq 'AI & SaaS Spend Audit & Renewal Decision | Stratum Praxis' _site/ai-saas-spend.html
           grep -Fq 'https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06' _site/ai-saas-spend-decision-kit.html
           grep -Fq 'Sitemap: https://stratumpraxis.com/sitemap.xml' _site/robots.txt
+          test "$(cat _site/e1db803787a56bb5ab5c1e61aa0cdbfd.txt)" = 'e1db803787a56bb5ab5c1e61aa0cdbfd'
 
       - name: Upload GitHub Pages artifact
         uses: actions/upload-pages-artifact@v3
