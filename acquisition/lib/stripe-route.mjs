@@ -1,15 +1,21 @@
 // Convert verified Stripe Checkout Session evidence into the existing winner input.
 // This adapter never invents traffic, CTA, checkout or purchase records.
 
+import { parseCheckoutReference } from './checkout-reference.mjs';
+
 function validRouteId(value) {
   value = String(value || '');
   return /^[a-zA-Z0-9_-]{1,200}$/.test(value) ? value : null;
 }
 
+function routeFromSession(session) {
+  const declared = validRouteId(session?.metadata?.attribution_route_id);
+  if (declared) return declared;
+  return parseCheckoutReference(session?.client_reference_id).route_id;
+}
+
 export function purchaseFromCheckoutSession(session) {
-  const routeId = validRouteId(
-    session?.metadata?.attribution_route_id || session?.client_reference_id
-  );
+  const routeId = routeFromSession(session);
   const verified = session?.payment_status === 'paid'
     && session?.mode === 'payment'
     && Boolean(session?.payment_intent);
