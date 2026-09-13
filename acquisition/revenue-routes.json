@@ -27,6 +27,40 @@
       "pre_sale_rule": "Do not create a new product. Improve only distribution, route clarity, attribution, checkout continuity, or buyer confidence when evidence supports the change.",
       "boundary_note": "Held by Stratum Safe Revenue Heartbeat because the source belongs to Vector Praxis. Cross-project acquisition routes must not be auto-used by Stratum.",
       "held_at": "2026-09-13T21:20:00+09:00"
+    },
+    {
+      "route_id": "stratum_spend_calculator_to_decision_kit_v1",
+      "state": "ACTIVE_CURRENT_ROUTE",
+      "source": "stratum_praxis",
+      "medium": "onsite_utility",
+      "campaign": "spend_roi_revenue_validation_20260913",
+      "content": "ai_saas_waste_calculator_to_decision_kit",
+      "source_url": "https://stratumpraxis.com/ai-saas-waste-calculator.html",
+      "landing_url": "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+      "checkout_url": "https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06",
+      "offer": "ai_saas_spend_decision_kit",
+      "price_usd": 39,
+      "historical_claim": false,
+      "stage": "TRAFFIC_WITHOUT_QUALIFIED_ACTION",
+      "evidence": {
+        "window": "last_7_days_as_of_2026-09-13",
+        "regular_pageviews_on_source": 8,
+        "verified_regular_checkout_clicks": 0,
+        "verified_paid_checkout_sessions": 0,
+        "automation_events_extend_route_life": false
+      },
+      "success_condition": "verified_paid_checkout_sessions >= 1",
+      "next_bottleneck": "qualified_human_action",
+      "rescue_policy": "Do not create a new product or change price. Keep the existing calculator -> $39 Decision Kit route intact and evaluate only verified human progression. One evidence-backed rescue action is allowed if human traffic continues without qualified action; otherwise HOLD.",
+      "on_success": [
+        "verify_payment",
+        "verify_fulfillment_or_access",
+        "identify_attributed_source_route",
+        "reconstruct_human_path",
+        "mark_win_candidate",
+        "amplify_only_after_repeatable_evidence"
+      ],
+      "activated_at": "2026-09-13"
     }
   ]
 }
