@@ -5,6 +5,14 @@
 <title>AI Agent Risk & Cost Audit Access | Stratum Praxis</title>
 <style>:root{--b:#090b0e;--p:#11151b;--l:#29303a;--t:#f4f6f8;--m:#a8b0bb;--g:#c7f9d4;--r:#ffb4b4}*{box-sizing:border-box}body{margin:0;background:var(--b);color:var(--t);font-family:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;line-height:1.6}.w{max-width:760px;margin:auto;padding:46px 20px 80px}.card{background:var(--p);border:1px solid var(--l);border-radius:18px;padding:22px;margin:16px 0}h1{font-size:clamp(34px,7vw,60px);line-height:1.05}.m{color:var(--m)}label{display:block;margin:10px 0 5px}input{width:100%;padding:13px;border-radius:10px;border:1px solid var(--l);background:#0c1015;color:var(--t)}button{margin-top:14px;padding:13px 18px;border:0;border-radius:999px;font-weight:800;cursor:pointer}.good{color:var(--g)}.bad{color:var(--r)}</style>
 <script defer src="scos-analytics.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QXTYRB4TWY');
+</script>
 </head>
 <body data-funnel="ai_agent_risk_cost_audit" data-product="ai_agent_risk_cost_audit"><main class="w"><p class="m">Stratum Praxis · Secure buyer access</p><h1>AI Agent Risk & Cost Audit</h1><div class="card"><p>Enter the same email address used at Stripe checkout. Access is granted only after the server verifies the paid Checkout Session, product, price, amount, currency, and Payment Link.</p><label for="email">Checkout email</label><input id="email" type="email" autocomplete="email" placeholder="you@example.com"><button id="open">Verify purchase & open audit</button><div id="status" class="m" aria-live="polite"></div></div><p class="m">No Stripe Session ID or email address is sent to analytics.</p></main><script>
 const API='https://ai-consultant-verify.practicalaireport.workers.dev';const p=new URLSearchParams(location.search);const sid=p.get('session_id')||'';const status=document.getElementById('status');const btn=document.getElementById('open');
