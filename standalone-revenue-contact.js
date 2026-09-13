@@ -1,0 +1,18 @@
+(()=>{'use strict';
+const EMAIL='ordlume.contact@gmail.com';
+const path=location.pathname.replace(/index\.html$/,'');
+const eligible=path==='/72-hour-household-readiness/'||path==='/72-hour-household-readiness'||path==='/72-hour-household-readiness/gear.html'||path==='/72-hour-household-readiness/plan.html'||path==='/money-resilience/'||path==='/money-resilience';
+if(!eligible||document.querySelector('[data-standalone-contact]'))return;
+const style=document.createElement('style');
+style.textContent=`.standalone-contact{width:min(1120px,calc(100% - 28px));margin:22px auto 88px;padding:13px 15px;border:1px solid rgba(120,145,135,.18);border-radius:14px;background:rgba(255,255,255,.58);color:#65736d;font:700 11px/1.5 Inter,"Noto Sans JP",ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;display:flex;align-items:center;justify-content:space-between;gap:12px;backdrop-filter:blur(10px)}.standalone-contact span{opacity:.9}.standalone-contact a{color:inherit;font-weight:900;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}.standalone-contact a:hover{opacity:.72}body.mr-vnext-body .standalone-contact{background:rgba(17,27,27,.78);border-color:rgba(208,230,224,.11);color:#92a39e}.standalone-contact[data-dark="true"]{background:rgba(17,27,27,.78);border-color:rgba(208,230,224,.11);color:#92a39e}@media(max-width:640px){.standalone-contact{margin:18px auto 82px;align-items:flex-start;flex-direction:column;width:calc(100% - 24px);padding:12px 13px}}@media print{.standalone-contact{display:none!important}}`;
+document.head.appendChild(style);
+const box=document.createElement('aside');
+box.className='standalone-contact';
+box.dataset.standaloneContact='true';
+if(path.startsWith('/money-resilience'))box.dataset.dark='true';
+const subject=encodeURIComponent('Site contact - '+location.pathname);
+box.innerHTML=`<span>運営・掲載・寄付に関する連絡 / Contact</span><a href="mailto:${EMAIL}?subject=${subject}" data-standalone-contact-link>${EMAIL}</a>`;
+const main=document.querySelector('main');
+if(main)main.insertAdjacentElement('afterend',box);else document.body.appendChild(box);
+box.querySelector('a')?.addEventListener('click',()=>{try{window.scosCapture?.('standalone_contact_click',{page_path:location.pathname});window.gtag?.('event','standalone_contact_click',{page_path:location.pathname})}catch(_){}});
+})();
