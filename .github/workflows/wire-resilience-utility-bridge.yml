@@ -1,0 +1,59 @@
+name: Wire resilience utility bridge
+on:
+  push:
+    paths:
+      - 'resilience-utility-bridge.js'
+      - '.github/workflows/wire-resilience-utility-bridge.yml'
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  wire:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Wire shared utility bridge
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          loader="""\n;(()=>{if(document.querySelector('script[data-resilience-utility-bridge]'))return;const s=document.createElement('script');s.src='/resilience-utility-bridge.js';s.defer=true;s.dataset.resilienceUtilityBridge='';document.head.appendChild(s)})();\n"""
+          changed=[]
+          for name in ['72-hour-household-readiness/readiness-v2.js','money-resilience/vnext-polish.js']:
+              p=Path(name)
+              if not p.exists(): continue
+              s=p.read_text(encoding='utf-8')
+              if 'data-resilience-utility-bridge' not in s:
+                  p.write_text(s.rstrip()+loader,encoding='utf-8'); changed.append(name)
+          for name in ['72-hour-household-readiness/gear.html','72-hour-household-readiness/plan.html']:
+              p=Path(name)
+              if not p.exists(): continue
+              s=p.read_text(encoding='utf-8')
+              tag='<script src="/resilience-utility-bridge.js" defer data-resilience-utility-bridge></script>'
+              if 'data-resilience-utility-bridge' not in s and '</body>' in s:
+                  s=s.replace('</body>',tag+'\n</body>',1);p.write_text(s,encoding='utf-8');changed.append(name)
+          print('changed:', ', '.join(changed) if changed else 'none')
+          PY
+      - name: Verify routes stay standalone
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          checks={
+            '72-hour-household-readiness/readiness-v2.js':'/money-resilience/',
+            'money-resilience/vnext-polish.js':'resilience-utility-bridge.js',
+            'resilience-utility-bridge.js':'/72-hour-household-readiness/'
+          }
+          for f,needle in checks.items():
+              s=Path(f).read_text(encoding='utf-8')
+              if needle not in s and f!='72-hour-household-readiness/readiness-v2.js': raise SystemExit(f'Missing bridge marker in {f}')
+          print('Utility bridge verification passed')
+          PY
+      - name: Commit wiring
+        run: |
+          if git diff --quiet; then echo "No wiring changes"; exit 0; fi
+          git config user.name "stratumpraxis-bot"
+          git config user.email "stratumpraxis@gmail.com"
+          git add resilience-utility-bridge.js 72-hour-household-readiness money-resilience
+          git commit -m "Connect household and money resilience utilities"
+          git push
