@@ -13,6 +13,7 @@
 <meta name="description" content="無料・登録不要。円安、物価、金利、暗号資産の変動を仮定し、家計への影響、現金余力、海外決済コスト、送金コストをブラウザ内で可視化するMoney Resilience Utility。">
 <meta name="robots" content="index,follow,max-image-preview:large">
 <link rel="canonical" href="https://stratumpraxis.com/money-resilience/">
+<base href="/money-resilience/">
 <link rel="icon" href="/utility-favicon.svg" type="image/svg+xml">
 <link rel="manifest" href="./manifest.webmanifest">
 <link rel="preconnect" href="https://api.frankfurter.dev" crossorigin>
@@ -62,5 +63,8 @@
 <script defer src="./site-power.js"></script>
 <script defer src="./experience-v2.js"></script>
 <script defer src="./experience-v3.js"></script>
+<script>
+window.addEventListener('load',()=>{try{if(location.pathname==='/money-resilience/'||location.pathname==='/money-resilience/index.html'){history.replaceState(history.state,'','/money/')}}catch(_){}});
+</script>
 </body>
 </html>
