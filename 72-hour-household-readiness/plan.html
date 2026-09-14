@@ -37,7 +37,6 @@ document.getElementById('date').value=new Date().toISOString().slice(0,10);
 const missing=q.get('missing');if(missing){const g=document.getElementById('gear');g.href='./gear.html?'+new URLSearchParams({missing,score:score||''}).toString();}
 document.getElementById('copy').onclick=async()=>{const text=`家庭用 備えプラン${score?` ${score}/100`:''}\n世帯：${document.getElementById('profile').value}\n今日：${document.getElementById('today').value}\n今週：${document.getElementById('week').value}\n今月：${document.getElementById('month').value}\n連絡・避難：${document.getElementById('contact').value}\n更新メモ：${document.getElementById('renewal').value}`;try{await navigator.clipboard.writeText(text);document.getElementById('copy').textContent='コピーしました';setTimeout(()=>document.getElementById('copy').textContent='テキストをコピー',1600)}catch(e){}};
 </script>
-<script src="/resilience-utility-bridge.js" defer data-resilience-utility-bridge></script>
 <script src="/resilience-utility-v3.js" defer data-resilience-utility-v3></script>
 </body>
 </html>
