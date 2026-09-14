@@ -20,30 +20,42 @@
       "note": "PostHog observation recorded zero human meaningful Money Resilience events under the bot=false rule."
     },
     "checkout": {
-      "status": "missing_or_unproven",
-      "provider_check": "Connected Stripe live accounts",
-      "note": "No Money Resilience-specific live Payment Link was found during the read-only Stripe inventory check. No payment or checkout object was created or changed."
+      "status": "pass_provider",
+      "provider": "Stripe live",
+      "payment_link_id": "plink_1UFRnfS1NIpN69U3RrH48dU2",
+      "currency": "jpy",
+      "amount": 500,
+      "active": true,
+      "submit_type": "donate",
+      "after_completion": "https://moneyresilience.vercel.app/?support=thanks",
+      "note": "Money Resilience-specific optional one-time support checkout exists and is active in live Stripe. No payment was completed during verification."
     },
     "source_route": {
-      "status": "no_checkout_evidence_found_in_reviewed_primary_surface",
-      "reviewed": [
-        "money-resilience/index.html",
-        "money-resilience/resilience-utility-v3.js",
-        "money-resilience/vnext-polish.js",
-        "money-resilience/site-power.js",
-        "money-resilience/experience-v3.js"
+      "status": "pass_source",
+      "commit": "31dbb28916caa56b1689c2ef70485e1b77e1551b",
+      "file": "money-resilience/resilience-utility-v3.js",
+      "note": "Primary utility source now exposes a ¥500 optional-support CTA connected to the Money Resilience Stripe Payment Link and records money_resilience_support_click."
+    },
+    "deploy": {
+      "status": "blocked",
+      "provider": "Vercel",
+      "reason": "build_rate_limit",
+      "commit": "31dbb28916caa56b1689c2ef70485e1b77e1551b",
+      "checks": [
+        {"context": "Vercel – moneyresilience", "state": "failure"},
+        {"context": "Vercel – money-resilience", "state": "failure"}
       ],
-      "note": "Reviewed primary production surface files expose the free utility, information navigation, result/share interactions and analytics, but did not provide evidence of a Money Resilience support/checkout destination."
+      "note": "The checkout route is complete in Stripe and source, but the CTA cannot yet be counted as Live because Money Resilience Vercel deployments for this commit are rate limited."
     }
   },
   "revenue_distance": {
     "current": 6,
-    "reason": "Checkout route is not currently evidenced; traffic amplification must remain gated until a real support/checkout route exists and can be verified."
+    "reason": "Revenue route source and live checkout exist, but the CTA change is not deployed to Money Resilience production yet. Traffic amplification remains gated until deploy and Live CTA verification pass."
   },
-  "bottleneck_class": "route_missing",
+  "bottleneck_class": "deploy_blocked",
   "next_action": {
-    "action": "Create and connect a Money Resilience-specific optional-support checkout, then verify CTA -> Stripe Checkout without completing a payment.",
-    "approval_required": true,
-    "reason": "Creating or changing checkout/payment configuration is an approval-gated financial/revenue-route change."
+    "action": "When the Vercel build-rate limit clears, deploy the current Money Resilience source and verify Utility CTA -> active Stripe Checkout in a real browser without completing payment.",
+    "approval_required": false,
+    "reason": "This is completion verification of the already-approved checkout route, not a new price or financial configuration change."
   }
 }
