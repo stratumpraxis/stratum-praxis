@@ -11,8 +11,15 @@ It does not provide investment, tax, legal or financial-product advice.
 - /yen/ — Yen depreciation and household exposure
 - /cash-buffer/ — Household cash buffer
 - /overseas-payment/ — Overseas payment costs
-- /methodology.html — Methodology
+- /methodology.html — Methodology and stress-test approach
+- /sources.html — Public reference sources
+- /faq.html — Frequently asked questions
 - /privacy.html — Privacy
+- /terms.html — Usage notes and limitations
 - /about.html — About and disclaimer
+- /media.html — Information for editors and organizations
+
+The utility score is an internal comparison indicator, not a credit score, lending decision, investment rating, or forecast.
+Household diagnostic inputs are designed to be calculated in the browser.
 
 Contact: ordlume.contact@gmail.com
