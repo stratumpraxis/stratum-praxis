@@ -1,24 +1,9 @@
 (()=>{'use strict';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
-const ORDLUME_URL='https://ordlume.vercel.app/';
 function track(name,params={}){try{window.gtag?.('event',name,{page_path:location.pathname,...params})}catch(e){}}
 function getMissingKeys(){return $$('#grid input').filter(i=>!i.checked).map(i=>i.dataset.k).filter(Boolean).slice(0,3)}
 function getActiveProfile(){return $('.profile-chip.active')?.textContent?.trim()||''}
-function applyStandaloneIdentity(){
-  const canonical=document.querySelector('link[rel="canonical"]');if(canonical)canonical.href=ORDLUME_URL;
-  const og=document.querySelector('meta[property="og:url"]');if(og)og.content=ORDLUME_URL;
-  document.querySelectorAll('script[type="application/ld+json"]').forEach(s=>{try{const j=JSON.parse(s.textContent);if(j&&j['@type']==='WebApplication'){j.url=ORDLUME_URL;s.textContent=JSON.stringify(j)}}catch(e){}});
-  document.querySelector('[data-seo-related="money"]')?.remove();
-  const guide=document.querySelector('.seo-readiness-guide');
-  if(guide){
-    guide.querySelectorAll('a[href*="money-resilience"]').forEach(a=>a.remove());
-    guide.querySelectorAll('p').forEach(p=>{if(p.textContent.includes('Money Resilience Utility'))p.textContent='結果は家庭用プランとして印刷・PDF保存できます。入力内容はこのブラウザ内だけで扱い、登録なしで利用できます。';});
-  }
-  const footer=document.querySelector('.footer');
-  if(footer&&!footer.querySelector('[data-ordlume-contact]')){const a=document.createElement('a');a.dataset.ordlumeContact='';a.href='mailto:ordlume.contact@gmail.com';a.textContent='Contact: ordlume.contact@gmail.com';a.style.color='inherit';a.style.textDecoration='none';footer.appendChild(a);}
-}
 function ready(){
-  applyStandaloneIdentity();
   document.body.classList.add('readiness-v2');
   const hero=$('.hero');
   if(hero&&!document.querySelector('.readiness-strip')){
