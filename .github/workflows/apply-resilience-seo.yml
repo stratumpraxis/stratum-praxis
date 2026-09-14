@@ -74,6 +74,6 @@ jobs:
           if git diff --quiet; then exit 0; fi
           git config user.name 'stratumpraxis-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git add -A money-resilience/market-pulse.js money-resilience/index.html money-resilience/scos-analytics.js 72-hour-household-readiness/index.html
+          git add -A money-resilience 72-hour-household-readiness/index.html
           git commit -m 'Clean OrdLume static identity and keep utility brands isolated'
           git push
