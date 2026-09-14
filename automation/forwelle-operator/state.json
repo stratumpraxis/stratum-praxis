@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49683262",
     "hn:49649213",
     "hn:49630931",
     "hn:49615537",
@@ -16,8 +17,8 @@
   ],
   "lastScoutAt": "2026-09-14T00:40:01.644Z",
   "lastRun": {
-    "id": "2026-09-11-openai-agents-api-hn-49649213",
-    "at": "2026-09-11T00:50:10.773Z",
+    "id": "2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262",
+    "at": "2026-09-14T00:41:20.984Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }
