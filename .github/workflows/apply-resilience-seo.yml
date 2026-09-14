@@ -50,6 +50,8 @@ jobs:
           s = s.replace('<a href="/money-resilience/">お金の耐久力チェック</a>', '')
           s = s.replace('金融面の余力は別のMoney Resilience Utilityで確認できます。どちらのツールも登録不要で、入力内容を相互に引き継ぎません。', '')
           s = s.replace('https://stratumpraxis.com/72-hour-household-readiness/', 'https://ordlume.vercel.app/')
+          s = s.replace('/72-hour-household-readiness/readiness-v2.css', '/readiness-v2.css')
+          s = s.replace('/72-hour-household-readiness/readiness-v2.js', '/readiness-v2.js')
           ord_index.write_text(s)
           PY
 
@@ -63,6 +65,9 @@ jobs:
           ! grep -q '/72-hour-household-readiness/' money-resilience/index.html
           ! grep -q '/money-resilience/' 72-hour-household-readiness/index.html
           ! grep -q 'stratumpraxis.com/72-hour-household-readiness/' 72-hour-household-readiness/index.html
+          ! grep -q '/72-hour-household-readiness/readiness-v2' 72-hour-household-readiness/index.html
+          grep -q 'href="/readiness-v2.css"' 72-hour-household-readiness/index.html
+          grep -q 'src="/readiness-v2.js"' 72-hour-household-readiness/index.html
           grep -q '<link rel="canonical" href="https://ordlume.vercel.app/">' 72-hour-household-readiness/index.html
           grep -q '<meta property="og:url" content="https://ordlume.vercel.app/">' 72-hour-household-readiness/index.html
           git diff --check
@@ -75,6 +80,6 @@ jobs:
           git config user.name 'stratumpraxis-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A money-resilience 72-hour-household-readiness/index.html
-          git commit -m 'Clean OrdLume static identity and keep utility brands isolated'
+          git commit -m 'Remove OrdLume legacy asset-path dependency'
           git pull --rebase origin main
           git push origin main
