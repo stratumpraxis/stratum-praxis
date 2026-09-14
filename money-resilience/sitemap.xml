@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://moneyresilience.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/guides/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/inflation/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/yen/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/cash-buffer/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/overseas-payment/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/methodology.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/sources.html</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/faq.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/terms.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/about.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+  <url><loc>https://moneyresilience.vercel.app/media.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
+</urlset>
