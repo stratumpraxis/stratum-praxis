@@ -1,0 +1,17 @@
+{
+  "asset_id": "money-resilience",
+  "url": "https://moneyresilience.vercel.app/",
+  "interaction_required": true,
+  "required_substrings": [
+    "class=\"mr-app\"",
+    "id=\"mrWorkspace\"",
+    "data-core-score"
+  ],
+  "forbidden_substrings": [
+    "id=\"mrBoot\""
+  ],
+  "minimum_counts": {
+    "data-tool-panel": 5,
+    "data-core-score": 2
+  }
+}

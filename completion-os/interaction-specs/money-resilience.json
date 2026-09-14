@@ -1,0 +1,16 @@
+{
+  "asset_id": "money-resilience",
+  "url": "https://moneyresilience.vercel.app/",
+  "wait_for": ".mr-app",
+  "action": {
+    "selector": "[data-value=\"income\"]",
+    "property": "value",
+    "value": "600000",
+    "events": ["input", "change"]
+  },
+  "observe": {
+    "selector": "[data-core=\"main\"] [data-core-score]",
+    "wait_ms": 1200
+  },
+  "restore": true
+}

@@ -1,0 +1,16 @@
+{
+  "asset_id": "ordlume",
+  "url": "https://ordlume.vercel.app/",
+  "wait_for": "#grid input[data-k]",
+  "action": {
+    "selector": "#grid input[data-k]",
+    "property": "checked",
+    "value": true,
+    "events": ["change"]
+  },
+  "observe": {
+    "selector": "#score",
+    "wait_ms": 500
+  },
+  "restore": true
+}
