@@ -1,6 +1,6 @@
 (function(){
 'use strict';
-if(location.pathname!=='/money-resilience/'&&location.pathname!=='/money-resilience/index.html')return;
+if(location.pathname!=='/'&&location.pathname!=='/index.html'&&location.pathname!=='/money-resilience/'&&location.pathname!=='/money-resilience/index.html')return;
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>Array.from(r.querySelectorAll(s));
 const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const scenarios=[
@@ -30,14 +30,12 @@ function capture(name,props){try{window.scosCapture&&window.scosCapture(name,pro
 function parseNum(text){const n=Number(String(text||'').replace(/[^0-9.-]/g,''));return Number.isFinite(n)?n:0}
 function formatLike(raw,value){if(/^¥/.test(raw))return '¥'+Math.round(value).toLocaleString('ja-JP');if(/m\s*$/.test(raw))return value.toFixed(1)+'m';if(/%/.test(raw))return Math.round(value)+'%';return Math.round(value).toLocaleString('ja-JP')}
 
-// Language persistence without changing analytics or financial state.
 try{
  const saved=localStorage.getItem('mr_lang_v1');
  if(saved==='ja'||saved==='en')requestAnimationFrame(()=>{const b=$(`[data-lang="${saved}"]`);if(b&&!b.classList.contains('active'))b.click()});
  document.addEventListener('click',e=>{const b=e.target.closest('[data-lang]');if(b)localStorage.setItem('mr_lang_v1',b.dataset.lang)});
 }catch(_){ }
 
-// Upgrade the scenario range into a three-state Stress Dial while preserving the existing range input.
 const slider=$('#mrScenario');
 if(slider){
  const wrap=document.createElement('div');wrap.className='mr-shock-wrap';slider.parentNode.insertBefore(wrap,slider);wrap.appendChild(slider);
@@ -57,7 +55,6 @@ function tweenAssumptions(){
  Object.keys(targets).forEach(k=>{$$(`[data-assume="${k}"]`).forEach(el=>{const to=targets[k],from=assumptionPrev[k]??to;assumptionPrev[k]=to;if(reduced||from===to){el.textContent=map[k].fmt(to);return}const start=performance.now();function f(now){const x=Math.min(1,(now-start)/260),e=1-Math.pow(1-x,3),v=from+(to-from)*e;el.textContent=map[k].fmt(v);if(x<1)requestAnimationFrame(f)}requestAnimationFrame(f)})});
 }
 
-// Keep result metrics visually continuous instead of replacing the world on each input.
 const lastMetric=new Map();
 function tweenResults(){
  $$('#mrResultGrid .mr-result-tile').forEach(tile=>{const key=$('small',tile)?.textContent||'';const b=$('b',tile);if(!b||!/[-\d]/.test(b.textContent))return;const raw=b.textContent,to=parseNum(raw);const from=lastMetric.has(key)?lastMetric.get(key):to;lastMetric.set(key,to);if(reduced||from===to)return;const start=performance.now();function frame(now){const x=Math.min(1,(now-start)/300),e=1-Math.pow(1-x,3);b.textContent=formatLike(raw,from+(to-from)*e);if(x<1)requestAnimationFrame(frame)}requestAnimationFrame(frame)})
@@ -65,32 +62,26 @@ function tweenResults(){
 function scheduleResultTween(){requestAnimationFrame(()=>requestAnimationFrame(tweenResults))}
 document.addEventListener('input',e=>{if(e.target.matches('[data-value],[data-range],[data-mini],#mrScenario'))scheduleResultTween()});
 
-// Causal feedback: show the currently dominant pressure in one compact ribbon.
 const coreCard=$('.mr-core-card');
 let ribbon;
 if(coreCard){ribbon=document.createElement('div');ribbon.className='mr-causal-ribbon';ribbon.innerHTML='<i></i><b>CORE</b><span>Input → pressure → resilience</span>';const legend=$('#mrFactorLegend');if(legend)legend.insertAdjacentElement('afterend',ribbon)}
 function updateCausal(){if(!ribbon)return;const factors=$$('#mrFactorLegend .mr-factor').map(el=>({name:$('span',el)?.textContent||'',v:parseNum($('b',el)?.textContent)})).sort((a,b)=>b.v-a.v);const top=factors[0];if(!top)return;ribbon.innerHTML=`<i></i><b>${top.name}</b><span>${top.v} → Core</span>`;ribbon.classList.remove('flash');void ribbon.offsetWidth;ribbon.classList.add('flash')}
 const legend=$('#mrFactorLegend');if(legend)new MutationObserver(updateCausal).observe(legend,{subtree:true,childList:true,characterData:true});updateCausal();
 
-// Mobile is a separate information hierarchy: Live + Score first, then inputs, fixed action dock.
 const preview=$('#mrPreview');
 let mobileScore;
 if(preview){mobileScore=document.createElement('div');mobileScore.className='mr-mobile-score';mobileScore.innerHTML='<i></i><div><small>RESILIENCE</small><b>—</b></div>';preview.appendChild(mobileScore)}
 function syncMobileScore(){if(!mobileScore)return;const score=$('[data-core="main"] [data-core-score]')?.textContent||$('[data-core="preview"] [data-core-score]')?.textContent||'—';$('b',mobileScore).textContent=score}
 const mainCore=$('[data-core="main"] [data-core-score]');if(mainCore)new MutationObserver(syncMobileScore).observe(mainCore,{childList:true,characterData:true,subtree:true});syncMobileScore();
 
-// Pause decorative motion outside the viewport and while the page is backgrounded.
 if('IntersectionObserver'in window){const io=new IntersectionObserver(entries=>{entries.forEach(x=>x.target.classList.toggle('mr-paused',!x.isIntersecting))},{rootMargin:'180px 0px',threshold:.01});['#mrPreview','#mrWorkspace'].forEach(s=>{const el=$(s);if(el)io.observe(el)})}
 document.addEventListener('visibilitychange',()=>document.body.classList.toggle('mr-page-hidden',document.visibilityState!=='visible'));
 
-// Make touch controls feel physical without adding continuous animation.
 document.addEventListener('pointerdown',e=>{const el=e.target.closest('button,.mr-control');if(el)el.dataset.pressed='1'});
 document.addEventListener('pointerup',e=>{const el=e.target.closest('[data-pressed]');if(el)delete el.dataset.pressed});
 
-// Live region for tool changes, useful visually and for assistive tech without adding copy to the page.
 const live=document.createElement('div');live.setAttribute('aria-live','polite');live.style.cssText='position:fixed;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap';document.body.appendChild(live);
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tool],[data-mobile],[data-nav]');if(!b)return;const v=b.dataset.tool||b.dataset.mobile||b.dataset.nav;if(v)live.textContent='Tool '+v});
 
 capture('money_resilience_vnext_polish_loaded',{motion:reduced?'reduced':'full'});
 })();
-;(()=>{if(document.querySelector('script[data-resilience-utility-bridge]'))return;const s=document.createElement('script');s.src='/resilience-utility-bridge.js';s.defer=true;s.dataset.resilienceUtilityBridge='';document.head.appendChild(s)})();
