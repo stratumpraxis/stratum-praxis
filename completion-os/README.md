@@ -115,10 +115,59 @@ GITHUB_TOKEN=... node completion-os/adapters/github-deploy-status.mjs \
 
 The adapter only reads status evidence. It never retries or starts a deployment itself.
 
+## HTTP Live-check adapter
+
+`adapters/http-live-check.mjs` performs a read-only HTTP/HTML contract check for the `live` stage.
+
+A Live contract can require:
+
+- expected HTTP status
+- expected production origin
+- exact canonical URL
+- required HTML markers
+- required script / stylesheet references
+- forbidden cross-brand or legacy markers
+
+Current contracts live in:
+
+- `live-specs/money-resilience.json`
+- `live-specs/ordlume.json`
+
+Live mode:
+
+```bash
+node completion-os/adapters/http-live-check.mjs \
+  --spec completion-os/live-specs/money-resilience.json
+```
+
+Source/fixture mode:
+
+```bash
+node completion-os/adapters/http-live-check.mjs \
+  --spec completion-os/live-specs/money-resilience.json \
+  --html money-resilience/index.html \
+  --status 200 \
+  --final-url https://moneyresilience.vercel.app/
+```
+
+### Important runtime boundary
+
+Passing HTTP and static HTML checks is **not** enough to prove a JavaScript-heavy utility is working in a real browser.
+
+When a contract has `"runtime_required": true`, the adapter deliberately returns:
+
+- `static_checks_passed: true`
+- `status: "unknown"`
+
+until separate browser evidence proves JavaScript boot and the required interactive behavior.
+
+This prevents a common false-positive: `HTTP 200 + correct HTML = Live complete`.
+
 ## Safety and concurrency rules
 
 - Never claim Deploy from build success alone.
 - Never claim Live without checking the intended public endpoint and behavior.
+- Never claim browser runtime from HTTP/HTML inspection alone.
 - Never claim Usage from page availability alone.
 - Never claim Action from a rendered CTA alone.
 - Never claim Payment from a click, checkout session, or success redirect alone.
@@ -133,4 +182,4 @@ The adapter only reads status evidence. It never retries or starts a deployment 
 
 `cases/2026-09-14-resilience.json` is a dated snapshot of the Money Resilience / OrdLume case that motivated this layer. It should remain historical even after those assets advance.
 
-The first adapter now reads GitHub deployment statuses and emits the same evidence contract. Future adapters should **read** existing analytics/payment/usage evidence without redefining those systems.
+The current adapters read deployment-status evidence and HTTP/HTML Live contracts. The next meaningful extension is a browser-runtime evidence adapter, followed later by read-only usage / action / payment evidence adapters without redefining those source systems.

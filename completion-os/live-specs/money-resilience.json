@@ -1,0 +1,22 @@
+{
+  "asset_id": "money-resilience",
+  "url": "https://moneyresilience.vercel.app/",
+  "expected_status": 200,
+  "canonical": "https://moneyresilience.vercel.app/",
+  "runtime_required": true,
+  "required_substrings": [
+    "Money Resilience Utility",
+    "id=\"mrBoot\""
+  ],
+  "required_assets": [
+    "market-pulse.js",
+    "resilience-utility-v3.js",
+    "experience-v3.js"
+  ],
+  "forbidden_substrings": [
+    "ordlume.vercel.app",
+    "ordlume.contact@gmail.com",
+    "72H Home Readiness",
+    "stratumpraxis.com/72-hour-household-readiness/"
+  ]
+}

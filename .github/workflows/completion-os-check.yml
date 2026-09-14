@@ -26,8 +26,11 @@ jobs:
           node --check completion-os/test.mjs
           node --check completion-os/adapters/github-deploy-status.mjs
           node --check completion-os/adapters/test-github-deploy-status.mjs
+          node --check completion-os/adapters/http-live-check.mjs
+          node --check completion-os/adapters/test-http-live-check.mjs
           node completion-os/test.mjs
           node completion-os/adapters/test-github-deploy-status.mjs
+          node completion-os/adapters/test-http-live-check.mjs
 
       - name: Validate dated resilience case
         run: |
@@ -57,4 +60,26 @@ jobs:
           if (gate.status !== 'blocked') throw new Error(`expected blocked, got ${gate.status}`);
           if (gate.retry_after !== '24 hours') throw new Error(`expected 24 hours, got ${gate.retry_after}`);
           console.log('Deploy-status fixture classified as external block');
+          NODE
+
+      - name: Validate current source against Live contracts
+        run: |
+          node completion-os/adapters/http-live-check.mjs \
+            --spec completion-os/live-specs/money-resilience.json \
+            --html money-resilience/index.html \
+            --status 200 \
+            --final-url https://moneyresilience.vercel.app/ > /tmp/money-live-contract.json
+          node completion-os/adapters/http-live-check.mjs \
+            --spec completion-os/live-specs/ordlume.json \
+            --html 72-hour-household-readiness/index.html \
+            --status 200 \
+            --final-url https://ordlume.vercel.app/ > /tmp/ordlume-live-contract.json
+          node - <<'NODE'
+          const fs = require('fs');
+          for (const file of ['/tmp/money-live-contract.json', '/tmp/ordlume-live-contract.json']) {
+            const gate = JSON.parse(fs.readFileSync(file, 'utf8'));
+            if (gate.static_checks_passed !== true) throw new Error(`${file}: static contract must pass`);
+            if (gate.status !== 'unknown') throw new Error(`${file}: runtime-required asset must remain unknown without browser evidence`);
+          }
+          console.log('Current source satisfies static Live contracts without falsely proving runtime Live');
           NODE
