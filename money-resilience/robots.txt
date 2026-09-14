@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://moneyresilience.vercel.app/sitemap.xml
