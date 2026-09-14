@@ -101,7 +101,11 @@ jobs:
                       raise SystemExit(f'Missing </head> in {path}')
                   html = html[:idx] + TAG + '\n' + html[idx:]
 
-              if html.count("gtag('config', 'G-QXTYRB4TWY');") != 1:
+              config_count = (
+                  html.count("gtag('config', 'G-QXTYRB4TWY');")
+                  + html.count("gtag('config','G-QXTYRB4TWY');")
+              )
+              if config_count != 1:
                   raise SystemExit(f'GA4 duplicate/missing config in {path}')
 
               path.write_text(html, encoding='utf-8')
