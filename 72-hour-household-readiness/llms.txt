@@ -1,0 +1,35 @@
+# OrdLume Home Readiness Utility
+
+OrdLume provides a free, registration-free household disaster-readiness utility in Japanese.
+
+Primary URL: https://ordlume.vercel.app/
+
+Core purpose:
+- Check 10 household readiness categories in about 2 minutes.
+- Show a simple readiness score.
+- Identify missing basics.
+- Turn gaps into three next actions: today, this week, this month.
+- Avoid fear pressure and unnecessary purchasing.
+
+Main sections:
+- / — interactive readiness check
+- /guides/ — disaster-readiness guides
+- /water/ — emergency water guide
+- /food/ — emergency food guide
+- /blackout/ — blackout preparation
+- /battery/ — backup power guide
+- /toilet/ — sanitation and toilet preparation
+- /solo/ — preparedness for people living alone
+- /family/ — family preparedness
+- /pet/ — preparedness with pets
+- /gear.html — gap-based preparedness guide
+- /plan.html — printable household readiness plan
+- /methodology.html — scoring and methodology
+- /sources.html — public sources and official references
+- /press.html — media information
+- /privacy.html — privacy information
+
+Important notes:
+- This is not a government service.
+- Medical, evacuation and public-support decisions should rely on current official information.
+- Support/donations are optional and do not change utility functionality.
