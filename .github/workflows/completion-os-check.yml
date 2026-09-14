@@ -24,7 +24,10 @@ jobs:
         run: |
           node --check completion-os/evaluate.mjs
           node --check completion-os/test.mjs
+          node --check completion-os/adapters/github-deploy-status.mjs
+          node --check completion-os/adapters/test-github-deploy-status.mjs
           node completion-os/test.mjs
+          node completion-os/adapters/test-github-deploy-status.mjs
 
       - name: Validate dated resilience case
         run: |
@@ -41,4 +44,17 @@ jobs:
             if (!item.later_gates_not_proven.includes('live')) throw new Error(`${item.asset_id}: live must remain unproven`);
           }
           console.log('Dated resilience case validated');
+          NODE
+
+      - name: Validate deploy-status fixture classification
+        run: |
+          node completion-os/adapters/github-deploy-status.mjs \
+            --file completion-os/fixtures/vercel-rate-limit-status.json \
+            --context '^Vercel – money-resilience$' > /tmp/deploy-gate.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const gate = JSON.parse(fs.readFileSync('/tmp/deploy-gate.json', 'utf8'));
+          if (gate.status !== 'blocked') throw new Error(`expected blocked, got ${gate.status}`);
+          if (gate.retry_after !== '24 hours') throw new Error(`expected 24 hours, got ${gate.retry_after}`);
+          console.log('Deploy-status fixture classified as external block');
           NODE

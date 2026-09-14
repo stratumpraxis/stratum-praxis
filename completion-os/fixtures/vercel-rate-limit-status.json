@@ -1,0 +1,23 @@
+{
+  "state": "failure",
+  "statuses": [
+    {
+      "state": "failure",
+      "description": "Deployment rate limited — retry in 24 hours.",
+      "target_url": "https://vercel.com/example?upgradeToPro=build-rate-limit",
+      "context": "Vercel – money-resilience"
+    },
+    {
+      "state": "failure",
+      "description": "Deployment rate limited — retry in 24 hours.",
+      "target_url": "https://vercel.com/example?upgradeToPro=build-rate-limit",
+      "context": "Vercel – ordlume"
+    },
+    {
+      "state": "success",
+      "description": "Older successful status for same context; must be ignored in favor of the latest one.",
+      "target_url": "https://vercel.com/example/older",
+      "context": "Vercel – money-resilience"
+    }
+  ]
+}
