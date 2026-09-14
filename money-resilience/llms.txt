@@ -10,7 +10,7 @@ It does not provide investment, tax, legal or financial-product advice.
 - /inflation/ — Inflation and household budgets
 - /yen/ — Yen depreciation and household exposure
 - /cash-buffer/ — Household cash buffer
-- /overseas-payments/ — Overseas payment costs
+- /overseas-payment/ — Overseas payment costs
 - /methodology.html — Methodology
 - /privacy.html — Privacy
 - /about.html — About and disclaimer
