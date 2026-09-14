@@ -8,6 +8,15 @@
     return String(value || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, limit || 120);
   }
 
+  const heroActions = document.querySelector('.hero .actions');
+  if (heroActions && !document.querySelector('.hero .checkout-fit')) {
+    const buyerFit = document.createElement('p');
+    buyerFit.className = 'checkout-fit';
+    buyerFit.style.cssText = 'max-width:630px;margin:0 0 14px;color:#b9c8c2;font-size:12.5px;line-height:1.62';
+    buyerFit.innerHTML = '<span class="locale locale-en">Best fit: teams or solo operators coordinating multiple AI agents or tools who want fewer handoff failures and clearer execution ownership.</span><span class="locale locale-ja">最適：複数のAIエージェントやツールを連携し、引き継ぎミスを減らして実行責任を明確にしたいチーム／個人運用者。</span><span class="locale locale-ko">적합 대상: 여러 AI 에이전트나 도구를 함께 운영하며 핸드오프 실패를 줄이고 실행 책임을 명확히 하려는 팀 또는 개인 운영자.</span><span class="locale locale-zh">适合：协同多个 AI 智能体或工具，希望减少交接失败并明确执行责任的团队或个人运营者。</span>';
+    heroActions.parentNode.insertBefore(buyerFit, heroActions);
+  }
+
   const demoVideo = document.getElementById('cross-agent-product-demo');
   if (demoVideo) {
     let played = false;
