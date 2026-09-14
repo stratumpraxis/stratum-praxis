@@ -12,6 +12,8 @@
   <url><loc>https://ordlume.vercel.app/solo/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ordlume.vercel.app/family/</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://ordlume.vercel.app/pet/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://ordlume.vercel.app/methodology.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://ordlume.vercel.app/sources.html</loc><changefreq>yearly</changefreq><priority>0.5</priority></url>
   <url><loc>https://ordlume.vercel.app/about.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
   <url><loc>https://ordlume.vercel.app/privacy.html</loc><changefreq>yearly</changefreq><priority>0.3</priority></url>
   <url><loc>https://ordlume.vercel.app/press.html</loc><changefreq>yearly</changefreq><priority>0.4</priority></url>
