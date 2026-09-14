@@ -21,5 +21,3 @@ It does not provide investment, tax, legal or financial-product advice.
 
 The utility score is an internal comparison indicator, not a credit score, lending decision, investment rating, or forecast.
 Household diagnostic inputs are designed to be calculated in the browser.
-
-Contact: ordlume.contact@gmail.com
