@@ -1,14 +1,90 @@
 {
+  "redirects": [
+    { "source": "/money", "destination": "/", "permanent": true },
+    { "source": "/money/", "destination": "/", "permanent": true },
+    { "source": "/money-resilience", "destination": "/", "permanent": true },
+    { "source": "/money-resilience/", "destination": "/", "permanent": true }
+  ],
   "rewrites": [
-    { "source": "/money-resilience/:path*", "destination": "/:path*" },
-    { "source": "/money", "destination": "/" },
-    { "source": "/money/", "destination": "/" }
+    { "source": "/money-resilience/:path+", "destination": "/:path+" }
   ],
   "headers": [
     {
       "source": "/",
       "headers": [
         { "key": "Link", "value": "<https://moneyresilience.vercel.app/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/guides/",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/guides/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/inflation/",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/inflation/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/yen/",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/yen/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/cash-buffer/",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/cash-buffer/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/overseas-payment/",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/overseas-payment/>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/methodology.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/methodology.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/sources.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/sources.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/faq.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/faq.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/privacy.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/privacy.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/terms.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/terms.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/about.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/about.html>; rel=\"canonical\"" }
+      ]
+    },
+    {
+      "source": "/media.html",
+      "headers": [
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/media.html>; rel=\"canonical\"" }
       ]
     },
     {
