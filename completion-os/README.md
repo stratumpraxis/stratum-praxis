@@ -42,6 +42,30 @@ The evaluator never infers later completion from earlier success.
 
 If `source=pass`, `deploy=blocked`, and `live=unknown`, the next job is deployment evidence — not more source polishing and not Live claims.
 
+## Revision binding
+
+Current production behavior and deployment of the **intended repository revision** are separate facts.
+
+When a state includes `target_revision`, pass evidence for `source`, `deploy`, and `live` must also include the exact same `revision`. If the revision is missing or different, Completion OS treats that gate as `unknown` rather than reusing stale production evidence.
+
+Example:
+
+```json
+{
+  "asset_id": "example",
+  "target": "production",
+  "target_revision": "commit-123",
+  "required_gates": ["source", "deploy", "live"],
+  "gates": {
+    "source": {"status":"pass","revision":"commit-123"},
+    "deploy": {"status":"pass","revision":"commit-123"},
+    "live": {"status":"pass","revision":"commit-123"}
+  }
+}
+```
+
+A browser test against a public URL can prove that **current production works** without proving which immutable revision produced that behavior. Such evidence belongs in a dated observation record until a deployment/revision marker binds it to the intended revision.
+
 ## Input shape
 
 ```json
@@ -75,6 +99,7 @@ node completion-os/evaluate.mjs path/to/state.json
 
 The output includes:
 
+- `target_revision`
 - `proven_through`
 - `blocker_gate`
 - `blocker_status`
@@ -140,46 +165,48 @@ node completion-os/adapters/http-live-check.mjs \
   --spec completion-os/live-specs/money-resilience.json
 ```
 
-Source/fixture mode:
+Passing HTTP and static HTML checks is **not** enough to prove a JavaScript-heavy utility is working in a real browser. With `runtime_required: true`, static success remains `status: "unknown"` until browser evidence exists.
 
-```bash
-node completion-os/adapters/http-live-check.mjs \
-  --spec completion-os/live-specs/money-resilience.json \
-  --html money-resilience/index.html \
-  --status 200 \
-  --final-url https://moneyresilience.vercel.app/
-```
+## Browser runtime evidence
 
-### Important runtime boundary
+`adapters/browser-dom-check.mjs` classifies DOM captured from a real browser engine. Contracts in `browser-specs/` verify that JavaScript replaced/extended the static shell and produced the expected runtime elements.
 
-Passing HTTP and static HTML checks is **not** enough to prove a JavaScript-heavy utility is working in a real browser.
+`adapters/webdriver-interaction-check.mjs` uses the W3C WebDriver HTTP protocol without application dependencies. Contracts in `interaction-specs/` mutate one safe browser-local input and verify that the expected result changes.
 
-When a contract has `"runtime_required": true`, the adapter deliberately returns:
+The production probe workflow is:
 
-- `static_checks_passed: true`
-- `status: "unknown"`
+`.github/workflows/completion-os-live-browser.yml`
 
-until separate browser evidence proves JavaScript boot and the required interactive behavior.
+It is read-only with respect to repository and production configuration. Test input mutations happen only inside the disposable browser session and are restored where practical.
 
-This prevents a common false-positive: `HTTP 200 + correct HTML = Live complete`.
+The dated production observation from 2026-09-14 is stored at:
+
+`evidence/2026-09-14-production-runtime.json`
+
+At that observation:
+
+- Money Resilience browser boot passed and changing income changed the Core score from 72 to 78.
+- OrdLume browser boot passed and checking one readiness item changed the score from 0 to 10.
+- The public pages did not expose an immutable deployment revision, so the observation is **revision-unbound** and must not be used to claim that the latest repository commit was deployed.
 
 ## Safety and concurrency rules
 
 - Never claim Deploy from build success alone.
 - Never claim Live without checking the intended public endpoint and behavior.
 - Never claim browser runtime from HTTP/HTML inspection alone.
+- Never reuse production evidence for another revision unless the revision is explicitly bound.
 - Never claim Usage from page availability alone.
 - Never claim Action from a rendered CTA alone.
 - Never claim Payment from a click, checkout session, or success redirect alone.
 - Respect provider rate limits and repository retry bounds; no infinite retries.
 - Do not force-push to solve concurrent main-branch edits.
-- Production evidence remains in its provider/owned evidence store (for example `.deployment-status/`); dated cases here are snapshots, not an authority override.
+- Production evidence remains in its provider/owned evidence store (for example `.deployment-status/`); dated cases and observations here are snapshots, not an authority override.
 - Historical successful evidence must not be overwritten by assumptions.
 
 ## Current MVP
 
 `evaluate.mjs` is intentionally dependency-free and deterministic. It does not mutate production, deploy anything, or query providers by itself. That keeps the decision layer reusable and safe.
 
-`cases/2026-09-14-resilience.json` is a dated snapshot of the Money Resilience / OrdLume case that motivated this layer. It should remain historical even after those assets advance.
+`cases/2026-09-14-resilience.json` is a dated decision snapshot. `evidence/2026-09-14-production-runtime.json` is a dated production-behavior observation. Neither should be rewritten when later evidence advances.
 
-The current adapters read deployment-status evidence and HTTP/HTML Live contracts. The next meaningful extension is a browser-runtime evidence adapter, followed later by read-only usage / action / payment evidence adapters without redefining those source systems.
+The current adapters cover deployment status, HTTP/static Live contracts, browser boot, and a minimal input→result interaction probe. The next meaningful extension is read-only usage/action/payment evidence ingestion, while keeping those source systems authoritative.
