@@ -1,0 +1,18 @@
+# Money Resilience Utility
+
+Money Resilience is a free, registration-free household financial stress-test utility.
+It helps users explore how changes in prices, exchange rates, interest rates and cash buffers may affect household resilience.
+It does not provide investment, tax, legal or financial-product advice.
+
+## Main pages
+- / — Money Resilience Utility
+- /guides/ — Guides
+- /inflation/ — Inflation and household budgets
+- /yen/ — Yen depreciation and household exposure
+- /cash-buffer/ — Household cash buffer
+- /overseas-payments/ — Overseas payment costs
+- /methodology.html — Methodology
+- /privacy.html — Privacy
+- /about.html — About and disclaimer
+
+Contact: ordlume.contact@gmail.com
