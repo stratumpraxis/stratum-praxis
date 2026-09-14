@@ -189,13 +189,46 @@ At that observation:
 - OrdLume browser boot passed and checking one readiness item changed the score from 0 to 10.
 - The public pages did not expose an immutable deployment revision, so the observation is **revision-unbound** and must not be used to claim that the latest repository commit was deployed.
 
+## Usage evidence
+
+`adapters/analytics-usage-evidence.mjs` normalizes read-only analytics observations into the `usage` gate without treating exposure as usage.
+
+It separates four materially different states:
+
+- meaningful human interaction exists → `pass`
+- meaningful events exist but only automation/bot/internal evidence is proven → `unknown`
+- instrumentation is missing or not connected to the inspected provider → `unknown` with `measurement_gap: true`
+- only page/load exposure exists → `unknown`
+
+A zero count is not automatically a failure. Absence of evidence can mean no use, filtered internal traffic, bot-only activity, or a missing measurement path; Completion OS preserves that distinction.
+
+The dated observation is stored at:
+
+`evidence/2026-09-14-usage-observation.json`
+
+For that observation:
+
+- Money Resilience had product-specific events in PostHog, but the queried `money_resilience_market_refresh`, `money_resilience_v3_loaded`, and `money_resilience_vnext_loaded` events produced zero results when restricted to `$virt_is_bot=false`; Usage therefore remains unproven rather than failed.
+- OrdLume `readiness_*` interaction events were not present in the inspected PostHog taxonomy while its source uses a separate `gtag` path; this is recorded as a measurement-path gap, not as zero usage.
+- Generic `calculator_input` was excluded because its verified calculator identifier was `ai_agent_economics`, not Money Resilience.
+- Raw household financial input values are not required or stored for Usage evidence.
+
+Run the dated classifier snapshot with:
+
+```bash
+node completion-os/adapters/analytics-usage-evidence.mjs \
+  completion-os/evidence/2026-09-14-usage-observation.json
+```
+
 ## Safety and concurrency rules
 
 - Never claim Deploy from build success alone.
 - Never claim Live without checking the intended public endpoint and behavior.
 - Never claim browser runtime from HTTP/HTML inspection alone.
 - Never reuse production evidence for another revision unless the revision is explicitly bound.
-- Never claim Usage from page availability alone.
+- Never claim Usage from page availability or load events alone.
+- Never promote bot/internal/automated probes to human Usage.
+- Never interpret missing instrumentation as proof of zero usage.
 - Never claim Action from a rendered CTA alone.
 - Never claim Payment from a click, checkout session, or success redirect alone.
 - Respect provider rate limits and repository retry bounds; no infinite retries.
@@ -207,6 +240,6 @@ At that observation:
 
 `evaluate.mjs` is intentionally dependency-free and deterministic. It does not mutate production, deploy anything, or query providers by itself. That keeps the decision layer reusable and safe.
 
-`cases/2026-09-14-resilience.json` is a dated decision snapshot. `evidence/2026-09-14-production-runtime.json` is a dated production-behavior observation. Neither should be rewritten when later evidence advances.
+`cases/2026-09-14-resilience.json` is a dated decision snapshot. Dated runtime and Usage observations under `evidence/` are append-only evidence snapshots. They should not be rewritten when later evidence advances.
 
-The current adapters cover deployment status, HTTP/static Live contracts, browser boot, and a minimal input→result interaction probe. The next meaningful extension is read-only usage/action/payment evidence ingestion, while keeping those source systems authoritative.
+The current adapters cover deployment status, HTTP/static Live contracts, browser boot, a minimal input→result interaction probe, and analytics Usage classification. The next meaningful extension is read-only Action evidence ingestion, followed by Payment evidence without redefining those authoritative source systems.
