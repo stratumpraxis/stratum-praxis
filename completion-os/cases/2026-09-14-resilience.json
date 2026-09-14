@@ -1,0 +1,50 @@
+[
+  {
+    "asset_id": "money-resilience",
+    "target": "production",
+    "required_gates": ["source", "deploy", "live"],
+    "gates": {
+      "source": {
+        "status": "pass",
+        "evidence": [
+          "Money Resilience root-native runtime and cross-brand cleanup are present in source history before this snapshot."
+        ]
+      },
+      "deploy": {
+        "status": "blocked",
+        "evidence": [
+          "Vercel commit status: Deployment rate limited — retry in 24 hours."
+        ],
+        "next_action": "After the platform rate limit clears, deploy the intended revision once and record the deployment revision/status before doing Live verification.",
+        "retry_after": "Vercel provider limit window"
+      },
+      "live": {
+        "status": "unknown"
+      }
+    }
+  },
+  {
+    "asset_id": "ordlume",
+    "target": "production",
+    "required_gates": ["source", "deploy", "live"],
+    "gates": {
+      "source": {
+        "status": "pass",
+        "evidence": [
+          "OrdLume canonical/OG/JSON-LD identity and native-root asset paths are present in source history before this snapshot."
+        ]
+      },
+      "deploy": {
+        "status": "blocked",
+        "evidence": [
+          "Vercel commit status: Deployment rate limited — retry in 24 hours."
+        ],
+        "next_action": "After the platform rate limit clears, deploy the intended revision once and record the deployment revision/status before doing Live verification.",
+        "retry_after": "Vercel provider limit window"
+      },
+      "live": {
+        "status": "unknown"
+      }
+    }
+  }
+]
