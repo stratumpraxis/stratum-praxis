@@ -6,6 +6,13 @@
 :where(button,.btn,.amount,.profile-chip){min-height:44px}
 :where(button,.btn,.amount){touch-action:manipulation}
 
+/* Search-entry hierarchy: intent answer -> one obvious primary action -> supporting actions. */
+.hero-copy .ord-search-answer{max-width:640px}
+.hero-actions{align-items:stretch}
+.hero-actions .cta{min-width:220px;box-shadow:0 14px 30px rgba(17,148,71,.22)}
+.hero-actions .ghost{opacity:.9}
+.hero-mini{margin-top:13px!important}
+
 .next-panel{scroll-margin-top:18px}
 .next-panel .next{line-height:1.5}
 .next-panel .next+.next{margin-top:7px}
@@ -21,6 +28,9 @@
 
 @media(max-width:580px){
   :where(button,.btn,.amount,.profile-chip){min-height:46px}
+  .hero-actions{display:grid!important;grid-template-columns:1fr!important;gap:8px!important}
+  .hero-actions .cta,.hero-actions .ghost{width:100%;min-width:0}
+  .hero-actions .cta{min-height:52px;font-size:16px}
   #gear,#plan{width:100%}
   .support-inline .amounts{width:100%}
   [data-ordlume-guides]{margin-inline:0!important}
