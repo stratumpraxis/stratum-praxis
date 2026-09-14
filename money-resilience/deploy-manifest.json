@@ -1,0 +1,41 @@
+{
+  "project": "Money Resilience Utility",
+  "deployment_mode": "standalone",
+  "root_directory": "money-resilience",
+  "public_root": "/",
+  "required_routes": [
+    "/",
+    "/guides/",
+    "/inflation/",
+    "/yen/",
+    "/cash-buffer/",
+    "/overseas-payment/",
+    "/methodology.html",
+    "/sources.html",
+    "/privacy.html",
+    "/faq.html",
+    "/terms.html",
+    "/about.html",
+    "/media.html",
+    "/llms.txt",
+    "/robots.txt"
+  ],
+  "required_assets": [
+    "/market-pulse.js",
+    "/vnext-polish.js",
+    "/experience-v2.js",
+    "/experience-v3.js",
+    "/resilience-utility-v3.js",
+    "/site-power.js",
+    "/utility-favicon.svg",
+    "/manifest.webmanifest"
+  ],
+  "post_deploy": [
+    "fix absolute canonical URLs",
+    "create absolute sitemap.xml",
+    "add sitemap URL to robots.txt",
+    "verify health.html",
+    "verify market data loads",
+    "verify result calculation and share/print actions"
+  ]
+}
