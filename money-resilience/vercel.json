@@ -6,7 +6,7 @@
     { "source": "/money-resilience/", "destination": "/", "permanent": true }
   ],
   "rewrites": [
-    { "source": "/money-resilience/:path+", "destination": "/:path+" }
+    { "source": "/money-resilience/:path*", "destination": "/:path*" }
   ],
   "headers": [
     {
