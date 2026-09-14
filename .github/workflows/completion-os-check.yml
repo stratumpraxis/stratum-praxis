@@ -1,0 +1,44 @@
+name: Completion OS check
+
+on:
+  push:
+    paths:
+      - 'completion-os/**'
+      - '.github/workflows/completion-os-check.yml'
+  pull_request:
+    paths:
+      - 'completion-os/**'
+      - '.github/workflows/completion-os-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Syntax and unit tests
+        run: |
+          node --check completion-os/evaluate.mjs
+          node --check completion-os/test.mjs
+          node completion-os/test.mjs
+
+      - name: Validate dated resilience case
+        run: |
+          node completion-os/evaluate.mjs completion-os/cases/2026-09-14-resilience.json > /tmp/completion-result.json
+          node - <<'NODE'
+          const fs = require('fs');
+          const result = JSON.parse(fs.readFileSync('/tmp/completion-result.json', 'utf8'));
+          if (!Array.isArray(result) || result.length !== 2) throw new Error('expected two resilience cases');
+          for (const item of result) {
+            if (item.complete !== false) throw new Error(`${item.asset_id}: expected incomplete`);
+            if (item.proven_through !== 'source') throw new Error(`${item.asset_id}: expected source as proven_through`);
+            if (item.blocker_gate !== 'deploy') throw new Error(`${item.asset_id}: expected deploy blocker`);
+            if (item.blocker_status !== 'blocked') throw new Error(`${item.asset_id}: expected blocked status`);
+            if (!item.later_gates_not_proven.includes('live')) throw new Error(`${item.asset_id}: live must remain unproven`);
+          }
+          console.log('Dated resilience case validated');
+          NODE
