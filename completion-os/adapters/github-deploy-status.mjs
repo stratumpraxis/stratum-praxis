@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { pathToFileURL } from 'node:url';
 
 function uniqueLatestByContext(statuses) {
   const seen = new Set();
@@ -112,7 +113,8 @@ function parseArgs(argv) {
   return args;
 }
 
-if (process.argv[1]?.endsWith('github-deploy-status.mjs')) {
+const invokedDirectly = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (invokedDirectly) {
   try {
     const args = parseArgs(process.argv.slice(2));
     if (!args.context) throw new Error('--context is required');
