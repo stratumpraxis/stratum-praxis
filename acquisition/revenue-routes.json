@@ -90,13 +90,16 @@
         "queue_status": "DRAFT",
         "approval_status": "PENDING_HUMAN",
         "safety_status": "UNCHECKED",
-        "stratum_instagram_identity_verified_in_policy": true
+        "stratum_instagram_identity_verified_in_policy": true,
+        "same_destination_collision_active": false,
+        "collision_rechecked_date": "2026-09-14"
       },
       "next_bottleneck": "approved_distribution",
       "safety_state": "HUMAN_GATE",
-      "human_gate_reason": "The existing Stratum-owned Instagram route is not approved for publication. Queue policy requires HUMAN_APPROVED before scheduling or publishing, and the queue notes an in-flight same-destination collision guard that must be resolved first.",
-      "safe_auto_limit": "Do not schedule, publish, create new creative, change price, or bypass collision/approval gates. Re-evaluate only after explicit approval or verified state change.",
-      "created_at": "2026-09-14T07:51:50+09:00"
+      "human_gate_reason": "The existing Stratum-owned Instagram route is not approved for publication. The previous same-destination collision note was cleared on recheck; publication remains blocked by safety_status UNCHECKED and approval_status PENDING_HUMAN. Queue policy requires HUMAN_APPROVED before scheduling or publishing.",
+      "safe_auto_limit": "Do not schedule, publish, create new creative, change price, or bypass safety/approval gates. Re-evaluate only after explicit approval or verified state change.",
+      "created_at": "2026-09-14T07:51:50+09:00",
+      "last_synced_at": "2026-09-14T10:01:00+09:00"
     }
   ]
 }
