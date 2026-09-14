@@ -1,0 +1,16 @@
+{
+  "asset_id": "ordlume",
+  "url": "https://ordlume.vercel.app/",
+  "interaction_required": true,
+  "required_substrings": [
+    "readiness-v2",
+    "readiness-strip",
+    "data-plan-open"
+  ],
+  "forbidden_substrings": [
+    "Money Resilience Utility"
+  ],
+  "minimum_counts": {
+    "data-k=": 10
+  }
+}
