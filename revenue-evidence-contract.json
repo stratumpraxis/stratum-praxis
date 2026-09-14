@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-14",
+  "purpose": "Prevent automation and local QA activity from being treated as buyer or checkout evidence in revenue decisions.",
+  "qualifiedExternalCheckout": {
+    "event": "checkout_click",
+    "include": {
+      "$virt_traffic_type": ["Regular"]
+    },
+    "exclude": {
+      "$current_url_contains": ["localhost", "127.0.0.1", "::1"]
+    },
+    "evaluationPriority": "Payment Evidence > Qualified External Checkout > Qualified Buyer Action > Qualified Traffic > Reach"
+  },
+  "evidenceBaseline": {
+    "observedOn": "2026-09-14",
+    "window": "last_30_days",
+    "qualifiedExternalCheckoutClicks": 0,
+    "paymentEvidence": 0
+  },
+  "excludedSignals": [
+    {
+      "product": "cross_agent_personal",
+      "routeId": "cuai_agent_bus_160",
+      "observedClicks": 2,
+      "reason": "$virt_traffic_type=Automation"
+    },
+    {
+      "product": "workflow-audit",
+      "observedClicks": 4,
+      "reason": "Regular-classified events originated from localhost QA"
+    },
+    {
+      "product": "revenue-router",
+      "observedClicks": 1,
+      "reason": "Regular-classified event originated from localhost QA"
+    }
+  ],
+  "decisionRule": "Do not amplify a route from checkout_click alone. A route may be treated as checkout evidence only after passing the qualifiedExternalCheckout filter; payment claims require independent live payment evidence."
+}
