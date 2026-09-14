@@ -145,6 +145,10 @@ Master `AGENTS.md`、Claude / Codex / Cursor用Adapter、Human Gate Matrix、Pol
 
 [Cross-Agent Operating Kitを見る](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=publication&utm_medium=article&utm_campaign=cross_agent_operating_kit&utm_content=agent_constitution&route_id=publication_agent_constitution_cross_agent_20260913)
 
+購入前に構造だけ確認したい場合は、既存の34秒デモで運用レイヤーとPersonalライセンスを先に確認できます。
+
+[34秒の商品デモを先に見る](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=publication&utm_medium=article&utm_campaign=cross_agent_demo&utm_content=agent_constitution_demo&route_id=publication_agent_constitution_cross_agent_demo_20260915#product-demo-title)
+
 完全版のAgent Role Charter、Permission Matrix、Approval Gate、Evidence Contract、Failure / Rollback Protocolは既存noteへ追記しています。
 
 https://note.com/deft_eel6718/n/nfce5ac047c15
