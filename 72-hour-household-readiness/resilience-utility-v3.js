@@ -31,7 +31,17 @@ function apply(){
     if(!f.querySelector('[data-ordlume-about]')){const a=document.createElement('a');a.dataset.ordlumeAbout='';a.href='/about.html';a.textContent='About';a.style.color='inherit';f.appendChild(a)}
     if(!f.querySelector('[data-ordlume-privacy]')){const a=document.createElement('a');a.dataset.ordlumePrivacy='';a.href='/privacy.html';a.textContent='Privacy';a.style.color='inherit';f.appendChild(a)}
   }
-  if(root()){finishInternalActions();addClarityPanel();initDecisionRelief();}
+  if(root()){addSearchIntentHero();finishInternalActions();addClarityPanel();initDecisionRelief();}
+}
+function addSearchIntentHero(){
+  const copy=$('.hero-copy');if(!copy||$('[data-search-intent]'))return;
+  const style=document.createElement('style');
+  style.textContent=`.ord-search-intent{margin:0 0 12px;display:flex;gap:7px;flex-wrap:wrap}.ord-search-intent span{padding:6px 9px;border-radius:999px;background:#fff;border:1px solid #dbe6de;color:#50645a;font-size:10px;font-weight:900}.ord-search-answer{max-width:720px;margin:0 0 12px;color:#40584c;font-size:14px;line-height:1.6;font-weight:750}@media(max-width:580px){.ord-search-answer{font-size:13px}.ord-search-intent span{font-size:9px}}`;
+  document.head.appendChild(style);
+  const answer=document.createElement('p');answer.className='ord-search-answer';answer.dataset.searchIntent='';
+  const tags=document.createElement('div');tags.className='ord-search-intent';copy.insertBefore(answer,copy.firstChild);copy.insertBefore(tags,answer.nextSibling);
+  function sync(){if(isEN()){answer.textContent='Not sure what to prepare first? Check the essentials you already have, find the gaps, and leave with only three next actions.';tags.innerHTML='<span>72-hour emergency kit</span><span>what to prepare first</span><span>home preparedness checklist</span>'}else{answer.textContent='防災の備蓄、何から始める？ 今ある物を約2分で確認し、不足だけを「次の3手」に絞ります。';tags.innerHTML='<span>防災 備蓄 何から</span><span>72時間 備え チェック</span><span>家庭 防災リスト</span>'}}
+  [$('#jp'),$('#en')].filter(Boolean).forEach(b=>b.addEventListener('click',()=>setTimeout(sync,20)));sync();
 }
 function finishInternalActions(){
   const gear=$('#gear'),plan=$('#plan'),free=$('.amount[data-url=""]'),amounts=$('.amounts');
