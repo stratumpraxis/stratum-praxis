@@ -1,1 +1,0 @@
-(()=>{'use strict';window.__ORDLUME_STANDALONE__=true;})();
