@@ -44,7 +44,18 @@ function apply(){
       const a=document.createElement('a');a.dataset.ordlumePrivacy='';a.href='/privacy.html';a.textContent='Privacy';a.style.color='inherit';f.appendChild(a);
     }
   }
-  if(root())initDecisionRelief();
+  if(root()){addClarityPanel();initDecisionRelief();}
+}
+function addClarityPanel(){
+  const hero=$('.hero'),quick=$('.quick');
+  if(!hero||!quick||$('[data-ordlume-clarity]'))return;
+  const style=document.createElement('style');
+  style.textContent=`.ord-clarity{margin:6px 0 14px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}.ord-clarity-card{background:#fff;border:1px solid #dce7df;border-radius:18px;padding:14px 15px;box-shadow:0 7px 22px rgba(16,55,38,.05)}.ord-clarity-card small{display:block;color:#0d7f43;font-size:9px;font-weight:950;letter-spacing:.08em}.ord-clarity-card b{display:block;margin-top:5px;font-size:14px}.ord-clarity-card p{margin:5px 0 0;color:#66766f;font-size:11px;line-height:1.6}@media(max-width:760px){.ord-clarity{grid-template-columns:1fr}}`;
+  document.head.appendChild(style);
+  const s=document.createElement('section');s.className='ord-clarity';s.dataset.ordlumeClarity='';
+  quick.parentNode.insertBefore(s,quick);
+  function sync(){const en=$('#en')?.classList.contains('active');s.innerHTML=en?'<div class="ord-clarity-card"><small>FOR WHO</small><b>If you know you should prepare, but do not know what comes first</b><p>Use what you already have, find the gaps, and avoid buying everything at once.</p></div><div class="ord-clarity-card"><small>YOU LEAVE WITH</small><b>Three actions in priority order</b><p>Your result is complete when you know what to do today, this week, and this month.</p></div><div class="ord-clarity-card"><small>NOT THIS</small><b>No fear, no product pushing, no one-size-fits-all claim</b><p>This is a household readiness aid based on transparent priorities and public guidance.</p></div>':'<div class="ord-clarity-card"><small>こんな人向け</small><b>備えたいけど、何からやるか決めきれない</b><p>今ある物を確認し、不足だけを順番に絞ります。全部いっぺんに買う必要はありません。</p></div><div class="ord-clarity-card"><small>このページで得るもの</small><b>今日・今週・今月の「次の3手」</b><p>何をするか決まったら、このUtilityの役目は完了です。</p></div><div class="ord-clarity-card"><small>しないこと</small><b>不安を煽らない・商品を押しつけない・万能を装わない</b><p>透明な優先順位と公的情報をもとに、家庭の判断を助けます。</p></div>'}
+  [$('#jp'),$('#en')].filter(Boolean).forEach(b=>b.addEventListener('click',()=>setTimeout(sync,20)));sync();
 }
 function initDecisionRelief(){
   const nextPanel=$('.next-panel'),nextList=$('#next-list'),grid=$('#grid'),support=$('.support-inline');
