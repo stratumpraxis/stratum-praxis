@@ -4,7 +4,9 @@ on:
   push:
     paths:
       - 'completion-os/adapters/browser-dom-check.mjs'
+      - 'completion-os/adapters/webdriver-interaction-check.mjs'
       - 'completion-os/browser-specs/**'
+      - 'completion-os/interaction-specs/**'
       - '.github/workflows/completion-os-live-browser.yml'
   workflow_dispatch:
 
@@ -22,9 +24,11 @@ jobs:
         run: |
           set -u
           CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          DRIVER="$(command -v chromedriver || command -v chromium-driver || true)"
           echo "Browser binary: ${CHROME:-not-found}"
+          echo "Driver binary: ${DRIVER:-not-found}"
 
-          probe() {
+          probe_boot() {
             local name="$1"
             local spec="$2"
             local dom="/tmp/${name}.dom.html"
@@ -43,12 +47,28 @@ jobs:
               node completion-os/adapters/browser-dom-check.mjs --spec "$spec" --error "$msg" > "$out"
             fi
 
-            echo "===== ${name} ====="
+            echo "===== ${name} browser boot ====="
             cat "$out"
             echo
           }
 
-          probe money-resilience completion-os/browser-specs/money-resilience.json
-          probe ordlume completion-os/browser-specs/ordlume.json
+          probe_interaction() {
+            local name="$1"
+            local spec="$2"
+            local out="/tmp/${name}.interaction.json"
+            if [ -z "$DRIVER" ]; then
+              node completion-os/adapters/webdriver-interaction-check.mjs --spec "$spec" > "$out"
+            else
+              node completion-os/adapters/webdriver-interaction-check.mjs --spec "$spec" --driver "$DRIVER" > "$out"
+            fi
+            echo "===== ${name} interaction ====="
+            cat "$out"
+            echo
+          }
+
+          probe_boot money-resilience completion-os/browser-specs/money-resilience.json
+          probe_boot ordlume completion-os/browser-specs/ordlume.json
+          probe_interaction money-resilience completion-os/interaction-specs/money-resilience.json
+          probe_interaction ordlume completion-os/interaction-specs/ordlume.json
 
           echo "These probe results are production evidence, not CI correctness. A fail/unknown result must not be rewritten as pass."
