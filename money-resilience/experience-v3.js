@@ -1,6 +1,6 @@
 (()=>{'use strict';
 const path=location.pathname.replace(/index\.html$/,'');
-if(path!=='/money-resilience/'&&path!=='/money-resilience')return;
+if(path!=='/'&&path!=='/money-resilience/'&&path!=='/money-resilience')return;
 const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
 const reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
