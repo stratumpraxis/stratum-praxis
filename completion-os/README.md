@@ -84,6 +84,37 @@ The output includes:
 - `human_gate`
 - `later_gates_not_proven`
 
+## Deployment-status adapter
+
+`adapters/github-deploy-status.mjs` converts GitHub commit statuses (including Vercel status contexts) into a Completion OS `deploy` gate.
+
+It distinguishes:
+
+- provider success → `pass`
+- real deployment/build failure → `fail`
+- provider rate limit / quota / temporary capacity block → `blocked`
+- still-running deployment → `unknown` with a no-duplicate-retry instruction
+- missing matching context → `unknown`
+
+Fixture mode:
+
+```bash
+node completion-os/adapters/github-deploy-status.mjs \
+  --file completion-os/fixtures/vercel-rate-limit-status.json \
+  --context '^Vercel – money-resilience$'
+```
+
+Live GitHub status mode:
+
+```bash
+GITHUB_TOKEN=... node completion-os/adapters/github-deploy-status.mjs \
+  --repo stratumpraxis/stratum-praxis \
+  --sha <commit-sha> \
+  --context '^Vercel – money-resilience$'
+```
+
+The adapter only reads status evidence. It never retries or starts a deployment itself.
+
 ## Safety and concurrency rules
 
 - Never claim Deploy from build success alone.
@@ -102,4 +133,4 @@ The output includes:
 
 `cases/2026-09-14-resilience.json` is a dated snapshot of the Money Resilience / OrdLume case that motivated this layer. It should remain historical even after those assets advance.
 
-Next extensions should be adapters that **read** existing evidence sources (deployment status, analytics, payment evidence) and emit this state contract without redefining those systems.
+The first adapter now reads GitHub deployment statuses and emits the same evidence contract. Future adapters should **read** existing analytics/payment/usage evidence without redefining those systems.
