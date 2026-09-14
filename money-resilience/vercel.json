@@ -8,7 +8,7 @@
     {
       "source": "/",
       "headers": [
-        { "key": "Link", "value": "</>; rel=\"canonical\"" }
+        { "key": "Link", "value": "<https://moneyresilience.vercel.app/>; rel=\"canonical\"" }
       ]
     },
     {
