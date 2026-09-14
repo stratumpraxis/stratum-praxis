@@ -28,9 +28,12 @@ jobs:
           node --check completion-os/adapters/test-github-deploy-status.mjs
           node --check completion-os/adapters/http-live-check.mjs
           node --check completion-os/adapters/test-http-live-check.mjs
+          node --check completion-os/adapters/browser-dom-check.mjs
+          node --check completion-os/adapters/test-browser-dom-check.mjs
           node completion-os/test.mjs
           node completion-os/adapters/test-github-deploy-status.mjs
           node completion-os/adapters/test-http-live-check.mjs
+          node completion-os/adapters/test-browser-dom-check.mjs
 
       - name: Validate dated resilience case
         run: |
