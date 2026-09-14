@@ -1,0 +1,49 @@
+{
+  "asset_id": "money-resilience",
+  "observed_at": "2026-09-14",
+  "decision_system": "completion-evidence revenue gate",
+  "evidence": {
+    "live_runtime": {
+      "status": "pass",
+      "source": "completion-os/evidence/2026-09-14-production-runtime.json",
+      "note": "Dedicated Money Resilience production passed real-browser boot and interaction evidence."
+    },
+    "value_completion": {
+      "status": "pass",
+      "source": "completion-os/evidence/2026-09-14-production-runtime.json",
+      "note": "A real browser input change changed the resilience score from 72 to 78."
+    },
+    "human_usage": {
+      "status": "unproven",
+      "source": "completion-os/evidence/2026-09-14-usage-observation.json",
+      "window": "2026-08-15 through 2026-09-14",
+      "note": "PostHog observation recorded zero human meaningful Money Resilience events under the bot=false rule."
+    },
+    "checkout": {
+      "status": "missing_or_unproven",
+      "provider_check": "Connected Stripe live accounts",
+      "note": "No Money Resilience-specific live Payment Link was found during the read-only Stripe inventory check. No payment or checkout object was created or changed."
+    },
+    "source_route": {
+      "status": "no_checkout_evidence_found_in_reviewed_primary_surface",
+      "reviewed": [
+        "money-resilience/index.html",
+        "money-resilience/resilience-utility-v3.js",
+        "money-resilience/vnext-polish.js",
+        "money-resilience/site-power.js",
+        "money-resilience/experience-v3.js"
+      ],
+      "note": "Reviewed primary production surface files expose the free utility, information navigation, result/share interactions and analytics, but did not provide evidence of a Money Resilience support/checkout destination."
+    }
+  },
+  "revenue_distance": {
+    "current": 6,
+    "reason": "Checkout route is not currently evidenced; traffic amplification must remain gated until a real support/checkout route exists and can be verified."
+  },
+  "bottleneck_class": "route_missing",
+  "next_action": {
+    "action": "Create and connect a Money Resilience-specific optional-support checkout, then verify CTA -> Stripe Checkout without completing a payment.",
+    "approval_required": true,
+    "reason": "Creating or changing checkout/payment configuration is an approval-gated financial/revenue-route change."
+  }
+}
