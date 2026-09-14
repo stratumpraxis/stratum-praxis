@@ -1,0 +1,43 @@
+[
+  {
+    "asset_id": "money-resilience",
+    "observed_at": "2026-09-14",
+    "window": "2026-08-15 through 2026-09-14",
+    "provider": "PostHog project 573335",
+    "instrumentation": "present",
+    "meaningful_events": [
+      {
+        "name": "money_resilience_market_refresh",
+        "total": 2,
+        "human": 0,
+        "human_rule": "$virt_is_bot = false"
+      }
+    ],
+    "exposure_events": [
+      {"name": "money_resilience_v3_loaded", "total": 4},
+      {"name": "money_resilience_vnext_loaded", "total": 7},
+      {"name": "money_resilience_vnext_polish_loaded", "total": 4}
+    ],
+    "notes": [
+      "With filterTestAccounts=true and $virt_is_bot=false, the queried Money Resilience load/refresh events returned zero.",
+      "With test-account filtering disabled, the same event names exist, but $virt_is_bot=false still returned zero for market_refresh, v3_loaded, and vnext_loaded.",
+      "Page/load events are exposure evidence only and are not promoted to Usage.",
+      "The generic calculator_input event was excluded because its calculator property identifies ai_agent_economics, not Money Resilience.",
+      "No raw financial input values were queried or stored in this snapshot."
+    ]
+  },
+  {
+    "asset_id": "ordlume",
+    "observed_at": "2026-09-14",
+    "window": "2026-08-15 through 2026-09-14",
+    "provider": "PostHog project 573335",
+    "instrumentation": "not_in_provider",
+    "meaningful_events": [],
+    "exposure_events": [],
+    "notes": [
+      "No readiness_* OrdLume interaction events were present in the inspected PostHog event taxonomy.",
+      "Current OrdLume source uses gtag-based readiness tracking, so absence from this PostHog project is a measurement-path gap, not proof of zero usage.",
+      "Usage therefore remains unproven rather than failed."
+    ]
+  }
+]
