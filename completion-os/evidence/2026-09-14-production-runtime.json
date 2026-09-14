@@ -1,0 +1,56 @@
+{
+  "observed_at": "2026-09-14T03:31:54Z",
+  "source": {
+    "provider": "GitHub Actions hosted runner",
+    "workflow_run_id": 34802892825,
+    "job_id": 103848954414,
+    "probe_commit": "8592f4406d50707dc4e4c08078a024bd544da80e",
+    "browser": "/usr/bin/google-chrome",
+    "driver": "/usr/bin/chromedriver"
+  },
+  "revision_binding": {
+    "status": "unknown",
+    "note": "The public pages did not expose an immutable deployment revision marker during this probe. These observations prove current production behavior only; they must not be reused as proof that a later repository revision was deployed."
+  },
+  "assets": [
+    {
+      "asset_id": "money-resilience",
+      "url": "https://moneyresilience.vercel.app/",
+      "browser_boot": {
+        "status": "pass",
+        "evidence": [
+          "data-tool-panel count: 5",
+          "data-core-score count: 2",
+          "expected runtime DOM replaced the static boot shell"
+        ]
+      },
+      "interaction": {
+        "status": "pass",
+        "action": "Changed [data-value=\"income\"] through browser runtime events",
+        "observation": "[data-core=\"main\"] [data-core-score] changed from 72 to 78"
+      }
+    },
+    {
+      "asset_id": "ordlume",
+      "url": "https://ordlume.vercel.app/",
+      "browser_boot": {
+        "status": "pass",
+        "evidence": [
+          "data-k runtime marker count: 11",
+          "readiness-v2 runtime markers present"
+        ]
+      },
+      "interaction": {
+        "status": "pass",
+        "action": "Checked the first #grid input[data-k] and dispatched its change event",
+        "observation": "#score changed from 0 to 10"
+      }
+    }
+  ],
+  "latest_revision_evidence_at_probe": {
+    "revision": "1030e6fa68252b4cad0164d67c7ab583ab67ab41",
+    "deploy_status": "blocked",
+    "provider_evidence": "Vercel deployment rate limited — retry in 24 hours",
+    "conclusion": "Current production functionality is proven, but deployment of this repository revision is not proven."
+  }
+}
