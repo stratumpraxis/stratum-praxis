@@ -36,7 +36,6 @@ document.getElementById('missing-count').textContent=missing.length?`優先不�
 document.querySelectorAll('[data-keys]').forEach(card=>{const keys=card.dataset.keys.split(',');if(missing.some(k=>keys.includes(k)))card.classList.add('hit')});
 const p=new URLSearchParams();if(score)p.set('score',score);if(missing.length)p.set('missing',missing.join(','));document.getElementById('plan-link').href='./plan.html?'+p.toString();
 </script>
-<script src="/resilience-utility-bridge.js" defer data-resilience-utility-bridge></script>
 <script src="/resilience-utility-v3.js" defer data-resilience-utility-v3></script>
 </body>
 </html>
