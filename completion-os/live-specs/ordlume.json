@@ -1,0 +1,21 @@
+{
+  "asset_id": "ordlume",
+  "url": "https://ordlume.vercel.app/",
+  "expected_status": 200,
+  "canonical": "https://ordlume.vercel.app/",
+  "runtime_required": true,
+  "required_substrings": [
+    "防災・備蓄チェック",
+    "id=\"grid\""
+  ],
+  "required_assets": [
+    "readiness-v2.js",
+    "readiness-v2.css",
+    "resilience-utility-v3.js"
+  ],
+  "forbidden_substrings": [
+    "moneyresilience.vercel.app",
+    "Money Resilience Utility",
+    "stratumpraxis.com/72-hour-household-readiness/"
+  ]
+}
