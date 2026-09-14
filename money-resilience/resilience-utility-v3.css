@@ -1,1 +1,24 @@
 /* Standalone deployment: no shared Stratum stylesheet dependency. */
+
+/* Interaction polish: clearer result focus, safer tap targets, and calmer mobile UI. */
+:where(button,a,input,select,label,[role="button"]){-webkit-tap-highlight-color:transparent}
+:where(button,a,[role="button"]):focus-visible{outline:3px solid rgba(124,231,194,.3);outline-offset:3px}
+:where(button,.btn,[role="button"]){min-height:44px;touch-action:manipulation}
+
+#mrResultGrid{scroll-margin-top:18px}
+.mr-result-tile b{font-variant-numeric:tabular-nums}
+.mr-result-tile small{letter-spacing:.05em}
+.mr-relief{scroll-margin-top:18px}
+.mr-relief>a{font-weight:650}
+.mr-proof a{white-space:nowrap}
+
+@media(max-width:720px){
+  :where(button,.btn,[role="button"]){min-height:46px}
+  .mr-result-tile{min-width:0}
+  .mr-result-tile b{overflow-wrap:anywhere}
+  .mr-relief>a{min-height:46px}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
