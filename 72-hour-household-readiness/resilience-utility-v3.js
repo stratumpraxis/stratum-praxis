@@ -1,1 +1,46 @@
-(()=>{'use strict';const BASE='https://ordlume.vercel.app';function canonicalForPath(){const p=location.pathname||'/';if(p==='/'||p==='/index.html')return BASE+'/';return BASE+p.replace(/index\.html$/,'');}function apply(){const url=canonicalForPath();let c=document.querySelector('link[rel="canonical"]');if(!c){c=document.createElement('link');c.rel='canonical';document.head.appendChild(c)}c.href=url;let og=document.querySelector('meta[property="og:url"]');if(og)og.content=url;document.querySelectorAll('script[type="application/ld+json"]').forEach(s=>{try{const j=JSON.parse(s.textContent);if(j&&j.url&&String(j.url).includes('stratumpraxis.com')){j.url=url;s.textContent=JSON.stringify(j)}}catch(_){}});document.querySelectorAll('a[href*="/money-resilience/"]').forEach(a=>a.remove());document.querySelector('[data-seo-related="money"]')?.remove();document.querySelectorAll('p').forEach(p=>{if(p.textContent.includes('Money Resilience Utility'))p.textContent=p.textContent.replace(/金融面の余力は別のMoney Resilience Utilityで確認できます。?/g,'').replace(/どちらのツールも登録不要で、入力内容を相互に引き継ぎません。?/g,'入力内容はこのブラウザ内で扱い、登録なしで利用できます。')});const main=document.querySelector('main');if(main&&!document.querySelector('[data-ordlume-guides]')&&(location.pathname==='/'||location.pathname==='/index.html')){const s=document.createElement('section');s.dataset.ordlumeGuides='';s.style.cssText='margin:18px 14px 8px;padding:18px;border:1px solid rgba(16,34,29,.11);border-radius:20px;background:rgba(255,255,255,.78)';s.innerHTML='<div style="font-size:11px;font-weight:950;color:#176b4a;letter-spacing:.08em">ORDLUME GUIDES</div><h2 style="margin:6px 0 10px;font-size:19px">気になる項目だけ詳しく確認</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><a href="/water/">水</a><a href="/food/">食料</a><a href="/blackout/">停電</a><a href="/toilet/">衛生・トイレ</a><a href="/solo/">一人暮らし</a><a href="/family/">家族</a><a href="/pet/">ペット</a><a href="/guides/">すべて見る →</a></div>';s.querySelectorAll('a').forEach(a=>a.style.cssText='padding:8px 10px;border:1px solid #dbe6de;border-radius:999px;color:#176b4a;background:#fff;text-decoration:none;font-size:12px;font-weight:900');main.appendChild(s)}const f=document.querySelector('.footer, footer');if(f){if(!f.querySelector('[data-ordlume-contact]')){const a=document.createElement('a');a.dataset.ordlumeContact='';a.href='mailto:ordlume.contact@gmail.com';a.textContent='ordlume.contact@gmail.com';a.style.color='inherit';a.style.textDecoration='none';f.appendChild(a)}if(!f.querySelector('[data-ordlume-about]')){const a=document.createElement('a');a.dataset.ordlumeAbout='';a.href='/about.html';a.textContent='About';a.style.color='inherit';f.appendChild(a)}if(!f.querySelector('[data-ordlume-privacy]')){const a=document.createElement('a');a.dataset.ordlumePrivacy='';a.href='/privacy.html';a.textContent='Privacy';a.style.color='inherit';f.appendChild(a)}}}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();})();
+(()=>{'use strict';
+const BASE='https://ordlume.vercel.app';
+function canonicalForPath(){
+  const p=location.pathname||'/';
+  if(p==='/'||p==='/index.html')return BASE+'/';
+  return BASE+p.replace(/index\.html$/,'');
+}
+function apply(){
+  const url=canonicalForPath();
+  let c=document.querySelector('link[rel="canonical"]');
+  if(!c){c=document.createElement('link');c.rel='canonical';document.head.appendChild(c)}
+  c.href=url;
+  const og=document.querySelector('meta[property="og:url"]');
+  if(og)og.content=url;
+  document.querySelectorAll('script[type="application/ld+json"]').forEach(s=>{
+    try{
+      const j=JSON.parse(s.textContent);
+      if(j&&j.url){j.url=url;s.textContent=JSON.stringify(j)}
+    }catch(_){ }
+  });
+
+  const main=document.querySelector('main');
+  if(main&&!document.querySelector('[data-ordlume-guides]')&&(location.pathname==='/'||location.pathname==='/index.html')){
+    const s=document.createElement('section');
+    s.dataset.ordlumeGuides='';
+    s.style.cssText='margin:18px 14px 8px;padding:18px;border:1px solid rgba(16,34,29,.11);border-radius:20px;background:rgba(255,255,255,.78)';
+    s.innerHTML='<div style="font-size:11px;font-weight:950;color:#176b4a;letter-spacing:.08em">ORDLUME GUIDES</div><h2 style="margin:6px 0 10px;font-size:19px">気になる項目だけ詳しく確認</h2><div style="display:flex;gap:8px;flex-wrap:wrap"><a href="/water/">水</a><a href="/food/">食料</a><a href="/blackout/">停電</a><a href="/toilet/">衛生・トイレ</a><a href="/solo/">一人暮らし</a><a href="/family/">家族</a><a href="/pet/">ペット</a><a href="/guides/">すべて見る →</a></div>';
+    s.querySelectorAll('a').forEach(a=>a.style.cssText='padding:8px 10px;border:1px solid #dbe6de;border-radius:999px;color:#176b4a;background:#fff;text-decoration:none;font-size:12px;font-weight:900');
+    main.appendChild(s);
+  }
+
+  const f=document.querySelector('.footer, footer');
+  if(f){
+    if(!f.querySelector('[data-ordlume-contact]')){
+      const a=document.createElement('a');a.dataset.ordlumeContact='';a.href='mailto:ordlume.contact@gmail.com';a.textContent='ordlume.contact@gmail.com';a.style.color='inherit';a.style.textDecoration='none';f.appendChild(a);
+    }
+    if(!f.querySelector('[data-ordlume-about]')){
+      const a=document.createElement('a');a.dataset.ordlumeAbout='';a.href='/about.html';a.textContent='About';a.style.color='inherit';f.appendChild(a);
+    }
+    if(!f.querySelector('[data-ordlume-privacy]')){
+      const a=document.createElement('a');a.dataset.ordlumePrivacy='';a.href='/privacy.html';a.textContent='Privacy';a.style.color='inherit';f.appendChild(a);
+    }
+  }
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+})();
