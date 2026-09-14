@@ -17,7 +17,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Make Money Resilience native-root and remove cross-brand leakage
+      - name: Repair native runtime and independent identities
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -31,7 +31,7 @@ jobs:
               s = s.replace(old_guard, new_guard, 1)
           elif new_guard not in s:
               raise SystemExit('Unexpected Market Pulse path guard; refusing unsafe rewrite')
-          s, n = re.subn(r'<a data-seo-home-readiness href="/72-hour-household-readiness/"[^>]*>72H Home Readiness ↗</a>', '', s)
+          s = re.sub(r'<a data-seo-home-readiness href="/72-hour-household-readiness/"[^>]*>72H Home Readiness ↗</a>', '', s)
           pulse.write_text(s)
 
           index = Path('money-resilience/index.html')
@@ -49,6 +49,7 @@ jobs:
           s = re.sub(r'<nav data-seo-related="money".*?</nav>', '', s, flags=re.S)
           s = s.replace('<a href="/money-resilience/">お金の耐久力チェック</a>', '')
           s = s.replace('金融面の余力は別のMoney Resilience Utilityで確認できます。どちらのツールも登録不要で、入力内容を相互に引き継ぎません。', '')
+          s = s.replace('https://stratumpraxis.com/72-hour-household-readiness/', 'https://ordlume.vercel.app/')
           ord_index.write_text(s)
           PY
 
@@ -61,6 +62,9 @@ jobs:
           ! grep -q '/72-hour-household-readiness/' money-resilience/market-pulse.js
           ! grep -q '/72-hour-household-readiness/' money-resilience/index.html
           ! grep -q '/money-resilience/' 72-hour-household-readiness/index.html
+          ! grep -q 'stratumpraxis.com/72-hour-household-readiness/' 72-hour-household-readiness/index.html
+          grep -q '<link rel="canonical" href="https://ordlume.vercel.app/">' 72-hour-household-readiness/index.html
+          grep -q '<meta property="og:url" content="https://ordlume.vercel.app/">' 72-hour-household-readiness/index.html
           git diff --check
           bad=$(git diff --name-only | grep -Ev '^(money-resilience/(market-pulse\.js|index\.html|scos-analytics\.js)|72-hour-household-readiness/index\.html)$' || true)
           test -z "$bad"
@@ -71,5 +75,5 @@ jobs:
           git config user.name 'stratumpraxis-bot'
           git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
           git add -A money-resilience/market-pulse.js money-resilience/index.html money-resilience/scos-analytics.js 72-hour-household-readiness/index.html
-          git commit -m 'Make Money Resilience native-root and isolate utility brands'
+          git commit -m 'Clean OrdLume static identity and keep utility brands isolated'
           git push
