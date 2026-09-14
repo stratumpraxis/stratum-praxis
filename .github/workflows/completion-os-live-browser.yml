@@ -1,0 +1,54 @@
+name: Completion OS live browser probe
+
+on:
+  push:
+    paths:
+      - 'completion-os/adapters/browser-dom-check.mjs'
+      - 'completion-os/browser-specs/**'
+      - '.github/workflows/completion-os-live-browser.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Probe production utilities in a real browser engine
+        shell: bash
+        run: |
+          set -u
+          CHROME="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          echo "Browser binary: ${CHROME:-not-found}"
+
+          probe() {
+            local name="$1"
+            local spec="$2"
+            local dom="/tmp/${name}.dom.html"
+            local err="/tmp/${name}.browser.err"
+            local out="/tmp/${name}.browser.json"
+            local url
+            url="$(node -e "const s=require('./${spec}'); process.stdout.write(s.url)")"
+
+            if [ -z "$CHROME" ]; then
+              node completion-os/adapters/browser-dom-check.mjs --spec "$spec" --error "Chrome/Chromium binary not available on runner" > "$out"
+            elif timeout 40s "$CHROME" --headless=new --no-sandbox --disable-gpu --disable-dev-shm-usage --virtual-time-budget=12000 --dump-dom "$url" > "$dom" 2> "$err"; then
+              node completion-os/adapters/browser-dom-check.mjs --spec "$spec" --dom "$dom" > "$out"
+            else
+              msg="$(tail -c 1500 "$err" 2>/dev/null | tr '\n' ' ' || true)"
+              [ -n "$msg" ] || msg="Browser probe timed out or exited non-zero"
+              node completion-os/adapters/browser-dom-check.mjs --spec "$spec" --error "$msg" > "$out"
+            fi
+
+            echo "===== ${name} ====="
+            cat "$out"
+            echo
+          }
+
+          probe money-resilience completion-os/browser-specs/money-resilience.json
+          probe ordlume completion-os/browser-specs/ordlume.json
+
+          echo "These probe results are production evidence, not CI correctness. A fail/unknown result must not be rewritten as pass."
