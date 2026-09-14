@@ -1,1 +1,31 @@
 /* Standalone OrdLume deployment intentionally does not load Stratum-wide resilience styles. */
+
+/* Interaction polish: clearer hierarchy, safer tap targets, and less visual noise. */
+:where(button,a,input,label,[role="button"]){-webkit-tap-highlight-color:transparent}
+:where(button,a,[role="button"]):focus-visible{outline:3px solid rgba(23,107,74,.28);outline-offset:3px}
+:where(button,.btn,.amount,.profile-chip){min-height:44px}
+:where(button,.btn,.amount){touch-action:manipulation}
+
+.next-panel{scroll-margin-top:18px}
+.next-panel .next{line-height:1.5}
+.next-panel .next+.next{margin-top:7px}
+
+#gear,#plan{font-weight:900}
+#plan{box-shadow:0 10px 24px rgba(16,34,29,.08)}
+.support-inline{margin-top:16px}
+.support-inline .amounts{margin-top:10px}
+.support-inline .mini-note{opacity:.78}
+
+[data-ordlume-guides] a{min-height:38px;display:inline-flex;align-items:center}
+.footer a,footer a{margin-inline:4px}
+
+@media(max-width:580px){
+  :where(button,.btn,.amount,.profile-chip){min-height:46px}
+  #gear,#plan{width:100%}
+  .support-inline .amounts{width:100%}
+  [data-ordlume-guides]{margin-inline:0!important}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
