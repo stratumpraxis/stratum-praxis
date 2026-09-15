@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-14T21:53:52.244Z",
+  "generated_at": "2026-09-15T00:40:51.688Z",
   "article_count": 6,
   "articles": [
     {
@@ -26,7 +26,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-14T21:53:44.283Z"
+      "checked_at": "2026-09-15T00:40:41.060Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -52,7 +52,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-14T21:53:44.577Z"
+      "checked_at": "2026-09-15T00:40:41.397Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -78,7 +78,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-14T21:53:48.158Z"
+      "checked_at": "2026-09-15T00:40:44.896Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -104,7 +104,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-14T21:53:48.514Z"
+      "checked_at": "2026-09-15T00:40:45.444Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -130,7 +130,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-14T21:53:51.928Z"
+      "checked_at": "2026-09-15T00:40:51.297Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -156,7 +156,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-14T21:53:52.244Z"
+      "checked_at": "2026-09-15T00:40:51.688Z"
     }
   ]
 }
