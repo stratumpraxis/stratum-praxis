@@ -1,6 +1,7 @@
 {
   "version": 1,
   "recentCandidateIds": [
+    "hn:49701004",
     "hn:49683262",
     "hn:49649213",
     "hn:49630931",
@@ -17,8 +18,8 @@
   ],
   "lastScoutAt": "2026-09-15T01:09:28.929Z",
   "lastRun": {
-    "id": "2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262",
-    "at": "2026-09-14T00:41:20.984Z",
+    "id": "2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004",
+    "at": "2026-09-15T01:10:48.626Z",
     "state": "ATTEMPTED_OR_BLOCKED"
   }
 }

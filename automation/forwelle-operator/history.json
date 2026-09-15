@@ -2,6 +2,80 @@
   "version": 1,
   "items": [
     {
+      "id": "2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004",
+      "candidateId": "hn:49701004",
+      "createdAt": "2026-09-15T01:09:29.035Z",
+      "recordedAt": "2026-09-15T01:10:48.626Z",
+      "title": "iOS 27, iPadOS 27, and macOS 27",
+      "source": {
+        "name": "apple.com — first-party source",
+        "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/",
+        "factSource": true,
+        "verified": true,
+        "published": "2026-09-14T17:50:29.000Z"
+      },
+      "outputFile": "media/forwelle/2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004.mp4",
+      "state": "ATTEMPTED_OR_BLOCKED",
+      "platforms": {
+        "youtube": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "tiktok": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        },
+        "instagram": {
+          "status": "blocked-channel-allowlist",
+          "postId": null,
+          "externalLink": null,
+          "sentAt": null,
+          "dueAt": null,
+          "message": null
+        }
+      },
+      "structureProfile": {
+        "hookType": "concrete-change",
+        "hookText": "iOS 27, iPadOS 27, and macOS 27",
+        "pacing": "five-scene-progressive",
+        "ctaType": "non-salesy-takeaway",
+        "visualStyle": "procedural-motion",
+        "sceneCount": 5,
+        "durationSeconds": 40
+      },
+      "strategy": {
+        "winningPatternLearning": {
+          "status": "BUILDING_DATASET",
+          "sampleCount": 0,
+          "targetCount": 10,
+          "briefUsed": false,
+          "editorialBrief": null
+        },
+        "rendering": {
+          "preferredFinalComposer": "remotion",
+          "currentOperatorRenderer": "procedural"
+        }
+      },
+      "assetCandidates": {
+        "moneyPrinterTurbo": {
+          "status": "SKIPPED_NOT_CONFIGURED",
+          "candidateOnly": true,
+          "promotedToPublication": false,
+          "provider": "MoneyPrinterTurbo",
+          "reason": "Set MONEYPRINTERTURBO_BASE_URL to activate the candidate-material provider."
+        }
+      },
+      "metrics": {}
+    },
+    {
       "id": "2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262",
       "candidateId": "hn:49683262",
       "createdAt": "2026-09-14T00:40:01.748Z",
