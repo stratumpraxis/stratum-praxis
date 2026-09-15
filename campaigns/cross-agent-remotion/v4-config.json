@@ -1,5 +1,5 @@
 {
-  "version": "v4-pass-12-opening-readability",
+  "version": "v4-pass-13-astra-omega",
   "sceneFrames": [72, 147, 162, 180, 270],
   "safeTop": 112,
   "safeBottom": 182,
@@ -25,5 +25,54 @@
   "ctaPulse": 0.0035,
   "bgmVolume": 0.095,
   "narrationVolume": 1.04,
-  "colors": {"bg":"#010409","bg2":"#07101c","silver":"#e3eaf2","white":"#ffffff","muted":"#b5c3d3","blue":"#78b7ff","red":"#ff746f","card":"rgba(7,15,26,.96)","border":"rgba(158,190,230,.40)"}
+  "colors": {"bg":"#010409","bg2":"#07101c","silver":"#e3eaf2","white":"#ffffff","muted":"#b5c3d3","blue":"#78b7ff","red":"#ff746f","card":"rgba(7,15,26,.96)","border":"rgba(158,190,230,.40)"},
+  "astraOmega": {
+    "engine": "Self-Improving Video Quality Engine",
+    "currentQuality": "Q4-Q5",
+    "targetQuality": "Q6",
+    "finalNorthStar": "Q7",
+    "weakestLink": "mid-video motion-depth-material repetition",
+    "preserve": [
+      "sub-1.5s contradiction hook",
+      "single-core-message",
+      "restrained premium B2B tone",
+      "clear product proof",
+      "$69 single CTA",
+      "audible narration",
+      "vertical safe zones"
+    ],
+    "upgradeNext": [
+      "replace uniform 2D drift with foreground-midground-background parallax",
+      "add primary-secondary-micro motion hierarchy",
+      "vary material response between policy core, agent nodes and proof surfaces",
+      "add restrained atmospheric light haze and depth separation",
+      "reduce repeated Fade/card cadence with movement-match and depth transitions"
+    ],
+    "qaPasses": [
+      "visual",
+      "motion",
+      "audio",
+      "continuity",
+      "retention",
+      "platform",
+      "regression"
+    ],
+    "stopCondition": [
+      "no visible artifact",
+      "motion feels physically coherent",
+      "lighting and color remain unified",
+      "audio remains comfortable and narration-led",
+      "mid-video does not collapse into template-like cards",
+      "CTA remains readable and dominant",
+      "playback succeeds end-to-end"
+    ],
+    "dynamicRouting": true,
+    "targetedRepairOnly": true,
+    "learningLedger": {
+      "keep": ["contradiction hook","motion restraint","single CTA","concrete operating artifacts"],
+      "upgrade": ["depth","material variation","transition vocabulary","micro-motion"],
+      "reject": ["uniform repeated fades","flat card-only scenes","gratuitous glow","full-regeneration for local defects"],
+      "standard": ["weakest-link-first","best-take selection","multi-pass QA","revenue alignment"]
+    }
+  }
 }
