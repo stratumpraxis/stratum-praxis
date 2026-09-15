@@ -1,33 +1,33 @@
 {
-  "id": "2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262",
-  "createdAt": "2026-09-14T00:40:01.748Z",
+  "id": "2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004",
+  "createdAt": "2026-09-15T01:09:29.035Z",
   "brandLane": "forwelle-en",
   "platformVariant": "cross-platform-short",
-  "title": "Why is the x86 undefined instruction called ud2? Why 2?",
-  "topic": "Why is the x86 undefined instruction called ud2? Why 2?",
+  "title": "iOS 27, iPadOS 27, and macOS 27",
+  "topic": "iOS 27, iPadOS 27, and macOS 27",
   "language": "en",
-  "summary": "A fresh first-party signal from devblogs.microsoft.com is worth watching.",
-  "voiceover": "A fresh signal from devblogs.microsoft.com is getting attention: Why is the x86 undefined instruction called ud2? Why 2?. The headline matters less than the change underneath it. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
-  "sourceCandidateId": "hn:49683262",
-  "outputFile": "media/forwelle/2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262.mp4",
+  "summary": "A fresh first-party signal from apple.com is worth watching.",
+  "voiceover": "A fresh signal from apple.com is getting attention: iOS 27, iPadOS 27, and macOS 27. The headline matters less than the change underneath it. The useful question is what this changes in a real workflow: speed, quality, access, or what becomes practical for the first time. Forwelle tracks the shift, not the hype. Watch what people can reliably do next.",
+  "sourceCandidateId": "hn:49701004",
+  "outputFile": "media/forwelle/2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004.mp4",
   "scores": {
     "freshness": 8,
     "themeFit": 3,
     "revenueFit": 2,
-    "engagement": 7,
+    "engagement": 9,
     "sourceTrust": 10,
     "originalityOpportunity": 8,
     "officialFeedBoost": 0,
-    "total": 38,
+    "total": 40,
     "max": 74
   },
   "sources": [
     {
-      "name": "devblogs.microsoft.com — first-party source",
-      "url": "https://devblogs.microsoft.com/oldnewthing/20260910-00/?p=112689",
+      "name": "apple.com — first-party source",
+      "url": "https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/",
       "factSource": true,
       "verified": true,
-      "published": "2026-09-13T12:30:15.000Z"
+      "published": "2026-09-14T17:50:29.000Z"
     }
   ],
   "thirdPartyAssets": [],
@@ -54,8 +54,8 @@
     }
   },
   "structureProfile": {
-    "hookType": "why",
-    "hookText": "Why is the x86 undefined instruction called",
+    "hookType": "concrete-change",
+    "hookText": "iOS 27, iPadOS 27, and macOS 27",
     "pacing": "five-scene-progressive",
     "ctaType": "non-salesy-takeaway",
     "visualStyle": "procedural-motion",
@@ -89,9 +89,9 @@
       "duration": 6,
       "eyebrow": "NEW SIGNAL",
       "motionTag": "WHY NOW",
-      "headline": "Why is the x86\nundefined\ninstruction called",
-      "body": "A fresh first-party update from devblogs.microsoft.com.",
-      "sourceLabel": "devblogs.microsoft.com",
+      "headline": "iOS 27, iPadOS 27,\nand macOS 27",
+      "body": "A fresh first-party update from apple.com.",
+      "sourceLabel": "apple.com",
       "background": "#050711",
       "accent": "#7CFFDA"
     },
@@ -101,7 +101,7 @@
       "motionTag": "THE SIGNAL",
       "headline": "Look past the\nheadline.",
       "body": "A new capability or workflow change is emerging.",
-      "sourceLabel": "devblogs.microsoft.com",
+      "sourceLabel": "apple.com",
       "background": "#071421",
       "accent": "#5BE7FF"
     },
@@ -144,8 +144,8 @@
     ],
     "mode": "shareNow",
     "aiGeneratedLabel": true,
-    "title": "Why is the x86 undefined instruction called ud2? Why 2?",
-    "caption": "Why is the x86 undefined instruction called ud2? Why 2? Forwelle tracks practical shifts in AI, tools and how people work. Source: https://devblogs.microsoft.com/oldnewthing/20260910-00/?p=112689 #AI #FutureOfWork #Technology #Forwelle",
+    "title": "iOS 27, iPadOS 27, and macOS 27",
+    "caption": "iOS 27, iPadOS 27, and macOS 27 Forwelle tracks practical shifts in AI, tools and how people work. Source: https://www.apple.com/newsroom/2026/09/major-updates-for-apples-software-platforms-are-now-available/ #AI #FutureOfWork #Technology #Forwelle",
     "youtubePrivacy": "public",
     "channelAllowlist": {
       "youtube": [
@@ -165,6 +165,6 @@
   "narration": {
     "file": "automation/forwelle-operator/narration.mp3",
     "voiceId": "geffen_32",
-    "durationSeconds": 25.104
+    "durationSeconds": 23.4
   }
 }

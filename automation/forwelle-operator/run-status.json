@@ -1,47 +1,9 @@
 {
-  "at": "2026-09-14T00:41:20.984Z",
-  "status": "ATTEMPTED_OR_BLOCKED",
-  "manifestId": "2026-09-14-why-is-the-x86-undefined-instruction-called-ud2-why-2-hn-49683262",
-  "platforms": {
-    "youtube": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "tiktok": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    },
-    "instagram": {
-      "status": "blocked-channel-allowlist",
-      "postId": null,
-      "externalLink": null,
-      "sentAt": null,
-      "dueAt": null,
-      "message": null
-    }
-  },
-  "structureProfile": {
-    "hookType": "why",
-    "hookText": "Why is the x86 undefined instruction called",
-    "pacing": "five-scene-progressive",
-    "ctaType": "non-salesy-takeaway",
-    "visualStyle": "procedural-motion",
-    "sceneCount": 5,
-    "durationSeconds": 40
-  },
-  "winningPatternLearning": {
-    "status": "BUILDING_DATASET",
-    "sampleCount": 0,
-    "targetCount": 10,
-    "briefUsed": false,
-    "editorialBrief": null
-  }
+  "at": "2026-09-15T01:09:29.035Z",
+  "status": "PLANNED",
+  "manifestId": "2026-09-15-ios-27-ipados-27-and-macos-27-hn-49701004",
+  "candidateId": "hn:49701004",
+  "usedAIEditor": false,
+  "winningPatternSamples": 0,
+  "winningPatternBriefUsed": false
 }
