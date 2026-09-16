@@ -1,0 +1,77 @@
+{
+  "asset": "Cross-Agent Operating Kit Personal 34s product demo",
+  "source": "campaigns/cross-agent-remotion/src/index.jsx",
+  "runtimeBuilder": "campaigns/cross-agent-remotion/build-q6-entry.mjs",
+  "master": "campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4",
+  "qualityState": "Q6_CANDIDATE_TECHNICAL_PASS",
+  "northStar": "Q7_DISTINCT_VISUAL_LANGUAGE",
+  "verifiedAt": "2026-09-16T01:03:28Z",
+  "renderCommit": "6264bcf382ee2d0648ab5a2418ee1bbbecb27fe2",
+  "technicalEvidence": {
+    "workflowRun": 35042295468,
+    "visualDirector": "PASS",
+    "visualDirectionQA": "PASS",
+    "audioQA": "PASS",
+    "render": "PASS",
+    "technicalQA": "PASS",
+    "publishEvidence": "PASS",
+    "width": 1080,
+    "height": 1920,
+    "videoCodec": "h264",
+    "audioCodec": "aac",
+    "durationSeconds": 34.048
+  },
+  "preserved": [
+    "hook copy and opening timing",
+    "single core message",
+    "restrained premium B2B tone",
+    "$69 Personal CTA",
+    "product URL",
+    "34 second duration",
+    "narration-led audio structure"
+  ],
+  "targetedUpgradeApplied": [
+    "foreground-midground-background depth atmosphere in mid-video scenes",
+    "depth-sensitive agent node micro-motion",
+    "material variation across failure cards",
+    "master-policy focal material and restrained parallax",
+    "kit-card material variation and micro-motion",
+    "source-preserving runtime build for rollback safety"
+  ],
+  "regressionStatus": {
+    "technical": "PASS",
+    "commercialCopy": "PRESERVED_BY_SOURCE_TRANSFORM",
+    "visualPerceivedQuality": "PENDING_DIRECT_VISUAL_REVIEW"
+  },
+  "weakestLinkNext": "transition vocabulary remains repetitive across scene boundaries",
+  "nextUpgrade": [
+    "replace universal light sweep with 2-3 meaning-matched transition families",
+    "keep transitions restrained and preserve CTA readability",
+    "perform direct visual review before claiming Q6 achieved"
+  ],
+  "learning": {
+    "keep": [
+      "contradiction hook",
+      "single CTA",
+      "existing narration and BGM structure",
+      "source-preserving targeted repair"
+    ],
+    "upgrade": [
+      "transition vocabulary",
+      "direct perceived-quality review",
+      "motion-to-audio macro synchronization"
+    ],
+    "reject": [
+      "full regeneration for a local visual weakness",
+      "claiming Q-level from technical specs alone",
+      "repeating one transition across every scene"
+    ],
+    "standard": [
+      "weakest-link-first",
+      "targeted repair",
+      "progressive verification",
+      "technical evidence before publication",
+      "revenue route preservation"
+    ]
+  }
+}
