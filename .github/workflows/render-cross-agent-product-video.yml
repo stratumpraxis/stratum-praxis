@@ -4,6 +4,7 @@ on:
     branches: [main]
     paths:
       - 'campaigns/cross-agent-remotion/src/index.jsx'
+      - 'campaigns/cross-agent-remotion/build-q6-entry.mjs'
       - 'campaigns/cross-agent-remotion/narrate.mjs'
       - 'campaigns/cross-agent-remotion/music.mjs'
       - 'campaigns/cross-agent-remotion/package.json'
