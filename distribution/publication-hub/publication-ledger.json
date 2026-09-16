@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-16T00:24:22.774Z",
-  "article_count": 6,
+  "generated_at": "2026-09-16T02:59:56.617Z",
+  "article_count": 7,
   "articles": [
     {
       "source": "ai-agent-operating-constitution-ja.md",
@@ -26,7 +26,33 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-16T00:24:14.797Z"
+      "checked_at": "2026-09-16T02:59:45.107Z"
+    },
+    {
+      "source": "ai-agents-as-organization-ja.md",
+      "slug": "ai-agents-as-organization-ja",
+      "title": "AIエージェントを「組織」として動かす方法──AIを増やしても仕事が減らない理由",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "published",
+        "mode": "created",
+        "identity_source": "new_article",
+        "id": 4663093,
+        "url": "https://dev.to/stratumpraxis/aiezientowozu-zhi-tositedong-kasufang-fa-aiwozeng-yasitemoshi-shi-gajian-ranaili-you-5519",
+        "canonical_url": "https://dev.to/stratumpraxis/aiezientowozu-zhi-tositedong-kasufang-fa-aiwozeng-yasitemoshi-shi-gajian-ranaili-you-5519"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/ai-agents-as-organization-ja.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
+      },
+      "checked_at": "2026-09-16T02:59:45.708Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -52,7 +78,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-16T00:24:15.355Z"
+      "checked_at": "2026-09-16T02:59:49.147Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -78,7 +104,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-16T00:24:15.664Z"
+      "checked_at": "2026-09-16T02:59:49.557Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -104,7 +130,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-16T00:24:19.126Z"
+      "checked_at": "2026-09-16T02:59:52.955Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -130,7 +156,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-16T00:24:19.421Z"
+      "checked_at": "2026-09-16T02:59:53.210Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -156,7 +182,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-16T00:24:22.774Z"
+      "checked_at": "2026-09-16T02:59:56.616Z"
     }
   ]
 }
