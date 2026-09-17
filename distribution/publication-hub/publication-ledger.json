@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-16T02:59:56.617Z",
+  "generated_at": "2026-09-17T16:52:03.192Z",
   "article_count": 7,
   "articles": [
     {
@@ -26,7 +26,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-16T02:59:45.107Z"
+      "checked_at": "2026-09-17T16:51:48.529Z"
     },
     {
       "source": "ai-agents-as-organization-ja.md",
@@ -38,8 +38,8 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "mode": "created",
-        "identity_source": "new_article",
+        "mode": "updated",
+        "identity_source": "map_id",
         "id": 4663093,
         "url": "https://dev.to/stratumpraxis/aiezientowozu-zhi-tositedong-kasufang-fa-aiwozeng-yasitemoshi-shi-gajian-ranaili-you-5519",
         "canonical_url": "https://dev.to/stratumpraxis/aiezientowozu-zhi-tositedong-kasufang-fa-aiwozeng-yasitemoshi-shi-gajian-ranaili-you-5519"
@@ -52,7 +52,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
       },
-      "checked_at": "2026-09-16T02:59:45.708Z"
+      "checked_at": "2026-09-17T16:51:52.049Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -78,7 +78,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-16T02:59:49.147Z"
+      "checked_at": "2026-09-17T16:51:52.545Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -104,7 +104,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-16T02:59:49.557Z"
+      "checked_at": "2026-09-17T16:51:56.162Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -130,7 +130,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-16T02:59:52.955Z"
+      "checked_at": "2026-09-17T16:51:56.434Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -156,7 +156,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-16T02:59:53.210Z"
+      "checked_at": "2026-09-17T16:51:59.771Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -182,7 +182,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-16T02:59:56.616Z"
+      "checked_at": "2026-09-17T16:52:03.192Z"
     }
   ]
 }
