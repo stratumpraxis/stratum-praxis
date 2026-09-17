@@ -65,6 +65,7 @@
   {
     "id": "revstrike-cross-tiktok-01",
     "active": true,
+    "canary": true,
     "services": ["tiktok"],
     "title": "One operating layer for every AI agent",
     "text": "Changing AI tools shouldn't mean rebuilding your policies, skills and human gates from scratch. Keep the operating layer portable.",
