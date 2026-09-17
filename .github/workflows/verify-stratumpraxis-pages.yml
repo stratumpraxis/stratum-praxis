@@ -137,5 +137,5 @@ jobs:
           echo 'All Stratum Praxis HTTPS, Prompt Systems and Return Gate checks passed.'
 
           wait_for_contains 'https://stratumpraxis.com/agent-control-auditor.html' \
-            'What do you want this agent to accomplish?' \
+            'What should this agent get done?' \
             'https://buy.stripe.com/cNiaEY3sEgTF60o6NJ6Zy0W'
