@@ -46,6 +46,8 @@ jobs:
         run: npm install --no-save marked
 
       - name: Publish all Stratum articles to Ghost
+        id: ghost
+        continue-on-error: true
         env:
           GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
           GHOST_ADMIN_API_KEY: ${{ secrets.GHOST_ADMIN_API_KEY }}
@@ -78,3 +80,11 @@ jobs:
           git commit -m 'publishing: refresh publication hub evidence and packets'
           git pull --rebase origin main
           git push origin HEAD:main
+
+      - name: Report degraded publication lanes
+        if: always()
+        run: |
+          echo "GHOST_LANE_OUTCOME=${{ steps.ghost.outcome }}"
+          if [ "${{ steps.ghost.outcome }}" != "success" ]; then
+            echo "::warning::Ghost publication lane failed or is externally blocked. DEV.to and publication-packet lanes were allowed to continue."
+          fi
