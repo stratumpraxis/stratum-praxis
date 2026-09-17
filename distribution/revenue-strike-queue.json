@@ -61,5 +61,15 @@
     "services": ["bluesky"],
     "text": "A durable agent stack separates the model from the operating contract: policy, skills, state, human gates and cost limits. Then tools can change without losing control.",
     "url": "https://stratumpraxis.com/systems/?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_bluesky_03"
+  },
+  {
+    "id": "revstrike-cross-tiktok-01",
+    "active": true,
+    "services": ["tiktok"],
+    "title": "One operating layer for every AI agent",
+    "text": "Changing AI tools shouldn't mean rebuilding your policies, skills and human gates from scratch. Keep the operating layer portable.",
+    "url": "https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=buffer&utm_medium=social&utm_campaign=revenue_strike&utm_content=cross_tiktok_01",
+    "videoUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/campaigns/cross-agent-remotion/output/cross-agent-operating-kit-personal.mp4",
+    "thumbnailOffsetMs": 2000
   }
 ]
