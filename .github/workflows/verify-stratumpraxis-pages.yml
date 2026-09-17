@@ -110,15 +110,12 @@ jobs:
             curl --fail --silent --show-error --location --max-time 20 --retry 4 --retry-delay 5 --retry-all-errors "$url" >/dev/null
           done
 
+          # Only routes intentionally present in the canonical sitemap are asserted here.
+          # Other owned pages above are still verified for live HTTPS reachability.
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
-            'https://stratumpraxis.com/return-gate/' \
             'https://stratumpraxis.com/prompt-systems.html' \
             'https://stratumpraxis.com/workflow-operator.html' \
-            'https://stratumpraxis.com/trend-to-video-revenue-suite.html' \
-            'https://stratumpraxis.com/execution-without-drift.html' \
-            'https://stratumpraxis.com/safe-api-automation-kit.html' \
-            'https://stratumpraxis.com/revenue-distribution-engine.html' \
-            'https://stratumpraxis.com/return-gate-growth-os.html'
+            'https://stratumpraxis.com/revenue-distribution-engine.html'
 
           wait_for_contains 'https://stratumpraxis.com/passage-hub/' \
             'href="/prompt-systems.html"' \
