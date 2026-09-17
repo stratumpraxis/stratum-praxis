@@ -174,6 +174,14 @@ function page({ title, description, canonical, funnel, product, jsonLd, body, na
 <script defer src="/scos-analytics.js"></script>
 <style>${STYLE}</style>
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QXTYRB4TWY');
+</script>
 </head>
 <body data-funnel="${esc(funnel)}"${product ? ` data-product="${esc(product)}"` : ''}>
 <a class="skip" href="#main">Skip to content</a>
