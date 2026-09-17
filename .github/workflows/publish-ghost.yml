@@ -1,19 +1,16 @@
 name: Publish Ghost Articles
 
+# Recovery/test lane only.
+# Automatic Ghost publication is owned by Stratum Unified Publication Hub,
+# which can isolate an externally blocked Ghost lane without stopping other publication lanes.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'content/ghost/**/*.md'
-      - 'scripts/publish_ghost_post.mjs'
-      - '.github/workflows/publish-ghost.yml'
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: stratum-ghost-auto-publish
+  group: stratum-ghost-manual-publish
   cancel-in-progress: false
 
 jobs:
