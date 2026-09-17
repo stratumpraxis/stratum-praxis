@@ -71,6 +71,14 @@ jobs:
         working-directory: campaigns/cross-agent-remotion
         run: npm install
 
+      - name: Q6 runtime builder preflight
+        working-directory: campaigns/cross-agent-remotion
+        run: |
+          node --check build-q6-entry.mjs
+          node build-q6-entry.mjs
+          test -s src/index-q6-runtime.jsx
+          echo 'Q6_BUILDER_PREFLIGHT=PASS'
+
       - name: Generate English narration
         working-directory: campaigns/cross-agent-remotion
         env:
