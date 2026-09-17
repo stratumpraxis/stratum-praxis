@@ -18,11 +18,45 @@ if (!key) {
   process.exit(0);
 }
 
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
 async function gql(query) {
-  const r = await fetch(API, {method:'POST',headers:{'Content-Type':'application/json','Authorization':`Bearer ${key}`},body:JSON.stringify({query})});
-  const j = await r.json();
-  if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
-  return j.data;
+  const isMutation = query.trimStart().startsWith('mutation');
+  const maxAttempts = isMutation ? 1 : 3;
+  let lastError;
+
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    try {
+      const r = await fetch(API, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','Authorization':`Bearer ${key}`},
+        body: JSON.stringify({query})
+      });
+      const text = await r.text();
+      let j;
+      try {
+        j = text ? JSON.parse(text) : {};
+      } catch {
+        j = {error: text || `Non-JSON response (${r.status})`};
+      }
+
+      if (r.ok && !j.errors) return j.data;
+
+      const payload = JSON.stringify(j.errors || j);
+      const retryable = !isMutation && (r.status === 429 || r.status >= 500);
+      if (!retryable || attempt === maxAttempts) throw new Error(payload);
+
+      console.warn(`BUFFER_READ_RETRY attempt=${attempt}/${maxAttempts} status=${r.status} error=${payload}`);
+      await sleep(500 * attempt);
+    } catch (error) {
+      lastError = error;
+      if (isMutation || attempt === maxAttempts) throw error;
+      console.warn(`BUFFER_READ_RETRY attempt=${attempt}/${maxAttempts} network_error=${error?.message || error}`);
+      await sleep(500 * attempt);
+    }
+  }
+
+  throw lastError || new Error('Buffer request failed');
 }
 function q(s){ return JSON.stringify(String(s)); }
 function dayNumberUTC(){ return Math.floor(Date.now() / 86400000); }
@@ -98,5 +132,5 @@ for (const channel of channels) {
   console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result},null,2));
   if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
   if (!result?.post?.id) throw new Error(`Buffer did not return a post id for ${service}`);
-  await new Promise(r=>setTimeout(r,1500));
+  await sleep(1500);
 }
