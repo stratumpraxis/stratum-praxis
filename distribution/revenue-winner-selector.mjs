@@ -18,7 +18,9 @@ const performance = await readJson(PERFORMANCE_FILE, {
   variants: {}
 });
 
-const services = ['linkedin', 'threads', 'bluesky'];
+// Canary on a currently connected, identity-matched channel.
+// Expand only after external delivery and reaction evidence exists.
+const services = ['tiktok'];
 const day = Math.floor(Date.now() / 86400000);
 const MIN_SCORE = 8;
 const MIN_SIGNALS = 3;
@@ -45,9 +47,6 @@ function chooseForService(service, offset) {
   const best = ranked[0];
   const enoughEvidence = best.metrics.score >= MIN_SCORE && best.metrics.signals >= MIN_SIGNALS;
 
-  // Exploration is the safe default. Once evidence exists, use a 5-day exploitation cycle:
-  // winner, alternate 1, winner, alternate 2, winner. This gives the winner 60% share
-  // while preserving exploration and avoids blindly locking onto an early weak signal.
   if (!enoughEvidence) {
     return { ...candidates[(day + offset) % candidates.length], selection_mode: 'explore' };
   }
