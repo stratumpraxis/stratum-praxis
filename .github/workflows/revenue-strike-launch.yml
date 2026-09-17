@@ -44,28 +44,48 @@ jobs:
         run: node distribution/safety-audit.mjs
 
       - name: Agent Control Auditor -> LinkedIn
+        id: linkedin
+        continue-on-error: true
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: linkedin
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
       - name: AI Value / SaaS Spend -> Threads
+        id: threads
+        continue-on-error: true
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: threads
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
       - name: Cross-Agent Operating Kit -> Bluesky
+        id: bluesky
+        continue-on-error: true
         env:
           BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
           BUFFER_TARGET_SERVICES: bluesky
           BUFFER_QUEUE_FILE: revenue-strike-selected.json
           BUFFER_SELECT_MODE: first
+          REQUIRE_ELIGIBLE_CHANNELS: '1'
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
+
+      - name: Enforce external delivery evidence
+        if: always()
+        run: |
+          echo "LINKEDIN_OUTCOME=${{ steps.linkedin.outcome }}"
+          echo "THREADS_OUTCOME=${{ steps.threads.outcome }}"
+          echo "BLUESKY_OUTCOME=${{ steps.bluesky.outcome }}"
+          if [ "${{ steps.linkedin.outcome }}" != "success" ] || [ "${{ steps.threads.outcome }}" != "success" ] || [ "${{ steps.bluesky.outcome }}" != "success" ]; then
+            echo "::error::Revenue Strike did not complete all intended external delivery lanes. Connect the required Buffer channels or update the approved route before treating this workflow as successful."
+            exit 1
+          fi
