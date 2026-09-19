@@ -15,13 +15,13 @@
   <meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="stylesheet" href="/stratum-office-v4.css">
-  <link rel="stylesheet" href="/stratum-revenue-home.css?v=2">
+  <link rel="stylesheet" href="/stratum-revenue-home.css?v=3">
   <script>try{const r=localStorage.getItem('sp-office-route');if(!['cost','workflow','agent'].includes(r))localStorage.setItem('sp-office-route','cost')}catch(e){}</script>
   <script src="/scos-analytics.js" defer></script>
   <script defer src="/cross-agent-attribution.js"></script>
   <script src="/stratum-office-v4.js" defer></script>
-  <script src="/stratum-revenue-home.js?v=2" defer></script>
-  <script src="/stratum-revenue-growth.js?v=1" defer></script>
+  <script src="/stratum-revenue-home.js?v=3" defer></script>
+  <script src="/stratum-revenue-growth.js?v=2" defer></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/","description":"B2B AI spend, workflow and agent decision intelligence with free evidence tools, self-service products, fixed-scope audits and recurring spend control.","logo":"https://stratumpraxis.com/media/og/stratum-praxis-og-default.png"}</script>
   <link rel="stylesheet" href="/design-preview/stratum-preview-v2.css" data-stratum-home-v2>
   <link rel="stylesheet" href="/inbound-revenue.css">
@@ -220,15 +220,25 @@
       </div>
     </section>
 
-    <section class="rh-audit-band" aria-label="Workflow Audit">
-      <div>
-        <small data-rh="auditLabel">PROFESSIONAL ESCALATION</small>
-        <h2 data-rh="auditTitle">One material workflow. One written decision.</h2>
-        <p data-rh="auditText">Workflow map, leak analysis, ranked opportunities, ROI scenarios, risk checkpoints and a 30-day action plan—without open-ended consulting.</p>
+    <section class="rh-audit-band rh-audit-compare" aria-labelledby="audit-pair-title">
+      <div class="rh-audit-choice-copy">
+        <small data-rg="auditPairLabel">TWO $499 SPECIALIST ROUTES</small>
+        <h2 id="audit-pair-title" data-rg="auditPairTitle">Choose the audit that matches the leak.</h2>
+        <p data-rg="auditPairNote">Spend leakage and workflow leakage are different decisions. Both remain fixed-scope so buyers do not have to enter open-ended consulting.</p>
       </div>
-      <div class="rh-audit-price">
-        <span data-rh="auditFixed">FIXED PRICE</span><strong>$499</strong><small>USD</small>
-        <a class="action-btn" href="/workflow-audit.html" data-analytics-id="home_audit_band"><span data-rh="auditCta">Review audit →</span></a>
+      <div class="rh-audit-options">
+        <a class="rh-audit-option" href="/workflow-audit.html" data-analytics-id="home_audit_compare_workflow">
+          <span>WORKFLOW · $499</span>
+          <strong data-rg="workflowTitle">AI Workflow Opportunity Audit</strong>
+          <p data-rg="workflowText">Best when one recurring workflow has material delay, rework or coordination burden and needs ranked automation opportunities.</p>
+          <b><span data-rg="openWorkflow">Open Workflow Audit — $499</span><i>→</i></b>
+        </a>
+        <a class="rh-audit-option" href="/ai-saas-spend-waste-audit.html" data-analytics-id="home_audit_compare_spend">
+          <span>SPEND · $499</span>
+          <strong data-rg="spendTitle">AI & SaaS Spend Waste Audit</strong>
+          <p data-rg="spendText">Best when the decision is about renewals, tool overlap, AI add-on creep, plan size or software cost versus workflow value.</p>
+          <b><span data-rg="openSpend">Open Spend Audit — $499</span><i>→</i></b>
+        </a>
       </div>
     </section>
 
