@@ -11,7 +11,7 @@
 
   const family=(()=>{
     if(['/','/live-lab.html','/product-router.html','/systems/','/guides/','/evidence.html'].includes(path)) return 'core';
-    if(path.startsWith('/guides/ai-saas')||['/ai-saas-waste-calculator.html','/ai-saas-spend-audit-checklist.html','/ai-value-realization-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/saas-renewal-decision.html'].includes(path)) return 'spend';
+    if(path.startsWith('/guides/ai-saas')||['/ai-saas-waste-calculator.html','/ai-saas-spend-audit-checklist.html','/ai-value-realization-kit.html','/ai-saas-spend-decision-kit.html','/ai-saas-spend-waste-audit.html','/ai-saas-spend-monitoring.html','/saas-renewal-decision.html'].includes(path)) return 'spend';
     if(path.startsWith('/guides/workflow')||['/b2b/','/workflow-audit.html','/sample-workflow-audit.html','/workflow-automation-comparison.html'].includes(path)) return 'workflow';
     if(path.startsWith('/guides/ai-agent')||['/ai-agent-economics-calculator.html','/agent-control-auditor.html','/cross-agent-operating-kit.html','/ai-agent-cost-roi-calculator.html','/ai-coding-assistant-comparison.html'].includes(path)) return 'agent';
     if(path.startsWith('/revenue-pump/')||['/ai-monetization-reality-check.html','/ai-income-claim-checklist.html','/rustchain-bounty-radar.html'].includes(path)) return 'revenue';
