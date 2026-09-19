@@ -26,6 +26,18 @@ const DELIVERY_FILES = [
     url: 'https://drive.google.com/file/d/15JPXD7jIZu5niHuMieBMs4fml_Iw_oTI/view?usp=drivesdk',
     contents: 'MSV1-005 · 60s + 30s + 15s WAV plus preview and metadata',
   },
+  {
+    name: 'MSV1-006_Phase_Shift_Product_Bundle.zip',
+    sha256: 'ebdccdfc0aa89bb13bf7421d22fe849dcfd8ede06f3e98eabfe90e8384ed844a',
+    url: 'https://drive.google.com/file/d/16WQTcq8lSfCSZWpF6XpCF4Cz2tm_LQV1/view?usp=drivesdk',
+    contents: 'MSV1-006 · 60s + 30s + 15s WAV plus preview, promo, metadata and license',
+  },
+  {
+    name: 'MSV1-007_Fracture_Bloom_Product_Bundle.zip',
+    sha256: 'd848bd3b49b91b1f6c8cd815454da36642b4240be376057f7931e6666e4875da',
+    url: 'https://drive.google.com/file/d/1SOj6sy0Pmqt0VkDXEiASdKsWfqJfYlnQ/view?usp=drivesdk',
+    contents: 'MSV1-007 · 60s + 30s + 15s WAV plus preview, promos, metadata and license',
+  },
 ];
 const te = new TextEncoder();
 const td = new TextDecoder();
@@ -135,7 +147,7 @@ async function createCheckout(env) {
     'line_items[0][price_data][currency]': CURRENCY,
     'line_items[0][price_data][unit_amount]': String(AMOUNT),
     'line_items[0][price_data][product_data][name]': PRODUCT_NAME,
-    'line_items[0][price_data][product_data][description]': '5 original instrumental tracks · 60s + 30s + 15s edits · 48 kHz / 24-bit stereo WAV',
+    'line_items[0][price_data][product_data][description]': '7 original instrumental tracks · 60s + 30s + 15s edits · 48 kHz / 24-bit stereo WAV',
     'line_items[0][quantity]': '1',
     customer_creation: 'always',
     success_url: `${PUBLIC_ORIGIN}/music-stock-pack-v1-access.html?session_id={CHECKOUT_SESSION_ID}`,
@@ -216,7 +228,7 @@ export default {
         return json({
           authorized: true,
           buyer_email: claim.email,
-          track_count: 5,
+          track_count: 7,
           delivery_files: DELIVERY_FILES,
           file_name: DELIVERY_FILES[0].name,
           sha256: DELIVERY_FILES[0].sha256,

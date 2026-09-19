@@ -21,15 +21,15 @@
 <body data-page="music_stock_pack_v1_delivery">
 <main class="shell">
   <p class="ey">STRATUM PRAXIS · BUYER DELIVERY</p>
-  <h1>Your five-track pack is gated by the paid session.</h1>
+  <h1>Your seven-track pack is gated by the paid session.</h1>
   <p class="muted">This page re-checks the signed buyer token and live Stripe Checkout Session before exposing the private delivery files.</p>
   <section class="card">
     <p id="state" class="muted" role="status" aria-live="polite">Re-checking purchase…</p>
     <div id="details" class="hidden">
-      <div class="row"><span>Product</span><span>Music Stock Pack v1 · 5 tracks</span></div>
+      <div class="row"><span>Product</span><span>Music Stock Pack v1 · 7 tracks</span></div>
       <div class="row"><span>Buyer email</span><span id="email"></span></div>
       <div id="files" class="delivery-list"></div>
-      <p class="note">The Drive files remain private. If Drive asks for access, request access using the same email used at Stripe Checkout. The original three-track archive and the two new modulation-track deliveries together make up the five-track pack.</p>
+      <p class="note">The Drive files remain private. If Drive asks for access, request access using the same email used at Stripe Checkout. The original three-track archive plus MSV1-004 through MSV1-007 deliveries together make up the seven-track pack.</p>
     </div>
   </section>
 </main>
@@ -42,7 +42,7 @@ async function load(){
   try{
     const r=await fetch(API+'?token='+encodeURIComponent(token),{cache:'no-store'}),x=await r.json();
     if(!r.ok||!x.authorized||!x.delivery_url)throw new Error(x.error||'Buyer delivery could not be verified');
-    state.innerHTML='<span class="good">Purchase verified. Five-track buyer delivery unlocked.</span>';
+    state.innerHTML='<span class="good">Purchase verified. Seven-track buyer delivery unlocked.</span>';
     document.getElementById('email').textContent=x.buyer_email||'';
     const deliveries=Array.isArray(x.delivery_files)&&x.delivery_files.length?x.delivery_files:[{name:x.file_name,sha256:x.sha256,url:x.delivery_url,contents:'Paid delivery'}];
     deliveries.forEach((item,index)=>{
