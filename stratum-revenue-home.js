@@ -24,7 +24,11 @@
       d1:'Workflow Map',d1n:'Trigger, owners, systems and handoffs.',d2:'Leak Analysis',d2n:'Rework, delay and value loss.',d3:'Ranked Opportunities',d3n:'Impact, effort, reversibility and risk.',d4:'ROI Scenarios',d4n:'Transparent assumptions, not invented precision.',d5:'Human Checkpoints',d5n:'Where authority and review should remain.',d6:'30-Day Action Plan',d6n:'Test, validate, scale, redesign or stop.',
       finalLabel:'TURN SIGNALS INTO A DECISION',finalTitle:'Do not buy more AI until you know what the next dollar is supposed to do.',finalText:'Start free if the problem is still fuzzy. Choose the smallest implementation route when the evidence is enough. Escalate only when the workflow is material.',finalCta:'Start with free evidence',
       integrityTitle:'Input integrity',integrityEmpty:'Add your own numbers. Nothing is pre-filled.',integrityPartial:'Keep going — the result is still based only on your inputs.',integrityReady:'Inputs complete. The result is now calculated from your assumptions.',
-      proofA:'FREE FIRST',proofAv:'A valid end state',proofB:'INPUTS',proofBv:'Your numbers only',proofC:'METHOD',proofCv:'Assumptions visible',proofD:'SCOPE',proofDv:'Escalation stays bounded'
+      proofA:'FREE FIRST',proofAv:'A valid end state',proofB:'INPUTS',proofBv:'Your numbers only',proofC:'METHOD',proofCv:'Assumptions visible',proofD:'SCOPE',proofDv:'Escalation stays bounded',
+      liveProofLabel:'LIVE EVIDENCE · OPEN BEFORE YOU BUY',liveProofTitle:'Inspect the work, not the promise.',liveProofNote:'These are public, working Stratum artifacts. No client-result claim is needed to understand the method.',
+      liveProof1Label:'01 · LIVE CALCULATOR',liveProof1Title:'AI & SaaS Waste Calculator',liveProof1Text:'Enter your own spend and assumptions. The page calculates; it does not invent outcomes.',liveProof1Cta:'Use calculator',
+      liveProof2Label:'02 · LIVE DIAGNOSTIC',liveProof2Title:'Workflow Decision Diagnostic',liveProof2Text:'Six click-only questions return a decision memo and can end with no paid recommendation.',liveProof2Cta:'Run 2-minute check',
+      liveProof3Label:'03 · ILLUSTRATIVE SAMPLE · NOT A CLIENT RESULT',liveProof3Title:'Interactive Workflow Audit Sample',liveProof3Text:'Inspect the structure, assumptions, human checkpoints and 30-day plan before paying.',liveProof3Cta:'Open sample'
     },
     ja:{
       eyebrow:'B2B AI支出 · WORKFLOW · AGENT CONTROL',
@@ -45,7 +49,11 @@
       d1:'Workflow Map',d1n:'Trigger・担当・System・Handoff。',d2:'Leak Analysis',d2n:'再作業・遅延・価値損失。',d3:'Ranked Opportunities',d3n:'Impact・Effort・Reversibility・Risk。',d4:'ROI Scenarios',d4n:'架空精度ではなく透明な前提。',d5:'Human Checkpoints',d5n:'権限とHuman Reviewを残す場所。',d6:'30-Day Action Plan',d6n:'試す・検証・拡張・再設計・停止。',
       finalLabel:'SIGNALを判断へ',finalTitle:'次の1ドルの役割が分かるまで、AIを増やさない。',finalText:'課題が曖昧なら無料から。Evidenceが十分なら最小の実装Routeを選ぶ。重要なWorkflowだけ専門監査へ。',finalCta:'無料Evidenceから始める',
       integrityTitle:'入力の完全性',integrityEmpty:'自分の数字を入力してください。初期値で結論を作りません。',integrityPartial:'入力途中です。結果は入力済みの値だけを使います。',integrityReady:'入力完了。あなたの前提だけで結果を計算しています。',
-      proofA:'FREE FIRST',proofAv:'無料終了も正解',proofB:'INPUTS',proofBv:'自分の数字だけ',proofC:'METHOD',proofCv:'前提を可視化',proofD:'SCOPE',proofDv:'支援範囲を固定'
+      proofA:'FREE FIRST',proofAv:'無料終了も正解',proofB:'INPUTS',proofBv:'自分の数字だけ',proofC:'METHOD',proofCv:'前提を可視化',proofD:'SCOPE',proofDv:'支援範囲を固定',
+      liveProofLabel:'LIVE EVIDENCE · 購入前に実物確認',liveProofTitle:'約束ではなく、実物を見る。',liveProofNote:'Stratumの公開済み・稼働中Assetです。顧客実績を捏造せず、方法と品質を購入前に確認できます。',
+      liveProof1Label:'01 · 稼働中CALCULATOR',liveProof1Title:'AI & SaaS Waste Calculator',liveProof1Text:'自分の支出と前提を入力。成果を作らず、入力値から計算します。',liveProof1Cta:'Calculatorを使う',
+      liveProof2Label:'02 · 稼働中DIAGNOSTIC',liveProof2Title:'Workflow Decision Diagnostic',liveProof2Text:'6問の選択式で判断Memoを返し、Signalが弱ければPaid提案なしで終了します。',liveProof2Cta:'2分診断を試す',
+      liveProof3Label:'03 · ILLUSTRATIVE SAMPLE · 顧客実績ではありません',liveProof3Title:'Interactive Workflow Audit Sample',liveProof3Text:'購入前に構造・前提・Human Checkpoint・30日Planを実物で確認できます。',liveProof3Cta:'Sampleを開く'
     },
     es:{
       eyebrow:'GASTO AI B2B · WORKFLOW · CONTROL DE AGENTES',
@@ -61,7 +69,11 @@
       receiveLabel:'QUÉ PRODUCE LA AUDITORÍA',receiveTitle:'Artefactos de decisión que el equipo puede usar.',receiveNote:'Mapea el workflow, expone fugas, ordena opciones, define controles y decide qué ocurre después.',d1:'Mapa de Workflow',d1n:'Trigger, responsables, sistemas y handoffs.',d2:'Análisis de fugas',d2n:'Retrabajo, retraso y pérdida de valor.',d3:'Oportunidades ordenadas',d3n:'Impacto, esfuerzo, reversibilidad y riesgo.',d4:'Escenarios ROI',d4n:'Supuestos transparentes.',d5:'Puntos humanos',d5n:'Dónde mantener autoridad y revisión.',d6:'Plan 30 días',d6n:'Probar, validar, escalar, rediseñar o parar.',
       finalLabel:'DE SEÑAL A DECISIÓN',finalTitle:'No compres más AI hasta saber qué debe hacer el próximo dólar.',finalText:'Empieza gratis si el problema sigue difuso. Elige la ruta mínima cuando haya evidencia y escala solo si hace falta.',finalCta:'Empezar con evidencia gratis',
       integrityTitle:'Integridad de entrada',integrityEmpty:'Añade tus propios números. No hay resultados precargados.',integrityPartial:'Sigue: el resultado usa solo los datos que introduces.',integrityReady:'Datos completos. El resultado se calcula con tus supuestos.',
-      proofA:'GRATIS PRIMERO',proofAv:'Puede terminar aquí',proofB:'DATOS',proofBv:'Solo tus números',proofC:'MÉTODO',proofCv:'Supuestos visibles',proofD:'ALCANCE',proofDv:'Escalación limitada'
+      proofA:'GRATIS PRIMERO',proofAv:'Puede terminar aquí',proofB:'DATOS',proofBv:'Solo tus números',proofC:'MÉTODO',proofCv:'Supuestos visibles',proofD:'ALCANCE',proofDv:'Escalación limitada',
+      liveProofLabel:'EVIDENCIA EN VIVO · ÁBRELA ANTES DE COMPRAR',liveProofTitle:'Inspecciona el trabajo, no la promesa.',liveProofNote:'Son activos públicos y funcionales de Stratum. No hace falta inventar resultados de clientes para entender el método.',
+      liveProof1Label:'01 · CALCULADORA EN VIVO',liveProof1Title:'AI & SaaS Waste Calculator',liveProof1Text:'Introduce tu gasto y supuestos. La página calcula; no inventa resultados.',liveProof1Cta:'Usar calculadora',
+      liveProof2Label:'02 · DIAGNÓSTICO EN VIVO',liveProof2Title:'Workflow Decision Diagnostic',liveProof2Text:'Seis preguntas producen un memo de decisión y pueden terminar sin recomendación pagada.',liveProof2Cta:'Hacer chequeo de 2 min',
+      liveProof3Label:'03 · MUESTRA ILUSTRATIVA · NO ES RESULTADO DE CLIENTE',liveProof3Title:'Interactive Workflow Audit Sample',liveProof3Text:'Revisa estructura, supuestos, controles humanos y plan de 30 días antes de pagar.',liveProof3Cta:'Abrir muestra'
     }
   };
 
@@ -132,7 +144,7 @@
       hero.addEventListener('pointerleave',()=>{hero.style.setProperty('--mx','0');hero.style.setProperty('--my','0')},{passive:true});
     }
 
-    const targets=document.querySelectorAll('.rh-proofbar,.rh-section,.rh-audit-band,.rh-final,.rh-recent-wrap');
+    const targets=document.querySelectorAll('.rh-proofbar,.rh-evidence,.rh-section,.rh-audit-band,.rh-final,.rh-recent-wrap');
     if(reduce){targets.forEach(x=>x.classList.add('is-seen'));return;}
     const io=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('is-seen');io.unobserve(entry.target)}}),{threshold:.12,rootMargin:'0px 0px -6%'});
     targets.forEach(x=>{x.classList.add('rh-reveal');io.observe(x)});
