@@ -4,7 +4,7 @@
   const DECISION_KIT_CHECKOUT='https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06';
   const C={
     en:{
-      loopLabel:'POST-AUDIT VALUE LOOP',loopTitle:'Turn a one-time audit into verified value and recurring control.',loopNote:'The spend route can continue after the first decision: recover verified savings when execution support is justified, then keep the stack from drifting back.',
+      loopLabel:'SPEND ROUTE · AFTER THE AUDIT',loopTitle:'If the issue is software spend, the route can continue after the $499 audit.',loopNote:'This section applies to the Spend Audit path: recover mutually verified savings when execution support is justified, then keep the stack from drifting back.',
       auditBadge:'ONE-TIME',auditName:'AI & SaaS Spend Audit',auditPrice:'$499',auditDesc:'Connect software cost to workflow value and rank KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL decisions.',auditMeta1:'3-business-day target',auditMeta2:'Stripe checkout',auditCta:'Review the $499 spend audit',
       recoveryBadge:'PERFORMANCE',recoveryName:'Verified Savings Recovery',recoveryPrice:'15%',recoveryDesc:'Optional post-audit execution support. Fee applies only to mutually verified first-year savings under a written baseline.',recoveryMeta1:'Post-audit only',recoveryMeta2:'Verified savings only',recoveryCta:'See recovery terms',
       monitorBadge:'RECURRING',monitorName:'Spend Monitoring',monitorPrice:'$199–$499/mo',monitorDesc:'Recurring review for renewals, duplicate capability, plan-size drift, AI add-ons and prioritized cost actions.',monitorMeta1:'Core $199/mo',monitorMeta2:'Pro $499/mo',monitorCta:'See monthly monitoring',
@@ -13,7 +13,7 @@
       spendTitle:'AI & SaaS Spend Waste Audit',spendText:'Best when the decision is about renewals, tool overlap, AI add-on creep, plan size or software cost versus workflow value.',workflowTitle:'AI Workflow Opportunity Audit',workflowText:'Best when one recurring workflow has material delay, rework or coordination burden and needs ranked automation opportunities.',openSpend:'Open Spend Audit — $499',openWorkflow:'Open Workflow Audit — $499'
     },
     ja:{
-      loopLabel:'POST-AUDIT VALUE LOOP',loopTitle:'単発監査を、実証価値と継続収益につなげる。',loopNote:'Spend Routeは最初の判断で終わりません。必要なら実証済み削減のRecoveryへ進み、その後はStackの再肥大化をMonthly Monitoringで抑えます。',
+      loopLabel:'SPEND ROUTE · 監査後',loopTitle:'Software Spendが課題なら、$499監査の後もRouteを継続できます。',loopNote:'ここはSpend Auditを選んだ場合だけの導線です。必要なら相互確認できた削減のRecoveryへ進み、その後はMonthly Monitoringで再肥大化を抑えます。',
       auditBadge:'ONE-TIME',auditName:'AI & SaaS Spend Audit',auditPrice:'$499',auditDesc:'Software CostをWorkflow Valueへ接続し、KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCELを順位化。',auditMeta1:'3営業日目安',auditMeta2:'Stripe決済',auditCta:'$499 Spend Auditを見る',
       recoveryBadge:'PERFORMANCE',recoveryName:'Verified Savings Recovery',recoveryPrice:'15%',recoveryDesc:'監査後の任意Execution Support。書面Baselineに基づき、相互確認できた初年度削減額だけがFee対象です。',recoveryMeta1:'監査後のみ',recoveryMeta2:'実証済み削減のみ',recoveryCta:'Recovery条件を見る',
       monitorBadge:'RECURRING',monitorName:'Spend Monitoring',monitorPrice:'$199–$499/月',monitorDesc:'Renewal・機能重複・Plan肥大・AI Add-on・コストActionを毎月レビューする継続Control。',monitorMeta1:'Core $199/月',monitorMeta2:'Pro $499/月',monitorCta:'Monthly Monitoringを見る',
@@ -22,7 +22,7 @@
       spendTitle:'AI & SaaS Spend Waste Audit',spendText:'更新・Tool重複・AI Add-on・Plan肥大・Software CostとWorkflow Valueの判断に向く監査。',workflowTitle:'AI Workflow Opportunity Audit',workflowText:'1つの定常Workflowに大きな遅延・再作業・調整負荷があり、自動化機会を順位化したい場合の監査。',openSpend:'Spend Auditを開く — $499',openWorkflow:'Workflow Auditを開く — $499'
     },
     es:{
-      loopLabel:'POST-AUDIT VALUE LOOP',loopTitle:'Convierte una auditoría única en valor verificado y control recurrente.',loopNote:'La ruta de gasto puede continuar: recuperación de ahorro verificado cuando tenga sentido y monitorización para evitar que el stack vuelva a crecer sin control.',
+      loopLabel:'RUTA DE GASTO · DESPUÉS DE LA AUDITORÍA',loopTitle:'Si el problema es gasto de software, la ruta puede continuar después de la auditoría de $499.',loopNote:'Esta sección solo aplica a Spend Audit: recuperación de ahorro verificado cuando tenga sentido y monitorización para evitar que el stack vuelva a crecer.',
       auditBadge:'UNA VEZ',auditName:'AI & SaaS Spend Audit',auditPrice:'$499',auditDesc:'Conecta coste de software con valor del workflow y prioriza KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL.',auditMeta1:'Objetivo 3 días',auditMeta2:'Pago Stripe',auditCta:'Ver Spend Audit $499',
       recoveryBadge:'RENDIMIENTO',recoveryName:'Verified Savings Recovery',recoveryPrice:'15%',recoveryDesc:'Soporte opcional tras la auditoría. La tarifa se aplica solo al ahorro de primer año verificado bajo una línea base escrita.',recoveryMeta1:'Solo post-audit',recoveryMeta2:'Solo ahorro verificado',recoveryCta:'Ver condiciones',
       monitorBadge:'RECURRENTE',monitorName:'Spend Monitoring',monitorPrice:'$199–$499/mes',monitorDesc:'Revisión recurrente de renovaciones, duplicados, planes sobredimensionados, add-ons AI y acciones de coste.',monitorMeta1:'Core $199/mes',monitorMeta2:'Pro $499/mes',monitorCta:'Ver monitorización mensual',
