@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T00:23:17.695Z",
+  "generated_at": "2026-09-20T00:10:01.682Z",
   "article_count": 7,
   "articles": [
     {
@@ -26,7 +26,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-19T00:22:59.897Z"
+      "checked_at": "2026-09-20T00:09:49.474Z"
     },
     {
       "source": "ai-agents-as-organization-ja.md",
@@ -52,7 +52,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
       },
-      "checked_at": "2026-09-19T00:23:03.400Z"
+      "checked_at": "2026-09-20T00:09:53.144Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -78,7 +78,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-19T00:23:06.782Z"
+      "checked_at": "2026-09-20T00:09:53.487Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -104,7 +104,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-19T00:23:10.456Z"
+      "checked_at": "2026-09-20T00:09:57.256Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -130,7 +130,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-19T00:23:13.966Z"
+      "checked_at": "2026-09-20T00:09:57.504Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -156,7 +156,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-19T00:23:14.264Z"
+      "checked_at": "2026-09-20T00:10:01.345Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -182,7 +182,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-19T00:23:17.695Z"
+      "checked_at": "2026-09-20T00:10:01.682Z"
     }
   ]
 }
