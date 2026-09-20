@@ -23,7 +23,10 @@
     '/ai-saas-spend-waste-audit.html': 'ai_saas_spend_waste_audit',
     '/ai-saas-spend-monitoring.html': 'ai_saas_spend_monitoring',
     '/workflow-audit.html': 'workflow_audit',
-    '/cross-agent-operating-kit.html': 'cross_agent_operating_kit'
+    '/cross-agent-operating-kit.html': 'cross_agent_operating_kit',
+    '/ai-agent-vendor-due-diligence-pack.html': 'ai_agent_vendor_due_diligence_pack',
+    '/agentic-ai-governance-permission-kit.html': 'agentic_ai_governance_permission_kit',
+    '/eu-ai-act-article-50-transparency-readiness-pack.html': 'eu_ai_act_article_50_transparency_readiness_pack'
   };
   const CHECKOUT_MARKER_KEY = 'sp_checkout_clicked_v1';
   const VERIFIED_MARKER_KEY = 'sp_verified_access_v1';
