@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mwc7qo3kcd2r",
+  "cid": "bafyreieh5y7f4jeykl6trhcqgudtnmlygi7bukhmudtakdqi7n22u6kyam",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mwc7qo3kcd2r",
+  "destination": "https://stratumpraxis.wordpress.com/2026/09/22/ai-cost-per-successful-outcome/?utm_source=bsky&utm_campaign=costoutcome",
+  "content_id": "stratum-bluesky-ai-cost-outcome-20260925",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-09-24T21:38:55.788Z"
+}
