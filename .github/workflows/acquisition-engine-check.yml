@@ -1,6 +1,8 @@
 name: Acquisition Intelligence Engine Check
 
 on:
+  repository_dispatch:
+    types: [project_nerve_acquisition_readback]
   push:
     branches: [main]
     paths:
