@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-ai-cost-outcome-20260925",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "AI cost per seat can hide retries and human review. Measure cost per successful outcome before the next renewal.",
+  "hook": "Measure AI cost per successful outcome.",
+  "cta": "Read the guide",
+  "destination": "https://stratumpraxis.wordpress.com/2026/09/22/ai-cost-per-successful-outcome/?utm_source=bsky&utm_campaign=costoutcome",
+  "status": "QUEUED"
+}
