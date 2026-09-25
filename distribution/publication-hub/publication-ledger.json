@@ -1,6 +1,6 @@
 {
-  "generated_at": "2026-09-25T00:34:48.206Z",
-  "article_count": 7,
+  "generated_at": "2026-09-25T04:54:49.090Z",
+  "article_count": 8,
   "articles": [
     {
       "source": "ai-agent-operating-constitution-ja.md",
@@ -26,7 +26,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-09-25T00:34:32.805Z"
+      "checked_at": "2026-09-25T04:54:35.148Z"
     },
     {
       "source": "ai-agents-as-organization-ja.md",
@@ -52,7 +52,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
       },
-      "checked_at": "2026-09-25T00:34:36.431Z"
+      "checked_at": "2026-09-25T04:54:35.581Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -78,7 +78,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-09-25T00:34:40.048Z"
+      "checked_at": "2026-09-25T04:54:39.216Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -104,7 +104,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-09-25T00:34:40.682Z"
+      "checked_at": "2026-09-25T04:54:39.831Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -130,7 +130,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-09-25T00:34:44.216Z"
+      "checked_at": "2026-09-25T04:54:44.190Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -156,7 +156,33 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-09-25T00:34:44.757Z"
+      "checked_at": "2026-09-25T04:54:44.723Z"
+    },
+    {
+      "source": "choosing-ai-app-builder-iphone.md",
+      "slug": "choosing-ai-app-builder-iphone",
+      "title": "Choosing an AI App Builder for iPhone: The 7 Questions to Answer Before You Build",
+      "ghost": {
+        "status": "managed_by_publish_ghost_workflow"
+      },
+      "devto": {
+        "platform": "devto",
+        "status": "published",
+        "mode": "created",
+        "identity_source": "new_article",
+        "id": 4738251,
+        "url": "https://dev.to/stratumpraxis/choosing-an-ai-app-builder-for-iphone-the-7-questions-to-answer-before-you-build-4677",
+        "canonical_url": "https://dev.to/stratumpraxis/choosing-an-ai-app-builder-for-iphone-the-7-questions-to-answer-before-you-build-4677"
+      },
+      "tips": {
+        "status": "ready_for_mcp",
+        "file": "distribution/publication-hub/tips-ready/choosing-ai-app-builder-iphone.md"
+      },
+      "social": {
+        "status": "ready",
+        "file": "distribution/publication-hub/social-ready/choosing-ai-app-builder-iphone.json"
+      },
+      "checked_at": "2026-09-25T04:54:45.609Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -182,7 +208,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-09-25T00:34:48.206Z"
+      "checked_at": "2026-09-25T04:54:49.090Z"
     }
   ]
 }
