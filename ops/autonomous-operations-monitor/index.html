@@ -30,6 +30,11 @@ h1{margin:0;font-size:clamp(28px,5vw,46px);line-height:1.08;letter-spacing:-.04e
 .badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 9px;font-size:10px;font-weight:800}.b-ok{background:var(--okbg);color:var(--ok)}.b-run{background:var(--runbg);color:var(--run)}.b-wait{background:var(--waitbg);color:var(--wait)}.b-warn{background:var(--warnbg);color:var(--warn)}.b-soft{background:var(--soft);color:#56627a}
 a.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:700;background:#fff}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}.history{max-height:560px;overflow:auto}.hist{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid #edf0f4}.htime{font-size:10px;color:var(--muted)}.hmain{font-size:12px}.hmeta{font-size:10px;color:var(--muted);margin-top:2px}
 details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}.internal{font-size:10px;color:var(--muted);overflow-wrap:anywhere;padding-top:5px}
+.revenueGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:850px){.revenueGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.revenueGrid{grid-template-columns:1fr}}
+.revCard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.revCard.ok{border-color:#a9dcc5;background:#f6fffa}.revCard.none{background:#fafbfc}.revStage{font-size:12px;color:var(--muted);font-weight:800}.revValue{font-size:18px;font-weight:900;margin-top:5px}.revMeta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.45}
+.todayGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}@media(max-width:700px){.todayGrid{grid-template-columns:repeat(2,1fr)}}.today{border-radius:12px;padding:11px;background:#f8fafc;border:1px solid var(--line)}.today .n{font-size:22px;font-weight:900}.today .l{font-size:10px;color:var(--muted)}
+.project.p-run{border-color:#9fb8ff;background:#f8faff}.project.p-ok{border-color:#b8e2cc}.project.p-wait{border-color:#ecd68d;background:#fffdf5}.project.p-human{border-color:#f0b6bf;background:#fff8f9}.project.p-warn{border-color:#e2b36d;background:#fffaf2}.project.p-soft{border-color:var(--line)}
+.criticalBox{border:1px solid #f2b8c0;background:#fff7f8;border-radius:12px;padding:12px;color:#8d2333}.allClear{border:1px solid #bce3cf;background:#f6fffa;border-radius:12px;padding:12px;color:var(--ok);font-weight:800}
 </style>
 </head>
 <body><main>
@@ -54,10 +59,21 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <div id="kpis" class="grid6"></div>
 
+<section class="section">
+  <div class="sectionHead">
+    <div><h2>Revenue前進</h2><div class="hint">Human → Qualified → Checkout → Payment。自動化成功とは分けて表示。</div></div>
+    <div id="lastRevenue" class="hint"></div>
+  </div>
+  <div id="revenueGrid" class="revenueGrid"></div>
+  <div id="todayResults" class="todayGrid"></div>
+</section>
+
 <div class="twocol">
 <section class="section"><div class="sectionHead"><div><h2>次に起きる予定</h2><div class="hint">直近の自動Wakeだけ表示</div></div></div><div id="nextList" class="nextList"></div></section>
 <section class="section"><div class="sectionHead"><div><h2>あなたの対応が必要</h2><div class="hint">Human Gate / Approvalだけ。通常のBlockerは別扱い。</div></div></div><div id="humanList" class="humanList"></div></section>
 </div>
+
+<section class="section"><div class="sectionHead"><div><h2>重要異常</h2><div class="hint">Clock停止 / Failedだけ赤。通常Blocker・HOLD・Human Gateは赤にしません。</div></div></div><div id="criticalList"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div></section>
 
@@ -77,14 +93,14 @@ async function load(){
 }
 function badge(text,cls){return '<span class="badge '+cls+'">'+esc(text)+'</span>'}
 function friendlyProject(p){
-  if(p.running_task)return {t:'いま作業中',c:'b-run'};
-  if(p.status==='REFERENCE')return {t:'参照待ち',c:'b-soft'};
+  if(p.running_task)return {t:'いま作業中',c:'b-run',card:'p-run'};
+  if(p.status==='REFERENCE')return {t:'参照待ち',c:'b-soft',card:'p-soft'};
   const s=String(p.state||'');
-  if(s.includes('NEEDS_APPROVAL')||s.includes('HUMAN_GATE'))return {t:'あなた待ち',c:'b-warn'};
-  if(s.includes('HOLD')||s.includes('WAITING'))return {t:'条件待ち',c:'b-wait'};
-  if(s.includes('BLOCKED')||s.includes('GATE'))return {t:'局所要確認',c:'b-warn'};
-  if(p.next_schedule)return {t:'次回待ち',c:'b-ok'};
-  return {t:'Event待ち',c:'b-soft'};
+  if(s.includes('NEEDS_APPROVAL')||s.includes('HUMAN_GATE'))return {t:'あなた待ち',c:'b-warn',card:'p-human'};
+  if(s.includes('HOLD')||s.includes('WAITING'))return {t:'条件待ち',c:'b-wait',card:'p-wait'};
+  if(s.includes('BLOCKED')||s.includes('GATE'))return {t:'局所要確認',c:'b-warn',card:'p-warn'};
+  if(p.next_schedule)return {t:'次回待ち',c:'b-ok',card:'p-ok'};
+  return {t:'Event待ち',c:'b-soft',card:'p-soft'};
 }
 function resultText(r){if(!r||typeof r!=='object')return '';const x=[];if(r.outcome)x.push(r.outcome);if(r.status_code!==undefined)x.push('HTTP '+r.status_code);if(r.route_healthy===true)x.push('route healthy');return x.join(' · ')}
 function render(d){
@@ -96,16 +112,40 @@ function render(d){
   $('nowLine').innerHTML=h.clock_healthy?'<span class="pulse"></span>Global Clockは動作中':'Global Clockを確認してください';
   $('lastLine').textContent='最後に内部が動いたのは '+ago(h.last_movement)+'（'+time(h.last_movement)+'）';
   $('plainExplain').innerHTML='直近30分のClock実行: <b>'+esc(h.cron_stats?.succeeded_30m??0)+'成功 / '+esc(failed30)+'失敗</b><br>現在RUNNING: <b>'+running+'</b><br><br>RUNNINGが0でも、Clockが正常なら停止ではなく次のWake待ちです。';
+  const rev=d.revenue||{}, stages=rev.stages||{};
+  const stageDefs=[
+    ['HUMAN','Human Evidence','実Human反応'],
+    ['QUALIFIED','Qualified Action','購入・成果へ近い行動'],
+    ['CHECKOUT','Checkout確認','導線確認。Human購入とは別'],
+    ['PAYMENT','Payment','Provider入金Evidence']
+  ];
+  $('revenueGrid').innerHTML=stageDefs.map(([key,label,sub])=>{
+    const x=stages[key];
+    return '<div class="revCard '+(x?'ok':'none')+'"><div class="revStage">'+esc(label)+'</div><div class="revValue">'+(x?'確認済み':'未確認')+'</div><div class="revMeta">'+esc(sub)+(x?'<br>'+esc(x.unit_id)+' · '+time(x.at)+' · '+ago(x.at):'')+'</div></div>';
+  }).join('');
+  $('lastRevenue').textContent=rev.last_progress?'最後のRevenue前進: '+ago(rev.last_progress.at)+' · '+rev.last_progress.stage+' · '+rev.last_progress.unit_id:'Revenue前進Evidenceなし';
+  const stoppedToday=Number(c.blocked_today||0)+Number(c.failed_today||0);
+  $('todayResults').innerHTML=[
+    ['今日の完了',c.done_today??0],['今日のRevenue前進',rev.progressed_today??0],['今日の停止/保留',stoppedToday],['今日のHuman Gate',c.needs_approval_today??0]
+  ].map(x=>'<div class="today"><div class="n">'+esc(x[1])+'</div><div class="l">'+esc(x[0])+'</div></div>').join('');
+
+  const critical=[];
+  if(!h.clock_healthy)critical.push('Global Clockが正常ではありません');
+  if(failed30>0)critical.push('直近30分にCron失敗 '+failed30+'件');
+  if(Number(c.failed_today||0)>0)critical.push('今日FAILED Task '+Number(c.failed_today||0)+'件');
+  $('criticalList').innerHTML=critical.length?critical.map(x=>'<div class="criticalBox">'+esc(x)+'</div>').join(''):'<div class="allClear">重大異常なし</div>';
+
   const nextAll=(d.schedules||[]).filter(s=>s.enabled&&s.next_run_at).sort((a,b)=>new Date(a.next_run_at)-new Date(b.next_run_at));
   const nearest=nextAll[0];
-  const kpis=[['24H完了',c.done_24h??0],['いま作業中',running],['次の起動',nearest?time(nearest.next_run_at):'Event待ち'],['Schedule稼働',h.enabled_schedules??0],['30分失敗',failed30],['あなた待ち',gates]];
+  const criticalCount=(!h.clock_healthy?1:0)+failed30+Number(c.failed_today||0);
+  const kpis=[['今日の完了',c.done_today??0],['いま作業中',running],['次の起動',nearest?time(nearest.next_run_at):'Event待ち'],['Revenue前進',d.revenue?.progressed_today??0],['重大異常',criticalCount],['あなた待ち',gates]];
   $('kpis').innerHTML=kpis.map(x=>'<div class="kpi"><div class="num">'+esc(x[1])+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');
   $('nextList').innerHTML=nextAll.slice(0,6).map(s=>'<div class="item"><div class="itemTop"><div><div class="itemTitle">'+esc(s.name)+'</div><div class="meta">'+esc(s.source_unit_id)+' · '+esc(s.interval_minutes)+'分周期</div></div>'+badge(time(s.next_run_at),'b-ok')+'</div></div>').join('')||'<div class="empty">定刻Wakeなし。Event / Handoff待ちです。</div>';
   const human=(d.alerts||[]).filter(a=>a.status==='NEEDS_APPROVAL'||a.level==='GATE'||String(a.status||'').includes('HUMAN_GATE'));
   $('humanList').innerHTML=human.length?human.map(a=>'<div class="item"><div class="itemTop"><div><div class="itemTitle">'+esc(a.title)+'</div><div class="meta">'+esc(a.unit_id)+' · '+time(a.at)+'</div></div>'+badge('対応必要','b-warn')+'</div></div>').join(''):'<div class="empty">いま、あなたの対応が必須の項目はありません。</div>';
   $('projectCount').textContent=d.projects.length+' Project';
   const ps=[...(d.projects||[])].sort((a,b)=>{const ar=a.running_task?0:(friendlyProject(a).t==='あなた待ち'?1:(a.next_schedule?2:3));const br=b.running_task?0:(friendlyProject(b).t==='あなた待ち'?1:(b.next_schedule?2:3));return ar-br});
-  $('projects').innerHTML=ps.map(p=>{const f=friendlyProject(p);const next=p.next_schedule?'次回 '+time(p.next_schedule.next_run_at):'Event / Handoff待ち';const last=p.last_task?ago(p.last_task.updated_at||p.last_task.created_at):ago(p.last_movement);const doc=p.doc?.location?'<a class="btn" target="_blank" href="'+esc(p.doc.location)+'">正本を見る</a>':'';return '<div class="project"><div class="itemTop"><div><div class="pname">'+esc(p.name)+'</div><div class="meta">'+esc(p.category)+' · '+esc(p.id)+'</div></div>'+badge(f.t,f.c)+'</div><div class="pstate">'+(p.revenue_distance!=null?badge('Revenue D'+p.revenue_distance,'b-soft'):'')+'</div><div class="desc">'+esc(p.objective||'')+'</div>'+(p.blocker?'<div class="problem">現在の詰まり: '+esc(p.blocker)+'</div>':'')+(p.next_action?'<div class="next"><b>次:</b> '+esc(p.next_action)+'</div>':'')+'<div class="foot"><div class="footText">'+esc(next)+'<br>最後の動作: '+esc(last)+'</div><div>'+doc+'</div></div><details><summary>内部Stateを見る</summary><div class="internal">'+esc(p.state||'')+'</div></details></div>'}).join('');
+  $('projects').innerHTML=ps.map(p=>{const f=friendlyProject(p);const next=p.next_schedule?'次回 '+time(p.next_schedule.next_run_at):'Event / Handoff待ち';const last=p.last_task?ago(p.last_task.updated_at||p.last_task.created_at):ago(p.last_movement);const doc=p.doc?.location?'<a class="btn" target="_blank" href="'+esc(p.doc.location)+'">正本を見る</a>':'';return '<div class="project '+f.card+'"><div class="itemTop"><div><div class="pname">'+esc(p.name)+'</div><div class="meta">'+esc(p.category)+' · '+esc(p.id)+'</div></div>'+badge(f.t,f.c)+'</div><div class="pstate">'+(p.revenue_distance!=null?badge('Revenue D'+p.revenue_distance,'b-soft'):'')+'</div><div class="desc">'+esc(p.objective||'')+'</div>'+(p.blocker?'<div class="problem">現在の詰まり: '+esc(p.blocker)+'</div>':'')+(p.next_action?'<div class="next"><b>次:</b> '+esc(p.next_action)+'</div>':'')+'<div class="foot"><div class="footText">'+esc(next)+'<br>最後の動作: '+esc(last)+'</div><div>'+doc+'</div></div><details><summary>内部Stateを見る</summary><div class="internal">'+esc(p.state||'')+'</div></details></div>'}).join('');
   const hist=(d.timeline||[]).filter(x=>x.kind==='TASK').slice(0,40);
   $('history').innerHTML=hist.length?hist.map(x=>'<div class="hist"><div class="htime">'+time(x.at)+'<br>'+ago(x.at)+'</div><div><div class="hmain">'+esc(x.title)+'</div><div class="hmeta">'+esc(x.unit_id)+' · '+esc(x.status)+(resultText(x.detail)?' · '+esc(resultText(x.detail)):'')+'</div></div></div>').join(''):'<div class="empty">Task履歴なし</div>';
   $('msg').textContent='接続済み · 15秒ごとに自動更新 · '+time(d.generated_at);
