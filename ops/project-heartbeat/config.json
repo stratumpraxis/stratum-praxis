@@ -15,7 +15,10 @@
     "receipt_path": "ops/project-heartbeat/receipts/wordpress.json",
     "stale_after_hours": 24,
     "required": true,
-    "executor": "connected_wordpress_mcp"
+    "executor": "company_os_v4_wordpress_sensor",
+    "sensor_url": "https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/wordpress-public-sensor?site=stratumpraxis.wordpress.com",
+    "activity_24h_required": true,
+    "measurement_boundary": "PUBLIC_WORDPRESS_SURFACE_AND_CONTENT_FRESHNESS_ONLY"
   },
   "roles": [
     {
