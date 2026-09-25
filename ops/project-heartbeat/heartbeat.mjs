@@ -121,16 +121,51 @@ for (const role of cfg.roles || []) {
 
 if (cfg.wordpress) {
   const live = await checkUrl(cfg.wordpress.url);
-  const receipt = await readReceipt(cfg.wordpress.receipt_path);
-  const receiptAge = hoursSince(receipt?.last_activity_at || receipt?.verified_at);
-  const fresh = live.reachable && receipt && receiptAge <= cfg.wordpress.stale_after_hours && receipt.activity_today !== false;
+  let sensor = null;
+  let sensorError = null;
+
+  if (cfg.wordpress.sensor_url) {
+    try {
+      const r = await fetch(cfg.wordpress.sensor_url, {
+        redirect: 'follow',
+        headers: { 'user-agent': cfg.project + '-ProjectHeartbeat/1.0' }
+      });
+      const body = await r.text();
+      if (!r.ok) throw new Error('sensor HTTP ' + r.status + ' ' + body.slice(0, 180));
+      sensor = JSON.parse(body);
+    } catch (e) {
+      sensorError = String(e).slice(0, 240);
+    }
+  }
+
+  const receipt = sensor ? null : await readReceipt(cfg.wordpress.receipt_path);
+  const requiredHealthy = sensor
+    ? sensor?.required_organ?.healthy === true
+    : Boolean(receipt);
+  const activity24h = sensor
+    ? sensor?.required_organ?.activity_24h === true
+    : (receipt?.activity_today !== false && hoursSince(receipt?.last_activity_at || receipt?.verified_at) <= cfg.wordpress.stale_after_hours);
+  const latestModified = sensor?.content?.latest_modified || receipt?.last_activity_at || receipt?.verified_at || null;
+
+  let wpState = 'ACTION_REQUIRED';
+  if (!live.reachable) wpState = 'UNREACHABLE';
+  else if (sensorError) wpState = 'READBACK_ERROR';
+  else if (!requiredHealthy) wpState = 'REQUIRED_ORGAN_UNHEALTHY';
+  else if (cfg.wordpress.activity_24h_required && !activity24h) wpState = 'SLEEPING_OR_STALE';
+  else wpState = 'HEALTHY';
+
   rows.unshift({
     id: cfg.wordpress.id || 'wordpress',
-    state: fresh ? 'HEALTHY' : live.reachable ? 'ACTION_REQUIRED' : 'UNREACHABLE',
-    latest: receipt ? ((receipt.last_activity_at || receipt.verified_at || 'receipt') + ' / HTTP ' + live.status) : ('NO_RECEIPT / HTTP ' + live.status),
-    next: fresh
-      ? 'WordPress evidence is fresh.'
-      : 'Connected WordPress executor must inspect Current Reality, perform at most one justified safe action, read back live state, then refresh the receipt.'
+    state: wpState,
+    latest: (latestModified || 'NO_CURRENT_ACTIVITY') + ' / HTTP ' + live.status +
+      (sensor ? ' / CompanyOS sensor' : ' / legacy receipt'),
+    next: wpState === 'HEALTHY'
+      ? 'WordPress Required Organ is healthy and has Current 24H activity.'
+      : wpState === 'SLEEPING_OR_STALE'
+        ? 'WordPress public surface is healthy but 24H activity is absent. Do not mark Project GREEN; route one justified safe WordPress action/readback through the owning Project.'
+        : wpState === 'READBACK_ERROR'
+          ? 'Company OS WordPress sensor readback failed: ' + sensorError
+          : 'WordPress Required Organ needs Current Reality inspection; do not hide it behind other GREEN roles.'
   });
 }
 
