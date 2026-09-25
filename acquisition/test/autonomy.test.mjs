@@ -41,7 +41,7 @@ const cleanInstagram = {
 };
 
 test('fresh exact Stratum Buffer evidence can system-approve a clean bounded Instagram route', () => {
-  const { item, verdict } = runSafetyGate(cleanInstagram, { ...baseContext, siblings: [] });
+  const { item, verdict } = runSafetyGate(cleanInstagram, { ...baseContext, siblings: [], now: Date.parse('2026-09-08T00:00:00Z') });
   assert.equal(verdict.ok, true);
   assert.equal(item.status, 'READY');
   assert.equal(item.approval_status, 'SYSTEM_APPROVED');
