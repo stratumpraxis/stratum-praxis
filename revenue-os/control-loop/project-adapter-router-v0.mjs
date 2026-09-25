@@ -11,6 +11,12 @@ function clone(value) {
   return JSON.parse(JSON.stringify(value));
 }
 
+function optionalSafeInteger(value) {
+  if (value === null || value === undefined || value === '') return null;
+  const number = Number(value);
+  return Number.isSafeInteger(number) ? number : null;
+}
+
 export async function loadProjectAdapterRegistry(
   path = 'revenue-os/control-loop/project-adapter-registry-v0.json'
 ) {
@@ -39,14 +45,8 @@ export function normalizeDecisionEnvelope(input = {}) {
     route_id: text(action.route_id) || null,
     channel: text(action.channel) || null,
     experiment_id: text(action.experiment_id) || null,
-    expected_external_writes:
-      Number.isSafeInteger(Number(action.expected_external_writes))
-        ? Number(action.expected_external_writes)
-        : null,
-    expected_cost_minor:
-      Number.isSafeInteger(Number(action.expected_cost_minor))
-        ? Number(action.expected_cost_minor)
-        : null,
+    expected_external_writes: optionalSafeInteger(action.expected_external_writes),
+    expected_cost_minor: optionalSafeInteger(action.expected_cost_minor),
     currency: text(action.currency) || null,
     upstream_evidence_ref: Array.isArray(input.evidence_ref)
       ? input.evidence_ref.map(text).filter(Boolean)
