@@ -12,7 +12,7 @@
 <select id="project" onchange="changeFilter()">
 <option value="ALL">全Project</option><option value="stratum">Stratum</option><option value="vector">Vector</option><option value="gwr">GWR</option><option value="ai-practical">AI Practical</option><option value="forwelle">YouTube / Forwelle</option><option value="sovlta">SOVLTA</option><option value="media-store">Media Store</option><option value="lingua-flow">Lingua Flow</option><option value="harmony">Harmony</option>
 </select>
-<select id="source" onchange="changeFilter()"><option value="ALL">全Source</option><option value="GOOGLE_TRENDS">Google Trends</option><option value="YOUTUBE_PUBLIC_TRENDING">YouTube Public</option><option value="X_PROXY_TRENDS24">X Trend Proxy</option></select>
+<select id="source" onchange="changeFilter()"><option value="ALL">全Source</option><option value="GOOGLE_TRENDS">Google Trends</option><option value="YOUTUBE_PUBLIC_TRENDING">YouTube Public</option><option value="YOUTUBE_SEARCH_BRIDGE">YouTube Search Bridge</option><option value="X_PROXY_TRENDS24">X Trend Proxy</option></select>
 <span class="hint">TrendはPublic Attention。Buyer Signalには自動昇格しません。</span>
 </div></section>
 <section class="section"><h2>Source Health</h2><div class="hint">取得元が本当に生きているかを分離表示</div><div id="sourceStatus" class="statusGrid" style="margin-top:12px"></div></section>
@@ -21,7 +21,7 @@
 const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/trends';const $=id=>document.getElementById(id);$('key').value=localStorage.getItem('monitor_key')||'';
 let page=1;const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
 function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}function changeFilter(){page=1;load()}
-function sourceName(x){return x==='GOOGLE_TRENDS'?'Google Trends':x==='YOUTUBE_PUBLIC_TRENDING'?'YouTube Public Trending':x==='X_PROXY_TRENDS24'?'X Trend Proxy (trends24)':'Unknown'}
+function sourceName(x){return x==='GOOGLE_TRENDS'?'Google Trends':x==='YOUTUBE_PUBLIC_TRENDING'?'YouTube Public Trending':x==='YOUTUBE_SEARCH_BRIDGE'?'YouTube Search Bridge':x==='X_PROXY_TRENDS24'?'X Trend Proxy (trends24)':'Unknown'}
 async function load(){const key=localStorage.getItem('monitor_key')||$('key').value.trim();if(!key){$('msg').textContent='監視キーを入力してください。';return}$('msg').textContent='最新Trendを読込中…';const url=API+'?project='+encodeURIComponent($('project').value)+'&source='+encodeURIComponent($('source').value)+'&page='+page+'&page_size=20';try{const r=await fetch(url,{headers:{Authorization:'Bearer '+key}});const d=await r.json();if(!r.ok)throw new Error(d.error||'読込失敗');render(d)}catch(e){$('msg').textContent='接続できません: '+e.message}}
 function render(d){$('sourceStatus').innerHTML=(d.source_status||[]).map(s=>'<div class="source"><div style="display:flex;justify-content:space-between;gap:8px"><div class="name">'+esc(sourceName(s.source))+'</div><span class="badge '+(s.status==='OK'?'ok':s.status==='PARTIAL'?'warn':'bad')+'">'+esc(s.status)+'</span></div><div class="meta">取得 '+esc(s.item_count)+'件 · 最終成功 '+time(s.last_success_at)+(s.last_error?'<br>'+esc(s.last_error):'')+'</div></div>').join('');
 $('summary').textContent=d.total+'件 · '+d.page+'/'+d.pages+'ページ · '+time(d.generated_at);
