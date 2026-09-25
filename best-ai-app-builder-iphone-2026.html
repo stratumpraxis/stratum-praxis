@@ -57,5 +57,61 @@ main{max-width:960px;margin:auto;padding:64px 22px 90px}h1{font-size:clamp(38px,
 </div>
 
 <p class="small">Stratum Praxis does not rank vendors on this page. Builder capabilities change; current provider documentation remains the source of truth for technical features.</p>
-</main></body>
+</main><script>
+(function(){
+  'use strict';
+  const ENDPOINT='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-funnel-sensor';
+  const PROJECT='product-ai-app-builder-router-2026';
+  const ROUTE='ai-app-builder-router-2026-iphone-guide';
+  const START=Date.now();
+  const params=new URLSearchParams(location.search);
+  let sessionKey='';
+  try{
+    sessionKey=sessionStorage.getItem('sp_aiapp_sensor_session')||'';
+    if(!sessionKey){
+      sessionKey=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random());
+      sessionStorage.setItem('sp_aiapp_sensor_session',sessionKey);
+    }
+  }catch(_){
+    sessionKey=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random());
+  }
+  function refHost(){
+    try{return document.referrer?new URL(document.referrer).hostname.replace(/^www\./,''):''}catch(_){return ''}
+  }
+  function send(eventType,extra){
+    const payload=Object.assign({
+      event_id:(crypto.randomUUID?crypto.randomUUID():String(Date.now())+'-'+Math.random()),
+      project_unit_id:PROJECT,
+      route_id:ROUTE,
+      event_type:eventType,
+      path:location.pathname,
+      utm_source:(params.get('utm_source')||'').slice(0,100),
+      utm_medium:(params.get('utm_medium')||'').slice(0,100),
+      utm_campaign:(params.get('utm_campaign')||'').slice(0,160),
+      utm_content:(params.get('utm_content')||'').slice(0,160),
+      referrer_host:refHost().slice(0,160),
+      session_key:sessionKey,
+      webdriver:!!navigator.webdriver,
+      dwell_ms:Math.max(0,Date.now()-START),
+      qa:false
+    },extra||{});
+    try{
+      fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload),keepalive:true,mode:'cors'});
+    }catch(_){}
+  }
+  let engaged=false;
+  setTimeout(function(){
+    if(engaged) return;
+    if(document.visibilityState!=='visible'||!document.hasFocus()) return;
+    engaged=true;
+    send('PAGE_ENGAGED',{input_trusted:false});
+  },7000);
+  const cta=document.querySelector('[data-analytics-id="ai_app_builder_iphone_guide_gumroad_cta"]');
+  if(cta){
+    cta.addEventListener('pointerdown',function(ev){
+      send('CTA_CLICK',{input_trusted:!!ev.isTrusted});
+    },{capture:true,passive:true});
+  }
+})();
+</script></body>
 </html>
