@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "project": "Stratum",
+  "branch": "main",
+  "issue_title": "[PROJECT HEARTBEAT] Stratum 24H",
+  "policy": {
+    "max_safe_dispatches_per_run": 3,
+    "external_mutation": "human_gate_unless_separately_approved",
+    "wordpress_is_required": true,
+    "payment_read_is_not_payment_circulation": true
+  },
+  "wordpress": {
+    "id": "wordpress",
+    "url": "https://stratumpraxis.wordpress.com",
+    "receipt_path": "ops/project-heartbeat/receipts/wordpress.json",
+    "stale_after_hours": 24,
+    "required": true,
+    "executor": "connected_wordpress_mcp"
+  },
+  "roles": [
+    {
+      "id": "site-runtime",
+      "workflow": "verify-stratumpraxis-pages.yml",
+      "stale_after_hours": 6,
+      "retry_after_hours": 2,
+      "safe_dispatch": true
+    },
+    {
+      "id": "product-offer-truth",
+      "workflow": "acquisition-engine-check.yml",
+      "stale_after_hours": 8,
+      "retry_after_hours": 3,
+      "safe_dispatch": true,
+      "inputs": {
+        "live_url_verification": "true"
+      }
+    },
+    {
+      "id": "payment-observability",
+      "workflow": "market-ingest.yml",
+      "stale_after_hours": 3,
+      "retry_after_hours": 2,
+      "safe_dispatch": true,
+      "inputs": {
+        "source": "stripe",
+        "local": "false",
+        "test_payload": ""
+      }
+    },
+    {
+      "id": "owned-content",
+      "workflow": "autonomous-blogger.yml",
+      "stale_after_hours": 8,
+      "retry_after_hours": 3,
+      "safe_dispatch": true
+    },
+    {
+      "id": "publication",
+      "workflow": "stratum-publication-hub.yml",
+      "stale_after_hours": 26,
+      "retry_after_hours": 6,
+      "safe_dispatch": false,
+      "external_action": true
+    },
+    {
+      "id": "revenue-safety",
+      "workflow": "revenue-safety-loop.yml",
+      "stale_after_hours": 12,
+      "retry_after_hours": 4,
+      "safe_dispatch": true
+    },
+    {
+      "id": "social-distribution",
+      "workflow": "stratum-bluesky-publish.yml",
+      "stale_after_hours": 8,
+      "retry_after_hours": 3,
+      "safe_dispatch": false,
+      "external_action": true
+    },
+    {
+      "id": "b2b-sales",
+      "capability_gap": true,
+      "required": true,
+      "reason": "No verified project-local B2B sales worker currently closes signal -> qualified buyer -> approved outreach -> reply evidence."
+    },
+    {
+      "id": "payment-circulation",
+      "capability_gap": true,
+      "required": true,
+      "reason": "Stripe/payment readback exists, but checkout -> payment -> fulfillment -> attribution -> learning is not yet a verified closed project-local loop."
+    }
+  ]
+}

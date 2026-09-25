@@ -1,0 +1,43 @@
+name: Stratum Project Heartbeat
+
+on:
+  schedule:
+    - cron: '13 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/project-heartbeat/**'
+      - '.github/workflows/project-heartbeat.yml'
+
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
+concurrency:
+  group: stratum-project-heartbeat
+  cancel-in-progress: true
+
+jobs:
+  heartbeat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Route project-local 24H work
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HEARTBEAT_CONFIG: ops/project-heartbeat/config.json
+        run: node ops/project-heartbeat/heartbeat.mjs
+      - name: Upload current heartbeat evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: stratum-project-heartbeat-${{ github.run_id }}
+          path: ops/project-heartbeat/runtime-state.json
+          if-no-files-found: warn
+          retention-days: 14
