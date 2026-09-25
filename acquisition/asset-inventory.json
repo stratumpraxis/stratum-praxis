@@ -1603,7 +1603,7 @@
         "in_sitemap": true,
         "http_checked_at": "2026-09-25T05:50:57Z",
         "http_status": 200,
-        "http_evidence": "Supabase direct HTTP readback request 173; GitHub Pages production deploy commit 77985ae6971f462f0d7023596212d0a3044a5e88"
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/36100189922"
       }
     }
   ]
