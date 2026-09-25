@@ -1554,6 +1554,57 @@
         "in_sitemap": true,
         "note": "Registered because it is the SECONDARY route of the agent-company-control-owner-package publisher source. Already loads scos-analytics.js and emits qualified_tool_action and paid_offer_exposure; those two events were added to the engine taxonomy separately."
       }
+    },
+    {
+      "asset_id": "ai-app-builder-iphone-fit-check",
+      "brand": "Stratum Praxis",
+      "asset_name": "AI App Builder for iPhone — 7-Point Fit Check",
+      "asset_type": "GUIDE",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/best-ai-app-builder-iphone-2026.html",
+      "revenue_destination": {
+        "type": "GUMROAD",
+        "url": "https://stratumpraxis.gumroad.com/l/bsnxjk",
+        "price": "USD 24",
+        "evidence": "in-page CTA to the existing AI App Builder Router 2026 Gumroad checkout"
+      },
+      "primary_user_problem": "Non-technical founders can prototype with AI app builders but cannot tell which path will survive testing, App Store release, accounts, payments, notifications, iteration and an engineering handoff.",
+      "problem_keys": [
+        "ai_app_builder",
+        "iphone_app",
+        "app_store_release",
+        "no_code",
+        "prototype_to_production",
+        "builder_selection"
+      ],
+      "target_audience": [
+        "founder",
+        "creator",
+        "nontechnical_builder"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "devto",
+        "bluesky"
+      ],
+      "cta": {
+        "label": "Open AI App Builder Router 2026 — $24",
+        "analytics_id": "ai_app_builder_iphone_guide_gumroad_cta"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "primary_cta_click",
+        "checkout_click"
+      ],
+      "verification_state": "HTTP_VERIFIED",
+      "verification": {
+        "repo_file": "best-ai-app-builder-iphone-2026.html",
+        "in_sitemap": true,
+        "http_checked_at": "2026-09-25T05:50:57Z",
+        "http_status": 200,
+        "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/36100189922"
+      }
     }
   ]
 }
