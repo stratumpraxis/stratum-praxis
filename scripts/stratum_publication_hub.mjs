@@ -155,7 +155,13 @@ async function devtoPublish(article) {
     identity_source: existing?.source || 'new_article',
     id: data.id,
     url: data.url,
-    canonical_url: data.canonical_url || canonicalUrl || null
+    canonical_url: data.canonical_url || canonicalUrl || null,
+    stats: {
+      page_views_count: Number.isFinite(data.page_views_count) ? data.page_views_count : null,
+      public_reactions_count: Number.isFinite(data.public_reactions_count) ? data.public_reactions_count : null,
+      comments_count: Number.isFinite(data.comments_count) ? data.comments_count : null,
+      evidence_boundary: 'PLATFORM_REPORTED_REACH_AND_REACTION_ONLY_NOT_BUYER_SIGNAL'
+    }
   };
 }
 
