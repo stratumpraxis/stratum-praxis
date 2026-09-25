@@ -256,7 +256,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "saas-spend-management-small-business.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -400,7 +400,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-value-realization-kit.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -539,7 +539,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "accounting-ai-workflow-audit.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -591,7 +591,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-council-builder.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -643,7 +643,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-council-builder-ja.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -786,7 +786,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-workspace-safety-workflow-kit.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -833,7 +833,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "ai-workspace-safety-checklist.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -927,7 +927,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "smartphone-income-blueprint.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -975,7 +975,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "smartphone-ai-slide-factory.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -1018,7 +1018,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "return-gate-growth-os.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -1153,7 +1153,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "async-ai-advisor.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -1194,7 +1194,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "unmanned/index.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -1247,7 +1247,7 @@
       "verification_state": "HTTP_VERIFIED",
       "verification": {
         "repo_file": "agentic-ai-governance-permission-kit.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "http_checked_at": "2026-08-28T07:15:51Z",
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/33150774890 (job 98782039757)"
@@ -1299,10 +1299,10 @@
         "access_granted",
         "access_denied"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "REPO_ONLY",
       "verification": {
         "repo_file": "prompt-store/index.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "note": "Live HTTP check not performed from the authoring session: outbound HTTPS to stratumpraxis.com is refused by the network egress policy. .github/workflows/verify-systems-library.yml performs the live check from Actions."
       }
     },
@@ -1450,10 +1450,10 @@
         "access_granted",
         "access_denied"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "REPO_ONLY",
       "verification": {
         "repo_file": "prompt-store/operations-10.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "note": "Added to sitemap.xml here; it was previously absent. The /systems/ page published to main linked /prompt-store/ops10/, which has no page - the worker serves only /prompt-store/ops10/login and /workspace under that path."
       }
     },
@@ -1498,10 +1498,10 @@
         "primary_cta_click",
         "checkout_click"
       ],
-      "verification_state": "REPO_AND_SITEMAP",
+      "verification_state": "REPO_ONLY",
       "verification": {
         "repo_file": "paid-insights/what-you-need-to-know-before-hiring-300-ai-agents.html",
-        "in_sitemap": true,
+        "in_sitemap": false,
         "note": "Registered because it is the PRIMARY route of the agent-company-control-owner-package publisher source, yet was absent from the inventory - so every CTA the publisher sent there was unattributable. It also carried no scos-analytics.js at all and was added to sitemap.xml in the same change; before that it emitted nothing and was invisible to search. Live HTTP check runs from Actions, not from the authoring session."
       }
     },
