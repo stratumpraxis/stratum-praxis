@@ -32,6 +32,7 @@ on:
       - 'daily-edge/**'
       - 'stack-pulse/**'
       - 'sitemap.xml'
+      - 'best-ai-app-builder-iphone-2026.html'
       - '54b81c12e07af0e37b6ab0ac24469586.txt'
   workflow_dispatch:
 
@@ -65,6 +66,7 @@ jobs:
                 "https://stratumpraxis.com/ai-saas-spend-monitoring.html",
                 "https://stratumpraxis.com/saas-renewal-decision.html",
                 "https://stratumpraxis.com/product-router.html",
+                "https://stratumpraxis.com/best-ai-app-builder-iphone-2026.html",
                 "https://stratumpraxis.com/revenue-router.html",
                 "https://stratumpraxis.com/cross-agent-operating-kit.html",
                 "https://stratumpraxis.com/return-gate/",
