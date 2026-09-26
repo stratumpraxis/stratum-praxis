@@ -3,11 +3,42 @@
 <title>Trend Radar｜Autonomous Operations Monitor</title>
 <style>
 :root{--bg:#f5f7fb;--card:#fff;--line:#dfe5ee;--text:#162033;--muted:#6e7a8f;--ok:#168a57;--okbg:#e8f7f0;--warn:#9a6b00;--warnbg:#fff5d7;--bad:#ba384b;--badbg:#fdecef;--blue:#2357c7;--bluebg:#eaf0ff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}main{max-width:1180px;margin:auto;padding:24px 16px 64px}header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}h1{margin:0;font-size:clamp(28px,5vw,44px);letter-spacing:-.04em}.sub{color:var(--muted);font-size:13px;margin-top:7px}.auth{display:flex;gap:8px;flex-wrap:wrap}.auth input,.auth button,select{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;font:inherit}.auth button{font-weight:800;cursor:pointer}.nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.nav a.active{background:#162033;color:#fff}.section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px}.section h2{margin:0;font-size:18px}.hint{color:var(--muted);font-size:12px;margin-top:3px}.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.statusGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:800px){.statusGrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:14px;padding:13px}.source .name{font-weight:900}.badge{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.ok{background:var(--okbg);color:var(--ok)}.warn{background:var(--warnbg);color:var(--warn)}.bad{background:var(--badbg);color:var(--bad)}.blue{background:var(--bluebg);color:var(--blue)}.signals{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:760px){.signals{grid-template-columns:1fr}}.sig{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.title{font-size:17px;font-weight:900}.meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:800;background:#fff;margin-top:9px}.pager{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:14px}.pager button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 11px;font-weight:800;cursor:pointer}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.revenueLens{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:800px){.revenueLens{grid-template-columns:1fr}}.lens{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}.lens b{display:block;margin-bottom:4px}.order{font-weight:900;color:var(--blue)}#msg{font-size:12px;color:var(--muted);margin:8px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}main{max-width:1180px;margin:auto;padding:24px 16px 64px}header{display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}h1{margin:0;font-size:clamp(28px,5vw,44px);letter-spacing:-.04em}.sub{color:var(--muted);font-size:13px;margin-top:7px}.auth{display:flex;gap:8px;flex-wrap:wrap}.auth input,.auth button,select{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;font:inherit}.auth button{font-weight:800;cursor:pointer}.nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.nav a.active{background:#162033;color:#fff}.section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px}.section h2{margin:0;font-size:18px}.hint{color:var(--muted);font-size:12px;margin-top:3px}.filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.statusGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:800px){.statusGrid{grid-template-columns:1fr}}.source{border:1px solid var(--line);border-radius:14px;padding:13px}.source .name{font-weight:900}.badge{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:800}.ok{background:var(--okbg);color:var(--ok)}.warn{background:var(--warnbg);color:var(--warn)}.bad{background:var(--badbg);color:var(--bad)}.blue{background:var(--bluebg);color:var(--blue)}.signals{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:760px){.signals{grid-template-columns:1fr}}.sig{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.title{font-size:17px;font-weight:900}.meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}.tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:800;background:#fff;margin-top:9px}.pager{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:14px}.pager button{border:1px solid var(--line);background:#fff;border-radius:9px;padding:7px 11px;font-weight:800;cursor:pointer}.empty{padding:20px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:12px}.directGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:800px){.directGrid{grid-template-columns:1fr}}.moneyBox{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fff}.moneyBox.near{border-color:#d8c36d;background:#fffdf5}.moneyBox.ai{border-color:#a9c8ef;background:#f8fbff}.moneyBox.human{border-color:#efb5bf;background:#fff8f9}.moneyBox.paid{border-color:#a9dcc5;background:#f6fffa}.moneyTitle{font-size:16px;font-weight:900}.moneyFields{display:grid;grid-template-columns:150px 1fr;gap:6px 10px;margin-top:9px;font-size:11px;line-height:1.5}.moneyFields .k{color:var(--muted);font-weight:800}.sourceRegistry{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}@media(max-width:850px){.sourceRegistry{grid-template-columns:1fr 1fr}}@media(max-width:560px){.sourceRegistry{grid-template-columns:1fr}}.sourceMini{border:1px solid var(--line);border-radius:12px;padding:10px}.sourceMini b{font-size:11px}.directSummary{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}.revenueLens{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:800px){.revenueLens{grid-template-columns:1fr}}.lens{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff}.lens b{display:block;margin-bottom:4px}.order{font-weight:900;color:var(--blue)}#msg{font-size:12px;color:var(--muted);margin:8px 0}
 </style></head><body><main>
-<header><div><h1>Trend Radar</h1><div class="sub">最新市場レーダー｜Google Trends / YouTube / X系Public SignalsをProject別に見る</div></div><div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div></header>
+<header><div><h1>Trend Radar</h1><div class="sub">市場Trend + Direct Revenue Pump｜「何が流行っているか」と「今、直接お金になるもの」を同じ画面で見る</div></div><div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div></header>
 <nav class="nav"><a href="index.html">Operations</a><a class="active" href="trends.html">Trend Radar</a><a href="audit.html">Audit / Human Gate</a></nav>
 <div id="msg">監視キーを入力してください。</div>
+
+<section class="section">
+  <h2>Direct Revenue Pump</h2>
+  <div class="hint">Verified Direct Revenueのみ。人気・再生数・Trend・推測価値・未確認Buyer Intentはここに入れません。</div>
+  <div id="directSummary" class="directSummary"></div>
+</section>
+<section class="section">
+  <h2>今すぐ入金に近いもの</h2>
+  <div class="hint">PAYOUT_READY → BALANCE_AVAILABLE → CLAIMABLE_REVENUE → ACCEPTED_NOT_PAID → PAYOUT_PENDING → PAYMENT_PENDING の順。</div>
+  <div id="closestMoney" class="directGrid" style="margin-top:12px"></div>
+</section>
+<section class="section">
+  <h2>AIが入金まで進めているもの</h2>
+  <div class="hint">Pendingは触らずDirect Readbackのみ。安全条件が揃ったRouteだけ最小Actionへ進める。</div>
+  <div id="aiMoney" class="directGrid" style="margin-top:12px"></div>
+</section>
+<section class="section">
+  <h2>自分の確認が必要なもの</h2>
+  <div class="hint">Safe Payout条件に不足がある時だけ、必要操作を1つだけ表示。</div>
+  <div id="humanMoney" class="directGrid" style="margin-top:12px"></div>
+</section>
+<section class="section">
+  <h2>入金確認済み</h2>
+  <div class="hint">Direct Payment / Payout Evidenceがあるもの。重複集計はしません。</div>
+  <div id="paidMoney" class="directGrid" style="margin-top:12px"></div>
+</section>
+<section class="section">
+  <h2>Revenue Direct Sources</h2>
+  <div class="hint">Source Registryは拡張可能。Evidenceが入ると自動でOBSERVEDへ。</div>
+  <div id="directSources" class="sourceRegistry" style="margin-top:12px"></div>
+</section>
 <section class="section">
   <h2>Revenue Lens</h2>
   <div class="hint">全体リーダー判断順：<span class="order">Payment → Checkout → Buyer → Qualified Action → Human → Reach</span></div>
@@ -31,8 +62,35 @@ const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor
 let page=1;const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
 function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}function changeFilter(){page=1;load()}
 function sourceName(x){return x==='GOOGLE_TRENDS'?'Google Trends':x==='YOUTUBE_PUBLIC_TRENDING'?'YouTube Public Trending':x==='YOUTUBE_SEARCH_BRIDGE'?'YouTube Search Bridge':x==='X_PROXY_TRENDS24'?'X Trend Proxy (trends24)':'Unknown'}
+function moneyCard(x,cls){
+  const evidenceLink=x.source_url&&/^https?:\/\//.test(String(x.source_url))?'<br><a class="btn" target="_blank" href="'+esc(x.source_url)+'">証拠を開く ↗</a>':'';
+  return '<div class="moneyBox '+cls+'"><div class="moneyTitle">'+esc(x.revenue_name)+'</div><div class="moneyFields">'+
+    '<div class="k">何の収益か</div><div>'+esc(x.revenue_name)+'</div>'+
+    '<div class="k">金額</div><div><b>'+esc(x.amount)+'</b></div>'+
+    '<div class="k">今どこか</div><div>'+esc(x.status_label)+'</div>'+
+    '<div class="k">AIが何をしているか</div><div>'+esc(x.ai_action||'—')+'</div>'+
+    '<div class="k">自分の操作が必要か</div><div>'+(x.human_required?esc(x.human_action||'確認が必要'):'不要')+'</div>'+
+    '<div class="k">入金証拠</div><div>'+esc(x.payout_evidence||'—')+evidenceLink+'</div>'+
+  '</div></div>';
+}
+function renderDirectRevenue(dr){
+  dr=dr||{};
+  const near=dr.closest_to_cash||[], ai=dr.ai_advancing||[], human=dr.human_required||[], paid=dr.confirmed||[];
+  $('closestMoney').innerHTML=near.length?near.map(x=>moneyCard(x,'near')).join(''):'<div class="empty">現在、Direct Evidence付きの入金候補はありません。</div>';
+  $('aiMoney').innerHTML=ai.length?ai.map(x=>moneyCard(x,'ai')).join(''):'<div class="empty">AIが追跡中のDirect Revenueなし。</div>';
+  $('humanMoney').innerHTML=human.length?human.map(x=>moneyCard(x,'human')).join(''):'<div class="empty">現在、あなたの操作が必要なDirect Revenueはありません。</div>';
+  $('paidMoney').innerHTML=paid.length?paid.map(x=>moneyCard(x,'paid')).join(''):'<div class="empty">このWindowに入金確認済みEvidenceなし。</div>';
+  $('directSources').innerHTML=(dr.source_registry||[]).map(s=>'<div class="sourceMini"><div style="display:flex;justify-content:space-between;gap:8px"><b>'+esc(s.label)+'</b><span class="badge '+(s.status==='OBSERVED'?'ok':'warn')+'">'+esc(s.status)+'</span></div><div class="meta">Direct Evidence '+esc(s.observed_count||0)+'件</div></div>').join('');
+  $('directSummary').innerHTML=[
+    ['入金に近い',near.length],
+    ['AI進行中',ai.length],
+    ['自分の確認',human.length],
+    ['入金確認済み',paid.length],
+    ['安全自動候補',dr.safe_auto_candidates||0]
+  ].map(x=>'<span class="badge blue">'+esc(x[0])+': '+esc(x[1])+'</span>').join('');
+}
 async function load(){const key=localStorage.getItem('monitor_key')||$('key').value.trim();if(!key){$('msg').textContent='監視キーを入力してください。';return}$('msg').textContent='最新Trendを読込中…';const url=API+'?project='+encodeURIComponent($('project').value)+'&source='+encodeURIComponent($('source').value)+'&page='+page+'&page_size=20';try{const r=await fetch(url,{headers:{Authorization:'Bearer '+key}});const d=await r.json();if(!r.ok)throw new Error(d.error||'読込失敗');render(d)}catch(e){$('msg').textContent='接続できません: '+e.message}}
-function render(d){$('sourceStatus').innerHTML=(d.source_status||[]).map(s=>'<div class="source"><div style="display:flex;justify-content:space-between;gap:8px"><div class="name">'+esc(sourceName(s.source))+'</div><span class="badge '+(s.status==='OK'?'ok':s.status==='PARTIAL'?'warn':'bad')+'">'+esc(s.status)+'</span></div><div class="meta">取得 '+esc(s.item_count)+'件 · 最終成功 '+time(s.last_success_at)+(s.last_error?'<br>'+esc(s.last_error):'')+'</div></div>').join('');
+function render(d){renderDirectRevenue(d.direct_revenue);$('sourceStatus').innerHTML=(d.source_status||[]).map(s=>'<div class="source"><div style="display:flex;justify-content:space-between;gap:8px"><div class="name">'+esc(sourceName(s.source))+'</div><span class="badge '+(s.status==='OK'?'ok':s.status==='PARTIAL'?'warn':'bad')+'">'+esc(s.status)+'</span></div><div class="meta">取得 '+esc(s.item_count)+'件 · 最終成功 '+time(s.last_success_at)+(s.last_error?'<br>'+esc(s.last_error):'')+'</div></div>').join('');
 $('summary').textContent=d.total+'件 · '+d.page+'/'+d.pages+'ページ · '+time(d.generated_at);
 $('signals').innerHTML=d.items.length?d.items.map(x=>'<div class="sig"><div style="display:flex;justify-content:space-between;gap:8px"><div class="title">'+esc(x.title)+'</div><span class="badge blue">'+esc(sourceName(x.source))+'</span></div><div class="meta">'+(x.metric?'勢い: '+esc(x.metric)+' · ':'')+'観測 '+time(x.observed_at)+' · 更新 '+time(x.last_seen_at)+'</div><div class="tags">'+((x.project_tags||[]).length?(x.project_tags||[]).map(t=>'<span class="badge ok">'+esc(t)+'</span>').join(''):'<span class="badge warn">市場全体</span>')+'</div>'+(x.url?'<a class="btn" target="_blank" href="'+esc(x.url)+'">Sourceを開く ↗</a>':'')+'</div>').join(''):'<div class="empty">このFilterに一致する最新Signalはありません。</div>';
 $('pager').innerHTML=(d.page>1?'<button onclick="page--;load()">← 前へ</button>':'')+'<span class="hint">'+d.page+' / '+d.pages+'</span>'+(d.page<d.pages?'<button onclick="page++;load()">次へ →</button>':'');$('msg').textContent='接続済み · '+time(d.generated_at)}
