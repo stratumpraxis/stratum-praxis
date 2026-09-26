@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>収益回収ダッシュボード</title>
+<style>
+:root{color-scheme:dark;--bg:#06101d;--panel:#0d1b2d;--line:#223b59;--text:#ecf5ff;--muted:#94a9c1;--green:#65e6a6;--blue:#79a9ff;--yellow:#ffd166;--red:#ff7a8a}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#071424,#050b14);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1180px;margin:auto;padding:22px 16px 70px}
+h1{font-size:clamp(32px,6vw,62px);margin:0;letter-spacing:-.05em;line-height:1}
+.sub{color:var(--muted);margin:8px 0 18px;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+input,button{background:#0b1b30;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
+input{min-width:240px;flex:1}
+button{cursor:pointer;font-weight:800}
+button.primary{background:#174c37;border-color:#2f8f68}
+button:hover{filter:brightness(1.1)}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(13,27,45,.94);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:12px}
+.k{color:var(--muted);font-size:12px}
+.v{font-size:24px;font-weight:850;margin-top:4px;overflow-wrap:anywhere}
+.tiny{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px;font-size:11px}
+.row{border-top:1px solid #172c44;padding:11px 0}
+.row:first-child{border-top:0}
+.status{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;border:1px solid var(--line)}
+.ok{color:var(--green)} .wait{color:var(--yellow)} .bad{color:var(--red)} .info{color:var(--blue)}
+#msg{min-height:22px;color:var(--blue);margin-top:9px;font-size:12px}
+a{color:var(--blue)}
+</style>
+</head>
+<body>
+<main>
+  <div class="k">自分用｜収益回収の現在地</div>
+  <h1>収益回収ダッシュボード</h1>
+  <div class="sub">お金になりそうなものを見つける → いちばん入金に近いものを選ぶ → 担当へ渡す → 入金を確認する</div>
+
+  <div class="bar">
+    <input id="key" type="password" placeholder="接続キー">
+    <button id="connectBtn" type="button">接続</button>
+    <button id="runBtn" class="primary" type="button">今いちばん入金に近いものを確認</button>
+  </div>
+  <div id="msg">監視キーを入力してください。</div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="k">いま一番お金に近いもの</div>
+      <div id="selected" class="v">未接続</div>
+      <div id="selectedMeta" class="tiny"></div>
+    </section>
+    <section class="card">
+      <div class="k">いま何待ち？</div>
+      <div id="state" class="v">—</div>
+      <div id="next" class="tiny"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="k">どこからお金の情報を拾っているか</div>
+    <div id="sources"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">いま回収を追っているお金</div>
+    <div id="items"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">新しく見つかった報酬候補</div>
+    <div id="market"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">また使えそうな稼ぎ方</div>
+    <div id="repeat"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">最後にどこへ回して、どうなったか</div>
+    <div id="dispatch"></div>
+  </section>
+</main>
+
+<script src="app-jp-v2.js" defer></script>
+</body>
+</html>
