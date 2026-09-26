@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3-Layer Revenue Architecture</title>
+<style>
+:root{color-scheme:dark;--bg:#070b14;--panel:#0e1626;--line:#26344f;--text:#edf3ff;--muted:#96a6c0;--blue:#7aa7ff;--green:#69e3a5;--yellow:#ffd166}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0%,#152a50 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+main{max-width:1250px;margin:auto;padding:24px 18px 70px}header{display:flex;justify-content:space-between;gap:15px;align-items:flex-end;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(32px,6vw,64px);letter-spacing:-.05em}.sub{color:var(--muted);margin-top:8px}.auth{display:flex;gap:8px;flex-wrap:wrap}
+input,button,a{border:1px solid var(--line);background:#101a2d;color:var(--text);border-radius:11px;padding:9px 11px;font:inherit;text-decoration:none}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:22px}@media(max-width:900px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,#111c31,#0a1220);border-radius:20px;padding:18px;display:flex;flex-direction:column;min-height:390px}
+.layer{font-size:11px;color:var(--muted);letter-spacing:.09em;text-transform:uppercase}.title{font-size:25px;font-weight:850;margin-top:6px}.role{color:#c7d4ea;line-height:1.6;margin-top:12px}
+.state{margin-top:14px;border-top:1px solid var(--line);padding-top:12px}.state b{display:block;font-size:13px;color:var(--muted)}.state strong{display:block;margin-top:5px;line-height:1.45}
+.flow{font-size:12px;color:var(--muted);line-height:1.6;margin-top:12px}.actions{margin-top:auto;display:flex;gap:8px;flex-wrap:wrap;padding-top:15px}
+.monitor{border-color:#315b96}.github{border-color:#4b5565}.pump{border-color:#2d7453}.badge{display:inline-block;border-radius:999px;padding:4px 8px;border:1px solid var(--line);font-size:10px;margin-top:8px}
+.good{color:var(--green)}.warn{color:var(--yellow)}#msg{min-height:22px;color:var(--blue);margin-top:10px}.rules{margin-top:16px;border:1px solid var(--line);border-radius:16px;padding:15px;color:var(--muted);line-height:1.65}
+</style>
+</head>
+<body><main>
+<header>
+<div><div class="layer">Command / Engines separation</div><h1>3-Layer Architecture</h1><div class="sub">Monitor / GitHub ぽちぽち / Revenue Pump を混ぜずに運用。</div></div>
+<div class="auth"><input id="key" type="password" placeholder="Monitor key"><button onclick="connect()">接続</button><a href="index.html">Monitorへ</a></div>
+</header>
+<div id="msg"></div>
+
+<div class="grid">
+<section class="card monitor">
+<div class="layer">Layer 1 · Command / Dashboard</div>
+<div class="title">Autonomous Operations Monitor</div>
+<div class="badge good">READ / ROUTE ONLY</div>
+<div class="role">全体監視、Current Reality復元、Revenue Distance確認、Evidence統合、Human Gate / 異常表示、各Engineへの起動導線。</div>
+<div class="state"><b>Current</b><strong id="monitorState">未接続</strong></div>
+<div class="flow">Monitor自体はRevenue Taskを直接実行しません。</div>
+<div class="actions"><a href="index.html">監視盤を開く</a></div>
+</section>
+
+<section class="card github">
+<div class="layer">Layer 2 · External GitHub Paid Tasks</div>
+<div class="title">GitHub ぽちぽち</div>
+<div class="badge">codeops.contact@gmail.com</div>
+<div class="role">外部GitHubの低リスクPaid Task専用。README / Docs / Test / Small Bug Fix / Small OSS Task / 明確な報酬Issue。</div>
+<div class="state"><b>Current</b><strong id="codeopsState">未接続</strong></div>
+<div class="flow">Market → Discovery → Qualification → Buildable → Human Gate → Submission → Accepted → Payout</div>
+<div class="actions"><a href="https://github.com/codeopscontact/codeops">CodeOpsを開く</a></div>
+</section>
+
+<section class="card pump">
+<div class="layer">Layer 3 · Commercial Revenue Engine</div>
+<div class="title">Revenue Pump</div>
+<div class="badge good">DEDICATED RUNTIME</div>
+<div class="role">WordPress / Search / SNS / Marketplace / Affiliate / Existing Product / Buyer Outreach / Checkout / Contract / Payment / Fulfillment / Repeat Revenue。</div>
+<div class="state"><b>Current</b><strong id="pumpState">未接続</strong></div>
+<div class="flow">Market Signal → Route → First Broken Stage → Qualified Human → Buyer → Checkout → Payment → Fulfillment → Repeat</div>
+<div class="actions"><a href="../revenue-pump/index.html">Revenue Pumpを開く</a></div>
+</section>
+</div>
+
+<div class="rules">
+<b>共有してよい:</b> Market Signal / Revenue Evidence / Payout Evidence / Learned Pattern / Current Status<br>
+<b>共有しない:</b> GitHub Identity / Gmail Identity / Secrets / External Write Authority / Runtime / Execution State / Project固有設定
+</div>
+
+<script>
+const MON='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/snapshot';
+const PUMP='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-pump-engine/status';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('monitor_key')||'';
+function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
+async function load(){
+ const key=$('key').value.trim(); if(!key){$('msg').textContent='Monitor keyを入力してください。';return}
+ $('msg').textContent='Current Status読込中…';
+ try{
+   const mr=await fetch(MON,{headers:{Authorization:'Bearer '+key}}); const md=await mr.json(); if(!mr.ok)throw new Error(md.error||'Monitor読込失敗');
+   const units=md.units||md.projects||[];
+   const codeops=units.find(x=>x.id==='codeops');
+   $('codeopsState').textContent=codeops?.state||'State未取得';
+   $('monitorState').textContent=(md.runtime_health?.overall||md.company_status||md.mode||'CONNECTED');
+   const pr=await fetch(PUMP,{headers:{Authorization:'Bearer '+key}}); const pd=await pr.json(); if(!pr.ok)throw new Error(pd.error||'Revenue Pump読込失敗');
+   $('pumpState').textContent=pd.state?.state||'READY';
+   $('msg').textContent='3レイヤーState接続済み';
+ }catch(e){$('msg').textContent=e.message}
+}
+load();
+</script>
+</main></body></html>
