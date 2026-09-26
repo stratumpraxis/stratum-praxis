@@ -69,7 +69,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
-    <div><h2>Revenue前進</h2><div class="hint">Human → Qualified → Checkout → Payment。自動化成功とは分けて表示。</div></div>
+    <div><h2>Revenue前進</h2><div class="hint">Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位Evidenceを常に優先し、自動化成功とは分けて表示。</div></div>
     <div id="lastRevenue" class="hint"></div>
   </div>
   <div id="revenueGrid" class="revenueGrid"></div>
@@ -201,10 +201,12 @@ function render(d){
   $('plainExplain').innerHTML='直近30分のClock実行: <b>'+esc(h.cron_stats?.succeeded_30m??0)+'成功 / '+esc(failed30)+'失敗</b><br>現在RUNNING: <b>'+running+'</b><br><br>RUNNINGが0でも、Clockが正常なら停止ではなく次のWake待ちです。';
   const rev=d.revenue||{}, stages=rev.stages||{};
   const stageDefs=[
-    ['HUMAN','Human Evidence','実Human反応'],
-    ['QUALIFIED','Qualified Action','購入・成果へ近い行動'],
-    ['CHECKOUT','Checkout確認','導線確認。Human購入とは別'],
-    ['PAYMENT','Payment','Provider入金Evidence']
+    ['PAYMENT','Payment','Provider入金 / Payout Evidence'],
+    ['CHECKOUT','Checkout','実Checkout / Contract Evidence'],
+    ['BUYER','Buyer','明示Buyer Signal'],
+    ['QUALIFIED','Qualified Action','購入・成果へ近い実行動'],
+    ['HUMAN','Human','実Human反応 / 訪問'],
+    ['REACH','Reach','配信・到達。単独ではRevenue成果にしない']
   ];
   $('revenueGrid').innerHTML=stageDefs.map(([key,label,sub])=>{
     const x=stages[key];
