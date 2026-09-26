@@ -82,7 +82,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
       <h2>Revenue Command Deck</h2>
       <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
     </div>
-    <div class="hint">Operator / v26 Safe Revenue Control</div>
+    <div class="hint">Operator / v27 Safe Revenue Control</div>
   </div>
   <div class="commandGrid">
     <div class="cmdCard">
@@ -99,6 +99,11 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
       <div class="cmdTitle">GitHub ぽちぽち収益</div>
       <div class="cmdDesc">CodeOpsへGitHub micro-task。対象Repoでpush=true確認前は書かず、ACCESS_GAPで停止。</div>
       <button class="cmdBtn github" onclick="runControl('github-pochipochi',null,this)">GitHubで最短修正</button>
+    </div>
+    <div class="cmdCard">
+      <div class="cmdTitle">YouTube / Forwelle収益</div>
+      <div class="cmdDesc">既存ShortsをPayment→Checkout→Buyer→Qualified Action→Human→Reachで逆向き監査。必要時だけ安全な1 Publish。Quota・重複・誤Channelは越えない。</div>
+      <button class="cmdBtn" onclick="runControl('youtube-forwelle',null,this)">Forwelle収益を1段進める</button>
     </div>
   </div>
   <div class="cmdCard" style="margin-top:10px">
@@ -145,7 +150,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v26 Safe Revenue Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v27 Safe Revenue Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -161,6 +166,7 @@ function outcomeMessage(x){
   if(x.outcome==='NO_RESEARCH_INTERVENTION_REQUIRED')return '現在、研究介入が必要なRevenue Gapなし。正常系を維持。';
   if(x.outcome==='GITHUB_REVENUE_HANDOFF_CREATED')return 'CodeOpsへ起動: '+(x.target_project?.name||x.target_project?.id||'')+'。push権限確認後のみ最小修正。';
   if(x.outcome==='NO_SAFE_GITHUB_REVENUE_MICROTASK')return '現在、GitHubで直接短縮できる安全なRevenue micro-taskなし。';
+  if(x.outcome==='YOUTUBE_REVENUE_HANDOFF_CREATED')return 'Forwelle起動: Payment→Checkout→Buyer→Qualified Action→Human→Reach の順でYouTube Revenueを1段進めます。';
   if(x.outcome==='TRUE_HUMAN_GATE_HELD')return 'True Human Gateを検出。越境せず停止: '+(x.gate?.action_label||x.gate?.title||'');
   if(x.duplicate||String(x.outcome||'').includes('EXISTING_'))return '同じCurrent StateのActionあり。重複せず既存Actionを継続。';
   if(x.outcome==='REVENUE_ACTION_HANDOFF_CREATED')return '起動済み: '+(x.decision?.project_name||'')+' → '+(x.decision?.measurable_outcome||'Revenue Realityを1段前進');
