@@ -35,7 +35,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 .revenueGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:850px){.revenueGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.revenueGrid{grid-template-columns:1fr}}
 .revCard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.revCard.ok{border-color:#a9dcc5;background:#f6fffa}.revCard.none{background:#fafbfc}.revStage{font-size:12px;color:var(--muted);font-weight:800}.revValue{font-size:18px;font-weight:900;margin-top:5px}.revMeta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.45}
 .todayGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}@media(max-width:700px){.todayGrid{grid-template-columns:repeat(2,1fr)}}.today{border-radius:12px;padding:11px;background:#f8fafc;border:1px solid var(--line)}.today .n{font-size:22px;font-weight:900}.today .l{font-size:10px;color:var(--muted)}
-.revenueOp{border:1px solid #9fd8bb;background:#f6fff9;border-radius:14px;padding:14px}.revenueOpTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.revenueOpTitle{font-size:16px;font-weight:900}.revenueOpMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}.opBtn{border:1px solid #168a57;background:#168a57;color:#fff;border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer}.opBtn:disabled{opacity:.55;cursor:not-allowed}.loopBox{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.loopTitle{font-weight:900;font-size:13px}.loopMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
+.revenueOp{border:1px solid #9fd8bb;background:#f6fff9;border-radius:14px;padding:14px}.revenueOpTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.revenueOpTitle{font-size:16px;font-weight:900}.revenueOpMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}.opBtn{border:1px solid #168a57;background:#168a57;color:#fff;border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer}.opBtn:disabled{opacity:.55;cursor:not-allowed}.commandGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}@media(max-width:900px){.commandGrid{grid-template-columns:1fr 1fr}}@media(max-width:560px){.commandGrid{grid-template-columns:1fr}}.cmdCard{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fbfcfe}.cmdTitle{font-weight:900;font-size:13px}.cmdDesc{font-size:10px;color:var(--muted);line-height:1.45;margin:5px 0 9px}.cmdBtn{width:100%;border:1px solid #2357c7;background:#2357c7;color:#fff;border-radius:9px;padding:9px 10px;font-weight:800;cursor:pointer}.cmdBtn.research{background:#6f49b8;border-color:#6f49b8}.cmdBtn.github{background:#24292f;border-color:#24292f}.cmdBtn.wordpress{background:#168a57;border-color:#168a57}.cmdBtn:disabled{opacity:.55;cursor:not-allowed}.wpButtons{display:flex;gap:7px;flex-wrap:wrap}.wpButtons .cmdBtn{width:auto;min-width:150px}.loopBox{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.loopTitle{font-weight:900;font-size:13px}.loopMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
 .project.p-run{border-color:#9fb8ff;background:#f8faff}.project.p-ok{border-color:#b8e2cc}.project.p-wait{border-color:#ecd68d;background:#fffdf5}.project.p-human{border-color:#f0b6bf;background:#fff8f9}.project.p-warn{border-color:#e2b36d;background:#fffaf2}.project.p-soft{border-color:var(--line)}
 .criticalBox{border:1px solid #f2b8c0;background:#fff7f8;border-radius:12px;padding:12px;color:#8d2333}.allClear{border:1px solid #bce3cf;background:#f6fffa;border-radius:12px;padding:12px;color:var(--ok);font-weight:800}
 </style>
@@ -78,6 +78,39 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
+    <div>
+      <h2>Revenue Command Deck</h2>
+      <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
+    </div>
+    <div class="hint">Operator / v25 Safe Revenue Control</div>
+  </div>
+  <div class="commandGrid">
+    <div class="cmdCard">
+      <div class="cmdTitle">全体リーダー</div>
+      <div class="cmdDesc">全ProjectからRevenue Distance最短の安全な1件を選び、正しいOwnerへ実行Handoff。</div>
+      <button class="cmdBtn" onclick="runControl('global-leader',null,this)">全体Revenueを1段進める</button>
+    </div>
+    <div class="cmdCard">
+      <div class="cmdTitle">研究リーダー</div>
+      <div class="cmdDesc">最短Revenue Routeを止めるCapability / Adapter Gapだけ研究Issue化。正常Project運転は奪わない。</div>
+      <button class="cmdBtn research" onclick="runControl('research-leader',null,this)">Revenue Gapを研究へ</button>
+    </div>
+    <div class="cmdCard">
+      <div class="cmdTitle">GitHub ぽちぽち収益</div>
+      <div class="cmdDesc">CodeOpsへGitHub micro-task。対象Repoでpush=true確認前は書かず、ACCESS_GAPで停止。</div>
+      <button class="cmdBtn github" onclick="runControl('github-pochipochi',null,this)">GitHubで最短修正</button>
+    </div>
+  </div>
+  <div class="cmdCard" style="margin-top:10px">
+    <div class="cmdTitle">各Project WordPress収益実行</div>
+    <div class="cmdDesc">既存WordPress Owned Routeのみ。新Site / 新Product / 価格 / Checkout設定は変更せず、Projectごとに1段だけ進める。</div>
+    <div id="wpButtons" class="wpButtons"><span class="hint">Current WordPress Routeを読込中…</span></div>
+  </div>
+  <div id="controlMsg" class="hint" style="margin-top:10px"></div>
+</section>
+
+<section class="section">
+  <div class="sectionHead">
     <div><h2>ぽちぽち収益</h2><div class="hint">全ProjectからRevenue Distance最短の1件だけ選ぶ。READ成功だけではRevenue前進にしない。</div></div>
     <div class="hint">Operator / v24 Reality Guard</div>
   </div>
@@ -112,7 +145,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v24 Reality Guard · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v25 Safe Revenue Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -122,30 +155,40 @@ const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&
 const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}):'—';
 const ago=t=>{if(!t)return '—';const s=Math.max(0,(Date.now()-new Date(t).getTime())/1000);if(s<60)return Math.floor(s)+'秒前';if(s<3600)return Math.floor(s/60)+'分前';if(s<86400)return Math.floor(s/3600)+'時間前';return Math.floor(s/86400)+'日前'};
 function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
-async function pochi(){
+function outcomeMessage(x){
+  if(x.outcome==='ACTION_ADAPTER_GAP_ROUTED')return 'Reality-changing Adapter不足を研究/統合神経へ返却。無理な外部Writeはしていません。';
+  if(x.outcome==='RESEARCH_REVENUE_GAP_WOKEN')return '研究リーダー起動: '+(x.decision?.project_name||'')+' / '+(x.decision?.first_broken_stage||'');
+  if(x.outcome==='NO_RESEARCH_INTERVENTION_REQUIRED')return '現在、研究介入が必要なRevenue Gapなし。正常系を維持。';
+  if(x.outcome==='GITHUB_REVENUE_HANDOFF_CREATED')return 'CodeOpsへ起動: '+(x.target_project?.name||x.target_project?.id||'')+'。push権限確認後のみ最小修正。';
+  if(x.outcome==='NO_SAFE_GITHUB_REVENUE_MICROTASK')return '現在、GitHubで直接短縮できる安全なRevenue micro-taskなし。';
+  if(x.outcome==='TRUE_HUMAN_GATE_HELD')return 'True Human Gateを検出。越境せず停止: '+(x.gate?.action_label||x.gate?.title||'');
+  if(x.duplicate||String(x.outcome||'').includes('EXISTING_'))return '同じCurrent StateのActionあり。重複せず既存Actionを継続。';
+  if(x.outcome==='REVENUE_ACTION_HANDOFF_CREATED')return '起動済み: '+(x.decision?.project_name||'')+' → '+(x.decision?.measurable_outcome||'Revenue Realityを1段前進');
+  if(x.outcome==='NO_SAFE_REVENUE_ACTION')return '安全に進められるRevenue Actionなし。External Wait / Human Gateを維持。';
+  return x.message||x.outcome||'実行要求を受理しました。';
+}
+async function runControl(actor,unitId,btn,msgId='controlMsg'){
   const key=localStorage.getItem('monitor_key')||$('key').value.trim();
-  const b=$('revOpBtn'),m=$('revOpMsg');
+  const m=$(msgId);
   if(!key){m.textContent='監視キーを入力してください。';return}
-  b.disabled=true;m.textContent='Current Realityを再確認して1件だけ起動中…';
+  if(btn)btn.disabled=true;
+  m.textContent='Current Reality → Payment優先順でSafe Actionを判定中…';
   try{
-    const r=await fetch(BASE+'/api/revenue-pump',{
+    const r=await fetch(BASE+'/api/revenue-control',{
       method:'POST',
       headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-      body:'{}'
+      body:JSON.stringify({actor,unit_id:unitId||null})
     });
     const x=await r.json();
     if(!r.ok)throw new Error(x.error||'起動失敗');
-    if(x.outcome==='ACTION_ADAPTER_GAP_ROUTED'){
-      m.textContent='Reality-changing Adapter不足を統合神経へ返却済み。Project Runtimeは勝手に変更していません。';
-    }else if(x.duplicate){
-      m.textContent='同じCurrent StateのActionあり。重複せず既存Actionを継続。';
-    }else{
-      m.textContent='起動済み: '+(x.decision?.project_name||'')+' → '+(x.decision?.measurable_outcome||'');
-    }
+    m.textContent=outcomeMessage(x);
     await load();
   }catch(e){
     m.textContent=e.message==='Operator key required'?'実行にはOperator keyが必要です。Viewer keyは監視のみ。':e.message;
-  }finally{b.disabled=false}
+  }finally{if(btn)btn.disabled=false}
+}
+async function pochi(){
+  return runControl('revenue-pump',null,$('revOpBtn'),'revOpMsg');
 }
 async function load(){
   const key=localStorage.getItem('monitor_key')||$('key').value.trim(); if(!key){$('msg').textContent='監視キーを入力してください。';return}
@@ -213,6 +256,10 @@ function render(d){
     return '<div class="revCard '+(x?'ok':'none')+'"><div class="revStage">'+esc(label)+'</div><div class="revValue">'+(x?'確認済み':'未確認')+'</div><div class="revMeta">'+esc(sub)+(x?'<br>'+esc(x.unit_id)+' · '+time(x.at)+' · '+ago(x.at):'')+'</div></div>';
   }).join('');
   $('lastRevenue').textContent=rev.last_progress?'最後のRevenue前進: '+ago(rev.last_progress.at)+' · '+rev.last_progress.stage+' · '+rev.last_progress.unit_id:'Revenue前進Evidenceなし';
+  const wpSites=d.wordpress_sites||[];
+  $('wpButtons').innerHTML=wpSites.length?wpSites.map(s=>
+    '<button class="cmdBtn wordpress" data-unit="'+esc(s.project_unit_id||'')+'" onclick="runControl(\'wordpress\',this.dataset.unit,this)">'+esc((s.project_unit_id||'Project')+' WordPress')+'</button>'
+  ).join(''):'<span class="hint">CurrentでProject-owned WordPress Routeなし。</span>';
   const stoppedToday=Number(c.blocked_today||0)+Number(c.failed_today||0);
   $('todayResults').innerHTML=[
     ['今日の完了',c.done_today??0],['今日のRevenue前進',rev.progressed_today??0],['今日の停止/保留',stoppedToday],['今すぐHuman Gate',gates]
