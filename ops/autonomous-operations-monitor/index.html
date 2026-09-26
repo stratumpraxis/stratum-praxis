@@ -82,7 +82,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
       <h2>Revenue Command Deck</h2>
       <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
     </div>
-    <div class="hint">Monitor key / v31 Revenue Reality Control</div>
+    <div class="hint">Monitor key / v32 Revenue Reality Control</div>
   </div>
   <div class="commandGrid">
     <div class="cmdCard" data-control-card="global-leader">
@@ -121,7 +121,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section">
   <div class="sectionHead">
     <div><h2>ぽちぽち収益</h2><div class="hint">全ProjectからRevenue Distance最短の1件だけ選ぶ。READ成功だけではRevenue前進にしない。</div></div>
-    <div class="hint">Monitor key / v31 Revenue Reality Control</div>
+    <div class="hint">Monitor key / v32 Revenue Reality Control</div>
   </div>
   <div class="revenueOp">
     <div class="revenueOpTop">
@@ -154,7 +154,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v31 Revenue Reality Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v32 Revenue Reality Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -170,6 +170,7 @@ function outcomeMessage(x){
   if(x.outcome==='NO_RESEARCH_INTERVENTION_REQUIRED')return '現在、研究介入が必要なRevenue Gapなし。正常系を維持。';
   if(x.outcome==='GITHUB_REVENUE_HANDOFF_CREATED')return 'CodeOpsへ起動: '+(x.target_project?.name||x.target_project?.id||'')+'。push権限確認後のみ最小修正。';
   if(x.outcome==='NO_SAFE_GITHUB_REVENUE_MICROTASK')return '現在、GitHubで直接短縮できる安全なRevenue micro-taskなし。';
+  if(x.outcome==='GITHUB_REVENUE_ACCESS_NOT_VERIFIED')return 'GitHub安全停止: '+(x.message||'write権限未検証');
   if(x.outcome==='YOUTUBE_REVENUE_HANDOFF_CREATED')return 'Forwelle起動: Payment→Checkout→Buyer→Qualified Action→Human→Reach の順でYouTube Revenueを1段進めます。';
   if(x.outcome==='TRUE_HUMAN_GATE_HELD')return 'True Human Gateを検出。越境せず停止: '+(x.gate?.action_label||x.gate?.title||'');
   if(x.duplicate||String(x.outcome||'').includes('EXISTING_'))return '同じCurrent StateのActionあり。重複せず既存Actionを継続。';
