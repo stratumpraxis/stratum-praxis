@@ -31,7 +31,7 @@ h1{margin:0;font-size:clamp(28px,5vw,46px);line-height:1.08;letter-spacing:-.04e
 a.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);color:var(--text);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:700;background:#fff}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}.history{max-height:560px;overflow:auto}.hist{display:grid;grid-template-columns:110px 1fr;gap:10px;padding:8px 0;border-bottom:1px solid #edf0f4}.htime{font-size:10px;color:var(--muted)}.hmain{font-size:12px}.hmeta{font-size:10px;color:var(--muted);margin-top:2px}
 details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}.internal{font-size:10px;color:var(--muted);overflow-wrap:anywhere;padding-top:5px}
 .nav{display:flex;gap:8px;flex-wrap:wrap;margin:-6px 0 14px}.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.nav a.active{background:#162033;color:#fff;border-color:#162033}
-.pager{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:14px}.pager a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:9px;padding:7px 11px;font-size:11px;font-weight:800}.actionBox{border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff}.actionBox.human{border-color:#f0b6bf;background:#fff8f9}.actionBox.ai{border-color:#b8e2cc;background:#f8fffb}.actionReason{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}.actionResume{font-size:11px;line-height:1.5;margin-top:6px}
+.pager{display:flex;justify-content:center;gap:8px;align-items:center;margin-top:14px}.pager a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:9px;padding:7px 11px;font-size:11px;font-weight:800}.actionBox{border:1px solid var(--line);border-radius:12px;padding:11px;background:#fff}.actionBox.human{border-color:#f0b6bf;background:#fff8f9}.actionBox.human.executable{border-color:#d8a900;box-shadow:0 0 0 3px rgba(216,169,0,.18),0 0 24px rgba(216,169,0,.16)}.actionBox.ai{border-color:#b8e2cc;background:#f8fffb}.actionReason{font-size:11px;color:var(--muted);line-height:1.5;margin-top:5px}.actionResume{font-size:11px;line-height:1.5;margin-top:6px}.humanGateExecRow{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:9px}.humanGateBtn{border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:11px;font-weight:900;background:#fff;color:var(--text);cursor:pointer}.humanGateBtn.executable{background:#b88400;border-color:#b88400;color:#fff;box-shadow:0 0 0 3px rgba(216,169,0,.24),0 0 22px rgba(216,169,0,.26);animation:gateGlow 1.8s ease-in-out infinite}.humanGateBtn:disabled{opacity:.5;cursor:not-allowed;animation:none;box-shadow:none}.humanGateState{font-size:10px;color:var(--muted);line-height:1.4}.humanGateState.done{color:var(--ok);font-weight:900}.humanGateState.run{color:var(--run);font-weight:800}.humanGateState.block{color:var(--warn);font-weight:800}@keyframes gateGlow{50%{box-shadow:0 0 0 5px rgba(216,169,0,.13),0 0 30px rgba(216,169,0,.34)}}
 .revenueGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:850px){.revenueGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.revenueGrid{grid-template-columns:1fr}}
 .revCard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.revCard.ok{border-color:#a9dcc5;background:#f6fffa}.revCard.none{background:#fafbfc}.revStage{font-size:12px;color:var(--muted);font-weight:800}.revValue{font-size:18px;font-weight:900;margin-top:5px}.revMeta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.45}
 .todayGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}@media(max-width:700px){.todayGrid{grid-template-columns:repeat(2,1fr)}}.today{border-radius:12px;padding:11px;background:#f8fafc;border:1px solid var(--line)}.today .n{font-size:22px;font-weight:900}.today .l{font-size:10px;color:var(--muted)}
@@ -82,7 +82,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
       <h2>Revenue Command Deck</h2>
       <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
     </div>
-    <div class="hint">Monitor key / v33 Revenue Action Surface</div>
+    <div class="hint">Monitor key / v34 Human Gate Execute</div>
   </div>
   <div class="commandGrid">
     <div class="cmdCard" data-control-card="global-leader">
@@ -121,7 +121,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section">
   <div class="sectionHead">
     <div><h2>ぽちぽち収益</h2><div class="hint">全ProjectからRevenue Distance最短の1件だけ選ぶ。READ成功だけではRevenue前進にしない。</div></div>
-    <div class="hint">Monitor key / v33 Revenue Action Surface</div>
+    <div class="hint">Monitor key / v34 Human Gate Execute</div>
   </div>
   <div class="revenueOp">
     <div class="revenueOpTop">
@@ -144,7 +144,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <div class="twocol">
 <section class="section"><div class="sectionHead"><div><h2>次に起きる予定</h2><div class="hint">直近の自動Wakeだけ表示</div></div></div><div id="nextList" class="nextList"></div></section>
-<section class="section"><div class="sectionHead"><div><h2>あなたの対応が必要</h2><div class="hint">今すぐ本当に人間が必要なものだけ。将来Gateは除外。</div></div></div><div id="humanList" class="humanList"></div></section>
+<section class="section"><div class="sectionHead"><div><h2>あなたの対応が必要</h2><div class="hint">今すぐ本当に人間が必要なものだけ。実行RuntimeがDirect確認できるGateだけボタンが光ります。押下はそのGateだけ実行し、Direct Readbackまで追跡。</div></div></div><div id="humanList" class="humanList"></div></section>
 </div>
 
 <section class="section"><div class="sectionHead"><div><h2>AI側で対応・監視する項目</h2><div class="hint">Human Gateではないもの。あなたに返さずAI側で処理または条件監視。</div></div></div><div id="aiActionList" class="nextList"></div></section>
@@ -154,7 +154,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v33 Revenue Action Surface · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v34 Human Gate Execute · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -315,6 +315,61 @@ async function runProjectRevenueNow(unitId,btn){
     const m=$('controlMsg');if(m)m.textContent=e.message;
   }finally{if(btn)btn.disabled=false}
 }
+
+function humanGateActionHtml(a){
+  const x=a.monitor_execution||{};
+  const id=String(a.task_id||'');
+  const stateId='gate-state-'+id.replace(/[^a-zA-Z0-9_-]/g,'');
+  if(x.executable){
+    return '<div class="humanGateExecRow">'+
+      '<button class="humanGateBtn executable" data-task="'+esc(id)+'" data-updated="'+esc(a.updated_at||'')+'" onclick="runHumanGate(this.dataset.task,this.dataset.updated,this)">'+esc(x.button_label||'このHuman Gateだけ実行')+'</button>'+
+      '<span id="'+stateId+'" class="humanGateState">実行可能 · '+esc(x.reason||'Direct Readbackまで実行')+'</span>'+
+    '</div>';
+  }
+  return '<div class="humanGateExecRow">'+
+    '<button class="humanGateBtn" disabled>この画面では実行不可</button>'+
+    '<span id="'+stateId+'" class="humanGateState">'+esc(x.reason||'実行Runtime未接続。対象URLから本人操作が必要。')+'</span>'+
+  '</div>';
+}
+async function runHumanGate(taskId,updatedAt,btn){
+  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||'';
+  const stateId='gate-state-'+String(taskId).replace(/[^a-zA-Z0-9_-]/g,'');
+  const st=$(stateId);
+  if(!key){if(st)st.textContent='監視キーを入力してください。';return}
+  if(btn)btn.disabled=true;
+  if(st){st.className='humanGateState run';st.textContent='このGateだけ実行中… Direct Readback待ち';}
+  try{
+    const r=await fetch(BASE+'/api/human-gate-execute',{
+      method:'POST',
+      headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
+      body:JSON.stringify({task_id:taskId,expected_updated_at:updatedAt||null})
+    });
+    const x=await r.json();
+    if(!r.ok)throw new Error(x.error||'Human Gate起動失敗');
+    for(let i=0;i<15;i++){
+      await new Promise(resolve=>setTimeout(resolve,2000));
+      const sr=await fetch(BASE+'/api/human-gate-status?task_id='+encodeURIComponent(taskId),{headers:{Authorization:'Bearer '+key}});
+      const sx=await sr.json();
+      if(!sr.ok)throw new Error(sx.error||'Direct Readback確認失敗');
+      if(sx.completed){
+        if(st){st.className='humanGateState done';st.textContent='完了 · Direct Readback済み';}
+        await load();
+        return;
+      }
+      if(sx.blocked){
+        if(st){st.className='humanGateState block';st.textContent='Blocked · '+esc(sx.task_status||'Specific blocker');}
+        await load();
+        return;
+      }
+      if(st){st.className='humanGateState run';st.textContent=(sx.task_status||'実行中')+' · Direct Readback待ち';}
+    }
+    if(st){st.className='humanGateState run';st.textContent='実行継続中 · Direct Readbackは自動更新で確認';}
+    await load();
+  }catch(e){
+    if(st){st.className='humanGateState block';st.textContent=e.message;}
+    if(btn)btn.disabled=false;
+  }
+}
 function render(d){
   renderRevenueOperator(d);
   const h=d.health,c=h.counts||{}; const running=Number(c.running||0); const failed30=Number(h.cron_stats?.failed_30m||0); const actions=d.action_items||[]; const gates=Number(d.human_gate_now_count||0);
@@ -363,7 +418,7 @@ function render(d){
   $('kpis').innerHTML=kpis.map(x=>'<div class="kpi"><div class="num">'+esc(x[1])+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');
   $('nextList').innerHTML=nextAll.slice(0,6).map(s=>'<div class="item"><div class="itemTop"><div><div class="itemTitle">'+esc(s.name)+'</div><div class="meta">'+esc(s.source_unit_id)+' · '+esc(s.interval_minutes)+'分周期</div></div>'+badge(time(s.next_run_at),'b-ok')+'</div>'+quickActionHtml(d,s.source_unit_id,true,s.id)+'</div>').join('')||'<div class="empty">定刻Wakeなし。Event / Handoff待ちです。</div>';
   const human=actions.filter(a=>a.requires_user_now);
-  $('humanList').innerHTML=human.length?human.map(a=>'<div class="actionBox human"><div class="itemTop"><div><div class="itemTitle">'+esc(a.action_label||a.title)+'</div><div class="meta">'+esc(a.source_unit_id)+' · '+esc(a.action_class)+'</div></div>'+badge('今すぐ必要','b-warn')+'</div><div class="actionReason">'+esc(a.reason||'')+'</div>'+(a.resume_hint?'<div class="actionResume"><b>その後:</b> '+esc(a.resume_hint)+'</div>':'')+(a.action_url?'<div style="margin-top:8px"><a class="btn" target="_blank" href="'+esc(a.action_url)+'">対象URLを開く</a></div>':'')+'</div>').join(''):'<div class="empty">いま、あなたの対応が必須の項目はありません。</div>';
+  $('humanList').innerHTML=human.length?human.map(a=>'<div class="actionBox human '+(a.monitor_execution?.executable?'executable':'')+'"><div class="itemTop"><div><div class="itemTitle">'+esc(a.action_label||a.title)+'</div><div class="meta">'+esc(a.source_unit_id)+' · '+esc(a.action_class)+'</div></div>'+badge(a.monitor_execution?.executable?'今すぐ実行可':'本人対応','b-warn')+'</div><div class="actionReason">'+esc(a.reason||'')+'</div>'+(a.resume_hint?'<div class="actionResume"><b>その後:</b> '+esc(a.resume_hint)+'</div>':'')+humanGateActionHtml(a)+(a.action_url?'<div style="margin-top:8px"><a class="btn" target="_blank" href="'+esc(a.action_url)+'">対象URLを開く</a></div>':'')+'</div>').join(''):'<div class="empty">いま、あなたの対応が必須の項目はありません。</div>';
   const aiActions=actions.filter(a=>!a.requires_user_now&&!a.deferred);
   $('aiActionList').innerHTML=aiActions.length?aiActions.slice(0,8).map(a=>'<div class="actionBox ai"><div class="itemTop"><div><div class="itemTitle">'+esc(a.action_label||a.title)+'</div><div class="meta">'+esc(a.source_unit_id)+' · '+esc(a.task_status)+' · '+esc(a.action_class)+'</div></div>'+badge('AI側','b-ok')+'</div><div class="actionReason">'+esc(a.reason||'')+'</div>'+(a.resume_hint?'<div class="actionResume"><b>再開条件:</b> '+esc(a.resume_hint)+'</div>':'')+'</div>').join(''):'<div class="empty">AI側の未完了項目なし</div>';
   const ps=[...(d.projects||[])].sort((a,b)=>{const ar=a.running_task?0:(friendlyProject(a,actions).t==='あなた待ち'?1:(a.next_schedule?2:3));const br=b.running_task?0:(friendlyProject(b,actions).t==='あなた待ち'?1:(b.next_schedule?2:3));return ar-br});
