@@ -35,6 +35,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 .revenueGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}@media(max-width:850px){.revenueGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:520px){.revenueGrid{grid-template-columns:1fr}}
 .revCard{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.revCard.ok{border-color:#a9dcc5;background:#f6fffa}.revCard.none{background:#fafbfc}.revStage{font-size:12px;color:var(--muted);font-weight:800}.revValue{font-size:18px;font-weight:900;margin-top:5px}.revMeta{font-size:10px;color:var(--muted);margin-top:6px;line-height:1.45}
 .todayGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:10px}@media(max-width:700px){.todayGrid{grid-template-columns:repeat(2,1fr)}}.today{border-radius:12px;padding:11px;background:#f8fafc;border:1px solid var(--line)}.today .n{font-size:22px;font-weight:900}.today .l{font-size:10px;color:var(--muted)}
+.revenueOp{border:1px solid #9fd8bb;background:#f6fff9;border-radius:14px;padding:14px}.revenueOpTop{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap}.revenueOpTitle{font-size:16px;font-weight:900}.revenueOpMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:6px}.opBtn{border:1px solid #168a57;background:#168a57;color:#fff;border-radius:10px;padding:9px 12px;font-weight:800;cursor:pointer}.opBtn:disabled{opacity:.55;cursor:not-allowed}.loopBox{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fff}.loopTitle{font-weight:900;font-size:13px}.loopMeta{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
 .project.p-run{border-color:#9fb8ff;background:#f8faff}.project.p-ok{border-color:#b8e2cc}.project.p-wait{border-color:#ecd68d;background:#fffdf5}.project.p-human{border-color:#f0b6bf;background:#fff8f9}.project.p-warn{border-color:#e2b36d;background:#fffaf2}.project.p-soft{border-color:var(--line)}
 .criticalBox{border:1px solid #f2b8c0;background:#fff7f8;border-radius:12px;padding:12px;color:#8d2333}.allClear{border:1px solid #bce3cf;background:#f6fffa;border-radius:12px;padding:12px;color:var(--ok);font-weight:800}
 </style>
@@ -75,6 +76,30 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <div id="todayResults" class="todayGrid"></div>
 </section>
 
+<section class="section">
+  <div class="sectionHead">
+    <div><h2>ぽちぽち収益</h2><div class="hint">全ProjectからRevenue Distance最短の1件だけ選ぶ。READ成功だけではRevenue前進にしない。</div></div>
+    <div class="hint">Operator / v24 Reality Guard</div>
+  </div>
+  <div class="revenueOp">
+    <div class="revenueOpTop">
+      <div>
+        <div id="revOpTitle" class="revenueOpTitle">Currentを読込中…</div>
+        <div id="revOpMeta" class="revenueOpMeta"></div>
+      </div>
+      <button id="revOpBtn" class="opBtn" onclick="pochi()">この1件を進める</button>
+    </div>
+    <div id="revOpMsg" class="hint" style="margin-top:9px"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead">
+    <div><h2>Closed Loop Proof</h2><div class="hint">Decision → Dispatch → Runtime → Reality Change → Evidence → New State → Next Decision</div></div>
+  </div>
+  <div id="closedLoop" class="loopBox"></div>
+</section>
+
 <div class="twocol">
 <section class="section"><div class="sectionHead"><div><h2>次に起きる予定</h2><div class="hint">直近の自動Wakeだけ表示</div></div></div><div id="nextList" class="nextList"></div></section>
 <section class="section"><div class="sectionHead"><div><h2>あなたの対応が必要</h2><div class="hint">今すぐ本当に人間が必要なものだけ。将来Gateは除外。</div></div></div><div id="humanList" class="humanList"></div></section>
@@ -87,14 +112,41 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v24 Reality Guard · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
-const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/snapshot';
+const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const API=BASE+'/api/snapshot';
 const $=id=>document.getElementById(id); $('key').value=localStorage.getItem('monitor_key')||'';
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',second:'2-digit'}):'—';
 const ago=t=>{if(!t)return '—';const s=Math.max(0,(Date.now()-new Date(t).getTime())/1000);if(s<60)return Math.floor(s)+'秒前';if(s<3600)return Math.floor(s/60)+'分前';if(s<86400)return Math.floor(s/3600)+'時間前';return Math.floor(s/86400)+'日前'};
 function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
+async function pochi(){
+  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  const b=$('revOpBtn'),m=$('revOpMsg');
+  if(!key){m.textContent='監視キーを入力してください。';return}
+  b.disabled=true;m.textContent='Current Realityを再確認して1件だけ起動中…';
+  try{
+    const r=await fetch(BASE+'/api/revenue-pump',{
+      method:'POST',
+      headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
+      body:'{}'
+    });
+    const x=await r.json();
+    if(!r.ok)throw new Error(x.error||'起動失敗');
+    if(x.outcome==='ACTION_ADAPTER_GAP_ROUTED'){
+      m.textContent='Reality-changing Adapter不足を統合神経へ返却済み。Project Runtimeは勝手に変更していません。';
+    }else if(x.duplicate){
+      m.textContent='同じCurrent StateのActionあり。重複せず既存Actionを継続。';
+    }else{
+      m.textContent='起動済み: '+(x.decision?.project_name||'')+' → '+(x.decision?.measurable_outcome||'');
+    }
+    await load();
+  }catch(e){
+    m.textContent=e.message==='Operator key required'?'実行にはOperator keyが必要です。Viewer keyは監視のみ。':e.message;
+  }finally{b.disabled=false}
+}
 async function load(){
   const key=localStorage.getItem('monitor_key')||$('key').value.trim(); if(!key){$('msg').textContent='監視キーを入力してください。';return}
   $('msg').textContent='内部Stateを読込中…';
@@ -112,7 +164,33 @@ function friendlyProject(p,actions){
   return {t:'Event待ち',c:'b-soft',card:'p-soft'};
 }
 function resultText(r){if(!r||typeof r!=='object')return '';const x=[];if(r.outcome)x.push(r.outcome);if(r.status_code!==undefined)x.push('HTTP '+r.status_code);if(r.route_healthy===true)x.push('route healthy');return x.join(' · ')}
+function renderRevenueOperator(d){
+  const rd=d.revenue_decision||{},s=rd.selected||null;
+  if(s){
+    $('revOpTitle').textContent=(s.project_name||s.unit_id||'')+' · '+(s.pump||'Revenue Action');
+    $('revOpMeta').innerHTML=
+      'First Broken: <b>'+esc(s.first_broken_stage||'—')+'</b><br>'+
+      'Outcome: '+esc(s.measurable_outcome||'—')+'<br>'+
+      'Execution: '+esc(s.execution_class||'—')+' · Revenue D'+esc(s.revenue_distance??'—')+
+      (s.adapter?'<br>Adapter: '+esc(s.adapter.type||'')+' / '+esc(s.adapter.authority||''):'');
+    $('revOpBtn').textContent=s.action_mode==='ROUTE_ADAPTER_GAP'?'神経Gapを返却':'この1件を進める';
+  }else{
+    $('revOpTitle').textContent='安全に進められるRevenue Actionなし';
+    $('revOpMeta').textContent='Human Gate / External Wait / Adapter Gapを確認。';
+    $('revOpBtn').disabled=true;
+  }
+  const c=d.closed_loop_proof||{};
+  if(!c.classification){
+    $('closedLoop').innerHTML='<div class="empty">まだClosed Loop実証なし</div>';
+  }else{
+    $('closedLoop').innerHTML='<div class="loopTitle">'+esc(c.classification)+'</div>'+
+      '<div class="loopMeta">'+esc(c.project||'')+(c.task_status?' · Task '+esc(c.task_status):'')+
+      '<br>State: '+esc(c.state_before||'—')+' → '+esc(c.state_after||'—')+
+      '<br>'+esc(c.rule||'Task DONE ≠ Revenue Reality change')+'</div>';
+  }
+}
 function render(d){
+  renderRevenueOperator(d);
   const h=d.health,c=h.counts||{}; const running=Number(c.running||0); const failed30=Number(h.cron_stats?.failed_30m||0); const actions=d.action_items||[]; const gates=Number(d.human_gate_now_count||0);
   const st=$('companyStatus');
   if(!h.clock_healthy||failed30>0){st.textContent='要確認';st.className='statusBig warn'}
