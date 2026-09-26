@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Direct Revenue OS</title>
+<style>
+:root{color-scheme:dark;--bg:#06101d;--panel:#0d1b2d;--line:#223b59;--text:#ecf5ff;--muted:#94a9c1;--green:#65e6a6;--blue:#79a9ff;--yellow:#ffd166;--red:#ff7a8a}
+*{box-sizing:border-box}
+body{margin:0;background:linear-gradient(180deg,#071424,#050b14);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1180px;margin:auto;padding:22px 16px 70px}
+h1{font-size:clamp(32px,6vw,62px);margin:0;letter-spacing:-.05em;line-height:1}
+.sub{color:var(--muted);margin:8px 0 18px;line-height:1.55}
+.bar{display:flex;gap:8px;flex-wrap:wrap}
+input,button{background:#0b1b30;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
+input{min-width:240px;flex:1}
+button{cursor:pointer;font-weight:800}
+button.primary{background:#174c37;border-color:#2f8f68}
+button:hover{filter:brightness(1.1)}
+.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px}
+@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(13,27,45,.94);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:12px}
+.k{color:var(--muted);font-size:12px}
+.v{font-size:24px;font-weight:850;margin-top:4px;overflow-wrap:anywhere}
+.tiny{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
+.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px;font-size:11px}
+.row{border-top:1px solid #172c44;padding:11px 0}
+.row:first-child{border-top:0}
+.status{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;border:1px solid var(--line)}
+.ok{color:var(--green)} .wait{color:var(--yellow)} .bad{color:var(--red)} .info{color:var(--blue)}
+#msg{min-height:22px;color:var(--blue);margin-top:9px;font-size:12px}
+a{color:var(--blue)}
+</style>
+</head>
+<body>
+<main>
+  <div class="k">Independent Live Control Plane</div>
+  <h1>Direct Revenue OS</h1>
+  <div class="sub">Market → Direct Reward → Existing Route Match → Claim → Payout → Deposit</div>
+
+  <div class="bar">
+    <input id="key" type="password" placeholder="Monitor key">
+    <button onclick="connect()">接続</button>
+    <button class="primary" onclick="runNow()">Closest-to-cashを進める</button>
+  </div>
+  <div id="msg">監視キーを入力してください。</div>
+
+  <div class="grid">
+    <section class="card">
+      <div class="k">Closest to cash</div>
+      <div id="selected" class="v">未接続</div>
+      <div id="selectedMeta" class="tiny"></div>
+    </section>
+    <section class="card">
+      <div class="k">Canonical State</div>
+      <div id="state" class="v">—</div>
+      <div id="next" class="tiny"></div>
+    </section>
+  </div>
+
+  <section class="card">
+    <div class="k">Source Registry</div>
+    <div id="sources"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">Direct Revenue Candidates</div>
+    <div id="items"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">Market / Direct Reward Candidates</div>
+    <div id="market"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">Repeat Winning Routes</div>
+    <div id="repeat"></div>
+  </section>
+
+  <section class="card">
+    <div class="k">Latest Route Handoff / Readback</div>
+    <div id="dispatch"></div>
+  </section>
+</main>
+
+<script>
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/direct-revenue-os';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('direct_revenue_os_key')||'';
+
+function esc(s){
+  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+function connect(){
+  localStorage.setItem('direct_revenue_os_key',$('key').value.trim());
+  load();
+}
+async function api(path,opt={}){
+  const key=$('key').value.trim()||localStorage.getItem('direct_revenue_os_key')||'';
+  if(!key) throw new Error('Monitor keyを入力してください');
+  const r=await fetch(API+path,{
+    ...opt,
+    headers:{Authorization:'Bearer '+key,'Content-Type':'application/json',...(opt.headers||{})}
+  });
+  const x=await r.json();
+  if(!r.ok) throw new Error(x.error||('HTTP '+r.status));
+  return x;
+}
+function classFor(status){
+  const s=String(status||'');
+  if(/CONFIRMED|DONE|ACTIVE/i.test(s)) return 'ok';
+  if(/PENDING|WAIT|READY/i.test(s)) return 'wait';
+  if(/BLOCK|FAIL/i.test(s)) return 'bad';
+  return 'info';
+}
+function item(x){
+  const name=x.revenue_name||x.title||'Direct Revenue';
+  return '<div class="row">'+
+    '<span class="status '+classFor(x.status)+'">'+esc(x.status)+'</span> '+
+    '<b>'+esc(x.amount||'UNKNOWN')+'</b><br>'+
+    esc(name)+
+    '<div class="tiny">'+esc(x.source||'')+' → '+esc(x.route?.label||'route unknown')+' · '+esc(x.action||'')+'</div>'+
+    '</div>';
+}
+async function load(){
+  try{
+    $('msg').textContent='Current Direct Revenueを読込中…';
+    const d=await api('/api/snapshot');
+    const s=d.selected;
+    $('selected').textContent=s?((s.amount||'UNKNOWN')+' · '+s.status):'候補なし';
+    $('selectedMeta').textContent=s?((s.revenue_name||s.title||'')+' → '+(s.route?.label||'')):'Verified candidate待ち';
+    $('state').textContent=d.canonical_state?.state||'ACTIVE';
+    $('next').textContent=d.canonical_state?.next_action||'';
+    $('sources').innerHTML=(d.source_registry||[]).map(x=>
+      '<span class="pill">'+esc(x.label||x.source||x.key)+' '+esc(x.observed_count??x.count??0)+'</span>'
+    ).join('')||'<div class="tiny">Source registry待ち</div>';
+    $('items').innerHTML=(d.closest_to_cash||[]).map(item).join('')||'<div class="tiny">現在の直接回収候補なし</div>';
+    $('market').innerHTML=(d.market_candidates||[]).map(item).join('')||'<div class="tiny">現在のverified direct reward候補なし</div>';
+    $('repeat').innerHTML=(d.repeat_winning_routes||[]).map(x=>
+      '<div class="row"><b>'+esc(x.source)+' → '+esc(x.route?.label||x.route?.unit_id||'route')+'</b>'+
+      '<div class="tiny">confirmed count: '+esc(x.count)+' · last: '+esc(x.last_at||'—')+'</div></div>'
+    ).join('')||'<div class="tiny">Repeat Winner集計待ち</div>';
+    $('dispatch').innerHTML=(d.latest_dispatches||[]).map(x=>
+      '<div class="row"><span class="status '+classFor(x.status)+'">'+esc(x.status)+'</span> → <b>'+esc(x.to_unit)+'</b><br>'+
+      esc(x.title)+'<div class="tiny">'+esc(x.created_at||'')+'</div></div>'
+    ).join('')||'<div class="tiny">まだhandoffなし</div>';
+    $('msg').textContent='更新 '+new Date(d.generated_at).toLocaleString('ja-JP');
+  }catch(e){
+    $('msg').textContent='読込エラー: '+e.message;
+  }
+}
+async function runNow(){
+  try{
+    $('msg').textContent='Closest-to-cashを選定・Route Handoff中…';
+    const x=await api('/api/run',{method:'POST',body:'{}'});
+    $('msg').textContent=x.outcome+' · '+(x.route?.label||'');
+    await load();
+  }catch(e){
+    $('msg').textContent='実行エラー: '+e.message;
+  }
+}
+if($('key').value) load();
+setInterval(()=>{if($('key').value)load()},15000);
+</script>
+</body>
+</html>
