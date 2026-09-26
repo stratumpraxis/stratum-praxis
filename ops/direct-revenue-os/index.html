@@ -87,17 +87,19 @@ a{color:var(--blue)}
 <script>
 const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/direct-revenue-os';
 const $=id=>document.getElementById(id);
-$('key').value=localStorage.getItem('direct_revenue_os_key')||'';
+$('key').value=localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||'';
 
 function esc(s){
   return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 }
 function connect(){
-  localStorage.setItem('direct_revenue_os_key',$('key').value.trim());
+  const key=$('key').value.trim();
+  localStorage.setItem('monitor_key',key);
+  localStorage.setItem('direct_revenue_os_key',key);
   load();
 }
 async function api(path,opt={}){
-  const key=$('key').value.trim()||localStorage.getItem('direct_revenue_os_key')||'';
+  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||'';
   if(!key) throw new Error('Monitor keyを入力してください');
   const r=await fetch(API+path,{
     ...opt,
