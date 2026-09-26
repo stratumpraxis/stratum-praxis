@@ -7,7 +7,7 @@
   const copy={
     en:{
       eyebrow:'B2B AI SPEND · WORKFLOW · AGENT CONTROL',
-      heroA:'Stop buying AI',heroB:'without knowing',heroC:'what pays back.',
+      heroA:'Know your AI cost',heroB:'per successful outcome',heroC:'before you spend more.',
       lead:'Measure AI and SaaS spend, workflow friction, and agent economics before another renewal, automation project, or expansion decision.',
       ctaFree:'Run a free evidence scan',ctaAudit:'See how decisions are verified',
       trust1:'No signup to start',trust2:'No invented ROI',trust3:'Transparent assumptions',
@@ -32,7 +32,7 @@
     },
     ja:{
       eyebrow:'B2B AI支出 · WORKFLOW · AGENT CONTROL',
-      heroA:'AIを増やす前に、',heroB:'何が回収できるかを',heroC:'見える化する。',
+      heroA:'AIの支出額ではなく、',heroB:'「成功1件あたりコスト」を',heroC:'先に見る。',
       lead:'AI・SaaS支出、業務摩擦、Agent採算を測り、更新・自動化・追加投資の前に「次の1ドルをどこへ使うか」を判断できる状態にします。',
       ctaFree:'無料Evidence Scanを始める',ctaAudit:'判断の検証方法を見る',
       trust1:'開始時の登録不要',trust2:'架空ROIなし',trust3:'前提を明示',
@@ -57,7 +57,7 @@
     },
     es:{
       eyebrow:'GASTO AI B2B · WORKFLOW · CONTROL DE AGENTES',
-      heroA:'No compres más AI',heroB:'sin saber',heroC:'qué devuelve valor.',
+      heroA:'Mide el coste AI',heroB:'por resultado exitoso',heroC:'antes de gastar más.',
       lead:'Mide gasto AI y SaaS, fricción de workflow y economía de agentes antes de otra renovación, automatización o decisión de expansión.',
       ctaFree:'Iniciar análisis gratis',ctaAudit:'Ver cómo se verifican las decisiones',trust1:'Sin registro al empezar',trust2:'Sin ROI inventado',trust3:'Supuestos visibles',
       panelLabel:'VALUE LEAK SNAPSHOT',panelLive:'TUS DATOS',panelTitle:'Pon un número a la decisión.',panelNote:'Usa tus propios supuestos. Stratum calcula; no fabrica resultados.',
