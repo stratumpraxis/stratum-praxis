@@ -72,6 +72,7 @@ function plainCodeopsState(state){
   if(/PAID_TASK_DISCOVERY_RUNNING/i.test(s)) return '新しい有料Taskを探しています'
   if(/PAID_TASK_CANDIDATE_SELECTED/i.test(s)) return '有料Task候補を見つけました。提出直前まで準備中'
   if(/NO_EXPLICIT_LOW_RISK_REWARD_FOUND/i.test(s)) return '今は条件の合う有料Taskなし。次回また探します'
+  if(/16601_TYPE_C_WORK_DONE.*HUMAN_GATE/i.test(s)) return '15 RTC案件：作業完成・提出前の確認待ち'
   if(/PAYOUT_PENDING/i.test(s)) return '既存報酬の入金待ち'
   return '待機中'
 }
@@ -135,6 +136,15 @@ async function load(){
     try{
       const c=await api('/readback/codeops')
       $('githubEngine').textContent=plainCodeopsState(c.state)
+      if(c.human_gate){
+        $('humanGate').style.display='block'
+        $('humanGateReason').textContent=/16601|PUBLIC_DELIVERY_REPO/i.test(String(c.state||''))
+          ? '15 RTC案件の作業は完成。公開納品Repoの作成・RTC受取先の確認・外部Claim送信だけ確認が必要です。'
+          : '外部送信など、人の確認が必要な操作があります。'
+      }else{
+        $('humanGate').style.display='none'
+        $('humanGateReason').textContent=''
+      }
     }catch(_e){}
     const s=d.selected
     $('selected').textContent=s?((s.amount||'金額未確認')+'・'+plainStatus(s.status)):'今すぐ回収する候補なし'
