@@ -285,9 +285,10 @@ function quickActionClass(s){
 function quickActionFor(d,unitId){
   return (d.project_revenue_quick?.actions||[]).find(x=>String(x.unit_id)===String(unitId))||null;
 }
-function quickActionHtml(d,unitId,compact=false){
+function quickActionHtml(d,unitId,compact=false,scheduleId=''){
   const x=quickActionFor(d,unitId);
   if(!x)return '';
+  if(scheduleId && String(x.schedule_id)!==String(scheduleId))return '';
   const rec=String(d.project_revenue_quick?.recommended_unit_id||'')===String(unitId);
   const busy=['起動済み','実行中'].includes(String(x.status));
   return '<div class="quickRevenueAction">'+
@@ -360,7 +361,7 @@ function render(d){
   const criticalCount=(!h.clock_healthy?1:0)+failed30+Number(c.failed_today||0);
   const kpis=[['今日の完了',c.done_today??0],['いま作業中',running],['次の起動',nearest?time(nearest.next_run_at):'Event待ち'],['Revenue前進',d.revenue?.progressed_today??0],['重大異常',criticalCount],['あなた待ち',gates]];
   $('kpis').innerHTML=kpis.map(x=>'<div class="kpi"><div class="num">'+esc(x[1])+'</div><div class="label">'+esc(x[0])+'</div></div>').join('');
-  $('nextList').innerHTML=nextAll.slice(0,6).map(s=>'<div class="item"><div class="itemTop"><div><div class="itemTitle">'+esc(s.name)+'</div><div class="meta">'+esc(s.source_unit_id)+' · '+esc(s.interval_minutes)+'分周期</div></div>'+badge(time(s.next_run_at),'b-ok')+'</div>'+quickActionHtml(d,s.source_unit_id,true)+'</div>').join('')||'<div class="empty">定刻Wakeなし。Event / Handoff待ちです。</div>';
+  $('nextList').innerHTML=nextAll.slice(0,6).map(s=>'<div class="item"><div class="itemTop"><div><div class="itemTitle">'+esc(s.name)+'</div><div class="meta">'+esc(s.source_unit_id)+' · '+esc(s.interval_minutes)+'分周期</div></div>'+badge(time(s.next_run_at),'b-ok')+'</div>'+quickActionHtml(d,s.source_unit_id,true,s.id)+'</div>').join('')||'<div class="empty">定刻Wakeなし。Event / Handoff待ちです。</div>';
   const human=actions.filter(a=>a.requires_user_now);
   $('humanList').innerHTML=human.length?human.map(a=>'<div class="actionBox human"><div class="itemTop"><div><div class="itemTitle">'+esc(a.action_label||a.title)+'</div><div class="meta">'+esc(a.source_unit_id)+' · '+esc(a.action_class)+'</div></div>'+badge('今すぐ必要','b-warn')+'</div><div class="actionReason">'+esc(a.reason||'')+'</div>'+(a.resume_hint?'<div class="actionResume"><b>その後:</b> '+esc(a.resume_hint)+'</div>':'')+(a.action_url?'<div style="margin-top:8px"><a class="btn" target="_blank" href="'+esc(a.action_url)+'">対象URLを開く</a></div>':'')+'</div>').join(''):'<div class="empty">いま、あなたの対応が必須の項目はありません。</div>';
   const aiActions=actions.filter(a=>!a.requires_user_now&&!a.deferred);
