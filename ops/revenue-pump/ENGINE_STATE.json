@@ -1,0 +1,25 @@
+{
+  "engine": "revenue-pump",
+  "version": 1,
+  "identity": {
+    "gmail": null,
+    "status": "NOT_CREATED"
+  },
+  "runtime": "revenue-pump-engine",
+  "phase": "READY",
+  "hierarchy": [
+    "PAYMENT_PAYOUT",
+    "CHECKOUT_CONTRACT",
+    "BUYER_SIGNAL",
+    "QUALIFIED_ACTION",
+    "HUMAN_TRAFFIC",
+    "REACH"
+  ],
+  "success_evidence": [
+    "PAYMENT",
+    "PAYOUT",
+    "CASH_EVIDENCE"
+  ],
+  "import_github_pochipochi_execution_state": false,
+  "updated_at": "2026-09-27"
+}
