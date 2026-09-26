@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revenue Pump Engine</title>
+<style>
+:root{color-scheme:dark;--bg:#06100d;--p:#0c1a16;--p2:#10241e;--line:#21483b;--text:#eefcf7;--muted:#8fb6a8;--green:#67e8a7;--yellow:#ffd166;--red:#ff7b86}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#123d2e 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
+main{max-width:1180px;margin:auto;padding:24px 18px 70px}header{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(34px,6vw,68px);letter-spacing:-.05em}.sub{color:var(--muted);margin-top:8px}.auth{display:flex;gap:8px;flex-wrap:wrap}
+input,button,a{border:1px solid var(--line);background:#0e211a;color:var(--text);border-radius:11px;padding:10px 12px;font:inherit;text-decoration:none}
+button{cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}@media(max-width:850px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--p2),var(--p));border-radius:18px;padding:16px}.k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.v{font-size:22px;font-weight:800;margin-top:6px}
+.route{margin-top:16px}.flow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px}.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}
+pre{white-space:pre-wrap;word-break:break-word;font-size:12px;color:#cbe5dc}.run{width:100%;font-weight:800;background:#174b37;border-color:#2b8b63}
+.note{font-size:12px;color:var(--muted);line-height:1.55}#msg{min-height:22px;color:var(--green);margin-top:10px}
+</style>
+</head>
+<body><main>
+<header>
+<div><div class="k">Execution Engine</div><h1>Revenue Pump</h1><div class="sub">商売全体の売上専用Engine。GitHubぽちぽちのExecution Stateは取り込みません。</div></div>
+<div class="auth"><input id="key" type="password" placeholder="Operator / monitor key"><button onclick="connect()">接続</button><a href="../autonomous-operations-monitor/layers.html">3レイヤーへ</a></div>
+</header>
+<div id="msg"></div>
+
+<div class="grid">
+<div class="card"><div class="k">Runtime</div><div class="v">revenue-pump-engine</div><div class="note">Monitorとは別Runtime。</div></div>
+<div class="card"><div class="k">Identity</div><div class="v" id="identity">専用Gmail未作成</div><div class="note">必要性が出るまで既存Identityを流用しません。</div></div>
+<div class="card"><div class="k">Success Evidence</div><div class="v">Payment / Payout / Cash</div><div class="note">HTTP200 / Task DONEだけでは成功扱いしません。</div></div>
+</div>
+
+<section class="card route">
+<div class="k">Revenue Flow</div>
+<div class="flow">
+<span class="pill">Market Signal</span><span class="pill">Route Selection</span><span class="pill">First Broken Stage</span><span class="pill">Distribution</span><span class="pill">Qualified Human</span><span class="pill">Buyer Signal</span><span class="pill">Checkout / Contract</span><span class="pill">Payment</span><span class="pill">Fulfillment</span><span class="pill">Repeat Revenue</span>
+</div>
+</section>
+
+<div class="grid">
+<section class="card">
+<div class="k">Current Engine State</div>
+<div id="state" class="v">未接続</div>
+<div id="stateMeta" class="note"></div>
+</section>
+<section class="card">
+<div class="k">Selected Revenue Route</div>
+<div id="selected" class="v">未接続</div>
+<div id="selectedMeta" class="note"></div>
+</section>
+<section class="card">
+<div class="k">Execution</div>
+<button id="run" class="run" onclick="runPump()" disabled>最短Commercial Routeを1段進める</button>
+<div class="note" style="margin-top:8px">実行にはOperator keyが必要。Viewer keyは状態確認のみ。</div>
+</section>
+</div>
+
+<section class="card route">
+<div class="k">Recent Dispatches</div>
+<pre id="runs">未接続</pre>
+</section>
+</main>
+<script>
+const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-pump-engine';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('revenue_pump_key')||localStorage.getItem('monitor_key')||'';
+function connect(){localStorage.setItem('revenue_pump_key',$('key').value.trim());load()}
+async function load(){
+  const key=$('key').value.trim(); if(!key){$('msg').textContent='Keyを入力してください。';return}
+  $('msg').textContent='Current Reality読込中…';
+  try{
+    const r=await fetch(BASE+'/status',{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json(); if(!r.ok)throw new Error(d.error||'読込失敗');
+    $('state').textContent=d.state?.state||'—';
+    $('stateMeta').textContent=(d.state?.next_action||'')+(d.state?.blocker?' / '+d.state.blocker:'');
+    const s=d.decision?.selected;
+    $('selected').textContent=s?(s.project_name+' · D'+(s.revenue_distance??'—')):'安全に進められるRouteなし';
+    $('selectedMeta').textContent=s?('First Broken: '+s.first_broken_stage+' / '+s.execution_class):'';
+    $('identity').textContent=d.identity?.gmail||'専用Gmail未作成';
+    $('runs').textContent=(d.recent_dispatches||[]).map(x=>x.status+' · '+x.title+' · '+(x.first_broken_stage||'')).join('\n')||'まだ専用RuntimeからのDispatchなし';
+    $('run').disabled=false;
+    $('msg').textContent='接続済み';
+  }catch(e){$('msg').textContent=e.message;$('run').disabled=true}
+}
+async function runPump(){
+  const key=$('key').value.trim(); if(!key)return;
+  $('run').disabled=true; $('msg').textContent='Revenue Pump実行中…';
+  try{
+    const r=await fetch(BASE+'/run',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:'{}'});
+    const d=await r.json(); if(!r.ok)throw new Error(d.error||'実行失敗');
+    $('msg').textContent=d.outcome||'実行済み';
+    await load();
+  }catch(e){$('msg').textContent=e.message}finally{$('run').disabled=false}
+}
+load();
+</script>
+</body></html>

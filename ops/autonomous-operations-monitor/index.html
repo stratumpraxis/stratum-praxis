@@ -46,7 +46,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div>
 </header>
 <nav class="nav">
-  <a class="active" href="index.html">Operations</a>
+  <a class="active" href="index.html">Operations</a>\n  <a href="layers.html">3 Layers</a>
   <a href="trends.html">Trend Radar</a>
   <a href="revenue-os.html">Revenue OS</a>
   <a href="audit.html">Audit / Human Gate</a>
@@ -81,7 +81,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <div class="sectionHead">
     <div>
       <h2>Revenue Command Deck</h2>
-      <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
+      <div class="hint">MonitorはREAD / ROUTE専用。Revenue実行はRevenue Pump、GitHub報酬実行はCodeOpsへ分離。Stateを混ぜない。</div>
     </div>
     <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
   </div>
@@ -89,25 +89,25 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
     <div class="cmdCard" data-control-card="global-leader">
       <div class="cmdTitle">全体リーダー</div>
       <div class="cmdDesc">全ProjectからRevenue Distance最短の安全な1件を選び、正しいOwnerへ実行Handoff。</div>
-      <button class="cmdBtn" data-control-key="global-leader" onclick="runControl('global-leader',null,this)">全体Revenueを1段進める</button>
+      <button class="cmdBtn" data-control-key="global-leader" onclick="runControl('global-leader',null,this)">Revenue Pumpを開く</button>
       <div class="controlStatus" data-control-status="global-leader"></div>
     </div>
     <div class="cmdCard" data-control-card="research-leader">
       <div class="cmdTitle">研究リーダー</div>
       <div class="cmdDesc">最短Revenue Routeを止めるCapability / Adapter Gapだけ研究Issue化。正常Project運転は奪わない。</div>
-      <button class="cmdBtn research" data-control-key="research-leader" onclick="runControl('research-leader',null,this)">Revenue Gapを研究へ</button>
+      <button class="cmdBtn research" data-control-key="research-leader" onclick="runControl('research-leader',null,this)">Revenue Pump経由で確認</button>
       <div class="controlStatus" data-control-status="research-leader"></div>
     </div>
     <div class="cmdCard" data-control-card="github-pochipochi">
       <div class="cmdTitle">GitHub ぽちぽち収益</div>
       <div class="cmdDesc">CodeOpsへGitHub micro-task。対象Repoでpush=true確認前は書かず、ACCESS_GAPで停止。</div>
-      <button class="cmdBtn github" data-control-key="github-pochipochi" onclick="runControl('github-pochipochi',null,this)">GitHubで最短修正</button>
+      <button class="cmdBtn github" data-control-key="github-pochipochi" onclick="runControl('github-pochipochi',null,this)">GitHubぽちぽちを開く</button>
       <div class="controlStatus" data-control-status="github-pochipochi"></div>
     </div>
     <div class="cmdCard" data-control-card="youtube-forwelle">
       <div class="cmdTitle">YouTube / Forwelle収益</div>
       <div class="cmdDesc">既存ShortsをPayment→Checkout→Buyer→Qualified Action→Human→Reachで逆向き監査。必要時だけ安全な1 Publish。Quota・重複・誤Channelは越えない。</div>
-      <button class="cmdBtn" data-control-key="youtube-forwelle" onclick="runControl('youtube-forwelle',null,this)">Forwelle収益を1段進める</button>
+      <button class="cmdBtn" data-control-key="youtube-forwelle" onclick="runControl('youtube-forwelle',null,this)">Revenue Pumpを開く</button>
       <div class="controlStatus" data-control-status="youtube-forwelle"></div>
     </div>
   </div>
@@ -121,7 +121,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
-    <div><h2>ぽちぽち収益</h2><div class="hint">全ProjectからRevenue Distance最短の1件だけ選ぶ。READ成功だけではRevenue前進にしない。</div></div>
+    <div><h2>Revenue Pump Route</h2><div class="hint">Monitorは候補表示のみ。実行は独立Revenue Pump Runtimeへ移動。</div></div>
     <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
   </div>
   <div class="revenueOp">
@@ -130,7 +130,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
         <div id="revOpTitle" class="revenueOpTitle">Currentを読込中…</div>
         <div id="revOpMeta" class="revenueOpMeta"></div>
       </div>
-      <div><button id="revOpBtn" class="opBtn" data-control-key="revenue-pump" onclick="pochi()">この1件を進める</button><div class="controlStatus" data-control-status="revenue-pump"></div></div>
+      <div><button id="revOpBtn" class="opBtn" data-control-key="revenue-pump" onclick="pochi()">Revenue Pumpを開く</button><div class="controlStatus" data-control-status="revenue-pump"></div></div>
     </div>
     <div id="revOpMsg" class="hint" style="margin-top:9px"></div>
   </div>
@@ -180,30 +180,20 @@ function outcomeMessage(x){
   return x.message||x.outcome||'実行要求を受理しました。';
 }
 async function runControl(actor,unitId,btn,msgId='controlMsg'){
-  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||'';
   const m=$(msgId);
-  if(!key){m.textContent='監視キーを入力してください。';return}
-  if(btn)btn.disabled=true;
-  m.textContent='Current Reality → Payment優先順でSafe Actionを判定中…';
-  try{
-    const r=await fetch(BASE+'/api/revenue-control',{
-      method:'POST',
-      headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-      body:JSON.stringify({actor,unit_id:unitId||null})
-    });
-    const x=await r.json();
-    if(!r.ok)throw new Error(x.error||'起動失敗');
-    m.textContent=outcomeMessage(x);
-    const controlKey=actor==='wordpress'?'wordpress:'+String(unitId||''):actor;
-    const st=document.querySelector('[data-control-status="'+controlKey+'"]');
-    if(st){st.className='controlStatus run';st.textContent='起動済み · Direct Readback待ち';}
-    await load();
-  }catch(e){
-    m.textContent=e.message;
-  }finally{if(btn)btn.disabled=false}
+  if(actor==='github-pochipochi'){
+    if(m)m.textContent='GitHubぽちぽち専用Engineへ移動します。Monitorは実行しません。';
+    window.location.href='https://github.com/codeopscontact/codeops';
+    return;
+  }
+  const q=unitId?'?project='+encodeURIComponent(unitId):'';
+  if(m)m.textContent='Revenue Pump専用Engineへ移動します。MonitorはRevenue Taskを直接実行しません。';
+  window.location.href='../revenue-pump/index.html'+q;
 }
 async function pochi(){
-  return runControl('revenue-pump',null,$('revOpBtn'),'revOpMsg');
+  const m=$('revOpMsg');
+  if(m)m.textContent='Revenue Pump専用Engineへ移動します。';
+  window.location.href='../revenue-pump/index.html';
 }
 async function load(){
   const key=$('key').value.trim()||localStorage.getItem('monitor_key')||''; if(!key){$('msg').textContent='監視キーを入力してください。';return}
@@ -298,23 +288,9 @@ function quickActionHtml(d,unitId,compact=false,scheduleId=''){
   '</div>';
 }
 async function runProjectRevenueNow(unitId,btn){
-  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||'';
-  if(!key)return;
-  if(btn)btn.disabled=true;
-  try{
-    const r=await fetch(BASE+'/api/project-revenue-now',{
-      method:'POST',
-      headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
-      body:JSON.stringify({unit_id:unitId})
-    });
-    const x=await r.json();
-    if(!r.ok)throw new Error(x.error||'起動失敗');
-    const m=$('controlMsg');
-    if(m)m.textContent=x.duplicate?'既存の即時Revenue確認Taskを継続。':(x.message||x.outcome||'起動済み');
-    await load();
-  }catch(e){
-    const m=$('controlMsg');if(m)m.textContent=e.message;
-  }finally{if(btn)btn.disabled=false}
+  const m=$('controlMsg');
+  if(m)m.textContent='Project指定でRevenue Pumpへ移動します。Monitorは実行しません。';
+  window.location.href='../revenue-pump/index.html?project='+encodeURIComponent(unitId);
 }
 
 function humanGateActionHtml(a){
