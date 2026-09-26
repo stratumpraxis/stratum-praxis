@@ -40,8 +40,8 @@ a{color:var(--blue)}
 
   <div class="bar">
     <input id="key" type="password" placeholder="Monitor key">
-    <button onclick="connect()">接続</button>
-    <button class="primary" onclick="runNow()">Closest-to-cashを進める</button>
+    <button id="connectBtn" type="button">接続</button>
+    <button id="runBtn" class="primary" type="button">Closest-to-cashを進める</button>
   </div>
   <div id="msg">監視キーを入力してください。</div>
 
@@ -84,86 +84,6 @@ a{color:var(--blue)}
   </section>
 </main>
 
-<script>
-const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/direct-revenue-os';
-const $=id=>document.getElementById(id);
-$('key').value=localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||'';
-
-function esc(s){
-  return String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
-}
-function connect(){
-  const key=$('key').value.trim();
-  localStorage.setItem('monitor_key',key);
-  localStorage.setItem('direct_revenue_os_key',key);
-  load();
-}
-async function api(path,opt={}){
-  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||'';
-  if(!key) throw new Error('Monitor keyを入力してください');
-  const r=await fetch(API+path,{
-    ...opt,
-    headers:{Authorization:'Bearer '+key,'Content-Type':'application/json',...(opt.headers||{})}
-  });
-  const x=await r.json();
-  if(!r.ok) throw new Error(x.error||('HTTP '+r.status));
-  return x;
-}
-function classFor(status){
-  const s=String(status||'');
-  if(/CONFIRMED|DONE|ACTIVE/i.test(s)) return 'ok';
-  if(/PENDING|WAIT|READY/i.test(s)) return 'wait';
-  if(/BLOCK|FAIL/i.test(s)) return 'bad';
-  return 'info';
-}
-function item(x){
-  const name=x.revenue_name||x.title||'Direct Revenue';
-  return '<div class="row">'+
-    '<span class="status '+classFor(x.status)+'">'+esc(x.status)+'</span> '+
-    '<b>'+esc(x.amount||'UNKNOWN')+'</b><br>'+
-    esc(name)+
-    '<div class="tiny">'+esc(x.source||'')+' → '+esc(x.route?.label||'route unknown')+' · '+esc(x.action||'')+'</div>'+
-    '</div>';
-}
-async function load(){
-  try{
-    $('msg').textContent='Current Direct Revenueを読込中…';
-    const d=await api('/api/snapshot');
-    const s=d.selected;
-    $('selected').textContent=s?((s.amount||'UNKNOWN')+' · '+s.status):'候補なし';
-    $('selectedMeta').textContent=s?((s.revenue_name||s.title||'')+' → '+(s.route?.label||'')):'Verified candidate待ち';
-    $('state').textContent=d.canonical_state?.state||'ACTIVE';
-    $('next').textContent=d.canonical_state?.next_action||'';
-    $('sources').innerHTML=(d.source_registry||[]).map(x=>
-      '<span class="pill">'+esc(x.label||x.source||x.key)+' '+esc(x.observed_count??x.count??0)+'</span>'
-    ).join('')||'<div class="tiny">Source registry待ち</div>';
-    $('items').innerHTML=(d.closest_to_cash||[]).map(item).join('')||'<div class="tiny">現在の直接回収候補なし</div>';
-    $('market').innerHTML=(d.market_candidates||[]).map(item).join('')||'<div class="tiny">現在のverified direct reward候補なし</div>';
-    $('repeat').innerHTML=(d.repeat_winning_routes||[]).map(x=>
-      '<div class="row"><b>'+esc(x.source)+' → '+esc(x.route?.label||x.route?.unit_id||'route')+'</b>'+
-      '<div class="tiny">confirmed count: '+esc(x.count)+' · last: '+esc(x.last_at||'—')+'</div></div>'
-    ).join('')||'<div class="tiny">Repeat Winner集計待ち</div>';
-    $('dispatch').innerHTML=(d.latest_dispatches||[]).map(x=>
-      '<div class="row"><span class="status '+classFor(x.status)+'">'+esc(x.status)+'</span> → <b>'+esc(x.to_unit)+'</b><br>'+
-      esc(x.title)+'<div class="tiny">'+esc(x.created_at||'')+'</div></div>'
-    ).join('')||'<div class="tiny">まだhandoffなし</div>';
-    $('msg').textContent='更新 '+new Date(d.generated_at).toLocaleString('ja-JP');
-  }catch(e){
-    $('msg').textContent='読込エラー: '+e.message;
-  }
-}
-async function runNow(){
-  try{
-    $('msg').textContent='Closest-to-cashを選定・Route Handoff中…';
-    const x=await api('/api/run',{method:'POST',body:'{}'});
-    $('msg').textContent=x.outcome+' · '+(x.route?.label||'');
-    await load();
-  }catch(e){
-    $('msg').textContent='実行エラー: '+e.message;
-  }
-}
-if($('key').value) load();
-setInterval(()=>{if($('key').value)load()},15000);
-</script>
+<script src="app.js" defer></script>
 </body>
 </html>
