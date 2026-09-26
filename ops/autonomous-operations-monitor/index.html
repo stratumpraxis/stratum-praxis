@@ -82,7 +82,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
       <h2>Revenue Command Deck</h2>
       <div class="hint">全ボタン共通：Payment → Checkout → Buyer → Qualified Action → Human → Reach。上位から1段だけ、安全に実行。重複・Human Gate越境・価格/Secret/Account変更は禁止。</div>
     </div>
-    <div class="hint">Monitor key / v28 Safe Revenue Control</div>
+    <div class="hint">Monitor key / v29 Safe Revenue Control</div>
   </div>
   <div class="commandGrid">
     <div class="cmdCard">
@@ -150,7 +150,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v28 Safe Revenue Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v29 Safe Revenue Control · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -174,7 +174,7 @@ function outcomeMessage(x){
   return x.message||x.outcome||'実行要求を受理しました。';
 }
 async function runControl(actor,unitId,btn,msgId='controlMsg'){
-  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||'';
   const m=$(msgId);
   if(!key){m.textContent='監視キーを入力してください。';return}
   if(btn)btn.disabled=true;
@@ -197,7 +197,7 @@ async function pochi(){
   return runControl('revenue-pump',null,$('revOpBtn'),'revOpMsg');
 }
 async function load(){
-  const key=localStorage.getItem('monitor_key')||$('key').value.trim(); if(!key){$('msg').textContent='監視キーを入力してください。';return}
+  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||''; if(!key){$('msg').textContent='監視キーを入力してください。';return}
   $('msg').textContent='内部Stateを読込中…';
   try{const r=await fetch(API,{headers:{Authorization:'Bearer '+key}}); const d=await r.json(); if(!r.ok)throw new Error(d.error||'読込失敗'); render(d)}catch(e){$('msg').textContent='接続できません: '+e.message}
 }
