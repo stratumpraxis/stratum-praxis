@@ -1,0 +1,115 @@
+name: ASTRA Idle Continuous Training
+
+on:
+  workflow_dispatch:
+    inputs:
+      task_id:
+        description: Company autonomy task id
+        required: true
+        type: string
+      domain_id:
+        description: video / app / website
+        required: true
+        type: choice
+        options:
+          - video
+          - app
+          - website
+      source_unit_id:
+        description: State Core owner
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  id-token: write
+
+concurrency:
+  group: astra-idle-${{ inputs.domain_id }}
+  cancel-in-progress: false
+
+jobs:
+  train:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      RETURN_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/astra-training-return
+      TARGET_BRANCH: astra/continuous-${{ inputs.domain_id }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Switch to persistent training branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch origin "$TARGET_BRANCH" || true
+          if git show-ref --verify --quiet "refs/remotes/origin/$TARGET_BRANCH"; then
+            git switch -C "$TARGET_BRANCH" "origin/$TARGET_BRANCH"
+            git checkout origin/main -- astra-training/continuous_train.py
+          else
+            git switch -c "$TARGET_BRANCH"
+          fi
+
+      - name: Run one practical capability cycle
+        id: train
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 astra-training/continuous_train.py --domain "${{ inputs.domain_id }}"
+
+      - name: Commit training evidence
+        id: commit
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "IDLE ASTRA"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add astra-training
+          if git diff --cached --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            git commit -m "astra: train ${{ inputs.domain_id }} capability"
+            git push origin "HEAD:$TARGET_BRANCH"
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Build return payload
+        if: always()
+        shell: bash
+        env:
+          JOB_STATUS: ${{ job.status }}
+          TASK_ID: ${{ inputs.task_id }}
+          DOMAIN_ID: ${{ inputs.domain_id }}
+          SOURCE_UNIT_ID: ${{ inputs.source_unit_id }}
+          COMMIT_SHA: ${{ steps.commit.outputs.sha }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          d=os.environ["DOMAIN_ID"]
+          p=Path("astra-training/reports")/f"{d}-latest.json"
+          report=json.loads(p.read_text()) if p.exists() else {"status":"NO_REPORT"}
+          payload={
+            "task_id":os.environ["TASK_ID"],
+            "domain_id":d,
+            "source_unit_id":os.environ["SOURCE_UNIT_ID"],
+            "workflow_status":os.environ["JOB_STATUS"],
+            "commit_sha":os.environ.get("COMMIT_SHA",""),
+            "training_branch":f"astra/continuous-{d}",
+            "report":report,
+          }
+          Path("astra-return.json").write_text(json.dumps(payload))
+          PY
+
+      - name: Return verified result to State Core
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          RAW="$(curl -fsSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=astra-training-return")"
+          TOKEN="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["value"])' <<< "$RAW")"
+          curl -fsSL -X POST "$RETURN_URL"             -H "Authorization: Bearer $TOKEN"             -H "Content-Type: application/json"             --data-binary @astra-return.json
