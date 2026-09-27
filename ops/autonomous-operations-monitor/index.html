@@ -42,7 +42,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 </head>
 <body><main>
 <header>
-  <div><h1>Autonomous Operations Monitor<br><span style="font-size:.56em;font-weight:800;letter-spacing:-.02em">（自動運転監視盤）</span></h1><div class="sub">「本当に動いてる？」を自分の目で確認するための画面</div></div>
+  <div><h1>Autonomous Operations Monitor<br><span style="font-size:.56em;font-weight:800;letter-spacing:-.02em">（自動運転監視盤）</span></h1><div class="sub">全体Current Realityを見て、実Human → Buyer → Paymentへ最短Routeを進める画面</div></div>
   <div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div>
 </header>
 <nav class="nav">
@@ -81,39 +81,43 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <div class="sectionHead">
     <div>
       <h2>Revenue Command Deck</h2>
-      <div class="hint">MonitorはREAD / ROUTE専用。Revenue実行はRevenue Pump、GitHub報酬実行はCodeOpsへ分離。Stateを混ぜない。</div>
+      <div class="hint">全体Commercial Revenue専用。Payment実績の再現とHuman獲得を優先。GitHub報酬はDirect Revenue OSへ完全分離し、ここでは混ぜない。</div>
     </div>
-    <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
+    <div class="hint">Payment → Checkout → Buyer → Qualified Action → Human</div>
   </div>
   <div class="commandGrid">
     <div class="cmdCard" data-control-card="global-leader">
-      <div class="cmdTitle">全体リーダー</div>
-      <div class="cmdDesc">全ProjectからRevenue Distance最短の安全な1件を選び、正しいOwnerへ実行Handoff。</div>
-      <button class="cmdBtn" data-control-key="global-leader" onclick="runControl('global-leader',null,this)">Revenue Pumpを開く</button>
+      <div class="cmdTitle">全体Revenueを1段進める</div>
+      <div class="cmdDesc">全ProjectからRevenue Distance最短の安全な1件だけ選び、正しいOwner / Revenue Pumpへ渡す。待ち案件は殴らない。</div>
+      <button class="cmdBtn" data-control-key="global-leader" onclick="runControl('global-leader',null,this)">最短Routeを進める</button>
       <div class="controlStatus" data-control-status="global-leader"></div>
     </div>
+
+    <div class="cmdCard">
+      <div class="cmdTitle">Winner再現｜Vector</div>
+      <div class="cmdDesc">実Payment ¥2,500が出たWinnerへ火力集中。Owned/Search Entry → 有料note → Paymentの2件目を狙う。</div>
+      <button class="cmdBtn wordpress" onclick="runControl('revenue-pump','vector',this)">¥2,500 Winnerをもう1件狙う</button>
+      <div id="winnerRouteStatus" class="controlStatus">Currentを読込中…</div>
+    </div>
+
+    <div class="cmdCard">
+      <div class="cmdTitle">Human獲得｜AI App</div>
+      <div class="cmdDesc">$24 Checkoutは確認済み。商品を増やさず、既存Entryから最初の実Human → CTAへ進める。</div>
+      <button class="cmdBtn" onclick="runControl('revenue-pump','product-ai-app-builder-router-2026',this)">$24 RouteのHuman 0を突破</button>
+      <div id="humanAcqStatus" class="controlStatus">Currentを読込中…</div>
+    </div>
+
     <div class="cmdCard" data-control-card="research-leader">
-      <div class="cmdTitle">研究リーダー</div>
-      <div class="cmdDesc">最短Revenue Routeを止めるCapability / Adapter Gapだけ研究Issue化。正常Project運転は奪わない。</div>
-      <button class="cmdBtn research" data-control-key="research-leader" onclick="runControl('research-leader',null,this)">Revenue Pump経由で確認</button>
+      <div class="cmdTitle">Revenue Gapだけ研究へ</div>
+      <div class="cmdDesc">Revenue最短Routeを止めるCapability / Adapter Gapだけ研究へ返す。正常ProjectやExternal Waitは研究対象にしない。</div>
+      <button class="cmdBtn research" data-control-key="research-leader" onclick="runControl('research-leader',null,this)">詰まりだけ研究へ渡す</button>
       <div class="controlStatus" data-control-status="research-leader"></div>
     </div>
-    <div class="cmdCard" data-control-card="github-pochipochi">
-      <div class="cmdTitle">GitHub ぽちぽち収益</div>
-      <div class="cmdDesc">CodeOpsへGitHub micro-task。対象Repoでpush=true確認前は書かず、ACCESS_GAPで停止。</div>
-      <button class="cmdBtn github" data-control-key="github-pochipochi" onclick="runControl('github-pochipochi',null,this)">GitHubぽちぽちを開く</button>
-      <div class="controlStatus" data-control-status="github-pochipochi"></div>
-    </div>
-    <div class="cmdCard" data-control-card="youtube-forwelle">
-      <div class="cmdTitle">YouTube / Forwelle収益</div>
-      <div class="cmdDesc">既存ShortsをPayment→Checkout→Buyer→Qualified Action→Human→Reachで逆向き監査。必要時だけ安全な1 Publish。Quota・重複・誤Channelは越えない。</div>
-      <button class="cmdBtn" data-control-key="youtube-forwelle" onclick="runControl('youtube-forwelle',null,this)">Revenue Pumpを開く</button>
-      <div class="controlStatus" data-control-status="youtube-forwelle"></div>
-    </div>
   </div>
+
   <div class="cmdCard" style="margin-top:10px">
-    <div class="cmdTitle">各Project WordPress収益実行</div>
-    <div class="cmdDesc">既存WordPress Owned Routeのみ。新Site / 新Product / 価格 / Checkout設定は変更せず、Projectごとに1段だけ進める。</div>
+    <div class="cmdTitle">各Project WordPress Revenue Hub</div>
+    <div class="cmdDesc">記事数を増やすためではなく、Current Entry → Human → CTA → Checkout → Payment の最初のBroken Stageを1つだけ前進。既存Asset優先。</div>
     <div id="wpButtons" class="wpButtons"><span class="hint">Current WordPress Routeを読込中…</span></div>
   </div>
   <div id="controlMsg" class="hint" style="margin-top:10px"></div>
@@ -121,7 +125,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
-    <div><h2>Revenue Pump Route</h2><div class="hint">Monitorは候補表示のみ。実行は独立Revenue Pump Runtimeへ移動。</div></div>
+    <div><h2>Current Closest-to-Cash Route</h2><div class="hint">いまPaymentへ最も近いCommercial Routeを1本だけ表示。Monitorで作業を増やさず、Revenue Pumpへ渡してDirect Evidenceで閉じる。</div></div>
     <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
   </div>
   <div class="revenueOp">
@@ -155,7 +159,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 <section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">「いま何を待っているか」「次にいつ動くか」を優先。カードからProject専用ページへ。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
-<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v36 Revenue OS Boundary · Static UI synced from main · Payment / Buyer / Human Evidence separated</div>
+<div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v36 · Commercial Revenue Focus · Winner Reproduction / Human Acquisition / Payment Evidence</div>
 </main>
 <script>
 const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
@@ -181,13 +185,10 @@ function outcomeMessage(x){
 }
 async function runControl(actor,unitId,btn,msgId='controlMsg'){
   const m=$(msgId);
-  if(actor==='github-pochipochi'){
-    if(m)m.textContent='GitHubぽちぽち専用Engineへ移動します。Monitorは実行しません。';
-    window.location.href='https://github.com/codeopscontact/codeops';
-    return;
-  }
   const q=unitId?'?project='+encodeURIComponent(unitId):'';
-  if(m)m.textContent='Revenue Pump専用Engineへ移動します。MonitorはRevenue Taskを直接実行しません。';
+  if(m)m.textContent=unitId
+    ? '選択ProjectのRevenue Pumpへ移動します。First Broken Stageだけ進めます。'
+    : '全体Revenue Pumpへ移動します。Paymentへ最も近いRouteだけ進めます。';
   window.location.href='../revenue-pump/index.html'+q;
 }
 async function pochi(){
@@ -377,6 +378,28 @@ function render(d){
     return '<div class="cmdCard" data-control-card="'+esc(k)+'"><button class="cmdBtn wordpress" data-control-key="'+esc(k)+'" data-unit="'+esc(s.project_unit_id||'')+'" onclick="runControl(\'wordpress\',this.dataset.unit,this)">'+esc((s.project_unit_id||'Project')+' WordPress')+'</button><div class="controlStatus" data-control-status="'+esc(k)+'"></div></div>';
   }).join(''):'<span class="hint">CurrentでProject-owned WordPress Routeなし。</span>';
   renderRevenueControls(d);
+  const projectMap=Object.fromEntries((d.projects||[]).map(p=>[String(p.id),p]));
+  const vectorProject=projectMap['vector'];
+  const aiAppProject=projectMap['product-ai-app-builder-router-2026'];
+  if($('winnerRouteStatus')){
+    const s=String(vectorProject?.state||'');
+    $('winnerRouteStatus').className='controlStatus '+(s.includes('PAYMENT_CONFIRMED')?'progress':'');
+    $('winnerRouteStatus').textContent=vectorProject
+      ? (s.includes('PAYMENT_CONFIRMED')
+          ? '実Payment確認済み · 2件目のPayment再現へ'
+          : 'Current: '+(vectorProject.blocker||vectorProject.state||'確認中'))
+      : 'Vector Current未取得';
+  }
+  if($('humanAcqStatus')){
+    const s=String(aiAppProject?.state||'');
+    const humanZero=s.includes('HUMAN_ZERO')||String(aiAppProject?.blocker||'').includes('HUMAN_ZERO');
+    $('humanAcqStatus').className='controlStatus '+(humanZero?'nochange':'');
+    $('humanAcqStatus').textContent=aiAppProject
+      ? (humanZero
+          ? '$24 Checkout確認済み · Human 0 → 実Human獲得が次'
+          : 'Current: '+(aiAppProject.blocker||aiAppProject.state||'確認中'))
+      : 'AI App Current未取得';
+  }
   const stoppedToday=Number(c.blocked_today||0)+Number(c.failed_today||0);
   $('todayResults').innerHTML=[
     ['今日の完了',c.done_today??0],['今日のRevenue前進',rev.progressed_today??0],['今日の停止/保留',stoppedToday],['今すぐHuman Gate',gates]
