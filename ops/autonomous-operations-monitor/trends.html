@@ -39,7 +39,7 @@
 </section>
 <section class="section">
   <h2>Article Asset Stack</h2>
-  <div class="hint">Revenue-safe Signal / Existing Routeから自動生成された記事資産。1回のTrend Cycleにつき最大1本。ここにあるだけでは公開・Revenue成功ではありません。</div>
+  <div class="hint">Revenue-safe Signal / Existing Routeから自動生成された記事資産。生成後は構造QCを自動実行し、SEOはPUBLISH_CANDIDATE、社内KnowledgeはKNOWLEDGE_READYへ昇格。外部公開・Revenue成功とは別です。</div>
   <div id="articleAssetSummary" class="directSummary" style="margin-top:10px"></div>
   <div id="articleAssets" class="assetGrid" style="margin-top:12px"></div>
 </section>
@@ -161,8 +161,10 @@ function renderRevenueSafe(){
   const today=new Date().toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo'});
   const todayCount=assets.filter(x=>new Date(x.created_at).toLocaleDateString('ja-JP',{timeZone:'Asia/Tokyo'})===today).length;
   $('articleAssetSummary').innerHTML=[
-    ['Total Draft Assets',assets.length],
+    ['Total Assets',assets.length],
     ['Today',todayCount],
+    ['Publish Candidates',assets.filter(x=>x.status==='PUBLISH_CANDIDATE').length],
+    ['Knowledge Ready',assets.filter(x=>x.status==='KNOWLEDGE_READY').length],
     ['Publish Policy','Human Gate']
   ].map(x=>'<span class="badge blue">'+esc(x[0])+': '+esc(x[1])+'</span>').join('');
   $('articleAssets').innerHTML=assets.length?assets.slice(0,20).map(x=>'<div class="assetCard"><div class="assetTitle">'+esc(x.title)+'</div><div class="assetMeta"><b>'+esc(x.project_unit_id)+'</b> · '+esc(CATEGORY_LABELS[x.category]||x.category)+'<br>'+esc(x.asset_kind)+' · '+esc(x.status)+'<br>Source: '+esc(x.signal_source)+' / '+esc(x.signal_title)+'<br>Route: '+esc(x.existing_route||'Internal knowledge')+'<br>Publish: '+esc(x.publish_policy)+'<br>'+time(x.created_at)+'</div></div>').join(''):'<div class="empty">まだ記事資産はありません。次のTrend Cycleで自動生成されます。</div>';
