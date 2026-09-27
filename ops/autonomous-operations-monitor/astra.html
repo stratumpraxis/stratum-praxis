@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>ASTRA Growth Lab｜育成＋実践レベル</title>
+<style>
+:root{
+  --bg:#071018;--panel:#0d1822;--panel2:#111f2b;--line:#203244;--text:#eef7ff;--muted:#8ea4b8;
+  --cyan:#5de4ff;--green:#79f2ad;--amber:#ffc86b;--red:#ff7d8b;--blue:#8aa8ff;--violet:#c69cff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:
+  radial-gradient(circle at 12% -10%,#0f3850 0,transparent 30%),
+  radial-gradient(circle at 88% 0,#201c47 0,transparent 28%),var(--bg);
+  color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1320px;margin:auto;padding:22px 16px 72px}
+header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(30px,5vw,54px);letter-spacing:-.05em;line-height:1}
+.sub{margin-top:9px;color:var(--muted);font-size:13px;line-height:1.7}
+.auth{display:flex;gap:8px;flex-wrap:wrap}
+.auth input,.auth button{border:1px solid var(--line);border-radius:11px;background:#0b1620;color:var(--text);padding:10px 12px;font:inherit}
+.auth input{min-width:210px}.auth button{font-weight:900;cursor:pointer}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0}
+.nav a{border:1px solid var(--line);background:#0c1720;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:850}
+.nav a.active{border-color:#5de4ff80;background:#102834;color:var(--cyan)}
+#msg{font-size:12px;color:var(--muted);margin:8px 0}
+.summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:14px}
+@media(max-width:900px){.summary{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.summary{grid-template-columns:1fr}}
+.stat{border:1px solid var(--line);background:linear-gradient(180deg,#101d28,#0b151e);border-radius:17px;padding:16px}
+.stat .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.08em}
+.stat .v{font-size:26px;font-weight:950;margin-top:4px;letter-spacing:-.04em}
+.stat .s{font-size:11px;color:var(--muted);margin-top:3px}
+.legend{margin-top:14px;border:1px solid var(--line);border-radius:15px;padding:13px 15px;background:#0a151e}
+.legend strong{font-size:12px}.legend span{color:var(--muted);font-size:11px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:14px}
+@media(max-width:940px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:linear-gradient(155deg,#101d29,#0b151e 70%);border-radius:21px;padding:17px;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;inset:0 auto auto 0;width:100%;height:2px;background:linear-gradient(90deg,var(--cyan),transparent)}
+.cardHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.name{font-size:24px;font-weight:950;letter-spacing:-.04em}
+.meta{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.6}
+.badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.badge{display:inline-flex;align-items:center;border-radius:999px;padding:5px 8px;font-size:10px;font-weight:900;border:1px solid var(--line)}
+.ok{background:#0d2a20;color:var(--green);border-color:#22533f}.ready{background:#14223e;color:#9bb6ff;border-color:#28406b}
+.warn{background:#302617;color:var(--amber);border-color:#5f4925}.mutedBadge{background:#121c25;color:#9aaaba}
+.miniGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:14px 0}
+@media(max-width:600px){.miniGrid{grid-template-columns:repeat(2,1fr)}}
+.mini{border:1px solid #1c3040;border-radius:13px;padding:10px;background:#0b1620}
+.mini b{font-size:18px;display:block}.mini span{font-size:10px;color:var(--muted)}
+.sectionTitle{font-size:11px;color:#b7cad9;font-weight:900;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 8px}
+.practice{display:flex;gap:6px}
+.pip{height:9px;flex:1;border-radius:999px;background:#182735;border:1px solid #23384a}
+.pip.on{background:linear-gradient(90deg,#43bfd8,#79f2ad);border-color:transparent}
+.ladder{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+@media(max-width:540px){.ladder{grid-template-columns:1fr}}
+.skill{display:grid;grid-template-columns:minmax(110px,1fr) 2fr 42px;gap:8px;align-items:center;font-size:11px}
+.skill .label{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#c6d6e3}
+.track{height:8px;background:#172632;border-radius:999px;overflow:hidden}
+.fill{height:100%;background:linear-gradient(90deg,#5de4ff,#79f2ad);border-radius:999px}
+.num{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.mode{margin-top:12px;border:1px solid #273b4d;background:#0a151e;border-radius:13px;padding:11px}
+.mode b{font-size:12px}.mode div{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.55}
+.trend{margin-top:10px;border-left:3px solid var(--violet);padding:7px 0 7px 10px;font-size:11px;color:#c8d4de}
+.weak{margin-top:10px;color:var(--muted);font-size:11px}
+.tableSec{margin-top:16px;border:1px solid var(--line);background:#0a151e;border-radius:18px;padding:14px;overflow:auto}
+.tableSec h2{font-size:16px;margin:0 0 10px}
+table{width:100%;border-collapse:collapse;min-width:760px}
+th,td{padding:10px;border-bottom:1px solid #1d3040;text-align:left;font-size:11px;vertical-align:top}
+th{color:#91a8bb;text-transform:uppercase;letter-spacing:.06em;font-size:10px}
+td strong{font-size:12px}
+small{color:var(--muted)}
+.footerNote{margin-top:14px;padding:13px 15px;border:1px dashed #31465a;border-radius:14px;color:var(--muted);font-size:11px;line-height:1.7}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <h1>ASTRA Growth Lab</h1>
+    <div class="sub">育成進捗＋実践接続レベルを、VIDEO / APP / SITE / REVENUE / DISTRIBUTION 横断で可視化。<br>内部スコアと実Revenue Evidenceは分離して表示します。</div>
+  </div>
+  <div class="auth">
+    <input id="key" type="password" placeholder="監視キー">
+    <button onclick="connect()">接続</button>
+    <button onclick="load()">更新</button>
+  </div>
+</header>
+
+<nav class="nav">
+  <a href="index.html">Operations</a>
+  <a href="trends.html">Trend Radar</a>
+  <a class="active" href="astra.html">ASTRA Growth</a>
+  <a href="audit.html">Audit / Human Gate</a>
+</nav>
+
+<div id="msg">監視キーを入力してください。</div>
+<div id="summary" class="summary"></div>
+
+<div class="legend">
+  <strong>実践接続レベル：</strong>
+  <span>L1 Cycle実行 → L2 Artifact + Evidence確認 → L3 次Cycle自動生成 → L4 Trend + Revenue Context接続。これは外部品質や売上保証の点数ではありません。</span>
+</div>
+
+<section id="cards" class="grid"></section>
+
+<section class="tableSec">
+  <h2>最新実践Cycle</h2>
+  <table>
+    <thead><tr><th>ASTRA</th><th>Cycle</th><th>育成対象</th><th>内部進捗</th><th>Revenue Mode</th><th>Trend</th><th>Evidence</th><th>完了</th></tr></thead>
+    <tbody id="recent"></tbody>
+  </table>
+</section>
+
+<div class="footerNote">
+  <b>Truth Boundary：</b> Internal progression score はASTRA内部の育成進捗。Payment / Payout / Human Visit / Buyer Signal はDirect Evidenceがある場合のみ別扱い。TrendはPublic Attentionであり、自動的にBuyer Signalへ昇格しません。
+</div>
+</main>
+
+<script>
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/astra';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('monitor_key')||'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const modeName=x=>x==='REPEAT_VERIFIED_WINNER'?'勝ち筋の再現性':x==='QUALIFIED_HUMAN_ACQUISITION'?'Qualified Human獲得':x==='ROUTE_VERIFICATION'?'Revenue Route検証':(x||'—');
+function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
+function practicePips(n,max=4){return Array.from({length:max},(_,i)=>'<i class="pip '+(i<n?'on':'')+'"></i>').join('')}
+function ladder(levels){
+  const entries=Object.entries(levels||{});
+  if(!entries.length)return '<div class="meta">まだ育成Stateがありません。</div>';
+  return entries.map(([k,v])=>{
+    const n=Number(v)||0,p=Math.max(0,Math.min(100,n/12*100));
+    return '<div class="skill"><span class="label">'+esc(k)+'</span><div class="track"><div class="fill" style="width:'+p+'%"></div></div><span class="num">'+n+'/12</span></div>';
+  }).join('');
+}
+function render(d){
+  const lanes=d.lanes||[];
+  const avg=lanes.length?(lanes.reduce((s,x)=>s+Number(x.ladder_percent||0),0)/lanes.length):0;
+  const ready=lanes.filter(x=>x.next_cycle&&['READY','RUNNING'].includes(x.next_cycle.status)).length;
+  const artifacts=lanes.reduce((s,x)=>s+Number(x.artifact_count||0),0);
+  $('summary').innerHTML=[
+    ['LIVE / VERIFIED',d.live_verified_count+' / '+lanes.length,'実Cycle＋Evidence確認済み'],
+    ['平均育成進捗',avg.toFixed(1)+'%','各Ladder 0–12の平均'],
+    ['自動継続',ready+' / '+lanes.length,'次Cycle READY / RUNNING'],
+    ['累積Artifact',artifacts,'ASTRA Training Artifacts']
+  ].map(x=>'<div class="stat"><div class="k">'+x[0]+'</div><div class="v">'+x[1]+'</div><div class="s">'+x[2]+'</div></div>').join('');
+
+  $('cards').innerHTML=lanes.map(x=>{
+    const m=x.latest_done?.metrics||{};
+    const trend=m.trend_selected_title
+      ? '<div class="trend">Trend接続：<b>'+esc(m.trend_selected_title)+'</b> · '+esc(m.trend_selected_source||'')+'</div>'
+      : '<div class="trend">Trend接続：適合Signalなし → 無理に採用せずHOLD</div>';
+    const weak=(x.weakest_dimensions||[]).join(' / ')||'—';
+    return '<article class="card">'+
+      '<div class="cardHead"><div><div class="name">'+esc(x.label)+'</div><div class="meta">'+esc(x.domain_id)+' · Updated '+time(x.latest_done?.finished_at||x.latest_artifact_at)+'</div></div>'+
+      '<div class="badges"><span class="badge '+(x.live_verified?'ok':'warn')+'">'+(x.live_verified?'LIVE / VERIFIED':'NOT VERIFIED')+'</span><span class="badge ready">'+esc(x.next_cycle?.status||'NO NEXT')+'</span></div></div>'+
+      '<div class="miniGrid">'+
+        '<div class="mini"><b>G'+esc(x.generation)+'</b><span>Generation</span></div>'+
+        '<div class="mini"><b>'+esc(x.cycle)+'</b><span>Cycle</span></div>'+
+        '<div class="mini"><b>'+esc(x.internal_progress_score)+'</b><span>Internal score</span></div>'+
+        '<div class="mini"><b>'+esc(x.artifact_count)+'</b><span>Artifacts</span></div>'+
+      '</div>'+
+      '<div class="sectionTitle">実践接続 L'+x.practical_level+' / '+x.practical_level_max+'</div>'+
+      '<div class="practice">'+practicePips(x.practical_level,x.practical_level_max)+'</div>'+
+      '<div class="sectionTitle">Training Ladder · '+Number(x.ladder_percent||0).toFixed(1)+'%</div>'+
+      '<div class="ladder">'+ladder(x.levels)+'</div>'+
+      '<div class="weak">現在の最弱候補：<b>'+esc(weak)+'</b>　／　最新育成：<b>'+esc(x.latest_done?.trained_dimension||'—')+'</b></div>'+
+      '<div class="mode"><b>Revenue Mode：'+esc(modeName(m.revenue_expansion_mode))+'</b><div>'+
+        (m.revenue_expansion_mode==='REPEAT_VERIFIED_WINNER'?'既存の実証済みRouteを壊さず、再現性・Attribution・CTA距離を鍛える。':
+         m.revenue_expansion_mode==='QUALIFIED_HUMAN_ACQUISITION'?'商品を作り直すより、Qualified Humanが既存Routeへ入る確率を鍛える。':
+         'Current Revenue Realityを優先してRouteを検証する。')+
+      '</div></div>'+trend+
+      '<div class="meta" style="margin-top:10px">次Cycle：'+esc(x.next_cycle?.title||'—')+' · '+time(x.next_cycle?.scheduled_for)+'</div>'+
+    '</article>';
+  }).join('');
+
+  const rows=[];
+  lanes.forEach(x=>(x.recent_cycles||[]).slice(0,4).forEach(c=>rows.push({...c,label:x.label})));
+  rows.sort((a,b)=>new Date(b.finished_at||0)-new Date(a.finished_at||0));
+  $('recent').innerHTML=rows.slice(0,18).map(c=>
+    '<tr><td><strong>'+esc(c.label)+'</strong></td>'+
+    '<td>G'+esc(c.generation)+' / C'+esc(c.cycle)+'</td>'+
+    '<td>'+esc(c.trained_dimension||'—')+'</td>'+
+    '<td>'+esc(c.before_score)+' → '+esc(c.after_score)+' <small>(Δ'+esc(c.delta)+')</small></td>'+
+    '<td>'+esc(modeName(c.revenue_expansion_mode))+'</td>'+
+    '<td>'+(c.trend_selected_title?esc(c.trend_selected_title)+'<br><small>'+esc(c.trend_selected_source||'')+'</small>':'—')+'</td>'+
+    '<td>'+(c.evidence_verified?'<span class="badge ok">VERIFIED</span>':'<span class="badge warn">UNVERIFIED</span>')+' <small>'+esc(c.artifact_count)+' artifacts</small></td>'+
+    '<td>'+time(c.finished_at)+'</td></tr>'
+  ).join('');
+
+  $('msg').textContent='接続済み · '+time(d.generated_at)+' · Runtime '+d.runtime;
+}
+async function load(){
+  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  if(!key){$('msg').textContent='監視キーを入力してください。';return}
+  $('msg').textContent='ASTRA状態を読込中…';
+  try{
+    const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'読込失敗');
+    render(d);
+  }catch(e){$('msg').textContent='接続できません: '+e.message}
+}
+if(localStorage.getItem('monitor_key'))load();
+setInterval(()=>{if(localStorage.getItem('monitor_key'))load()},60000);
+</script>
+</body></html>
