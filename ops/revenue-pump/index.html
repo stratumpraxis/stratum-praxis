@@ -3,95 +3,97 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Revenue Pump Engine</title>
+<meta name="color-scheme" content="dark">
+<title>Revenue Pump｜Market → Payment</title>
 <style>
-:root{color-scheme:dark;--bg:#06100d;--p:#0c1a16;--p2:#10241e;--line:#21483b;--text:#eefcf7;--muted:#8fb6a8;--green:#67e8a7;--yellow:#ffd166;--red:#ff7b86}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0%,#123d2e 0,transparent 35%),var(--bg);color:var(--text);font-family:Inter,system-ui,sans-serif}
-main{max-width:1180px;margin:auto;padding:24px 18px 70px}header{display:flex;justify-content:space-between;gap:16px;align-items:flex-end;flex-wrap:wrap}
-h1{margin:0;font-size:clamp(34px,6vw,68px);letter-spacing:-.05em}.sub{color:var(--muted);margin-top:8px}.auth{display:flex;gap:8px;flex-wrap:wrap}
-input,button,a{border:1px solid var(--line);background:#0e211a;color:var(--text);border-radius:11px;padding:10px 12px;font:inherit;text-decoration:none}
-button{cursor:pointer}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}@media(max-width:850px){.grid{grid-template-columns:1fr}}
-.card{border:1px solid var(--line);background:linear-gradient(180deg,var(--p2),var(--p));border-radius:18px;padding:16px}.k{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}.v{font-size:22px;font-weight:800;margin-top:6px}
-.route{margin-top:16px}.flow{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.pill{border:1px solid var(--line);border-radius:999px;padding:6px 9px;font-size:11px}.good{color:var(--green)}.warn{color:var(--yellow)}.bad{color:var(--red)}
-pre{white-space:pre-wrap;word-break:break-word;font-size:12px;color:#cbe5dc}.run{width:100%;font-weight:800;background:#174b37;border-color:#2b8b63}
-.note{font-size:12px;color:var(--muted);line-height:1.55}#msg{min-height:22px;color:var(--green);margin-top:10px}
+:root{color-scheme:dark;--bg:#031019;--panel:#071c25;--panel2:#0a2530;--line:#164353;--text:#ecfbff;--muted:#82a9b5;--cyan:#25d7ff;--green:#3bea8d;--orange:#ffae42;--red:#ff6b78;--shadow:0 18px 54px rgba(0,0,0,.28)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 68% -10%,rgba(0,225,160,.13),transparent 32%),radial-gradient(circle at 4% 12%,rgba(37,215,255,.12),transparent 27%),var(--bg);color:var(--text);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+button,input,select{font:inherit}a{color:inherit;text-decoration:none}.app{display:grid;grid-template-columns:210px 1fr;min-height:100vh}.sidebar{position:sticky;top:0;height:100vh;border-right:1px solid var(--line);background:linear-gradient(180deg,#03121b,#041820);padding:22px 14px;display:flex;flex-direction:column;gap:16px}.brand{display:flex;gap:11px;align-items:center;padding:0 7px}.logo{display:grid;grid-template-columns:repeat(4,7px);gap:3px;align-items:end;height:29px}.logo i{display:block;border-radius:3px;background:linear-gradient(180deg,#51f7a1,#11bb65);box-shadow:0 0 14px rgba(59,234,141,.35)}.logo i:nth-child(1){height:10px}.logo i:nth-child(2){height:18px}.logo i:nth-child(3){height:25px}.logo i:nth-child(4){height:29px}.brand b{font-size:17px;letter-spacing:-.02em}.brand small{display:block;color:var(--muted);font-size:9px;margin-top:2px}.nav{display:flex;flex-direction:column;gap:6px}.nav a{padding:10px 11px;border-radius:10px;color:#a9c4ce;font-size:12px;font-weight:750;border:1px solid transparent}.nav a:hover,.nav a.active{color:white;background:rgba(21,184,107,.14);border-color:rgba(59,234,141,.25)}.nav .ico{display:inline-block;width:20px}.sidebarFoot{margin-top:auto;border:1px solid var(--line);border-radius:14px;padding:12px;background:#05151d;color:var(--muted);font-size:10px;line-height:1.6}.sidebarFoot b{color:var(--green);display:block;margin-bottom:4px}.main{min-width:0;padding:18px 20px 54px;max-width:1680px;width:100%;margin:0 auto}.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap}.title h1{font-size:27px;margin:0;letter-spacing:-.04em}.title p{margin:5px 0 0;color:var(--muted);font-size:11px}.auth{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.auth input{width:200px}.auth input,.auth select,.auth button{border:1px solid var(--line);background:#071a23;color:var(--text);border-radius:9px;padding:8px 10px;font-size:11px}.auth button{cursor:pointer;font-weight:800}.auth button.primary{border-color:#187c56;background:#0f704a}.statusline{margin:10px 0 0;color:var(--muted);font-size:10px;min-height:16px}.statusline.ok{color:var(--green)}.statusline.bad{color:var(--red)}
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:9px;margin-top:14px}.kpi,.panel{border:1px solid var(--line);background:linear-gradient(180deg,rgba(10,37,48,.94),rgba(5,24,32,.95));border-radius:14px;box-shadow:var(--shadow)}.kpi{padding:12px;min-height:91px;position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;right:-15px;bottom:-23px;width:70px;height:70px;border-radius:50%;background:radial-gradient(circle,rgba(37,215,255,.13),transparent 68%)}.kpi .label{font-size:10px;color:var(--muted);font-weight:750}.kpi .value{font-size:23px;font-weight:900;letter-spacing:-.04em;margin-top:7px}.kpi .meta{font-size:9px;color:var(--muted);margin-top:5px}.value.green{color:var(--green)}.value.cyan{color:var(--cyan)}.value.orange{color:var(--orange)}.section{margin-top:11px}.panel{padding:13px}.panelHead{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}.panelHead h2{font-size:15px;margin:0}.hint{font-size:9.5px;color:var(--muted);line-height:1.5;margin-top:3px}.flow{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:11px}.flowStep{border:1px solid #1e5262;border-radius:12px;padding:11px;min-height:111px;position:relative;background:linear-gradient(180deg,#092630,#061b24)}.flowStep:not(:last-child):after{content:"→";position:absolute;right:-11px;top:43%;z-index:2;color:var(--cyan);font-size:19px;font-weight:900}.flowStep .num{width:28px;height:28px;display:grid;place-items:center;border-radius:50%;font-weight:900;font-size:13px;background:rgba(59,234,141,.16);color:var(--green);border:1px solid rgba(59,234,141,.34)}.flowStep:nth-child(6) .num{background:rgba(255,174,66,.17);border-color:rgba(255,174,66,.35);color:var(--orange)}.flowStep b{display:block;font-size:11px;margin-top:8px}.flowStep span{display:block;color:var(--muted);font-size:9px;line-height:1.55;margin-top:4px}.twocol{display:grid;grid-template-columns:1.55fr .8fr;gap:10px}.sources{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.source{border:1px solid var(--line);border-radius:11px;padding:10px;background:#061a23}.sourceTop{display:flex;justify-content:space-between;gap:7px;align-items:center}.source b{font-size:10px}.source small{display:block;color:var(--muted);font-size:8.5px;margin-top:5px}.badge{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px 7px;font-size:8px;font-weight:850}.badge.ok{color:var(--green);border-color:rgba(59,234,141,.35);background:rgba(59,234,141,.1)}.badge.warn{color:var(--orange);border-color:rgba(255,174,66,.35);background:rgba(255,174,66,.09)}.badge.blue{color:var(--cyan);border-color:rgba(37,215,255,.28);background:rgba(37,215,255,.08)}.successGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.success{border:1px solid var(--line);border-radius:11px;padding:11px;background:#061a23}.success b{font-size:10px}.success .n{font-size:20px;font-weight:900;margin-top:6px}.success p{font-size:8.5px;color:var(--muted);line-height:1.45;margin:5px 0 0}.queueWrap{overflow:auto;margin-top:10px}.queue{width:100%;border-collapse:collapse;min-width:820px}.queue th,.queue td{padding:8px 7px;text-align:left;border-bottom:1px solid #103544;font-size:9px;vertical-align:top}.queue th{color:var(--muted);font-weight:800}.queue td b{font-size:10px}.score{font-weight:900;color:var(--green)}.actionBtn{border:1px solid rgba(59,234,141,.36);color:var(--green);background:rgba(59,234,141,.08);border-radius:7px;padding:5px 7px;font-size:8px;font-weight:850;cursor:pointer}.routeGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:10px}.routeTile{border:1px solid var(--line);border-radius:10px;padding:10px;background:#061923}.routeTile b{display:block;font-size:10px}.routeTile span{display:block;color:var(--muted);font-size:8.5px;margin-top:3px}.currentBox{border:1px solid rgba(59,234,141,.3);border-radius:12px;padding:12px;margin-top:10px;background:rgba(20,112,74,.1)}.currentBox h3{margin:0;font-size:13px}.currentBox .big{font-size:18px;font-weight:900;margin-top:7px}.currentBox .line{font-size:9px;color:var(--muted);line-height:1.6;margin-top:7px}.runBtn{width:100%;margin-top:10px;border:1px solid #1c8b5e;background:linear-gradient(180deg,#16875b,#0d6845);color:white;border-radius:10px;padding:11px;font-weight:900;font-size:11px;cursor:pointer}.runBtn:disabled{opacity:.45;cursor:not-allowed}.signalList,.evidenceList,.projectList{display:flex;flex-direction:column;gap:7px;margin-top:10px}.signal,.ev,.proj{border:1px solid var(--line);border-radius:10px;padding:9px;background:#061923}.signalTop,.evTop,.projTop{display:flex;justify-content:space-between;gap:8px}.signal b,.ev b,.proj b{font-size:10px}.meta{font-size:8.5px;color:var(--muted);line-height:1.5;margin-top:4px}.miniLink{font-size:8px;color:var(--cyan)}.threecol{display:grid;grid-template-columns:1.25fr .9fr .9fr;gap:10px}.empty{padding:14px;border:1px dashed #24505e;border-radius:10px;color:var(--muted);font-size:9px;text-align:center;margin-top:9px}.footer{margin-top:15px;text-align:center;color:#587a85;font-size:8.5px;line-height:1.6}
+@media(max-width:1200px){.kpis{grid-template-columns:repeat(3,1fr)}.flow{grid-template-columns:repeat(3,1fr)}.flowStep:after{display:none}.twocol,.threecol{grid-template-columns:1fr}.sources{grid-template-columns:repeat(2,1fr)}}@media(max-width:780px){.app{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.nav{display:grid;grid-template-columns:repeat(2,1fr)}.main{padding:14px}.kpis{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:1fr 1fr}.sources{grid-template-columns:1fr 1fr}.successGrid{grid-template-columns:1fr}.routeGrid{grid-template-columns:1fr}.auth input{width:100%}}
 </style>
 </head>
-<body><main>
-<header>
-<div><div class="k">Execution Engine</div><h1>Revenue Pump</h1><div class="sub">商売全体の売上専用Engine。GitHubぽちぽちのExecution Stateは取り込みません。</div></div>
-<div class="auth"><input id="key" type="password" placeholder="Operator / monitor key"><button onclick="connect()">接続</button><a href="../autonomous-operations-monitor/layers.html">3レイヤーへ</a></div>
-</header>
-<div id="msg"></div>
-
-<div class="grid">
-<div class="card"><div class="k">Runtime</div><div class="v">revenue-pump-engine</div><div class="note">Monitorとは別Runtime。</div></div>
-<div class="card"><div class="k">Identity</div><div class="v" id="identity">専用Gmail未作成</div><div class="note">必要性が出るまで既存Identityを流用しません。</div></div>
-<div class="card"><div class="k">Success Evidence</div><div class="v">Payment / Payout / Cash</div><div class="note">HTTP200 / Task DONEだけでは成功扱いしません。</div></div>
-</div>
-
-<section class="card route">
-<div class="k">Revenue Flow</div>
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand"><div class="logo"><i></i><i></i><i></i><i></i></div><div><b>Revenue Pump</b><small>Market → Payment Engine</small></div></div>
+<nav class="nav">
+<a class="active" href="#dashboard"><span class="ico">⌂</span>ダッシュボード</a>
+<a href="#market"><span class="ico">⌕</span>市場分析</a>
+<a href="#routes"><span class="ico">⌁</span>収益ルート</a>
+<a href="#signals"><span class="ico">▤</span>コンテンツ運用</a>
+<a href="#execute"><span class="ico">▣</span>販売・決済</a>
+<a href="#evidence"><span class="ico">↗</span>収益履歴</a>
+<a href="#settings"><span class="ico">⚙</span>設定</a>
+</nav>
+<div class="sidebarFoot"><b>Revenue First</b>Payment / Payout → Checkout / Contract → Buyer Signal → Qualified Action → Human Traffic → Reach<br><br>GitHubぽちぽちのExecution Stateは取り込みません。</div>
+</aside>
+<main class="main" id="dashboard">
+<div class="topbar">
+<div class="title"><h1>Revenue Pump</h1><p>市場レーダーから、既存Revenue Routeを使って売上・入金Evidenceまで進める独立Engine</p></div>
+<div class="auth" id="settings">
+<input id="key" type="password" placeholder="Operator / monitor key">
+<select id="project" title="表示Project"><option value="ALL">全Project</option><option value="stratum">Stratum</option><option value="vector">Vector</option><option value="gwr">GWR</option><option value="ai-practical">AI Practical</option><option value="product-ai-app-builder-router-2026">AI App</option><option value="forwelle">Forwelle</option><option value="sovlta">SOVLTA</option><option value="harmony">Harmony</option></select>
+<button onclick="connect()">接続</button><button onclick="loadAll()">更新</button><button class="primary" onclick="runPump()" id="topRun" disabled>Revenueを1段進める</button>
+</div></div>
+<div id="msg" class="statusline">監視キーを入力してください。Monitorと同じKeyを利用できます。</div>
+<section class="kpis" id="kpis"></section>
+<section class="panel section" id="routes"><div class="panelHead"><div><h2>収益フロー</h2><div class="hint">市場Signalは入口。成果判定はPayment / Payout / Repeat Revenueだけ。途中Stateを勝手に昇格しません。</div></div><span class="badge blue">Event-driven / 1差分</span></div>
 <div class="flow">
-<span class="pill">Market Signal</span><span class="pill">Route Selection</span><span class="pill">First Broken Stage</span><span class="pill">Distribution</span><span class="pill">Qualified Human</span><span class="pill">Buyer Signal</span><span class="pill">Checkout / Contract</span><span class="pill">Payment</span><span class="pill">Fulfillment</span><span class="pill">Repeat Revenue</span>
-</div>
+<div class="flowStep"><div class="num">1</div><b>市場を調べる</b><span>Google Trends / YouTube / X Proxy / Public Signalから需要を見る</span></div>
+<div class="flowStep"><div class="num">2</div><b>収益Routeを選ぶ</b><span>既存Offer・WordPress・note・Checkoutを優先。新商品は最後</span></div>
+<div class="flowStep"><div class="num">3</div><b>人を集める</b><span>Search / SNS / MediaからExternal Humanを獲得</span></div>
+<div class="flowStep"><div class="num">4</div><b>興味を持ってもらう</b><span>Qualified Action → Buyer Signal。投稿数そのものは成果にしない</span></div>
+<div class="flowStep"><div class="num">5</div><b>購入・決済</b><span>Checkout / Contract → Payment。実決済Evidenceで確認</span></div>
+<div class="flowStep"><div class="num">6</div><b>継続収益</b><span>Fulfillment → Repeat Payment / Payout。勝ち筋だけ太くする</span></div>
+</div></section>
+<section class="twocol section" id="market">
+<div class="panel"><div class="panelHead"><div><h2>Source / Trend Radar</h2><div class="hint">市場Signalを収益機会へ接続。TrendはBuyer Signalではありません。</div></div><span id="signalCount" class="badge blue">—</span></div><div id="sourceStatus" class="sources"></div><div id="signalList" class="signalList"></div></div>
+<div class="panel"><div class="panelHead"><div><h2>成功の基準</h2><div class="hint">この3つが増えればRevenue Engineとして前進。</div></div></div><div class="successGrid" id="successGrid"></div>
+<div class="currentBox" id="execute"><h3>Current Closest-to-Cash Route</h3><div id="selected" class="big">未接続</div><div id="selectedMeta" class="line"></div><button id="run" class="runBtn" onclick="runPump()" disabled>最短Commercial Routeを1段進める</button><div id="runMsg" class="meta">Operator keyでのみ実行。実行後はDirect Readbackで状態を確認します。</div></div></div>
 </section>
-
-<div class="grid">
-<section class="card">
-<div class="k">Current Engine State</div>
-<div id="state" class="v">未接続</div>
-<div id="stateMeta" class="note"></div>
+<section class="twocol section">
+<div class="panel"><div class="panelHead"><div><h2>機会キュー</h2><div class="hint">Revenue Pump RuntimeがCurrent Realityから選んだ候補。市場Signalの量ではなくRevenue Distanceを優先。</div></div><span id="candidateCount" class="badge ok">—</span></div><div class="queueWrap"><table class="queue"><thead><tr><th>#</th><th>Project / Route</th><th>Revenue Stage</th><th>Revenue D</th><th>First Broken Stage</th><th>実行区分</th><th>Score</th><th>次</th></tr></thead><tbody id="queueBody"></tbody></table></div></div>
+<div class="panel"><div class="panelHead"><div><h2>収益ルート</h2><div class="hint">新しい器を増やすのではなく、既存の正常Routeを再利用。</div></div></div>
+<div class="routeGrid"><div class="routeTile"><b>WordPress</b><span>Search / Owned Entry → CTA</span></div><div class="routeTile"><b>note</b><span>有料記事 / Membership</span></div><div class="routeTile"><b>Stripe</b><span>Checkout / Payment Link</span></div><div class="routeTile"><b>Payhip / Gumroad</b><span>Digital Product Checkout</span></div><div class="routeTile"><b>Affiliate</b><span>A8.net / 既存ASP</span></div><div class="routeTile"><b>Digital Product</b><span>PDF / Template / Tool</span></div></div>
+<div class="currentBox"><h3>変更ルール</h3><div class="line">Human 0なら商品改修をしない。0 response時は Channel / Audience / Hook / Entry の1変数だけ変更。正常RouteはBaseline保護。</div></div></div>
 </section>
-<section class="card">
-<div class="k">Selected Revenue Route</div>
-<div id="selected" class="v">未接続</div>
-<div id="selectedMeta" class="note"></div>
-</section>
-<section class="card">
-<div class="k">Execution</div>
-<button id="run" class="run" onclick="runPump()" disabled>最短Commercial Routeを1段進める</button>
-<div class="note" style="margin-top:8px">実行にはOperator keyが必要。Viewer keyは状態確認のみ。</div>
-</section>
-</div>
-
-<section class="card route">
-<div class="k">Recent Dispatches</div>
-<pre id="runs">未接続</pre>
-</section>
-</main>
+<section class="threecol section" id="evidence"><div class="panel"><div class="panelHead"><div><h2>最近のEvidence</h2><div class="hint">Task DONEではなくExternal Realityを優先。</div></div></div><div id="evidenceList" class="evidenceList"></div></div><div class="panel"><div class="panelHead"><div><h2>Direct Revenue</h2><div class="hint">入金に近い順。</div></div></div><div id="directRevenue" class="evidenceList"></div></div><div class="panel"><div class="panelHead"><div><h2>実行中Project</h2><div class="hint">Revenue Distanceが短い順に確認。</div></div></div><div id="projectList" class="projectList"></div></div></section>
+<section class="panel section" id="signals"><div class="panelHead"><div><h2>Revenue Pump Runtime</h2><div class="hint">Monitorとは別Runtime。市場調査から得たSignalを参考にしつつ、実行時はCurrent Realityを再読して最短RouteだけDispatch。</div></div><span id="engineState" class="badge blue">未接続</span></div><div class="currentBox"><h3>Recent Dispatches</h3><div id="dispatches" class="line">未接続</div></div></section>
+<div class="footer">Revenue Pump v1 · Static UI + live Revenue Runtime · GitHub paid-task execution state excluded · Payment / Payout Evidence first</div>
+</main></div>
 <script>
-const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-pump-engine';
+const MONITOR='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const TRENDS=MONITOR+'/api/trends';
+const PUMP='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-pump-engine';
 const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const fmtTime=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const key=()=>($('key').value.trim()||localStorage.getItem('revenue_pump_key')||localStorage.getItem('monitor_key')||'');
+const headers=()=>({Authorization:'Bearer '+key()});
+let state={pump:null,monitor:null,trends:null};
 $('key').value=localStorage.getItem('revenue_pump_key')||localStorage.getItem('monitor_key')||'';
-function connect(){localStorage.setItem('revenue_pump_key',$('key').value.trim());load()}
-async function load(){
-  const key=$('key').value.trim(); if(!key){$('msg').textContent='Keyを入力してください。';return}
-  $('msg').textContent='Current Reality読込中…';
-  try{
-    const r=await fetch(BASE+'/status',{headers:{Authorization:'Bearer '+key}});
-    const d=await r.json(); if(!r.ok)throw new Error(d.error||'読込失敗');
-    $('state').textContent=d.state?.state||'—';
-    $('stateMeta').textContent=(d.state?.next_action||'')+(d.state?.blocker?' / '+d.state.blocker:'');
-    const s=d.decision?.selected;
-    $('selected').textContent=s?(s.project_name+' · D'+(s.revenue_distance??'—')):'安全に進められるRouteなし';
-    $('selectedMeta').textContent=s?('First Broken: '+s.first_broken_stage+' / '+s.execution_class):'';
-    $('identity').textContent=d.identity?.gmail||'専用Gmail未作成';
-    $('runs').textContent=(d.recent_dispatches||[]).map(x=>x.status+' · '+x.title+' · '+(x.first_broken_stage||'')).join('\n')||'まだ専用RuntimeからのDispatchなし';
-    $('run').disabled=false;
-    $('msg').textContent='接続済み';
-  }catch(e){$('msg').textContent=e.message;$('run').disabled=true}
-}
-async function runPump(){
-  const key=$('key').value.trim(); if(!key)return;
-  $('run').disabled=true; $('msg').textContent='Revenue Pump実行中…';
-  try{
-    const r=await fetch(BASE+'/run',{method:'POST',headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},body:'{}'});
-    const d=await r.json(); if(!r.ok)throw new Error(d.error||'実行失敗');
-    $('msg').textContent=d.outcome||'実行済み';
-    await load();
-  }catch(e){$('msg').textContent=e.message}finally{$('run').disabled=false}
-}
-load();
+const qs=new URLSearchParams(location.search);if(qs.get('project'))$('project').value=qs.get('project');
+$('project').addEventListener('change',()=>loadAll());
+function connect(){const k=$('key').value.trim();if(!k){setMsg('Keyを入力してください。','bad');return}localStorage.setItem('revenue_pump_key',k);localStorage.setItem('monitor_key',k);loadAll()}
+function setMsg(s,cls=''){$('msg').textContent=s;$('msg').className='statusline '+cls}
+async function getJson(url,opt={}){const r=await fetch(url,opt);let d={};try{d=await r.json()}catch{}if(!r.ok)throw new Error(d.error||('HTTP '+r.status));return d}
+function sourceName(x){return x==='GOOGLE_TRENDS'?'Google Trends':x==='YOUTUBE_PUBLIC_TRENDING'?'YouTube Public Trending':x==='YOUTUBE_SEARCH_BRIDGE'?'YouTube Search Bridge':x==='X_PROXY_TRENDS24'?'X Trend Proxy (trends24)':x||'Source'}
+function stageLabel(x){return ({PAYMENT_PAYOUT:'Payment / Payout',CHECKOUT_CONTRACT:'Checkout / Contract',BUYER_SIGNAL:'Buyer Signal',QUALIFIED_ACTION:'Qualified Action',HUMAN_TRAFFIC:'Human Traffic',REACH:'Reach'})[x]||x||'—'}
+function countDirect(){const d=state.trends?.direct_revenue||{};return {near:(d.closest_to_cash||[]).length,paid:(d.confirmed||[]).length,human:(d.human_required||[]).length,ai:(d.ai_advancing||[]).length}}
+async function loadAll(){if(!key()){setMsg('監視キーを入力してください。','bad');return}setMsg('Market / Revenue Current Realityを読込中…');const project=$('project').value||'ALL';const trendUrl=TRENDS+'?project='+encodeURIComponent(project)+'&source=ALL&page=1&page_size=20';try{const [pump,monitor,trends]=await Promise.all([getJson(PUMP+'/status',{headers:headers()}),getJson(MONITOR,{headers:headers()}),getJson(trendUrl,{headers:headers()})]);state={pump,monitor,trends};renderAll();setMsg('接続済み · '+fmtTime(new Date().toISOString()),'ok');$('run').disabled=false;$('topRun').disabled=false}catch(e){setMsg('接続できません: '+e.message,'bad');$('run').disabled=true;$('topRun').disabled=true}}
+function renderAll(){renderKpis();renderSources();renderSignals();renderSuccess();renderPump();renderQueue();renderEvidence();renderDirect();renderProjects()}
+function renderKpis(){const m=state.monitor||{},r=m.revenue||{},st=r.stages||{},d=countDirect(),p=state.pump?.decision||{},t=state.trends||{};const vals=[['Payment / Payout',st.PAYMENT?'確認済み':(d.paid?d.paid+'件':'未確認'),'green','最上位Revenue Evidence'],['Checkout / Contract',st.CHECKOUT?'確認済み':'未確認','cyan','Payment直前の実Evidence'],['Buyer Signal',st.BUYER?'確認済み':'未確認','cyan','明示Buyer intentのみ'],['Human Traffic',st.HUMAN?'確認済み':'未確認','cyan','Bot/Testを除外'],['Market Signals',t.total??0,'cyan','Public Attention'],['Active Routes',(p.candidates||[]).length,'orange','Current安全候補']];$('kpis').innerHTML=vals.map(x=>'<div class="kpi"><div class="label">'+esc(x[0])+'</div><div class="value '+x[2]+'">'+esc(x[1])+'</div><div class="meta">'+esc(x[3])+'</div></div>').join('')}
+function renderSources(){const xs=state.trends?.source_status||[];$('sourceStatus').innerHTML=xs.length?xs.map(s=>'<div class="source"><div class="sourceTop"><b>'+esc(sourceName(s.source))+'</b><span class="badge '+(s.status==='OK'?'ok':'warn')+'">'+esc(s.status)+'</span></div><small>取得 '+esc(s.item_count)+'件 · 最終成功 '+fmtTime(s.last_success_at)+(s.last_error?'<br>'+esc(s.last_error):'')+'</small></div>').join(''):'<div class="empty">Source Healthなし</div>'}
+function renderSignals(){const xs=state.trends?.items||[];$('signalCount').textContent=(state.trends?.total??0)+' Signals';$('signalList').innerHTML=xs.length?xs.slice(0,8).map(x=>'<div class="signal"><div class="signalTop"><b>'+esc(x.title)+'</b><span class="badge blue">'+esc(sourceName(x.source))+'</span></div><div class="meta">'+(x.metric?'勢い '+esc(x.metric)+' · ':'')+'更新 '+fmtTime(x.last_seen_at)+'<br>'+((x.project_tags||[]).length?'関連: '+esc((x.project_tags||[]).join(', ')):'市場全体')+'</div>'+(x.url?'<a class="miniLink" target="_blank" rel="noopener" href="'+esc(x.url)+'">Sourceを開く ↗</a>':'')+'</div>').join(''):'<div class="empty">このProject FilterにSignalなし</div>'}
+function renderSuccess(){const d=countDirect(),p=state.pump?.decision?.selected;const repeat=p?.winner_first?'判定中':'Evidence待ち';$('successGrid').innerHTML=[['Payment / Payout',d.paid,'実売上・入金のDirect Evidence'],['Closest to Cash',d.near,'入金に近いVerified Revenue'],['Repeatability',repeat,'同じ勝ち筋で次のPaymentが出るか']].map(x=>'<div class="success"><b>'+esc(x[0])+'</b><div class="n">'+esc(x[1])+'</div><p>'+esc(x[2])+'</p></div>').join('')}
+function renderPump(){const s=state.pump?.decision?.selected||null,unit=state.pump?.state||{};$('engineState').textContent=unit.state||'ACTIVE';if(!s){$('selected').textContent='安全に進められるRouteなし';$('selectedMeta').textContent='Human Gate / External Wait / Adapter Gapを保持。無理に仕事を作りません。'}else{$('selected').textContent=(s.project_name||s.unit_id)+' · '+stageLabel(s.revenue_stage);$('selectedMeta').innerHTML='Revenue D'+esc(s.revenue_distance??'—')+' · First Broken: <b>'+esc(s.first_broken_stage||'—')+'</b><br>Execution: '+esc(s.execution_class||'—')+' · Stop: '+esc(s.stop_condition||'—')+'<br>'+esc(s.measurable_outcome||'')}const runs=state.pump?.recent_dispatches||[];$('dispatches').innerHTML=runs.length?runs.slice(0,8).map(x=>'• '+esc(x.status)+' · '+esc(x.title)+' · '+esc(x.first_broken_stage||'')).join('<br>'):'まだRevenue PumpからのDispatchなし'}
+function renderQueue(){const xs=state.pump?.decision?.candidates||[];$('candidateCount').textContent=xs.length+' Routes';$('queueBody').innerHTML=xs.length?xs.map((x,i)=>'<tr><td>'+(i+1)+'</td><td><b>'+esc(x.project_name||x.unit_id)+'</b><div class="meta">'+esc(x.pump||'')+'</div></td><td>'+esc(stageLabel(x.revenue_stage))+'</td><td>'+esc(x.revenue_distance??'—')+'</td><td>'+esc(x.first_broken_stage||'—')+'</td><td>'+esc(x.execution_class||'—')+'</td><td class="score">'+esc(x.score??'—')+'</td><td><button class="actionBtn" onclick="focusRoute('+i+')">確認</button></td></tr>').join(''):'<tr><td colspan="8">安全に進められるRouteなし</td></tr>'}
+function focusRoute(i){const x=state.pump?.decision?.candidates?.[i];if(!x)return;$('selected').textContent=(x.project_name||x.unit_id)+' · '+stageLabel(x.revenue_stage);$('selectedMeta').innerHTML='候補確認のみ。実行時はCurrent Realityを再読して最短Routeを再選定します。<br>First Broken: <b>'+esc(x.first_broken_stage||'—')+'</b><br>'+esc(x.measurable_outcome||'');location.hash='#execute'}
+function renderEvidence(){const xs=(state.monitor?.timeline||[]).filter(x=>x.kind==='TASK').slice(0,8);const rev=state.monitor?.revenue?.last_progress;const extra=rev?[{title:'Revenue前進 · '+rev.stage,unit_id:rev.unit_id,status:'VERIFIED',at:rev.at}]:[];const rows=[...extra,...xs];$('evidenceList').innerHTML=rows.length?rows.slice(0,8).map(x=>'<div class="ev"><div class="evTop"><b>'+esc(x.title||x.event_type||'Evidence')+'</b><span class="badge '+(String(x.status).includes('DONE')||String(x.status).includes('VERIFIED')?'ok':'blue')+'">'+esc(x.status||'Evidence')+'</span></div><div class="meta">'+esc(x.unit_id||'')+' · '+fmtTime(x.at||x.updated_at||x.created_at)+'</div></div>').join(''):'<div class="empty">Recent Evidenceなし</div>'}
+function renderDirect(){const d=state.trends?.direct_revenue||{};const xs=[...(d.closest_to_cash||[]),...(d.confirmed||[])].slice(0,8);$('directRevenue').innerHTML=xs.length?xs.map(x=>'<div class="ev"><div class="evTop"><b>'+esc(x.revenue_name)+'</b><span class="badge '+((d.confirmed||[]).includes(x)?'ok':'warn')+'">'+esc(x.status_label||'Revenue')+'</span></div><div class="meta">金額: '+esc(x.amount||'—')+'<br>AI: '+esc(x.ai_action||'—')+(x.human_required?'<br>Human: '+esc(x.human_action||'必要'):'')+'</div></div>').join(''):'<div class="empty">Direct Revenue Evidenceなし</div>'}
+function renderProjects(){const xs=[...(state.monitor?.projects||[])].filter(x=>x.status==='ACTIVE'||x.status==null).sort((a,b)=>(a.revenue_distance??99)-(b.revenue_distance??99)).slice(0,8);$('projectList').innerHTML=xs.length?xs.map(x=>'<div class="proj"><div class="projTop"><b>'+esc(x.name||x.id)+'</b><span class="badge '+((x.revenue_distance??99)<=2?'ok':'blue')+'">D'+esc(x.revenue_distance??'—')+'</span></div><div class="meta">'+esc(x.state||'')+(x.blocker?'<br>詰まり: '+esc(x.blocker):'')+'</div></div>').join(''):'<div class="empty">Active Projectなし</div>'}
+async function runPump(){if(!key()){setMsg('Operator keyを入力してください。','bad');return}$('run').disabled=true;$('topRun').disabled=true;$('runMsg').textContent='Revenue Pump実行中… Current Realityを再読しています。';try{const d=await getJson(PUMP+'/run',{method:'POST',headers:{...headers(),'Content-Type':'application/json'},body:'{}'});$('runMsg').textContent=(d.outcome||'実行済み')+(d.duplicate?' · 既存Actionを再利用':'')+' · Direct Readback更新中';await loadAll()}catch(e){$('runMsg').textContent='実行停止: '+e.message;setMsg('実行できません: '+e.message,'bad')}finally{$('run').disabled=false;$('topRun').disabled=false}}
+if(key())loadAll();setInterval(()=>{if(key())loadAll()},60000);
 </script>
 </body></html>
