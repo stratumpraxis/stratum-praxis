@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Product Portfolio｜Revenue Evidence</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--line:#dfe5ee;--text:#162033;--muted:#6e7a8f;--ok:#168a57;--blue:#2357c7;--purple:#7a4eb3;--warn:#9a6b00;--bad:#ba384b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}main{max-width:1220px;margin:auto;padding:24px 16px 64px}h1{margin:0;font-size:clamp(30px,5vw,46px)}.sub,.hint{color:var(--muted);font-size:12px;line-height:1.5}.auth{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.auth input,.auth button{border:1px solid var(--line);border-radius:10px;background:#fff;padding:9px 11px;font:inherit}.auth button{font-weight:800}.nav{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.nav a.active{background:#162033;color:#fff}.section{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;margin-top:12px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media(max-width:800px){.grid{grid-template-columns:1fr}}.card{border:1px solid var(--line);border-radius:14px;padding:14px}.top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.name{font-weight:900;font-size:16px}.meta{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.55}.badge{display:inline-flex;border-radius:999px;padding:4px 8px;font-size:10px;font-weight:900;background:#eef2f8}.KEEP{background:#e8f7f0;color:#168a57}.REPEATABILITY_TEST{background:#eaf0ff;color:#2357c7}.HOLD{background:#fff5d7;color:#9a6b00}.CTA_REPAIR,.CHECKOUT_REPAIR{background:#fdecef;color:#ba384b}.btn{display:inline-block;text-decoration:none;border:1px solid var(--line);border-radius:9px;padding:7px 9px;font-size:11px;font-weight:800;color:var(--text);background:#fff;margin-top:8px}.rule{border-left:4px solid var(--purple);padding-left:12px;line-height:1.7;font-size:12px}.empty{padding:18px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center}
+</style></head><body><main>
+<header><h1>PRODUCT PORTFOLIO</h1><div class="sub">既存商品をRevenue Evidence基準で管理。新商品を量産する画面ではありません。</div><div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div></header>
+<nav class="nav"><a href="index.html">Operations</a><a href="layers.html">3 Layers</a><a href="trends.html">Trend Radar</a><a href="revenue-os.html">Revenue OS</a><a class="active" href="product-portfolio.html">Products</a><a href="audit.html">Workspaces</a></nav>
+<div id="msg" class="hint">監視キーを入力してください。</div>
+<section class="section"><div class="rule"><b>Evidence順:</b> Payment / Payout → Checkout → Buyer Signal → Qualified Action → Human Traffic → Reach<br><b>Human 0:</b> 原則商品を直さずDistributionへ返す。<br><b>Payment 1件:</b> Repeatability未証明。Winnerを全面改修しない。</div></section>
+<section class="section"><div id="products" class="grid"><div class="empty">Current読込待ち</div></div></section>
+<section class="section"><a class="btn" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/c/6ab8d6c5-b3d4-83ee-891a-1ef0b9e71940">Product Portfolio Keeper担当Chatを開く ↗</a></section>
+<script>
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-safe-actions/portfolio';
+const $=id=>document.getElementById(id);$('key').value=localStorage.getItem('monitor_key')||'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'}):'—';
+function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
+function card(x){
+  return '<div class="card"><div class="top"><div><div class="name">'+esc(x.product)+'</div><div class="meta">'+esc(x.project_name)+' · '+esc(x.price)+' · '+esc(x.provider)+'</div></div><span class="badge '+esc(x.product_state)+'">'+esc(x.product_state)+'</span></div><div class="meta"><b>Current:</b> '+esc(x.current_state)+'<br><b>Revenue Distance:</b> '+esc(x.revenue_distance??'—')+'<br><b>Payment Evidence:</b> '+esc(x.payment_evidence_count)+'件'+(x.latest_payment_at?' · '+time(x.latest_payment_at):'')+'<br><b>Next:</b> '+esc(x.next_action||'—')+(x.blocker?'<br><b>Blocker:</b> '+esc(x.blocker):'')+'</div><a class="btn" target="_blank" rel="noopener noreferrer" href="'+esc(x.url)+'">商品 / Routeを開く ↗</a></div>'
+}
+async function load(){
+  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  if(!key){$('msg').textContent='監視キーを入力してください。';return}
+  $('msg').textContent='Product Currentを読込中…';
+  try{
+    const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json();if(!r.ok)throw new Error(d.error||'読込失敗');
+    $('products').innerHTML=(d.items||[]).length?d.items.map(card).join(''):'<div class="empty">商品Currentなし</div>';
+    $('msg').textContent='接続済み · '+time(d.generated_at)+' · 新商品自動生成OFF';
+  }catch(e){$('msg').textContent='接続できません: '+e.message}
+}
+if(localStorage.getItem('monitor_key'))load();
+</script></main></body></html>
