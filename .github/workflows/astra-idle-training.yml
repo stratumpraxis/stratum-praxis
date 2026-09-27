@@ -22,6 +22,10 @@ on:
         description: State Core owner
         required: true
         type: string
+      idle_wake_id:
+        description: IDLE ASTRA wake nonce
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -31,6 +35,7 @@ env:
   ASTRA_TASK_ID: ${{ github.event.client_payload.task_id || inputs.task_id }}
   ASTRA_DOMAIN_ID: ${{ github.event.client_payload.domain_id || inputs.domain_id }}
   ASTRA_SOURCE_UNIT_ID: ${{ github.event.client_payload.source_unit_id || inputs.source_unit_id }}
+  ASTRA_WAKE_ID: ${{ github.event.client_payload.idle_wake_id || inputs.idle_wake_id }}
   RETURN_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/astra-training-return
 
 concurrency:
@@ -52,6 +57,7 @@ jobs:
           set -euo pipefail
           case "$ASTRA_DOMAIN_ID" in video|app|website) ;; *) echo "invalid domain"; exit 2;; esac
           [[ "$ASTRA_TASK_ID" =~ ^[0-9a-fA-F-]{36}$ ]]
+          [[ "$ASTRA_WAKE_ID" =~ ^idle-astra-[0-9a-f]{32}$ ]]
           echo "TARGET_BRANCH=astra/continuous-$ASTRA_DOMAIN_ID" >> "$GITHUB_ENV"
 
       - name: Switch to persistent training branch
@@ -108,6 +114,7 @@ jobs:
             "task_id":os.environ["ASTRA_TASK_ID"],
             "domain_id":d,
             "source_unit_id":os.environ["ASTRA_SOURCE_UNIT_ID"],
+            "idle_wake_id":os.environ["ASTRA_WAKE_ID"],
             "workflow_status":os.environ["JOB_STATUS"],
             "commit_sha":os.environ.get("COMMIT_SHA",""),
             "training_branch":f"astra/continuous-{d}",
@@ -123,4 +130,7 @@ jobs:
           set -euo pipefail
           RAW="$(curl -fsSL -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=astra-training-return")"
           TOKEN="$(python3 -c 'import json,sys; print(json.load(sys.stdin)["value"])' <<< "$RAW")"
-          curl -fsSL -X POST "$RETURN_URL"             -H "Authorization: Bearer $TOKEN"             -H "Content-Type: application/json"             --data-binary @astra-return.json
+          curl -fsSL -X POST "$RETURN_URL" \
+            -H "Authorization: Bearer $TOKEN" \
+            -H "Content-Type: application/json" \
+            --data-binary @astra-return.json
