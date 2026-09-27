@@ -1,6 +1,9 @@
 name: ASTRA Idle Continuous Training
 
 on:
+  repository_dispatch:
+    types:
+      - astra_idle_training
   workflow_dispatch:
     inputs:
       task_id:
@@ -24,21 +27,32 @@ permissions:
   contents: write
   id-token: write
 
+env:
+  ASTRA_TASK_ID: ${{ github.event.client_payload.task_id || inputs.task_id }}
+  ASTRA_DOMAIN_ID: ${{ github.event.client_payload.domain_id || inputs.domain_id }}
+  ASTRA_SOURCE_UNIT_ID: ${{ github.event.client_payload.source_unit_id || inputs.source_unit_id }}
+  RETURN_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/astra-training-return
+
 concurrency:
-  group: astra-idle-${{ inputs.domain_id }}
+  group: astra-idle-${{ github.event.client_payload.domain_id || inputs.domain_id }}
   cancel-in-progress: false
 
 jobs:
   train:
     runs-on: ubuntu-latest
     timeout-minutes: 12
-    env:
-      RETURN_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/astra-training-return
-      TARGET_BRANCH: astra/continuous-${{ inputs.domain_id }}
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+
+      - name: Validate wake payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          case "$ASTRA_DOMAIN_ID" in video|app|website) ;; *) echo "invalid domain"; exit 2;; esac
+          [[ "$ASTRA_TASK_ID" =~ ^[0-9a-fA-F-]{36}$ ]]
+          echo "TARGET_BRANCH=astra/continuous-$ASTRA_DOMAIN_ID" >> "$GITHUB_ENV"
 
       - name: Switch to persistent training branch
         shell: bash
@@ -57,7 +71,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 astra-training/continuous_train.py --domain "${{ inputs.domain_id }}"
+          python3 astra-training/continuous_train.py --domain "$ASTRA_DOMAIN_ID"
 
       - name: Commit training evidence
         id: commit
@@ -71,7 +85,7 @@ jobs:
           if git diff --cached --quiet; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
-            git commit -m "astra: train ${{ inputs.domain_id }} capability"
+            git commit -m "astra: train $ASTRA_DOMAIN_ID capability"
             git push origin "HEAD:$TARGET_BRANCH"
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
@@ -82,21 +96,18 @@ jobs:
         shell: bash
         env:
           JOB_STATUS: ${{ job.status }}
-          TASK_ID: ${{ inputs.task_id }}
-          DOMAIN_ID: ${{ inputs.domain_id }}
-          SOURCE_UNIT_ID: ${{ inputs.source_unit_id }}
           COMMIT_SHA: ${{ steps.commit.outputs.sha }}
         run: |
           python3 - <<'PY'
           import json, os
           from pathlib import Path
-          d=os.environ["DOMAIN_ID"]
+          d=os.environ["ASTRA_DOMAIN_ID"]
           p=Path("astra-training/reports")/f"{d}-latest.json"
           report=json.loads(p.read_text()) if p.exists() else {"status":"NO_REPORT"}
           payload={
-            "task_id":os.environ["TASK_ID"],
+            "task_id":os.environ["ASTRA_TASK_ID"],
             "domain_id":d,
-            "source_unit_id":os.environ["SOURCE_UNIT_ID"],
+            "source_unit_id":os.environ["ASTRA_SOURCE_UNIT_ID"],
             "workflow_status":os.environ["JOB_STATUS"],
             "commit_sha":os.environ.get("COMMIT_SHA",""),
             "training_branch":f"astra/continuous-{d}",
