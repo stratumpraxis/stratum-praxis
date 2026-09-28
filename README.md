@@ -10,6 +10,8 @@ Stratum Praxis is the B2B asset base inside the broader Digital Index Base struc
 
 **Current cost-economics field note:** [How to Measure AI Cost per Successful Outcome](https://linkly.link/2uDCW) — use retries, failures, tool calls and human review to judge the real cost of a useful AI outcome before another spend decision.
 
+**Free AI Agent Cost & ROI Calculator:** [Model payback before approving an agent](https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=github&utm_medium=referral&utm_campaign=cost_roi_acquisition_20260928&utm_content=readme_cost_economics&route_id=stratum_github_cost_roi_20260928) — use real task volume, human review, retry cost and implementation cost; the existing $39 decision route remains downstream when the economics justify it.
+
 Its role is practical B2B decision support: workflow audits, ROI/economics tools, AI/SaaS spend and renewal decisions, governance, implementation planning, and fixed-scope paid support for businesses and professional-service firms.
 
 ## Current operating boundary
