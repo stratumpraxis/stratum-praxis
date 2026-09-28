@@ -3,7 +3,7 @@
   "content_id": "stratum-bluesky-ai-agent-cost-roi-20260928",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "AI agent costs look cheap until retries, failed runs, tool calls, and human review are included. Measure cost per successful outcome before you scale.",
+  "text": "AI agent cost: measure cost per successful outcome.",
   "hook": "Measure AI cost per successful outcome — not per run.",
   "cta": "Free cost & ROI calculator",
   "destination": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=bluesky&utm_medium=social&utm_campaign=cost_roi_acquisition_20260928&utm_content=cost_per_success&route_id=stratum_bluesky_cost_roi_20260928",
