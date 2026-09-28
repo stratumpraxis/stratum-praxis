@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Self-Owned Tool Keeper｜自社ツール保守</title>
+<style>
+:root{--bg:#071018;--panel:#0d1922;--panel2:#101f2b;--line:#223846;--text:#eff8fb;--muted:#8da7b4;--green:#42e49a;--cyan:#45d7ff;--amber:#ffc35a;--red:#ff7785;--violet:#a990ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 75% -20%,rgba(69,215,255,.12),transparent 35%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+a{color:inherit;text-decoration:none}.wrap{max-width:1420px;margin:auto;padding:22px 16px 60px}.nav{display:flex;gap:7px;flex-wrap:wrap}.nav a{border:1px solid var(--line);border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800;background:#0b1620}.nav a.active{background:#17374a;border-color:#31576c}
+.hero{margin-top:14px;border:1px solid var(--line);border-radius:20px;padding:22px;background:linear-gradient(135deg,#102331,#0c171f)}h1{font-size:clamp(30px,5vw,54px);letter-spacing:-.05em;margin:0}.sub{color:var(--muted);font-size:12px;line-height:1.7;margin-top:8px}.north{font-size:20px;font-weight:950;margin-top:15px}.north b{color:var(--green)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.bar input,.bar button{border:1px solid var(--line);border-radius:10px;padding:9px 11px;background:#0a1620;color:var(--text);font:inherit;font-size:11px}.bar input{min-width:240px}.bar button{cursor:pointer;font-weight:900}.bar .primary{background:#14694a;border-color:#23865f}
+.msg{font-size:10px;color:var(--muted);margin-top:8px;min-height:16px}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:620px){.grid{grid-template-columns:1fr}}
+.card,.section{border:1px solid var(--line);border-radius:15px;background:linear-gradient(180deg,var(--panel2),var(--panel));padding:14px}.card .k{font-size:10px;color:var(--muted);font-weight:800}.card .v{font-size:21px;font-weight:950;margin-top:6px}.card .d{font-size:9px;color:var(--muted);line-height:1.5;margin-top:5px}
+.section{margin-top:12px}.section h2{font-size:16px;margin:0}.hint{font-size:10px;color:var(--muted);line-height:1.6;margin-top:4px}.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:11px}@media(max-width:950px){.tools{grid-template-columns:1fr 1fr}}@media(max-width:620px){.tools{grid-template-columns:1fr}}
+.tool{border:1px solid var(--line);border-radius:13px;padding:12px;background:#0a1720}.toolTop{display:flex;justify-content:space-between;gap:8px}.tool b{font-size:12px}.tool p{font-size:9.5px;color:var(--muted);line-height:1.55;margin:7px 0 0}.pill{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px 7px;font-size:8px;font-weight:900}.ok{color:var(--green);border-color:rgba(66,228,154,.35);background:rgba(66,228,154,.08)}.warn{color:var(--amber);border-color:rgba(255,195,90,.35);background:rgba(255,195,90,.08)}.bad{color:var(--red);border-color:rgba(255,119,133,.35);background:rgba(255,119,133,.08)}.info{color:var(--cyan);border-color:rgba(69,215,255,.35);background:rgba(69,215,255,.08)}
+.flow{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:12px}.step{padding:7px 9px;border-radius:9px;background:#0a1b26;border:1px solid var(--line);font-size:10px;font-weight:850}.arr{color:var(--cyan);font-weight:900}
+.split{display:grid;grid-template-columns:1.15fr .85fr;gap:10px;margin-top:12px}@media(max-width:900px){.split{grid-template-columns:1fr}}
+.gap{border-left:4px solid var(--amber);background:#17170f;border-radius:0 11px 11px 0;padding:10px 12px;margin-top:8px}.gap.red{border-color:var(--red);background:#1a1115}.gap.green{border-color:var(--green);background:#0e1b16}.gap b{font-size:11px}.gap div{font-size:9.5px;color:var(--muted);line-height:1.55;margin-top:3px}
+.payment{border:1px solid rgba(66,228,154,.3);background:rgba(31,121,83,.10);border-radius:14px;padding:14px;margin-top:10px}.payment .route{font-size:24px;font-weight:950}.payment .meta{font-size:10px;color:var(--muted);line-height:1.6;margin-top:5px}.links{display:flex;gap:7px;flex-wrap:wrap;margin-top:10px}.btn{border:1px solid var(--line);border-radius:9px;padding:8px 10px;font-size:10px;font-weight:900;background:#0a1720}.btn.green{background:#14694a;border-color:#23865f}.raw{white-space:pre-wrap;word-break:break-word;font-size:9px;color:#a9bec8;background:#08131b;border:1px solid var(--line);border-radius:10px;padding:10px;max-height:260px;overflow:auto;margin-top:8px}
+.footer{font-size:9px;color:#617c89;text-align:center;margin-top:16px}
+</style>
+</head>
+<body><div class="wrap">
+<nav class="nav">
+<a href="../autonomous-operations-monitor/index.html">Operations</a>
+<a href="../autonomous-operations-monitor/third-leader.html">3代目</a>
+<a href="../revenue-pump/index.html">Revenue Pump</a>
+<a class="active" href="./index.html">自社ツール保守</a>
+</nav>
+
+<section class="hero">
+<div class="pill info">EVENT-DRIVEN / NO NEW SCHEDULER</div>
+<h1>自社ツール保守</h1>
+<div class="sub">新しい仕組みを増やす担当ではない。既に成功した自社Runtimeを壊さず、Evidenceで USE / REPAIR / HOLD / RETIRE を判断し、修理は既存Primary Ownerへ返す。</div>
+<div class="north">目的：<b>自社能力を強くする。ただしPaymentから遠ざけない。</b></div>
+<div class="bar"><input id="key" type="password" placeholder="Monitor key"><button onclick="connect()">接続</button><button class="primary" onclick="loadAll()">Current更新</button></div>
+<div id="msg" class="msg">Monitorと同じKeyを利用できます。Keyはブラウザ内だけに保存します。</div>
+</section>
+
+<div class="grid">
+<div class="card"><div class="k">自動運転の本体</div><div class="v">Event / Handoff</div><div class="d">時刻で仕事を作らず、Reality Changeから次Ownerを起こす。</div></div>
+<div class="card"><div class="k">実行エンジン</div><div class="v">ORD</div><div class="d">自社版Make/n8n相当。Workflow / Webhook / Run / Step Evidence。</div></div>
+<div class="card"><div class="k">判断・状態</div><div class="v">STATE CORE</div><div class="d">Current / Evidence / Asset / Handoff / Eventを共有。</div></div>
+<div class="card"><div class="k">成果判定</div><div class="v">Payment Reality</div><div class="d">DONE / HTTP200 / Sensor正常だけでは成功にしない。</div></div>
+</div>
+
+<section class="section">
+<h2>24Hの流れ</h2><div class="hint">24H = 毎時Task生成ではない。Eventが来たら安全範囲を最後まで進める。</div>
+<div class="flow">
+<span class="step">Reality Change</span><span class="arr">→</span>
+<span class="step">STATE CORE</span><span class="arr">→</span>
+<span class="step">READY / Claim</span><span class="arr">→</span>
+<span class="step">Primary Owner</span><span class="arr">→</span>
+<span class="step">ORD / Adapter</span><span class="arr">→</span>
+<span class="step">External Action</span><span class="arr">→</span>
+<span class="step">Direct Readback</span><span class="arr">→</span>
+<span class="step">Evidence</span><span class="arr">→</span>
+<span class="step">Next Wake</span>
+</div>
+</section>
+
+<section class="section">
+<h2>自社ツール台帳</h2><div class="hint">新Tool導入ではなく、既存能力の証明レベルと不足を管理する。</div>
+<div id="tools" class="tools"></div>
+</section>
+
+<div class="split">
+<section class="section" style="margin-top:0">
+<h2>まだ足りないところ</h2>
+<div class="gap red"><b>A1 外部WriteのScheduleless実証</b><div>A0 Readback / Routing / Dedupeは実証済み。次は安全なExternal Write → Readback → State ReturnをProject-owned権限で複数条件実証する。</div></div>
+<div class="gap red"><b>Human → Payment E2E</b><div>最大の未完。Humanを作るだけ、CTAを置くだけで終わらず、既存Checkoutの実Paymentまで閉じる。</div></div>
+<div class="gap"><b>Project Adapter Coverage</b><div>Core transport不足ではなく、Project固有の「最後の外部Action Adapter」が未接続なLaneが残る。必要なLaneだけ局所追加する。</div></div>
+<div class="gap"><b>勝ち筋のRepeatability</b><div>1回PaymentしたRouteは作り直さず、同じ構造で2回目・3回目を取れるか確認する。</div></div>
+</section>
+
+<section class="section" style="margin-top:0">
+<h2>Payment Closure</h2>
+<div class="hint">ORDとRevenue Pumpは競合ではない。役割を分ける。</div>
+<div class="payment">
+<div id="payRoute" class="route">Current接続待ち</div>
+<div id="payMeta" class="meta">3代目 = Commercial Payment最短ルート選定<br>Revenue Pump / Direct Revenue OS = Reward / Payout / Deposit<br>ORD = 実行</div>
+</div>
+<div class="gap green"><b>シンプルな原則</b><div>新商品を探す前に、既にPayment実績またはVerified CheckoutがあるRouteから「次の1段」だけ通す。</div></div>
+<div class="links"><a class="btn green" href="../autonomous-operations-monitor/third-leader.html">3代目を開く</a><a class="btn" href="../revenue-pump/index.html">Revenue Pump</a></div>
+</section>
+</div>
+
+<section class="section">
+<h2>Live Readback</h2><div class="hint">表示はCurrent Evidence優先。接続できない項目を正常扱いしない。</div>
+<div id="live" class="raw">未接続</div>
+</section>
+
+<div class="footer">Self-Owned Tool Keeper · Role shell only · No duplicate runtime · Existing Owner First · Payment Reality First</div>
+</div>
+<script>
+const MON='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const ORD='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/ord-automation';
+const DRO='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/direct-revenue-os';
+const PUMP='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/revenue-pump-engine';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('monitor_key')||localStorage.getItem('company_state_key')||'';
+const tools=[
+ {id:'state-core',name:'STATE CORE',state:'PROVEN',desc:'Current / Evidence / Asset / Handoff / Event の共有正本。'},
+ {id:'autonomy-core',name:'24H Autonomy Core',state:'ACTIVE',desc:'Event/HandoffからOwnerを選び、READY→Claim→次Actionへ接続。'},
+ {id:'ord',name:'ORD Automation Core',state:'PROVEN A0',desc:'自社版Make/n8n相当。Webhook・条件分岐・Run/Step履歴。'},
+ {id:'operations-audit',name:'Operations Audit',state:'ACTIVE',desc:'False Gate / stale / duplicate / runtime failure / state driftを監査。'},
+ {id:'revenue-pump',name:'Revenue Pump',state:'ACTIVE',desc:'Direct Revenue opportunityを既存Routeへ接続。商品販売の全面改修は担当しない。'},
+ {id:'direct-revenue-os',name:'Direct Revenue OS',state:'ACTIVE',desc:'Reward / Claim / Payout / Depositの薄いControl Plane。'},
+ {id:'astra-growth-lab',name:'ASTRA',state:'ACTIVE',desc:'Revenue実務が無い時に能力を鍛える。TrainingをRevenueへ昇格しない。'},
+ {id:'product-portfolio',name:'Product Portfolio',state:'ACTIVE',desc:'商品判断。Human 0で商品改修へ逃げず、Payment winnerを保護。'},
+ {id:'stratum-b2b-outbound-guard',name:'B2B Outbound Guard',state:'PARTIAL',desc:'Qualified outbound準備・重複/Reply Guard。外部Send executorが次の重要境界。'}
+];
+function cls(s){s=String(s).toUpperCase();return /PROVEN|ACTIVE|VERIFIED/.test(s)?'ok':/PARTIAL|OPEN|UNKNOWN/.test(s)?'warn':'info'}
+function renderTools(){ $('tools').innerHTML=tools.map(t=>'<div class="tool"><div class="toolTop"><b>'+t.name+'</b><span id="st-'+t.id+'" class="pill '+cls(t.state)+'">'+t.state+'</span></div><p>'+t.desc+'</p></div>').join('') }
+async function fetchJson(url,key){
+ const r=await fetch(url,{headers:key?{Authorization:'Bearer '+key}:{}});
+ let x={};try{x=await r.json()}catch{}
+ if(!r.ok)throw new Error((x&&x.error)||('HTTP '+r.status));
+ return x
+}
+async function loadAll(){
+ const key=$('key').value.trim()||localStorage.getItem('monitor_key')||localStorage.getItem('company_state_key')||'';
+ if(!key){$('msg').textContent='Monitor keyを入力してください。';return}
+ localStorage.setItem('monitor_key',key);localStorage.setItem('company_state_key',key);
+ $('msg').textContent='Current Realityを読込中…';
+ const out={};
+ try{out.monitor=await fetchJson(MON+'/api/snapshot',key)}catch(e){out.monitor_error=e.message}
+ try{out.ord=await fetchJson(ORD+'/health','')}catch(e){out.ord_error=e.message}
+ try{out.direct=await fetchJson(DRO+'/health','')}catch(e){out.direct_error=e.message}
+ try{out.pump=await fetchJson(PUMP+'/status',key)}catch(e){out.pump_error=e.message}
+ if(out.ord?.ok){const e=$('st-ord');e.textContent='LIVE / PROVEN A0';e.className='pill ok'}
+ const sel=out.monitor?.revenue_decision?.selected||out.pump?.decision?.selected||null;
+ if(sel){
+   $('payRoute').textContent=sel.project_name||sel.name||sel.unit_id||'Selected Route';
+   $('payMeta').textContent='First Broken Stage: '+(sel.first_broken_stage||'—')+'\nNext: '+(sel.measurable_outcome||sel.next_action||'Current Evidenceで次Stageへ');
+ }else{
+   $('payRoute').textContent='Verified RouteをCurrentから選定';
+   $('payMeta').textContent='Current monitorが選定できない場合は推測せずUNKNOWN。';
+ }
+ $('live').textContent=JSON.stringify({
+   generated_at:out.monitor?.generated_at||null,
+   company_mode:out.monitor?.company_mode||null,
+   revenue_selected:sel,
+   human_gate_now:out.monitor?.human_gate_now_count??null,
+   running_tasks:(out.monitor?.running_tasks||[]).slice(0,8).map(x=>({unit:x.source_unit_id,title:x.title,status:x.status})),
+   ord_health:out.ord||out.ord_error,
+   direct_revenue_health:out.direct||out.direct_error,
+   revenue_pump:out.pump?.decision||out.pump_error
+ },null,2);
+ $('msg').textContent='Current更新済み · '+new Date().toLocaleString('ja-JP');
+}
+function connect(){loadAll()}
+renderTools();if($('key').value)loadAll();
+</script>
+</body></html>
