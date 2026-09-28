@@ -39,12 +39,24 @@
     "publishing private recipient email addresses or draft IDs"
   ],
   "runtime": {
-    "primary": "ORD Automation Core",
+    "primary": "ORD Automation Core / Self Scheduler V4",
+    "guard": "stratum-b2b-outbound-guard",
+    "adapter_id": "5b803c18-3ef9-4802-aa85-f6348c7d5cf3",
+    "schedule": "sched-v4-stratum-b2b-guard",
+    "private_queue": "stratum_b2b_outbound_queue",
     "secondary": [
       "24H | Project Nerve Intake",
       "MARKET | Revenue Pump Intake"
     ],
-    "makeComPolicy": "Thin event-driven router only; never the permanent B2B loop.",
-    "outboundWriter": "Stratum-owned B2B writer adapter (currently not attached)"
+    "makeComPolicy": "Thin event-driven router only; not the permanent B2B loop.",
+    "outboundWriter": "External send executor not attached"
+  },
+  "currentEvidence": {
+    "task_id": "98f8be53-3f76-4ab1-8308-20d36d86557c",
+    "task_status": "DONE",
+    "outcome": "OUTBOUND_ELIGIBLE",
+    "company": "Coram AI",
+    "kind": "FOLLOWUP",
+    "external_write": false
   }
 }
