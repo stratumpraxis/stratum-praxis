@@ -167,5 +167,55 @@
     "Maximum one automated follow-up per route.",
     "Do not modify price, checkout, or product packaging while Human/Buyer evidence is absent.",
     "Payment evidence outranks all intermediate states."
+  ],
+  "operatingModel": "INDEPENDENT_SPECIALIST_UNIT",
+  "independence": "VERIFIED",
+  "globalMicromanagement": "DISABLED",
+  "ownershipBoundary": {
+    "upstream": {
+      "owner": "3代目リーダー",
+      "scope": [
+        "Search",
+        "WordPress",
+        "Distribution",
+        "Existing Asset",
+        "Human Traffic",
+        "Qualified Action",
+        "Revenue Entry整備"
+      ]
+    },
+    "downstream": {
+      "owner": "STRATUM B2B INDEPENDENT REVENUE AUTOMATION UNIT",
+      "scope": [
+        "Qualified Buyer",
+        "Private Queue",
+        "Outbound Guard",
+        "External Send",
+        "Reply",
+        "Buyer Signal",
+        "Checkout / Contract",
+        "Payment",
+        "Repeat Revenue"
+      ]
+    },
+    "reconnectAt": "BUYER_SIGNAL"
+  },
+  "globalReturnContract": [
+    "BUYER_SIGNAL",
+    "CHECKOUT / CONTRACT",
+    "PAYMENT / PAYOUT",
+    "MATERIAL_ROUTE_REGRESSION",
+    "TRUE_HUMAN_GATE",
+    "MAJOR_EXTERNAL_SEND_FAILURE"
+  ],
+  "internalOnlyEvents": [
+    "Candidate Added",
+    "Queue Updated",
+    "Guard DONE",
+    "Schedule DONE",
+    "Draft Created",
+    "Send Count",
+    "HTTP 200",
+    "Routine Readback"
   ]
 }
