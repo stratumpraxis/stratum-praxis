@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mwkz4ybgby2m",
+  "cid": "bafyreiemgy6bq4nx3rf7nf3ifybrle6ie2fyi5rlr4z6sbmfbq4u2nj4ni",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mwkz4ybgby2m",
+  "destination": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=bluesky&utm_medium=social&utm_campaign=cost_roi_acquisition_20260928&utm_content=cost_per_success&route_id=stratum_bluesky_cost_roi_20260928",
+  "content_id": "stratum-bluesky-ai-agent-cost-roi-20260928",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-09-28T09:34:30.581Z"
+}
