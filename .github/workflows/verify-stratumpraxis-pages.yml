@@ -34,6 +34,7 @@ on:
       - 'ai-council-builder-ja-access.html'
       - 'agent-control-auditor.html'
       - 'agent-control-auditor.mjs'
+      - 'ops/autonomous-operations-monitor/24h-control-plane.html'
       - 'sitemap.xml'
       - 'scos-analytics.js'
   workflow_dispatch:
@@ -103,6 +104,7 @@ jobs:
             'https://stratumpraxis.com/ai-council-builder-access.html'
             'https://stratumpraxis.com/ai-council-builder-ja-access.html'
             'https://stratumpraxis.com/agent-control-auditor.html'
+            'https://stratumpraxis.com/ops/autonomous-operations-monitor/24h-control-plane.html'
             'https://stratumpraxis.com/sitemap.xml'
           )
           for url in "${urls[@]}"; do
@@ -139,3 +141,11 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/agent-control-auditor.html' \
             'What should this agent get done?' \
             'https://buy.stripe.com/cNiaEY3sEgTF60o6NJ6Zy0W'
+
+          wait_for_contains 'https://stratumpraxis.com/ops/autonomous-operations-monitor/24h-control-plane.html' \
+            '24H AUTONOMOUS' \
+            'CONTROL PLANE' \
+            'CONTROL PLANE' \
+            'SALES PUMP' \
+            'REWARD PUMP / DIRECT REVENUE PUMP' \
+            'PAYMENT-FIRST'
