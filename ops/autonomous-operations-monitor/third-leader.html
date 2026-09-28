@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>3代目 Revenue Partner Cockpit</title>
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--line:#dbe3ef;--text:#152033;--muted:#69758a;--blue:#2458cf;--green:#15865a;--gold:#9b6a00;--red:#b63c51;--soft:#eef3fa}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1180px;margin:auto;padding:24px 16px 64px}.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}.nav a.active{background:#152033;color:#fff}
+.hero,.section{background:var(--card);border:1px solid var(--line);border-radius:18px}.hero{padding:22px}.section{padding:16px;margin-top:12px}
+h1{margin:0;font-size:clamp(30px,6vw,52px);letter-spacing:-.045em}.sub{color:var(--muted);font-size:13px;line-height:1.6;margin-top:8px}.pill{display:inline-flex;align-items:center;padding:5px 9px;border-radius:999px;background:#eaf0ff;color:var(--blue);font-size:10px;font-weight:900;margin-right:6px}
+.north{font-size:clamp(26px,5vw,44px);font-weight:950;margin-top:16px}.north small{font-size:12px;color:var(--muted);font-weight:800}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}@media(max-width:850px){.grid3{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff}.card h3{margin:0 0 6px;font-size:16px}.meta{font-size:11px;color:var(--muted);line-height:1.55}.flow{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.step{background:var(--soft);border-radius:10px;padding:8px 10px;font-size:11px;font-weight:850}.arrow{color:var(--muted);font-weight:900}
+.rule{border-left:4px solid var(--green);padding:10px 12px;background:#f8fffb;border-radius:0 12px 12px 0;font-size:12px;line-height:1.65}.warn{border-left-color:var(--gold);background:#fffaf0}.danger{border-left-color:var(--red);background:#fff8fa}
+.score{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}@media(max-width:850px){.score{grid-template-columns:repeat(2,1fr)}}.scoreItem{border:1px solid var(--line);border-radius:12px;padding:11px}.scoreItem b{display:block;font-size:12px}.scoreItem span{font-size:10px;color:var(--muted)}
+.priority{display:grid;grid-template-columns:1fr;gap:9px}.p{border:1px solid var(--line);border-radius:14px;padding:14px}.p strong{font-size:15px}.badge{display:inline-flex;padding:4px 8px;border-radius:999px;background:#eef3fa;font-size:10px;font-weight:900;margin-left:6px}.badge.run{background:#eaf0ff;color:var(--blue)}.badge.owner{background:#e9f7f0;color:var(--green)}.badge.hold{background:#fff3d7;color:var(--gold)}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.btn,button{border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit;font-size:11px;font-weight:900;background:#fff;color:var(--text);cursor:pointer;text-decoration:none}.btn.primary,button.primary{background:var(--blue);border-color:var(--blue);color:#fff}.btn.green{background:var(--green);border-color:var(--green);color:#fff}
+textarea{width:100%;min-height:150px;border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;resize:vertical;background:#fff}.status{font-size:11px;color:var(--muted);margin-top:8px;white-space:pre-wrap}.live{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:760px){.live{grid-template-columns:1fr}}
+.kv{border:1px solid var(--line);border-radius:12px;padding:12px}.kv .k{font-size:10px;color:var(--muted)}.kv .v{font-size:14px;font-weight:900;margin-top:4px;overflow-wrap:anywhere}
+code{font-size:11px;background:#f1f4f9;padding:2px 5px;border-radius:5px}
+.footer{font-size:10px;color:var(--muted);text-align:center;margin-top:16px}
+</style>
+</head>
+<body><main>
+<nav class="nav">
+  <a href="index.html">Operations</a>
+  <a href="layers.html">3 Layers</a>
+  <a href="trends.html">Trend Radar</a>
+  <a href="revenue-os.html">Revenue OS</a>
+  <a href="product-portfolio.html">Products</a>
+  <a href="audit.html">Workspaces</a>
+  <a class="active" href="third-leader.html">3rd Leader</a>
+</nav>
+
+<section class="hero">
+  <span class="pill">PAYMENT PHASE ACTIVE</span><span class="pill">PARTNER MODE</span>
+  <h1>3代目 Revenue Partner</h1>
+  <div class="sub">このページは「正しい3代目の形」を固定する殻。ページやチャットが変わっても、Role・判断順・Owner境界・Current優先順位をここから復元する。</div>
+  <div class="north">月30万円 <small>実Payment / Payout</small></div>
+</section>
+
+<section class="section">
+  <h2>固定Doctrine</h2>
+  <div class="rule"><b>ROLE = REVENUE COMMAND + OWNED REVENUE EXECUTION</b><br>
+  3代目は単なるRouting担当ではない。自分が持つ通常Revenue Routeは直接進める。専門UnitはOwnerを奪わない。External Waitなら会社全体を止めず、次の非重複Revenue Routeへ移る。</div>
+  <div class="flow" style="margin-top:12px">
+    <span class="step">Payment / Payout</span><span class="arrow">→</span>
+    <span class="step">Checkout / Contract</span><span class="arrow">→</span>
+    <span class="step">Buyer Signal</span><span class="arrow">→</span>
+    <span class="step">Qualified Action</span><span class="arrow">→</span>
+    <span class="step">Human</span><span class="arrow">→</span>
+    <span class="step">Reach</span>
+  </div>
+</section>
+
+<section class="section">
+  <h2>100点 起動ゲート</h2>
+  <div class="score">
+    <div class="scoreItem"><b>Revenue Evidence</b><span>Stageを混ぜない</span></div>
+    <div class="scoreItem"><b>Owned Execution</b><span>自分のRouteは直接進める</span></div>
+    <div class="scoreItem"><b>Owner Boundary</b><span>専門Unitを奪わない</span></div>
+    <div class="scoreItem"><b>First Broken Stage</b><span>1個だけ扱う</span></div>
+    <div class="scoreItem"><b>Baseline Protection</b><span>正常Routeを壊さない</span></div>
+    <div class="scoreItem"><b>Human Zero Rule</b><span>Productへ逃げない</span></div>
+    <div class="scoreItem"><b>Direct Readback</b><span>Task成功で終わらない</span></div>
+    <div class="scoreItem"><b>Wait Rotation</b><span>別Revenue Routeへ移る</span></div>
+    <div class="scoreItem"><b>No False Promotion</b><span>UNKNOWN ≠ 0</span></div>
+    <div class="scoreItem"><b>Move Money Closer</b><span>Payment Distanceを縮める</span></div>
+  </div>
+  <div class="rule warn" style="margin-top:12px"><b>100 / 100のみ起動。</b> 「Routingして待つ」「とりあえず作る」「Human 0だからProduct修正」「Workflow成功＝Revenue成功」は即失格。</div>
+</section>
+
+<section class="section">
+  <h2>Current Priority</h2>
+  <div class="priority">
+    <div class="p"><strong>1. Vector</strong><span class="badge run">OWNED REVENUE</span><div class="meta">2uH95 Revenue Post Publication Readback → Human → CTA → Payment Repeatability。Product / Price / Checkout / #7は保護。</div></div>
+    <div class="p"><strong>2. Stratum Upstream</strong><span class="badge run">OWNED REVENUE</span><div class="meta">Measured Acquisition → Real Human → Calculator Interaction → Checkout → Payment。B2B内部には介入しない。</div></div>
+    <div class="p"><strong>3. AI App $24</strong><span class="badge run">OWNED REVENUE</span><div class="meta">Fresh Human Acquisition → CTA → Checkout → Payment。新App / 新Site / 価格 / Checkout変更へ逃げない。</div></div>
+    <div class="p"><strong>B2B / Forwelle / SOVLTA</strong><span class="badge owner">SPECIALIST OWNER</span><div class="meta">内部運転は専門Owner。3代目はBuyer / Checkout / Payment / 重大Gate等の重大Returnだけ統合。</div></div>
+    <div class="p"><strong>GWR / Game</strong><span class="badge hold">HOLD</span><div class="meta">明示Resumeまたは新しいRevenue EvidenceまでNoiseから外す。</div></div>
+  </div>
+</section>
+
+<section class="section">
+  <h2>毎回の実行Loop</h2>
+  <div class="flow">
+    <span class="step">Current Reality</span><span class="arrow">→</span>
+    <span class="step">Closest Route</span><span class="arrow">→</span>
+    <span class="step">First Broken Stage</span><span class="arrow">→</span>
+    <span class="step">Safe Action</span><span class="arrow">→</span>
+    <span class="step">Direct Readback</span><span class="arrow">→</span>
+    <span class="step">Evidence</span><span class="arrow">→</span>
+    <span class="step">Revenue State</span><span class="arrow">→</span>
+    <span class="step">Next Action</span>
+  </div>
+  <div class="rule danger" style="margin-top:12px"><b>BUILD MOREではない。MOVE MONEY CLOSER。</b><br>説明・整理・設計・監視・Training・UI改善へRevenue Executionから横滑りしない。</div>
+</section>
+
+<section class="section">
+  <h2>Live Current Readback</h2>
+  <div class="sub">既存Operations Monitorの認証キーがブラウザに保存されていれば、同じCurrentを読み込む。ここはRead-only。</div>
+  <div class="actions"><button class="primary" onclick="loadCurrent()">Currentを読む</button><a class="btn" href="index.html">Operationsへ</a></div>
+  <div id="liveState" class="live" style="margin-top:10px"></div>
+  <div id="liveMsg" class="status"></div>
+</section>
+
+<section class="section">
+  <h2>Partner Handoff Builder</h2>
+  <div class="sub">チャットが変わっても「今の話」だけ書けば、Doctrineを崩さず次の3代目へ渡せる。</div>
+  <textarea id="note" placeholder="例：Vectorの2uH95を確認した。Public存在はまだ未確認。次どう動く？"></textarea>
+  <div class="actions">
+    <button class="primary" onclick="copyHandoff()">3代目へ渡す文をコピー</button>
+    <button onclick="saveNote()">このブラウザにメモ保存</button>
+    <a class="btn green" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/">ChatGPTを開く ↗</a>
+  </div>
+  <div id="copyMsg" class="status"></div>
+</section>
+
+<section class="section">
+  <h2>Partner Contract</h2>
+  <div class="rule">長く一緒にやる前提。毎回ゼロから設計しない。Currentを読む。間違えたら正本へ戻る。収益に近いActionは一緒に進める。専門Ownerは尊重する。成果はPayment Realityで見る。</div>
+</section>
+
+<div class="footer">Canonical shell: 3代目 Revenue Partner Cockpit · PAYMENT PHASE · MOVE MONEY CLOSER</div>
+</main>
+
+<script>
+const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const API=BASE+'/api/snapshot';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+document.getElementById('note').value=localStorage.getItem('third_leader_partner_note')||'';
+
+function saveNote(){
+  localStorage.setItem('third_leader_partner_note',document.getElementById('note').value);
+  document.getElementById('copyMsg').textContent='保存しました。';
+}
+async function loadCurrent(){
+  const key=localStorage.getItem('monitor_key')||'';
+  const msg=document.getElementById('liveMsg'),box=document.getElementById('liveState');
+  if(!key){msg.textContent='Operationsで監視キーを接続すると、ここでもCurrentを読めます。';box.innerHTML='';return;}
+  msg.textContent='Currentを読込中…';
+  try{
+    const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'読込失敗');
+    const sel=d.revenue_decision?.selected||null;
+    const rev=d.revenue_summary||d.revenue||{};
+    const cells=[
+      ['Company',d.company_status||d.status||'Current loaded'],
+      ['Closest Route',sel?.project_name||sel?.unit_id||'—'],
+      ['First Broken Stage',sel?.first_broken_stage||'—'],
+      ['Next Outcome',sel?.measurable_outcome||'—']
+    ];
+    box.innerHTML=cells.map(([k,v])=>'<div class="kv"><div class="k">'+esc(k)+'</div><div class="v">'+esc(v)+'</div></div>').join('');
+    msg.textContent='Read-only Current取得済み。Project内部実行は各Owner境界を維持。';
+  }catch(e){msg.textContent='Current読込失敗: '+e.message;box.innerHTML='';}
+}
+function handoffText(){
+  const note=document.getElementById('note').value.trim();
+  return `3代目起動。役割を再解釈しない。
+
+ROLE: REVENUE COMMAND + OWNED REVENUE EXECUTION
+PHASE: PAYMENT PHASE ACTIVE
+NORTH STAR: 月30万円の実Payment / Payout
+
+固定ルール:
+Payment/Payout > Checkout/Contract > Buyer Signal > Qualified Action > Human > Reach。
+自分の通常Revenue Routeは直接実行。
+専門UnitはOwnerを奪わない。
+External Waitなら別の非重複Revenue Routeへ。
+Task DONE / Deploy / HTTP 200 / 記事公開 / Schedule成功をRevenue成功にしない。
+Human=0でProduct改善へ逃げない。
+BUILD MOREではなく MOVE MONEY CLOSER。
+
+実行:
+Direct Readback → Paymentに最も近い既存Route → First Broken Stage 1個 → Safe Action → Direct Readback → Evidence → Revenue State → Next Action。
+
+今回のCurrent / 相談:
+${note||'CurrentをDirect Readbackして最優先Revenue Routeから開始。'}
+
+説明だけで終わらず、安全に実行可能なOwned Revenue Actionがあれば実行まで進める。`;
+}
+async function copyHandoff(){
+  const t=handoffText();
+  try{await navigator.clipboard.writeText(t);document.getElementById('copyMsg').textContent='コピーしました。そのまま次の3代目ページへ貼れます。';}
+  catch(e){document.getElementById('copyMsg').textContent=t;}
+}
+</script>
+</body>
+</html>
