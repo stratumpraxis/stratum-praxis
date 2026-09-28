@@ -18,8 +18,17 @@ button{cursor:pointer;font-weight:800}
 button.primary{background:#174c37;border-color:#2f8f68}
 button:hover{filter:brightness(1.1)}
 .grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px}
-@media(max-width:800px){.grid{grid-template-columns:1fr}}
+.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+@media(max-width:800px){.grid,.action-grid{grid-template-columns:1fr}}
 .card{background:rgba(13,27,45,.94);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:12px}
+.action-card{margin-top:0;border-width:2px}
+.action-card.noaction{border-color:#2f8f68;background:rgba(17,55,42,.72)}
+.action-card.human{border-color:#c98548;background:rgba(62,37,19,.82)}
+.action-card.external{border-color:#7f6a2e;background:rgba(54,48,20,.75)}
+.action-title{font-size:clamp(24px,4vw,38px);font-weight:900;margin-top:5px}
+.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.legend span{border-radius:999px;padding:5px 9px;font-size:11px;border:1px solid var(--line)}
+.legend .l-ok{color:var(--green)} .legend .l-human{color:#ffb36b} .legend .l-wait{color:var(--yellow)}
 .k{color:var(--muted);font-size:12px}
 .v{font-size:24px;font-weight:850;margin-top:4px;overflow-wrap:anywhere}
 .tiny{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
@@ -36,14 +45,33 @@ a{color:var(--blue)}
 <main>
   <div class="k">自分用｜収益回収の現在地</div>
   <h1>収益回収ダッシュボード</h1>
-  <div class="sub">お金になりそうなものを見つける → いちばん入金に近いものを選ぶ → 担当へ渡す → 入金を確認する</div>
+  <div class="sub">「自分が動く必要があるのか」と「外部側を待つだけなのか」を最初に分けて表示します。</div>
 
   <div class="bar">
     <input id="key" type="password" placeholder="接続キー">
     <button id="connectBtn" type="button">接続</button>
-    <button id="runBtn" class="primary" type="button">今いちばん入金に近いものを確認</button>
+    <button id="runBtn" class="primary" type="button">最新状態を確認</button>
   </div>
-  <div id="msg">監視キーを入力してください。</div>
+  <div id="msg">接続キーを入力してください。</div>
+
+  <div class="legend" aria-label="状態の見方">
+    <span class="l-ok">● 操作不要</span>
+    <span class="l-human">● あなたの操作が必要</span>
+    <span class="l-wait">● 外部・AI側の待ち</span>
+  </div>
+
+  <div class="action-grid">
+    <section id="humanCard" class="card action-card noaction">
+      <div class="k">あなたが今やること</div>
+      <div id="humanAction" class="action-title">接続後に判定</div>
+      <div id="humanActionMeta" class="tiny">入金待ちだけなら「操作不要」と表示します。</div>
+    </section>
+    <section id="externalCard" class="card action-card external">
+      <div class="k">外部・AI側で待っていること</div>
+      <div id="externalWait" class="action-title">—</div>
+      <div id="externalWaitMeta" class="tiny"></div>
+    </section>
+  </div>
 
   <div class="grid">
     <section class="card">
@@ -52,7 +80,7 @@ a{color:var(--blue)}
       <div id="selectedMeta" class="tiny"></div>
     </section>
     <section class="card">
-      <div class="k">いま何待ち？</div>
+      <div class="k">収益の現在地</div>
       <div id="state" class="v">—</div>
       <div id="next" class="tiny"></div>
     </section>
