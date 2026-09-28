@@ -89,6 +89,89 @@ function plainNext(state,next){
     .replaceAll('CodeOps','GitHubぽちぽち担当')
     .replaceAll('adjudication wait','判定待ち')
 }
+function snapshotText(d){
+  const parts=[]
+  const add=function(x){
+    if(!x) return
+    if(typeof x==='string'){parts.push(x);return}
+    ;['status','action','state','next_action','title','revenue_name','note','reason'].forEach(function(k){
+      if(x[k]!=null) parts.push(String(x[k]))
+    })
+  }
+  add(d&&d.selected)
+  add(d&&d.canonical_state)
+  ;(d&&d.closest_to_cash||[]).forEach(add)
+  ;(d&&d.market_candidates||[]).forEach(add)
+  ;(d&&d.latest_dispatches||[]).forEach(add)
+  return parts.join(' ')
+}
+function humanGateSummary(d){
+  const s=snapshotText(d)
+  if(/WAITING_HUMAN_FORK|HUMAN_GATE[^\n]*FORK|FORK_REQUIRED|CREATE[^\n]*FORK/i.test(s)){
+    return {
+      needed:true,
+      title:'GitHubでForkが必要',
+      meta:'入金確認とは別の操作です。対象Repoを1回Forkすれば、担当側で続きへ進めます。'
+    }
+  }
+  if(/PAYOUT_DESTINATION|PAYMENT_DESTINATION|WALLET[^\n]*(REQUIRED|NEEDED)|DESTINATION[^\n]*(REQUIRED|NEEDED)/i.test(s)){
+    return {
+      needed:true,
+      title:'送金先の確認が必要',
+      meta:'これは外部の入金待ちとは別です。送金先の入力・確認だけがHuman Gateです。'
+    }
+  }
+  if(/HUMAN_GATE|WAITING_HUMAN|MANUAL_ACTION|OWNER_ACTION|APPROVAL_REQUIRED|REQUIRES_APPROVAL|KYC_REQUIRED|LOGIN_REQUIRED/i.test(s)){
+    return {
+      needed:true,
+      title:'あなたの操作が必要',
+      meta:'Human Gateがあります。下の収益一覧の技術詳細で対象を確認できます。'
+    }
+  }
+  return {
+    needed:false,
+    title:'操作不要',
+    meta:'今はあなたが押すものはありません。外部側の反映や入金を待つだけです。'
+  }
+}
+function externalWaitSummary(d){
+  const list=[]
+  if(d&&d.selected) list.push(d.selected)
+  ;(d&&d.closest_to_cash||[]).forEach(function(x){list.push(x)})
+  const x=list.find(function(v){
+    return /PAYOUT_PENDING|PAYMENT_PENDING|EXTERNAL_WAIT|SUBMITTED|ACCEPTED_NOT_PAID|WAIT/i.test(String(v&&v.status||'')+' '+String(v&&v.action||''))
+  })
+  if(x){
+    const amount=x.amount||''
+    const status=plainStatus(x.status)
+    return {
+      title:(amount?amount+'・':'')+status,
+      meta:plainName(x.revenue_name||x.title||'')+(x.action?' ｜ '+plainAction(x.action):'')
+    }
+  }
+  const cs=d&&d.canonical_state||{}
+  if(cs.state){
+    return {
+      title:plainState(cs.state),
+      meta:plainNext(cs.state,cs.next_action)
+    }
+  }
+  return {
+    title:'外部待ちはありません',
+    meta:'新しい報酬候補または次のRevenue Actionを確認します。'
+  }
+}
+function renderActionSummary(d){
+  const h=humanGateSummary(d)
+  const e=externalWaitSummary(d)
+  const humanCard=$('humanCard')
+  humanCard.className='card action-card '+(h.needed?'human':'noaction')
+  $('humanAction').textContent=h.title
+  $('humanActionMeta').textContent=h.meta
+  $('externalCard').className='card action-card external'
+  $('externalWait').textContent=e.title
+  $('externalWaitMeta').textContent=e.meta
+}
 function classFor(status){
   const s=String(status||'')
   if(/CONFIRMED|DONE|ACTIVE/i.test(s)) return 'ok'
@@ -129,6 +212,7 @@ async function load(){
     $('selectedMeta').textContent=s?(plainName(s.revenue_name||s.title||'')+' → '+plainRoute(s.route)):'新しい報酬候補を自動で探します'
     $('state').textContent=plainState(d.canonical_state&&d.canonical_state.state)
     $('next').textContent=plainNext(d.canonical_state&&d.canonical_state.state,d.canonical_state&&d.canonical_state.next_action)
+    renderActionSummary(d)
 
     const sourceNames={
       GMAIL_REVENUE:'メールの報酬・入金情報',
@@ -164,6 +248,11 @@ async function load(){
     setMessage('最新状態 '+new Date(d.generated_at).toLocaleString('ja-JP'))
   }catch(e){
     setMessage('読込エラー: '+(e&&e.message?e.message:String(e)))
+    if($('humanAction')){
+      $('humanAction').textContent='状態を確認できません'
+      $('humanActionMeta').textContent='接続キーと通信状態を確認してください。'
+      $('humanCard').className='card action-card human'
+    }
   }
 }
 function connect(){
@@ -187,7 +276,9 @@ document.addEventListener('DOMContentLoaded',function(){
   $('key').value=storedKey()
   $('connectBtn').addEventListener('click',connect)
   $('runBtn').addEventListener('click',runNow)
-  setMessage('画面準備完了')
+  setMessage('画面準備完了。定期更新はせず、操作時と画面復帰時だけ確認します。')
   if($('key').value) load()
-  setInterval(function(){if($('key').value)load()},15000)
+  document.addEventListener('visibilitychange',function(){
+    if(document.visibilityState==='visible'&&$('key').value) load()
+  })
 })
