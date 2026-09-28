@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-ai-agent-cost-roi-20260929",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Retries + human review can erase AI agent savings.",
+  "hook": "Retry / review cost",
+  "cta": "Free cost & ROI calculator",
+  "destination": "https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=bluesky&utm_medium=social&utm_campaign=cost_roi_acquisition_20260929&utm_content=retry_review&route_id=stratum_bluesky_cost_roi_20260929",
+  "status": "QUEUED"
+}
