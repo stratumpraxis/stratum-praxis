@@ -75,44 +75,60 @@
       "kind": "FOLLOWUP",
       "externalWrite": false
     },
-    "nextAutomaticAction": "Coram AI follow-up → External Send Executor",
-    "currentBlocker": "External Send Executor not attached"
+    "nextAutomaticAction": "Reply / Buyer Signal monitoring; MetLife remains READY until next daily outbound window",
+    "currentBlocker": "No Buyer Signal yet; external-send executor is still not attached for unattended send",
+    "todayExecution": {
+      "followupSent": [
+        "Coram AI"
+      ],
+      "initialSent": [
+        "SIXT",
+        "ServiceNow"
+      ],
+      "newOutboundCap": "2/2 REACHED",
+      "held": [
+        "MetLife"
+      ],
+      "buyerSignal": 0,
+      "checkout": 0,
+      "payment": 0
+    }
   },
   "kpis": {
     "paymentConfirmed": 0,
     "checkoutConfirmed": 0,
     "buyerSignals": 0,
     "repliesFromTrackedB2B": 0,
-    "outboundDraftsReady": 4
+    "outboundDraftsReady": 1
   },
   "routes": [
     {
       "company": "SIXT",
-      "state": "DRAFT_READY",
+      "state": "SENT_WAIT",
       "lane": "Corporate Procurement",
       "asset": "AI/SaaS Spend Decision",
-      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
+      "next": "WAIT_FOR_EXTERNAL_REPLY"
     },
     {
       "company": "Coram AI",
-      "state": "FOLLOWUP_DRAFT_READY",
+      "state": "FOLLOWUP_SENT_WAIT",
       "lane": "AI Spend Efficiency",
       "asset": "AI/SaaS Spend Decision",
-      "next": "OUTBOUND_ELIGIBLE / EXTERNAL_SEND_GATE"
+      "next": "WAIT_FOR_EXTERNAL_REPLY"
     },
     {
       "company": "ServiceNow",
-      "state": "DRAFT_READY",
+      "state": "SENT_WAIT",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
+      "next": "WAIT_FOR_EXTERNAL_REPLY"
     },
     {
       "company": "MetLife",
       "state": "DRAFT_READY",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
+      "next": "HELD_BY_DAILY_NEW_OUTBOUND_CAP"
     },
     {
       "company": "Xsolla",
