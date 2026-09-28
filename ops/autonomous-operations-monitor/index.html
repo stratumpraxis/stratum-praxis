@@ -89,8 +89,8 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   </div>
   <div class="commandGrid">
     <div class="cmdCard recommended">
-      <div class="cmdTitle">⭐ 3代目リーダー｜全社Revenue判断 / Routing</div>
-      <div class="cmdDesc">全社Currentを読み、Revenue優先順位・Correct Owner Routing・重大State判断を担当。独立Projectは各Ownerへ任せ、Routing後は内部実行に入らない。</div>
+      <div class="cmdTitle">⭐ 3代目リーダー｜DIB Revenue Brain / Next Best Action</div>
+      <div class="cmdDesc">Market / Current / Revenue Evidenceを読み、Best Revenue Fit・Revenue Priority・Next Best Actionを決定。正しいOwnerへ渡し、Project内部は任せつつ次のRevenue Opportunityを探し続ける。</div>
       <a class="cmdLink leader" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/c/6ab8676a-11d8-83e9-8b7d-f72f3e425f21">3代目リーダーを開く ↗</a>
     </div>
 
@@ -148,7 +148,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
-    <div><h2>Current Closest-to-Cash Commercial Route</h2><div class="hint">ここは3代目が所有する中央Commercial判断だけ。独立Project Revenueは各Project Ownerへ任せ、Revenue Pump（Direct Revenue専用）とも混ぜない。</div></div>
+    <div><h2>Current Closest-to-Cash Commercial Route</h2><div class="hint">ここは3代目のRevenue Brain領域。独立Projectの内部実行は各Ownerへ任せるが、会社全体のRevenue Opportunity選定・Priority・Next Best Actionは3代目が継続する。Revenue Pump（Direct Revenue専用）とは分離。</div></div>
     <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
   </div>
   <div class="revenueOp">
@@ -179,7 +179,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section"><div class="sectionHead"><div><h2>重要異常</h2><div class="hint">Clock停止 / Failedだけ赤。通常Blocker・HOLD・Human Gateは赤にしません。</div></div></div><div id="criticalList"></div></section>
 
-<section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">参照専用。独立Projectの局所実行は各Ownerに任せ、3代目はここから介入しない。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
+<section class="section" id="projectsSection"><div class="sectionHead"><div><h2>Projectごとの現在地</h2><div class="hint">参照専用。独立Projectの局所実行は各Ownerに任せる。3代目はProject内部へ介入せず、このEvidenceを会社全体のPriority / Next Best Action判断に使う。</div></div><div id="projectCount" class="hint"></div></div><div id="projects" class="projects"></div><div id="projectPager" class="pager"></div></section>
 
 <section class="section"><div class="sectionHead"><div><h2>実際に動いた履歴</h2><div class="hint">Task単位。起動→実行→完了の証拠として見る。</div></div><div class="hint">15秒ごと自動更新</div></div><div id="history" class="history"></div></section>
 <div class="hint" style="text-align:center;margin-top:16px">Monitor Canonical: company-monitor v36 · Commercial Revenue Focus · Winner Reproduction / Human Acquisition / Payment Evidence</div>
@@ -217,7 +217,7 @@ async function runControl(actor,unitId,btn,msgId='controlMsg'){
 }
 async function pochi(){
   const m=$('revOpMsg');
-  if(m)m.textContent='中央Commercial判断だけ3代目リーダーへ接続します。独立Project Revenueは各Ownerへ任せます。';
+  if(m)m.textContent='会社全体のCommercial Priority / Next Best Actionは3代目リーダーへ接続します。独立Projectの内部実行は各Ownerへ任せます。';
   window.open('https://chatgpt.com/c/6ab8676a-11d8-83e9-8b7d-f72f3e425f21','_blank','noopener');
 }
 async function runSafeAction(action,project,signalKey,btn){
