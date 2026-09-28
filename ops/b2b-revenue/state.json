@@ -1,7 +1,7 @@
 {
   "updatedAt": "2026-09-28",
   "project": "Stratum Praxis",
-  "mode": "B2B Revenue Operations",
+  "mode": "B2B Revenue Automation",
   "revenuePriority": [
     "PAYMENT",
     "CHECKOUT",
@@ -29,7 +29,54 @@
     "replyStop": "FOLLOWUP_REQUIRES_NO_REPLY_VERIFIED",
     "followupLimit": 1,
     "maxDailyNewOutbound": 2,
-    "safety": "QUALIFIED_QUEUE_ONLY"
+    "safety": "QUALIFIED_QUEUE_ONLY",
+    "runtimeStages": [
+      {
+        "name": "State Core",
+        "status": "ACTIVE",
+        "detail": "Canonical current / evidence"
+      },
+      {
+        "name": "Self Scheduler V4",
+        "status": "ACTIVE",
+        "detail": "60m B2B guard wake"
+      },
+      {
+        "name": "Private Queue",
+        "status": "ACTIVE",
+        "detail": "4 qualified outbound items"
+      },
+      {
+        "name": "Outbound Guard",
+        "status": "VERIFIED",
+        "detail": "Duplicate / cap / follow-up guard"
+      },
+      {
+        "name": "External Send",
+        "status": "BLOCKED",
+        "detail": "Executor not attached"
+      },
+      {
+        "name": "Reply Readback",
+        "status": "ARMED",
+        "detail": "Starts after first automated send"
+      }
+    ],
+    "queue": {
+      "total": 4,
+      "initialReady": 3,
+      "followupReady": 1
+    },
+    "lastVerifiedRun": {
+      "taskId": "98f8be53-3f76-4ab1-8308-20d36d86557c",
+      "status": "DONE",
+      "outcome": "OUTBOUND_ELIGIBLE",
+      "company": "Coram AI",
+      "kind": "FOLLOWUP",
+      "externalWrite": false
+    },
+    "nextAutomaticAction": "Coram AI follow-up → External Send Executor",
+    "currentBlocker": "External Send Executor not attached"
   },
   "kpis": {
     "paymentConfirmed": 0,
