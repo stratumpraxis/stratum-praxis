@@ -10,23 +10,26 @@
     "HUMAN",
     "REACH"
   ],
-  "firstBrokenStage": "OUTBOUND_WRITER_ADAPTER",
+  "firstBrokenStage": "EXTERNAL_SEND_EXECUTION_GATE",
   "automation": {
     "engine": "ORD Automation Core",
-    "canonicalArchitecture": "STATE CORE → 24H Autonomy Core → ORD → Stratum B2B Writer Adapter → Gmail → Readback",
+    "canonicalArchitecture": "STATE CORE → Self Scheduler V4 → Stratum B2B Guard Adapter → External Send → Readback",
     "makeComRole": "SECONDARY_EVENT_ROUTER_ONLY",
-    "makeComScenarios": [
-      "24H | Project Nerve Intake",
-      "MARKET | Revenue Pump Intake"
-    ],
-    "directMakeGmailOAuth": "NOT_REQUIRED_AS_PRIMARY",
-    "writerAdapter": "NOT_ATTACHED",
-    "autoSend": "BLOCKED_BY_WRITER_ADAPTER",
-    "duplicateGuard": "REQUIRED",
-    "replyStop": "REQUIRED",
+    "guardAdapter": "VERIFIED_ACTIVE",
+    "guardFunction": "stratum-b2b-outbound-guard",
+    "projectWorkerVersion": 7,
+    "schedule": "sched-v4-stratum-b2b-guard / 60m / ACTIVE",
+    "privateQueue": 4,
+    "lastGuardOutcome": "OUTBOUND_ELIGIBLE",
+    "lastEligibleCompany": "Coram AI",
+    "lastEligibleKind": "FOLLOWUP",
+    "externalWriter": "NOT_ATTACHED",
+    "autoSend": "BLOCKED_AT_EXTERNAL_SEND",
+    "duplicateGuard": "VERIFIED",
+    "replyStop": "FOLLOWUP_REQUIRES_NO_REPLY_VERIFIED",
     "followupLimit": 1,
     "maxDailyNewOutbound": 2,
-    "safety": "QUALIFIED_DRAFTS_ONLY"
+    "safety": "QUALIFIED_QUEUE_ONLY"
   },
   "kpis": {
     "paymentConfirmed": 0,
@@ -41,28 +44,28 @@
       "state": "DRAFT_READY",
       "lane": "Corporate Procurement",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
+      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
     },
     {
       "company": "Coram AI",
       "state": "FOLLOWUP_DRAFT_READY",
       "lane": "AI Spend Efficiency",
       "asset": "AI/SaaS Spend Decision",
-      "next": "ONE_FINAL_FOLLOWUP_AFTER_WRITER_ADAPTER"
+      "next": "OUTBOUND_ELIGIBLE / EXTERNAL_SEND_GATE"
     },
     {
       "company": "ServiceNow",
       "state": "DRAFT_READY",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
+      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
     },
     {
       "company": "MetLife",
       "state": "DRAFT_READY",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
+      "next": "PRIVATE_QUEUE_READY / GUARD_ACTIVE"
     },
     {
       "company": "Xsolla",
