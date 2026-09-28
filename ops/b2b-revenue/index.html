@@ -15,8 +15,8 @@ a{color:inherit}.wrap{max-width:1440px;margin:auto;padding:26px}.top{display:fle
 .flow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-top:13px}.step{border:1px solid var(--line);border-radius:12px;padding:11px;background:#071a22;min-height:106px;position:relative}.step:not(:last-child):after{content:"→";position:absolute;right:-9px;top:38px;color:var(--cyan);font-weight:900}.step b{display:block;font-size:10px}.step span{display:block;font-size:9px;color:var(--muted);margin-top:5px}.step.active{border-color:rgba(255,184,77,.6);box-shadow:inset 0 0 0 1px rgba(255,184,77,.12)}.step.done{border-color:rgba(73,229,150,.35)}
 .two{grid-template-columns:1.35fr .65fr}.tableWrap{overflow:auto;margin-top:11px}table{width:100%;border-collapse:collapse;min-width:880px}th,td{border-bottom:1px solid #123441;padding:9px 8px;text-align:left;font-size:10px;vertical-align:top}th{color:var(--muted);font-weight:850}.state{font-weight:900}.state.DRAFT_READY,.state.FOLLOWUP_DRAFT_READY{color:var(--amber)}.state.SENT_WAIT,.state.FOLLOWUP_SENT_WAIT,.state.LINKEDIN_WAIT{color:var(--cyan)}
 .assetGrid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:11px}.asset{border:1px solid var(--line);border-radius:11px;padding:11px;background:#071a22}.asset b{font-size:11px}.asset small{display:block;color:var(--muted);margin-top:4px}
-.rule{border-left:3px solid var(--green);padding:7px 10px;background:rgba(73,229,150,.05);margin-top:8px;font-size:10px;color:#cfe9df}.gate{border:1px solid rgba(255,184,77,.35);background:rgba(255,184,77,.07);padding:13px;border-radius:12px;margin-top:11px}.gate b{color:var(--amber)}.footer{font-size:9px;color:#617f89;text-align:center;margin:18px 0 4px}
-@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(2,1fr)}.step:after{display:none}.two{grid-template-columns:1fr}}@media(max-width:600px){.wrap{padding:16px}.title{font-size:25px}.kpis{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}}
+.rule{border-left:3px solid var(--green);padding:7px 10px;background:rgba(73,229,150,.05);margin-top:8px;font-size:10px;color:#cfe9df}.gate{border:1px solid rgba(255,184,77,.35);background:rgba(255,184,77,.07);padding:13px;border-radius:12px;margin-top:11px}.gate b{color:var(--amber)}.runtime{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;margin-top:12px}.runtimeNode{border:1px solid var(--line);border-radius:12px;padding:12px;background:#071a22;min-height:105px}.runtimeNode b{display:block;font-size:10px}.runtimeNode small{display:block;color:var(--muted);font-size:9px;margin-top:6px}.runtimeNode.ok{border-color:rgba(73,229,150,.35)}.runtimeNode.warn{border-color:rgba(255,184,77,.55)}.runtimeNode.info{border-color:rgba(41,214,255,.35)}.runtimeNode .rstate{font-size:11px;font-weight:950;margin-top:7px}.nowBox{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}.nowItem{border:1px solid var(--line);border-radius:11px;padding:11px;background:#071a22}.nowItem strong{display:block;font-size:11px}.nowItem span{display:block;font-size:10px;color:var(--muted);margin-top:5px}.footer{font-size:9px;color:#617f89;text-align:center;margin:18px 0 4px}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(2,1fr)}.runtime{grid-template-columns:repeat(2,1fr)}.nowBox{grid-template-columns:1fr}.step:after{display:none}.two{grid-template-columns:1fr}}@media(max-width:600px){.wrap{padding:16px}.title{font-size:25px}.kpis{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -24,8 +24,8 @@ a{color:inherit}.wrap{max-width:1440px;margin:auto;padding:26px}.top{display:fle
   <div class="top">
     <div>
       <div class="eyebrow">STRATUM PRAXIS</div>
-      <div class="title">B2B Revenue Ops</div>
-      <div class="sub">候補数や送信数ではなく、External Human → Buyer Signal → Checkout → Payment を実Evidenceで前進させるためのCurrent Reality画面。</div>
+      <div class="title">B2B Revenue Automation</div>
+      <div class="sub">Current Reality・Private Queue・Guard・Scheduler・Revenue Stageを1画面で確認するStratum B2B自動収益運転面。</div>
     </div>
     <div>
       <div class="actions">
@@ -36,6 +36,18 @@ a{color:inherit}.wrap{max-width:1440px;margin:auto;padding:26px}.top{display:fle
       <div class="stamp" id="stamp">loading…</div>
     </div>
   </div>
+
+  <section class="panel">
+    <div class="head">
+      <div><h2>Automation Runtime</h2><div class="hint">自社ORD / Self Schedulerを正本にしたB2B自動化Current。</div></div>
+      <span class="badge info" id="runtimeBadge">—</span>
+    </div>
+    <div class="runtime" id="runtime"></div>
+    <div class="nowBox">
+      <div class="nowItem"><strong>Next Automatic Action</strong><span id="nextAuto">—</span></div>
+      <div class="nowItem"><strong>Current Blocker</strong><span id="currentBlocker">—</span></div>
+    </div>
+  </section>
 
   <section class="grid kpis" id="kpis"></section>
 
@@ -93,6 +105,14 @@ async function loadState(){
     document.getElementById('stamp').textContent='Updated '+s.updatedAt+' · '+s.project;
     document.getElementById('broken').textContent=s.firstBrokenStage;
     document.getElementById('routeCount').textContent=s.routes.length+' routes';
+    const stages=s.automation.runtimeStages||[];
+    document.getElementById('runtimeBadge').textContent=(s.automation.lastGuardOutcome||'UNKNOWN')+' · '+(s.automation.queue?.total||0)+' queued';
+    document.getElementById('runtime').innerHTML=stages.map(x=>{
+      const cls=x.status==='ACTIVE'||x.status==='VERIFIED'?'ok':x.status==='BLOCKED'?'warn':'info';
+      return '<div class="runtimeNode '+cls+'"><b>'+x.name+'</b><div class="rstate '+(cls==='ok'?'green':cls==='warn'?'amber':'cyan')+'">'+x.status+'</div><small>'+x.detail+'</small></div>';
+    }).join('');
+    document.getElementById('nextAuto').textContent=s.automation.nextAutomaticAction||'—';
+    document.getElementById('currentBlocker').textContent=s.automation.currentBlocker||'—';
     const k=[
       ['Payment',s.kpis.paymentConfirmed,'green','Confirmed only'],
       ['Checkout',s.kpis.checkoutConfirmed,'cyan','Confirmed only'],
@@ -103,7 +123,7 @@ async function loadState(){
     document.getElementById('kpis').innerHTML=k.map(x=>'<div class="card"><div class="label">'+x[0]+'</div><div class="num '+x[2]+'">'+x[1]+'</div><div class="meta">'+x[3]+'</div></div>').join('');
     document.getElementById('routes').innerHTML=s.routes.map(x=>'<tr><td><b>'+x.company+'</b></td><td class="state '+x.state+'">'+x.state+'</td><td>'+x.lane+'</td><td>'+x.asset+'</td><td>'+x.next+'</td></tr>').join('');
     document.getElementById('autoState').textContent=s.automation.autoSend;
-    document.getElementById('gate').innerHTML='<b>Writer Adapter: '+s.automation.writerAdapter+'</b><div class="meta">Primary: '+s.automation.engine+'<br>Architecture: '+s.automation.canonicalArchitecture+'<br>make.com: '+s.automation.makeComRole+'<br>Direct Make Gmail OAuth: '+s.automation.directMakeGmailOAuth+'<br>Daily new outbound: max '+s.automation.maxDailyNewOutbound+'<br>Follow-up limit: '+s.automation.followupLimit+'<br>Duplicate guard: '+s.automation.duplicateGuard+'<br>Reply stop: '+s.automation.replyStop+'</div>';
+    document.getElementById('gate').innerHTML='<b>External Writer: '+s.automation.externalWriter+'</b><div class="meta">Primary: '+s.automation.engine+'<br>Architecture: '+s.automation.canonicalArchitecture+'<br>Guard: '+s.automation.guardAdapter+' / '+s.automation.guardFunction+'<br>Schedule: '+s.automation.schedule+'<br>Private queue: '+(s.automation.queue?.total||s.automation.privateQueue||0)+'<br>Last eligible: '+s.automation.lastEligibleCompany+' / '+s.automation.lastEligibleKind+'<br>Daily new outbound: max '+s.automation.maxDailyNewOutbound+'<br>Follow-up limit: '+s.automation.followupLimit+'<br>Duplicate guard: '+s.automation.duplicateGuard+'<br>Reply stop: '+s.automation.replyStop+'</div>';
     document.getElementById('assets').innerHTML=s.assets.map(a=>'<div class="asset"><b>'+a.name+'</b><small>'+a.type+(a.price?' · '+a.price:'')+(a.url?' · <a href="'+a.url+'">open</a>':'')+'</small></div>').join('');
     document.getElementById('rules').innerHTML=s.rules.map(x=>'<div class="rule">'+x+'</div>').join('');
   }catch(e){
