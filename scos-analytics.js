@@ -11,7 +11,7 @@
   const SOCIAL_HOSTS = ['x.com','twitter.com','instagram.com','tiktok.com','linkedin.com','facebook.com','threads.net','bsky.app'];
   const AGENT_LAB_ENTRY = '/agent-lab/?utm_source=stratumpraxis&utm_medium=owned_network&utm_campaign=agent_lab_entry';
   const FREE_TOOL_PATHS = new Set([
-    '/ai-saas-waste-calculator.html','/ai-saas-spend-audit-checklist.html','/b2b/','/ai-agent-economics-calculator.html','/agent-control-auditor.html',
+    '/ai-saas-waste-calculator.html','/ai-saas-spend-audit-checklist.html','/b2b/','/ai-agent-economics-calculator.html','/ai-agent-cost-roi-calculator.html','/agent-control-auditor.html',
     '/ai-monetization-reality-check.html','/ai-income-claim-checklist.html','/money-resilience/','/72-hour-household-readiness/'
   ]);
   const PAID_PRODUCT_PATHS = new Set([
