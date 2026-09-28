@@ -2,15 +2,16 @@
   "name": "Stratum B2B Revenue Automation Contract",
   "version": "2026-09-28",
   "scope": "Qualified outbound only",
-  "trigger": "Scheduled Make scenario after Gmail OAuth is healthy",
-  "sourceOfTruth": "Stratum Gmail + ops/b2b-revenue/state.json",
+  "trigger": "Company State / 24H Autonomy dispatch into ORD Automation Core. make.com is secondary event routing only.",
+  "sourceOfTruth": "Company State Core + Stratum Gmail evidence + ops/b2b-revenue/state.json",
   "sendEligibility": [
     "route.state is DRAFT_READY or FOLLOWUP_DRAFT_READY",
     "recipient/company has no reply since latest outbound",
     "recipient/company has no duplicate outbound in protected window",
     "followup_count <= 1",
     "daily_new_outbound_count < 2",
-    "asset already exists and CTA is live"
+    "asset already exists and CTA is live",
+    "ORD writer adapter is VERIFIED and project-owned"
   ],
   "stopConditions": [
     "reply detected",
@@ -18,7 +19,7 @@
     "unsubscribe or explicit no-contact",
     "payment or contract signal detected",
     "duplicate candidate detected",
-    "Gmail OAuth unhealthy",
+    "outbound writer adapter unhealthy or missing",
     "state contradiction or unknown recipient identity"
   ],
   "stateTransitions": {
@@ -36,5 +37,14 @@
     "counting sent email as Buyer Signal",
     "changing price/product/checkout to create activity",
     "publishing private recipient email addresses or draft IDs"
-  ]
+  ],
+  "runtime": {
+    "primary": "ORD Automation Core",
+    "secondary": [
+      "24H | Project Nerve Intake",
+      "MARKET | Revenue Pump Intake"
+    ],
+    "makeComPolicy": "Thin event-driven router only; never the permanent B2B loop.",
+    "outboundWriter": "Stratum-owned B2B writer adapter (currently not attached)"
+  }
 }
