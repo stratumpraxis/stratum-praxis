@@ -10,11 +10,18 @@
     "HUMAN",
     "REACH"
   ],
-  "firstBrokenStage": "OUTBOUND_SEND_GATE",
+  "firstBrokenStage": "OUTBOUND_WRITER_ADAPTER",
   "automation": {
-    "engine": "Make + Stratum Gmail",
-    "gmailOAuth": "PENDING",
-    "autoSend": "BLOCKED_BY_OAUTH",
+    "engine": "ORD Automation Core",
+    "canonicalArchitecture": "STATE CORE → 24H Autonomy Core → ORD → Stratum B2B Writer Adapter → Gmail → Readback",
+    "makeComRole": "SECONDARY_EVENT_ROUTER_ONLY",
+    "makeComScenarios": [
+      "24H | Project Nerve Intake",
+      "MARKET | Revenue Pump Intake"
+    ],
+    "directMakeGmailOAuth": "NOT_REQUIRED_AS_PRIMARY",
+    "writerAdapter": "NOT_ATTACHED",
+    "autoSend": "BLOCKED_BY_WRITER_ADAPTER",
     "duplicateGuard": "REQUIRED",
     "replyStop": "REQUIRED",
     "followupLimit": 1,
@@ -34,28 +41,28 @@
       "state": "DRAFT_READY",
       "lane": "Corporate Procurement",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
     },
     {
       "company": "Coram AI",
       "state": "FOLLOWUP_DRAFT_READY",
       "lane": "AI Spend Efficiency",
       "asset": "AI/SaaS Spend Decision",
-      "next": "ONE_FINAL_FOLLOWUP_AFTER_GMAIL_OAUTH"
+      "next": "ONE_FINAL_FOLLOWUP_AFTER_WRITER_ADAPTER"
     },
     {
       "company": "ServiceNow",
       "state": "DRAFT_READY",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
     },
     {
       "company": "MetLife",
       "state": "DRAFT_READY",
       "lane": "FinOps / AI Cost Governance",
       "asset": "AI/SaaS Spend Decision",
-      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+      "next": "AUTO_SEND_AFTER_WRITER_ADAPTER"
     },
     {
       "company": "Xsolla",

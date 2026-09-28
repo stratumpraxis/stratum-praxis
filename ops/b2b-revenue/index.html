@@ -70,7 +70,7 @@ a{color:inherit}.wrap{max-width:1440px;margin:auto;padding:26px}.top{display:fle
     </div>
 
     <div class="panel">
-      <div class="head"><div><h2>Automation Gate</h2><div class="hint">Make + Stratum Gmail</div></div><span class="badge warn" id="autoState">—</span></div>
+      <div class="head"><div><h2>Automation Gate</h2><div class="hint">ORD Automation Core · make.com = secondary event router</div></div><span class="badge warn" id="autoState">—</span></div>
       <div class="gate" id="gate"></div>
       <div class="assetGrid" id="assets"></div>
     </div>
@@ -103,7 +103,7 @@ async function loadState(){
     document.getElementById('kpis').innerHTML=k.map(x=>'<div class="card"><div class="label">'+x[0]+'</div><div class="num '+x[2]+'">'+x[1]+'</div><div class="meta">'+x[3]+'</div></div>').join('');
     document.getElementById('routes').innerHTML=s.routes.map(x=>'<tr><td><b>'+x.company+'</b></td><td class="state '+x.state+'">'+x.state+'</td><td>'+x.lane+'</td><td>'+x.asset+'</td><td>'+x.next+'</td></tr>').join('');
     document.getElementById('autoState').textContent=s.automation.autoSend;
-    document.getElementById('gate').innerHTML='<b>Current: '+s.automation.gmailOAuth+'</b><div class="meta">Engine: '+s.automation.engine+'<br>Daily new outbound: max '+s.automation.maxDailyNewOutbound+'<br>Follow-up limit: '+s.automation.followupLimit+'<br>Duplicate guard: '+s.automation.duplicateGuard+'<br>Reply stop: '+s.automation.replyStop+'</div>';
+    document.getElementById('gate').innerHTML='<b>Writer Adapter: '+s.automation.writerAdapter+'</b><div class="meta">Primary: '+s.automation.engine+'<br>Architecture: '+s.automation.canonicalArchitecture+'<br>make.com: '+s.automation.makeComRole+'<br>Direct Make Gmail OAuth: '+s.automation.directMakeGmailOAuth+'<br>Daily new outbound: max '+s.automation.maxDailyNewOutbound+'<br>Follow-up limit: '+s.automation.followupLimit+'<br>Duplicate guard: '+s.automation.duplicateGuard+'<br>Reply stop: '+s.automation.replyStop+'</div>';
     document.getElementById('assets').innerHTML=s.assets.map(a=>'<div class="asset"><b>'+a.name+'</b><small>'+a.type+(a.price?' · '+a.price:'')+(a.url?' · <a href="'+a.url+'">open</a>':'')+'</small></div>').join('');
     document.getElementById('rules').innerHTML=s.rules.map(x=>'<div class="rule">'+x+'</div>').join('');
   }catch(e){
