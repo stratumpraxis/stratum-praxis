@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>Stratum B2B Revenue Ops</title>
+<style>
+:root{--bg:#041016;--panel:#081b23;--panel2:#0b2430;--line:#173b48;--text:#eefbff;--muted:#8aaab5;--cyan:#29d6ff;--green:#49e596;--amber:#ffb84d;--red:#ff7380;--blue:#7bb7ff}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 80% -10%,rgba(41,214,255,.12),transparent 30%),radial-gradient(circle at 0 0,rgba(73,229,150,.09),transparent 30%),var(--bg);color:var(--text);font:14px/1.5 Inter,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+a{color:inherit}.wrap{max-width:1440px;margin:auto;padding:26px}.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap}.eyebrow{font-size:11px;color:var(--green);font-weight:900;letter-spacing:.12em}.title{font-size:31px;font-weight:950;letter-spacing:-.04em;margin-top:4px}.sub{font-size:12px;color:var(--muted);margin-top:6px;max-width:760px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);background:#0a202a;color:var(--text);padding:9px 12px;border-radius:10px;font-weight:800;cursor:pointer}.btn:hover{border-color:#2d6c81}.stamp{font-size:10px;color:var(--muted);margin-top:8px;text-align:right}
+.grid{display:grid;gap:10px}.kpis{grid-template-columns:repeat(5,minmax(0,1fr));margin-top:20px}.card,.panel{border:1px solid var(--line);background:linear-gradient(180deg,rgba(11,36,48,.96),rgba(6,24,31,.97));border-radius:15px}.card{padding:14px;min-height:104px}.label{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase}.num{font-size:26px;font-weight:950;margin-top:8px}.green{color:var(--green)}.cyan{color:var(--cyan)}.amber{color:var(--amber)}.red{color:var(--red)}.meta{font-size:10px;color:var(--muted);margin-top:5px}
+.panel{padding:16px;margin-top:11px}.head{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.head h2{font-size:15px;margin:0}.hint{font-size:10px;color:var(--muted);margin-top:3px}.badge{display:inline-flex;border-radius:999px;border:1px solid var(--line);padding:4px 8px;font-size:9px;font-weight:900}.badge.ok{color:var(--green);border-color:rgba(73,229,150,.35);background:rgba(73,229,150,.08)}.badge.warn{color:var(--amber);border-color:rgba(255,184,77,.35);background:rgba(255,184,77,.08)}.badge.info{color:var(--cyan);border-color:rgba(41,214,255,.3);background:rgba(41,214,255,.07)}
+.flow{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;margin-top:13px}.step{border:1px solid var(--line);border-radius:12px;padding:11px;background:#071a22;min-height:106px;position:relative}.step:not(:last-child):after{content:"→";position:absolute;right:-9px;top:38px;color:var(--cyan);font-weight:900}.step b{display:block;font-size:10px}.step span{display:block;font-size:9px;color:var(--muted);margin-top:5px}.step.active{border-color:rgba(255,184,77,.6);box-shadow:inset 0 0 0 1px rgba(255,184,77,.12)}.step.done{border-color:rgba(73,229,150,.35)}
+.two{grid-template-columns:1.35fr .65fr}.tableWrap{overflow:auto;margin-top:11px}table{width:100%;border-collapse:collapse;min-width:880px}th,td{border-bottom:1px solid #123441;padding:9px 8px;text-align:left;font-size:10px;vertical-align:top}th{color:var(--muted);font-weight:850}.state{font-weight:900}.state.DRAFT_READY,.state.FOLLOWUP_DRAFT_READY{color:var(--amber)}.state.SENT_WAIT,.state.FOLLOWUP_SENT_WAIT,.state.LINKEDIN_WAIT{color:var(--cyan)}
+.assetGrid{display:grid;grid-template-columns:1fr;gap:8px;margin-top:11px}.asset{border:1px solid var(--line);border-radius:11px;padding:11px;background:#071a22}.asset b{font-size:11px}.asset small{display:block;color:var(--muted);margin-top:4px}
+.rule{border-left:3px solid var(--green);padding:7px 10px;background:rgba(73,229,150,.05);margin-top:8px;font-size:10px;color:#cfe9df}.gate{border:1px solid rgba(255,184,77,.35);background:rgba(255,184,77,.07);padding:13px;border-radius:12px;margin-top:11px}.gate b{color:var(--amber)}.footer{font-size:9px;color:#617f89;text-align:center;margin:18px 0 4px}
+@media(max-width:1000px){.kpis{grid-template-columns:repeat(2,1fr)}.flow{grid-template-columns:repeat(2,1fr)}.step:after{display:none}.two{grid-template-columns:1fr}}@media(max-width:600px){.wrap{padding:16px}.title{font-size:25px}.kpis{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <div>
+      <div class="eyebrow">STRATUM PRAXIS</div>
+      <div class="title">B2B Revenue Ops</div>
+      <div class="sub">候補数や送信数ではなく、External Human → Buyer Signal → Checkout → Payment を実Evidenceで前進させるためのCurrent Reality画面。</div>
+    </div>
+    <div>
+      <div class="actions">
+        <button class="btn" onclick="loadState()">Currentを更新</button>
+        <a class="btn" href="../../ai-saas-spend-audit-checklist.html">Buyer Entry</a>
+        <a class="btn" href="../revenue-pump/index.html">Revenue Pump</a>
+      </div>
+      <div class="stamp" id="stamp">loading…</div>
+    </div>
+  </div>
+
+  <section class="grid kpis" id="kpis"></section>
+
+  <section class="panel">
+    <div class="head">
+      <div><h2>Revenue Stage</h2><div class="hint">First Broken Stageだけを直す。中間状態をPaymentへ昇格しない。</div></div>
+      <span class="badge warn" id="broken">—</span>
+    </div>
+    <div class="flow">
+      <div class="step done"><b>Qualified Target</b><span>公開Pain + 既存Asset適合 + 重複なし</span></div>
+      <div class="step active"><b>Outbound Send</b><span>現在のFirst Broken Stage</span></div>
+      <div class="step"><b>Human Reply</b><span>返信・紹介・具体質問</span></div>
+      <div class="step"><b>Buyer Signal</b><span>課題・予算・導入検討の外部Evidence</span></div>
+      <div class="step"><b>Checkout / Contract</b><span>実在する購入・契約到達</span></div>
+      <div class="step"><b>Payment</b><span>決済Evidence</span></div>
+      <div class="step"><b>Repeat</b><span>再購入・継続・紹介</span></div>
+    </div>
+  </section>
+
+  <section class="grid two">
+    <div class="panel">
+      <div class="head">
+        <div><h2>Active Buyer Routes</h2><div class="hint">個人メール、Draft ID、内部認証情報は公開面に載せない。</div></div>
+        <span class="badge info" id="routeCount">—</span>
+      </div>
+      <div class="tableWrap">
+        <table>
+          <thead><tr><th>Company</th><th>State</th><th>Lane</th><th>Asset</th><th>Next</th></tr></thead>
+          <tbody id="routes"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="head"><div><h2>Automation Gate</h2><div class="hint">Make + Stratum Gmail</div></div><span class="badge warn" id="autoState">—</span></div>
+      <div class="gate" id="gate"></div>
+      <div class="assetGrid" id="assets"></div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="head"><div><h2>Safety / Revenue Rules</h2><div class="hint">自動化は送信数を増やすためではなく、Qualified RouteをPaymentへ進めるためだけに使う。</div></div><span class="badge ok">GUARDED</span></div>
+    <div id="rules"></div>
+  </section>
+
+  <div class="footer">Payment / Payout → Checkout / Contract → Buyer Signal → Qualified Action → Human Traffic → Reach</div>
+</main>
+
+<script>
+async function loadState(){
+  try{
+    const r=await fetch('./state.json',{cache:'no-store'});
+    if(!r.ok) throw new Error('state.json '+r.status);
+    const s=await r.json();
+    document.getElementById('stamp').textContent='Updated '+s.updatedAt+' · '+s.project;
+    document.getElementById('broken').textContent=s.firstBrokenStage;
+    document.getElementById('routeCount').textContent=s.routes.length+' routes';
+    const k=[
+      ['Payment',s.kpis.paymentConfirmed,'green','Confirmed only'],
+      ['Checkout',s.kpis.checkoutConfirmed,'cyan','Confirmed only'],
+      ['Buyer Signal',s.kpis.buyerSignals,'cyan','External evidence'],
+      ['Replies',s.kpis.repliesFromTrackedB2B,'cyan','Tracked B2B'],
+      ['Draft Ready',s.kpis.outboundDraftsReady,'amber','Not revenue']
+    ];
+    document.getElementById('kpis').innerHTML=k.map(x=>'<div class="card"><div class="label">'+x[0]+'</div><div class="num '+x[2]+'">'+x[1]+'</div><div class="meta">'+x[3]+'</div></div>').join('');
+    document.getElementById('routes').innerHTML=s.routes.map(x=>'<tr><td><b>'+x.company+'</b></td><td class="state '+x.state+'">'+x.state+'</td><td>'+x.lane+'</td><td>'+x.asset+'</td><td>'+x.next+'</td></tr>').join('');
+    document.getElementById('autoState').textContent=s.automation.autoSend;
+    document.getElementById('gate').innerHTML='<b>Current: '+s.automation.gmailOAuth+'</b><div class="meta">Engine: '+s.automation.engine+'<br>Daily new outbound: max '+s.automation.maxDailyNewOutbound+'<br>Follow-up limit: '+s.automation.followupLimit+'<br>Duplicate guard: '+s.automation.duplicateGuard+'<br>Reply stop: '+s.automation.replyStop+'</div>';
+    document.getElementById('assets').innerHTML=s.assets.map(a=>'<div class="asset"><b>'+a.name+'</b><small>'+a.type+(a.price?' · '+a.price:'')+(a.url?' · <a href="'+a.url+'">open</a>':'')+'</small></div>').join('');
+    document.getElementById('rules').innerHTML=s.rules.map(x=>'<div class="rule">'+x+'</div>').join('');
+  }catch(e){
+    document.getElementById('stamp').textContent='State load failed';
+    console.error(e);
+  }
+}
+loadState();
+setInterval(loadState,60000);
+</script>
+</body>
+</html>

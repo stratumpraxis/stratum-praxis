@@ -1,0 +1,114 @@
+{
+  "updatedAt": "2026-09-28",
+  "project": "Stratum Praxis",
+  "mode": "B2B Revenue Operations",
+  "revenuePriority": [
+    "PAYMENT",
+    "CHECKOUT",
+    "BUYER_SIGNAL",
+    "QUALIFIED_ACTION",
+    "HUMAN",
+    "REACH"
+  ],
+  "firstBrokenStage": "OUTBOUND_SEND_GATE",
+  "automation": {
+    "engine": "Make + Stratum Gmail",
+    "gmailOAuth": "PENDING",
+    "autoSend": "BLOCKED_BY_OAUTH",
+    "duplicateGuard": "REQUIRED",
+    "replyStop": "REQUIRED",
+    "followupLimit": 1,
+    "maxDailyNewOutbound": 2,
+    "safety": "QUALIFIED_DRAFTS_ONLY"
+  },
+  "kpis": {
+    "paymentConfirmed": 0,
+    "checkoutConfirmed": 0,
+    "buyerSignals": 0,
+    "repliesFromTrackedB2B": 0,
+    "outboundDraftsReady": 4
+  },
+  "routes": [
+    {
+      "company": "SIXT",
+      "state": "DRAFT_READY",
+      "lane": "Corporate Procurement",
+      "asset": "AI/SaaS Spend Decision",
+      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+    },
+    {
+      "company": "Coram AI",
+      "state": "FOLLOWUP_DRAFT_READY",
+      "lane": "AI Spend Efficiency",
+      "asset": "AI/SaaS Spend Decision",
+      "next": "ONE_FINAL_FOLLOWUP_AFTER_GMAIL_OAUTH"
+    },
+    {
+      "company": "ServiceNow",
+      "state": "DRAFT_READY",
+      "lane": "FinOps / AI Cost Governance",
+      "asset": "AI/SaaS Spend Decision",
+      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+    },
+    {
+      "company": "MetLife",
+      "state": "DRAFT_READY",
+      "lane": "FinOps / AI Cost Governance",
+      "asset": "AI/SaaS Spend Decision",
+      "next": "AUTO_SEND_AFTER_GMAIL_OAUTH"
+    },
+    {
+      "company": "Xsolla",
+      "state": "SENT_WAIT",
+      "lane": "FinOps",
+      "asset": "AI/SaaS Spend Decision",
+      "next": "WAIT_FOR_EXTERNAL_REPLY"
+    },
+    {
+      "company": "GrowCFO",
+      "state": "FOLLOWUP_SENT_WAIT",
+      "lane": "Finance / SaaS Spend",
+      "asset": "$499 Audit",
+      "next": "NO_MORE_FOLLOWUP"
+    },
+    {
+      "company": "TaxConnex",
+      "state": "FOLLOWUP_SENT_WAIT",
+      "lane": "Finance / SaaS Spend",
+      "asset": "$499 Audit",
+      "next": "NO_MORE_FOLLOWUP"
+    },
+    {
+      "company": "Cohorts",
+      "state": "LINKEDIN_WAIT",
+      "lane": "Founder",
+      "asset": "Existing Stratum B2B Assets",
+      "next": "WAIT_FOR_EXTERNAL_SIGNAL"
+    }
+  ],
+  "assets": [
+    {
+      "name": "AI/SaaS Spend Audit Checklist",
+      "type": "FREE_ENTRY",
+      "url": "https://stratumpraxis.com/ai-saas-spend-audit-checklist.html"
+    },
+    {
+      "name": "AI & SaaS Spend Decision Kit",
+      "type": "PAID_SELF_SERVICE",
+      "price": "$39"
+    },
+    {
+      "name": "AI & SaaS Spend Waste Audit",
+      "type": "PAID_FIXED_SCOPE",
+      "price": "$499"
+    }
+  ],
+  "rules": [
+    "Do not count drafts or sends as Buyer Signal.",
+    "Do not send twice to the same person/company without a documented reason.",
+    "Stop automated follow-up when a reply exists.",
+    "Maximum one automated follow-up per route.",
+    "Do not modify price, checkout, or product packaging while Human/Buyer evidence is absent.",
+    "Payment evidence outranks all intermediate states."
+  ]
+}

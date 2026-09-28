@@ -1,0 +1,40 @@
+{
+  "name": "Stratum B2B Revenue Automation Contract",
+  "version": "2026-09-28",
+  "scope": "Qualified outbound only",
+  "trigger": "Scheduled Make scenario after Gmail OAuth is healthy",
+  "sourceOfTruth": "Stratum Gmail + ops/b2b-revenue/state.json",
+  "sendEligibility": [
+    "route.state is DRAFT_READY or FOLLOWUP_DRAFT_READY",
+    "recipient/company has no reply since latest outbound",
+    "recipient/company has no duplicate outbound in protected window",
+    "followup_count <= 1",
+    "daily_new_outbound_count < 2",
+    "asset already exists and CTA is live"
+  ],
+  "stopConditions": [
+    "reply detected",
+    "bounce detected",
+    "unsubscribe or explicit no-contact",
+    "payment or contract signal detected",
+    "duplicate candidate detected",
+    "Gmail OAuth unhealthy",
+    "state contradiction or unknown recipient identity"
+  ],
+  "stateTransitions": {
+    "DRAFT_READY": "SENT_WAIT",
+    "FOLLOWUP_DRAFT_READY": "FOLLOWUP_SENT_WAIT",
+    "SENT_WAIT + reply": "REPLY_RECEIVED",
+    "REPLY_RECEIVED + commercial intent": "BUYER_SIGNAL",
+    "BUYER_SIGNAL + checkout/contract evidence": "CHECKOUT_OR_CONTRACT",
+    "CHECKOUT_OR_CONTRACT + payment evidence": "PAYMENT_CONFIRMED"
+  },
+  "forbidden": [
+    "bulk cold email",
+    "invented ROI or fabricated personalization",
+    "second follow-up without new external evidence",
+    "counting sent email as Buyer Signal",
+    "changing price/product/checkout to create activity",
+    "publishing private recipient email addresses or draft IDs"
+  ]
+}
