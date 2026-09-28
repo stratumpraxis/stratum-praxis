@@ -145,7 +145,127 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/ops/autonomous-operations-monitor/24h-control-plane.html' \
             '24H AUTONOMOUS' \
             'CONTROL PLANE' \
-            'CONTROL PLANE' \
             'SALES PUMP' \
             'REWARD PUMP / DIRECT REVENUE PUMP' \
             'PAYMENT-FIRST'
+
+      - name: Verify 24H Control Plane desktop and mobile rendering
+        shell: bash
+        run: |
+          set -euo pipefail
+          BROWSER="$(command -v google-chrome-stable || command -v google-chrome || command -v chromium-browser || command -v chromium || true)"
+          if [[ -z "$BROWSER" ]]; then
+            echo "No Chrome/Chromium executable found on runner" >&2
+            exit 1
+          fi
+
+          tmpdir="$(mktemp -d)"
+          cd "$tmpdir"
+          npm init -y >/dev/null 2>&1
+          npm install --silent puppeteer-core@24
+
+          cat > verify-control-plane.mjs <<'NODE'
+          import puppeteer from 'puppeteer-core';
+
+          const browserPath = process.env.BROWSER;
+          const url = 'https://stratumpraxis.com/ops/autonomous-operations-monitor/24h-control-plane.html';
+          const cases = [
+            { name: 'desktop', width: 1440, height: 1000 },
+            { name: 'mobile', width: 390, height: 844, mobile: true }
+          ];
+
+          const browser = await puppeteer.launch({
+            executablePath: browserPath,
+            headless: true,
+            args: ['--no-sandbox', '--disable-setuid-sandbox']
+          });
+
+          let failed = false;
+          try {
+            for (const c of cases) {
+              const page = await browser.newPage();
+              await page.setViewport({
+                width: c.width,
+                height: c.height,
+                isMobile: Boolean(c.mobile),
+                deviceScaleFactor: 1
+              });
+
+              const consoleErrors = [];
+              const pageErrors = [];
+              page.on('console', msg => {
+                if (msg.type() === 'error') consoleErrors.push(msg.text());
+              });
+              page.on('pageerror', err => pageErrors.push(String(err)));
+
+              const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
+              const status = response?.status() ?? 0;
+              const checks = await page.evaluate(() => {
+                const text = document.body.innerText;
+                return {
+                  title: document.title,
+                  hasHero: text.includes('24H AUTONOMOUS') && text.includes('CONTROL PLANE'),
+                  hasBoundary: text.includes('CONTROL PLANE') && text.includes('EXECUTION OWNER'),
+                  hasSales: text.includes('SALES PUMP'),
+                  hasReward: text.includes('REWARD PUMP / DIRECT REVENUE PUMP'),
+                  hasVector: text.includes('VECTOR'),
+                  hasStratum: text.includes('STRATUM'),
+                  hasAiApp: text.includes('AI APP $24'),
+                  hasOwners: text.includes('Project / Specialist Owners'),
+                  hasHandoffs: text.includes('Current Handoffs'),
+                  hasGates: text.includes('Human Gates'),
+                  hasEvidence: text.includes('Evidence Stream'),
+                  hasGuards: text.includes('System Guards'),
+                  hasWake: text.includes('Current Next Wake'),
+                  scrollWidth: document.documentElement.scrollWidth,
+                  clientWidth: document.documentElement.clientWidth,
+                  bodyWidth: document.body.getBoundingClientRect().width
+                };
+              });
+
+              await page.screenshot({
+                path: process.env.GITHUB_WORKSPACE + '/control-plane-' + c.name + '.png',
+                fullPage: true
+              });
+
+              const overflow = checks.scrollWidth > checks.clientWidth + 2;
+              const required = [
+                checks.hasHero, checks.hasBoundary, checks.hasSales, checks.hasReward,
+                checks.hasVector, checks.hasStratum, checks.hasAiApp, checks.hasOwners,
+                checks.hasHandoffs, checks.hasGates, checks.hasEvidence, checks.hasGuards, checks.hasWake
+              ].every(Boolean);
+
+              console.log(JSON.stringify({
+                viewport: c.name,
+                status,
+                requiredContent: required,
+                overflow,
+                scrollWidth: checks.scrollWidth,
+                clientWidth: checks.clientWidth,
+                consoleErrors,
+                pageErrors
+              }));
+
+              if (status !== 200 || !required || overflow || consoleErrors.length || pageErrors.length) {
+                failed = true;
+              }
+              await page.close();
+            }
+          } finally {
+            await browser.close();
+          }
+
+          if (failed) process.exit(1);
+          NODE
+
+          BROWSER="$BROWSER" node verify-control-plane.mjs
+
+      - name: Upload 24H Control Plane render evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: 24h-control-plane-production-readback
+          path: |
+            control-plane-desktop.png
+            control-plane-mobile.png
+          if-no-files-found: error
+          retention-days: 7
