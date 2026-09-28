@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>商品管理進捗｜Product Portfolio Keeper</title>
+<style>
+:root{--bg:#081019;--panel:#0f1924;--panel2:#132131;--line:#26384a;--text:#edf4fb;--muted:#8ea2b6;--accent:#7dd3fc;--good:#86efac;--warn:#facc15;--violet:#c4b5fd;--blue:#93c5fd}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 20% 0,#112337 0,#081019 34%,#071019 100%);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:1220px;margin:auto;padding:32px 20px 72px}.topbar{display:flex;justify-content:space-between;gap:24px;align-items:flex-end}
+.kicker{font-size:11px;letter-spacing:.16em;font-weight:900;color:var(--accent)}h1{font-size:clamp(30px,5vw,54px);line-height:1;margin:8px 0 10px;letter-spacing:-.04em}.lead{max-width:760px;color:var(--muted);line-height:1.65;font-size:14px}
+.controls{display:flex;gap:8px;align-items:center}.btn{appearance:none;border:1px solid var(--line);background:#101c29;color:var(--text);border-radius:10px;padding:9px 12px;font-weight:800;font-size:12px;cursor:pointer}.btn:hover{border-color:#45617c}.stamp{font-size:11px;color:var(--muted);text-align:right;line-height:1.5}
+.priority{margin:24px 0 14px;background:linear-gradient(135deg,#1b1730,#111d2a);border:1px solid #4a3d77;border-radius:18px;padding:19px}.priority .label{font-size:10px;letter-spacing:.13em;color:var(--violet);font-weight:900}.priority h2{font-size:22px;margin:7px 0 4px}.priority p{margin:0;color:#bdc8d5;font-size:13px;line-height:1.5}
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin:14px 0 20px}.stat{border:1px solid var(--line);background:rgba(15,25,36,.9);border-radius:14px;padding:14px}.stat b{display:block;font-size:24px}.stat span{color:var(--muted);font-size:11px}
+.rule{display:flex;gap:8px;flex-wrap:wrap;color:var(--muted);font-size:11px;margin:0 0 12px}.rule strong{color:var(--text)}
+.filters{display:flex;gap:7px;flex-wrap:wrap;margin:0 0 14px}.chip{border:1px solid var(--line);background:transparent;color:var(--muted);padding:6px 9px;border-radius:999px;font-size:10px;font-weight:800;cursor:pointer}.chip.active{color:var(--text);border-color:#4d6985;background:#112438}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.card{background:rgba(15,25,36,.96);border:1px solid var(--line);border-radius:17px;padding:17px;transition:.15s transform,.15s border-color}.card:hover{transform:translateY(-1px);border-color:#3c536a}
+.head{display:flex;justify-content:space-between;gap:16px}.project{font-size:10px;color:var(--accent);font-weight:900;letter-spacing:.11em;text-transform:uppercase}.card h3{font-size:18px;margin:5px 0 3px}.price{font-size:12px;color:var(--muted)}.badge{height:max-content;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:900;letter-spacing:.04em;border:1px solid}.repeat{background:#261d44;color:#d9ccff;border-color:#51417f}.keep{background:#10291d;color:var(--good);border-color:#285e40}.repair{background:#302611;color:#f8d57a;border-color:#654f21}.free{background:#10263a;color:#a7dcff;border-color:#2a5879}.hold{background:#202a36;color:#c0cad6;border-color:#3d4a5b}
+.stage{display:flex;justify-content:space-between;gap:12px;background:var(--panel2);border-radius:11px;padding:10px 11px;margin:15px 0 11px}.stage span{font-size:11px;color:var(--muted)}.stage b{font-size:11px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:12px}.cell,.decision,.evidence{border-top:1px solid var(--line);padding-top:10px;margin-top:10px}.lab{font-size:9px;font-weight:900;color:var(--muted);letter-spacing:.1em;text-transform:uppercase}.val{margin-top:5px;font-size:12px;line-height:1.55}.evidence small{display:block;margin-top:5px;color:#70859a;font-size:10px}
+.error{display:none;margin:12px 0;padding:10px 12px;border:1px solid #6b3a3a;background:#2d1717;border-radius:10px;color:#fecaca;font-size:12px}
+footer{margin-top:24px;border-top:1px solid var(--line);padding-top:15px;color:var(--muted);font-size:11px;line-height:1.6}
+@media(max-width:780px){.topbar{display:block}.controls{margin-top:14px;justify-content:space-between}.stamp{text-align:left}.stats{grid-template-columns:repeat(2,1fr)}.grid,.pair{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="kicker">PRODUCT PORTFOLIO KEEPER</div>
+      <h1>商品管理進捗</h1>
+      <div class="lead">全Projectの商品CurrentをRevenue Evidenceで可視化。中央は判断・優先順位・Handoff・結果回収、実装は各所有Project。</div>
+    </div>
+    <div>
+      <div class="controls"><button class="btn" id="refresh">再読込</button></div>
+      <div class="stamp" id="stamp">Current Readback: loading...</div>
+    </div>
+  </div>
+
+  <div class="error" id="error"></div>
+
+  <section class="priority">
+    <div class="label">CURRENT PRIORITY</div>
+    <h2 id="priorityTitle">Loading...</h2>
+    <p id="priorityBody"></p>
+  </section>
+
+  <section class="stats" id="stats"></section>
+
+  <div class="rule"><strong>Revenue First</strong><span>Payment / Payout → Checkout / Contract → Buyer Signal → Qualified Action → Human Traffic → Reach</span></div>
+  <div class="filters" id="filters"></div>
+  <main class="grid" id="grid"></main>
+
+  <footer>
+    Human Traffic = 0では原則商品そのものを改修しない。Verified Payment Winnerは保護。<br>
+    Read-only visualization / no Secret / no Buyer identity / no payment destination.
+  </footer>
+</div>
+
+<script>
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/product-portfolio/api/snapshot';
+let DATA=null, FILTER='ALL';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const badge=s=>s==='REPEATABILITY_TEST'?'repeat':s==='KEEP'?'keep':s==='FREE'?'free':String(s).includes('REPAIR')?'repair':'hold';
+const fmt=v=>{try{return new Intl.DateTimeFormat('ja-JP',{timeZone:'Asia/Tokyo',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).format(new Date(v))}catch(e){return String(v||'UNKNOWN')}};
+
+function render(){
+  if(!DATA)return;
+  const p=DATA.current_priority||{};
+  $('stamp').innerHTML='Current Readback<br><b>'+esc(fmt(DATA.generated_at))+' JST</b>';
+  $('priorityTitle').textContent=(p.project||'—')+' · '+(p.product||'—');
+  $('priorityBody').textContent=(p.portfolio_state||'UNKNOWN')+' · '+(p.next_decision||'');
+
+  const c=DATA.counts||{};
+  const repair=Object.entries(c).filter(([k])=>k.includes('REPAIR')).reduce((a,[,v])=>a+Number(v||0),0);
+  const stats=[['Products',DATA.products.length],['Payment Winner',c.REPEATABILITY_TEST||0],['KEEP',c.KEEP||0],['HOLD',c.HOLD||0],['Repair',repair]];
+  $('stats').innerHTML=stats.map(x=>'<div class="stat"><b>'+esc(x[1])+'</b><span>'+esc(x[0])+'</span></div>').join('');
+
+  const states=['ALL',...new Set(DATA.products.map(x=>x.portfolio_state))];
+  $('filters').innerHTML=states.map(s=>'<button class="chip '+(FILTER===s?'active':'')+'" data-state="'+esc(s)+'">'+esc(s)+'</button>').join('');
+  document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{FILTER=b.dataset.state;render()});
+
+  const rows=DATA.products.filter(x=>FILTER==='ALL'||x.portfolio_state===FILTER);
+  $('grid').innerHTML=rows.map(x=>
+    '<article class="card">'+
+      '<div class="head"><div><div class="project">'+esc(x.project)+'</div><h3>'+esc(x.product)+'</h3><div class="price">'+esc(x.price)+'</div></div>'+
+      '<span class="badge '+badge(x.portfolio_state)+'">'+esc(x.portfolio_state)+'</span></div>'+
+      '<div class="stage"><span>Revenue Stage</span><b>'+esc(x.revenue_stage)+'</b></div>'+
+      '<div class="pair"><div class="cell"><div class="lab">First Broken Stage</div><div class="val">'+esc(x.first_broken_stage)+'</div></div>'+
+      '<div class="cell"><div class="lab">Owner</div><div class="val">'+esc(x.owner)+'</div></div></div>'+
+      '<div class="decision"><div class="lab">Next Decision</div><div class="val">'+esc(x.next_decision)+'</div></div>'+
+      '<div class="evidence"><div class="lab">Latest Evidence</div><div class="val">'+esc(x.latest_evidence?.title||'No fresh evidence row')+'</div><small>'+esc(fmt(x.latest_evidence?.observed_at||x.updated_at))+' JST</small></div>'+
+    '</article>'
+  ).join('');
+}
+
+async function load(){
+  $('error').style.display='none';
+  try{
+    const r=await fetch(API,{cache:'no-store'});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    DATA=await r.json();
+    render();
+  }catch(e){
+    $('error').textContent='Current取得失敗: '+e.message;
+    $('error').style.display='block';
+  }
+}
+$('refresh').onclick=load;
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
