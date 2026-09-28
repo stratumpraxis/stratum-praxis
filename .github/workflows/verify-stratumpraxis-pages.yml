@@ -193,10 +193,20 @@ jobs:
 
               const consoleErrors = [];
               const pageErrors = [];
+              const httpErrors = [];
               page.on('console', msg => {
                 if (msg.type() === 'error') consoleErrors.push(msg.text());
               });
               page.on('pageerror', err => pageErrors.push(String(err)));
+              page.on('response', resp => {
+                if (resp.status() >= 400) {
+                  httpErrors.push({
+                    status: resp.status(),
+                    url: resp.url(),
+                    resourceType: resp.request().resourceType()
+                  });
+                }
+              });
 
               const response = await page.goto(url, { waitUntil: 'networkidle2', timeout: 60000 });
               const status = response?.status() ?? 0;
@@ -223,6 +233,17 @@ jobs:
                 };
               });
 
+              const internalLinks = await page.evaluate(() =>
+                [...new Set(Array.from(document.querySelectorAll('a[href]'))
+                  .map(a => a.href)
+                  .filter(h => h.startsWith(location.origin + '/ops/autonomous-operations-monitor/')))]
+              );
+              const linkChecks = [];
+              for (const href of internalLinks) {
+                const lr = await fetch(href, { redirect: 'follow' });
+                linkChecks.push({ href, status: lr.status });
+              }
+
               await page.screenshot({
                 path: process.env.GITHUB_WORKSPACE + '/control-plane-' + c.name + '.png',
                 fullPage: true
@@ -235,6 +256,14 @@ jobs:
                 checks.hasHandoffs, checks.hasGates, checks.hasEvidence, checks.hasGuards, checks.hasWake
               ].every(Boolean);
 
+              const criticalConsoleErrors = consoleErrors.filter(x => !x.includes('Failed to load resource'));
+              const criticalHttpErrors = httpErrors.filter(x =>
+                x.url.startsWith('https://stratumpraxis.com/') &&
+                ['document','script','stylesheet'].includes(x.resourceType) &&
+                !x.url.endsWith('/favicon.ico')
+              );
+              const brokenInternalLinks = linkChecks.filter(x => x.status >= 400);
+
               console.log(JSON.stringify({
                 viewport: c.name,
                 status,
@@ -243,10 +272,19 @@ jobs:
                 scrollWidth: checks.scrollWidth,
                 clientWidth: checks.clientWidth,
                 consoleErrors,
-                pageErrors
+                pageErrors,
+                httpErrors,
+                internalLinks: linkChecks,
+                criticalConsoleErrors,
+                criticalHttpErrors,
+                brokenInternalLinks
               }));
 
-              if (status !== 200 || !required || overflow || consoleErrors.length || pageErrors.length) {
+              if (
+                status !== 200 || !required || overflow ||
+                criticalConsoleErrors.length || pageErrors.length ||
+                criticalHttpErrors.length || brokenInternalLinks.length
+              ) {
                 failed = true;
               }
               await page.close();
