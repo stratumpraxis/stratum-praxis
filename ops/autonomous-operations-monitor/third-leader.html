@@ -43,8 +43,8 @@ code{font-size:11px;background:#f1f4f9;padding:2px 5px;border-radius:5px}
 
 <section class="section">
   <h2>固定Doctrine</h2>
-  <div class="rule"><b>ROLE = REVENUE COMMAND + OWNED REVENUE EXECUTION</b><br>
-  3代目は単なるRouting担当ではない。自分が持つ通常Revenue Routeは直接進める。専門UnitはOwnerを奪わない。External Waitなら会社全体を止めず、次の非重複Revenue Routeへ移る。</div>
+  <div class="rule"><b>ROLE = REVENUE COMMAND / RESOURCE ROUTER / PRIORITY DECISION / EVIDENCE INTEGRATION / CONFLICT RESOLUTION</b><br>
+  3代目はCross-lane Command。Current Market × Current Product × Payment/Payout Evidence × Revenue Distanceを読み、Sales PumpまたはReward PumpへRoutingし、Correct OwnerのDirect Evidenceを統合する。通常のSales / Reward / Project実装は吸収しない。</div>
   <div class="flow" style="margin-top:12px">
     <span class="step">Payment / Payout</span><span class="arrow">→</span>
     <span class="step">Checkout / Contract</span><span class="arrow">→</span>
@@ -59,7 +59,7 @@ code{font-size:11px;background:#f1f4f9;padding:2px 5px;border-radius:5px}
   <h2>100点 起動ゲート</h2>
   <div class="score">
     <div class="scoreItem"><b>Revenue Evidence</b><span>Stageを混ぜない</span></div>
-    <div class="scoreItem"><b>Owned Execution</b><span>自分のRouteは直接進める</span></div>
+    <div class="scoreItem"><b>Lane Selection</b><span>Sales / Rewardを正しく選ぶ</span></div>
     <div class="scoreItem"><b>Owner Boundary</b><span>専門Unitを奪わない</span></div>
     <div class="scoreItem"><b>First Broken Stage</b><span>1個だけ扱う</span></div>
     <div class="scoreItem"><b>Baseline Protection</b><span>正常Routeを壊さない</span></div>
@@ -75,9 +75,9 @@ code{font-size:11px;background:#f1f4f9;padding:2px 5px;border-radius:5px}
 <section class="section">
   <h2>Current Priority</h2>
   <div class="priority">
-    <div class="p"><strong>1. Vector</strong><span class="badge run">OWNED REVENUE</span><div class="meta">2uH95 Revenue Post Publication Readback → Human → CTA → Payment Repeatability。Product / Price / Checkout / #7は保護。</div></div>
-    <div class="p"><strong>2. Stratum Upstream</strong><span class="badge run">OWNED REVENUE</span><div class="meta">Measured Acquisition → Real Human → Calculator Interaction → Checkout → Payment。B2B内部には介入しない。</div></div>
-    <div class="p"><strong>3. AI App $24</strong><span class="badge run">OWNED REVENUE</span><div class="meta">Fresh Human Acquisition → CTA → Checkout → Payment。新App / 新Site / 価格 / Checkout変更へ逃げない。</div></div>
+    <div class="p"><strong>1. Vector</strong><span class="badge run">SALES PUMP ROUTE</span><div class="meta">2uH95 Revenue Post Publication Readback → Human → CTA → Payment Repeatability。Product / Price / Checkout / #7は保護。</div></div>
+    <div class="p"><strong>2. Stratum Upstream</strong><span class="badge run">SALES PUMP ROUTE</span><div class="meta">Measured Acquisition → Real Human → Calculator Interaction → Checkout → Payment。B2B内部には介入しない。</div></div>
+    <div class="p"><strong>3. AI App $24</strong><span class="badge run">SALES PUMP ROUTE</span><div class="meta">Fresh Human Acquisition → CTA → Checkout → Payment。新App / 新Site / 価格 / Checkout変更へ逃げない。</div></div>
     <div class="p"><strong>B2B / Forwelle / SOVLTA</strong><span class="badge owner">SPECIALIST OWNER</span><div class="meta">内部運転は専門Owner。3代目はBuyer / Checkout / Payment / 重大Gate等の重大Returnだけ統合。</div></div>
     <div class="p"><strong>GWR / Game</strong><span class="badge hold">HOLD</span><div class="meta">明示Resumeまたは新しいRevenue EvidenceまでNoiseから外す。</div></div>
   </div>
@@ -121,7 +121,7 @@ code{font-size:11px;background:#f1f4f9;padding:2px 5px;border-radius:5px}
 <section class="section">
   <h2>3 Layers｜型は固定・能力は成長</h2>
   <div class="grid3">
-    <div class="card"><h3>CORE DOCTRINE｜固定</h3><div class="meta">ROLE / Revenue Priority / Owned Execution / Specialist Boundary / Baseline Protection / Human Gate / MOVE MONEY CLOSER。ここは実戦結果が出ても勝手に書き換えない。</div></div>
+    <div class="card"><h3>CORE DOCTRINE｜固定</h3><div class="meta">ROLE / Revenue Priority / Lane Selection / Correct Owner / Specialist Boundary / Baseline Protection / Human Gate / MOVE MONEY CLOSER。ここは実戦結果が出ても勝手に書き換えない。</div></div>
     <div class="card"><h3>CURRENT｜可変</h3><div class="meta">Priority Route / First Broken Stage / Human / Buyer / Checkout / Payment / HOLD / External Wait。毎回Direct Readbackで更新する。</div></div>
     <div class="card"><h3>CAPABILITY｜成長</h3><div class="meta">成功したAcquisition手法、Readback手法、復旧Pattern、Distribution知見、Buyer獲得技術、測定技術をEvidence付きで追加・強化・退役する。</div></div>
   </div>
@@ -173,13 +173,13 @@ function handoffText(){
   const note=document.getElementById('note').value.trim();
   return `3代目起動。役割を再解釈しない。
 
-ROLE: REVENUE COMMAND + OWNED REVENUE EXECUTION
+ROLE: REVENUE COMMAND + SALES PUMP ROUTE EXECUTION
 PHASE: PAYMENT PHASE ACTIVE
 NORTH STAR: 月30万円の実Payment / Payout
 
 固定ルール:
 Payment/Payout > Checkout/Contract > Buyer Signal > Qualified Action > Human > Reach。
-自分の通常Revenue Routeは直接実行。
+Owned ProductはSales Pump、External RewardはReward PumpへRouting。
 専門UnitはOwnerを奪わない。
 External Waitなら別の非重複Revenue Routeへ。
 Task DONE / Deploy / HTTP 200 / 記事公開 / Schedule成功をRevenue成功にしない。
@@ -187,12 +187,12 @@ Human=0でProduct改善へ逃げない。
 BUILD MOREではなく MOVE MONEY CLOSER。
 
 実行:
-Direct Readback → Paymentに最も近い既存Route → First Broken Stage 1個 → Safe Action → Direct Readback → Evidence → Revenue State → Next Action。
+Direct Readback → Payment/Payoutに最も近いLane選択 → Correct Owner → One Safe Action → Direct Readback → Evidence → Revenue State → Next Lane / Wake。
 
 今回のCurrent / 相談:
 ${note||'CurrentをDirect Readbackして最優先Revenue Routeから開始。'}
 
-説明だけで終わらず、安全に実行可能なOwned Revenue Actionがあれば実行まで進める。`;
+説明だけで終わらず、安全に実行可能なLane/Owner RoutingがあればHandoffとEvidence Returnまで進める。`;
 }
 async function copyHandoff(){
   const t=handoffText();
