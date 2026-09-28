@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24H Autonomous Control Plane | Stratum Praxis Operations</title>
+<meta name="description" content="Cross-project control plane for Revenue Command, Sales Pump, Reward Pump, Project Owners, Current Reality and Revenue Evidence.">
+<style>
+:root{
+  --bg:#f5f7fb;--card:#fff;--line:#dfe5ee;--text:#162033;--muted:#6e7a8f;
+  --navy:#162033;--blue:#2357c7;--bluebg:#eaf0ff;--green:#168a57;--greenbg:#e8f7f0;
+  --gold:#9a6b00;--goldbg:#fff5d7;--red:#ba384b;--redbg:#fdecef;--purple:#7151a8;--purplebg:#f3edff;
+  --soft:#eef2f8;--cyan:#087e8b;--cyanbg:#e7f7f8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1280px;margin:auto;padding:24px 16px 72px}
+header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;margin-bottom:14px}
+h1{margin:0;font-size:clamp(30px,5vw,48px);line-height:1.04;letter-spacing:-.045em}
+.sub{color:var(--muted);font-size:13px;line-height:1.55;margin-top:8px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 18px}
+.nav a{border:1px solid var(--line);background:#fff;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:800}
+.nav a.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.auth{display:flex;gap:8px;flex-wrap:wrap}
+.auth input,.auth button{border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 12px;font:inherit}
+.auth button{cursor:pointer;font-weight:800}
+#msg{font-size:11px;color:var(--muted);min-height:16px;margin:0 0 10px}
+.hero{background:var(--navy);color:#fff;border-radius:20px;padding:24px;margin-bottom:12px;display:grid;grid-template-columns:1.35fr .65fr;gap:18px}
+@media(max-width:840px){.hero{grid-template-columns:1fr}}
+.hero .eyebrow{font-size:11px;font-weight:900;letter-spacing:.13em;color:#9db4ea;text-transform:uppercase}
+.hero h2{font-size:clamp(28px,5vw,50px);line-height:1;margin:8px 0 10px;letter-spacing:-.05em}
+.hero .rule{font-size:clamp(18px,3vw,28px);font-weight:950;color:#fff}
+.hero .desc{font-size:13px;line-height:1.6;color:#cbd5e7;max-width:760px;margin-top:10px}
+.heroSide{border:1px solid #3c4861;border-radius:16px;padding:15px;background:#1c2940}
+.heroSide b{display:block;font-size:13px;margin-bottom:8px}
+.heroSide .big{font-size:26px;font-weight:950;color:#9fd8bb}
+.heroSide .small{font-size:11px;line-height:1.55;color:#cbd5e7;margin-top:8px}
+.section{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-top:12px}
+.sectionHead{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.section h2{font-size:18px;margin:0}
+.hint{font-size:11px;color:var(--muted);line-height:1.5}
+.arch{display:grid;gap:8px;text-align:center}
+.node{border:1px solid var(--line);border-radius:14px;padding:12px;background:#fff;font-weight:900;font-size:13px}
+.node.command{background:var(--navy);color:#fff;border-color:var(--navy)}
+.node.control{background:var(--bluebg);border-color:#b9c9f5;color:#173e9b}
+.node.sales{background:var(--greenbg);border-color:#a9dcc5;color:#0f7247}
+.node.reward{background:var(--purplebg);border-color:#d8c9ef;color:#5a3e91}
+.node.evidence{background:var(--goldbg);border-color:#ecd68d;color:#7a5500}
+.arrow{color:var(--muted);font-weight:900;font-size:17px}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.split{grid-template-columns:1fr}}
+.flowline{font-size:11px;line-height:1.6;color:var(--muted);font-weight:700}
+.priority{display:grid;grid-template-columns:repeat(6,1fr);gap:7px}
+@media(max-width:880px){.priority{grid-template-columns:repeat(3,1fr)}}@media(max-width:520px){.priority{grid-template-columns:repeat(2,1fr)}}
+.stage{border-radius:12px;padding:11px;border:1px solid var(--line);background:#fff}
+.stage strong{display:block;font-size:12px}.stage small{font-size:9px;color:var(--muted)}
+.s1{border-color:#a9dcc5;background:var(--greenbg)}.s2{border-color:#bed0f8;background:var(--bluebg)}.s3{border-color:#d8c9ef;background:var(--purplebg)}
+.s4{border-color:#b4e0e4;background:var(--cyanbg)}.s5{background:#fafbfc}.s6{background:#fafbfc}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:640px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fff;min-width:0}
+.cardTitle{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.card h3{font-size:15px;margin:0}.card .meta{font-size:10px;color:var(--muted);line-height:1.5;margin-top:5px}
+.kv{display:grid;grid-template-columns:105px 1fr;gap:8px;font-size:11px;line-height:1.45;padding:6px 0;border-top:1px solid #edf0f4}
+.kv:first-of-type{margin-top:10px}
+.k{color:var(--muted);font-weight:800}.v{overflow-wrap:anywhere}
+.badge{display:inline-flex;align-items:center;border-radius:999px;padding:4px 8px;font-size:9px;font-weight:900;white-space:nowrap}
+.b-pay{background:var(--greenbg);color:var(--green)}.b-check{background:var(--bluebg);color:var(--blue)}.b-buyer{background:var(--purplebg);color:var(--purple)}
+.b-human{background:var(--cyanbg);color:var(--cyan)}.b-wait{background:var(--goldbg);color:var(--gold)}.b-system{background:var(--soft);color:#55627a}.b-gate{background:var(--redbg);color:var(--red)}
+.lanes{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:800px){.lanes{grid-template-columns:1fr}}
+.lane{border-radius:16px;padding:16px;border:1px solid var(--line)}
+.lane.sales{background:#f8fffb;border-color:#b8e2cc}.lane.reward{background:#fbf8ff;border-color:#dacdf0}
+.lane h3{margin:0 0 6px;font-size:17px}.lane .scope{font-size:11px;color:var(--muted);line-height:1.55}
+.ownerGrid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+@media(max-width:1000px){.ownerGrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.ownerGrid{grid-template-columns:1fr}}
+.owner{border:1px solid var(--line);border-radius:13px;padding:12px;background:#fff}
+.owner h3{font-size:13px;margin:0 0 8px}.owner .kv{grid-template-columns:92px 1fr;font-size:10px}
+.handoff{display:grid;grid-template-columns:150px 1fr 95px;gap:10px;align-items:start;padding:10px 0;border-bottom:1px solid #edf0f4;font-size:11px}
+@media(max-width:650px){.handoff{grid-template-columns:1fr;gap:4px}}
+.gates{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(max-width:700px){.gates{grid-template-columns:1fr}}
+.gateBox{border-radius:14px;padding:13px;border:1px solid var(--line)}.gateBox.true{background:#fff8f9;border-color:#f0b6bf}.gateBox.not{background:#f8fbff}
+.gateBox h3{font-size:13px;margin:0 0 7px}.gateBox ul{margin:0;padding-left:17px;font-size:11px;line-height:1.65;color:var(--muted)}
+.evidenceList{display:flex;flex-direction:column;gap:7px}
+.ev{display:grid;grid-template-columns:125px 1fr 120px;gap:10px;border:1px solid var(--line);border-radius:11px;padding:10px;font-size:10px}
+@media(max-width:650px){.ev{grid-template-columns:1fr;gap:5px}}
+.evTitle{font-weight:800;font-size:11px}.evTime{color:var(--muted)}
+.guards{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}@media(max-width:800px){.guards{grid-template-columns:1fr}}
+.guard{border:1px solid var(--line);border-radius:12px;padding:12px;background:#fbfcfe}.guard b{font-size:12px}.guard p{font-size:10px;color:var(--muted);line-height:1.55;margin:5px 0 0}
+.wake{border:1px solid #c4d1f3;background:#f5f8ff;border-radius:14px;padding:14px}
+.wake strong{font-size:15px}.wake p{font-size:11px;color:var(--muted);line-height:1.55;margin:6px 0 0}
+.footer{text-align:center;color:var(--muted);font-size:10px;margin-top:18px}
+.statusDot{display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--green);margin-right:6px}
+.unknown{color:var(--muted);font-style:italic}
+</style>
+</head>
+<body><main>
+<header>
+  <div>
+    <h1>24H AUTONOMOUS<br>CONTROL PLANE</h1>
+    <div class="sub">Existing Operations Surface · Cross-project Control / Routing / Evidence / Dedupe</div>
+  </div>
+  <div class="auth">
+    <input id="key" type="password" placeholder="既存Monitor Key">
+    <button onclick="connect()">Current接続</button>
+    <button onclick="loadCurrent()">更新</button>
+  </div>
+</header>
+<nav class="nav">
+  <a href="index.html">Operations</a>
+  <a class="active" href="24h-control-plane.html">24H Control Plane</a>
+  <a href="third-leader.html">3rd Leader</a>
+  <a href="revenue-os.html">Reward OS</a>
+  <a href="product-portfolio.html">Products</a>
+  <a href="audit.html">Workspaces</a>
+</nav>
+<div id="msg">Build-time Currentを表示中。既存Monitor KeyがあればLive Currentへ更新します。</div>
+
+<section class="hero">
+  <div>
+    <div class="eyebrow">Canonical Operating Contract</div>
+    <h2>CONTROL PLANE<br>≠ EXECUTION OWNER</h2>
+    <div class="rule">PAYMENT-FIRST</div>
+    <div class="desc">全体24H担当は「全部やるAI」ではない。Current Realityを横断し、正しいRevenue Lane → 正しいOwner → One Safe Action → Direct Evidenceへ接続するControl Plane。</div>
+  </div>
+  <div class="heroSide">
+    <b>CURRENT ROLE</b>
+    <div class="big">CROSS-PROJECT CONTROL</div>
+    <div class="small">Routing · Evidence · Dedupe · Role Conflict · Human Gate Classification · Identity / Authority Protection · DIB Return</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Revenue Architecture</h2><div class="hint">3rd Leaderと全体24H担当を混同しない。Executionは各Lane/Ownerへ。</div></div><span class="badge b-system">CURRENT ARCHITECTURE</span></div>
+  <div class="arch">
+    <div class="node control">24H CONTROL PLANE<br><small>Cross-project Current / Routing / Evidence / Dedupe</small></div>
+    <div class="arrow">↓ Current Reality / Interrupt / Evidence</div>
+    <div class="node command">3RD LEADER · REVENUE COMMAND<br><small>Resource Router / Priority Decision / Evidence Integration / Conflict Resolution</small></div>
+    <div class="arrow">↓ Lane / Priority</div>
+    <div class="split">
+      <div class="node sales">SALES PUMP<br><small>Existing Owned Product → External Payment</small></div>
+      <div class="node reward">REWARD PUMP / DIRECT REVENUE PUMP<br><small>External Reward → Accepted → Payout → Deposit</small></div>
+    </div>
+    <div class="split">
+      <div class="flowline">Sales Pump → Correct Project Owner → Human → Qualified Action → Buyer Signal → CTA → Checkout → Payment</div>
+      <div class="flowline">Reward Pump → Reward Owner → Opportunity → Verify → Dedupe → Claim / Work → Submit → Accepted → Payout → Deposit</div>
+    </div>
+    <div class="arrow">↓ Direct Reality</div>
+    <div class="node evidence">REVENUE EVIDENCE → DIB / STATE CORE</div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Current Revenue Priority</h2><div class="hint">下位Stageを上位成果へ昇格しない。Salesの最終成功はPayment、RewardはPayout / Deposit。</div></div><div id="liveAt" class="hint">Build readback: 2026-09-29 JST</div></div>
+  <div class="priority">
+    <div class="stage s1"><strong>PAYMENT / PAYOUT</strong><small>最上位External Reality</small></div>
+    <div class="stage s2"><strong>CHECKOUT / CONTRACT</strong><small>Payment前段</small></div>
+    <div class="stage s3"><strong>BUYER SIGNAL</strong><small>具体的購入意図</small></div>
+    <div class="stage s4"><strong>QUALIFIED ACTION</strong><small>購入に近い行動</small></div>
+    <div class="stage s5"><strong>HUMAN</strong><small>人間の反応 / 訪問</small></div>
+    <div class="stage s6"><strong>REACH</strong><small>単独ではRevenue成功でない</small></div>
+  </div>
+</section>
+
+<section class="section" id="revenue-board">
+  <div class="sectionHead"><div><h2>Current Revenue Board</h2><div class="hint">Supabase Company StateをLive優先。未取得値はUNKNOWNのまま表示。</div></div><span id="sourceBadge" class="badge b-system">BUILD-TIME READBACK</span></div>
+  <div class="grid">
+    <div class="card" data-route="vector">
+      <div class="cardTitle"><h3>VECTOR</h3><span class="badge b-pay">PAYMENT VERIFIED</span></div>
+      <div class="kv"><div class="k">CURRENT</div><div class="v route-current">Payment実績あり / Repeatability未確認</div></div>
+      <div class="kv"><div class="k">BROKEN</div><div class="v route-broken">Human → CTA Click</div></div>
+      <div class="kv"><div class="k">OWNER</div><div class="v route-owner">Vector｜Project 24H Leader</div></div>
+      <div class="kv"><div class="k">PROTECTED</div><div class="v">Product / ¥2,500 / Checkout / Paid URL</div></div>
+      <div class="kv"><div class="k">NEXT</div><div class="v route-next">Attributable Human / CTA / fresh Payment / winner publication evidence</div></div>
+    </div>
+    <div class="card" data-route="stratum">
+      <div class="cardTitle"><h3>STRATUM</h3><span class="badge b-human">HUMAN ACQUISITION</span></div>
+      <div class="kv"><div class="k">PRIMARY</div><div class="v">AI Agent Cost & ROI Calculator → $39 Decision Kit → $499 Audit</div></div>
+      <div class="kv"><div class="k">CURRENT</div><div class="v route-current">Measured acquisition route LIVE</div></div>
+      <div class="kv"><div class="k">BROKEN</div><div class="v route-broken">REAL HUMAN</div></div>
+      <div class="kv"><div class="k">OWNER</div><div class="v route-owner">Stratum｜Project 24H Leader</div></div>
+      <div class="kv"><div class="k">PROTECTED</div><div class="v">Product / Price / Stripe / Checkout / Calculator</div></div>
+    </div>
+    <div class="card" data-route="product-ai-app-builder-router-2026">
+      <div class="cardTitle"><h3>AI APP $24</h3><span class="badge b-human">FRESH HUMAN</span></div>
+      <div class="kv"><div class="k">CURRENT</div><div class="v route-current">Entry LIVE / Checkout LIVE</div></div>
+      <div class="kv"><div class="k">BROKEN</div><div class="v route-broken">FRESH HUMAN</div></div>
+      <div class="kv"><div class="k">OWNER</div><div class="v route-owner">AI App Builder Router 2026｜24H専用ページ</div></div>
+      <div class="kv"><div class="k">PROTECTED</div><div class="v">WordPress Entry / Gumroad $24</div></div>
+      <div class="kv"><div class="k">NEXT</div><div class="v route-next">first non-QA PAGE_ENGAGED or trusted CTA_CLICK</div></div>
+    </div>
+    <div class="card" data-route="revenue-pump">
+      <div class="cardTitle"><h3>REWARD PUMP</h3><span class="badge b-wait">PAYOUT / DEPOSIT</span></div>
+      <div class="kv"><div class="k">CANONICAL ID</div><div class="v">revenue-pump</div></div>
+      <div class="kv"><div class="k">CURRENT</div><div class="v route-current">External Reward lane / current payout evidence only</div></div>
+      <div class="kv"><div class="k">BROKEN</div><div class="v route-broken">Accepted / Payout / Deposit evidence</div></div>
+      <div class="kv"><div class="k">OWNER</div><div class="v route-owner">Reward Pump｜Primary Owner</div></div>
+      <div class="kv"><div class="k">GUARD</div><div class="v">External WaitはWait。再Claim / Product Sales混入禁止。</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Revenue Lanes</h2><div class="hint">Routing Layerであり、Project OwnerやRuntimeを吸収しない。</div></div></div>
+  <div class="lanes">
+    <div class="lane sales">
+      <h3>SALES PUMP</h3>
+      <div class="scope"><b>IN:</b> Existing Owned Product → Human → Qualified Action → Buyer Signal → CTA → Checkout → Payment → Repeatability<br><b>EXECUTION:</b> Correct Existing Project / Specialist Owner<br><b>OUT:</b> New Product Engine / Project takeover / B2B outbound takeover</div>
+    </div>
+    <div class="lane reward">
+      <h3>REWARD PUMP / DIRECT REVENUE PUMP</h3>
+      <div class="scope"><b>IN:</b> GitHub bounty / paid task / developer reward / affiliate / referral / cashback / platform reward / explicit reward<br><b>FLOW:</b> Verify → Dedupe → Claim/Work → Submit → Accepted → Payout → Deposit<br><b>OUT:</b> SEO / WordPress / Owned Product Human Acquisition / CTA / Checkout optimization</div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Project / Specialist Owners</h2><div class="hint">WHO · OWNS · WHAT · CURRENT · BLOCKER · NEXT WAKE · DO NOT TAKE OVER</div></div></div>
+  <div class="ownerGrid" id="owners">
+    <div class="owner" data-owner-unit="stratum-b2b"><h3>Stratum B2B</h3><div class="kv"><div class="k">OWNER</div><div class="v">Independent Revenue Automation</div></div><div class="kv"><div class="k">CURRENT</div><div class="v">INDEPENDENT AUTO</div></div><div class="kv"><div class="k">BROKEN</div><div class="v">Project-local Current</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Buyer Signal / Contract / Payment / True Human Gate</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Global takeover of Buyer Queue / Outbound</div></div></div>
+    <div class="owner" data-owner-unit="codeops"><h3>CodeOps</h3><div class="kv"><div class="k">OWNER</div><div class="v">External GitHub Paid Task</div></div><div class="kv"><div class="k">CURRENT</div><div class="v owner-current">Payout / new Revenue Event lane</div></div><div class="kv"><div class="k">BROKEN</div><div class="v owner-broken">External reward state</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Accepted / Payout / Deposit / claimable verified event</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Identity / Repo / Claim / Submission logic統合</div></div></div>
+    <div class="owner" data-owner-unit="sovlta"><h3>SOVLTA</h3><div class="kv"><div class="k">OWNER</div><div class="v">SOVLTA Project Owner</div></div><div class="kv"><div class="k">CURRENT</div><div class="v owner-current">Project-local Current</div></div><div class="kv"><div class="k">BROKEN</div><div class="v owner-broken unknown">UNKNOWN until State Core readback</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Material Project Evidence / True Gate</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Asset / Store implementation takeover</div></div></div>
+    <div class="owner" data-owner-unit="forwelle"><h3>Forwelle / YouTube</h3><div class="kv"><div class="k">OWNER</div><div class="v">Forwelle｜Project 24H Leader</div></div><div class="kv"><div class="k">CURRENT</div><div class="v owner-current">Publish-ready local lane</div></div><div class="kv"><div class="k">BROKEN</div><div class="v owner-broken">Identity / OAuth Gate if Current</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Publisher identity resolved / material Revenue evidence</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Rerender / duplicate publish / owner takeover</div></div></div>
+    <div class="owner" data-owner-unit="gwr"><h3>GWR</h3><div class="kv"><div class="k">OWNER</div><div class="v">GWR｜Project 24H Leader</div></div><div class="kv"><div class="k">CURRENT</div><div class="v owner-current">Local HOLD if no Buyer reply</div></div><div class="kv"><div class="k">BROKEN</div><div class="v owner-broken">Buyer Signal</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Concrete Buyer Reply / new verified Buyer candidate</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Duplicate follow-up</div></div></div>
+    <div class="owner"><h3>Product Portfolio Keeper</h3><div class="kv"><div class="k">OWNER</div><div class="v">Product Judgment</div></div><div class="kv"><div class="k">CURRENT</div><div class="v">Product Current / Priority / Handoff</div></div><div class="kv"><div class="k">BROKEN</div><div class="v">Only product evidence gap</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Product-specific Direct Evidence</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Human=0を理由に商品改修</div></div></div>
+    <div class="owner"><h3>Superman</h3><div class="kv"><div class="k">OWNER</div><div class="v">Persistent Weak Line Repair</div></div><div class="kv"><div class="k">CURRENT</div><div class="v">局所修復のみ</div></div><div class="kv"><div class="k">BROKEN</div><div class="v">Persistent proven weak line</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Correct Ownerから修復Handoff</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Command / Product / Reward owner takeover</div></div></div>
+    <div class="owner"><h3>Research / Production</h3><div class="kv"><div class="k">OWNER</div><div class="v">Research Leader / Site / App / Video</div></div><div class="kv"><div class="k">CURRENT</div><div class="v">Capability / Production only when routed</div></div><div class="kv"><div class="k">BROKEN</div><div class="v">Concrete capability / production gap</div></div><div class="kv"><div class="k">NEXT WAKE</div><div class="v">Project Weak Line related Handoff</div></div><div class="kv"><div class="k">DO NOT</div><div class="v">Capability = Revenue扱い / idle busy-work</div></div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Current Handoffs</h2><div class="hint">既存PENDINGを消費。ここから重複Handoffを生成しない。</div></div><span class="badge b-system">NO DUPLICATE CREATE</span></div>
+  <div id="handoffs">
+    <div class="handoff"><b>Sales Pump → Vector</b><div>Human / CTA Readback · First Broken = HUMAN_TO_CTA_CLICK</div><span class="badge b-wait">PENDING</span></div>
+    <div class="handoff"><b>Sales Pump → Stratum</b><div>Real Human Readback · Calculator / $39 / $499を保護</div><span class="badge b-wait">PENDING</span></div>
+    <div class="handoff"><b>Sales Pump → AI App $24</b><div>Fresh Human Readback · WordPress Entry / Gumroad $24を保護</div><span class="badge b-wait">PENDING</span></div>
+    <div class="handoff"><b>3rd Leader → Reward Pump</b><div>新Accepted / Payout / Depositまたは新claimable verified rewardのみReturn</div><span class="badge b-wait">PENDING</span></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Human Gates</h2><div class="hint">AIの不安をGateへ昇格しない。</div></div></div>
+  <div class="gates">
+    <div class="gateBox true"><h3>TRUE HUMAN GATE</h3><ul><li>KYC / 2FA / OAuth本人同意 / Secret入力</li><li>Money / Spend / Contract / Price / Legal</li><li>Irreversible Account Ownership / Destructive Change</li></ul></div>
+    <div class="gateBox not"><h3>NOT HUMAN GATE</h3><ul><li>System / Provider / External Wait</li><li>Observability Gap / Missing Generic Adapter</li><li>Internal READY / recoverable HTTP failure</li></ul></div>
+  </div>
+  <div id="gateCurrent" class="hint" style="margin-top:10px">Live Current接続時、requires_user_now=true のGateだけを表示します。</div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Evidence Stream</h2><div class="hint">Revenue / Human / Systemを視覚分離。Publish / Runtime成功はPaymentと同色にしない。</div></div></div>
+  <div class="evidenceList" id="evidence">
+    <div class="ev"><span class="badge b-pay">PAYMENT</span><div><div class="evTitle">Vector note ¥2,500 Payment Evidence</div><div class="hint">External Payment verified. Repeatabilityは別判定。</div></div><div class="evTime">2026-09-26 JST</div></div>
+    <div class="ev"><span class="badge b-wait">PAYOUT PENDING</span><div><div class="evTitle">Reward Pump current payout lane</div><div class="hint">External WaitはWait。再Claimしない。</div></div><div class="evTime">Current State Core</div></div>
+    <div class="ev"><span class="badge b-system">SYSTEM</span><div><div class="evTitle">Control Surface deployment / Task DONE / HTTP200</div><div class="hint">Revenue Successではない。</div></div><div class="evTime">Boundary</div></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>System Guards</h2><div class="hint">Legacy Mixed Revenue Pumpへ戻らないための表示契約。</div></div></div>
+  <div class="guards">
+    <div class="guard"><b>EVENT / STATE / HANDOFF FIRST</b><p>Reality Event → Intake → Dedupe → Correct Owner → Execute → Readback → Evidence → State Return → Wake / Close。</p></div>
+    <div class="guard"><b>SILENT HOLD</b><p>No Event / No State Change / unchanged External Waitは通知しない。Taskを作るためのTaskを生成しない。</p></div>
+    <div class="guard"><b>CAPABILITY ≠ REVENUE</b><p>ASTRAは能力として保持。Current Weak Lineに必要な時だけ正しいOwnerへRouting。Training ScoreはRevenue Cardへ混ぜない。</p></div>
+    <div class="guard"><b>UNKNOWN ≠ 0</b><p>観測不能をゼロに変換しない。HistoricalはCurrentへ昇格しない。</p></div>
+    <div class="guard"><b>LEGACY IS HISTORY</b><p>旧Mixed Revenue Pump /旧Global Coordination / Superseded Self-RecoveryはCurrent Actionへ表示しない。</p></div>
+    <div class="guard"><b>PROTECT OWNERSHIP</b><p>全体24H ≠ 3rd Leader ≠ Sales Pump ≠ Reward Pump ≠ Project Owner。</p></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Current Next Wake</h2><div class="hint">次に起動する理由がない時は仕事を生成しない。</div></div></div>
+  <div class="wake" id="nextWake"><strong>Material Revenue Event</strong><p>Payment / Payout / Deposit · Checkout / Contract · Buyer Signal · True Human Gate · Material Failure · Identity / Authority mismatch · existing Pending Handoff state return.</p></div>
+</section>
+
+<div class="footer">Canonical Surface: 24H Control Plane · Existing Runtime Only · No new Scheduler / Agent / Database / Monitor Runtime</div>
+</main>
+<script>
+const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const API=BASE+'/api/snapshot';
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('monitor_key')||'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const val=(x,fallback='UNKNOWN')=>x===null||x===undefined||x===''?fallback:String(x);
+function connect(){localStorage.setItem('monitor_key',$('key').value.trim());loadCurrent()}
+function routeCard(id){return document.querySelector('[data-route="'+id+'"]')}
+function projectMap(d){return Object.fromEntries((d.projects||[]).map(p=>[String(p.id),p]))}
+function setRoute(id,p,brokenFallback){
+  const el=routeCard(id); if(!el||!p)return;
+  const cur=el.querySelector('.route-current'),br=el.querySelector('.route-broken'),ow=el.querySelector('.route-owner'),nx=el.querySelector('.route-next');
+  if(cur)cur.textContent=val(p.state);
+  if(br)br.textContent=val(p.blocker,brokenFallback||'UNKNOWN');
+  if(ow)ow.textContent=val(p.owner_label,'UNKNOWN OWNER');
+  if(nx)nx.textContent=val(p.next_action,'UNKNOWN');
+}
+function setOwner(id,p){
+  const el=document.querySelector('[data-owner-unit="'+id+'"]'); if(!el||!p)return;
+  const c=el.querySelector('.owner-current'),b=el.querySelector('.owner-broken');
+  if(c)c.textContent=val(p.state);
+  if(b)b.textContent=val(p.blocker,'UNKNOWN');
+}
+function stageBadge(k){
+  const s=String(k||'').toUpperCase();
+  if(/PAYMENT|PAYOUT|DEPOSIT/.test(s))return 'b-pay';
+  if(/CHECKOUT|CONTRACT/.test(s))return 'b-check';
+  if(/BUYER/.test(s))return 'b-buyer';
+  if(/QUALIFIED|HUMAN/.test(s))return 'b-human';
+  return 'b-system';
+}
+function renderEvidence(d){
+  const rev=d.revenue||{}, stages=rev.stages||{}, out=[];
+  ['PAYMENT','CHECKOUT','BUYER','QUALIFIED','HUMAN','REACH'].forEach(k=>{
+    const x=stages[k]; if(!x)return;
+    out.push('<div class="ev"><span class="badge '+stageBadge(k)+'">'+esc(k)+'</span><div><div class="evTitle">'+esc(val(x.unit_id,'External Evidence'))+'</div><div class="hint">Current positive evidence · '+esc(val(x.stage,k))+'</div></div><div class="evTime">'+esc(val(x.at,'UNKNOWN TIME'))+'</div></div>');
+  });
+  if(out.length)$('evidence').innerHTML=out.join('');
+}
+function renderGates(d){
+  const gates=(d.action_items||[]).filter(x=>x.requires_user_now===true);
+  if(!gates.length){$('gateCurrent').textContent='Current true Human Gate: NONE VERIFIED by live snapshot.';return}
+  $('gateCurrent').innerHTML='<b>Current true Human Gate:</b><br>'+gates.slice(0,6).map(g=>esc(val(g.source_unit_id||g.unit_id,'UNKNOWN'))+' · '+esc(val(g.action_label||g.title,'Human action required'))).join('<br>');
+}
+function renderNextWake(d){
+  const s=d.revenue_decision?.selected||null;
+  if(!s)return;
+  $('nextWake').innerHTML='<strong>'+esc(val(s.project_name||s.unit_id,'Material Revenue Event'))+'</strong><p>First Broken: '+esc(val(s.first_broken_stage))+'<br>Next Wake: '+esc(val(s.wake_condition,'Material State Change / Evidence Return'))+'<br>Owner: '+esc(val(s.primary_owner||s.owner_label,'Correct Project / Specialist Owner'))+'</p>';
+}
+function render(d){
+  const pm=projectMap(d);
+  setRoute('vector',pm.vector,'Human → CTA Click');
+  setRoute('stratum',pm.stratum,'REAL HUMAN');
+  setRoute('product-ai-app-builder-router-2026',pm['product-ai-app-builder-router-2026'],'FRESH HUMAN');
+  setRoute('revenue-pump',pm['revenue-pump'],'Accepted / Payout / Deposit');
+  ['codeops','sovlta','forwelle','gwr'].forEach(id=>setOwner(id,pm[id]));
+  renderEvidence(d);renderGates(d);renderNextWake(d);
+  $('sourceBadge').textContent='LIVE COMPANY STATE';
+  $('sourceBadge').className='badge b-pay';
+  $('liveAt').textContent='Last Verified: '+new Date().toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'});
+  $('msg').innerHTML='<span class="statusDot"></span>Live Current loaded. Control Plane remains read-only / routing-only.';
+}
+async function loadCurrent(){
+  const key=$('key').value.trim()||localStorage.getItem('monitor_key')||'';
+  if(!key){$('msg').textContent='Build-time Currentを表示中。Live Currentには既存Monitor Keyを使用してください。';return}
+  $('msg').textContent='Current Realityを読込中…';
+  try{
+    const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'readback failed');
+    render(d);
+  }catch(e){$('msg').textContent='Live Current readback failed: '+e.message+' · Build-time Currentは保持。';}
+}
+if(localStorage.getItem('monitor_key'))loadCurrent();
+</script>
+</body>
+</html>
