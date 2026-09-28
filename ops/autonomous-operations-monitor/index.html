@@ -46,7 +46,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <div class="auth"><input id="key" type="password" placeholder="監視キー"><button onclick="connect()">接続</button><button onclick="load()">更新</button></div>
 </header>
 <nav class="nav">
-  <a class="active" href="index.html">Operations</a>\n  <a href="layers.html">3 Layers</a>
+  <a class="active" href="index.html">Operations</a>\n  <a href="24h-control-plane.html">24H Control Plane</a>\n  <a href="layers.html">3 Layers</a>
   <a href="trends.html">Trend Radar</a>
   <a href="revenue-os.html">Revenue OS</a>
   <a href="product-portfolio.html">Products</a>
@@ -89,8 +89,8 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   </div>
   <div class="commandGrid">
     <div class="cmdCard recommended">
-      <div class="cmdTitle">⭐ 3代目リーダー｜Revenue Command + Owned Execution</div>
-      <div class="cmdDesc">Current Reality → Revenue Priority → First Broken Stage → Owned Routeは直接Revenue Action実行 → Direct Readback → Evidence → State Update。専門UnitはOwnerを奪わない。</div>
+      <div class="cmdTitle">⭐ 3代目リーダー｜Revenue Command / Resource Router</div>
+      <div class="cmdDesc">Current Market × Current Product × Payment/Payout Evidence × Revenue Distance → Sales Pump / Reward Pumpを選択 → Correct OwnerへRouting → Direct Evidence統合。通常のProject実装を奪わない。</div>
       <a class="cmdLink leader" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/c/6ab8676a-11d8-83e9-8b7d-f72f3e425f21">3代目リーダーを開く ↗</a><a class="miniLink" href="third-leader.html">Partner Cockpit →</a>
     </div>
 
@@ -101,9 +101,9 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
     </div>
 
     <div class="cmdCard">
-      <div class="cmdTitle">💰 Revenue Pump｜Direct Revenueのみ</div>
-      <div class="cmdDesc">Market Radar → Direct Revenue Opportunity → Claim / Payout → Deposit専用。商品販売・価格・Checkoutは扱わない。</div>
-      <a class="cmdLink pump" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/c/6ab8d635-8144-83ee-9b03-8f7985419a25">Revenue Pump担当を開く ↗</a>
+      <div class="cmdTitle">💰 Reward Pump / Direct Revenue Pump</div>
+      <div class="cmdDesc">External Reward専用。Opportunity → Verify → Dedupe → Claim/Work → Submit → Accepted → Payout → Deposit。Owned Product Salesは扱わない。</div>
+      <a class="cmdLink pump" target="_blank" rel="noopener noreferrer" href="https://chatgpt.com/c/6ab8d635-8144-83ee-9b03-8f7985419a25">Reward Pump担当を開く ↗</a>
       <a class="miniLink" href="../revenue-pump/index.html">実行サイトを開く →</a>
     </div>
 
@@ -148,7 +148,7 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
 
 <section class="section">
   <div class="sectionHead">
-    <div><h2>Current Closest-to-Cash Commercial Route</h2><div class="hint">ここは3代目のOwned Commercial Revenue領域。Vector / Stratum Upstream / AI App $24は3代目が直接進める。B2B / Forwelle / SOVLTAは専門Ownerへ任せ、Revenue Pump（Direct Money専用）とも分離。</div></div>
+    <div><h2>Current Closest-to-Cash Commercial Route</h2><div class="hint">ここはSales PumpのOwned Product Revenue領域。Vector / Stratum / AI App $24はSales Pump経由で正しいProject OwnerへRoutingする。B2B / Forwelle / SOVLTAは専門Ownerを維持し、Reward Pumpとも分離。</div></div>
     <div class="hint">Monitor key / v36 Revenue OS Boundary</div>
   </div>
   <div class="revenueOp">
@@ -217,7 +217,7 @@ async function runControl(actor,unitId,btn,msgId='controlMsg'){
 }
 async function pochi(){
   const m=$('revOpMsg');
-  if(m)m.textContent='3代目Owned Commercial Routeを直接進めます。専門Unitの内部実行は各Ownerへ任せます。';
+  if(m)m.textContent='3代目はLane/Ownerを決定します。Owned ProductはSales Pump経由でCorrect OwnerへRoutingします。';
   window.open('https://chatgpt.com/c/6ab8676a-11d8-83e9-8b7d-f72f3e425f21','_blank','noopener');
 }
 async function runSafeAction(action,project,signalKey,btn){
