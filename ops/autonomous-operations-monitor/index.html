@@ -52,12 +52,12 @@ details{margin-top:6px}summary{cursor:pointer;font-size:10px;color:var(--muted)}
   <a href="product-portfolio.html">Products</a>
   <a href="audit.html">Workspaces</a><a href="third-leader.html">3rd Leader</a>
 </nav>
-<div id="msg">監視キーを入力して「接続」を押してください。</div>
+<div id="msg">監視キーが未保存です。既存の監視キーをこの画面へ直接入力して「接続」を押してください。キーはChatや外部へ共有しないでください。</div>
 
 <section class="hero">
   <div>
     <div class="hint">会社全体</div>
-    <div id="companyStatus" class="statusBig">未接続</div>
+    <div id="companyStatus" class="statusBig">監視キー待ち</div>
     <div id="nowLine" class="nowline">—</div>
     <div id="lastLine" class="explain"></div>
     <div class="activityHero"><div id="dailyDoneHero" class="activityNum">—</div><div><b>今日の完了</b><div class="hint">Execution Activity / Revenue成果とは別指標</div></div></div>
@@ -482,5 +482,5 @@ function render(d){
   $('history').innerHTML=hist.length?hist.map(x=>'<div class="hist"><div class="htime">'+time(x.at)+'<br>'+ago(x.at)+'</div><div><div class="hmain">'+esc(x.title)+'</div><div class="hmeta">'+esc(x.unit_id)+' · '+esc(x.status)+(resultText(x.detail)?' · '+esc(resultText(x.detail)):'')+'</div></div></div>').join(''):'<div class="empty">Task履歴なし</div>';
   $('msg').textContent='接続済み · 15秒ごとに自動更新 · '+time(d.generated_at);
 }
-if(localStorage.getItem('monitor_key'))load(); setInterval(()=>{if(localStorage.getItem('monitor_key'))load()},15000);
+const savedMonitorKey=localStorage.getItem('monitor_key')||''; if(savedMonitorKey){load()}else{$('companyStatus').textContent='監視キー待ち';$('msg').textContent='監視キーが未保存です。既存の監視キーをこの画面へ直接入力して「接続」を押してください。キーはChatや外部へ共有しないでください。'} setInterval(()=>{if(localStorage.getItem('monitor_key'))load()},15000);
 </script></body></html>
