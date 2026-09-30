@@ -77,6 +77,12 @@
     }
   };
 
+
+  // Existing offer fit: no checkout or pricing changes.
+  Object.assign(copy.en,{"fitLabel": "FOR MULTI-AGENT OPERATORS", "fitTitle": "Already working across Claude Code, Codex or Cursor?", "fitText": "If your next decision is about portable permissions, review gates or state handoff, inspect the existing Cross-Agent Operating Kit. A cost scan is optional for this need.", "fitPrice": "Personal · $69 one-time", "fitCta": "Review contents and purchase terms", "fitNote": "Check the scope, license and delivery details on the product page before buying."});
+  Object.assign(copy.ja,{"fitLabel": "複数のAIをすでに運用している方へ", "fitTitle": "Claude Code・Codex・Cursorの間で、運用ルールを引き継ぎたいですか？", "fitText": "権限・人の確認が必要な場面・状態の引き継ぎが課題なら、既存のCross-Agent Operating Kitの内容をご確認ください。この目的では、先にコスト診断を受ける必要はありません。", "fitPrice": "Personal · $69 買い切り", "fitCta": "収録内容と購入条件を見る", "fitNote": "購入前に、対象範囲・ライセンス・受け取り方を商品ページで確認してください。"});
+  Object.assign(copy.es,{"fitLabel": "PARA OPERADORES DE VARIOS AGENTES", "fitTitle": "¿Ya trabajas con Claude Code, Codex o Cursor?", "fitText": "Para permisos portables, revisión humana y transferencia de estado, consulta el Cross-Agent Operating Kit existente. El análisis de costes es opcional para esta necesidad.", "fitPrice": "Personal · $69 pago único", "fitCta": "Ver contenido y condiciones de compra", "fitNote": "Comprueba alcance, licencia y entrega en la página del producto antes de comprar."});
+
   const currentLang=()=>['en','ja','es'].includes(document.documentElement.lang)?document.documentElement.lang:'en';
   const t=()=>copy[currentLang()]||copy.en;
 
