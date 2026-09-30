@@ -200,6 +200,11 @@ async function load(){
   try{
     const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
     const d=await r.json();
+    if(r.status===401){
+      localStorage.removeItem('monitor_key');
+      $('key').value='';
+      throw new Error('保存されていた監視キーが無効です。現在の監視キーを再入力して「接続」を押してください。');
+    }
     if(!r.ok)throw new Error(d.error||'読込失敗');
     render(d);
   }catch(e){$('msg').textContent='接続できません: '+e.message}
