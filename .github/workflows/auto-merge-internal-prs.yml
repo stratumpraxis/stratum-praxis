@@ -2,7 +2,7 @@ name: Auto-merge internal PRs
 
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened, ready_for_review]
+    types: [labeled]
 
 permissions:
   actions: write
@@ -18,6 +18,7 @@ concurrency:
 jobs:
   auto-merge:
     if: >-
+      github.event.label.name == 'human-approved-automerge' &&
       github.event.pull_request.draft == false &&
       github.event.pull_request.head.repo.full_name == github.repository &&
       github.event.pull_request.user.login == 'stratumpraxis'
@@ -75,7 +76,7 @@ jobs:
           echo "Timed out waiting for PR checks; refusing automatic merge."
           exit 1
 
-      - name: Merge internal owner PR
+      - name: Merge internal owner PR after explicit human approval label
         env:
           GH_TOKEN: ${{ github.token }}
           PR_URL: ${{ github.event.pull_request.html_url }}
