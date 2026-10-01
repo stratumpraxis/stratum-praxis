@@ -9,6 +9,7 @@ import {
 } from '../lib/buyer-evidence-bridge.mjs';
 
 const created = Math.floor(Date.parse('2026-09-13T00:00:00.000Z') / 1000);
+const correlatedReference = 'spb_123e4567-e89b-12d3-a456-426614174000__spr_workflow_audit';
 
 function paidSession(overrides = {}) {
   return {
@@ -50,6 +51,34 @@ test('a real attributed Stripe Checkout Session proves checkout before payment',
   assert.equal(decision.reaction.evidence_source, 'stripe-checkout-session');
 });
 
+test('correlated client reference links an unpaid checkout to the PostHog buyer without a Stripe customer', () => {
+  const decision = checkoutReactionFromCheckoutSession(paidSession({
+    customer: null,
+    payment_status: 'unpaid',
+    payment_intent: null,
+    status: 'open',
+    client_reference_id: correlatedReference,
+    metadata: { attribution_route_id: undefined }
+  }));
+  assert.equal(decision.accepted, true);
+  assert.equal(decision.reaction.buyer_key, 'posthog:123e4567-e89b-12d3-a456-426614174000');
+  assert.equal(decision.reaction.revenue_route_id, 'workflow_audit');
+  assert.equal(decision.reaction.stage, 'checkout');
+});
+
+test('correlated client reference also preserves buyer identity after verified payment', () => {
+  const decision = buyerReactionFromCheckoutSession(paidSession({
+    customer: null,
+    client_reference_id: correlatedReference,
+    metadata: { attribution_route_id: undefined }
+  }));
+  assert.equal(decision.accepted, true);
+  assert.equal(decision.reaction.buyer_key, 'posthog:123e4567-e89b-12d3-a456-426614174000');
+  assert.equal(decision.reaction.revenue_route_id, 'workflow_audit');
+  assert.equal(decision.reaction.stage, 'payment_evidence');
+  assert.equal(decision.reaction.revenue_distance, 0);
+});
+
 test('checkout stage requires one-time mode, attribution, buyer key and time', () => {
   assert.equal(checkoutReactionFromCheckoutSession(paidSession({ mode: 'subscription' })).accepted, false);
   assert.equal(checkoutReactionFromCheckoutSession(paidSession({
@@ -89,8 +118,9 @@ test('a verified paid Stripe Checkout Session becomes payment evidence at distan
   assert.equal(decision.payment.currency, 'usd');
 });
 
-test('explicit opaque buyer metadata takes precedence over Stripe customer id', () => {
+test('explicit opaque buyer metadata takes precedence over correlated reference and Stripe customer id', () => {
   const decision = buyerReactionFromCheckoutSession(paidSession({
+    client_reference_id: correlatedReference,
     metadata: { buyer_key: 'buyer:account-42' }
   }));
   assert.equal(decision.accepted, true);
