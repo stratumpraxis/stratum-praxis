@@ -122,11 +122,14 @@ small{color:var(--muted)}
 <script>
 const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/astra';
 const $=id=>document.getElementById(id);
-$('key').value=localStorage.getItem('monitor_key')||'';
+function safeGetKey(){try{return localStorage.getItem('monitor_key')||sessionStorage.getItem('monitor_key')||''}catch(_e){try{return sessionStorage.getItem('monitor_key')||''}catch(_e2){return ''}}}
+function safeSetKey(v){try{localStorage.setItem('monitor_key',v)}catch(_e){} try{sessionStorage.setItem('monitor_key',v)}catch(_e){}}
+function safeClearKey(){try{localStorage.removeItem('monitor_key')}catch(_e){} try{sessionStorage.removeItem('monitor_key')}catch(_e){}}
+$('key').value=safeGetKey();
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
 const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
 const modeName=x=>x==='REPEAT_VERIFIED_WINNER'?'勝ち筋の再現性':x==='QUALIFIED_HUMAN_ACQUISITION'?'Qualified Human獲得':x==='ROUTE_VERIFICATION'?'Revenue Route検証':(x||'—');
-function connect(){localStorage.setItem('monitor_key',$('key').value.trim());load()}
+function connect(){safeSetKey($('key').value.trim());load()}
 function practicePips(n,max=4){return Array.from({length:max},(_,i)=>'<i class="pip '+(i<n?'on':'')+'"></i>').join('')}
 function ladder(levels){
   const entries=Object.entries(levels||{});
@@ -194,22 +197,22 @@ function render(d){
   $('msg').textContent='接続済み · '+time(d.generated_at)+' · Runtime '+d.runtime;
 }
 async function load(){
-  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  const key=safeGetKey()||$('key').value.trim();
   if(!key){$('msg').textContent='監視キーを入力してください。';return}
   $('msg').textContent='ASTRA状態を読込中…';
   try{
     const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
     const d=await r.json();
     if(r.status===401){
-      localStorage.removeItem('monitor_key');
+      safeClearKey();
       $('key').value='';
       throw new Error('保存されていた監視キーが無効です。現在の監視キーを再入力して「接続」を押してください。');
     }
     if(!r.ok)throw new Error(d.error||'読込失敗');
     render(d);
-  }catch(e){$('msg').textContent='接続できません: '+e.message}
+  }catch(e){$('msg').textContent='接続できません: '+(e&&e.message?e.message:String(e))+' / API: '+API}
 }
-if(localStorage.getItem('monitor_key'))load();
-setInterval(()=>{if(localStorage.getItem('monitor_key'))load()},60000);
+if(safeGetKey())load();
+setInterval(()=>{if(safeGetKey())load()},60000);
 </script>
 </body></html>
