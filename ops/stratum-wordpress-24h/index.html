@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>STRATUM 24H WordPress Operator</title>
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="description" content="Stratum Praxis internal 24H WordPress automation operator.">
+<style>
+:root{
+  --bg:#071015;--panel:#0d1820;--panel2:#11212b;--line:#243845;
+  --text:#f5fbff;--muted:#90a8b6;--good:#74e5b1;--warn:#ffd36e;--bad:#ff8f9a;
+  --accent:#86d9ff;--shadow:0 20px 70px rgba(0,0,0,.32)
+}
+*{box-sizing:border-box}
+body{margin:0;background:
+radial-gradient(circle at 85% -5%,rgba(134,217,255,.12),transparent 30%),
+radial-gradient(circle at -10% 20%,rgba(116,229,177,.08),transparent 28%),
+var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+button,a{font:inherit}
+.wrap{max-width:1180px;margin:auto;padding:24px 16px 90px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{display:flex;align-items:center;gap:11px;font-weight:900;letter-spacing:.06em}
+.mark{width:14px;height:14px;border-radius:50%;background:var(--accent);box-shadow:0 0 26px rgba(134,217,255,.65)}
+.badge{border:1px solid var(--line);border-radius:999px;padding:8px 12px;color:var(--muted);font-size:12px;font-weight:800}
+.hero{padding:28px;border:1px solid var(--line);border-radius:28px;background:linear-gradient(180deg,rgba(17,33,43,.96),rgba(9,20,27,.96));box-shadow:var(--shadow)}
+.heroRow{display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap}
+.kicker{font-size:12px;letter-spacing:.16em;color:var(--accent);font-weight:900}
+h1{font-size:clamp(34px,6vw,68px);line-height:.94;letter-spacing:-.045em;margin:10px 0 12px}
+.sub{color:var(--muted);max-width:720px;font-size:16px}
+.heroState{min-width:230px;padding:18px;border-radius:20px;background:#071015;border:1px solid var(--line)}
+.heroState small{display:block;color:var(--muted);font-size:11px;letter-spacing:.12em}
+.heroState strong{display:block;font-size:28px;margin:5px 0}
+.heroState span{font-size:12px;color:var(--muted)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;border:0;border-radius:14px;padding:13px 16px;font-weight:900;cursor:pointer}
+.primary{background:var(--text);color:#071015}
+.secondary{background:#12222d;color:var(--text);border:1px solid var(--line)}
+.warn{background:#2a2212;color:#ffe6a3;border:1px solid #5a4720}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:14px 0}
+.card{padding:18px;border-radius:20px;background:var(--panel);border:1px solid var(--line);min-height:126px}
+.label{font-size:11px;color:var(--muted);letter-spacing:.11em;font-weight:900}
+.value{font-size:22px;font-weight:900;margin:8px 0 3px;overflow-wrap:anywhere}
+.note{font-size:12px;color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:var(--muted)}
+.good .dot{background:var(--good);box-shadow:0 0 14px rgba(116,229,177,.5)}
+.warnState .dot{background:var(--warn);box-shadow:0 0 14px rgba(255,211,110,.5)}
+.badState .dot{background:var(--bad);box-shadow:0 0 14px rgba(255,143,154,.5)}
+.section{margin-top:14px;padding:20px;border-radius:24px;border:1px solid var(--line);background:rgba(13,24,32,.88)}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}
+.section h2{margin:0;font-size:18px}
+.flow{display:grid;grid-template-columns:repeat(7,minmax(110px,1fr));gap:8px;align-items:stretch;overflow:auto;padding-bottom:4px}
+.node{min-width:110px;padding:14px 12px;border-radius:16px;background:#0a141b;border:1px solid var(--line)}
+.node small{display:block;color:var(--muted);font-size:10px;letter-spacing:.08em}
+.node strong{display:block;margin-top:6px;font-size:13px}
+.node.on{border-color:rgba(116,229,177,.42);background:rgba(116,229,177,.07)}
+.node.gate{border-color:rgba(255,211,110,.45);background:rgba(255,211,110,.07)}
+.controls{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.control{display:flex;flex-direction:column;gap:7px;padding:18px;border-radius:18px;background:#0a141b;border:1px solid var(--line);text-decoration:none;color:var(--text)}
+.control strong{font-size:16px}
+.control span{color:var(--muted);font-size:12px}
+.control:hover{border-color:#3b5a6b;transform:translateY(-1px)}
+.split{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+.log{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:#061015;border:1px solid var(--line);border-radius:16px;padding:14px;min-height:150px;color:#b8cbd6;white-space:pre-wrap}
+.mini{display:grid;gap:9px}
+.row{display:flex;justify-content:space-between;gap:12px;padding:11px 12px;border:1px solid var(--line);border-radius:13px;background:#0a141b}
+.row span{color:var(--muted);font-size:12px}
+.row b{font-size:12px;text-align:right;overflow-wrap:anywhere}
+.footer{margin-top:18px;color:var(--muted);font-size:11px;text-align:center}
+@media(max-width:900px){.grid{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr}.split{grid-template-columns:1fr}}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.hero{padding:22px}.wrap{padding-left:12px;padding-right:12px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top">
+    <div class="brand"><span class="mark"></span>STRATUM PRAXIS</div>
+    <div class="badge">INTERNAL · 24H OPERATOR</div>
+  </div>
+
+  <section class="hero">
+    <div class="heroRow">
+      <div>
+        <div class="kicker">WORDPRESS AUTOMATION RUNTIME</div>
+        <h1>24H<br>Publisher</h1>
+        <div class="sub">Stratum専用。Vector / GWR / Forwelleの認証は使わない。時刻cronではなく、Eventが来た時だけ動く自社Publisher。</div>
+      </div>
+      <div class="heroState">
+        <small>RUNTIME STATE</small>
+        <strong id="runtimeState">CHECKING…</strong>
+        <span id="observedAt">status APIを確認中</span>
+      </div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="refreshBtn">↻ 状態を再読込</button>
+      <a class="btn secondary" href="https://stratumpraxis.wordpress.com/" target="_blank" rel="noopener">WordPressを開く</a>
+      <a class="btn warn" href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fwordpress.com%2Fsites" target="_blank" rel="noopener">🔐 Stratum認証</a>
+    </div>
+  </section>
+
+  <section class="grid">
+    <article class="card" id="authCard"><div class="label">WORDPRESS AUTH</div><div class="value"><span class="dot"></span><span id="authValue">CHECKING</span></div><div class="note" id="authNote">Stratumアカウントのみ</div></article>
+    <article class="card" id="surfaceCard"><div class="label">PUBLIC SURFACE</div><div class="value"><span class="dot"></span><span id="surfaceValue">CHECKING</span></div><div class="note" id="surfaceNote">WordPress公開面</div></article>
+    <article class="card" id="publisherCard"><div class="label">PUBLISHER</div><div class="value"><span class="dot"></span><span id="publisherValue">CHECKING</span></div><div class="note">dedupe + readback</div></article>
+    <article class="card" id="eventCard"><div class="label">TRIGGER MODE</div><div class="value"><span class="dot"></span><span id="eventValue">EVENT</span></div><div class="note">schedule dependency = false</div></article>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead"><h2>実行パイプライン</h2><span class="badge" id="pipelineBadge">CHECKING</span></div>
+    <div class="flow">
+      <div class="node on"><small>01</small><strong>STRATUM EVENT</strong></div>
+      <div class="node on"><small>02</small><strong>ARTICLE / QA</strong></div>
+      <div class="node on"><small>03</small><strong>DEDUPE</strong></div>
+      <div class="node gate" id="authNode"><small>04</small><strong>WORDPRESS AUTH</strong></div>
+      <div class="node" id="publishNode"><small>05</small><strong>PUBLISH</strong></div>
+      <div class="node" id="readbackNode"><small>06</small><strong>READBACK</strong></div>
+      <div class="node" id="revenueNode"><small>07</small><strong>$39 / $499</strong></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="sectionHead"><h2>売る導線</h2><span class="badge">EXISTING OFFERS ONLY</span></div>
+    <div class="controls">
+      <a class="control" href="https://stratumpraxis.com/ai-saas-spend-decision-kit.html" target="_blank" rel="noopener">
+        <span>SELF-SERVICE</span><strong>$39 Spend Decision Kit →</strong><span>既存の購入導線。新商品は作らない。</span>
+      </a>
+      <a class="control" href="https://stratumpraxis.com/workflow-audit.html" target="_blank" rel="noopener">
+        <span>FIXED-SCOPE B2B</span><strong>$499 Workflow Audit →</strong><span>Stripe checkout接続済みの既存Audit。</span>
+      </a>
+      <a class="control" href="https://stratumpraxis.com/product-router.html" target="_blank" rel="noopener">
+        <span>ROUTER</span><strong>Revenue Routes →</strong><span>FREE → $39 → $499 を既存経路で案内。</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section split">
+    <div>
+      <div class="sectionHead"><h2>Direct Readback</h2><span class="badge">LIVE</span></div>
+      <div class="log" id="log">status API waiting…</div>
+    </div>
+    <div class="mini">
+      <div class="row"><span>Latest WordPress</span><b id="latestTitle">—</b></div>
+      <div class="row"><span>Latest modified</span><b id="latestModified">—</b></div>
+      <div class="row"><span>24h changes</span><b id="last24">—</b></div>
+      <div class="row"><span>Adapter</span><b id="adapter">—</b></div>
+      <div class="row"><span>Next action</span><b id="nextAction">—</b></div>
+    </div>
+  </section>
+
+  <div class="footer">No secrets displayed · Project isolated · Event driven · Stratum only</div>
+</main>
+
+<script>
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-24h-status';
+const el=id=>document.getElementById(id);
+const cardState=(id,state)=>{
+  const x=el(id); x.classList.remove('good','warnState','badState');
+  x.classList.add(state);
+};
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+async function load(){
+  el('runtimeState').textContent='CHECKING…';
+  el('log').textContent='Direct Readback…';
+  try{
+    const r=await fetch(API,{cache:'no-store'});
+    const d=await r.json();
+    const auth=!!d.wordpress?.auth_ready;
+    const surface=!!d.wordpress?.surface_healthy;
+    const pub=!!d.publisher?.deployed;
+    const active=d.runtime?.state==='ACTIVE';
+
+    el('runtimeState').textContent=d.runtime?.state||'UNKNOWN';
+    el('observedAt').textContent='Observed '+new Date(d.observed_at).toLocaleString('ja-JP');
+    el('authValue').textContent=auth?'READY':'AUTH GATE';
+    el('authNote').textContent=auth?'Stratum WordPress認証済み':'stratumpraxis@gmail.com の再接続待ち';
+    cardState('authCard',auth?'good':'warnState');
+
+    el('surfaceValue').textContent=surface?'HEALTHY':'CHECK';
+    el('surfaceNote').textContent='HTTP '+(d.wordpress?.home_status??'—')+' · API '+(d.wordpress?.api_healthy?'OK':'NG');
+    cardState('surfaceCard',surface?'good':'badState');
+
+    el('publisherValue').textContent=pub?'DEPLOYED':'DOWN';
+    cardState('publisherCard',pub?'good':'badState');
+    cardState('eventCard','good');
+
+    el('pipelineBadge').textContent=active?'ACTIVE':'WAITING AUTH';
+    ['publishNode','readbackNode','revenueNode'].forEach(id=>{
+      el(id).classList.toggle('on',active);
+    });
+    el('authNode').classList.toggle('gate',!auth);
+    el('authNode').classList.toggle('on',auth);
+
+    el('latestTitle').innerHTML=d.wordpress?.latest_url
+      ? '<a style="color:#f5fbff" target="_blank" rel="noopener" href="'+esc(d.wordpress.latest_url)+'">'+esc((d.wordpress.latest_title||'Open').replace(/<[^>]+>/g,''))+'</a>'
+      : '—';
+    el('latestModified').textContent=d.wordpress?.latest_modified||'—';
+    el('last24').textContent=String(d.wordpress?.modified_last_24h_count??0);
+    el('adapter').textContent=d.publisher?.adapter_status||'—';
+    el('nextAction').textContent=d.runtime?.next_action||'—';
+
+    el('log').textContent=[
+      'PROJECT          '+d.project,
+      'RUNTIME          '+d.runtime?.state,
+      'EVENT_DRIVEN     '+d.runtime?.event_driven,
+      'SCHEDULE_DEP     '+d.runtime?.schedule_dependency,
+      'WP_AUTH          '+d.wordpress?.auth_ready,
+      'WP_SURFACE       '+d.wordpress?.surface_healthy,
+      'PUBLISHER        '+d.publisher?.deployed,
+      'DEDUPE           '+d.publisher?.dedupe,
+      'READBACK         '+d.publisher?.public_readback,
+      'AUTO_ELIGIBLE    '+d.publisher?.auto_eligible,
+      'NEXT             '+d.runtime?.next_action
+    ].join('\n');
+  }catch(e){
+    el('runtimeState').textContent='STATUS ERROR';
+    el('log').textContent=String(e);
+  }
+}
+el('refreshBtn').addEventListener('click',load);
+load();
+setInterval(load,60000);
+</script>
+</body>
+</html>
