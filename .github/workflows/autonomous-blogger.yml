@@ -1,10 +1,13 @@
 name: Autonomous Revenue Publisher
 
-# 2026-09-08: explicit second-pass trigger to verify newly requested MarketNest owned publication.
+# Event-driven Stratum publishing. No time-based scheduler.
 on:
   workflow_dispatch:
-  schedule:
-    - cron: '23 3 * * *'
+  repository_dispatch:
+    types:
+      - stratum_publish_event
+      - stratum_source_ready
+      - stratum_revenue_signal
   push:
     branches: [main]
     paths:
@@ -12,6 +15,7 @@ on:
       - 'acquisition/blogger/free-runner.mjs'
       - 'acquisition/blogger/local-fallback.mjs'
       - 'acquisition/blogger/owned-publisher.mjs'
+      - 'acquisition/blogger/state.json'
       - '.github/workflows/autonomous-blogger.yml'
 
 permissions:
@@ -48,7 +52,7 @@ jobs:
           else
             echo 'Workers AI generation did not require fallback'
           fi
-      - name: Route READY output to owned Signal site
+      - name: Route READY output to Stratum owned Signal site
         if: always()
         run: node acquisition/blogger/owned-publisher.mjs
       - name: Commit generated revenue media, sitemap, diagnostics and state
