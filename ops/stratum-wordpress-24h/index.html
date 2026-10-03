@@ -1,176 +1,301 @@
 <!doctype html>
 <html lang="ja">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>STRATUM 24H Operator｜Astra Integrated</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="theme-color" content="#071016">
+<title>STRATUM 24H Operator｜DIB + ASTRA</title>
 <style>
-:root{--bg:#061015;--p:#0d1820;--p2:#11232d;--line:#263b48;--text:#f5fbff;--muted:#91a9b6;--cyan:#82dcff;--green:#78e7b2;--amber:#ffd36e;--red:#ff8f9a;--violet:#c9a7ff}
-*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 90% -8%,#143b4a80,transparent 30%),radial-gradient(circle at -8% 18%,#19372870,transparent 28%),var(--bg);color:var(--text);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,input,a{font:inherit}.wrap{max-width:1200px;margin:auto;padding:18px 14px 100px}.top{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}.brand{font-weight:950;letter-spacing:.08em}.brand i{display:inline-block;width:11px;height:11px;border-radius:50%;background:var(--cyan);box-shadow:0 0 22px #82dcff88;margin-right:9px}.pill{border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--muted);font-size:11px;font-weight:850}
-.hero{margin-top:14px;padding:24px;border:1px solid var(--line);border-radius:26px;background:linear-gradient(180deg,#10232d,#09161d);box-shadow:0 22px 70px #0005}.heroGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;align-items:center}.kicker{font-size:11px;letter-spacing:.15em;color:var(--cyan);font-weight:900}h1{font-size:clamp(38px,7vw,72px);line-height:.94;letter-spacing:-.05em;margin:8px 0 12px}.lead{color:var(--muted);max-width:760px}.stateBox{border:1px solid var(--line);background:#071117;border-radius:20px;padding:18px}.stateBox small{color:var(--muted);font-size:10px;letter-spacing:.12em}.stateBox b{display:block;font-size:30px;margin:5px 0}.stateBox span{font-size:12px;color:var(--muted)}
-.auth{display:grid;grid-template-columns:1fr auto;gap:8px;margin-top:16px}.auth input{min-height:48px;border:1px solid var(--line);border-radius:13px;background:#08141b;color:var(--text);padding:0 13px}.btn{min-height:48px;border:1px solid var(--line);border-radius:13px;background:#122630;color:var(--text);font-weight:900;padding:0 15px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:7px}.btn.primary{background:var(--text);color:#061015;border-color:var(--text)}.btn.run{background:linear-gradient(135deg,#8de6ff,#77e8b0);color:#062018;border:0}.btn.warn{background:#2b2313;color:#ffe7a0;border-color:#56461f}.btn:disabled{opacity:.45;cursor:not-allowed}
-.mainRun{width:100%;min-height:68px;font-size:20px;margin-top:12px;border-radius:18px}.hint{font-size:11px;color:var(--muted);margin-top:8px}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px}.card{border:1px solid var(--line);border-radius:18px;background:var(--p);padding:16px}.card .l{font-size:10px;color:var(--muted);letter-spacing:.1em;font-weight:900}.card .v{font-size:21px;font-weight:950;margin-top:6px;overflow-wrap:anywhere}.card .s{font-size:11px;color:var(--muted);margin-top:4px}
-.section{margin-top:12px;border:1px solid var(--line);border-radius:22px;background:#0a161d;padding:18px}.head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:13px}.head h2{font-size:17px;margin:0}.controls{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.control{min-height:86px;border:1px solid var(--line);border-radius:15px;background:#0b1b23;color:var(--text);padding:12px;cursor:pointer;text-align:left}.control b{display:block;font-size:13px}.control span{display:block;font-size:10px;color:var(--muted);margin-top:5px}.control:hover{border-color:#466171}.control.astra{border-color:#4a3d68;background:#171326}.control.money{border-color:#315c4c;background:#0d2119}
-.flow{display:grid;grid-template-columns:repeat(7,minmax(100px,1fr));gap:7px;overflow:auto}.node{min-width:100px;border:1px solid var(--line);border-radius:14px;background:#08151c;padding:12px}.node small{color:var(--muted);font-size:9px}.node b{display:block;font-size:11px;margin-top:5px}.node.on{border-color:#2f6b55;background:#0d2219}.node.gate{border-color:#6a5528;background:#2a2213}
-.astraGrid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}.astraCard{border:1px solid #43385b;border-radius:15px;background:#141021;padding:13px}.astraCard small{color:#b7a3d9;font-size:9px}.astraCard b{display:block;font-size:16px;margin-top:5px}.bar{height:6px;border-radius:999px;background:#241d35;overflow:hidden;margin-top:8px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--violet),var(--cyan))}.astraCard span{font-size:10px;color:var(--muted)}
-.routes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.route{display:block;text-decoration:none;color:var(--text);border:1px solid var(--line);border-radius:16px;background:#0b1920;padding:15px}.route small{color:var(--muted);font-size:9px}.route b{display:block;font-size:15px;margin:5px 0}.route span{font-size:10px;color:var(--muted)}
-.split{display:grid;grid-template-columns:1.25fr .75fr;gap:10px}.log{min-height:190px;background:#051015;border:1px solid var(--line);border-radius:14px;padding:12px;white-space:pre-wrap;font:11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:#bad0dc}.rows{display:grid;gap:7px}.row{border:1px solid var(--line);border-radius:12px;background:#08151c;padding:10px}.row small{display:block;color:var(--muted);font-size:9px}.row b{font-size:11px;overflow-wrap:anywhere}
-.bottom{position:fixed;left:50%;bottom:max(10px,env(safe-area-inset-bottom));transform:translateX(-50%);width:min(700px,calc(100% - 24px));display:grid;grid-template-columns:1fr .42fr;gap:7px;padding:7px;border:1px solid var(--line);border-radius:18px;background:#071217ee;backdrop-filter:blur(14px);z-index:9}
-.ok{color:var(--green)}.warnText{color:var(--amber)}.bad{color:var(--red)}
-@media(max-width:950px){.heroGrid,.split{grid-template-columns:1fr}.grid4{grid-template-columns:1fr 1fr}.controls{grid-template-columns:1fr 1fr}.astraGrid{grid-template-columns:1fr 1fr}.routes{grid-template-columns:1fr}}
-@media(max-width:520px){.grid4,.controls,.astraGrid{grid-template-columns:1fr}.auth{grid-template-columns:1fr}.hero{padding:20px}}
+:root{
+  --bg:#071016;--panel:#0c1820;--panel2:#10222c;--panel3:#0a141b;--line:#223743;
+  --text:#f4fbff;--muted:#8da7b6;--cyan:#75dcff;--green:#72e0a9;--amber:#ffd06a;
+  --red:#ff8b98;--violet:#b8a8ff;--shadow:0 24px 80px rgba(0,0,0,.34)
+}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:
+radial-gradient(circle at 85% -5%,rgba(117,220,255,.13),transparent 28%),
+radial-gradient(circle at 0 30%,rgba(184,168,255,.08),transparent 24%),var(--bg);
+color:var(--text);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+a,button,input{font:inherit}button{cursor:pointer}
+.wrap{max-width:1180px;margin:auto;padding:18px 14px 96px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.brand{display:flex;align-items:center;gap:10px;font-weight:950;letter-spacing:.06em}
+.logo{width:15px;height:15px;border-radius:50%;background:var(--cyan);box-shadow:0 0 28px rgba(117,220,255,.7)}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);font-size:11px;font-weight:850}
+.hero{border:1px solid var(--line);border-radius:26px;padding:24px;background:linear-gradient(155deg,rgba(17,38,49,.96),rgba(9,20,27,.97));box-shadow:var(--shadow)}
+.heroGrid{display:grid;grid-template-columns:1.35fr .65fr;gap:18px;align-items:start}
+.kicker{font-size:11px;letter-spacing:.16em;font-weight:950;color:var(--cyan)}
+h1{font-size:clamp(36px,7vw,72px);line-height:.92;letter-spacing:-.055em;margin:10px 0 12px}
+.lead{color:var(--muted);max-width:760px;font-size:15px}
+.score{border:1px solid var(--line);background:#071116;border-radius:20px;padding:18px}
+.score small{display:block;color:var(--muted);font-size:10px;letter-spacing:.12em;font-weight:850}
+.score strong{display:block;font-size:38px;margin:5px 0}
+.score span{font-size:12px;color:var(--muted)}
+.mainAction{margin-top:18px;display:grid;grid-template-columns:1.5fr 1fr;gap:10px}
+.cycleBtn{border:0;border-radius:18px;padding:17px 18px;font-weight:950;font-size:17px;background:linear-gradient(135deg,var(--cyan),#a9eeff);color:#071016;box-shadow:0 12px 38px rgba(117,220,255,.18)}
+.cycleBtn:disabled{opacity:.45;cursor:not-allowed}
+.secondaryBtn{border:1px solid var(--line);border-radius:18px;padding:17px 18px;font-weight:900;background:#10212b;color:var(--text)}
+.grid4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:12px}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,#0e1c25,#0a151c);border-radius:18px;padding:16px;min-height:118px}
+.label{font-size:10px;color:var(--muted);letter-spacing:.1em;font-weight:900}
+.value{font-size:20px;font-weight:950;margin:7px 0 4px;overflow-wrap:anywhere}
+.sub{font-size:11px;color:var(--muted)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;background:#607886}
+.good .dot{background:var(--green);box-shadow:0 0 14px rgba(114,224,169,.5)}
+.warn .dot{background:var(--amber);box-shadow:0 0 14px rgba(255,208,106,.5)}
+.bad .dot{background:var(--red);box-shadow:0 0 14px rgba(255,139,152,.5)}
+.section{margin-top:12px;border:1px solid var(--line);border-radius:22px;background:rgba(12,24,32,.92);padding:18px}
+.sectionHead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
+.section h2{font-size:17px;margin:0}
+.actionGrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.action{border:1px solid var(--line);border-radius:16px;padding:14px;text-align:left;background:#09151c;color:var(--text)}
+.action b{display:block;font-size:14px}.action span{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.action.primary{border-color:rgba(117,220,255,.5);background:rgba(117,220,255,.08)}
+.action.violet{border-color:rgba(184,168,255,.4);background:rgba(184,168,255,.06)}
+.action.green{border-color:rgba(114,224,169,.4);background:rgba(114,224,169,.06)}
+.action:disabled{opacity:.45;cursor:not-allowed}
+.flow{display:grid;grid-template-columns:repeat(7,minmax(105px,1fr));gap:7px;overflow:auto;padding-bottom:4px}
+.node{min-width:105px;border:1px solid var(--line);border-radius:15px;padding:12px;background:#09151c}
+.node small{display:block;color:var(--muted);font-size:9px}.node b{display:block;font-size:11px;margin-top:5px}
+.node.on{border-color:rgba(114,224,169,.42);background:rgba(114,224,169,.06)}
+.node.now{border-color:rgba(255,208,106,.55);background:rgba(255,208,106,.08)}
+.routeGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.route{display:block;text-decoration:none;color:var(--text);border:1px solid var(--line);border-radius:17px;padding:15px;background:#09151c}
+.route small{color:var(--muted);font-size:10px}.route strong{display:block;font-size:16px;margin:5px 0}.route span{color:var(--muted);font-size:11px}
+.astraGrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.astra{border:1px solid var(--line);border-radius:17px;padding:15px;background:#09151c}
+.astraTop{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.astraTop b{font-size:14px}.meter{height:8px;border-radius:999px;background:#172a34;overflow:hidden;margin:11px 0 6px}
+.meter i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green))}
+.astraMeta{font-size:10px;color:var(--muted)}
+.split{display:grid;grid-template-columns:1.2fr .8fr;gap:10px}
+.log{min-height:160px;border:1px solid var(--line);border-radius:15px;padding:13px;background:#061015;font:11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace;color:#bdd0da;white-space:pre-wrap;overflow:auto}
+.evList{display:grid;gap:7px}
+.ev{border:1px solid var(--line);border-radius:13px;padding:11px;background:#09151c}
+.ev b{display:block;font-size:11px}.ev span{color:var(--muted);font-size:10px}
+details.settings{margin-top:12px;border:1px solid var(--line);border-radius:16px;background:#09151c;padding:12px}
+details summary{cursor:pointer;font-weight:900}
+.keyrow{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap}
+.keyrow input{flex:1;min-width:210px;border:1px solid var(--line);border-radius:12px;background:#071116;color:var(--text);padding:11px}
+.keyrow button{border:1px solid var(--line);border-radius:12px;background:#132630;color:var(--text);padding:11px 14px;font-weight:900}
+.authNote{margin-top:9px;font-size:10px;color:var(--muted)}
+.flash{animation:flash .7s ease}@keyframes flash{0%{box-shadow:0 0 0 0 rgba(117,220,255,.55)}100%{box-shadow:0 0 0 18px rgba(117,220,255,0)}}
+.footer{text-align:center;color:#5f7887;font-size:10px;margin-top:16px}
+@media(max-width:920px){.heroGrid,.split{grid-template-columns:1fr}.grid4,.actionGrid{grid-template-columns:1fr 1fr}.astraGrid,.routeGrid{grid-template-columns:1fr}.mainAction{grid-template-columns:1fr}}
+@media(max-width:540px){.grid4,.actionGrid{grid-template-columns:1fr}.hero{padding:20px}.wrap{padding-left:11px;padding-right:11px}.top .pill{display:none}}
 </style>
 </head>
 <body>
 <main class="wrap">
-<div class="top"><div class="brand"><i></i>STRATUM PRAXIS</div><div class="pill">INTERNAL · DIB + ASTRA</div></div>
+  <div class="top">
+    <div class="brand"><span class="logo"></span>STRATUM PRAXIS</div>
+    <div class="pill">DIB + ASTRA · PROJECT ISOLATED</div>
+  </div>
 
-<section class="hero">
- <div class="heroGrid">
-  <div><div class="kicker">24H REVENUE OPERATOR</div><h1>押す。<br>1周する。</h1><div class="lead">DIB正本の Current Reality → First Broken Stage → Safe Action → Direct Readback → Evidence → State Update を、そのままボタン化。Astraは能力だけ共有し、StratumのIdentity / Product / Price / Checkoutは保護。</div></div>
-  <div class="stateBox"><small>RUNTIME</small><b id="runtime">CHECKING</b><span id="firstBroken">Current Reality読込中</span></div>
- </div>
- <div class="auth"><input id="key" type="password" placeholder="Monitor / Operator key"><button class="btn" id="connect">接続</button></div>
- <button class="btn run mainRun" id="runCycle" disabled>▶ STRATUMを安全に1周回す</button>
- <div class="hint">外部送信・価格変更・Checkout変更なし。B2BはGuard確認のみ。AstraはTraining-only。Human GateはそのRouteだけ止める。</div>
-</section>
+  <section class="hero" id="hero">
+    <div class="heroGrid">
+      <div>
+        <div class="kicker">24H INTERNAL OPERATOR · EVENT DRIVEN</div>
+        <h1>押せば<br>1周する。</h1>
+        <div class="lead">Current Reality → First Broken Stage → Safe Action → Direct Readback → Evidence → Next Action。新商品・価格・Checkoutを触らず、Stratumの既存Routeを前へ進める。</div>
+      </div>
+      <div class="score">
+        <small>DIB PREFLIGHT</small>
+        <strong id="score">—/100</strong>
+        <span id="scoreNote">Current Realityを読込中</span>
+      </div>
+    </div>
+    <div class="mainAction">
+      <button class="cycleBtn" id="cycleBtn" onclick="runAction('cycle')">▶ 1 CYCLE 実行</button>
+      <button class="secondaryBtn" onclick="runAction('readback')">↻ Current Readback</button>
+    </div>
+  </section>
 
-<section class="grid4">
- <div class="card"><div class="l">100点起動GATE</div><div class="v" id="gateScore">—</div><div class="s">DIB 10項目 × 10点</div></div>
- <div class="card"><div class="l">WORDPRESS AUTH</div><div class="v" id="wpAuth">—</div><div class="s">Stratum専用Identity</div></div>
- <div class="card"><div class="l">PUBLIC SURFACE</div><div class="v" id="surface">—</div><div class="s">Direct Readback</div></div>
- <div class="card"><div class="l">B2B QUEUE</div><div class="v" id="b2b">—</div><div class="s">Guardのみ・送信なし</div></div>
-</section>
+  <section class="grid4">
+    <article class="card" id="stateCard"><div class="label">CURRENT STATE</div><div class="value"><span class="dot"></span><span id="state">—</span></div><div class="sub" id="stateNext">—</div></article>
+    <article class="card" id="brokenCard"><div class="label">FIRST BROKEN STAGE</div><div class="value"><span class="dot"></span><span id="broken">—</span></div><div class="sub">1個だけ扱う</div></article>
+    <article class="card" id="wpCard"><div class="label">WORDPRESS</div><div class="value"><span class="dot"></span><span id="wp">—</span></div><div class="sub" id="wpSub">—</div></article>
+    <article class="card good"><div class="label">TRIGGER</div><div class="value"><span class="dot"></span>EVENT</div><div class="sub">新Scheduler追加なし</div></article>
+  </section>
 
-<section class="section">
- <div class="head"><h2>ワンタッチ操作</h2><span class="pill">Existing Asset First</span></div>
- <div class="controls">
-  <button class="control" data-action="refresh"><b>① Current Reality</b><span>今の状態だけ読み直す</span></button>
-  <button class="control" data-action="wordpress_readback"><b>② WordPress確認</b><span>公開面/API/最新記事をDirect Readback</span></button>
-  <button class="control astra" data-action="astra_cycle"><b>③ ASTRA 1 Cycle</b><span>最弱能力を1差分だけTraining</span></button>
-  <button class="control" data-action="b2b_guard"><b>④ Buyer Guard</b><span>次のQualified候補だけ確認・送信なし</span></button>
-  <a class="control money" href="https://stratumpraxis.com/product-router.html" target="_blank" rel="noopener"><b>⑤ Revenue Route</b><span>FREE → $39 → $499 を確認</span></a>
- </div>
-</section>
+  <section class="section">
+    <div class="sectionHead"><h2>ワンタップ操作</h2><span class="pill" id="recommended">ASTRA: —</span></div>
+    <div class="actionGrid">
+      <button class="action primary" onclick="runAction('cycle')"><b>▶ 1 CYCLE</b><span>Currentを読んで最適Astra → Readback → Evidence</span></button>
+      <button class="action" onclick="runAction('readback')"><b>↻ READBACK</b><span>WordPress / Owned Route / Revenue Routeを再確認</span></button>
+      <button class="action violet" onclick="runAction('astra','distribution')"><b>ASTRA · DISTRIBUTION +1</b><span>Human Acquisition / channel / entry / attribution</span></button>
+      <button class="action violet" onclick="runAction('astra','sales-funnel')"><b>ASTRA · FUNNEL +1</b><span>Offer / CTA / proof / checkout path</span></button>
+      <button class="action green" onclick="runAction('astra','website')"><b>ASTRA · SITE +1</b><span>message / CTA / hierarchy / responsive</span></button>
+      <a class="action" href="https://stratumpraxis.wordpress.com/" target="_blank" rel="noopener"><b>WordPressを開く ↗</b><span>ブラウザ側のStratumログインを利用</span></a>
+      <a class="action" href="https://stratumpraxis.com/product-router.html" target="_blank" rel="noopener"><b>Revenue Routes ↗</b><span>FREE → $39 → $499</span></a>
+      <a class="action" href="https://stratumpraxis.com/ops/b2b-revenue/" target="_blank" rel="noopener"><b>B2B Unit ↗</b><span>独立Buyer / Outbound / Contract lane</span></a>
+    </div>
+  </section>
 
-<section class="section">
- <div class="head"><h2>DIB Revenue Loop</h2><span class="pill" id="loopState">READING</span></div>
- <div class="flow">
-  <div class="node on"><small>01</small><b>Current Reality</b></div><div class="node on"><small>02</small><b>First Broken</b></div><div class="node on"><small>03</small><b>Safe Action</b></div><div class="node on"><small>04</small><b>Direct Readback</b></div><div class="node on"><small>05</small><b>Evidence</b></div><div class="node on"><small>06</small><b>State Update</b></div><div class="node"><small>07</small><b>Next Action</b></div>
- </div>
-</section>
+  <section class="section">
+    <div class="sectionHead"><h2>DIB Loop</h2><span class="pill">MOVE MONEY CLOSER</span></div>
+    <div class="flow">
+      <div class="node on"><small>01</small><b>CURRENT REALITY</b></div>
+      <div class="node now"><small>02</small><b>FIRST BROKEN</b></div>
+      <div class="node on"><small>03</small><b>SAFE ACTION</b></div>
+      <div class="node on"><small>04</small><b>READBACK</b></div>
+      <div class="node on"><small>05</small><b>EVIDENCE</b></div>
+      <div class="node on"><small>06</small><b>STATE UPDATE</b></div>
+      <div class="node on"><small>07</small><b>NEXT ACTION</b></div>
+    </div>
+  </section>
 
-<section class="section">
- <div class="head"><h2>ASTRA能力パック</h2><span class="pill">Capability ≠ Revenue</span></div>
- <div class="astraGrid" id="astraGrid"><div class="astraCard">接続後に表示</div></div>
-</section>
+  <section class="section">
+    <div class="sectionHead"><h2>ASTRA能力</h2><span class="pill">Capability ≠ Revenue Evidence</span></div>
+    <div class="astraGrid" id="astraGrid"></div>
+  </section>
 
-<section class="section">
- <div class="head"><h2>既存Offerを売る</h2><span class="pill">Product / Price / Checkout 保護</span></div>
- <div class="routes">
-  <a class="route" href="https://stratumpraxis.com/ai-saas-spend-decision-kit.html" target="_blank" rel="noopener"><small>SELF-SERVICE</small><b>$39 Spend Decision Kit →</b><span>既存のCurrent self-service route</span></a>
-  <a class="route" href="https://stratumpraxis.com/workflow-audit.html" target="_blank" rel="noopener"><small>B2B FIXED SCOPE</small><b>$499 Workflow Audit →</b><span>既存Stripe Checkoutへ接続済み</span></a>
-  <a class="route" href="https://stratumpraxis.com/product-router.html" target="_blank" rel="noopener"><small>DECISION ROUTER</small><b>Revenue Routes →</b><span>無料診断から適切な深さへ</span></a>
- </div>
-</section>
+  <section class="section">
+    <div class="sectionHead"><h2>既存Revenue Route</h2><span class="pill">NO NEW PRODUCT</span></div>
+    <div class="routeGrid">
+      <a class="route" href="https://stratumpraxis.com/ai-saas-spend-decision-kit.html" target="_blank" rel="noopener"><small>SELF-SERVICE</small><strong>$39 Spend Decision Kit →</strong><span>既存Checkout route</span></a>
+      <a class="route" href="https://stratumpraxis.com/workflow-audit.html" target="_blank" rel="noopener"><small>B2B FIXED SCOPE</small><strong>$499 Workflow Audit →</strong><span>Stripe checkout route</span></a>
+      <a class="route" href="https://stratumpraxis.com/product-router.html" target="_blank" rel="noopener"><small>DECISION ROUTER</small><strong>Revenue Routes →</strong><span>Humanを適切な深さへ案内</span></a>
+    </div>
+  </section>
 
-<section class="section split">
- <div><div class="head"><h2>Direct Evidence</h2><span class="pill">LIVE</span></div><div class="log" id="log">Operator keyで接続してください。</div></div>
- <div class="rows">
-  <div class="row"><small>Latest WordPress</small><b id="latest">—</b></div>
-  <div class="row"><small>Latest modified</small><b id="modified">—</b></div>
-  <div class="row"><small>Publisher</small><b id="publisher">—</b></div>
-  <div class="row"><small>Next action</small><b id="next">—</b></div>
-  <div class="row"><small>Last result</small><b id="lastResult">—</b></div>
- </div>
-</section>
+  <section class="section split">
+    <div>
+      <div class="sectionHead"><h2>Operator Log</h2><span class="pill" id="runtime">LIVE</span></div>
+      <div class="log" id="log">Loading…</div>
+    </div>
+    <div>
+      <div class="sectionHead"><h2>Evidence</h2><span class="pill">DIRECT FIRST</span></div>
+      <div class="evList" id="evidence"></div>
+    </div>
+  </section>
 
-<section class="section">
- <div class="head"><h2>Human Gate</h2><span class="pill">RouteだけWAIT</span></div>
- <div class="controls" style="grid-template-columns:repeat(3,1fr)">
-  <a class="control" href="https://wordpress.com/log-in?redirect_to=https%3A%2F%2Fwordpress.com%2Fsites" target="_blank" rel="noopener"><b>🔐 Stratum WordPress認証</b><span>stratumpraxis@gmail.com を再接続</span></a>
-  <a class="control" href="https://stratumpraxis.wordpress.com/" target="_blank" rel="noopener"><b>WordPress本店</b><span>公開面を直接確認</span></a>
-  <a class="control astra" href="https://stratumpraxis.com/ops/autonomous-operations-monitor/astra.html" target="_blank" rel="noopener"><b>ASTRA Growth Lab</b><span>全Capabilityの詳細を見る</span></a>
- </div>
-</section>
+  <details class="settings">
+    <summary>⚙ Operator Key / Writer認証</summary>
+    <div class="keyrow">
+      <input id="key" type="password" autocomplete="off" placeholder="Monitorと同じOperator Key">
+      <button onclick="saveKey()">保存</button>
+      <button onclick="clearKey()">クリア</button>
+    </div>
+    <div class="authNote" id="authNote">Operator Keyはブラウザ内に保存。Astra実行ボタンだけに使用します。</div>
+    <div class="authNote">WordPress.comのブラウザログインと、自社24H Writer用OAuth tokenは別物です。Public Surfaceは監視可能。Writer tokenは安全にserver-sideで接続します。</div>
+  </details>
+
+  <div class="footer">STRATUM ONLY · DIB Doctrine · ASTRA Capability · 1差分 · Direct Readback · Evidence · No cross-project credentials</div>
 </main>
 
-<div class="bottom"><button class="btn run" id="bottomRun" disabled>▶ 1周回す</button><button class="btn" id="bottomRefresh">↻</button></div>
-
 <script>
-const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1';
-const CONTROL=BASE+'/stratum-operator-control';
-const PUBLIC=BASE+'/stratum-24h-status';
+const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-operator-control';
 const $=id=>document.getElementById(id);
-const key=()=>($('key').value.trim()||localStorage.getItem('monitor_key')||'');
-$('key').value=localStorage.getItem('monitor_key')||'';
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const headers=()=>({authorization:'Bearer '+key(),'content-type':'application/json'});
+const fmt=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+function getKey(){try{return localStorage.getItem('stratum_operator_key')||localStorage.getItem('monitor_key')||localStorage.getItem('revenue_pump_key')||''}catch{return''}}
+function saveKey(){const v=$('key').value.trim();if(!v)return;try{localStorage.setItem('stratum_operator_key',v);localStorage.setItem('monitor_key',v)}catch{};$('authNote').textContent='Operator Keyを保存しました。';load()}
+function clearKey(){try{localStorage.removeItem('stratum_operator_key')}catch{};$('key').value='';$('authNote').textContent='Operator Keyをクリアしました。'}
+$('key').value=getKey();
 
-function log(x){$('log').textContent=typeof x==='string'?x:JSON.stringify(x,null,2)}
-function setButtons(v){document.querySelectorAll('[data-action],#runCycle,#bottomRun').forEach(x=>x.disabled=!v)}
-function astraName(x){return ({website:'SITE','sales-funnel':'REVENUE','distribution':'DISTRIBUTION',seo:'SEO','product-quality':'PRODUCT'})[x]||x}
-function render(d){
- const b=d.base||{},wp=b.wordpress||{},rt=b.runtime||{},pf=d.preflight||{},pub=b.publisher||{};
- $('runtime').textContent=rt.state||'UNKNOWN';
- $('firstBroken').textContent='First Broken: '+(d.first_broken_stage||'—');
- $('gateScore').textContent=(pf.score??'—')+'/100';
- $('gateScore').className='v '+(pf.pass?'ok':'warnText');
- $('wpAuth').textContent=wp.auth_ready?'READY':'AUTH GATE'; $('wpAuth').className='v '+(wp.auth_ready?'ok':'warnText');
- $('surface').textContent=wp.surface_healthy?'HEALTHY':'CHECK'; $('surface').className='v '+(wp.surface_healthy?'ok':'bad');
- const bb=d.b2b||{};$('b2b').textContent=(bb.ready??0)+' READY';
- $('loopState').textContent=pf.pass?'100 / 100':'BLOCKED';
- $('latest').innerHTML=wp.latest_url?'<a style="color:#f5fbff" target="_blank" rel="noopener" href="'+esc(wp.latest_url)+'">'+esc((wp.latest_title||'Open').replace(/<[^>]+>/g,''))+'</a>':'—';
- $('modified').textContent=wp.latest_modified||'—'; $('publisher').textContent=pub.adapter_status||'—'; $('next').textContent=rt.next_action||d.first_broken_stage||'—';
- const xs=d.astra||[];
- $('astraGrid').innerHTML=xs.length?xs.map(x=>{
-   const lv=Object.values(x.levels||{}).map(Number);const pct=lv.length?Math.round(lv.reduce((a,b)=>a+b,0)/(lv.length*12)*100):0;
-   return '<div class="astraCard"><small>'+esc(astraName(x.domain_id))+'</small><b>G'+esc(x.generation)+' · C'+esc(x.cycle)+'</b><div class="bar"><i style="width:'+pct+'%"></i></div><span>'+pct+'% · score '+esc(x.last_score)+'</span></div>';
- }).join(''):'<div class="astraCard">ASTRA stateなし</div>';
- log([
-  'PREFLIGHT       '+(pf.score??'—')+'/100',
-  'FIRST_BROKEN    '+(d.first_broken_stage||'—'),
-  'RUNTIME         '+(rt.state||'—'),
-  'WP_AUTH         '+Boolean(wp.auth_ready),
-  'WP_SURFACE      '+Boolean(wp.surface_healthy),
-  'PUBLISHER       '+Boolean(pub.deployed),
-  'DEDUPE          '+Boolean(pub.dedupe),
-  'READBACK        '+Boolean(pub.public_readback),
-  'B2B_READY       '+(bb.ready??0),
-  'B2B_REPLIED     '+(bb.replied??0),
-  'RULE            Current Reality → First Broken → Safe Action → Readback → Evidence → State → Next'
- ].join('\n'));
+let current=null;
+function setCard(id,state){const x=$(id);x.classList.remove('good','warn','bad');x.classList.add(state)}
+function astraPercent(x){
+  const lv=x.levels||{};const vals=Object.values(lv).map(Number);
+  if(!vals.length)return 0;return Math.round(vals.reduce((a,b)=>a+b,0)/(vals.length*12)*100);
 }
-async function publicLoad(){
- try{const r=await fetch(PUBLIC,{cache:'no-store'});const d=await r.json();$('runtime').textContent=d.runtime?.state||'UNKNOWN';$('firstBroken').textContent=d.runtime?.next_action||'Connect operator key';$('wpAuth').textContent=d.wordpress?.auth_ready?'READY':'AUTH GATE';$('surface').textContent=d.wordpress?.surface_healthy?'HEALTHY':'CHECK';$('publisher').textContent=d.publisher?.adapter_status||'—';$('next').textContent=d.runtime?.next_action||'—'}catch(e){}
+function render(d){
+  current=d;
+  const c=d.current||{},u=c.unit||{},p=d.preflight||{};
+  $('score').textContent=(p.score??0)+'/100';
+  $('scoreNote').textContent=p.pass?'起動可 · Baseline保護':'Gate不足あり';
+  $('state').textContent=u.state||'UNKNOWN';
+  $('stateNext').textContent=(u.next_action||'').slice(0,150)||'—';
+  setCard('stateCard',u.status==='ACTIVE'?'good':'warn');
+
+  $('broken').textContent=c.first_broken_stage||'UNKNOWN';
+  setCard('brokenCard',c.first_broken_stage==='HUMAN_ACQUISITION'?'warn':'good');
+  $('recommended').textContent='ASTRA: '+String(c.recommended_astra_domain||'—').toUpperCase();
+
+  const w=c.wordpress||{};
+  $('wp').textContent=w.public_surface_healthy?'PUBLIC HEALTHY':'CHECK';
+  $('wpSub').textContent='Writer '+(w.writer_auth_ready?'READY':'AUTH GATE')+' · latest '+fmt(w.latest_modified);
+  setCard('wpCard',w.public_surface_healthy?(w.writer_auth_ready?'good':'warn'):'bad');
+
+  const as=(c.astra||[]);
+  $('astraGrid').innerHTML=as.map(x=>{
+    const pc=astraPercent(x);
+    const label=x.domain_id==='sales-funnel'?'FUNNEL':String(x.domain_id||'').toUpperCase();
+    const vals=Object.entries(x.levels||{}).sort((a,b)=>Number(a[1])-Number(b[1]));
+    const weak=vals[0]?.[0]||'—';
+    return '<article class="astra"><div class="astraTop"><b>'+esc(label)+'</b><span class="pill">C'+esc(x.cycle)+'</span></div>'+
+      '<div class="meter"><i style="width:'+pc+'%"></i></div>'+
+      '<div class="astraMeta">'+pc+'% · Score '+esc(x.last_score)+' · weakest '+esc(weak)+'<br>Updated '+fmt(x.updated_at)+'</div></article>'
+  }).join('');
+
+  const ev=c.recent_evidence||[];
+  $('evidence').innerHTML=ev.slice(0,8).map(x=>'<div class="ev"><b>'+esc(x.title||x.evidence_type)+'</b><span>'+esc(x.evidence_type)+' · '+fmt(x.occurred_at)+'</span></div>').join('')||'<div class="ev"><span>Evidenceなし</span></div>';
+
+  const route=c.routes||{};
+  $('log').textContent=[
+    'MODE             '+(d.mode||'DIB_ASTRA_OPERATOR_V2'),
+    'PROJECT          STRATUM',
+    'STATE            '+(u.state||'UNKNOWN'),
+    'REVENUE DISTANCE '+(u.revenue_distance??'—'),
+    'FIRST BROKEN     '+(c.first_broken_stage||'UNKNOWN'),
+    'ASTRA NEXT       '+String(c.recommended_astra_domain||'—').toUpperCase(),
+    'PREFLIGHT        '+(p.score??0)+'/100',
+    'WORDPRESS PUBLIC '+Boolean(w.public_surface_healthy),
+    'WORDPRESS WRITER '+(w.writer_auth_ready?'READY':'AUTH_GATE'),
+    '$39 ROUTE        '+Boolean(route.decision_kit_39?.ok),
+    '$499 ROUTE       '+Boolean(route.workflow_audit_499?.ok),
+    'NEW SCHEDULER    false',
+    'CROSS PROJECT    false'
+  ].join('\n');
 }
 async function load(){
- if(!key()){setButtons(false);await publicLoad();return}
- try{
-  const r=await fetch(CONTROL,{headers:headers()});const d=await r.json();
-  if(!r.ok)throw new Error(d.error||('HTTP '+r.status));
-  render(d);setButtons(true);
- }catch(e){setButtons(false);log('接続失敗: '+e.message)}
+  try{
+    const r=await fetch(API,{cache:'no-store'});const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'HTTP '+r.status);
+    render(d);
+  }catch(e){$('log').textContent='Status error: '+e.message}
 }
-async function act(action){
- if(!key())return;
- setButtons(false);$('lastResult').textContent='RUNNING…';log(action+' 実行中…');
- try{
-  const r=await fetch(CONTROL,{method:'POST',headers:headers(),body:JSON.stringify({action})});const d=await r.json();
-  if(!r.ok)throw new Error(d.error||('HTTP '+r.status));
-  $('lastResult').textContent=d.outcome||'DONE';
-  if(d.after)render(d.after);else await load();
-  log(d);
- }catch(e){$('lastResult').textContent='BLOCKED';log('実行停止: '+e.message)}
- finally{setButtons(true)}
+function disableActions(v){document.querySelectorAll('button.action,.cycleBtn,.secondaryBtn').forEach(b=>b.disabled=v)}
+async function runAction(action,domain){
+  const key=getKey();
+  if(!key){
+    $('authNote').textContent='Operator Keyが必要です。Monitorと同じKeyを入力してください。';
+    document.querySelector('details.settings').open=true;
+    $('key').focus();return;
+  }
+  disableActions(true);
+  $('runtime').textContent='RUNNING';
+  $('log').textContent='Current Reality → Preflight → '+(domain||'AUTO')+' → Readback → Evidence…';
+  try{
+    const r=await fetch(API,{
+      method:'POST',
+      headers:{Authorization:'Bearer '+key,'Content-Type':'application/json'},
+      body:JSON.stringify({action,domain})
+    });
+    const d=await r.json();
+    if(r.status===401){throw new Error('Operator Keyが違います')}
+    if(!r.ok){throw new Error((d.outcome||d.error||'Action failed')+(d.preflight?' · Preflight '+d.preflight.score+'/100':''))}
+    $('hero').classList.remove('flash');void $('hero').offsetWidth;$('hero').classList.add('flash');
+    $('log').textContent=[
+      'OUTCOME          '+(d.outcome||d.action||'DONE'),
+      'FIRST BROKEN     '+(d.first_broken_stage||d.current?.first_broken_stage||'—'),
+      'ASTRA DOMAIN     '+(d.astra?.domain||d.astra?.result?.domain_id||domain||'—'),
+      'ASTRA OUTCOME    '+(d.astra?.outcome||'—'),
+      'TASK ID          '+(d.astra?.task_id||'—'),
+      'EVIDENCE ID      '+(d.evidence_id||d.readback?.evidence_id||'—'),
+      'PREFLIGHT        '+(d.preflight?.score??'—')+'/100'
+    ].join('\n');
+    await load();
+  }catch(e){
+    $('log').textContent='STOP: '+e.message;
+  }finally{
+    $('runtime').textContent='LIVE';disableActions(false)
+  }
 }
-$('connect').onclick=()=>{const k=$('key').value.trim();if(k)localStorage.setItem('monitor_key',k);load()};
-$('runCycle').onclick=()=>act('one_cycle');$('bottomRun').onclick=()=>act('one_cycle');
-$('bottomRefresh').onclick=load;
-document.querySelectorAll('[data-action]').forEach(b=>b.onclick=()=>b.dataset.action==='refresh'?load():act(b.dataset.action));
-if(key())load();else publicLoad();
-setInterval(()=>{if(key())load();else publicLoad()},60000);
+load();
+setInterval(load,60000);
 </script>
-</body></html>
+</body>
+</html>
