@@ -102,7 +102,17 @@ jobs:
 
               # Branded Stratum pages receive one shared conversion UI layer.
               # Standalone utilities/other brands are left untouched unless they explicitly identify as Stratum Praxis.
-              is_stratum = 'Stratum Praxis' in html
+              rel = path.relative_to(Path('_site')).as_posix().lower()
+              excluded_revenue_ui = (
+                  rel.startswith('delivery/')
+                  or rel.startswith('ops/')
+                  or '/access' in rel
+                  or 'access.' in rel
+                  or 'deliver' in rel
+                  or 'thank-you' in rel
+                  or rel in {'privacy.html','privacy-policy.html','terms.html'}
+              )
+              is_stratum = 'Stratum Praxis' in html and not excluded_revenue_ui
               if is_stratum and 'stratum-revenue-ui-2026.css' not in html:
                   marker = '</head>'
                   idx = html.lower().find(marker)
@@ -139,7 +149,8 @@ jobs:
           revenue_ui_pages = 0
           for path in html_files:
               html = path.read_text(encoding='utf-8')
-              if 'Stratum Praxis' in html and 'stratum-revenue-ui-2026.css' in html:
+              rel = path.relative_to(Path('_site')).as_posix().lower()
+              if 'Stratum Praxis' in html and 'stratum-revenue-ui-2026.css' in html and not (rel.startswith('delivery/') or rel.startswith('ops/') or '/access' in rel or 'access.' in rel or 'deliver' in rel or 'thank-you' in rel or rel in {'privacy.html','privacy-policy.html','terms.html'}):
                   revenue_ui_pages += 1
           print(f'Revenue UI injected into {revenue_ui_pages} branded Stratum pages')
           print(f'GA4 injected exactly once into {len(html_files)} HTML pages')
