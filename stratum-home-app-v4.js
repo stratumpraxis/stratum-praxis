@@ -83,7 +83,8 @@ function renderConsole(){
  $('#metric-b-label').textContent=t('metric2')[mode];$('#metric-b').textContent=metrics[1];
  $('#console-next').textContent=t('next')[mode];
  const href=['/ai-saas-waste-calculator.html','/b2b/','/ai-agent-economics-calculator.html'][mode];$('#console-link').href=href;
- $$('.segment button').forEach((b,i)=>{b.textContent=t('tabs')[i];b.setAttribute('aria-selected',String(i===mode))});
+ $('.segment button').forEach((b,i)=>{b.textContent=t('tabs')[i];b.setAttribute('aria-selected',String(i===mode))});
+ const pt=t('previewTabs')||[]; $('.preview-tabs button').forEach((b,i)=>{if(pt[i])b.textContent=pt[i]});
 }
 function calc(){
  const spend=Math.max(0,Number($('#spend').value)||0),idle=Math.max(0,Number($('#idle').value)||0),hours=Math.max(0,Number($('#hours').value)||0);
