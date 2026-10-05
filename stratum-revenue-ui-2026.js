@@ -220,6 +220,16 @@ function dock(){
   d.className='sp-revenue-dock';d.dataset.spRevenueDock='true';
   d.innerHTML='<div class="sp-revenue-dock__copy"><small>PRIMARY ACTION</small><b>'+label+'</b></div><a href="'+link.href+'" data-analytics-id="revenue_ui_mobile_checkout">Checkout →</a>';
   document.body.appendChild(d);
+  document.documentElement.classList.add('sp-has-revenue-dock');
+  const revealAt=()=>Math.max(300,Math.round(innerHeight*.46));
+  const update=()=>{
+    const engaged=scrollY>revealAt()||Boolean(document.querySelector('[data-sp-revenue-proof] :focus-within'));
+    d.classList.toggle('is-visible',engaged);
+    d.setAttribute('aria-hidden',engaged?'false':'true');
+  };
+  update();
+  addEventListener('scroll',update,{passive:true});
+  addEventListener('resize',update,{passive:true});
 }
 function simplifyMobile(){
   if(innerWidth>720)return;
