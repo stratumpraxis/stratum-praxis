@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "output_id": "2026-10-05-revenue-director-workflow-before-tool-fe7fbf5d",
+  "generated_at": "2026-10-05T13:40:53.973Z",
+  "provider": "local-evidence-fallback",
+  "model": "none",
+  "billing_policy": "FREE_ONLY_NO_PAID_FALLBACK",
+  "source_id": "revenue-director-workflow-before-tool",
+  "source_candidate_id": null,
+  "identity_id": "stratum-praxis",
+  "desk_id": "en_desk",
+  "lens_id": "practical_operator",
+  "ghost_label": "Practical Operator",
+  "title_options": [
+    "Before buying another AI tool, diagnose one recurring workflow first"
+  ],
+  "title": "Before buying another AI tool, diagnose one recurring workflow first",
+  "dek": "A new AI subscription is not automatically a workflow improvement; the decision should start with a recurring process and a defined outcome. A useful diagnostic separates workflows that should be left alone, improved as ",
+  "body": "A new AI subscription is not automatically a workflow improvement; the decision should start with a recurring process and a defined outcome. A useful diagnostic separates workflows that should be left alone, improved as a process first, or investigated for automation.\n\n## What is actually changing\n\nA new AI subscription is not automatically a workflow improvement; the decision should start with a recurring process and a defined outcome.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 2\n\nA useful diagnostic separates workflows that should be left alone, improved as a process first, or investigated for automation.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 3\n\nFrequency, time cost, error cost, handoff friction, repeatability and output verifiability are practical inputs for deciding whether automation is worth investigating.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 4\n\nA browser visit or diagnostic completion is not buyer evidence; qualified action, buyer signal, checkout and payment require separate evidence.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 5\n\nWhen human traffic is zero, changing the offer, price or checkout adds variables without addressing the first broken revenue stage.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## The operating implication\n\nStratum already has an existing workflow diagnostic, a self-service decision kit and a fixed-scope audit route, so acquisition should use those assets before creating another product.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## A practical way to use the idea\n\nStart with the smallest decision the evidence can support. Separate what is known from what is inferred. Decide which action is reversible, which action needs review, and what signal would justify changing course. If the evidence is weak, keep the action small. If the evidence becomes stronger, expand deliberately.\n\nThis approach is slower than making a sweeping claim, but it produces a more durable operating system. The goal of this publication lane is not maximum content volume. It is to turn recorded source material into a useful decision surface while keeping attribution, uncertainty and commercial routing visible.\n\n## Where the boundary sits\n\nThe source package is intentionally narrower than a complete market study. It does not establish customer outcomes, guaranteed ROI or universal best practice unless those claims are explicitly present in the approved evidence. That boundary matters. A useful article can explain a mechanism and still leave room for uncertainty.\n\nThe result is a better handoff between publishing and operations: the article explains the decision, the evidence record explains why the claim is allowed, and any product link is included only when it directly fits the problem being discussed.",
+  "evidence_notes": [
+    "acquisition/media-engine/runtime-sources/revenue-director-workflow-before-tool.md",
+    "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "https://stratumpraxis.com/b2b/",
+    "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+    "https://stratumpraxis.com/workflow-audit.html"
+  ],
+  "allowed_claim_report": [
+    "A new AI subscription is not automatically a workflow improvement; the decision should start with a recurring process and a defined outcome.",
+    "A useful diagnostic separates workflows that should be left alone, improved as a process first, or investigated for automation.",
+    "Frequency, time cost, error cost, handoff friction, repeatability and output verifiability are practical inputs for deciding whether automation is worth investigating.",
+    "A browser visit or diagnostic completion is not buyer evidence; qualified action, buyer signal, checkout and payment require separate evidence.",
+    "When human traffic is zero, changing the offer, price or checkout adds variables without addressing the first broken revenue stage.",
+    "Stratum already has an existing workflow diagnostic, a self-service decision kit and a fixed-scope audit route, so acquisition should use those assets before creating another product."
+  ],
+  "restricted_claim_report": [
+    {
+      "phrase": "guaranteed ROI",
+      "safe_rewrite": "No guaranteed financial outcome is supported."
+    },
+    {
+      "phrase": "our customers saved",
+      "safe_rewrite": "No customer savings claim is supported by this source."
+    },
+    {
+      "phrase": "the market has validated",
+      "safe_rewrite": "Traffic, buyer and payment evidence must be measured separately."
+    },
+    {
+      "phrase": "we always reduce costs",
+      "safe_rewrite": "The route supports a decision; it does not promise a reduction."
+    }
+  ],
+  "editorial_notes": [
+    "Deterministic evidence-grounded fallback used; prose is constrained to approved source claims."
+  ],
+  "quality": {
+    "score": 84,
+    "words": 692,
+    "generic_hits": [],
+    "restricted_hits": [],
+    "first_person_risk": false,
+    "threshold": 82
+  },
+  "status": "READY",
+  "publication_lane": "OWNED_SITE",
+  "publication_proof": null,
+  "cta": {
+    "asset_id": "stratum-b2b-intro",
+    "label": "Run the free workflow diagnostic",
+    "destination_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "tracked_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708&utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=revenue-director-workflow-before-tool%3Alocal_fallback"
+  },
+  "attribution": {
+    "source_id": "revenue-director-workflow-before-tool",
+    "source_candidate_id": null,
+    "identity_id": "stratum-praxis",
+    "desk_id": "en_desk",
+    "lens_id": "practical_operator",
+    "ghost_label": "Practical Operator",
+    "channel_id": "owned_signal",
+    "campaign": "autonomous_revenue_publisher"
+  },
+  "stages": {
+    "final_sha256": "fe7fbf5dae7ae5e7ef286fe7c2fcb03529d6d61e43a05b0492a358d09fabcf9c",
+    "fallback_reason": "workers_ai_unavailable"
+  },
+  "publication_state": "PUBLISH_REQUESTED",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/before-buying-another-ai-tool-diagnose-one-recurring-workflow-first-fe7fbf5d.html"
+}
