@@ -20,7 +20,6 @@ on:
       - 'acquisition/blogger/free-runner.mjs'
       - 'acquisition/blogger/local-fallback.mjs'
       - 'acquisition/blogger/owned-publisher.mjs'
-      - 'acquisition/blogger/state.json'
       - '.github/workflows/autonomous-blogger.yml'
 
 permissions:
@@ -29,7 +28,7 @@ permissions:
 
 concurrency:
   group: autonomous-revenue-publisher
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   run:
@@ -87,26 +86,45 @@ jobs:
         if: always()
         shell: bash
         run: |
-          if git diff --quiet -- acquisition/blogger signal/auto signal/sitemap.xml publishing/queue content/dev/auto; then
-            echo "No autonomous revenue changes"
+          set -euo pipefail
+
+          # State timestamps and diagnostic logs are not revenue assets.
+          # Do not create a commit unless this run produced a substantive artifact.
+          substantive=0
+          for path in acquisition/blogger/outbox signal/auto signal/sitemap.xml publishing/queue content/dev/auto; do
+            if [ -e "$path" ] && ! git diff --quiet -- "$path"; then
+              substantive=1
+              break
+            fi
+          done
+
+          if [ "$substantive" = "0" ]; then
+            git restore --worktree --staged acquisition/blogger/state.json acquisition/blogger/last-run.log 2>/dev/null || true
+            echo "No substantive autonomous revenue changes"
             echo "committed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
+
           git config user.name "stratum-revenue-publisher-bot"
           git config user.email "actions@users.noreply.github.com"
+
           git add acquisition/blogger/outbox acquisition/blogger/state.json acquisition/blogger/last-run.log signal/auto signal/sitemap.xml publishing/queue
           if [ -d content/dev/auto ]; then
             git add content/dev/auto
           fi
           git commit -m "chore(revenue): publish evidence-grounded owned media"
+
           for attempt in 1 2 3; do
-            if git pull --rebase origin main && git push origin HEAD:main; then
-              echo "committed=true" >> "$GITHUB_OUTPUT"
-              exit 0
+            if git fetch origin main; then
+              if git rebase -X theirs origin/main && git push origin HEAD:main; then
+                echo "committed=true" >> "$GITHUB_OUTPUT"
+                exit 0
+              fi
             fi
             git rebase --abort 2>/dev/null || true
             sleep $((attempt * 3))
           done
+
           echo "Publisher evidence push failed after bounded retries." >&2
           exit 1
 
