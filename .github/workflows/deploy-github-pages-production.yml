@@ -18,6 +18,7 @@ on:
       - 'ai-saas-spend-monitoring.html'
       - 'saas-renewal-decision.html'
       - 'product-router.html'
+      - 'product-router-mobile-guard-2026.css'
       - 'revenue-router.html'
       - 'workflow-audit.html'
       - 'workflow-operator.html'
