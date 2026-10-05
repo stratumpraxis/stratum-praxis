@@ -42,12 +42,12 @@
     .lang{display:flex;gap:6px}
     .lang button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:7px 10px;border-radius:999px;cursor:pointer}
     .lang button.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}
-    .hero{padding:88px 0 64px}
-    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:48px;align-items:end}
+    .hero{padding:72px 0 58px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:44px;align-items:start}
     .kicker{margin:0 0 18px;color:var(--accent);font-weight:800;font-size:12px;letter-spacing:.16em}
-    h1{font-size:clamp(42px,6vw,78px);line-height:1.03;letter-spacing:-.045em;margin:0;max-width:880px}
-    .lead{font-size:clamp(18px,2vw,22px);color:var(--soft);max-width:760px;margin:28px 0 0}
-    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+    h1{font-size:clamp(40px,5.4vw,70px);line-height:1.06;letter-spacing:-.04em;margin:0;max-width:820px}
+    .lead{font-size:clamp(17px,1.8vw,20px);color:var(--soft);max-width:720px;margin:22px 0 0;line-height:1.75}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
     .btn{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:52px;padding:0 20px;border:1px solid var(--line);border-radius:12px;font-weight:800;transition:.18s ease}
     .btn:hover{transform:translateY(-1px);border-color:var(--accent2)}
     .btn.primary{background:var(--accent);color:#0b1713;border-color:var(--accent)}
@@ -99,17 +99,41 @@
     body.lang-en [data-lang-content="en"]{display:block}
     body.lang-en span[data-lang-content="en"],body.lang-en b[data-lang-content="en"]{display:inline}
     @media(max-width:840px){
-      .shell{width:min(100% - 28px,1160px)}
-      .hero{padding:60px 0 46px}
-      .hero-grid,.section-head,.audit-band,.final-grid{grid-template-columns:1fr}
-      .signal-grid,.proof-grid{grid-template-columns:1fr}
-      .deliver-grid,.boundary{grid-template-columns:1fr}
-      .hero-card{margin-top:8px}
-      .paper{border-radius:22px 22px 0 0;padding-top:54px}
-      .section{padding:48px 0}
-      h1{font-size:clamp(40px,13vw,64px)}
-      .topbar-inner{height:62px}
+      .shell{width:min(100% - 32px,1160px)}
+      .topbar-inner{height:56px;gap:10px}
+      .brand{gap:8px;font-size:15px;letter-spacing:.035em;white-space:nowrap}
+      .brand-mark{width:26px;height:26px;border-radius:7px;font-size:14px}
       .brand small{display:none}
+      .lang{gap:5px}
+      .lang button{padding:6px 9px;font-size:12px}
+
+      .hero{padding:34px 0 34px}
+      .hero-grid,.section-head,.audit-band,.final-grid{grid-template-columns:1fr}
+      .hero-grid{gap:0}
+      .kicker{font-size:10px;letter-spacing:.14em;margin-bottom:12px}
+      h1{font-size:clamp(34px,9.8vw,42px);line-height:1.08;letter-spacing:-.035em;max-width:10.5em}
+      .lead{font-size:15px;line-height:1.72;margin-top:18px;max-width:none}
+      .hero-actions{display:grid;grid-template-columns:1fr;gap:10px;margin-top:22px}
+      .hero-actions .btn{width:100%;min-height:54px;padding:0 18px;font-size:15px}
+      .trust{gap:6px;margin-top:14px}
+      .chip{font-size:10px;padding:5px 8px}
+      .hero-card{display:none}
+
+      .paper{border-radius:20px 20px 0 0;padding-top:42px}
+      .section{padding:42px 0}
+      .section-head{gap:14px;margin-bottom:20px}
+      .section h2{font-size:30px;line-height:1.16}
+      .section-head>p{font-size:15px}
+      .signal-grid,.proof-grid,.deliver-grid,.boundary{grid-template-columns:1fr}
+      .card{padding:18px;border-radius:14px}
+      .card h3{font-size:18px}
+      .proof-card{min-height:0}
+      .audit-band{padding:22px;border-radius:18px}
+      .price{font-size:52px}
+      .final{padding:52px 0}
+      .final h2{font-size:34px;line-height:1.12}
+      .final-actions .btn{width:100%;min-height:54px}
+      footer{padding:22px 0}
     }
   </style>
 </head>
@@ -133,8 +157,8 @@
     <div>
       <p class="kicker">B2B AI DECISION SUPPORT</p>
       <div data-lang-content="ja">
-        <h1>AIを増やす前に、<br>「どこを変えるか」を決める。</h1>
-        <p class="lead">Stratum Praxisは、AI・SaaS費用、定常業務、自動化候補を、会社が判断できる形に整理します。ツール導入ありきではなく、まず費用・業務・リスクを見ます。</p>
+        <h1>AI導入前に、<br>変える業務を決める。</h1>
+        <p class="lead">定常業務・AI/SaaS費用・自動化候補を、会社が判断できる形に整理します。ツールを増やす前に、まず「何を変えるべきか」を可視化します。</p>
       </div>
       <div data-lang-content="en">
         <h1>Decide what to change before buying more AI.</h1>
@@ -142,7 +166,7 @@
       </div>
       <div class="hero-actions">
         <a class="btn primary tracked" href="/b2b/" data-analytics-id="business_intro_free_diagnostic">
-          <span data-lang-content="ja">2分の無料診断を試す</span><span data-lang-content="en">Run the 2-minute diagnostic</span><b>→</b>
+          <span data-lang-content="ja">無料で業務を診断する</span><span data-lang-content="en">Run the 2-minute diagnostic</span><b>→</b>
         </a>
         <a class="btn secondary tracked" href="/sample-workflow-audit.html" data-analytics-id="business_intro_sample">
           <span data-lang-content="ja">成果物サンプルを見る</span><span data-lang-content="en">Inspect a sample deliverable</span><b>↗</b>
