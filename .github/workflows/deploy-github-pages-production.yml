@@ -35,6 +35,7 @@ on:
       - 'stratum-revenue-ui-2026.js'
       - 'stratum-motion-ui-2026.css'
       - 'stratum-motion-ui-2026.js'
+      - 'stratum-i18n-runtime-2026.js'
       - 'home-revenue-clean-2026.css'
       - 'media/**'
       - '*.txt'
@@ -85,6 +86,7 @@ jobs:
           REVENUE_UI_JS = '<script src="/stratum-revenue-ui-2026.js?v=20261005c" defer data-sp-revenue-ui="build"></script>'
           MOTION_UI_CSS = '<link rel="stylesheet" href="/stratum-motion-ui-2026.css?v=20261005a" data-sp-motion-ui="build">'
           MOTION_UI_JS = '<script src="/stratum-motion-ui-2026.js?v=20261005a" defer data-sp-motion-ui="build"></script>'
+          I18N_RUNTIME_JS = '<script src="/stratum-i18n-runtime-2026.js?v=20261005a" defer data-sp-i18n="build"></script>'
           TAG = '''<!-- Google tag (gtag.js) -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
           <script>
@@ -127,6 +129,8 @@ jobs:
                       inject.extend([REVENUE_UI_CSS, REVENUE_UI_JS])
                   if 'stratum-motion-ui-2026.css' not in html:
                       inject.extend([MOTION_UI_CSS, MOTION_UI_JS])
+                  if 'stratum-i18n-runtime-2026.js' not in html:
+                      inject.append(I18N_RUNTIME_JS)
                   if inject:
                       html = html[:idx] + '\n'.join(inject) + '\n' + html[idx:]
 
