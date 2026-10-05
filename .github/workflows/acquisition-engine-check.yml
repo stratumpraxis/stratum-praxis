@@ -7,6 +7,11 @@ on:
     branches: [main]
     paths:
       - 'acquisition/**'
+      - '!acquisition/blogger/state.json'
+      - '!acquisition/blogger/last-run.log'
+      - '!acquisition/blogger/outbox/**'
+      - '!acquisition/revenue-director-state.json'
+      - '!acquisition/media-engine/runtime-sources/**'
       - 'distribution/source-routing.json'
       - 'distribution/provider-policy.json'
       - 'trend-video-engine/publish-ledger.json'
@@ -27,7 +32,7 @@ permissions:
 
 concurrency:
   group: acquisition-engine-check
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   check:
