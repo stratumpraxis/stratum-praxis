@@ -254,6 +254,7 @@ footer{border-top:1px solid #17313f;padding:30px 0 48px;margin-top:36px;color:va
 <script>
 (()=>{
 const SENSOR='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-b2b-funnel-sensor';
+const INTAKE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-spend-leak-intake';
 const $=id=>document.getElementById(id);
 const money=n=>new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n||0);
 const uuid=()=>crypto.randomUUID?crypto.randomUUID():'ev-'+Date.now()+'-'+Math.random().toString(16).slice(2);
@@ -314,22 +315,29 @@ $('implBtn').addEventListener('click',()=>{$('leadForm').scrollIntoView({behavio
 
 $('submitBtn').addEventListener('click',async()=>{
   const company=$('company').value.trim(),email=$('email').value.trim(),problem=$('problem').value.trim();
+  const requestType=$('requestType').value;
+  const monthlySpend=Math.max(0,Number($('leadSpend').value)||0);
   const status=$('status');
   if(!company||!email||!problem||!$('consent').checked){status.className='status err';status.textContent='会社名・メール・課題・同意を確認してください。';return}
-  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.className='status err';status.textContent='メールアドレスを確認してください。';return}
+  if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)){status.className='status err';status.textContent='メールアドレスを確認してください。';return}
   $('submitBtn').disabled=true;status.className='status';status.textContent='送信中…';
-  const result=await sensor('DIAGNOSTIC_AUDIT_CLICK',{dwell_ms:Math.round(performance.now())});
-  if(result.ok){
+  try{
+    const r=await fetch(INTAKE,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({
+      company,email,request_type:requestType,monthly_spend:monthlySpend,problem,
+      diagnostic_score:lastScore,source_path:location.pathname,utm,website:''
+    })});
+    const d=await r.json().catch(()=>({}));
+    if(!r.ok||!d.accepted) throw new Error(d.error||'intake_failed');
+    await sensor('DIAGNOSTIC_AUDIT_CLICK',{dwell_ms:Math.round(performance.now())});
     status.className='status ok';
-    status.textContent='相談シグナルを受け付けました。Contact経路と合わせて確認します。';
+    status.textContent='受付しました。相談内容をStratum内部受付へ保存しました。';
     $('submitBtn').textContent='受付済み';
-  }else{
+  }catch(e){
     status.className='status err';
-    status.textContent='自動受付の確認に失敗しました。Contactからご連絡ください。';
+    status.textContent='自動受付に失敗しました。Contactからご連絡ください。';
     $('submitBtn').disabled=false;
   }
 });
-
 sensor('INTRO_ENGAGED',{dwell_ms:0});
 })();
 </script>
