@@ -2,116 +2,74 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>収益回収ダッシュボード</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#07111f">
+<title>CodeOps｜GitHub 24H Revenue Monitor</title>
 <style>
-:root{color-scheme:dark;--bg:#06101d;--panel:#0d1b2d;--line:#223b59;--text:#ecf5ff;--muted:#94a9c1;--green:#65e6a6;--blue:#79a9ff;--yellow:#ffd166;--red:#ff7a8a}
-*{box-sizing:border-box}
-body{margin:0;background:linear-gradient(180deg,#071424,#050b14);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
-main{max-width:1180px;margin:auto;padding:22px 16px 70px}
-h1{font-size:clamp(32px,6vw,62px);margin:0;letter-spacing:-.05em;line-height:1}
-.sub{color:var(--muted);margin:8px 0 18px;line-height:1.55}
-.bar{display:flex;gap:8px;flex-wrap:wrap}
-input,button{background:#0b1b30;color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit}
-input{min-width:240px;flex:1}
-button{cursor:pointer;font-weight:800}
-button.primary{background:#174c37;border-color:#2f8f68}
-button:hover{filter:brightness(1.1)}
-.grid{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:14px}
-.action-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-@media(max-width:800px){.grid,.action-grid{grid-template-columns:1fr}}
-.card{background:rgba(13,27,45,.94);border:1px solid var(--line);border-radius:16px;padding:15px;margin-top:12px}
-.action-card{margin-top:0;border-width:2px}
-.action-card.noaction{border-color:#2f8f68;background:rgba(17,55,42,.72)}
-.action-card.human{border-color:#c98548;background:rgba(62,37,19,.82)}
-.action-card.external{border-color:#7f6a2e;background:rgba(54,48,20,.75)}
-.action-title{font-size:clamp(24px,4vw,38px);font-weight:900;margin-top:5px}
-.legend{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.legend span{border-radius:999px;padding:5px 9px;font-size:11px;border:1px solid var(--line)}
-.legend .l-ok{color:var(--green)} .legend .l-human{color:#ffb36b} .legend .l-wait{color:var(--yellow)}
-.k{color:var(--muted);font-size:12px}
-.v{font-size:24px;font-weight:850;margin-top:4px;overflow-wrap:anywhere}
-.tiny{font-size:11px;color:var(--muted);line-height:1.55;margin-top:5px}
-.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:5px 9px;margin:3px;font-size:11px}
-.row{border-top:1px solid #172c44;padding:11px 0}
-.row:first-child{border-top:0}
-.status{display:inline-block;padding:3px 7px;border-radius:999px;font-size:10px;font-weight:800;border:1px solid var(--line)}
-.ok{color:var(--green)} .wait{color:var(--yellow)} .bad{color:var(--red)} .info{color:var(--blue)}
-#msg{min-height:22px;color:var(--blue);margin-top:9px;font-size:12px}
-a{color:var(--blue)}
+:root{color-scheme:dark;--bg:#060b13;--panel:#0b1422;--line:#1c2d43;--text:#f4f8fc;--muted:#8fa3ba;--green:#62e6a5;--blue:#7aa7ff;--yellow:#ffd166;--red:#ff7d8c;--cyan:#75e7f7;--shadow:0 14px 44px rgba(0,0,0,.28)}
+*{box-sizing:border-box}html{background:var(--bg)}
+body{margin:0;background:radial-gradient(circle at 15% -10%,rgba(66,120,255,.18),transparent 34%),radial-gradient(circle at 85% 0%,rgba(34,209,149,.12),transparent 28%),linear-gradient(180deg,#07111f 0%,#060b13 55%,#050910 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+button,input{font:inherit}main{max-width:1220px;margin:auto;padding:18px 14px 72px}
+.top{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin:4px 0 18px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#162942,#0e1b2c);border:1px solid #294562;box-shadow:var(--shadow);font-size:22px}
+.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--cyan);font-weight:800}
+h1{margin:2px 0 0;font-size:clamp(28px,6vw,54px);letter-spacing:-.055em;line-height:1}
+.desc{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.6;max-width:760px}
+.live{display:flex;align-items:center;gap:7px;border:1px solid #214430;background:#0d2119;border-radius:999px;padding:8px 11px;font-size:11px;font-weight:800;color:var(--green);white-space:nowrap}
+.dot{width:8px;height:8px;border-radius:50%;background:currentColor;box-shadow:0 0 14px currentColor}
+.connect{display:grid;grid-template-columns:1fr auto auto;gap:8px;margin:14px 0 10px}
+input,button{border:1px solid var(--line);background:#0a1524;color:var(--text);border-radius:12px;padding:11px 13px}input{min-width:0}
+button{font-weight:800;cursor:pointer}button.primary{background:linear-gradient(180deg,#1a5e45,#124632);border-color:#2d8863}
+#msg{font-size:11px;color:var(--muted);min-height:18px;margin:6px 2px 12px}
+.kpi{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:14px}
+.card{background:linear-gradient(180deg,rgba(15,27,44,.96),rgba(10,19,31,.96));border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow)}
+.kpi .card{padding:14px;min-height:112px}.klabel{font-size:11px;color:var(--muted);display:flex;align-items:center;justify-content:space-between;gap:8px}
+.kvalue{font-size:clamp(24px,4vw,38px);font-weight:900;letter-spacing:-.04em;margin-top:10px}.ksub{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.5}
+.ok{color:var(--green)}.wait{color:var(--yellow)}.bad{color:var(--red)}.info{color:var(--blue)}.cyan{color:var(--cyan)}
+.section{margin-top:12px;padding:16px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+.section-title h2{font-size:15px;margin:0}.section-title span{font-size:10px;color:var(--muted)}
+.pipeline{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.stage{border:1px solid var(--line);background:#0a1523;border-radius:14px;padding:12px;min-height:88px}.stage .n{font-size:22px;font-weight:900}.stage .s{font-size:10px;color:var(--muted);margin-top:4px}
+.stage.active{border-color:#2e7859;background:#0d2119}.stage.warn{border-color:#6f5d24;background:#201b0c}.stage.money{border-color:#2e587d;background:#0b1d30}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.action{padding:16px;min-height:150px}
+.action .big{font-size:clamp(22px,4vw,34px);font-weight:900;letter-spacing:-.04em;margin-top:10px}.action .meta{font-size:11px;color:var(--muted);line-height:1.6;margin-top:8px}
+.action.human{border-color:#765025;background:linear-gradient(180deg,rgba(56,35,15,.95),rgba(31,20,10,.96))}.action.external{border-color:#394d6a}
+.rows{display:grid;gap:8px}.row{border:1px solid #17283b;background:#09131f;border-radius:14px;padding:12px}
+.rowtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}.row b{font-size:13px}
+.status{display:inline-flex;align-items:center;border:1px solid currentColor;border-radius:999px;padding:3px 7px;font-size:9px;font-weight:900;white-space:nowrap}
+.amount{font-size:19px;font-weight:900;letter-spacing:-.03em;margin-top:5px}.tiny{font-size:10px;color:var(--muted);line-height:1.6;margin-top:5px}
+.pills{display:flex;gap:6px;flex-wrap:wrap}.pill{border:1px solid var(--line);border-radius:999px;padding:5px 8px;font-size:9px;color:#b9c9da}
+.empty{padding:18px;text-align:center;color:var(--muted);font-size:11px;border:1px dashed #1c3048;border-radius:14px}
+footer{color:#64788f;font-size:9px;text-align:center;margin-top:18px}details summary{cursor:pointer}pre{white-space:pre-wrap;overflow-wrap:anywhere;font-size:9px}
+@media(max-width:960px){.kpi{grid-template-columns:repeat(2,1fr)}.pipeline{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){main{padding:14px 10px 60px}.top{display:block}.live{display:inline-flex;margin-top:12px}.connect{grid-template-columns:1fr 1fr}.connect input{grid-column:1/-1}.grid2{grid-template-columns:1fr}.kpi{grid-template-columns:1fr 1fr}.pipeline{grid-template-columns:1fr 1fr}.section{padding:12px}.kpi .card{min-height:100px}}
 </style>
 </head>
 <body>
 <main>
-  <div class="k">自分用｜収益回収の現在地</div>
-  <h1>収益回収ダッシュボード</h1>
-  <div class="sub">「自分が動く必要があるのか」と「外部側を待つだけなのか」を最初に分けて表示します。</div>
-
-  <div class="bar">
-    <input id="key" type="password" placeholder="接続キー">
-    <button id="connectBtn" type="button">接続</button>
-    <button id="runBtn" class="primary" type="button">最新状態を確認</button>
-  </div>
-  <div id="msg">接続キーを入力してください。</div>
-
-  <div class="legend" aria-label="状態の見方">
-    <span class="l-ok">● 操作不要</span>
-    <span class="l-human">● あなたの操作が必要</span>
-    <span class="l-wait">● 外部・AI側の待ち</span>
-  </div>
-
-  <div class="action-grid">
-    <section id="humanCard" class="card action-card noaction">
-      <div class="k">あなたが今やること</div>
-      <div id="humanAction" class="action-title">接続後に判定</div>
-      <div id="humanActionMeta" class="tiny">入金待ちだけなら「操作不要」と表示します。</div>
-    </section>
-    <section id="externalCard" class="card action-card external">
-      <div class="k">外部・AI側で待っていること</div>
-      <div id="externalWait" class="action-title">—</div>
-      <div id="externalWaitMeta" class="tiny"></div>
-    </section>
-  </div>
-
-  <div class="grid">
-    <section class="card">
-      <div class="k">いま一番お金に近いもの</div>
-      <div id="selected" class="v">未接続</div>
-      <div id="selectedMeta" class="tiny"></div>
-    </section>
-    <section class="card">
-      <div class="k">収益の現在地</div>
-      <div id="state" class="v">—</div>
-      <div id="next" class="tiny"></div>
-    </section>
-  </div>
-
-  <section class="card">
-    <div class="k">どこからお金の情報を拾っているか</div>
-    <div id="sources"></div>
-  </section>
-
-  <section class="card">
-    <div class="k">いま回収を追っているお金</div>
-    <div id="items"></div>
-  </section>
-
-  <section class="card">
-    <div class="k">新しく見つかった報酬候補</div>
-    <div id="market"></div>
-  </section>
-
-  <section class="card">
-    <div class="k">また使えそうな稼ぎ方</div>
-    <div id="repeat"></div>
-  </section>
-
-  <section class="card">
-    <div class="k">最後にどこへ回して、どうなったか</div>
-    <div id="dispatch"></div>
-  </section>
-</main>
-
-<script src="app-jp-v2.js" defer></script>
-</body>
-</html>
+<header class="top"><div><div class="brand"><div class="logo">⌘</div><div><div class="eyebrow">CODEOPS / GITHUB REVENUE</div><h1>24H Revenue Monitor</h1></div></div><p class="desc">GitHub収益の実行状況だけを表示。候補数ではなく、WORK READY → SUBMITTED → ACCEPTED → PAYOUT → PAID を優先します。</p></div><div id="liveBadge" class="live"><span class="dot"></span><span>RUNTIME CHECK</span></div></header>
+<div class="connect"><input id="key" type="password" placeholder="接続キー"><button id="connectBtn" type="button">接続</button><button id="runBtn" class="primary" type="button">最新確認</button></div><div id="msg">接続キーを入力してください。</div>
+<section class="kpi">
+<div class="card"><div class="klabel">24H ENGINE <span>●</span></div><div id="engine" class="kvalue">—</div><div id="engineSub" class="ksub">CodeOps専用GitHub</div></div>
+<div class="card"><div class="klabel">CLOSEST CASH</div><div id="closestCount" class="kvalue">—</div><div class="ksub">入金に近い案件</div></div>
+<div class="card"><div class="klabel">MARKET</div><div id="marketCount" class="kvalue">—</div><div class="ksub">新規報酬候補</div></div>
+<div class="card"><div class="klabel">HUMAN GATE</div><div id="gateCount" class="kvalue">—</div><div id="gateSub" class="ksub">あなたの操作</div></div>
+<div class="card"><div class="klabel">TOP MONEY STATE</div><div id="moneyState" class="kvalue">—</div><div id="moneySub" class="ksub">Payment / Payout優先</div></div>
+</section>
+<section class="card section"><div class="section-title"><h2>Revenue Pipeline</h2><span>内部完了 ≠ 収益</span></div><div class="pipeline">
+<div id="stDiscover" class="stage"><div class="n">01</div><div>DISCOVER</div><div class="s">現金案件探索</div></div>
+<div id="stQualify" class="stage"><div class="n">02</div><div>QUALIFY</div><div class="s">支払・競合確認</div></div>
+<div id="stWork" class="stage"><div class="n">03</div><div>WORK READY</div><div class="s">実装・QA</div></div>
+<div id="stSubmit" class="stage"><div class="n">04</div><div>SUBMITTED</div><div class="s">外部提出済み</div></div>
+<div id="stAccept" class="stage"><div class="n">05</div><div>ACCEPTED</div><div class="s">採用・承認</div></div>
+<div id="stPaid" class="stage money"><div class="n">06</div><div>PAID</div><div class="s">入金確認</div></div>
+</div></section>
+<div class="grid2"><section id="humanCard" class="card action"><div class="klabel">あなたが今やること</div><div id="humanAction" class="big">接続後に判定</div><div id="humanActionMeta" class="meta"></div></section><section id="externalCard" class="card action external"><div class="klabel">外部側で待っていること</div><div id="externalWait" class="big">—</div><div id="externalWaitMeta" class="meta"></div></section></div>
+<section class="card section"><div class="section-title"><h2>いま一番お金に近いもの</h2><span id="state">未接続</span></div><div id="selected" class="amount">—</div><div id="selectedMeta" class="tiny"></div><div id="next" class="tiny"></div></section>
+<section class="card section"><div class="section-title"><h2>収益実行中</h2><span>Payment / Payout優先</span></div><div id="items" class="rows"></div></section>
+<section class="card section"><div class="section-title"><h2>新規GitHub報酬候補</h2><span>重複・飽和・危険案件は除外</span></div><div id="market" class="rows"></div></section>
+<section class="card section"><div class="section-title"><h2>Revenue Sources</h2><span>Direct Evidence</span></div><div id="sources" class="pills"></div></section>
+<section class="card section"><div class="section-title"><h2>最新Routing / Evidence</h2><span>CodeOps lane</span></div><div id="dispatch" class="rows"></div></section>
+<section class="card section"><div class="section-title"><h2>再現できた収益ルート</h2><span>Paid only</span></div><div id="repeat" class="rows"></div></section>
+<footer>CodeOps GitHub Revenue Monitor / Visualization only. Execution remains in the dedicated CodeOps GitHub runtime.</footer>
+</main><script src="app-jp-v2.js" defer></script></body></html>
