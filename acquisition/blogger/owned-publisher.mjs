@@ -106,6 +106,31 @@ async function queueBluesky(record, canonical) {
   return true;
 }
 
+async function queueWordPress(record, canonical) {
+  const shortId=String(record.output_id || crypto.randomUUID()).replace(/[^a-zA-Z0-9-]/g,'-').slice(-48);
+  const contentId=`stratum-wordpress-owned-${shortId}`;
+  const file=path.join(SOCIAL_QUEUE,`${contentId}.json`);
+  try { await fs.access(file); return false; } catch {}
+  const title=String(record.title || 'Stratum Praxis analysis').replace(/\s+/g,' ').trim();
+  const excerpt=String(record.dek || 'Evidence-grounded analysis from Stratum Praxis.').replace(/\s+/g,' ').trim();
+  const pkg={
+    brand:'Stratum',
+    content_id:contentId,
+    platform:'wordpress',
+    site:'stratumpraxis.wordpress.com',
+    title,
+    excerpt,
+    canonical_url:canonical,
+    source_id:record.output_id,
+    tags:['AI','business','Stratum Praxis'],
+    status:'QUEUED',
+    publish_trigger:new Date().toISOString()
+  };
+  await writeJson(file,pkg);
+  console.log(`WORDPRESS_QUEUED ${contentId}`);
+  return true;
+}
+
 async function updateSitemap(state) {
   let xml=await fs.readFile(SITEMAP,'utf8');
   const close='</urlset>';
@@ -146,6 +171,7 @@ async function main(){
     await writeJson(path.join(OUTBOX,name),record);
     state.owned_publications[record.output_id]={output_id:record.output_id,title:record.title,canonical_url:canonical,state:'PUBLISH_REQUESTED',requested_at:new Date().toISOString()};
     await queueBluesky(record, canonical);
+    await queueWordPress(record, canonical);
     created++;
   }
   await updateIndex(state); await updateSitemap(state); state.last_publish_pass_at=new Date().toISOString(); await writeJson(STATE_FILE,state);
