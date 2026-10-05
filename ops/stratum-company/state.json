@@ -42,9 +42,12 @@
     },
     "wordpress": {
       "label": "WordPress",
-      "status": "AUTH_GATE",
-      "detail": "Stratum WordPress public surface exists in DIB, but the currently connected WordPress management account does not expose the Stratum site. Unattended writer is not verified.",
-      "publicUrl": "https://stratumpraxis.wordpress.com/"
+      "status": "WRITER_READY_AUTH_GATE",
+      "detail": "Official WordPress.com REST writer and queued B2B distribution post are ready. Publishing stays fail-closed until Stratum WordPress OAuth access is authorized and STRATUM_WORDPRESS_ENABLED is turned on.",
+      "publicUrl": "https://stratumpraxis.wordpress.com/",
+      "writer": "scripts/publish_wordpress_official.mjs",
+      "workflow": ".github/workflows/stratum-wordpress-publish.yml",
+      "pendingQueue": "publishing/queue/stratum-wordpress-b2b-inbound-20261005.json"
     },
     "payment": {
       "label": "Payment",
