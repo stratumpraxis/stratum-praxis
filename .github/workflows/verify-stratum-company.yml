@@ -1,0 +1,100 @@
+name: Verify Stratum Company Control Room
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'ops/stratum-company/**'
+      - 'ops/b2b-revenue/state.json'
+      - 'acquisition/blogger/state.json'
+      - 'publishing/evidence/stratum-bluesky-b2b-inbound-20261005.json'
+      - '.github/workflows/verify-stratum-company.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for production content
+        shell: bash
+        run: |
+          set -euo pipefail
+          url='https://stratumpraxis.com/ops/stratum-company/'
+          for attempt in $(seq 1 18); do
+            body="$(curl --silent --show-error --location --max-time 20 "$url" || true)"
+            if grep -F '24H CONTROL' <<<"$body" >/dev/null &&
+               grep -F 'AUTONOMOUS REVENUE COMPANY' <<<"$body" >/dev/null &&
+               grep -F 'B2B営業' <<<"$body" >/dev/null &&
+               grep -F 'WordPress' <<<"$body" >/dev/null; then
+              echo "Production control room ready"
+              exit 0
+            fi
+            echo "Waiting for Pages deployment ($attempt/18)"
+            sleep 5
+          done
+          echo "Control room did not become ready" >&2
+          exit 1
+
+      - name: Verify public state dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/ops/stratum-company/state.json' | grep -F '"AUTONOMOUS_REVENUE_COMPANY"' >/dev/null
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/ops/b2b-revenue/state.json' | grep -F '"B2B Revenue Automation"' >/dev/null
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/acquisition/blogger/state.json' | grep -F '"owned_publications"' >/dev/null
+
+      - name: Verify desktop and mobile render
+        shell: bash
+        run: |
+          set -euo pipefail
+          BROWSER="$(command -v google-chrome-stable || command -v google-chrome || command -v chromium-browser || command -v chromium || true)"
+          test -n "$BROWSER"
+          npm init -y >/dev/null 2>&1
+          npm install --silent puppeteer-core@24
+          cat > verify.mjs <<'NODE'
+          import puppeteer from 'puppeteer-core';
+          const browser=await puppeteer.launch({executablePath:process.env.BROWSER,headless:true,args:['--no-sandbox','--disable-setuid-sandbox']});
+          let failed=false;
+          try{
+            for(const c of [{n:'desktop',w:1440,h:1000},{n:'mobile',w:390,h:844,m:true}]){
+              const p=await browser.newPage();
+              await p.setViewport({width:c.w,height:c.h,isMobile:Boolean(c.m),deviceScaleFactor:1});
+              const res=await p.goto('https://stratumpraxis.com/ops/stratum-company/',{waitUntil:'networkidle2',timeout:60000});
+              const x=await p.evaluate(()=>({
+                text:document.body.innerText,
+                sw:document.documentElement.scrollWidth,
+                cw:document.documentElement.clientWidth
+              }));
+              const ok=res?.status()===200 &&
+                x.text.includes('24H CONTROL') &&
+                x.text.includes('B2B営業') &&
+                x.text.includes('商品管理') &&
+                x.text.includes('SNS投稿') &&
+                x.text.includes('WordPress') &&
+                x.text.includes('Revenue Pipeline') &&
+                x.sw<=x.cw+2;
+              await p.screenshot({path:`stratum-company-${c.n}.png`,fullPage:true});
+              console.log(JSON.stringify({viewport:c.n,status:res?.status(),overflow:x.sw>x.cw+2,ok}));
+              if(!ok)failed=true;
+              await p.close();
+            }
+          }finally{await browser.close()}
+          if(failed)process.exit(1);
+          NODE
+          BROWSER="$BROWSER" node verify.mjs
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: stratum-company-control-room-readback
+          path: stratum-company-*.png
+          if-no-files-found: error
+          retention-days: 7
