@@ -117,12 +117,18 @@ jobs:
                   or rel in {'privacy.html','privacy-policy.html','terms.html'}
               )
               is_stratum = 'Stratum Praxis' in html and not excluded_revenue_ui
-              if is_stratum and 'stratum-revenue-ui-2026.css' not in html:
+              if is_stratum:
                   marker = '</head>'
                   idx = html.lower().find(marker)
                   if idx < 0:
                       raise SystemExit(f'Missing </head> in {path}')
-                  html = html[:idx] + REVENUE_UI_CSS + '\n' + REVENUE_UI_JS + '\n' + MOTION_UI_CSS + '\n' + MOTION_UI_JS + '\n' + html[idx:]
+                  inject = []
+                  if 'stratum-revenue-ui-2026.css' not in html:
+                      inject.extend([REVENUE_UI_CSS, REVENUE_UI_JS])
+                  if 'stratum-motion-ui-2026.css' not in html:
+                      inject.extend([MOTION_UI_CSS, MOTION_UI_JS])
+                  if inject:
+                      html = html[:idx] + '\n'.join(inject) + '\n' + html[idx:]
 
               if GA_ID not in html:
                   marker = '</head>'
