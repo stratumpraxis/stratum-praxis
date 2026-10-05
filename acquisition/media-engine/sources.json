@@ -369,7 +369,7 @@
         },
         {
           "role": "HIGH_TOUCH",
-          "asset_id": "workflow-opportunity-audit",
+          "asset_id": "workflow-audit",
           "url": "https://stratumpraxis.com/workflow-audit.html",
           "cta": "Review the fixed-scope $499 audit"
         }
