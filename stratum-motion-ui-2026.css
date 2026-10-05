@@ -1,0 +1,301 @@
+/* Stratum Motion UI 2026 — purposeful, GPU-friendly interaction layer */
+html.sp-motion-ui{
+  --sp-motion-fast:160ms;
+  --sp-motion-base:260ms;
+  --sp-motion-slow:420ms;
+  --sp-motion-ease:cubic-bezier(.2,.8,.2,1);
+  --sp-motion-spring:cubic-bezier(.16,1,.3,1);
+}
+html.sp-motion-ui :where(a,button,[role="button"]){
+  -webkit-tap-highlight-color:transparent;
+}
+html.sp-motion-ui :where(a,button,[role="button"]):active{
+  transform:scale(.985);
+}
+html.sp-motion-ui .sp-motion-surface{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+html.sp-motion-ui .sp-motion-surface::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  width:220px;height:220px;
+  left:calc(var(--sp-px,50%) - 110px);
+  top:calc(var(--sp-py,50%) - 110px);
+  border-radius:50%;
+  pointer-events:none;
+  opacity:0;
+  background:radial-gradient(circle,rgba(134,231,207,.11),rgba(131,207,255,.045) 38%,transparent 70%);
+  transition:opacity var(--sp-motion-base) ease;
+}
+html.sp-motion-ui .sp-motion-surface:hover::after,
+html.sp-motion-ui .sp-motion-surface:focus-within::after{opacity:1}
+html.sp-motion-ui .sp-reveal{
+  opacity:0;
+  transform:translateY(16px) scale(.992);
+  transition:
+    opacity var(--sp-motion-slow) ease,
+    transform var(--sp-motion-slow) var(--sp-motion-spring);
+  transition-delay:var(--sp-reveal-delay,0ms);
+}
+html.sp-motion-ui .sp-reveal.sp-in{
+  opacity:1;
+  transform:none;
+}
+html.sp-motion-ui .route-view.active{
+  animation:spRouteIn 360ms var(--sp-motion-spring) both;
+}
+@keyframes spRouteIn{
+  from{opacity:.15;transform:translateX(12px) scale(.995)}
+  to{opacity:1;transform:none}
+}
+html.sp-motion-ui .route-tab{
+  transition:
+    transform var(--sp-motion-base) var(--sp-motion-ease),
+    background var(--sp-motion-base) ease,
+    border-color var(--sp-motion-base) ease;
+}
+html.sp-motion-ui .route-tab[aria-selected="true"]{
+  transform:translateY(-2px);
+}
+html.sp-motion-ui .route-tab[aria-selected="true"] .tab-icon{
+  transform:scale(1.04);
+}
+html.sp-motion-ui .tab-icon{
+  transition:transform var(--sp-motion-base) var(--sp-motion-spring);
+}
+html.sp-motion-ui .flow-node,
+html.sp-motion-ui .offer,
+html.sp-motion-ui .start-card,
+html.sp-motion-ui .sp-revenue-proof__item{
+  transition:
+    transform var(--sp-motion-base) var(--sp-motion-spring),
+    border-color var(--sp-motion-base) ease,
+    background var(--sp-motion-base) ease,
+    box-shadow var(--sp-motion-base) ease;
+}
+html.sp-motion-ui .flow-node:hover,
+html.sp-motion-ui .offer:hover,
+html.sp-motion-ui .sp-revenue-proof__item:hover{
+  transform:translateY(-3px);
+}
+html.sp-motion-ui .flow-link i{
+  animation:spFlowPulse 2.2s ease-in-out infinite;
+}
+@keyframes spFlowPulse{
+  0%,100%{transform:translate(-50%,-50%) scale(.72);opacity:.45}
+  50%{transform:translate(-50%,-50%) scale(1.1);opacity:1}
+}
+
+/* Product Router — app-like offer rail */
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .offers{
+  align-items:stretch;
+}
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-shell{
+  min-width:0;
+  display:grid;
+  grid-template-rows:1fr auto;
+  gap:6px;
+}
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-shell>.offer{
+  width:100%;
+  height:100%;
+}
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-peek{
+  min-height:30px;
+  padding:0 9px;
+  border:1px solid rgba(180,213,224,.13);
+  border-radius:9px;
+  background:rgba(255,255,255,.025);
+  color:#91a5af;
+  font-size:8px;
+  font-weight:800;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:background var(--sp-motion-fast),color var(--sp-motion-fast),transform var(--sp-motion-fast);
+}
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-peek:hover,
+html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-peek:focus-visible{
+  color:#eef7fa;
+  background:rgba(134,231,207,.08);
+}
+html.sp-motion-ui .sp-sheet-backdrop{
+  position:fixed;inset:0;z-index:12000;
+  background:rgba(0,0,0,.46);
+  backdrop-filter:blur(7px);
+  -webkit-backdrop-filter:blur(7px);
+  opacity:0;pointer-events:none;
+  transition:opacity 220ms ease;
+}
+html.sp-motion-ui .sp-sheet-backdrop.is-open{opacity:1;pointer-events:auto}
+html.sp-motion-ui .sp-offer-sheet{
+  position:fixed;z-index:12001;
+  left:50%;bottom:16px;
+  width:min(620px,calc(100% - 24px));
+  max-height:min(78vh,760px);
+  overflow:auto;
+  transform:translate(-50%,calc(100% + 30px)) scale(.985);
+  opacity:0;
+  border:1px solid rgba(183,221,234,.2);
+  border-radius:24px;
+  background:
+    radial-gradient(circle at 88% 0%,rgba(134,231,207,.08),transparent 22rem),
+    #0b1720;
+  color:#f4f9fb;
+  box-shadow:0 30px 100px rgba(0,0,0,.5);
+  transition:
+    transform 360ms var(--sp-motion-spring),
+    opacity 220ms ease;
+  overscroll-behavior:contain;
+}
+html.sp-motion-ui .sp-offer-sheet.is-open{
+  transform:translate(-50%,0) scale(1);
+  opacity:1;
+}
+html.sp-motion-ui .sp-sheet-handle{
+  width:42px;height:4px;border-radius:999px;
+  margin:9px auto 2px;background:rgba(255,255,255,.22);
+}
+html.sp-motion-ui .sp-sheet-head{
+  display:grid;grid-template-columns:1fr auto;gap:16px;align-items:start;
+  padding:18px 20px 14px;border-bottom:1px solid rgba(183,221,234,.13);
+}
+html.sp-motion-ui .sp-sheet-head small{
+  display:block;color:#86e7cf;font-size:9px;font-weight:850;letter-spacing:.12em;
+}
+html.sp-motion-ui .sp-sheet-head h2{
+  margin:7px 0 0!important;
+  font-size:clamp(25px,5vw,38px)!important;
+  line-height:1!important;letter-spacing:-.045em!important;
+}
+html.sp-motion-ui .sp-sheet-close{
+  width:38px;height:38px;border:1px solid rgba(255,255,255,.11);border-radius:50%;
+  background:rgba(255,255,255,.035);color:#dce8ed;font-size:18px;cursor:pointer;
+}
+html.sp-motion-ui .sp-sheet-body{padding:18px 20px 20px}
+html.sp-motion-ui .sp-sheet-summary{
+  margin:0;color:#9eb0b9;font-size:13px;line-height:1.65;
+}
+html.sp-motion-ui .sp-sheet-meta{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:16px 0;
+}
+html.sp-motion-ui .sp-sheet-meta div{
+  min-width:0;padding:11px;border:1px solid rgba(183,221,234,.12);border-radius:12px;background:#08141c;
+}
+html.sp-motion-ui .sp-sheet-meta small{display:block;color:#718792;font-size:8px;letter-spacing:.09em}
+html.sp-motion-ui .sp-sheet-meta b{display:block;margin-top:5px;font-size:11px;line-height:1.25}
+html.sp-motion-ui .sp-sheet-list{
+  display:grid;gap:7px;margin:0;padding:0;list-style:none;
+}
+html.sp-motion-ui .sp-sheet-list li{
+  display:grid;grid-template-columns:26px 1fr;gap:9px;align-items:start;
+  padding:11px;border:1px solid rgba(183,221,234,.1);border-radius:12px;background:rgba(255,255,255,.025);
+  color:#c9d6dc;font-size:12px;
+}
+html.sp-motion-ui .sp-sheet-list li::before{
+  content:"✓";width:26px;height:26px;display:grid;place-items:center;border-radius:8px;
+  background:rgba(134,231,207,.09);color:#86e7cf;font-weight:900;
+}
+html.sp-motion-ui .sp-sheet-actions{
+  position:sticky;bottom:0;
+  display:grid;grid-template-columns:1fr auto;gap:8px;
+  margin-top:16px;padding-top:14px;
+  background:linear-gradient(180deg,transparent,#0b1720 24%);
+}
+html.sp-motion-ui .sp-sheet-primary,
+html.sp-motion-ui .sp-sheet-secondary{
+  min-height:48px;display:grid;place-items:center;padding:0 15px;border-radius:12px;
+  text-decoration:none;font-size:12px;font-weight:900;
+}
+html.sp-motion-ui .sp-sheet-primary{background:#86e7cf;color:#06140f}
+html.sp-motion-ui .sp-sheet-secondary{border:1px solid rgba(183,221,234,.15);color:#c9d7dd}
+html.sp-motion-ui body.sp-sheet-open{overflow:hidden}
+
+@media(max-width:760px){
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-tabs{
+    display:flex!important;
+    gap:8px!important;
+    overflow-x:auto!important;
+    padding:5px 1px 10px!important;
+    margin:0!important;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+    background:transparent!important;
+    backdrop-filter:none!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-tabs::-webkit-scrollbar{display:none}
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-tab{
+    flex:0 0 76%;
+    min-height:110px!important;
+    scroll-snap-align:center;
+    border-radius:17px!important;
+    padding:15px!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-shell{
+    border-radius:18px!important;
+    overflow:hidden!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-view.active{
+    display:block!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-side{
+    padding:20px 16px!important;
+    border-right:0!important;
+    border-bottom:1px solid rgba(183,221,234,.12)!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-side h3{
+    margin:18px 0 8px!important;
+    font-size:34px!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .route-canvas{padding:14px!important}
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .flow{
+    grid-template-columns:1fr!important;
+    gap:7px!important;
+    min-height:0!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .flow-link{
+    width:1px!important;height:18px!important;margin:auto!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .flow-link::after{display:none!important}
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .flow-node{
+    min-height:0!important;padding:13px!important;border-radius:14px!important;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .offers{
+    display:flex!important;
+    gap:9px!important;
+    overflow-x:auto!important;
+    padding:4px 1px 12px!important;
+    margin-top:12px!important;
+    scroll-snap-type:x mandatory;
+    scrollbar-width:none;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .offers::-webkit-scrollbar{display:none}
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .sp-offer-shell{
+    flex:0 0 76%;
+    scroll-snap-align:center;
+  }
+  html.sp-motion-ui body[data-page="revenue_route_os_v2"] .offer{
+    min-height:132px!important;border-radius:16px!important;padding:15px!important;
+  }
+  html.sp-motion-ui .sp-offer-sheet{
+    left:0;right:0;bottom:0;width:100%;max-height:84vh;
+    border-radius:24px 24px 0 0;
+    transform:translateY(100%) scale(1);
+  }
+  html.sp-motion-ui .sp-offer-sheet.is-open{transform:translateY(0)}
+  html.sp-motion-ui .sp-sheet-meta{grid-template-columns:1fr 1fr}
+  html.sp-motion-ui .sp-sheet-actions{grid-template-columns:1fr}
+}
+@media(hover:none){
+  html.sp-motion-ui .sp-motion-surface::after{display:none}
+}
+@media(prefers-reduced-motion:reduce){
+  html.sp-motion-ui .sp-reveal{opacity:1!important;transform:none!important;transition:none!important}
+  html.sp-motion-ui .flow-link i{animation:none!important}
+  html.sp-motion-ui .route-view.active{animation:none!important}
+  html.sp-motion-ui .sp-offer-sheet,
+  html.sp-motion-ui .sp-sheet-backdrop{transition:none!important}
+  html.sp-motion-ui :where(.flow-node,.offer,.route-tab,.sp-revenue-proof__item){transition:none!important}
+}
