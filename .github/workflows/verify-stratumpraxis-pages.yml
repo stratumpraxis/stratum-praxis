@@ -8,6 +8,7 @@ on:
       - 'return-gate/index.html'
       - 'passage-hub/index.html'
       - 'index.html'
+      - 'b2b-intro/index.html'
       - 'signal/index.html'
       - 'stack-pulse/index.html'
       - 'monthly-money-leak-audit/index.html'
@@ -77,6 +78,7 @@ jobs:
 
           urls=(
             'https://stratumpraxis.com/'
+            'https://stratumpraxis.com/b2b-intro/'
             'https://stratumpraxis.com/return-gate/'
             'https://stratumpraxis.com/passage-hub/'
             'https://stratumpraxis.com/prompt-systems.html'
@@ -114,6 +116,11 @@ jobs:
 
           # Only routes intentionally present in the canonical sitemap are asserted here.
           # Other owned pages above are still verified for live HTTPS reachability.
+          wait_for_contains 'https://stratumpraxis.com/b2b-intro/' \
+            'content="index,follow,max-image-preview:large"' \
+            'href="/b2b/"' \
+            '問い合わせは、まだ不要です。'
+
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
             'https://stratumpraxis.com/workflow-operator.html' \
