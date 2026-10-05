@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>24H Revenue Progress｜Digital Index Base</title>
+<style>
+:root{
+  --bg:#071018;--panel:#0d1822;--panel2:#111f2b;--line:#203244;--line2:#2c4256;
+  --text:#eef7ff;--muted:#8ea4b8;--green:#79f2ad;--cyan:#5de4ff;--amber:#ffc86b;
+  --red:#ff7d8b;--blue:#8aa8ff;--violet:#c69cff;--soft:#14222f;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  radial-gradient(circle at 12% -10%,#0f3850 0,transparent 32%),
+  radial-gradient(circle at 92% 0,#201c47 0,transparent 30%),var(--bg);
+  color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1360px;margin:auto;padding:20px 16px 84px}
+header{display:flex;justify-content:space-between;gap:18px;align-items:flex-start;flex-wrap:wrap}
+h1{margin:0;font-size:clamp(34px,6vw,66px);letter-spacing:-.055em;line-height:.98}
+.sub{margin-top:10px;color:var(--muted);font-size:12px;line-height:1.7}
+.auth{display:flex;gap:8px;flex-wrap:wrap}
+.auth input,.auth button{border:1px solid var(--line);border-radius:11px;background:#0b1620;color:var(--text);padding:10px 12px;font:inherit}
+.auth input{min-width:210px}.auth button{font-weight:900;cursor:pointer}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 10px}
+.nav a{border:1px solid var(--line);background:#0c1720;color:var(--text);text-decoration:none;border-radius:999px;padding:7px 11px;font-size:11px;font-weight:850}
+.nav a.active{border-color:#5de4ff80;background:#102834;color:var(--cyan)}
+#msg{font-size:11px;color:var(--muted);min-height:20px;margin:5px 0 12px}
+
+.hero{
+  border:1px solid var(--line);border-radius:24px;
+  background:linear-gradient(155deg,#101e2a,#0a141d 68%);
+  padding:20px;position:relative;overflow:hidden
+}
+.hero:after{content:"";position:absolute;width:270px;height:270px;border-radius:50%;right:-90px;top:-100px;background:var(--cyan);filter:blur(120px);opacity:.09}
+.heroTop{display:flex;justify-content:space-between;gap:18px;align-items:start;flex-wrap:wrap}
+.companyStatus{font-size:clamp(30px,5vw,56px);font-weight:950;letter-spacing:-.05em}
+.statusLine{font-size:12px;color:var(--muted);margin-top:5px}
+.live{display:inline-flex;align-items:center;gap:8px;color:var(--green);font-size:11px;font-weight:900}
+.live i{width:8px;height:8px;background:var(--green);border-radius:50%;box-shadow:0 0 0 6px #79f2ad16}
+.bigKpis{display:grid;grid-template-columns:repeat(5,1fr);gap:9px;margin-top:18px}
+.kpi{background:#0a151e;border:1px solid var(--line);border-radius:15px;padding:13px}
+.kpi .n{font-size:26px;font-weight:950;letter-spacing:-.035em}.kpi .l{font-size:10px;color:var(--muted);margin-top:3px}
+
+.section{margin-top:14px;border:1px solid var(--line);border-radius:20px;background:#0a151e;padding:16px}
+.sectionHead{display:flex;justify-content:space-between;align-items:end;gap:14px;margin-bottom:13px;flex-wrap:wrap}
+.section h2{font-size:18px;margin:0}.hint{font-size:10px;color:var(--muted);line-height:1.55;margin-top:3px}
+
+.ladder{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}
+.stage{border:1px solid var(--line);border-radius:14px;padding:12px;background:#0d1822;position:relative;overflow:hidden}
+.stage:before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#2b3a49}
+.stage.yes{border-color:#22533f;background:#0d251d}.stage.yes:before{background:var(--green)}
+.stageName{font-size:10px;color:var(--muted);font-weight:900;letter-spacing:.06em}
+.stageValue{font-size:15px;font-weight:950;margin-top:5px}.stageMeta{font-size:9px;color:var(--muted);margin-top:5px;line-height:1.45}
+
+.filterRow{display:flex;gap:7px;flex-wrap:wrap}
+.filter{border:1px solid var(--line);background:#0c1720;color:var(--muted);border-radius:999px;padding:6px 10px;font-size:10px;font-weight:850;cursor:pointer}
+.filter.active{background:var(--cyan);color:#071018;border-color:var(--cyan)}
+
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.project{border:1px solid var(--line);border-radius:17px;padding:14px;background:linear-gradient(155deg,#101d29,#0b151e 72%);display:flex;flex-direction:column;min-height:286px;position:relative;overflow:hidden}
+.project.running{border-color:#365f98}.project.money{border-color:#2e6a4e}.project.human{border-color:#826531}.project.warn{border-color:#6d3942}
+.pTop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pname{font-size:17px;font-weight:950;letter-spacing:-.02em}.pid{font-size:9px;color:var(--muted);margin-top:3px}
+.badge{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:4px 7px;font-size:9px;font-weight:900;white-space:nowrap}
+.bRun{color:var(--blue);border-color:#314d73;background:#111f35}.bMoney{color:var(--green);border-color:#28543f;background:#0e261d}.bHuman{color:var(--amber);border-color:#594723;background:#2a2114}.bSoft{color:var(--muted)}
+.moneyDistance{display:flex;align-items:center;gap:8px;margin-top:13px}
+.distanceNum{font-size:28px;font-weight:950;letter-spacing:-.05em}
+.distanceText{font-size:9px;color:var(--muted);line-height:1.4}
+.rail{display:grid;grid-template-columns:repeat(6,1fr);gap:3px;margin:12px 0 13px}
+.rail i{height:7px;border-radius:999px;background:#172735;border:1px solid #22384a}
+.rail i.on{background:linear-gradient(90deg,#4e9fd9,#79f2ad);border-color:transparent}
+.labels{display:grid;grid-template-columns:repeat(6,1fr);gap:2px;margin-top:-7px}
+.labels span{font-size:7px;color:#617587;text-align:center;overflow:hidden}
+.pobj{font-size:10px;color:var(--muted);line-height:1.5;margin-top:3px}
+.block{margin-top:10px;border-left:3px solid var(--amber);padding:6px 0 6px 9px;font-size:10px;line-height:1.45;color:#d5c5a4}
+.next{margin-top:8px;border-left:3px solid var(--cyan);padding:6px 0 6px 9px;font-size:10px;line-height:1.45}
+.pfoot{margin-top:auto;border-top:1px solid var(--line);padding-top:10px;display:flex;justify-content:space-between;gap:8px;align-items:end}
+.pfoot small{font-size:9px;color:var(--muted);line-height:1.45}
+.pfoot a{border:1px solid var(--line);border-radius:8px;text-decoration:none;color:var(--text);font-size:9px;font-weight:900;padding:6px 8px}
+
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.list{display:flex;flex-direction:column;gap:7px}
+.row{border:1px solid var(--line);border-radius:12px;padding:10px;background:#0d1822}
+.rowTop{display:flex;justify-content:space-between;gap:8px}.rowTitle{font-size:11px;font-weight:900}.rowMeta{font-size:9px;color:var(--muted);line-height:1.5;margin-top:4px}
+.time{color:var(--cyan);font-size:9px;white-space:nowrap}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:16px;color:var(--muted);font-size:10px;text-align:center}
+
+.matrix{overflow:auto;border:1px solid var(--line);border-radius:14px}
+table{width:100%;min-width:880px;border-collapse:collapse}
+th,td{padding:9px;border-bottom:1px solid #1b2d3b;text-align:left;font-size:9px;vertical-align:middle}
+th{color:#8199ac;text-transform:uppercase;letter-spacing:.05em;font-size:8px}
+td strong{font-size:10px}.dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:6px;background:#405466}
+.dot.run{background:var(--blue)}.dot.wait{background:var(--amber)}.dot.ok{background:var(--green)}
+.funnelMini{display:flex;gap:3px}.funnelMini i{width:18px;height:6px;border-radius:3px;background:#1b2c3a}.funnelMini i.on{background:var(--green)}
+
+.truth{margin-top:14px;border:1px dashed #30485b;border-radius:14px;padding:11px;color:var(--muted);font-size:9px;line-height:1.6}
+
+@media(max-width:1060px){.bigKpis{grid-template-columns:repeat(3,1fr)}.projects{grid-template-columns:repeat(2,1fr)}.ladder{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:720px){
+  main{padding:16px 12px 70px}.auth{width:100%}.auth input{flex:1;min-width:0}
+  .bigKpis{grid-template-columns:repeat(2,1fr)}.projects{grid-template-columns:1fr}.ladder{grid-template-columns:repeat(2,1fr)}
+  .twocol{grid-template-columns:1fr}.section{padding:13px}.hero{padding:15px}.pname{font-size:16px}
+}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <div>
+    <h1>24H Revenue Progress</h1>
+    <div class="sub">Digital Index Base｜各Projectの現在地・収益距離・First Broken Stage・24H運転を1画面で可視化。<br>Payment / Payout以外を売上として扱いません。</div>
+  </div>
+  <div class="auth">
+    <input id="key" type="password" placeholder="監視キー">
+    <button onclick="connect()">接続</button>
+    <button onclick="load()">更新</button>
+  </div>
+</header>
+
+<nav class="nav">
+  <a href="index.html">Operations</a>
+  <a class="active" href="progress.html">Progress</a>
+  <a href="astra.html">ASTRA Growth</a>
+  <a href="trends.html">Trend Radar</a>
+  <a href="revenue-os.html">Revenue OS</a>
+  <a href="audit.html">Workspaces</a>
+</nav>
+
+<div id="msg">監視キーを入力してください。</div>
+
+<section class="hero">
+  <div class="heroTop">
+    <div>
+      <div class="live"><i></i><span id="clock">Currentを取得中</span></div>
+      <div id="companyStatus" class="companyStatus">監視キー待ち</div>
+      <div id="lastMove" class="statusLine">Direct Evidenceを取得すると表示します。</div>
+    </div>
+    <div class="statusLine">15秒自動更新<br><span id="generatedAt">—</span></div>
+  </div>
+  <div id="kpis" class="bigKpis"></div>
+</section>
+
+<section class="section">
+  <div class="sectionHead">
+    <div><h2>Revenue Ladder</h2><div class="hint">外部Evidenceが確認された段階だけ点灯。内部完了・Deploy・PVは自動昇格しません。</div></div>
+    <div id="lastRevenue" class="hint"></div>
+  </div>
+  <div id="revenueLadder" class="ladder"></div>
+</section>
+
+<section class="section">
+  <div class="sectionHead">
+    <div><h2>Project Progress</h2><div class="hint">Payment距離の近い順。各Project OwnerのCurrentを読むだけで、中央Monitorが実行Ownerにはなりません。</div></div>
+    <div id="filters" class="filterRow">
+      <button class="filter active" data-filter="all">All</button>
+      <button class="filter" data-filter="running">稼働中</button>
+      <button class="filter" data-filter="money">Money近い</button>
+      <button class="filter" data-filter="human">Human Gate</button>
+      <button class="filter" data-filter="wait">待ち</button>
+    </div>
+  </div>
+  <div id="projects" class="projects"></div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Project Matrix</h2><div class="hint">横断比較用。UNKNOWNは0として扱いません。</div></div><div id="projectCount" class="hint"></div></div>
+  <div class="matrix">
+    <table>
+      <thead><tr><th>Project</th><th>状態</th><th>Revenue距離</th><th>First Broken Stage</th><th>次Action</th><th>最後の動作</th></tr></thead>
+      <tbody id="matrixBody"></tbody>
+    </table>
+  </div>
+</section>
+
+<section class="section">
+  <div class="twocol">
+    <div>
+      <div class="sectionHead"><div><h2>いま動いている</h2><div class="hint">RUNNING / 最新Taskを表示。</div></div></div>
+      <div id="moving" class="list"></div>
+    </div>
+    <div>
+      <div class="sectionHead"><div><h2>Human / External Wait</h2><div class="hint">AI側の作業不足と混同しない停止条件。</div></div></div>
+      <div id="waits" class="list"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="sectionHead"><div><h2>Recent Reality Changes</h2><div class="hint">Taskベース。完了数ではなく、何が現実に動いたかを見る。</div></div></div>
+  <div id="history" class="list"></div>
+</section>
+
+<div class="truth"><b>Truth Boundary：</b> Bot ≠ Human ≠ Buyer ≠ Checkout ≠ Payment ≠ Payout。UNKNOWN ≠ ZERO。1 Payment ≠ Repeatability。各Projectの局所実行はProject Owner、ここは横断可視化のみ。</div>
+</main>
+
+<script>
+const BASE='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor';
+const API=BASE+'/api/snapshot';
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—';
+const ago=t=>{if(!t)return '—';const s=Math.max(0,(Date.now()-new Date(t).getTime())/1000);if(s<60)return Math.floor(s)+'秒前';if(s<3600)return Math.floor(s/60)+'分前';if(s<86400)return Math.floor(s/3600)+'時間前';return Math.floor(s/86400)+'日前'};
+let currentFilter='all';
+let lastData=null;
+
+function safeGetKey(){try{return localStorage.getItem('monitor_key')||sessionStorage.getItem('monitor_key')||''}catch(_e){return ''}}
+function safeSetKey(v){try{localStorage.setItem('monitor_key',v)}catch(_e){} try{sessionStorage.setItem('monitor_key',v)}catch(_e){}}
+$('key').value=safeGetKey();
+function connect(){safeSetKey($('key').value.trim());load()}
+
+function projectMode(p,actions){
+  if(p.running_task)return 'running';
+  if((actions||[]).some(a=>String(a.source_unit_id)===String(p.id)&&a.requires_user_now))return 'human';
+  const s=(String(p.state||'')+' '+String(p.blocker||'')).toUpperCase();
+  if(p.revenue_distance!=null&&Number(p.revenue_distance)<=2)return 'money';
+  if(s.includes('WAIT')||s.includes('HOLD'))return 'wait';
+  return 'normal';
+}
+function modeBadge(m){
+  if(m==='running')return '<span class="badge bRun">RUNNING</span>';
+  if(m==='money')return '<span class="badge bMoney">MONEY近い</span>';
+  if(m==='human')return '<span class="badge bHuman">HUMAN GATE</span>';
+  if(m==='wait')return '<span class="badge bHuman">WAIT</span>';
+  return '<span class="badge bSoft">EVENT待ち</span>';
+}
+function railHtml(distance){
+  const d=Number(distance);
+  const known=Number.isFinite(d);
+  const progressed=known?Math.max(0,Math.min(6,6-d)):0;
+  const labels=['Reach','Human','Qual.','Buyer','Checkout','Pay'];
+  return '<div class="rail">'+labels.map((_,i)=>'<i class="'+(i<progressed?'on':'')+'"></i>').join('')+'</div><div class="labels">'+labels.map(x=>'<span>'+x+'</span>').join('')+'</div>';
+}
+function stageLabel(p){
+  return p.blocker||p.first_broken_stage||p.state||'UNKNOWN';
+}
+
+function render(d){
+  lastData=d;
+  const h=d.health||{}, c=h.counts||{}, actions=d.action_items||[], projects=d.projects||[], rev=d.revenue||{}, stages=rev.stages||{};
+  const running=Number(c.running||0);
+  const human=actions.filter(a=>a.requires_user_now);
+  const failed=Number(h.cron_stats?.failed_30m||0);
+  $('clock').textContent=h.clock_healthy?'Global Clock / Event Runtime 正常':'Clock要確認';
+  $('companyStatus').textContent=!h.clock_healthy||failed>0?'要確認':running>0?'正常・作業中':'正常・Event待ち';
+  $('lastMove').textContent='最後の動作 '+ago(h.last_movement)+' · '+time(h.last_movement);
+  $('generatedAt').textContent='Snapshot '+time(d.generated_at);
+
+  const paymentProjects=projects.filter(p=>Number(p.revenue_distance)===0).length;
+  const moneyNear=projects.filter(p=>p.revenue_distance!=null&&Number(p.revenue_distance)<=2).length;
+  $('kpis').innerHTML=[
+    ['外部Revenue前進',rev.progressed_today??0],
+    ['Payment距離 D0',paymentProjects],
+    ['Money近い Project',moneyNear],
+    ['いま作業中',running],
+    ['Human Gate',d.human_gate_now_count??human.length]
+  ].map(x=>'<div class="kpi"><div class="n">'+esc(x[1])+'</div><div class="l">'+esc(x[0])+'</div></div>').join('');
+
+  const defs=[
+    ['REACH','REACH','到達'],
+    ['HUMAN','HUMAN','実Human'],
+    ['QUALIFIED','QUALIFIED','Qualified Action'],
+    ['BUYER','BUYER','Buyer Signal'],
+    ['CHECKOUT','CHECKOUT','Checkout / Contract'],
+    ['PAYMENT','PAYMENT','Payment / Payout']
+  ];
+  $('revenueLadder').innerHTML=defs.map(([key,name,desc])=>{
+    const x=stages[key];
+    return '<div class="stage '+(x?'yes':'')+'"><div class="stageName">'+name+'</div><div class="stageValue">'+(x?'確認済み':'未確認')+'</div><div class="stageMeta">'+desc+(x?'<br>'+esc(x.unit_id||'')+' · '+time(x.at):'')+'</div></div>';
+  }).join('');
+  $('lastRevenue').textContent=rev.last_progress?'Last: '+rev.last_progress.stage+' · '+rev.last_progress.unit_id+' · '+ago(rev.last_progress.at):'Revenue Evidenceなし';
+
+  renderProjects(projects,actions);
+
+  const sorted=[...projects].sort((a,b)=>{
+    const ad=a.revenue_distance==null?99:Number(a.revenue_distance);
+    const bd=b.revenue_distance==null?99:Number(b.revenue_distance);
+    if(ad!==bd)return ad-bd;
+    return Number(Boolean(b.running_task))-Number(Boolean(a.running_task));
+  });
+  $('projectCount').textContent=sorted.length+' Project';
+  $('matrixBody').innerHTML=sorted.map(p=>{
+    const m=projectMode(p,actions);
+    const dot=m==='running'?'run':m==='money'?'ok':(m==='human'||m==='wait')?'wait':'';
+    return '<tr><td><span class="dot '+dot+'"></span><strong>'+esc(p.name||p.id)+'</strong><br><span class="rowMeta">'+esc(p.id)+'</span></td>'+
+      '<td>'+esc(p.state||'UNKNOWN')+'</td>'+
+      '<td>'+(p.revenue_distance!=null?'D'+esc(p.revenue_distance):'UNKNOWN')+'</td>'+
+      '<td>'+esc(stageLabel(p))+'</td>'+
+      '<td>'+esc(p.next_action||'—')+'</td>'+
+      '<td>'+esc(ago(p.last_task?.updated_at||p.last_task?.created_at||p.last_movement))+'</td></tr>';
+  }).join('');
+
+  const moving=sorted.filter(p=>p.running_task).slice(0,8);
+  $('moving').innerHTML=moving.length?moving.map(p=>'<div class="row"><div class="rowTop"><div class="rowTitle">'+esc(p.name)+'</div><span class="time">RUNNING</span></div><div class="rowMeta">'+esc(p.running_task?.title||p.running_task?.name||p.next_action||p.state||'')+'</div></div>').join(''):'<div class="empty">現在RUNNINGなし。Clock正常ならEvent待ちです。</div>';
+
+  const waits=[
+    ...human.map(a=>({title:a.action_label||a.title,meta:(a.source_unit_id||'')+' · '+(a.reason||'Human Gate'),kind:'Human'})),
+    ...sorted.filter(p=>projectMode(p,actions)==='wait').slice(0,8).map(p=>({title:p.name,meta:stageLabel(p),kind:'Wait'}))
+  ];
+  $('waits').innerHTML=waits.length?waits.slice(0,10).map(x=>'<div class="row"><div class="rowTop"><div class="rowTitle">'+esc(x.title)+'</div><span class="time">'+esc(x.kind)+'</span></div><div class="rowMeta">'+esc(x.meta)+'</div></div>').join(''):'<div class="empty">現在のHuman / External Waitなし</div>';
+
+  const hist=(d.timeline||[]).filter(x=>x.kind==='TASK').slice(0,18);
+  $('history').innerHTML=hist.length?hist.map(x=>'<div class="row"><div class="rowTop"><div class="rowTitle">'+esc(x.title)+'</div><span class="time">'+time(x.at)+'</span></div><div class="rowMeta">'+esc(x.unit_id)+' · '+esc(x.status)+' · '+ago(x.at)+'</div></div>').join(''):'<div class="empty">Task履歴なし</div>';
+
+  $('msg').textContent='接続済み · 15秒自動更新 · '+time(d.generated_at);
+}
+
+function renderProjects(projects,actions){
+  const filtered=projects.filter(p=>{
+    const m=projectMode(p,actions);
+    if(currentFilter==='all')return true;
+    if(currentFilter==='running')return m==='running';
+    if(currentFilter==='money')return p.revenue_distance!=null&&Number(p.revenue_distance)<=2;
+    if(currentFilter==='human')return m==='human';
+    if(currentFilter==='wait')return m==='wait';
+    return true;
+  }).sort((a,b)=>{
+    const am=projectMode(a,actions),bm=projectMode(b,actions);
+    if(am==='running'&&bm!=='running')return -1;if(bm==='running'&&am!=='running')return 1;
+    const ad=a.revenue_distance==null?99:Number(a.revenue_distance),bd=b.revenue_distance==null?99:Number(b.revenue_distance);
+    return ad-bd;
+  });
+  $('projects').innerHTML=filtered.length?filtered.map(p=>{
+    const m=projectMode(p,actions);
+    const dist=p.revenue_distance!=null?'D'+p.revenue_distance:'D?';
+    const klass=m==='running'?'running':m==='money'?'money':m==='human'?'human':m==='wait'?'human':'';
+    return '<article class="project '+klass+'"><div class="pTop"><div><div class="pname">'+esc(p.name||p.id)+'</div><div class="pid">'+esc(p.category||'')+' · '+esc(p.id)+'</div></div>'+modeBadge(m)+'</div>'+
+      '<div class="moneyDistance"><div class="distanceNum">'+esc(dist)+'</div><div class="distanceText">Payment distance<br>小さいほどお金に近い</div></div>'+
+      railHtml(p.revenue_distance)+
+      '<div class="pobj">'+esc(p.objective||'')+'</div>'+
+      (p.blocker?'<div class="block"><b>詰まり：</b>'+esc(p.blocker)+'</div>':'')+
+      (p.next_action?'<div class="next"><b>次：</b>'+esc(p.next_action)+'</div>':'')+
+      '<div class="pfoot"><small>最後 '+esc(ago(p.last_task?.updated_at||p.last_task?.created_at||p.last_movement))+'<br>'+esc(p.state||'UNKNOWN')+'</small><a href="project.html?id='+encodeURIComponent(p.id)+'">詳細 →</a></div></article>';
+  }).join(''):'<div class="empty">この条件のProjectはありません。</div>';
+}
+
+async function load(){
+  const key=$('key').value.trim()||safeGetKey();
+  if(!key){$('msg').textContent='監視キーを入力してください。';return}
+  $('msg').textContent='Current Realityを読込中…';
+  try{
+    const r=await fetch(API,{headers:{Authorization:'Bearer '+key}});
+    const d=await r.json();
+    if(!r.ok)throw new Error(d.error||'読込失敗');
+    render(d);
+  }catch(e){$('msg').textContent='接続できません: '+e.message}
+}
+
+document.querySelectorAll('.filter').forEach(btn=>btn.addEventListener('click',()=>{
+  currentFilter=btn.dataset.filter;
+  document.querySelectorAll('.filter').forEach(x=>x.classList.toggle('active',x===btn));
+  if(lastData)renderProjects(lastData.projects||[],lastData.action_items||[]);
+}));
+
+if(safeGetKey())load();
+setInterval(()=>{if(safeGetKey())load()},15000);
+</script>
+</body>
+</html>
