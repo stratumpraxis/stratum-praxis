@@ -76,7 +76,12 @@
       "canonical_url": "https://stratumpraxis.com/signal/auto/before-buying-another-ai-tool-diagnose-one-recurring-workflow-first-fe7fbf5d.html",
       "state": "VERIFIED",
       "requested_at": "2026-10-05T13:40:54.065Z",
-      "verified_at": "2026-10-05T13:45:49.596Z"
+      "verified_at": "2026-10-05T13:47:00Z",
+      "verification": {
+        "http_status": 200,
+        "title_verified": true,
+        "canonical_url": "https://stratumpraxis.com/signal/auto/before-buying-another-ai-tool-diagnose-one-recurring-workflow-first-fe7fbf5d.html"
+      }
     }
   },
   "last_publish_pass_at": "2026-10-05T13:45:49.622Z",
