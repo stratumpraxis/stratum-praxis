@@ -303,3 +303,59 @@ jobs:
           path: /tmp/market-run.json
           if-no-files-found: ignore
           retention-days: 30
+
+  revenue-director:
+    name: Stratum Revenue Director
+    needs: contracts
+    if: (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && needs.contracts.result == 'success'
+    permissions:
+      contents: write
+      actions: write
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Decide the nearest safe revenue action
+        id: director
+        shell: bash
+        run: |
+          set -o pipefail
+          node acquisition/revenue-director.mjs 2>&1 | tee /tmp/stratum-revenue-director.log
+      - name: Persist only a material acquisition source
+        id: persist
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! grep -q '^DIRECTOR_SOURCE_CREATED ' /tmp/stratum-revenue-director.log; then
+            echo 'No new acquisition source; no repository churn.'
+            git reset --hard HEAD
+            echo 'created=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name 'stratum-revenue-director'
+          git config user.email 'actions@users.noreply.github.com'
+          git add acquisition/revenue-director-state.json acquisition/media-engine/sources.json acquisition/media-engine/runtime-sources
+          git commit -m 'chore(revenue): advance Stratum human acquisition'
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              echo 'created=true' >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 3))
+          done
+          echo 'Revenue Director source push failed after bounded retries.' >&2
+          exit 1
+      - name: Start project-owned deterministic publisher
+        if: steps.persist.outputs.created == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh workflow run autonomous-blogger.yml --ref main -f local_only=true
+          echo 'DISPATCHED_AUTONOMOUS_BLOGGER_LOCAL_ONLY'
+
