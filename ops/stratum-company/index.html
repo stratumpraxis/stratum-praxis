@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#071018">
+<title>Stratum Autonomous Revenue Company</title>
+<meta name="description" content="Stratum Praxis 自動収益会社のB2B・商品・SNS・Owned Media・WordPress・Revenue Evidence監視盤。">
+<style>
+:root{
+  --bg:#071018;--panel:#0d1822;--panel2:#111f2b;--line:#203545;--text:#f5f8fb;--muted:#8fa5b5;
+  --green:#49e596;--greenbg:#0d2a22;--cyan:#45d7ff;--cyanbg:#0b2730;--amber:#ffbd59;--amberbg:#30250d;
+  --red:#ff7d89;--redbg:#32181c;--blue:#86b9ff;--purple:#c4a7ff;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:radial-gradient(circle at 85% -10%,rgba(69,215,255,.12),transparent 32%),radial-gradient(circle at 0 0,rgba(73,229,150,.08),transparent 30%),var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+main{max-width:1280px;margin:auto;padding:18px 14px 72px}
+header{display:flex;gap:14px;justify-content:space-between;align-items:flex-start;flex-wrap:wrap}
+.eyebrow{font-size:10px;letter-spacing:.14em;font-weight:900;color:var(--green)}
+h1{font-size:clamp(29px,7vw,58px);line-height:.98;letter-spacing:-.055em;margin:7px 0 10px}
+.sub{font-size:12px;line-height:1.55;color:var(--muted);max-width:780px}
+.auth{display:flex;gap:7px;flex-wrap:wrap}.auth input,.auth button{border:1px solid var(--line);border-radius:10px;background:#0b1720;color:var(--text);padding:9px 10px}.auth button{font-weight:900;cursor:pointer}
+.nav{display:flex;gap:7px;overflow:auto;padding:12px 0 3px}.nav a{flex:0 0 auto;text-decoration:none;color:var(--text);font-size:10px;font-weight:900;border:1px solid var(--line);border-radius:999px;padding:7px 10px;background:#0a151e}
+.hero{margin-top:12px;border:1px solid #285060;border-radius:20px;background:linear-gradient(135deg,#0d1d27,#0b161e);padding:17px;display:grid;grid-template-columns:1.25fr .75fr;gap:12px}
+@media(max-width:780px){.hero{grid-template-columns:1fr}}
+.statusline{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.pulse{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(73,229,150,.5);animation:p 1.7s infinite}@keyframes p{70%{box-shadow:0 0 0 10px rgba(73,229,150,0)}}
+.heroTitle{font-size:22px;font-weight:950;margin-top:9px}.heroText{font-size:12px;color:#b7c9d5;line-height:1.65;margin-top:7px}
+.money{border:1px solid #225646;background:#0a211b;border-radius:15px;padding:14px}.money .label{font-size:10px;color:#8fcdb2;font-weight:900}.money .value{font-size:31px;font-weight:950;color:var(--green);margin-top:5px}.money .small{font-size:10px;color:#9fb5c1;line-height:1.5;margin-top:5px}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:10px}
+@media(max-width:930px){.grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.grid{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:linear-gradient(180deg,#0d1b25,#0a151e);border-radius:16px;padding:14px;min-width:0}
+.cardHead{display:flex;gap:8px;justify-content:space-between;align-items:flex-start}.icon{font-size:22px}.name{font-size:15px;font-weight:950}.desc{font-size:11px;color:var(--muted);line-height:1.55;margin-top:7px}.meta{font-size:10px;color:#9eb2bf;line-height:1.55;margin-top:8px}.badge{display:inline-flex;border-radius:999px;padding:4px 7px;font-size:9px;font-weight:950;white-space:nowrap}.ok{background:var(--greenbg);color:var(--green)}.wait{background:var(--amberbg);color:var(--amber)}.gate{background:var(--redbg);color:var(--red)}.info{background:var(--cyanbg);color:var(--cyan)}
+.actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px}.btn{display:inline-block;text-decoration:none;color:var(--text);border:1px solid #315065;background:#102333;border-radius:9px;padding:7px 9px;font-size:10px;font-weight:900}
+.section{margin-top:10px;border:1px solid var(--line);border-radius:17px;background:#0b1720;padding:15px}.section h2{font-size:15px;margin:0}.section .hint{font-size:10px;color:var(--muted);margin-top:4px}
+.flow{display:grid;grid-template-columns:repeat(6,1fr);gap:7px;margin-top:10px}.step{border:1px solid var(--line);border-radius:11px;padding:10px;font-size:10px;text-align:center;font-weight:900;background:#0e1d28}@media(max-width:760px){.flow{grid-template-columns:repeat(3,1fr)}}@media(max-width:460px){.flow{grid-template-columns:repeat(2,1fr)}}
+.list{display:flex;flex-direction:column;gap:7px;margin-top:10px}.row{display:grid;grid-template-columns:150px 1fr auto;gap:9px;align-items:center;border:1px solid var(--line);border-radius:11px;padding:10px;background:#0d1a24;font-size:10px}@media(max-width:650px){.row{grid-template-columns:1fr}.row .badge{justify-self:start}}
+.problem{border-color:#69404a;background:#1d1116}.good{border-color:#285845;background:#0d201a}
+#msg{font-size:10px;color:var(--muted);margin-top:8px}.footer{text-align:center;color:#66808f;font-size:9px;margin-top:18px}
+</style>
+</head>
+<body><main>
+<header>
+  <div>
+    <div class="eyebrow">STRATUM PRAXIS · AUTONOMOUS REVENUE COMPANY</div>
+    <h1>24H CONTROL<br>ROOM</h1>
+    <div class="sub">B2B営業・商品管理・SNS・Owned Media・WordPress・Revenue Evidenceを1画面で監視。公開・送信・HTTP200は売上扱いせず、Paymentに近いRealityだけを昇格します。</div>
+  </div>
+  <div class="auth"><input id="key" type="password" placeholder="既存Monitor Key"><button onclick="connect()">接続</button><button onclick="loadAll()">更新</button></div>
+</header>
+<nav class="nav">
+  <a href="../autonomous-operations-monitor/project.html?id=stratum">Stratum Current</a>
+  <a href="../b2b-revenue/">B2B</a>
+  <a href="../autonomous-operations-monitor/product-portfolio.html">Products</a>
+  <a href="../autonomous-operations-monitor/revenue-os.html">Revenue OS</a>
+  <a href="../../signal/auto/">Owned Media</a>
+  <a href="https://stratumpraxis.wordpress.com/" target="_blank" rel="noopener">WordPress</a>
+</nav>
+
+<section class="hero">
+  <div>
+    <div class="statusline"><span class="pulse"></span><span class="badge ok">COMPANY RUNTIME ACTIVE</span><span id="wpHero" class="badge gate">WORDPRESS AUTH GATE</span></div>
+    <div class="heroTitle">会社は止めない。詰まったLaneだけ止める。</div>
+    <div class="heroText">Event / State-driven。Buyer Reply、Qualified Action、Checkout、Payment、New Publish、Platform Failureが起きた時に該当LaneをWake。重複営業・同一投稿・価格/決済の勝手な変更は禁止。</div>
+  </div>
+  <div class="money"><div class="label">NEW STRATUM PAYMENT</div><div id="paymentValue" class="value">$0 VERIFIED</div><div class="small">投稿数・送信数ではなく、Checkout / Contract / Payment Evidenceで更新。</div></div>
+</section>
+
+<div id="cards" class="grid"></div>
+
+<section class="section">
+  <h2>Revenue Pipeline</h2><div class="hint">前段の成功から後段を推測しません。</div>
+  <div class="flow"><div class="step">REACH</div><div class="step">HUMAN</div><div class="step">QUALIFIED ACTION</div><div class="step">BUYER SIGNAL</div><div class="step">CHECKOUT / CONTRACT</div><div class="step">PAYMENT</div></div>
+</section>
+
+<section class="section">
+  <h2>B2B Live Routes</h2><div class="hint">下流B2B Unitのstate.jsonを直接読込み。</div><div id="b2bRoutes" class="list"></div>
+</section>
+
+<section class="section">
+  <h2>Wake / Guard</h2><div class="hint">時間だから仕事を作らず、Reality変化で起動。</div><div id="wakes" class="list"></div>
+</section>
+
+<section class="section">
+  <h2>Current Blockers</h2><div id="blockers" class="list"></div>
+</section>
+
+<div id="msg">Public stateを読込中…</div>
+<div class="footer">STRATUM PRAXIS · MOVE MONEY CLOSER · Human ≠ Buyer ≠ Checkout ≠ Payment</div>
+
+<script>
+const $=id=>document.getElementById(id);
+$('key').value=localStorage.getItem('monitor_key')||'';
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const statusMap=s=>{s=String(s||'').toUpperCase();if(/ACTIVE|KEEP|VERIFIED/.test(s)&&!/WAIT|GATE|NO_NEW/.test(s))return ['ok','稼働'];if(/WAIT|HOLD|NO_NEW/.test(s))return ['wait','待機'];if(/GATE|BLOCK/.test(s))return ['gate','Gate'];return ['info',s.replaceAll('_',' ')]};
+const icons={b2b:'⌁',products:'◇',sns:'↗',ownedMedia:'▦',wordpress:'W',payment:'$'};
+function connect(){localStorage.setItem('monitor_key',$('key').value.trim());loadAll()}
+async function jget(url,opts={}){const r=await fetch(url,{cache:'no-store',...opts});if(!r.ok)throw new Error(url+' '+r.status);return r.json()}
+function card(k,x){const [c,label]=statusMap(x.status);let links='';
+ if(x.surface)links+='<a class="btn" href="'+esc(x.surface)+'">開く</a>';
+ if(x.latestPublicUrl)links+='<a class="btn" target="_blank" rel="noopener" href="'+esc(x.latestPublicUrl)+'">最新投稿 ↗</a>';
+ if(x.publicUrl)links+='<a class="btn" target="_blank" rel="noopener" href="'+esc(x.publicUrl)+'">公開面 ↗</a>';
+ return '<div class="card"><div class="cardHead"><div><div class="icon">'+esc(icons[k]||'•')+'</div><div class="name">'+esc(x.label)+'</div></div><span class="badge '+c+'">'+esc(label)+'</span></div><div class="desc">'+esc(x.detail)+'</div><div class="actions">'+links+'</div></div>'}
+async function loadAll(){
+ $('msg').textContent='Current readback…';
+ try{
+  const base=await jget('./state.json');
+  let b2b=null,blog=null,latest=null,project=null;
+  try{b2b=await jget('../b2b-revenue/state.json')}catch{}
+  try{blog=await jget('../../acquisition/blogger/state.json')}catch{}
+  try{latest=await jget('../../publishing/evidence/stratum-bluesky-b2b-inbound-20261005.json')}catch{}
+  const key=localStorage.getItem('monitor_key')||$('key').value.trim();
+  if(key){try{project=await jget('https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/company-monitor/api/project?id=stratum',{headers:{Authorization:'Bearer '+key}})}catch{}}
+  const lanes=structuredClone(base.lanes);
+  if(b2b){
+    const t=b2b.automation?.todayExecution||{};
+    lanes.b2b.status=(t.payment||0)>0?'PAYMENT_VERIFIED':(t.buyerSignal||0)>0?'BUYER_SIGNAL':'ACTIVE_WAIT_REPLY';
+    lanes.b2b.detail='Today: initial sent '+((t.initialSent||[]).length)+' / follow-up '+((t.followupSent||[]).length)+' / Buyer Signal '+(t.buyerSignal||0)+' / Payment '+(t.payment||0)+'. '+(b2b.automation?.currentBlocker||'');
+    $('paymentValue').textContent=(t.payment||0)>0?'PAYMENT VERIFIED':'$0 VERIFIED';
+  }
+  if(blog){
+    lanes.ownedMedia.detail='Event-driven publisher active. Verified publications '+Object.values(blog.owned_publications||{}).filter(x=>x.state==='VERIFIED').length+' / last publish pass '+(blog.last_publish_pass_at||'—')+'.';
+  }
+  if(latest){lanes.sns.detail='Official Bluesky writer verified. Latest publish '+(latest.published_at||'—')+' · platform accepted='+String(latest.platform_accepted);}
+  if(project?.unit){
+    const p=project.publishing_policy||{};
+    if(p.wordpress)lanes.wordpress.detail='Project Current: '+p.wordpress+' · '+lanes.wordpress.detail;
+  }
+  $('cards').innerHTML=Object.entries(lanes).map(([k,v])=>card(k,v)).join('');
+  const routes=b2b?.routes||[];
+  $('b2bRoutes').innerHTML=routes.length?routes.map(x=>'<div class="row"><b>'+esc(x.company)+'</b><span>'+esc(x.asset)+' · '+esc(x.next)+'</span><span class="badge '+statusMap(x.state)[0]+'">'+esc(x.state)+'</span></div>').join(''):'<div class="row"><b>B2B</b><span>Current readback unavailable</span><span class="badge gate">UNKNOWN</span></div>';
+  $('wakes').innerHTML=(base.wakeConditions||[]).map(x=>'<div class="row good"><b>EVENT</b><span>'+esc(x)+'</span><span class="badge ok">WAKE</span></div>').join('');
+  const blockers=[];
+  if(b2b?.automation?.currentBlocker)blockers.push(['B2B',b2b.automation.currentBlocker]);
+  blockers.push(['WordPress','Stratum management identity / unattended writer is not currently verified. Other company lanes continue.']);
+  if(!(b2b?.kpis?.buyerSignals>0))blockers.push(['Revenue','Buyer Signal未確認。Send / PublishだけではStateを昇格しない。']);
+  $('blockers').innerHTML=blockers.map(x=>'<div class="row problem"><b>'+esc(x[0])+'</b><span>'+esc(x[1])+'</span><span class="badge gate">OPEN</span></div>').join('');
+  $('msg').textContent='Updated '+new Date().toLocaleString('ja-JP',{timeZone:'Asia/Tokyo'})+(project?' · Live Monitor connected':' · Public state');
+ }catch(e){$('msg').textContent='Readback error: '+e.message}
+}
+loadAll();setInterval(loadAll,30000);
+</script>
+</main></body></html>
