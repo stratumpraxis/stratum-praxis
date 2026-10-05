@@ -176,7 +176,7 @@ async function main(){
       {role:'PRIMARY',asset_id:'stratum-b2b-intro',url:ENTRY,cta:'Run the free workflow diagnostic'},
       {role:'DIAGNOSTIC',asset_id:'stratum-workflow-diagnostic',url:DIAG,cta:'Diagnose one recurring workflow'},
       {role:'SELF_SERVICE',asset_id:'ai-saas-spend-decision-kit',url:KIT,cta:'Use the $39 decision kit'},
-      {role:'HIGH_TOUCH',asset_id:'workflow-opportunity-audit',url:AUDIT,cta:'Review the fixed-scope $499 audit'}
+      {role:'HIGH_TOUCH',asset_id:'workflow-audit',url:AUDIT,cta:'Review the fixed-scope $499 audit'}
     ],
     excerpt:topic.claims.slice(0,2).join(' '),
     notes:'Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim.'
