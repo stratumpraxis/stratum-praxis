@@ -1,0 +1,310 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Stratum Praxis for Business | AI導入前の業務・費用判断</title>
+  <meta name="description" content="AIや自動化を増やす前に、どの業務をどこまで改善すべきかを整理するStratum PraxisのB2B向け紹介ページ。無料診断、成果物サンプル、固定範囲のWorkflow Auditを確認できます。">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#07110f">
+  <link rel="canonical" href="https://stratumpraxis.com/for-business/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Stratum Praxis for Business">
+  <meta property="og:description" content="AIを増やす前に、業務・費用・リスクを判断できる形に。無料診断と成果物サンプルを先に確認できます。">
+  <meta property="og:url" content="https://stratumpraxis.com/for-business/">
+  <meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <script src="/scos-analytics.js" defer></script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-QXTYRB4TWY');
+  </script>
+  <style>
+    :root{
+      --bg:#07110f;--panel:#0c1916;--panel2:#10221d;--line:#244239;--text:#f5f2e9;
+      --muted:#9fb2aa;--soft:#d6ddd8;--accent:#d9ff7a;--accent2:#8be7c0;--paper:#f5f1e8;
+      --ink:#10201b;--inkmuted:#5e6b66;--shadow:0 24px 70px rgba(0,0,0,.22)
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif;line-height:1.6}
+    a{color:inherit;text-decoration:none}
+    button{font:inherit}
+    .shell{width:min(1160px,calc(100% - 40px));margin:0 auto}
+    .topbar{position:sticky;top:0;z-index:20;background:rgba(7,17,15,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.07)}
+    .topbar-inner{height:68px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.04em}
+    .brand-mark{width:28px;height:28px;border:1px solid var(--accent2);border-radius:8px;display:grid;place-items:center;color:var(--accent)}
+    .brand small{display:block;color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.12em}
+    .lang{display:flex;gap:6px}
+    .lang button{border:1px solid var(--line);background:transparent;color:var(--muted);padding:7px 10px;border-radius:999px;cursor:pointer}
+    .lang button.active{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+    .hero{padding:88px 0 64px}
+    .hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:48px;align-items:end}
+    .kicker{margin:0 0 18px;color:var(--accent);font-weight:800;font-size:12px;letter-spacing:.16em}
+    h1{font-size:clamp(42px,6vw,78px);line-height:1.03;letter-spacing:-.045em;margin:0;max-width:880px}
+    .lead{font-size:clamp(18px,2vw,22px);color:var(--soft);max-width:760px;margin:28px 0 0}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:32px}
+    .btn{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;min-height:52px;padding:0 20px;border:1px solid var(--line);border-radius:12px;font-weight:800;transition:.18s ease}
+    .btn:hover{transform:translateY(-1px);border-color:var(--accent2)}
+    .btn.primary{background:var(--accent);color:#0b1713;border-color:var(--accent)}
+    .btn.secondary{background:rgba(255,255,255,.04)}
+    .trust{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+    .chip{border:1px solid var(--line);color:var(--muted);padding:7px 10px;border-radius:999px;font-size:12px}
+    .hero-card{background:linear-gradient(180deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:18px;padding:26px;box-shadow:var(--shadow)}
+    .hero-card small{display:block;color:var(--accent2);font-weight:800;letter-spacing:.13em}
+    .hero-card h2{font-size:25px;line-height:1.25;margin:12px 0}
+    .hero-card p{color:var(--muted);margin:0}
+    .hero-card .note{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-size:13px}
+    .paper{background:var(--paper);color:var(--ink);border-radius:34px 34px 0 0;padding:76px 0 90px}
+    .section{padding:60px 0;border-top:1px solid rgba(16,32,27,.12)}
+    .section:first-child{border-top:0;padding-top:0}
+    .section-head{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:end;margin-bottom:28px}
+    .eyebrow{margin:0 0 8px;color:#356658;font-weight:850;font-size:12px;letter-spacing:.14em}
+    .section h2{margin:0;font-size:clamp(30px,4vw,50px);line-height:1.08;letter-spacing:-.035em}
+    .section-head>p{margin:0;color:var(--inkmuted);font-size:17px}
+    .signal-grid,.proof-grid,.deliver-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+    .card{border:1px solid rgba(16,32,27,.13);background:#fffdf8;border-radius:16px;padding:22px}
+    .card .num{font-size:12px;font-weight:900;color:#497a6d;letter-spacing:.12em}
+    .card h3{font-size:20px;line-height:1.25;margin:12px 0 8px}
+    .card p{color:var(--inkmuted);margin:0}
+    .proof-card{display:flex;flex-direction:column;min-height:235px}
+    .proof-card .tag{display:inline-flex;align-self:flex-start;background:#eaf4ef;color:#315e52;border-radius:999px;padding:5px 9px;font-size:11px;font-weight:850;letter-spacing:.08em}
+    .proof-card a{margin-top:auto;padding-top:18px;color:#163f34;font-weight:900}
+    .audit-band{display:grid;grid-template-columns:.8fr 1.2fr;gap:22px;background:#0c1916;color:var(--text);border-radius:22px;padding:30px;margin-top:16px}
+    .price{font-size:64px;font-weight:900;line-height:1}
+    .price small{font-size:13px;color:var(--muted);display:block;margin-top:9px;font-weight:700}
+    .audit-band p{color:var(--muted)}
+    .deliver-grid{grid-template-columns:repeat(2,1fr);margin-top:16px}
+    .deliver{border:1px solid var(--line);border-radius:13px;padding:15px;background:rgba(255,255,255,.025)}
+    .deliver b{display:block;color:var(--soft)}
+    .deliver span{font-size:12px;color:var(--muted)}
+    .boundary{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .boundary .card ul{padding-left:18px;margin:14px 0 0;color:var(--inkmuted)}
+    .shared-note{margin-top:26px;border:1px solid #c9d9d3;background:#eef5f2;border-radius:16px;padding:20px}
+    .shared-note b{display:block;margin-bottom:5px}
+    .final{background:var(--bg);color:var(--text);padding:74px 0}
+    .final-grid{display:grid;grid-template-columns:1.2fr .8fr;gap:34px;align-items:center}
+    .final h2{font-size:clamp(34px,5vw,60px);line-height:1.05;letter-spacing:-.04em;margin:0}
+    .final p{color:var(--muted)}
+    .final-actions{display:flex;flex-direction:column;gap:10px}
+    footer{border-top:1px solid var(--line);padding:26px 0;color:var(--muted);font-size:13px}
+    .footer-row{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    .footer-row nav{display:flex;gap:16px;flex-wrap:wrap}
+    [data-lang-content="en"]{display:none}
+    body.lang-en [data-lang-content="ja"]{display:none}
+    body.lang-en [data-lang-content="en"]{display:block}
+    body.lang-en span[data-lang-content="en"],body.lang-en b[data-lang-content="en"]{display:inline}
+    @media(max-width:840px){
+      .shell{width:min(100% - 28px,1160px)}
+      .hero{padding:60px 0 46px}
+      .hero-grid,.section-head,.audit-band,.final-grid{grid-template-columns:1fr}
+      .signal-grid,.proof-grid{grid-template-columns:1fr}
+      .deliver-grid,.boundary{grid-template-columns:1fr}
+      .hero-card{margin-top:8px}
+      .paper{border-radius:22px 22px 0 0;padding-top:54px}
+      .section{padding:48px 0}
+      h1{font-size:clamp(40px,13vw,64px)}
+      .topbar-inner{height:62px}
+      .brand small{display:none}
+    }
+  </style>
+</head>
+<body data-page="for_business_intro_v1" data-funnel="outbound_b2b_intro">
+<header class="topbar">
+  <div class="shell topbar-inner">
+    <a class="brand tracked" href="/" data-analytics-id="business_intro_brand_home">
+      <span class="brand-mark">S</span>
+      <span>STRATUM PRAXIS<small>B2B INTELLIGENCE · DECISION · REVENUE</small></span>
+    </a>
+    <div class="lang" aria-label="Language">
+      <button type="button" data-set-lang="ja" class="active">JA</button>
+      <button type="button" data-set-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="shell hero-grid">
+    <div>
+      <p class="kicker">B2B AI DECISION SUPPORT</p>
+      <div data-lang-content="ja">
+        <h1>AIを増やす前に、<br>「どこを変えるか」を決める。</h1>
+        <p class="lead">Stratum Praxisは、AI・SaaS費用、定常業務、自動化候補を、会社が判断できる形に整理します。ツール導入ありきではなく、まず費用・業務・リスクを見ます。</p>
+      </div>
+      <div data-lang-content="en">
+        <h1>Decide what to change before buying more AI.</h1>
+        <p class="lead">Stratum Praxis turns AI/SaaS spend, recurring workflows and automation candidates into a decision your team can inspect before funding more tools or implementation.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn primary tracked" href="/b2b/" data-analytics-id="business_intro_free_diagnostic">
+          <span data-lang-content="ja">2分の無料診断を試す</span><span data-lang-content="en">Run the 2-minute diagnostic</span><b>→</b>
+        </a>
+        <a class="btn secondary tracked" href="/sample-workflow-audit.html" data-analytics-id="business_intro_sample">
+          <span data-lang-content="ja">成果物サンプルを見る</span><span data-lang-content="en">Inspect a sample deliverable</span><b>↗</b>
+        </a>
+      </div>
+      <div class="trust">
+        <span class="chip" data-lang-content="ja">登録不要で開始</span><span class="chip" data-lang-content="en">No signup to start</span>
+        <span class="chip" data-lang-content="ja">架空の実績・ROIなし</span><span class="chip" data-lang-content="en">No invented client proof or ROI</span>
+        <span class="chip" data-lang-content="ja">機密情報不要</span><span class="chip" data-lang-content="en">No sensitive data required</span>
+      </div>
+    </div>
+    <aside class="hero-card">
+      <small>BEFORE YOU REPLY</small>
+      <div data-lang-content="ja">
+        <h2>営業メールへの返信は、まだ不要です。</h2>
+        <p>まず無料診断やサンプルだけ見て、方法が自社に合うか確認してください。問題が小さければ、有料サービスはおすすめしません。</p>
+        <p class="note">このページは直接共有用です。検索集客のための新商品ページではありません。</p>
+      </div>
+      <div data-lang-content="en">
+        <h2>You do not need to reply yet.</h2>
+        <p>Inspect the free diagnostic and sample first. If the problem is not material, the paid route should not be the next step.</p>
+        <p class="note">This is a direct-share introduction, not a new product line.</p>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<div class="paper">
+  <div class="shell">
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">WHEN THIS IS USEFUL</p>
+          <h2 data-lang-content="ja">こんな状態なら、先に業務を整理する価値があります。</h2>
+          <h2 data-lang-content="en">These are signs the decision should come before implementation.</h2>
+        </div>
+        <p data-lang-content="ja">AIそのものではなく、会社側の「判断材料」が不足している場面を対象にします。</p>
+        <p data-lang-content="en">The target is not “AI adoption” in the abstract. It is a specific business decision with visible cost, delay, repetition or risk.</p>
+      </div>
+      <div class="signal-grid">
+        <article class="card"><span class="num">01 · SPEND</span><h3 data-lang-content="ja">AI・SaaSが増えたが、費用対効果を説明しづらい</h3><h3 data-lang-content="en">AI/SaaS spend increased, but the value is hard to explain</h3><p data-lang-content="ja">更新、重複ツール、未使用席、AI追加料金を、KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCELで整理。</p><p data-lang-content="en">Review renewals, overlap, seats and add-ons with explicit keep/reduce/consolidate/review/cancel decisions.</p></article>
+        <article class="card"><span class="num">02 · WORKFLOW</span><h3 data-lang-content="ja">毎週・毎月くり返す手作業が残っている</h3><h3 data-lang-content="en">Recurring manual work keeps consuming time</h3><p data-lang-content="ja">作業、待ち、引き継ぎ、例外対応を分け、自動化する価値がある部分だけを候補化。</p><p data-lang-content="en">Separate work, waiting, handoffs and exceptions, then rank only the automation candidates worth testing.</p></article>
+        <article class="card"><span class="num">03 · CONTROL</span><h3 data-lang-content="ja">AIエージェントにどこまで任せるか決めきれない</h3><h3 data-lang-content="en">Agent autonomy is growing faster than operating controls</h3><p data-lang-content="ja">権限、Human Gate、停止条件、コスト、レビュー箇所を明示し、任せてよい範囲を判断。</p><p data-lang-content="en">Make permissions, human gates, stop conditions, cost and review points explicit before expanding autonomy.</p></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">INSPECT BEFORE BUYING</p>
+          <h2 data-lang-content="ja">「できます」ではなく、中身を先に見せます。</h2>
+          <h2 data-lang-content="en">Inspect the method before buying anything.</h2>
+        </div>
+        <p data-lang-content="ja">顧客実績を作り話で埋める代わりに、実際に動く無料ツールと、明示的に「架空例」と表示した成果物サンプルを公開しています。</p>
+        <p data-lang-content="en">Instead of replacing missing client proof with marketing claims, Stratum exposes working tools and a clearly labeled illustrative sample.</p>
+      </div>
+      <div class="proof-grid">
+        <article class="card proof-card"><span class="tag">FREE · ~2 MIN</span><h3 data-lang-content="ja">Workflow Decision Diagnostic</h3><h3 data-lang-content="en">Workflow Decision Diagnostic</h3><p data-lang-content="ja">6問だけで、対象業務を今すぐ直すべきか、まだ有料監査が不要かを判断。</p><p data-lang-content="en">Six questions produce a decision memo and can explicitly end with no paid recommendation.</p><a class="tracked" href="/b2b/" data-analytics-id="business_intro_proof_diagnostic">Open diagnostic →</a></article>
+        <article class="card proof-card"><span class="tag">ILLUSTRATIVE SAMPLE</span><h3 data-lang-content="ja">Interactive Workflow Audit Sample</h3><h3 data-lang-content="en">Interactive Workflow Audit Sample</h3><p data-lang-content="ja">Workflow Map、優先順位、ROI前提、Human Gate、30日プランの構造を購入前に確認。</p><p data-lang-content="en">Inspect the workflow map, rankings, ROI assumptions, human checkpoints and 30-day plan before purchase.</p><a class="tracked" href="/sample-workflow-audit.html" data-analytics-id="business_intro_proof_sample">Open sample →</a></article>
+        <article class="card proof-card"><span class="tag">FREE · YOUR NUMBERS</span><h3 data-lang-content="ja">AI & SaaS Waste Calculator</h3><h3 data-lang-content="en">AI & SaaS Waste Calculator</h3><p data-lang-content="ja">自社の数字を入力し、年間費用、見直し対象、削減余地の仮説を可視化。業界平均を勝手に当てません。</p><p data-lang-content="en">Use your own inputs to size annual spend and review exposure. No industry waste rate is silently imposed.</p><a class="tracked" href="/ai-saas-waste-calculator.html" data-analytics-id="business_intro_proof_calculator">Open calculator →</a></article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">FIXED-SCOPE ESCALATION</p>
+          <h2 data-lang-content="ja">問題が明確な場合だけ、固定範囲の監査へ。</h2>
+          <h2 data-lang-content="en">Escalate only when the problem is material.</h2>
+        </div>
+        <p data-lang-content="ja">「AIコンサル一式」ではなく、1つの定常Workflowを対象に、書面で判断材料を返します。</p>
+        <p data-lang-content="en">This is not an open-ended consulting retainer. One recurring workflow is mapped into a bounded written decision.</p>
+      </div>
+      <div class="audit-band">
+        <div>
+          <span class="eyebrow">AI WORKFLOW OPPORTUNITY AUDIT</span>
+          <div class="price">$499<small>USD · ONE-TIME · 1 RECURRING WORKFLOW</small></div>
+          <p data-lang-content="ja">完全なIntake後、3営業日を目安。Discovery Callは必須ではありません。</p>
+          <p data-lang-content="en">Target: within 3 business days after complete intake. No discovery call required.</p>
+          <a class="btn primary tracked" href="/workflow-audit.html" data-analytics-id="business_intro_audit_page"><span data-lang-content="ja">監査内容を確認</span><span data-lang-content="en">Review audit scope</span><b>→</b></a>
+        </div>
+        <div class="deliver-grid">
+          <div class="deliver"><b>01 · Workflow Map</b><span data-lang-content="ja">担当・システム・引き継ぎ・失敗点</span><span data-lang-content="en">Owners, systems, handoffs and failure points</span></div>
+          <div class="deliver"><b>02 · Leak Analysis</b><span data-lang-content="ja">反復・待ち・再作業・価値漏れ</span><span data-lang-content="en">Repetition, delay, rework and value leakage</span></div>
+          <div class="deliver"><b>03 · Ranked Opportunities</b><span data-lang-content="ja">Impact / Effort / Reversibility / Riskで順位化</span><span data-lang-content="en">Ranked by impact, effort, reversibility and risk</span></div>
+          <div class="deliver"><b>04 · ROI Scenarios</b><span data-lang-content="ja">前提を明示した試算。保証値ではありません</span><span data-lang-content="en">Transparent planning assumptions, not guarantees</span></div>
+          <div class="deliver"><b>05 · Human Checkpoints</b><span data-lang-content="ja">人が残る権限・承認・停止箇所</span><span data-lang-content="en">Human authority, approval and stop points</span></div>
+          <div class="deliver"><b>06 · 30-Day Action Plan</b><span data-lang-content="ja">試す・検証・拡張・再設計・停止</span><span data-lang-content="en">Test, validate, scale, redesign or stop</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <div><p class="eyebrow">BOUNDARIES</p><h2 data-lang-content="ja">最初から、できること・しないことを分けます。</h2><h2 data-lang-content="en">Clear boundaries before engagement.</h2></div>
+        <p data-lang-content="ja">期待値を上げすぎず、判断に必要な範囲だけを扱います。</p><p data-lang-content="en">The goal is a usable decision, not inflated expectations.</p>
+      </div>
+      <div class="boundary">
+        <article class="card"><span class="num">IN SCOPE</span><h3 data-lang-content="ja">扱うこと</h3><h3 data-lang-content="en">In scope</h3><ul><li data-lang-content="ja">AI/SaaS費用と利用状況の整理</li><li data-lang-content="en">AI/SaaS spend and usage decisions</li><li data-lang-content="ja">定常Workflowの可視化</li><li data-lang-content="en">Recurring workflow mapping</li><li data-lang-content="ja">自動化候補の優先順位</li><li data-lang-content="en">Automation opportunity ranking</li><li data-lang-content="ja">Human Gate・運用リスクの整理</li><li data-lang-content="en">Human gates and operating risk</li></ul></article>
+        <article class="card"><span class="num">NOT CLAIMED</span><h3 data-lang-content="ja">約束しないこと</h3><h3 data-lang-content="en">Not claimed</h3><ul><li data-lang-content="ja">必ず削減・売上増になるという保証</li><li data-lang-content="en">Guaranteed savings or revenue</li><li data-lang-content="ja">架空の顧客実績・推薦文</li><li data-lang-content="en">Fabricated clients or testimonials</li><li data-lang-content="ja">法務・税務・セキュリティの専門判断</li><li data-lang-content="en">Legal, tax or security professional advice</li><li data-lang-content="ja">無制限の導入代行・常駐支援</li><li data-lang-content="en">Unlimited implementation or staff augmentation</li></ul></article>
+      </div>
+      <div class="shared-note">
+        <b data-lang-content="ja">このURLをメールで受け取った方へ</b><b data-lang-content="en">If this URL was shared with you directly</b>
+        <span data-lang-content="ja">無料診断とサンプルを見るだけで構いません。自社の課題と合わない場合、返信や購入は不要です。</span>
+        <span data-lang-content="en">You can inspect the free diagnostic and sample without replying or purchasing. If the problem does not match your business, no further action is needed.</span>
+      </div>
+    </section>
+  </div>
+</div>
+
+<section class="final">
+  <div class="shell final-grid">
+    <div>
+      <p class="kicker">START WITH EVIDENCE</p>
+      <h2 data-lang-content="ja">まず2分。<br>有料に進む必要があるかから判断します。</h2>
+      <h2 data-lang-content="en">Start with two minutes of evidence.</h2>
+      <p data-lang-content="ja">弱いシグナルなら、有料監査は推奨しません。</p>
+      <p data-lang-content="en">If the signal is weak, the paid audit is not the recommended next step.</p>
+    </div>
+    <div class="final-actions">
+      <a class="btn primary tracked" href="/b2b/" data-analytics-id="business_intro_final_diagnostic"><span data-lang-content="ja">無料Workflow診断</span><span data-lang-content="en">Free workflow diagnostic</span><b>→</b></a>
+      <a class="btn secondary tracked" href="/sample-workflow-audit.html" data-analytics-id="business_intro_final_sample"><span data-lang-content="ja">成果物サンプル</span><span data-lang-content="en">Sample deliverable</span><b>↗</b></a>
+      <a class="btn secondary tracked" href="mailto:stratumpraxis@gmail.com?subject=Stratum%20Praxis%20B2B%20Inquiry" data-analytics-id="business_intro_contact"><span data-lang-content="ja">メールで問い合わせ</span><span data-lang-content="en">Email Stratum Praxis</span><b>↗</b></a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="shell footer-row">
+    <span>© 2026 Stratum Praxis · B2B Intelligence · Decision · Revenue</span>
+    <nav><a class="tracked" href="/privacy.html">Privacy</a><a class="tracked" href="/terms.html">Terms</a><a class="tracked" href="/">Main site</a></nav>
+  </div>
+</footer>
+
+<script>
+(function(){
+  const body=document.body;
+  const buttons=[...document.querySelectorAll('[data-set-lang]')];
+  function setLang(lang){
+    body.classList.toggle('lang-en',lang==='en');
+    document.documentElement.lang=lang;
+    buttons.forEach(b=>b.classList.toggle('active',b.dataset.setLang===lang));
+    try{localStorage.setItem('sp-business-lang',lang)}catch(e){}
+  }
+  buttons.forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.setLang)));
+  let saved='ja';
+  try{saved=localStorage.getItem('sp-business-lang')||'ja'}catch(e){}
+  setLang(saved==='en'?'en':'ja');
+
+  const p=new URLSearchParams(location.search);
+  const allowed=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  const carry={};
+  allowed.forEach(k=>{if(p.get(k))carry[k]=p.get(k)});
+  if(Object.keys(carry).length){
+    document.querySelectorAll('a.tracked[href^="/"]').forEach(a=>{
+      const u=new URL(a.getAttribute('href'),location.origin);
+      Object.entries(carry).forEach(([k,v])=>u.searchParams.set(k,v));
+      a.setAttribute('href',u.pathname+u.search+u.hash);
+    });
+  }
+})();
+</script>
+</body>
+</html>
