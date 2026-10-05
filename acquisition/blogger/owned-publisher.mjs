@@ -6,6 +6,7 @@ const ROOT = process.cwd();
 const OUTBOX = path.join(ROOT, 'acquisition/blogger/outbox');
 const STATE_FILE = path.join(ROOT, 'acquisition/blogger/state.json');
 const SITE_DIR = path.join(ROOT, 'signal/auto');
+const SOCIAL_QUEUE = path.join(ROOT, 'publishing/queue');
 const SITEMAP = path.join(ROOT, 'signal/sitemap.xml');
 const BASE = 'https://stratumpraxis.com/signal/auto';
 
@@ -76,6 +77,35 @@ async function updateIndex(state) {
   await fs.mkdir(SITE_DIR,{recursive:true}); await fs.writeFile(path.join(SITE_DIR,'index.html'),html);
 }
 
+async function queueBluesky(record, canonical) {
+  const shortId=String(record.output_id || crypto.randomUUID()).replace(/[^a-zA-Z0-9-]/g,'-').slice(-48);
+  const contentId=`stratum-bluesky-owned-${shortId}`;
+  const file=path.join(SOCIAL_QUEUE,`${contentId}.json`);
+  try { await fs.access(file); return false; } catch {}
+  const destination=`${canonical}?utm_source=bsky&utm_campaign=owned_auto`;
+  const title=String(record.title || 'New Stratum Praxis analysis').replace(/\s+/g,' ').trim();
+  const text=title.length>72 ? title.slice(0,69)+'...' : title;
+  const pkg={
+    brand:'Stratum',
+    content_id:contentId,
+    platform:'bluesky',
+    account_handle:'stratumpraxis.bsky.social',
+    text,
+    hook:'New evidence-grounded Stratum analysis.',
+    cta:'Read',
+    destination,
+    status:'QUEUED',
+    publish_trigger:new Date().toISOString()
+  };
+  const finalText=`${pkg.text}\n\n${pkg.cta}: ${pkg.destination}`;
+  if([...finalText].length>300) {
+    pkg.text='New Stratum Praxis analysis.';
+  }
+  await writeJson(file,pkg);
+  console.log(`SOCIAL_QUEUED ${contentId}`);
+  return true;
+}
+
 async function updateSitemap(state) {
   let xml=await fs.readFile(SITEMAP,'utf8');
   const close='</urlset>';
@@ -115,6 +145,7 @@ async function main(){
     record.attribution={...(record.attribution||{}),channel_id:'owned_signal',campaign:'autonomous_revenue_publisher'};
     await writeJson(path.join(OUTBOX,name),record);
     state.owned_publications[record.output_id]={output_id:record.output_id,title:record.title,canonical_url:canonical,state:'PUBLISH_REQUESTED',requested_at:new Date().toISOString()};
+    await queueBluesky(record, canonical);
     created++;
   }
   await updateIndex(state); await updateSitemap(state); state.last_publish_pass_at=new Date().toISOString(); await writeJson(STATE_FILE,state);
