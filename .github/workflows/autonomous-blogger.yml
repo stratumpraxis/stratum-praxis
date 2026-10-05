@@ -42,8 +42,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
+      - name: Resolve generation lane
+        id: lane
+        env:
+          REQUESTED_LOCAL: ${{ inputs.local_only || false }}
+        shell: bash
+        run: |
+          node - <<'NODE' >> "$GITHUB_OUTPUT"
+          const fs=require('fs');
+          const sources=JSON.parse(fs.readFileSync('acquisition/media-engine/sources.json','utf8'));
+          const state=JSON.parse(fs.readFileSync('acquisition/blogger/state.json','utf8'));
+          const next=(sources.sources||[]).find(s=>s.status==='COMPLETE' && !(state.processed||{})[s.source_id]);
+          const forced=String(process.env.REQUESTED_LOCAL)==='true' || String(next?.source_id||'').startsWith('revenue-director-');
+          console.log('local_only='+(forced?'true':'false'));
+          console.log('source_id='+(next?.source_id||''));
+          NODE
       - name: Generate one article with free-only Workers AI
-        if: ${{ github.event_name != 'workflow_dispatch' || inputs.local_only != true }}
+        if: steps.lane.outputs.local_only != 'true'
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -56,8 +71,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.local_only }}" = "true" ]; then
-            echo 'LOCAL_ONLY selected: no external generation provider'
+          if [ "${{ steps.lane.outputs.local_only }}" = "true" ]; then
+            echo 'LOCAL_ONLY selected: project-owned deterministic generation'
             node acquisition/blogger/local-fallback.mjs 2>&1 | tee acquisition/blogger/last-run.log
           elif [ -f acquisition/blogger/last-run.log ] && grep -Eq 'BLOGGER_STOP WORKERS_AI_ERROR|BLOGGER_BLOCKED|FREE_TIER_STOP' acquisition/blogger/last-run.log; then
             node acquisition/blogger/local-fallback.mjs 2>&1 | tee acquisition/blogger/last-run.log
