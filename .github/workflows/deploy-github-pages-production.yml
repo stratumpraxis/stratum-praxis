@@ -124,7 +124,7 @@ jobs:
                   or 'access.' in rel
                   or 'deliver' in rel
                   or 'thank-you' in rel
-                  or rel in {'privacy.html','privacy-policy.html','terms.html'}
+                  or rel in {'index.html','product-router.html','workflow-audit.html','ai-saas-spend-waste-audit.html','privacy.html','privacy-policy.html','terms.html'}
               )
               is_stratum = 'Stratum Praxis' in html and not excluded_revenue_ui
               if is_stratum:
