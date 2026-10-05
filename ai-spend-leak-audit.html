@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>AI Spend Leak Audit | Stratum Praxis</title>
+<meta name="description" content="AI・SaaS支出の重複、低利用、過剰プラン、運用コストを60秒で整理。無料診断から固定範囲の高単価監査・改善設計へ進むB2B意思決定ページ。">
+<meta name="robots" content="index,follow,max-image-preview:large">
+<meta name="theme-color" content="#07131c">
+<link rel="canonical" href="https://stratumpraxis.com/ai-spend-leak-audit.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AI Spend Leak Audit — Stratum Praxis">
+<meta property="og:description" content="AI・SaaS支出の漏れを60秒で可視化。固定範囲、非同期、意思決定用の監査。">
+<meta property="og:url" content="https://stratumpraxis.com/ai-spend-leak-audit.html">
+<meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
+<style>
+:root{--bg:#07131c;--card:#0d1d29;--card2:#102635;--line:#213c4c;--text:#f4f9fc;--muted:#9bb0bd;--cyan:#72ddff;--green:#77e0b2;--amber:#ffd36c;--red:#ff9c8f;--max:1040px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 85% 5%,#123346 0,transparent 28%),var(--bg);color:var(--text);font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans JP",sans-serif}
+a{color:inherit}button,input,select,textarea{font:inherit}.wrap{max-width:var(--max);margin:auto;padding:0 18px}
+header{position:sticky;top:0;z-index:20;background:#07131ce8;backdrop-filter:blur(14px);border-bottom:1px solid #16303e}
+.head{height:64px;display:flex;align-items:center;justify-content:space-between;gap:12px}.brand{font-weight:950;letter-spacing:.05em;text-decoration:none}.brand small{display:block;font-size:9px;color:var(--muted);letter-spacing:.14em}.badge{font-size:10px;font-weight:900;border:1px solid var(--line);border-radius:999px;padding:7px 10px;color:var(--cyan)}
+.hero{padding:56px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:var(--cyan);font-weight:950}.hero h1{font-size:clamp(38px,7vw,76px);line-height:.98;letter-spacing:-.055em;margin:14px 0 18px;max-width:900px}.lead{font-size:clamp(16px,2vw,21px);color:#c4d2db;max-width:750px;margin:0}
+.trust{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0}.chip{border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:11px;color:#c9d8df}.actions{display:flex;gap:10px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:52px;padding:0 18px;border-radius:15px;border:1px solid var(--line);font-weight:950;text-decoration:none;background:#102331;color:var(--text);cursor:pointer}.btn.primary{background:linear-gradient(135deg,var(--cyan),#b9f0ff);color:#06131b;border:0}.btn.secondary{background:#0c1a24}
+.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}.card{background:linear-gradient(160deg,#102532,#0a1923);border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:0 18px 55px #0004}.card h2{margin:0 0 8px;font-size:22px}.muted{color:var(--muted)}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px}.field{display:grid;gap:6px}.field.full{grid-column:1/-1}.field label{font-size:11px;color:#b9cbd5;font-weight:800}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:12px;background:#06131c;color:var(--text);padding:13px;outline:none}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--cyan)}.field textarea{min-height:90px;resize:vertical}
+.scorebox{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin-top:16px;padding:16px;border:1px solid var(--line);border-radius:17px;background:#071720}.score{width:86px;height:86px;border-radius:50%;display:grid;place-items:center;border:9px solid #1d3948;font-size:26px;font-weight:950}.score.high{border-color:var(--red)}.score.mid{border-color:var(--amber)}.score.low{border-color:var(--green)}.scorecopy strong{font-size:18px;display:block}.scorecopy span{color:var(--muted);font-size:12px}
+.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}.metric{border:1px solid var(--line);border-radius:14px;padding:12px;background:#081822}.metric small{display:block;color:var(--muted);font-size:9px}.metric b{display:block;font-size:18px;margin-top:3px}
+.section{padding:24px 0}.sectionhead{display:flex;justify-content:space-between;gap:20px;align-items:end;margin-bottom:14px}.sectionhead h2{font-size:30px;line-height:1.05;margin:0}.sectionhead p{max-width:560px;color:var(--muted);margin:0}
+.plans{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.plan{position:relative}.plan.recommended{border-color:#4c829a;background:linear-gradient(160deg,#123548,#0b1d28)}.planflag{position:absolute;right:12px;top:12px;border:1px solid #5b8ea4;border-radius:999px;padding:5px 8px;font-size:9px;color:var(--cyan);font-weight:900}.price{font-size:30px;font-weight:950;margin:12px 0 4px}.price small{font-size:11px;color:var(--muted)}.plan ul{padding-left:18px;color:#c6d4dc}.plan li{margin:7px 0}.plan .btn{width:100%;margin-top:10px}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.step{border:1px solid var(--line);border-radius:16px;padding:14px;background:#091923}.step small{color:var(--cyan);font-weight:900}.step b{display:block;margin:6px 0}.step span{color:var(--muted);font-size:11px}
+.notice{border:1px solid #594f2e;background:#18170e;border-radius:16px;padding:14px;color:#d9cfaa;font-size:12px}
+#leadForm{scroll-margin-top:82px}.status{margin-top:10px;min-height:26px;font-size:12px;color:var(--muted)}.status.ok{color:var(--green)}.status.err{color:var(--red)}
+footer{border-top:1px solid #18303e;margin-top:40px;padding:28px 0 40px;color:var(--muted);font-size:11px}.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+@media(max-width:780px){.grid,.plans{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.hero{padding-top:38px}.formgrid{grid-template-columns:1fr}.field.full{grid-column:auto}.metrics{grid-template-columns:1fr}.sectionhead{display:block}.sectionhead p{margin-top:8px}}
+@media(max-width:440px){.wrap{padding:0 13px}.hero h1{font-size:43px}.flow{grid-template-columns:1fr}.actions .btn{width:100%}.card{padding:16px;border-radius:18px}}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Service","name":"AI Spend Leak Audit","provider":{"@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/"},"areaServed":"JP","offers":[{"@type":"Offer","price":"49800","priceCurrency":"JPY"},{"@type":"Offer","price":"198000","priceCurrency":"JPY"},{"@type":"Offer","price":"498000","priceCurrency":"JPY"}]}</script>
+</head>
+<body>
+<header><div class="wrap head"><a class="brand" href="/">STRATUM PRAXIS<small>B2B DECISION / REVENUE</small></a><span class="badge">AI COST CONTROL</span></div></header>
+<main>
+<section class="hero"><div class="wrap">
+<div class="eyebrow">AI / SAAS SPEND LEAK AUDIT · 2026</div>
+<h1>AIに払っている金額、<br>使えている金額と同じですか？</h1>
+<p class="lead">AI・SaaSの重複契約、低利用、過剰プラン、手作業の残存を60秒で整理。無料診断の結果から、必要な場合だけ固定範囲の監査・改善設計へ進めます。</p>
+<div class="trust"><span class="chip">営業電話なし</span><span class="chip">非同期対応</span><span class="chip">固定範囲</span><span class="chip">ROI保証なし・前提を明示</span></div>
+<div class="actions"><a class="btn primary" href="#diagnostic">60秒で無料診断</a><a class="btn secondary" href="#plans">監査メニューを見る</a></div>
+</div></section>
+
+<section class="section" id="diagnostic"><div class="wrap grid">
+<article class="card">
+<h2>60秒 Spend Leak Check</h2><p class="muted">分かる範囲だけでOK。数値は診断用で、売上や削減額を保証するものではありません。</p>
+<div class="formgrid">
+<div class="field"><label>月間AI/SaaS支出</label><input id="monthlySpend" type="number" min="0" step="1000" value="100000" inputmode="numeric"></div>
+<div class="field"><label>契約ツール数</label><input id="toolCount" type="number" min="0" step="1" value="8" inputmode="numeric"></div>
+<div class="field"><label>ほぼ使っていないツール数</label><input id="idleCount" type="number" min="0" step="1" value="2" inputmode="numeric"></div>
+<div class="field"><label>似た用途の重複ツール数</label><input id="dupCount" type="number" min="0" step="1" value="2" inputmode="numeric"></div>
+<div class="field"><label>AI導入後も残る手作業時間 / 月</label><input id="manualHours" type="number" min="0" step="1" value="20" inputmode="numeric"></div>
+<div class="field"><label>契約見直し頻度</label><select id="reviewFreq"><option value="0">毎月</option><option value="8">四半期</option><option value="16" selected>半年〜年1回</option><option value="24">ほぼ見直さない</option></select></div>
+</div>
+<button class="btn primary" id="calcBtn" type="button" style="width:100%;margin-top:14px">診断する</button>
+<div id="scoreWrap" class="scorebox" hidden><div id="score" class="score">0</div><div class="scorecopy"><strong id="scoreTitle">—</strong><span id="scoreNote">—</span></div></div>
+<div class="metrics" id="metrics" hidden><div class="metric"><small>ANNUAL SPEND</small><b id="annualSpend">—</b></div><div class="metric"><small>VISIBLE IDLE SHARE</small><b id="idleShare">—</b></div><div class="metric"><small>NEXT ACTION</small><b id="nextAction">—</b></div></div>
+</article>
+<aside class="card">
+<h2>何を見ているか</h2>
+<p class="muted">「AIを使っているか」ではなく、支出と運用が意思決定可能な状態かを確認します。</p>
+<div class="flow" style="grid-template-columns:1fr">
+<div class="step"><small>01 · INVENTORY</small><b>何に払っているか</b><span>契約、席数、プラン、更新日。</span></div>
+<div class="step"><small>02 · UTILIZATION</small><b>実際に使われているか</b><span>低利用・重複・放置を分離。</span></div>
+<div class="step"><small>03 · WORKFLOW</small><b>手作業が残っていないか</b><span>AI費用を足しただけの状態を検出。</span></div>
+<div class="step"><small>04 · DECISION</small><b>残す / 下げる / 統合 / 止める</b><span>次の30日で判断できる形にする。</span></div>
+</div>
+</aside>
+</div></section>
+
+<section class="section" id="plans"><div class="wrap">
+<div class="sectionhead"><div><div class="eyebrow">FIXED-SCOPE OFFERS</div><h2>必要な深さだけ選ぶ</h2></div><p>低額商品を大量に売る設計ではなく、会社の支出判断に直結する一括オファーです。</p></div>
+<div class="plans">
+<article class="card plan"><h3>Leak Audit</h3><div class="price">¥49,800 <small>税込表示は請求時確認</small></div><p class="muted">1社・1回のAI/SaaS支出監査。</p><ul><li>支出インベントリ整理</li><li>重複・低利用候補</li><li>優先順位表</li><li>30日Decision List</li></ul><button class="btn" type="button" data-plan="Leak Audit|49800">この監査を申込</button></article>
+<article class="card plan recommended"><span class="planflag">RECOMMENDED</span><h3>Decision Pack</h3><div class="price">¥198,000 <small>固定範囲</small></div><p class="muted">経営判断まで持っていく詳細版。</p><ul><li>Leak Audit一式</li><li>契約別 Keep / Downgrade / Merge / Stop</li><li>Workflow再設計候補</li><li>経営向けDecision Memo</li></ul><button class="btn primary" type="button" data-plan="Decision Pack|198000">Decision Packを申込</button></article>
+<article class="card plan"><h3>Implementation Sprint</h3><div class="price">¥498,000〜 <small>要範囲確認</small></div><p class="muted">監査後の実装・自動化まで。</p><ul><li>Decision Pack一式</li><li>優先Workflow実装</li><li>Human Gate設計</li><li>Direct Readback / Evidence</li></ul><button class="btn" type="button" data-plan="Implementation Sprint|498000">実装相談を送る</button></article>
+</div>
+</div></section>
+
+<section class="section"><div class="wrap">
+<div class="sectionhead"><div><div class="eyebrow">HOW IT WORKS</div><h2>購入前の長い商談を減らす</h2></div><p>診断→固定範囲選択→必要情報の受付。人間が必要なのは契約・決済・重要判断だけです。</p></div>
+<div class="flow"><div class="step"><small>01</small><b>60秒診断</b><span>支出構造を自己診断。</span></div><div class="step"><small>02</small><b>プラン選択</b><span>必要な深さだけ選択。</span></div><div class="step"><small>03</small><b>非同期受付</b><span>会社・連絡先・状況を送信。</span></div><div class="step"><small>04</small><b>決済 / 着手</b><span>PayPayオンライン決済は接続後に自動化。</span></div></div>
+</div></section>
+
+<section class="section"><div class="wrap grid">
+<article class="card" id="leadForm">
+<h2>監査・実装を申し込む</h2><p class="muted">送信内容は受付と適合性確認に使用します。機密情報・APIキー・パスワードは送らないでください。</p>
+<div class="formgrid">
+<div class="field"><label>会社名 / 屋号 *</label><input id="company" autocomplete="organization" maxlength="120"></div>
+<div class="field"><label>連絡用メール *</label><input id="email" type="email" autocomplete="email" maxlength="180"></div>
+<div class="field"><label>希望プラン *</label><select id="plan"><option value="Leak Audit|49800">Leak Audit — ¥49,800</option><option value="Decision Pack|198000" selected>Decision Pack — ¥198,000</option><option value="Implementation Sprint|498000">Implementation Sprint — ¥498,000〜</option></select></div>
+<div class="field"><label>現在の月間AI/SaaS支出</label><input id="leadSpend" type="number" min="0" step="1000" inputmode="numeric"></div>
+<div class="field full"><label>いちばん困っていること *</label><textarea id="problem" maxlength="1200" placeholder="例：契約が増えすぎて、どれを残すべきか判断できない。"></textarea></div>
+<div class="field full"><label><input id="consent" type="checkbox" style="width:auto;margin-right:8px">連絡・監査可否の確認のため、この内容を送信することに同意します。</label></div>
+</div>
+<button class="btn primary" id="submitBtn" type="button" style="width:100%;margin-top:14px">申込内容を送信</button>
+<div class="status" id="status">決済はまだ発生しません。PayPayオンライン決済接続後、この後段を自動決済へ切り替えます。</div>
+</article>
+<aside class="card">
+<h2>運営ポリシー</h2><div class="notice">本ページは診断・意思決定支援・業務改善の入口です。特定の削減額、売上、利益、ROI、法務・税務上の結果を保証しません。実装可否・成果は利用環境、契約条件、データ品質、組織運用に依存します。</div>
+<p class="muted" style="margin-top:14px">申込後も、契約・決済・本人確認・機密情報の取り扱いなど不可逆または重要な操作は、人間の確認を残します。</p>
+</aside>
+</div></section>
+</main>
+<footer><div class="wrap foot"><div><b>Stratum Praxis</b><br>B2B Intelligence · Decision · Revenue</div><div><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="mailto:stratumpraxis@gmail.com">Contact</a></div><div>© 2026</div></div></footer>
+
+<script>
+(()=>{
+const SENSOR='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-b2b-funnel-sensor';
+const HARVEST='https://hook.eu1.make.com/96hncr771shitq6ylb3j6hk8tmqfh228';
+const $=id=>document.getElementById(id);
+const money=n=>new Intl.NumberFormat('ja-JP',{style:'currency',currency:'JPY',maximumFractionDigits:0}).format(n||0);
+const uuid=()=>crypto.randomUUID?crypto.randomUUID():'ev-'+Date.now()+'-'+Math.random().toString(16).slice(2);
+let session='';
+try{session=sessionStorage.getItem('sp_spend_audit_session')||uuid();sessionStorage.setItem('sp_spend_audit_session',session)}catch{session=uuid()}
+const qs=new URLSearchParams(location.search);
+const utm={utm_source:qs.get('utm_source')||'',utm_medium:qs.get('utm_medium')||'',utm_campaign:qs.get('utm_campaign')||'',utm_content:qs.get('utm_content')||''};
+let started=false,lastScore=null;
+
+async function sensor(eventType,extra={}){
+  const payload={event_id:uuid(),route_id:'b2b_diagnostic',event_type:eventType,path:location.pathname,session_key:session,input_trusted:true,webdriver:Boolean(navigator.webdriver),referrer_host:(()=>{try{return new URL(document.referrer).hostname}catch{return''}})(),...utm,...extra};
+  try{
+    const r=await fetch(SENSOR,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify(payload)});
+    return {ok:r.ok,status:r.status,body:await r.json().catch(()=>({}))};
+  }catch(e){return {ok:false,status:0,error:String(e)}}
+}
+function start(){if(started)return;started=true;sensor('DIAGNOSTIC_START')}
+['monthlySpend','toolCount','idleCount','dupCount','manualHours','reviewFreq'].forEach(id=>$(id).addEventListener('input',start));
+
+$('calcBtn').addEventListener('click',async()=>{
+  start();
+  const spend=Math.max(0,Number($('monthlySpend').value)||0);
+  const tools=Math.max(0,Number($('toolCount').value)||0);
+  const idle=Math.min(tools,Math.max(0,Number($('idleCount').value)||0));
+  const dup=Math.min(tools,Math.max(0,Number($('dupCount').value)||0));
+  const manual=Math.max(0,Number($('manualHours').value)||0);
+  const review=Math.max(0,Number($('reviewFreq').value)||0);
+  let score=0;
+  if(tools>0)score+=Math.round((idle/tools)*32);
+  if(tools>0)score+=Math.round((dup/tools)*24);
+  score+=Math.min(22,Math.round(manual/4));
+  score+=review;
+  if(spend>=300000)score+=8;else if(spend>=100000)score+=4;
+  score=Math.max(0,Math.min(100,score));
+  lastScore=score;
+  $('score').textContent=score;
+  $('score').className='score '+(score>=60?'high':score>=30?'mid':'low');
+  $('scoreTitle').textContent=score>=60?'監査優先度：高':score>=30?'監査優先度：中':'監査優先度：低';
+  $('scoreNote').textContent=score>=60?'重複・低利用・運用負荷を契約単位で分解する価値があります。':score>=30?'まず上位3契約と手作業の残存を確認してください。':'急いで有料監査へ進む必要はありません。定期見直しを続けてください。';
+  $('annualSpend').textContent=money(spend*12);
+  $('idleShare').textContent=tools?Math.round((idle/tools)*100)+'%':'—';
+  $('nextAction').textContent=score>=60?'AUDIT':score>=30?'REVIEW':'MONITOR';
+  $('scoreWrap').hidden=false;$('metrics').hidden=false;
+  $('leadSpend').value=spend||'';
+  await sensor('DIAGNOSTIC_COMPLETE',{dwell_ms:Math.round(performance.now())});
+});
+
+document.querySelectorAll('[data-plan]').forEach(b=>b.addEventListener('click',()=>{
+  $('plan').value=b.dataset.plan;
+  $('leadForm').scrollIntoView({behavior:'smooth',block:'start'});
+}));
+
+$('submitBtn').addEventListener('click',async()=>{
+  const company=$('company').value.trim(),email=$('email').value.trim(),problem=$('problem').value.trim();
+  const [planName,amountText]=$('plan').value.split('|');const amount=Number(amountText)||0;
+  const spend=Math.max(0,Number($('leadSpend').value)||0);
+  const status=$('status');
+  if(!company||!email||!problem||!$('consent').checked){status.className='status err';status.textContent='会社名・メール・課題・同意を確認してください。';return}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){status.className='status err';status.textContent='メールアドレスを確認してください。';return}
+  $('submitBtn').disabled=true;status.className='status';status.textContent='送信中…';
+  const s=await sensor('DIAGNOSTIC_AUDIT_CLICK',{dwell_ms:Math.round(performance.now())});
+  const eventId=uuid();
+  const payload={event_id:eventId,event_type:amount>=198000?'buyer_signal':'qualified_action',source:'stratumpraxis.com/ai-spend-leak-audit',project:'AI Spend Leak Audit',project_unit_id:'ai-spend-leak-audit',lane:'high_ticket_b2b',stage:amount>=198000?'BUYER_SIGNAL':'QUALIFIED_ACTION',amount,currency:'JPY',external_id:email,dedupe_key:'spend-audit:'+email.toLowerCase()+':'+planName,evidence_url:location.href,note:JSON.stringify({company,email,plan:planName,monthly_spend:spend,problem,diagnostic_score:lastScore}),occurred_at:new Date().toISOString()};
+  let harvestSent=false;
+  try{await fetch(HARVEST,{method:'POST',mode:'no-cors',headers:{'content-type':'text/plain;charset=UTF-8'},body:JSON.stringify(payload)});harvestSent=true}catch(_){}
+  if(s.ok&&harvestSent){status.className='status ok';status.textContent='受付しました。Revenue Evidenceへ送信済みです。決済はまだ発生していません。';$('submitBtn').textContent='受付済み';}
+  else{status.className='status err';status.textContent='送信確認に失敗しました。時間をおいて再送するかContactからご連絡ください。';$('submitBtn').disabled=false}
+});
+sensor('INTRO_ENGAGED',{dwell_ms:0});
+})();
+</script>
+</body>
+</html>
