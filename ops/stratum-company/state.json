@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-05T20:36:00+09:00",
+  "company": "Stratum Praxis",
+  "mode": "AUTONOMOUS_REVENUE_COMPANY",
+  "revenuePriority": [
+    "PAYMENT",
+    "CHECKOUT_CONTRACT",
+    "BUYER_SIGNAL",
+    "QUALIFIED_ACTION",
+    "HUMAN",
+    "REACH"
+  ],
+  "objective": "Existing Stratum assets to verified external revenue without breaking product, price, checkout, or identity boundaries.",
+  "lanes": {
+    "b2b": {
+      "label": "B2B営業",
+      "status": "ACTIVE_WAIT_REPLY",
+      "detail": "Guarded outbound is operating. Today new outbound cap is already reached; wait for replies instead of duplicate outreach.",
+      "source": "/ops/b2b-revenue/state.json",
+      "surface": "/ops/b2b-revenue/"
+    },
+    "products": {
+      "label": "商品管理",
+      "status": "KEEP_EXISTING",
+      "detail": "Spend Decision Kit $39 = KEEP. $499 B2B route = HOLD until Buyer Signal. No evidence-backed reason to create another product now.",
+      "surface": "/ops/autonomous-operations-monitor/product-portfolio.html"
+    },
+    "sns": {
+      "label": "SNS投稿",
+      "status": "ACTIVE",
+      "detail": "Official Stratum Bluesky direct writer is verified. Latest B2B inbound post published and evidence persisted.",
+      "latestEvidence": "/publishing/evidence/stratum-bluesky-b2b-inbound-20261005.json",
+      "latestPublicUrl": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mx4mzlbmyz2t"
+    },
+    "ownedMedia": {
+      "label": "Owned Media / SEO",
+      "status": "ACTIVE_EVENT_DRIVEN",
+      "detail": "Autonomous Revenue Publisher generates evidence-grounded articles and publishes to stratumpraxis.com/signal/auto/ on revenue/source events.",
+      "source": "/acquisition/blogger/state.json",
+      "surface": "/signal/auto/"
+    },
+    "wordpress": {
+      "label": "WordPress",
+      "status": "AUTH_GATE",
+      "detail": "Stratum WordPress public surface exists in DIB, but the currently connected WordPress management account does not expose the Stratum site. Unattended writer is not verified.",
+      "publicUrl": "https://stratumpraxis.wordpress.com/"
+    },
+    "payment": {
+      "label": "Payment",
+      "status": "NO_NEW_PAYMENT_VERIFIED",
+      "detail": "Publishing and sends are not revenue. Promote state only when Checkout / Contract / Payment evidence exists."
+    }
+  },
+  "wakeConditions": [
+    "Buyer reply",
+    "Qualified diagnostic action",
+    "Checkout / contract evidence",
+    "Payment evidence",
+    "New publish/source event",
+    "Platform failure or route regression",
+    "New product evidence that justifies portfolio re-evaluation"
+  ],
+  "rules": [
+    "No duplicate outreach or repeat posting without a new evidence-backed angle.",
+    "Human ≠ Buyer ≠ Checkout ≠ Payment.",
+    "Human=0 means acquisition/distribution first; do not rewrite product by default.",
+    "Price, checkout, contract, payment destination, KYC and identity remain Human Gate.",
+    "One route, one owner. B2B downstream remains its independent specialist unit.",
+    "No new time-based scheduler; use existing event/state-driven runtime."
+  ]
+}
