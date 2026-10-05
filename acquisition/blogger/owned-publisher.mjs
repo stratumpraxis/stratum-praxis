@@ -7,6 +7,7 @@ const OUTBOX = path.join(ROOT, 'acquisition/blogger/outbox');
 const STATE_FILE = path.join(ROOT, 'acquisition/blogger/state.json');
 const SITE_DIR = path.join(ROOT, 'signal/auto');
 const SOCIAL_QUEUE = path.join(ROOT, 'publishing/queue');
+const DEV_DIR = path.join(ROOT, 'content/dev/auto');
 const SITEMAP = path.join(ROOT, 'signal/sitemap.xml');
 const BASE = 'https://stratumpraxis.com/signal/auto';
 
@@ -106,6 +107,41 @@ async function queueBluesky(record, canonical) {
   return true;
 }
 
+async function queueDevto(record, canonical) {
+  const shortId=String(record.output_id || crypto.randomUUID()).replace(/[^a-zA-Z0-9-]/g,'-').slice(-48);
+  const contentId=`stratum-devto-owned-${shortId}`;
+  const queueFile=path.join(SOCIAL_QUEUE,`${contentId}.json`);
+  try { await fs.access(queueFile); return false; } catch {}
+  const sourcePath=`content/dev/auto/${contentId}.md`;
+  const sourceFile=path.join(ROOT,sourcePath);
+  const title=String(record.title || 'Stratum Praxis analysis').replace(/\s+/g,' ').trim();
+  const description=String(record.dek || 'Evidence-grounded analysis from Stratum Praxis.').replace(/\s+/g,' ').trim().slice(0,200);
+  const ctaUrl=safeUrl(record.cta?.tracked_url);
+  const body=[
+    String(record.body || '').trim(),
+    ctaUrl ? `\n---\n\n**Next:** [${record.cta?.label || 'Open the relevant Stratum resource'}](${ctaUrl})` : '',
+    '\n---\n\n_AI-assisted editorial production. Claims are constrained by recorded source evidence; product and platform details can change._'
+  ].join('\n').trim()+'\n';
+  await fs.mkdir(DEV_DIR,{recursive:true});
+  await fs.writeFile(sourceFile,body);
+  const pkg={
+    brand:'Stratum',
+    content_id:contentId,
+    platform:'devto',
+    title,
+    source_path:sourcePath,
+    canonical_url:canonical,
+    description,
+    tags:['ai','business','automation','productivity'],
+    published:true,
+    status:'QUEUED',
+    publish_trigger:new Date().toISOString()
+  };
+  await writeJson(queueFile,pkg);
+  console.log(`DEVTO_QUEUED ${contentId}`);
+  return true;
+}
+
 async function queueWordPress(record, canonical) {
   const shortId=String(record.output_id || crypto.randomUUID()).replace(/[^a-zA-Z0-9-]/g,'-').slice(-48);
   const contentId=`stratum-wordpress-owned-${shortId}`;
@@ -171,6 +207,7 @@ async function main(){
     await writeJson(path.join(OUTBOX,name),record);
     state.owned_publications[record.output_id]={output_id:record.output_id,title:record.title,canonical_url:canonical,state:'PUBLISH_REQUESTED',requested_at:new Date().toISOString()};
     await queueBluesky(record, canonical);
+    await queueDevto(record, canonical);
     await queueWordPress(record, canonical);
     created++;
   }
