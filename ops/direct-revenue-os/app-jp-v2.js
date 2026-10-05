@@ -1,284 +1,170 @@
 const API='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/direct-revenue-os';
 
-function $(id){return document.getElementById(id)}
-function esc(s){
-  return String(s==null?'':s).replace(/[&<>"']/g,function(m){
-    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]
-  })
+const $=id=>document.getElementById(id);
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const storedKey=()=>localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||'';
+const setMessage=s=>{$('msg').textContent=s};
+
+function textOf(x){
+  if(!x) return '';
+  return ['status','action','state','next_action','title','revenue_name','source','to_unit','unit_id','note','reason']
+    .map(k=>x[k]||'').join(' ');
 }
-function storedKey(){
-  return localStorage.getItem('monitor_key')||localStorage.getItem('direct_revenue_os_key')||''
+function isCodeOps(x){
+  const s=textOf(x).toLowerCase();
+  return /codeops|github|rtc|bounty|reward|rustchain/.test(s);
 }
-function setMessage(s){$('msg').textContent=s}
 function plainStatus(status){
-  const s=String(status||'').toUpperCase()
-  if(s==='PAYOUT_PENDING') return '入金待ち'
-  if(s==='PAYMENT_PENDING') return '支払い反映待ち'
-  if(s==='PAYOUT_READY'||s==='BALANCE_AVAILABLE'||s==='CLAIMABLE_REVENUE') return '受け取り可能'
-  if(s==='ACCEPTED_NOT_PAID') return '採用済み・まだ未入金'
-  if(s==='PAYMENT_CONFIRMED'||s==='PAYOUT_CONFIRMED') return '入金確認済み'
-  if(s==='REWARD_CONFIRMED') return '報酬確定'
-  if(s==='MARKET_DIRECT_REWARD') return '新しい報酬候補'
-  if(s==='TASK_PAYOUT_ROUTE') return '受け取り状況を確認中'
-  if(/DONE/.test(s)) return '確認完了'
-  if(/BLOCK/.test(s)) return '止まっている'
-  if(/READY/.test(s)) return '確認待ち'
-  return String(status||'確認中').replaceAll('_',' ')
+  const s=String(status||'').toUpperCase();
+  if(/PAID_CONFIRMED|PAYMENT_CONFIRMED|PAYOUT_CONFIRMED/.test(s)) return 'PAID';
+  if(/PAYOUT_PENDING/.test(s)) return 'PAYOUT';
+  if(/ACCEPTED/.test(s)) return 'ACCEPTED';
+  if(/SUBMITTED/.test(s)) return 'SUBMITTED';
+  if(/WORK_READY|READY/.test(s)) return 'WORK READY';
+  if(/HUMAN_GATE|WAITING_HUMAN/.test(s)) return 'HUMAN GATE';
+  if(/BLOCK|FAIL/.test(s)) return 'BLOCKED';
+  if(/WAIT/.test(s)) return 'WAIT';
+  return String(status||'CHECK').replaceAll('_',' ');
 }
-function plainAction(action){
-  const s=String(action||'')
-  if(s==='DIRECT_READBACK_ONLY') return '入金されたか確認だけする'
-  if(s==='CLAIM_OR_PAYOUT_PREP') return '受け取り手続きを準備する'
-  if(s==='QUALIFY_BEFORE_CLAIM') return '条件を確認してから参加する'
-  if(s==='HOLD_CONFIRMED_EVIDENCE') return '入金済みとして記録'
-  if(s==='DIRECT_READBACK_OR_ROUTE_MATCH') return '今の状態を確認する'
-  return s.replaceAll('_',' ')
+function cls(status){
+  const s=String(status||'').toUpperCase();
+  if(/PAID|CONFIRMED|DONE|ACTIVE/.test(s)) return 'ok';
+  if(/PENDING|WAIT|READY|SUBMITTED|ACCEPTED/.test(s)) return 'wait';
+  if(/BLOCK|FAIL|ERROR/.test(s)) return 'bad';
+  return 'info';
 }
-function plainSource(source){
-  const s=String(source||'')
-  if(s==='Gmail') return 'メール'
-  if(s==='GitHub') return 'GitHub報酬'
-  if(s==='Direct shared evidence'||s==='Revenue Evidence') return '既存の収益記録'
-  if(s==='Stripe') return 'Stripe'
-  if(s==='Marketplace') return '販売サイト'
-  if(s==='Affiliate / Referral') return 'アフィリエイト・紹介報酬'
-  if(s==='Creator / Platform') return '動画・投稿プラットフォーム'
-  if(s==='Refund / Credit') return '返金・クレジット'
-  return s
-}
-function plainRoute(route){
-  const id=String((route&&route.unit_id)||'')
-  if(id==='codeops') return 'GitHubぽちぽち担当'
-  if(id==='autonomy-core') return '全体リーダー'
-  return (route&&route.label)||id||'担当確認中'
+function plainRoute(x){
+  const id=String((x&&x.unit_id)||(x&&x.to_unit)||'');
+  if(id==='codeops') return 'CodeOps';
+  return (x&&x.label)||id||'CodeOps';
 }
 function plainName(name){
-  let s=String(name||'収益候補')
-  s=s.replace(/(\d+(?:\.\d+)?)\s*RTC\s*batch\s*\|\s*(\d+(?:\.\d+)?)\s*RTC\s*now sent\s*\/\s*pending IDs?\s*([0-9-]+)/i,
-    function(_,total,pending,ids){return total+' RTC分のうち、'+pending+' RTCは送金処理中（ID '+ids+'）'})
-  s=s.replace(/#(\d+)\s*wallet-CLI keystore\s*\|\s*(\d+(?:\.\d+)?)\s*RTC\s*pending ID\s*(\d+)/i,
-    function(_,issue,amount,id){return '#'+issue+' の '+amount+' RTC：送金処理中（ID '+id+'）'})
-  s=s.replace(/payout pending/ig,'入金待ち')
-  s=s.replace(/payment pending/ig,'支払い反映待ち')
-  s=s.replace(/pending IDs?/ig,'処理中ID')
-  s=s.replace(/now sent/ig,'送金処理中')
-  s=s.replace(/batch/ig,'まとめ分')
-  s=s.replace(/Direct Revenue/ig,'収益回収')
-  s=s.replace(/CodeOps/ig,'GitHubぽちぽち担当')
-  return s
-}
-function plainState(state){
-  const s=String(state||'')
-  if(/PAYOUT_PENDING.*CODEOPS|PAYOUT_PENDING__DIRECT_READBACK_VERIFIED__CODEOPS/i.test(s)) return 'GitHub報酬の入金待ち'
-  if(/PAYMENT_PENDING/i.test(s)) return '支払いの反映待ち'
-  if(/NO_VERIFIED_DIRECT_REVENUE_CANDIDATE/i.test(s)) return '今すぐ回収する候補なし'
-  if(/DISPATCHED/i.test(s)) return '担当へ回して確認中'
-  if(/ACTIVE/i.test(s)) return '自動確認中'
-  return s.replaceAll('_',' ')
-}
-function plainNext(state,next){
-  const s=String(state||'')+' '+String(next||'')
-  if(/28 RTC|PAYOUT_PENDING|Payout Pending/i.test(s)){
-    return '今は待つだけ。送金が実際に反映されたかを自動で確認します。追撃や再申請はしません。別の12 RTCは判定待ちとして分けて保持しています。'
-  }
-  if(/NO_VERIFIED_DIRECT_REVENUE_CANDIDATE/i.test(s)) return '新しい報酬や受け取れる残高が見つかるまで自動で探します。'
-  return String(next||'自動で次の確認を続けます。')
-    .replaceAll('Payout','入金')
-    .replaceAll('Evidence','証拠')
-    .replaceAll('Direct Readback','状態確認')
-    .replaceAll('CodeOps','GitHubぽちぽち担当')
-    .replaceAll('adjudication wait','判定待ち')
-}
-function snapshotText(d){
-  const parts=[]
-  const add=function(x){
-    if(!x) return
-    if(typeof x==='string'){parts.push(x);return}
-    ;['status','action','state','next_action','title','revenue_name','note','reason'].forEach(function(k){
-      if(x[k]!=null) parts.push(String(x[k]))
-    })
-  }
-  add(d&&d.selected)
-  add(d&&d.canonical_state)
-  ;(d&&d.closest_to_cash||[]).forEach(add)
-  ;(d&&d.market_candidates||[]).forEach(add)
-  ;(d&&d.latest_dispatches||[]).forEach(add)
-  return parts.join(' ')
+  return String(name||'GitHub収益案件')
+    .replace(/CodeOps/ig,'CodeOps')
+    .replace(/PAYOUT_PENDING/ig,'入金待ち')
+    .replace(/PAYMENT_PENDING/ig,'支払い反映待ち')
+    .replace(/adjudication wait/ig,'判定待ち');
 }
 function humanGateSummary(d){
-  const s=snapshotText(d)
-  if(/WAITING_HUMAN_FORK|HUMAN_GATE[^\n]*FORK|FORK_REQUIRED|CREATE[^\n]*FORK/i.test(s)){
-    return {
-      needed:true,
-      title:'GitHubでForkが必要',
-      meta:'入金確認とは別の操作です。対象Repoを1回Forkすれば、担当側で続きへ進めます。'
-    }
-  }
-  if(/PAYOUT_DESTINATION|PAYMENT_DESTINATION|WALLET[^\n]*(REQUIRED|NEEDED)|DESTINATION[^\n]*(REQUIRED|NEEDED)/i.test(s)){
-    return {
-      needed:true,
-      title:'送金先の確認が必要',
-      meta:'これは外部の入金待ちとは別です。送金先の入力・確認だけがHuman Gateです。'
-    }
-  }
-  if(/HUMAN_GATE|WAITING_HUMAN|MANUAL_ACTION|OWNER_ACTION|APPROVAL_REQUIRED|REQUIRES_APPROVAL|KYC_REQUIRED|LOGIN_REQUIRED/i.test(s)){
-    return {
-      needed:true,
-      title:'あなたの操作が必要',
-      meta:'Human Gateがあります。下の収益一覧の技術詳細で対象を確認できます。'
-    }
-  }
+  const all=[d&&d.selected,...(d&&d.closest_to_cash||[]),...(d&&d.market_candidates||[]),...(d&&d.latest_dispatches||[])].filter(Boolean).filter(isCodeOps);
+  const s=all.map(textOf).join(' ');
+  if(/WAITING_HUMAN_FORK|FORK_REQUIRED|CREATE[^\n]*FORK/i.test(s)) return {needed:true,title:'Forkが必要',meta:'対象Repoを1回ForkするとCodeOpsが続行できます。'};
+  if(/PAYOUT_DESTINATION|PAYMENT_DESTINATION|WALLET[^\n]*(REQUIRED|NEEDED)/i.test(s)) return {needed:true,title:'送金先確認',meta:'支払い先の確認だけがHuman Gateです。'};
+  if(/HUMAN_GATE|WAITING_HUMAN|APPROVAL_REQUIRED|KYC_REQUIRED|LOGIN_REQUIRED/i.test(s)) return {needed:true,title:'操作が必要',meta:'外部送信・認証など、権限が必要な操作があります。'};
+  return {needed:false,title:'操作不要',meta:'今はCodeOps側または外部側が進行します。重複Claim・追送はしません。'};
+}
+function externalSummary(d){
+  const list=[...(d&&d.closest_to_cash||[]),d&&d.selected].filter(Boolean).filter(isCodeOps);
+  const x=list.find(v=>/PAYOUT_PENDING|PAYMENT_PENDING|EXTERNAL_WAIT|SUBMITTED|ACCEPTED|WAIT/i.test(textOf(v)));
+  if(!x) return {title:'新規案件を探索中',meta:'24H RuntimeがGitHub案件を探索・資格判定します。'};
   return {
-    needed:false,
-    title:'操作不要',
-    meta:'今はあなたが押すものはありません。外部側の反映や入金を待つだけです。'
-  }
+    title:(x.amount?x.amount+' / ':'')+plainStatus(x.status),
+    meta:plainName(x.revenue_name||x.title||'')+' → '+plainRoute(x.route||x)
+  };
 }
-function externalWaitSummary(d){
-  const list=[]
-  if(d&&d.selected) list.push(d.selected)
-  ;(d&&d.closest_to_cash||[]).forEach(function(x){list.push(x)})
-  const x=list.find(function(v){
-    return /PAYOUT_PENDING|PAYMENT_PENDING|EXTERNAL_WAIT|SUBMITTED|ACCEPTED_NOT_PAID|WAIT/i.test(String(v&&v.status||'')+' '+String(v&&v.action||''))
-  })
-  if(x){
-    const amount=x.amount||''
-    const status=plainStatus(x.status)
-    return {
-      title:(amount?amount+'・':'')+status,
-      meta:plainName(x.revenue_name||x.title||'')+(x.action?' ｜ '+plainAction(x.action):'')
-    }
-  }
-  const cs=d&&d.canonical_state||{}
-  if(cs.state){
-    return {
-      title:plainState(cs.state),
-      meta:plainNext(cs.state,cs.next_action)
-    }
-  }
-  return {
-    title:'外部待ちはありません',
-    meta:'新しい報酬候補または次のRevenue Actionを確認します。'
-  }
+function row(x){
+  const name=plainName(x.revenue_name||x.title||'GitHub収益案件');
+  const amount=x.amount||'金額未確認';
+  return '<div class="row"><div class="rowtop"><div><span class="status '+cls(x.status)+'">'+esc(plainStatus(x.status))+'</span><div class="amount">'+esc(amount)+'</div></div><div class="tiny">'+esc(plainRoute(x.route||x))+'</div></div><b>'+esc(name)+'</b><div class="tiny">'+esc(x.source||'GitHub')+' ｜ '+esc(String(x.action||'').replaceAll('_',' '))+'</div><details class="tiny"><summary>Evidence</summary><pre>'+esc(JSON.stringify({status:x.status,source:x.source,action:x.action,route:x.route},null,2))+'</pre></details></div>';
 }
-function renderActionSummary(d){
-  const h=humanGateSummary(d)
-  const e=externalWaitSummary(d)
-  const humanCard=$('humanCard')
-  humanCard.className='card action-card '+(h.needed?'human':'noaction')
-  $('humanAction').textContent=h.title
-  $('humanActionMeta').textContent=h.meta
-  $('externalCard').className='card action-card external'
-  $('externalWait').textContent=e.title
-  $('externalWaitMeta').textContent=e.meta
+function setPipeline(d){
+  ['stDiscover','stQualify','stWork','stSubmit','stAccept','stPaid'].forEach(id=>$(id).classList.remove('active','warn'));
+  $('stDiscover').classList.add('active');
+  $('stQualify').classList.add('active');
+  const s=[d&&d.selected,...(d&&d.closest_to_cash||[]),...(d&&d.market_candidates||[]),...(d&&d.latest_dispatches||[])].filter(Boolean).filter(isCodeOps).map(textOf).join(' ').toUpperCase();
+  if(/WORK_READY|READY/.test(s)) $('stWork').classList.add('active');
+  if(/SUBMITTED/.test(s)) $('stSubmit').classList.add('active');
+  if(/ACCEPTED/.test(s)) $('stAccept').classList.add('active');
+  if(/PAID_CONFIRMED|PAYMENT_CONFIRMED|PAYOUT_CONFIRMED/.test(s)) $('stPaid').classList.add('active');
+  if(/PAYOUT_PENDING/.test(s)) $('stPaid').classList.add('warn');
 }
-function classFor(status){
-  const s=String(status||'')
-  if(/CONFIRMED|DONE|ACTIVE/i.test(s)) return 'ok'
-  if(/PENDING|WAIT|READY/i.test(s)) return 'wait'
-  if(/BLOCK|FAIL/i.test(s)) return 'bad'
-  return 'info'
+function bestCodeOps(d){
+  const list=[...(d&&d.closest_to_cash||[]),d&&d.selected].filter(Boolean).filter(isCodeOps);
+  return list[0]||null;
 }
-function item(x){
-  const name=x.revenue_name||x.title||'収益候補'
-  const amount=x.amount||'金額未確認'
-  return '<div class="row">'+
-    '<span class="status '+classFor(x.status)+'">'+esc(plainStatus(x.status))+'</span> '+
-    '<b>'+esc(amount)+'</b><br>'+
-    '<b>'+esc(name)+'</b>'+
-    '<div class="tiny">'+esc(plainSource(x.source))+' → '+esc(plainRoute(x.route))+' ｜ '+esc(plainAction(x.action))+'</div>'+
-    '<details class="tiny"><summary>技術詳細</summary><pre>'+esc(JSON.stringify({status:x.status,source:x.source,route:x.route,action:x.action},null,2))+'</pre></details>'+
-    '</div>'
-}
-async function api(path,opt){
-  const options=opt||{}
-  const key=$('key').value.trim()||storedKey()
-  if(!key) throw new Error('接続キーを入力してください')
-  const headers=Object.assign({
-    Authorization:'Bearer '+key,
-    'Content-Type':'application/json'
-  },options.headers||{})
-  const r=await fetch(API+path,Object.assign({},options,{headers:headers}))
-  const x=await r.json()
-  if(!r.ok) throw new Error(x.error||('HTTP '+r.status))
-  return x
+async function api(path,opt={}){
+  const key=$('key').value.trim()||storedKey();
+  if(!key) throw new Error('接続キーを入力してください');
+  const headers=Object.assign({Authorization:'Bearer '+key,'Content-Type':'application/json'},opt.headers||{});
+  const r=await fetch(API+path,Object.assign({},opt,{headers}));
+  const x=await r.json();
+  if(!r.ok) throw new Error(x.error||('HTTP '+r.status));
+  return x;
 }
 async function load(){
   try{
-    setMessage('最新のお金の状態を確認しています…')
-    const d=await api('/api/snapshot')
-    const s=d.selected
-    $('selected').textContent=s?((s.amount||'金額未確認')+'・'+plainStatus(s.status)):'今すぐ回収する候補なし'
-    $('selectedMeta').textContent=s?(plainName(s.revenue_name||s.title||'')+' → '+plainRoute(s.route)):'新しい報酬候補を自動で探します'
-    $('state').textContent=plainState(d.canonical_state&&d.canonical_state.state)
-    $('next').textContent=plainNext(d.canonical_state&&d.canonical_state.state,d.canonical_state&&d.canonical_state.next_action)
-    renderActionSummary(d)
+    setMessage('CodeOpsの最新Revenue Evidenceを確認しています…');
+    const d=await api('/api/snapshot');
+    const closest=(d.closest_to_cash||[]).filter(isCodeOps);
+    const market=(d.market_candidates||[]).filter(isCodeOps);
+    const dispatch=(d.latest_dispatches||[]).filter(isCodeOps);
+    const repeat=(d.repeat_winning_routes||[]).filter(isCodeOps);
+    const best=bestCodeOps(d);
+    const gate=humanGateSummary(d);
+    const ext=externalSummary(d);
 
-    const sourceNames={
-      GMAIL_REVENUE:'メールの報酬・入金情報',
-      GITHUB_REWARD:'GitHub報酬',
-      REVENUE_LEDGER:'収益記録',
-      DIB_HISTORY:'過去の収益履歴',
-      STRIPE_REVENUE:'Stripe入金',
-      PAYHIP_MARKETPLACE:'販売サイトの入金',
-      AFFILIATE_REFERRAL:'アフィリエイト・紹介報酬',
-      CREATOR_PLATFORM:'動画・投稿プラットフォーム報酬',
-      PENDING_PAYOUT:'入金待ち・受け取り可能残高',
-      REFUND_CREDIT:'返金・クレジット',
-      OTHER_VERIFIED:'その他の確認済み収益'
-    }
-    $('sources').innerHTML=(d.source_registry||[]).map(function(x){
-      const label=sourceNames[x.key]||x.label||x.source||x.key
-      const count=x.observed_count==null?(x.count==null?0:x.count):x.observed_count
-      return '<span class="pill">'+esc(label)+' '+esc(count)+'件</span>'
-    }).join('')||'<div class="tiny">まだ情報なし</div>'
+    $('engine').textContent='LIVE';
+    $('engine').className='kvalue ok';
+    $('engineSub').textContent='CodeOps専用GitHub / 24H';
+    $('liveBadge').innerHTML='<span class="dot"></span><span>CODEOPS LIVE</span>';
+    $('closestCount').textContent=String(closest.length);
+    $('marketCount').textContent=String(market.length);
+    $('gateCount').textContent=gate.needed?'1':'0';
+    $('gateCount').className='kvalue '+(gate.needed?'wait':'ok');
+    $('gateSub').textContent=gate.needed?'Human Gateあり':'操作不要';
+    $('moneyState').textContent=best?plainStatus(best.status):'SCAN';
+    $('moneyState').className='kvalue '+(best?cls(best.status):'info');
+    $('moneySub').textContent=best?(best.amount||'金額確認中'):'新規現金案件探索';
 
-    $('items').innerHTML=(d.closest_to_cash||[]).map(item).join('')||'<div class="tiny">今すぐ回収を追うお金はありません。</div>'
-    $('market').innerHTML=(d.market_candidates||[]).map(item).join('')||'<div class="tiny">今のところ、新しく参加できる明確な報酬案件は見つかっていません。</div>'
-    $('repeat').innerHTML=(d.repeat_winning_routes||[]).map(function(x){
-      return '<div class="row"><b>'+esc(plainSource(x.source))+' → '+esc(plainRoute(x.route))+'</b>'+
-        '<div class="tiny">入金確認できた回数: '+esc(x.count)+'回</div></div>'
-    }).join('')||'<div class="tiny">まだ「繰り返せる稼ぎ方」と言えるだけの実績はありません。</div>'
-    $('dispatch').innerHTML=(d.latest_dispatches||[]).map(function(x){
-      return '<div class="row"><span class="status '+classFor(x.status)+'">'+esc(plainStatus(x.status))+'</span> → <b>'+esc(x.to_unit==='codeops'?'GitHubぽちぽち担当':x.to_unit)+'</b><br>'+
-        esc(plainName(x.title).replaceAll('PAYOUT_PENDING','入金待ち'))+
-        '<details class="tiny"><summary>技術詳細</summary><pre>'+esc(JSON.stringify(x,null,2))+'</pre></details></div>'
-    }).join('')||'<div class="tiny">まだ担当への引き渡し履歴はありません。</div>'
+    $('humanCard').className='card action '+(gate.needed?'human':'');
+    $('humanAction').textContent=gate.title;
+    $('humanActionMeta').textContent=gate.meta;
+    $('externalWait').textContent=ext.title;
+    $('externalWaitMeta').textContent=ext.meta;
 
-    setMessage('最新状態 '+new Date(d.generated_at).toLocaleString('ja-JP'))
+    $('selected').textContent=best?((best.amount||'金額未確認')+' / '+plainStatus(best.status)):'現在の最上位は探索・資格判定';
+    $('selectedMeta').textContent=best?plainName(best.revenue_name||best.title||''):'クリーンな現金案件が出るまで基準を下げず探索します。';
+    $('state').textContent=(d.canonical_state&&d.canonical_state.state)?String(d.canonical_state.state).replaceAll('_',' '):'CODEOPS';
+    $('next').textContent=(d.canonical_state&&d.canonical_state.next_action)?String(d.canonical_state.next_action).replaceAll('_',' '):'DISCOVER → QUALIFY → WORK READY';
+
+    $('items').innerHTML=closest.map(row).join('')||'<div class="empty">現在、CodeOpsで入金直前の案件はありません。</div>';
+    $('market').innerHTML=market.map(row).join('')||'<div class="empty">現在、条件を満たす新規GitHub報酬候補はありません。</div>';
+
+    const src=(d.source_registry||[]).filter(x=>/GITHUB|PAYOUT|REVENUE/i.test(String(x.key||x.label||'')));
+    $('sources').innerHTML=src.map(x=>'<span class="pill">'+esc(x.label||x.key)+' '+esc(x.observed_count??x.count??0)+'件</span>').join('')||'<span class="pill">GitHub Direct Evidence</span>';
+
+    $('dispatch').innerHTML=dispatch.map(x=>'<div class="row"><div class="rowtop"><span class="status '+cls(x.status)+'">'+esc(plainStatus(x.status))+'</span><b>CodeOps</b></div><div class="tiny">'+esc(plainName(x.title||''))+'</div></div>').join('')||'<div class="empty">最新のCodeOps Routing Evidenceはありません。</div>';
+    $('repeat').innerHTML=repeat.map(x=>'<div class="row"><b>'+esc(x.source||'GitHub')+' → CodeOps</b><div class="tiny">PAID確認回数: '+esc(x.count||0)+'</div></div>').join('')||'<div class="empty">繰り返し可能と判定できるPAIDルートはまだありません。</div>';
+
+    setPipeline(d);
+    const generated=d.generated_at?new Date(d.generated_at):new Date();
+    setMessage('最新状態 '+generated.toLocaleString('ja-JP'));
   }catch(e){
-    setMessage('読込エラー: '+(e&&e.message?e.message:String(e)))
-    if($('humanAction')){
-      $('humanAction').textContent='状態を確認できません'
-      $('humanActionMeta').textContent='接続キーと通信状態を確認してください。'
-      $('humanCard').className='card action-card human'
-    }
+    $('engine').textContent='CHECK';
+    $('engine').className='kvalue wait';
+    $('liveBadge').innerHTML='<span class="dot"></span><span>CONNECTION CHECK</span>';
+    setMessage('読込エラー: '+(e&&e.message?e.message:String(e)));
   }
 }
 function connect(){
-  const key=$('key').value.trim()
+  const key=$('key').value.trim();
   if(!key){setMessage('接続キーを入力してください');return}
-  localStorage.setItem('monitor_key',key)
-  localStorage.setItem('direct_revenue_os_key',key)
-  load()
+  localStorage.setItem('monitor_key',key);
+  localStorage.setItem('direct_revenue_os_key',key);
+  load();
 }
 async function runNow(){
   try{
-    setMessage('いま一番入金に近いものを確認しています…')
-    const x=await api('/api/run',{method:'POST',body:'{}'})
-    setMessage('確認完了。'+(x.route?plainRoute(x.route):'担当を確認しました'))
-    await load()
-  }catch(e){
-    setMessage('実行エラー: '+(e&&e.message?e.message:String(e)))
-  }
+    setMessage('Revenue状態を再確認しています…');
+    await api('/api/run',{method:'POST',body:'{}'});
+    await load();
+  }catch(e){setMessage('実行エラー: '+(e&&e.message?e.message:String(e)))}
 }
-document.addEventListener('DOMContentLoaded',function(){
-  $('key').value=storedKey()
-  $('connectBtn').addEventListener('click',connect)
-  $('runBtn').addEventListener('click',runNow)
-  setMessage('画面準備完了。定期更新はせず、操作時と画面復帰時だけ確認します。')
-  if($('key').value) load()
-  document.addEventListener('visibilitychange',function(){
-    if(document.visibilityState==='visible'&&$('key').value) load()
-  })
-})
+document.addEventListener('DOMContentLoaded',()=>{
+  $('key').value=storedKey();
+  $('connectBtn').addEventListener('click',connect);
+  $('runBtn').addEventListener('click',runNow);
+  if($('key').value) load();
+  else setMessage('接続キーを入力するとCodeOpsのRevenue Evidenceを表示します。');
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&$('key').value) load()});
+});
