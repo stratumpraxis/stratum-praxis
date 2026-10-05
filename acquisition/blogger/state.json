@@ -69,5 +69,14 @@
     "repeat-visit-sites-win-owner-package": 1,
     "agent-company-control-owner-package": 1,
     "recurring-digital-spend-owner-package-2026-09-08": 1
+  },
+  "company_start_event": {
+    "at": "2026-10-05T11:40:00Z",
+    "mode": "STRATUM_AUTONOMOUS_REVENUE_COMPANY_ACTIVE",
+    "reason": "User explicitly authorized B2B sales, product operations, product sales, SNS publishing and WordPress publishing. Run existing guarded revenue routes; do not change price/checkout/contracts; do not duplicate outreach.",
+    "wordpress_writer_state": "HUMAN_GATE_NO_STRATUM_CONNECTION",
+    "b2b_state": "GUARDED_ACTIVE_DAILY_CAP_RESPECTED",
+    "social_state": "ACTIVE_EXISTING_PROJECT_OWNED_WRITERS",
+    "product_state": "DEMAND_GATED_EXISTING_ASSET_FIRST"
   }
 }
