@@ -30,6 +30,8 @@ on:
       - 'stratum-revenue-growth.js'
       - 'stratum-revenue-home.js'
       - 'stratum-revenue-home.css'
+      - 'stratum-revenue-ui-2026.css'
+      - 'stratum-revenue-ui-2026.js'
       - 'media/**'
       - '*.txt'
   workflow_dispatch:
@@ -75,6 +77,8 @@ jobs:
           from pathlib import Path
 
           GA_ID = 'G-QXTYRB4TWY'
+          REVENUE_UI_CSS = '<link rel="stylesheet" href="/stratum-revenue-ui-2026.css?v=20261005b" data-sp-revenue-ui="build">'
+          REVENUE_UI_JS = '<script src="/stratum-revenue-ui-2026.js?v=20261005b" defer data-sp-revenue-ui="build"></script>'
           TAG = '''<!-- Google tag (gtag.js) -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
           <script>
@@ -93,6 +97,16 @@ jobs:
               html = html.replace('href="/index.html"', 'href="/"')
               html = html.replace("href='/index.html'", "href='/'")
               html = html.replace('https://stratumpraxis.com/index.html', 'https://stratumpraxis.com/')
+
+              # Branded Stratum pages receive one shared conversion UI layer.
+              # Standalone utilities/other brands are left untouched unless they explicitly identify as Stratum Praxis.
+              is_stratum = 'Stratum Praxis' in html
+              if is_stratum and 'stratum-revenue-ui-2026.css' not in html:
+                  marker = '</head>'
+                  idx = html.lower().find(marker)
+                  if idx < 0:
+                      raise SystemExit(f'Missing </head> in {path}')
+                  html = html[:idx] + REVENUE_UI_CSS + '\n' + REVENUE_UI_JS + '\n' + html[idx:]
 
               if GA_ID not in html:
                   marker = '</head>'
@@ -120,6 +134,12 @@ jobs:
               if 'href="/index.html"' in html or "href='/index.html'" in html:
                   raise SystemExit(f'Legacy /index.html internal link remains in {path}')
 
+          revenue_ui_pages = 0
+          for path in html_files:
+              html = path.read_text(encoding='utf-8')
+              if 'Stratum Praxis' in html and 'stratum-revenue-ui-2026.css' in html:
+                  revenue_ui_pages += 1
+          print(f'Revenue UI injected into {revenue_ui_pages} branded Stratum pages')
           print(f'GA4 injected exactly once into {len(html_files)} HTML pages')
           print('Homepage canonical/internal-link normalization -> PASS')
           PY
