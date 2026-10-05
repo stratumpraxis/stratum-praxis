@@ -1605,6 +1605,101 @@
         "http_status": 200,
         "http_evidence": "https://github.com/stratumpraxis/stratum-praxis/actions/runs/36100189922"
       }
+    },
+    {
+      "asset_id": "stratum-b2b-intro",
+      "brand": "Stratum Praxis",
+      "asset_name": "B2B Workflow Diagnostic Entry",
+      "asset_type": "FREE_ENTRY",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/b2b-intro/",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/b2b/",
+        "price": null,
+        "evidence": "b2b-intro/index.html routes qualified visitors to /b2b/ diagnostic"
+      },
+      "primary_user_problem": "Needs to decide whether a recurring workflow is worth diagnosing before buying another AI tool.",
+      "problem_keys": [
+        "workflow_automation",
+        "ai_adoption",
+        "tool_overlap",
+        "buy_vs_process"
+      ],
+      "target_audience": [
+        "smb_owner",
+        "ops_lead",
+        "finance",
+        "founder"
+      ],
+      "commercial_intent": "MID",
+      "distribution_candidates": [
+        "bluesky",
+        "devto"
+      ],
+      "cta": {
+        "label": "Run the free workflow diagnostic",
+        "analytics_id": "stratum_b2b_intro_primary"
+      },
+      "analytics_events": [
+        "funnel_view",
+        "intro_engaged",
+        "intro_cta_click"
+      ],
+      "verification_state": "REPO_ONLY",
+      "verification": {
+        "repo_file": "b2b-intro/index.html",
+        "in_sitemap": false,
+        "note": "Canonical B2B revenue entry. Live HTTP and first-party funnel sensor are verified by Stratum runtime."
+      }
+    },
+    {
+      "asset_id": "stratum-workflow-diagnostic",
+      "brand": "Stratum Praxis",
+      "asset_name": "B2B Workflow Diagnostic",
+      "asset_type": "FREE_DIAGNOSTIC",
+      "language": "en",
+      "status": "LIVE",
+      "public_url": "https://stratumpraxis.com/b2b/",
+      "revenue_destination": {
+        "type": "INTERNAL_FUNNEL",
+        "url": "https://stratumpraxis.com/workflow-audit.html",
+        "price": null,
+        "evidence": "b2b/index.html diagnostic routes qualified users toward the existing fixed-scope workflow audit"
+      },
+      "primary_user_problem": "Does not know whether one recurring workflow should be left alone, improved first, or investigated for automation.",
+      "problem_keys": [
+        "workflow_automation",
+        "process_audit",
+        "ai_adoption"
+      ],
+      "target_audience": [
+        "smb_owner",
+        "ops_lead",
+        "finance",
+        "founder"
+      ],
+      "commercial_intent": "HIGH",
+      "distribution_candidates": [
+        "bluesky",
+        "devto"
+      ],
+      "cta": {
+        "label": "Diagnose one recurring workflow",
+        "analytics_id": "stratum_workflow_diagnostic_primary"
+      },
+      "analytics_events": [
+        "diagnostic_start",
+        "diagnostic_complete",
+        "qualified_action_candidate"
+      ],
+      "verification_state": "REPO_ONLY",
+      "verification": {
+        "repo_file": "b2b/index.html",
+        "in_sitemap": false,
+        "note": "Live HTTP and first-party funnel sensor are verified by Stratum runtime."
+      }
     }
   ]
 }
