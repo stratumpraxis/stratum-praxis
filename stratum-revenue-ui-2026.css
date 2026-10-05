@@ -502,3 +502,54 @@ html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-shell{
     max-width:11ch!important;font-size:clamp(38px,11vw,52px)!important;
   }
 }
+
+
+/* Core route cleanup: one header, one locale control, one primary action. */
+html.sp-revenue-ui .spx-locale,
+html.sp-revenue-ui .spx-route-dock{display:none!important}
+html.sp-revenue-ui body[data-page="live_lab_v4"]::before,
+html.sp-revenue-ui body[data-page="workflow_audit_v4"]::before,
+html.sp-revenue-ui body[data-page="buyer_workspace"]::before{display:none!important}
+html.sp-revenue-ui body[data-page="live_lab_v4"] .page-topline{
+  min-height:0!important;padding:42px 38px!important;border-radius:22px!important;box-shadow:none!important;
+}
+html.sp-revenue-ui body[data-page="live_lab_v4"] .page-topline h1{
+  max-width:12ch!important;font-size:clamp(44px,5.7vw,68px)!important;line-height:.96!important;
+}
+html.sp-revenue-ui body[data-page="workflow_audit_v4"] .audit-stage{
+  min-height:0!important;padding:48px 42px!important;border-radius:22px!important;box-shadow:none!important;
+}
+html.sp-revenue-ui body[data-page="workflow_audit_v4"] .audit-stage h1{
+  max-width:12ch!important;font-size:clamp(44px,5.7vw,68px)!important;line-height:.96!important;
+}
+html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-hero{
+  min-height:0!important;padding:42px!important;border-radius:22px 22px 0 0!important;box-shadow:none!important;
+}
+html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-hero::after{display:none!important}
+html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-hero h1{
+  max-width:12ch!important;font-size:clamp(42px,5.5vw,64px)!important;line-height:.98!important;
+}
+html.sp-revenue-ui body[data-page="workflow_diagnostic_v4"] .page-topline{
+  min-height:0!important;padding-top:28px!important;padding-bottom:18px!important;
+}
+html.sp-revenue-ui body[data-page="workflow_diagnostic_v4"] .page-topline h1{
+  max-width:14ch!important;font-size:clamp(38px,5vw,58px)!important;line-height:.98!important;
+}
+html.sp-revenue-ui body[data-page="live_lab_v4"] :where(.workspace-panel,.recommend-card,.inventory,.intent-panel),
+html.sp-revenue-ui body[data-page="workflow_audit_v4"] :where(.audit-brief,.wa-preview-shell,.audit-band),
+html.sp-revenue-ui body[data-page="buyer_workspace"] :where(.bw-state,.bw-section){
+  box-shadow:none!important;
+}
+@media(max-width:760px){
+  html.sp-revenue-ui body[data-page="live_lab_v4"] .page-topline,
+  html.sp-revenue-ui body[data-page="workflow_audit_v4"] .audit-stage,
+  html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-hero{
+    grid-template-columns:1fr!important;padding:24px 18px!important;gap:18px!important;border-radius:18px!important;
+  }
+  html.sp-revenue-ui body[data-page="live_lab_v4"] .page-topline h1,
+  html.sp-revenue-ui body[data-page="workflow_audit_v4"] .audit-stage h1,
+  html.sp-revenue-ui body[data-page="buyer_workspace"] .bw-hero h1,
+  html.sp-revenue-ui body[data-page="workflow_diagnostic_v4"] .page-topline h1{
+    max-width:11ch!important;font-size:clamp(36px,10.5vw,46px)!important;line-height:.98!important;
+  }
+}
