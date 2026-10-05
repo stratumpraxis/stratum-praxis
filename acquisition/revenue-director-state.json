@@ -1,8 +1,18 @@
 {
   "version": 1,
-  "last_run_at": null,
-  "last_source_at": null,
-  "created_source_ids": [],
-  "last_outcome": "NOT_RUN",
-  "last_funnel": null
+  "last_run_at": "2026-10-05T13:40:38.773Z",
+  "last_source_at": "2026-10-05T13:40:38.775Z",
+  "created_source_ids": [
+    "revenue-director-workflow-before-tool"
+  ],
+  "last_outcome": "SOURCE_CREATED",
+  "last_funnel": {
+    "intro_engaged": 0,
+    "intro_cta": 0,
+    "diagnostic_start": 0,
+    "diagnostic_complete": 0,
+    "audit_click": 0
+  },
+  "runtime": "SUPABASE_DIRECT",
+  "last_source_id": "revenue-director-workflow-before-tool"
 }
