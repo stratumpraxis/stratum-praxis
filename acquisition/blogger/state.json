@@ -36,7 +36,7 @@
       "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-05T13:41:23.104Z",
+  "last_run_at": "2026-10-05T13:45:49.331Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -74,11 +74,12 @@
       "output_id": "2026-10-05-revenue-director-workflow-before-tool-fe7fbf5d",
       "title": "Before buying another AI tool, diagnose one recurring workflow first",
       "canonical_url": "https://stratumpraxis.com/signal/auto/before-buying-another-ai-tool-diagnose-one-recurring-workflow-first-fe7fbf5d.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-10-05T13:40:54.065Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-10-05T13:40:54.065Z",
+      "verified_at": "2026-10-05T13:45:49.596Z"
     }
   },
-  "last_publish_pass_at": "2026-10-05T13:41:24.772Z",
+  "last_publish_pass_at": "2026-10-05T13:45:49.622Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
