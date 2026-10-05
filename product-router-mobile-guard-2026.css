@@ -1,0 +1,67 @@
+/* Product Router Mobile Guard 2026 — fail-closed responsive layout */
+html,body{max-width:100%;overflow-x:hidden}
+body[data-page="revenue_route_os_v2"] :where(.console,.route-tabs,.route-shell,.route-view,.route-side,.route-canvas,.offers,.sp-revenue-proof,.sp-revenue-focus){
+  min-width:0!important;max-width:100%!important
+}
+@media(max-width:760px){
+  body[data-page="revenue_route_os_v2"] .console{
+    width:min(100% - 24px,680px)!important;margin:0 auto!important;padding:0!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-tabs{
+    width:100%!important;display:flex!important;overflow-x:auto!important;overscroll-behavior-x:contain;
+    gap:8px!important;padding:4px 0 10px!important;scroll-snap-type:x mandatory;scroll-padding:12px;
+  }
+  body[data-page="revenue_route_os_v2"] .route-tab{
+    flex:0 0 82%!important;width:auto!important;min-width:0!important;max-width:82%!important;
+    scroll-snap-align:start!important;min-height:104px!important;padding:14px!important;border-radius:16px!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-shell{
+    width:100%!important;display:block!important;overflow:hidden!important;border-radius:18px!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-view{display:none!important;width:100%!important}
+  body[data-page="revenue_route_os_v2"] .route-view.active{display:block!important}
+  body[data-page="revenue_route_os_v2"] .route-side{
+    width:100%!important;max-width:none!important;display:block!important;padding:20px 16px 16px!important;
+    border-right:0!important;border-bottom:1px solid rgba(180,213,224,.12)!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-side h3{
+    max-width:12ch!important;margin:16px 0 8px!important;font-size:34px!important;line-height:.98!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-side>p{max-width:38ch!important;font-size:12px!important;line-height:1.55!important}
+  body[data-page="revenue_route_os_v2"] .route-side .route-facts{
+    display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-side .route-facts>div{
+    min-width:0!important;padding:10px!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-side .route-facts strong{font-size:12px!important}
+  body[data-page="revenue_route_os_v2"] .start-card{
+    width:100%!important;min-width:0!important;min-height:72px!important;padding:13px!important;border-radius:14px!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-canvas{
+    width:100%!important;max-width:none!important;display:block!important;padding:14px 12px 16px!important;overflow:hidden!important
+  }
+  body[data-page="revenue_route_os_v2"] .route-canvas .flow{display:none!important}
+  body[data-page="revenue_route_os_v2"] .offers{
+    width:100%!important;display:flex!important;gap:9px!important;overflow-x:auto!important;overscroll-behavior-x:contain;
+    padding:2px 1px 10px!important;margin:0!important;scroll-snap-type:x mandatory;scroll-padding:1px;scrollbar-width:none
+  }
+  body[data-page="revenue_route_os_v2"] .offers::-webkit-scrollbar{display:none}
+  body[data-page="revenue_route_os_v2"] .sp-offer-shell{
+    flex:0 0 82%!important;width:82%!important;max-width:82%!important;scroll-snap-align:start!important
+  }
+  body[data-page="revenue_route_os_v2"] .offer{
+    width:100%!important;max-width:100%!important;min-height:126px!important;margin:0!important;padding:14px!important;border-radius:15px!important
+  }
+  body[data-page="revenue_route_os_v2"] .sp-revenue-focus,
+  body[data-page="revenue_route_os_v2"] .sp-revenue-proof{
+    width:calc(100% - 20px)!important;max-width:none!important;margin-left:auto!important;margin-right:auto!important
+  }
+  body[data-page="revenue_route_os_v2"] .sp-revenue-proof__head{
+    grid-template-columns:1fr!important;padding:16px!important
+  }
+  body[data-page="revenue_route_os_v2"] .sp-revenue-proof__grid{grid-template-columns:1fr!important}
+  body[data-page="revenue_route_os_v2"] .sp-revenue-proof__item{
+    width:100%!important;min-width:0!important;border-right:0!important
+  }
+}
