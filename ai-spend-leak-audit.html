@@ -264,12 +264,15 @@ let session='';
 try{session=sessionStorage.getItem('sp_spend_audit_session')||uuid();sessionStorage.setItem('sp_spend_audit_session',session)}catch{session=uuid()}
 const qs=new URLSearchParams(location.search);
 const utm={utm_source:qs.get('utm_source')||'',utm_medium:qs.get('utm_medium')||'',utm_campaign:qs.get('utm_campaign')||'',utm_content:qs.get('utm_content')||''};
-let started=false,lastScore=null;
+let started=false,lastScore=null,lastTrustedAt=0;
+['pointerdown','click','input','change','keydown','touchstart'].forEach(name=>{
+  document.addEventListener(name,e=>{if(e.isTrusted)lastTrustedAt=Date.now()},{capture:true,passive:name==='pointerdown'||name==='touchstart'});
+});
 
 async function sensor(eventType,extra={}){
   const payload={
     event_id:uuid(),route_id:'b2b_diagnostic',event_type:eventType,path:location.pathname,
-    session_key:session,input_trusted:true,webdriver:Boolean(navigator.webdriver),
+    session_key:session,input_trusted:(Date.now()-lastTrustedAt)<5000,webdriver:Boolean(navigator.webdriver),
     referrer_host:(()=>{try{return new URL(document.referrer).hostname}catch{return''}})(),
     ...utm,...extra
   };
@@ -340,7 +343,11 @@ $('submitBtn').addEventListener('click',async()=>{
     $('submitBtn').disabled=false;
   }
 });
-sensor('INTRO_ENGAGED',{dwell_ms:0});
+setTimeout(()=>{
+  if(document.visibilityState==='visible'){
+    sensor('INTRO_ENGAGED',{dwell_ms:4000});
+  }
+},4000);
 })();
 </script>
 </body>
