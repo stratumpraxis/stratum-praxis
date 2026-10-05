@@ -32,6 +32,7 @@ on:
       - 'stratum-revenue-home.css'
       - 'stratum-revenue-ui-2026.css'
       - 'stratum-revenue-ui-2026.js'
+      - 'home-revenue-clean-2026.css'
       - 'media/**'
       - '*.txt'
   workflow_dispatch:
