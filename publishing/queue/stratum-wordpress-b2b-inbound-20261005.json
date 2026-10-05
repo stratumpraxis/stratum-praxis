@@ -1,0 +1,18 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-wordpress-b2b-inbound-20261005",
+  "platform": "wordpress",
+  "site": "stratumpraxis.wordpress.com",
+  "title": "AI導入の前に、まず1業務を診断する｜Stratum Praxis",
+  "excerpt": "AIツールを追加購入する前に、繰り返し業務を1つ選び、改善対象として成立するかを6問で確認できる無料Workflow診断を公開しています。登録不要です。",
+  "canonical_url": "https://stratumpraxis.com/b2b-intro/",
+  "source_id": "b2b-inbound-20261005",
+  "tags": [
+    "AI",
+    "業務改善",
+    "SaaS",
+    "Stratum Praxis"
+  ],
+  "status": "QUEUED",
+  "publish_trigger": "2026-10-05T20:36:00+09:00"
+}
