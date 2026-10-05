@@ -1,0 +1,12 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-b2b-inbound-20261005",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Before buying another AI tool, pick one recurring workflow and decide whether it is actually worth fixing. Six questions, no signup, no invented ROI.",
+  "hook": "Decide what to fix before buying more AI.",
+  "cta": "Free 2-minute workflow diagnostic",
+  "destination": "https://stratumpraxis.com/b2b-intro/?utm_source=bluesky&utm_medium=social&utm_campaign=b2b_inbound_20261005",
+  "status": "QUEUED",
+  "publish_trigger": "2026-10-05"
+}
