@@ -100,6 +100,39 @@
       "safe_auto_limit": "Do not schedule, publish, create new creative, change price, or bypass safety/approval gates. Re-evaluate only after explicit approval or verified state change.",
       "created_at": "2026-09-14T07:51:50+09:00",
       "last_synced_at": "2026-09-14T10:01:00+09:00"
+    },
+    {
+      "route_id": "stratum_b2b_intro_inbound_v1",
+      "state": "ACTIVE_MEASURE_FIRST_PARTY",
+      "source": "stratum_praxis",
+      "medium": "multi_channel",
+      "campaign": "b2b_inbound_20261005",
+      "content": "b2b_intro_workflow_diagnostic",
+      "source_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+      "canonical_entry_url": "https://stratumpraxis.com/b2b-intro/",
+      "landing_url": "https://stratumpraxis.com/b2b/",
+      "paid_escalation_url": "https://stratumpraxis.com/workflow-audit.html",
+      "checkout_url": "https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02",
+      "offer": "workflow_opportunity_audit",
+      "price_usd": 499,
+      "historical_claim": false,
+      "stage": "DISTRIBUTION_TO_HUMAN",
+      "first_party_sensor": "https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-b2b-funnel-sensor",
+      "measurement_boundary": "FIRST_PARTY_BROWSER_INTERACTION_CANDIDATE_ONLY",
+      "auto_human_promotion": false,
+      "auto_buyer_promotion": false,
+      "payment_inference": false,
+      "success_condition": "audit_click_candidate >= 1 then verify buyer / checkout / payment using direct evidence",
+      "next_bottleneck": "external_human_acquisition",
+      "pre_sale_rule": "Keep existing product, price and checkout fixed. Change one acquisition variable at a time. Browser interaction is candidate evidence only.",
+      "on_success": [
+        "verify_buyer_or_checkout_signal",
+        "verify_payment_if_present",
+        "attribute_entry_channel",
+        "preserve_winning_entry",
+        "scale_only_after_repeatable_external_evidence"
+      ],
+      "activated_at": "2026-10-05"
     }
   ]
 }
