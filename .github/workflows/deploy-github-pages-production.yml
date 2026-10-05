@@ -37,6 +37,8 @@ on:
       - 'stratum-motion-ui-2026.js'
       - 'stratum-i18n-runtime-2026.js'
       - 'home-revenue-clean-2026.css'
+      - 'stratum-home-app-v4.css'
+      - 'stratum-home-app-v4.js'
       - 'media/**'
       - '*.txt'
   workflow_dispatch:
@@ -164,7 +166,7 @@ jobs:
           for path in html_files:
               html = path.read_text(encoding='utf-8')
               rel = path.relative_to(Path('_site')).as_posix().lower()
-              if 'Stratum Praxis' in html and 'stratum-revenue-ui-2026.css' in html and not (rel.startswith('delivery/') or rel.startswith('ops/') or '/access' in rel or 'access.' in rel or 'deliver' in rel or 'thank-you' in rel or rel in {'privacy.html','privacy-policy.html','terms.html'}):
+              if 'Stratum Praxis' in html and 'stratum-revenue-ui-2026.css' in html and not (rel.startswith('delivery/') or rel.startswith('ops/') or '/access' in rel or 'access.' in rel or 'deliver' in rel or 'thank-you' in rel or rel in {'index.html','privacy.html','privacy-policy.html','terms.html'}):
                   revenue_ui_pages += 1
           print(f'Revenue UI injected into {revenue_ui_pages} branded Stratum pages')
           print(f'GA4 injected exactly once into {len(html_files)} HTML pages')
