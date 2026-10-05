@@ -79,8 +79,8 @@ jobs:
           from pathlib import Path
 
           GA_ID = 'G-QXTYRB4TWY'
-          REVENUE_UI_CSS = '<link rel="stylesheet" href="/stratum-revenue-ui-2026.css?v=20261005b" data-sp-revenue-ui="build">'
-          REVENUE_UI_JS = '<script src="/stratum-revenue-ui-2026.js?v=20261005b" defer data-sp-revenue-ui="build"></script>'
+          REVENUE_UI_CSS = '<link rel="stylesheet" href="/stratum-revenue-ui-2026.css?v=20261005c" data-sp-revenue-ui="build">'
+          REVENUE_UI_JS = '<script src="/stratum-revenue-ui-2026.js?v=20261005c" defer data-sp-revenue-ui="build"></script>'
           TAG = '''<!-- Google tag (gtag.js) -->
           <script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
           <script>
