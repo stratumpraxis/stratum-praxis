@@ -66,4 +66,12 @@ jobs:
           git config user.email "actions@users.noreply.github.com"
           git add acquisition/blogger/outbox acquisition/blogger/state.json acquisition/blogger/last-run.log signal/auto signal/sitemap.xml publishing/queue
           git commit -m "chore(revenue): publish evidence-grounded owned media"
-          git push
+          for attempt in 1 2 3; do
+            if git pull --rebase origin main && git push origin HEAD:main; then
+              exit 0
+            fi
+            git rebase --abort 2>/dev/null || true
+            sleep $((attempt * 3))
+          done
+          echo "Publisher evidence push failed after bounded retries." >&2
+          exit 1
