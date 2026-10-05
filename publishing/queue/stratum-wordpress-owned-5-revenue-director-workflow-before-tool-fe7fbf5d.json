@@ -13,5 +13,7 @@
     "Stratum Praxis"
   ],
   "status": "QUEUED",
-  "publish_trigger": "2026-10-05T13:40:54.070Z"
+  "publish_trigger": "2026-10-05T13:40:54.070Z",
+  "retry_requested_at": "2026-10-05T13:45:00Z",
+  "retry_reason": "self-owned writer credential preflight"
 }
