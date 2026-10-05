@@ -114,7 +114,6 @@ jobs:
         if: steps.persist.outputs.committed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
-          WP_ENABLED: ${{ vars.STRATUM_WORDPRESS_ENABLED || 'false' }}
         shell: bash
         run: |
           set -euo pipefail
@@ -130,12 +129,8 @@ jobs:
                 echo "DISPATCHED_DEVTO $package"
                 ;;
               publishing/queue/stratum-wordpress-*.json)
-                if [ "$WP_ENABLED" = "true" ]; then
-                  gh workflow run stratum-wordpress-publish.yml --ref main -f package_path="$package"
-                  echo "DISPATCHED_WORDPRESS $package"
-                else
-                  echo "WORDPRESS_AUTH_GATE $package"
-                fi
+                gh workflow run stratum-wordpress-publish.yml --ref main -f package_path="$package"
+                echo "DISPATCHED_WORDPRESS $package"
                 ;;
             esac
           done
