@@ -454,25 +454,3 @@
     }
   });
 })();
-
-
-;(()=>{'use strict';
-if(window.__STRATUM_REVENUE_UI_LOADER__)return;
-window.__STRATUM_REVENUE_UI_LOADER__='2026.10.05-v1';
-const host=location.hostname.toLowerCase();
-if(!(host==='stratumpraxis.com'||host==='www.stratumpraxis.com'||host==='localhost'||host==='127.0.0.1'))return;
-if(!document.querySelector('link[data-sp-revenue-ui]')){
-  const l=document.createElement('link');
-  l.rel='stylesheet';
-  l.href='/stratum-revenue-ui-2026.css?v=20261005b';
-  l.dataset.spRevenueUi='true';
-  document.head.appendChild(l);
-}
-if(!document.querySelector('script[data-sp-revenue-ui]')){
-  const s=document.createElement('script');
-  s.src='/stratum-revenue-ui-2026.js?v=20261005b';
-  s.defer=true;
-  s.dataset.spRevenueUi='true';
-  document.head.appendChild(s);
-}
-})();
