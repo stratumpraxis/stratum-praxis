@@ -7,13 +7,13 @@ en:{
   routes:[
     {k:'01 · SPEND & ROI',title:'Control AI spend before renewal.',desc:'Find overlap, low-use tools and weak utilization before renewing or expanding software spend.',facts:[['ENTRY','FREE'],['SELF-SERVE','$39'],['SPECIALIST','$499']],start:'Run Waste Calculator',
       steps:[['FREE SIGNAL','Waste Calculator','FREE','/ai-saas-waste-calculator.html'],['SELF-SERVICE','Spend Decision Kit','$39','https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06'],['SPECIALIST','AI / SaaS Spend Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['SPEND MAP','Contracts, purpose and renewal in one view.'],['DECISION MATRIX','Keep / downgrade / merge / stop.'],['30-DAY PATH','What to inspect first.']],out:'Spend decision artifact',secondary:'View spend audit','/ai-saas-spend-waste-audit.html'},
+      arts:[['SPEND MAP','Contracts, purpose and renewal in one view.'],['DECISION MATRIX','Keep / downgrade / merge / stop.'],['30-DAY PATH','What to inspect first.']],out:'Spend decision artifact',secondary:['View spend audit','/ai-saas-spend-waste-audit.html']},
     {k:'02 · WORKFLOW',title:'Decide what to automate before building.',desc:'Separate a real automation opportunity from process noise, then escalate only if the workflow is material.',facts:[['ENTRY','FREE'],['SELF-SERVE','DIAGNOSE'],['SPECIALIST','$499']],start:'Open Workflow Diagnostic',
       steps:[['FREE SIGNAL','Workflow Diagnostic','FREE','/b2b/'],['PREVIEW','Audit Sample','SAMPLE','/sample-workflow-audit.html'],['SPECIALIST','Workflow Opportunity Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['WORKFLOW MAP','Trigger, owners, systems and handoffs.'],['RANKED OPTIONS','Impact, effort, reversibility and risk.'],['HUMAN GATES','Where automation should stop.']],out:'Workflow decision artifact',secondary:'View workflow audit','/workflow-audit.html'},
+      arts:[['WORKFLOW MAP','Trigger, owners, systems and handoffs.'],['RANKED OPTIONS','Impact, effort, reversibility and risk.'],['HUMAN GATES','Where automation should stop.']],out:'Workflow decision artifact',secondary:['View workflow audit','/workflow-audit.html']},
     {k:'03 · AGENT OPS',title:'Know economics and authority before scale.',desc:'Make unit economics, permission boundaries and handoff rules visible before increasing autonomy.',facts:[['ENTRY','FREE'],['KIT','$69+'],['OUTCOME','CONTROL']],start:'Run Agent Economics',
       steps:[['FREE SIGNAL','Agent Economics Calculator','FREE','/ai-agent-economics-calculator.html'],['CONTROL','Agent Control Auditor','FREE / PRO','/agent-control-auditor.html'],['OPERATING KIT','Cross-Agent Operating Kit','$69–299','/cross-agent-operating-kit.html']],
-      arts:[['ECONOMICS','Cost per successful outcome.'],['AUTHORITY MAP','Permissions and human checkpoints.'],['HANDOFF RULES','Portable policy and state.']],out:'Agent operating artifact',secondary:'View operating kit','/cross-agent-operating-kit.html'}
+      arts:[['ECONOMICS','Cost per successful outcome.'],['AUTHORITY MAP','Permissions and human checkpoints.'],['HANDOFF RULES','Portable policy and state.']],out:'Agent operating artifact',secondary:['View operating kit','/cross-agent-operating-kit.html']}
   ],
   outputs:'WHAT YOU GET',open:'Open route',compare:'Open product page',method:'EVIDENCE FIRST',m1:'No forced bundle',m2:'No invented ROI',m3:'Fixed-scope escalation',swipe:'Swipe left / right to change route'
 },
@@ -23,13 +23,13 @@ ja:{
   routes:[
     {k:'01 · AI / SAAS支出',title:'更新前に、AI支出を制御する。',desc:'重複・低利用・弱い活用を見つけ、更新や追加投資の前に判断できる状態へ。',facts:[['入口','無料'],['SELF-SERVE','$39'],['専門監査','$499']],start:'Waste Calculatorを使う',
       steps:[['無料SIGNAL','Waste Calculator','無料','/ai-saas-waste-calculator.html'],['自分で判断','Spend Decision Kit','$39','https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06'],['専門監査','AI / SaaS Spend Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['SPEND MAP','契約・用途・更新を1画面へ。'],['DECISION MATRIX','残す / 下げる / 統合 / 止める。'],['30-DAY PATH','最初に確認する順番。']],out:'支出Decision Artifact',secondary:'支出監査を見る','/ai-saas-spend-waste-audit.html'},
+      arts:[['SPEND MAP','契約・用途・更新を1画面へ。'],['DECISION MATRIX','残す / 下げる / 統合 / 止める。'],['30-DAY PATH','最初に確認する順番。']],out:'支出Decision Artifact',secondary:['支出監査を見る','/ai-saas-spend-waste-audit.html']},
     {k:'02 · WORKFLOW',title:'作る前に、自動化すべきか決める。',desc:'Process noiseと本当に自動化価値のあるWorkflowを分け、重要な場合だけ監査へ。',facts:[['入口','無料'],['SELF-SERVE','診断'],['専門監査','$499']],start:'Workflow診断を開く',
       steps:[['無料SIGNAL','Workflow診断','無料','/b2b/'],['実物確認','Audit Sample','SAMPLE','/sample-workflow-audit.html'],['専門監査','Workflow Opportunity Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['WORKFLOW MAP','Trigger・担当・System・Handoff。'],['RANKED OPTIONS','Impact・Effort・Riskで順位化。'],['HUMAN GATES','人を残す場所を明示。']],out:'Workflow Decision Artifact',secondary:'Workflow監査を見る','/workflow-audit.html'},
+      arts:[['WORKFLOW MAP','Trigger・担当・System・Handoff。'],['RANKED OPTIONS','Impact・Effort・Riskで順位化。'],['HUMAN GATES','人を残す場所を明示。']],out:'Workflow Decision Artifact',secondary:['Workflow監査を見る','/workflow-audit.html']},
     {k:'03 · AGENT運用',title:'拡大前に、採算と権限を見える化する。',desc:'成功1件コスト・権限境界・引き継ぎルールを見てから自律性を上げる。',facts:[['入口','無料'],['KIT','$69+'],['結果','CONTROL']],start:'Agent採算を測る',
       steps:[['無料SIGNAL','Agent Economics Calculator','無料','/ai-agent-economics-calculator.html'],['CONTROL','Agent Control Auditor','FREE / PRO','/agent-control-auditor.html'],['運用KIT','Cross-Agent Operating Kit','$69–299','/cross-agent-operating-kit.html']],
-      arts:[['ECONOMICS','成功1件あたりコスト。'],['AUTHORITY MAP','権限とHuman Checkpoint。'],['HANDOFF RULES','PolicyとStateの引き継ぎ。']],out:'Agent Operating Artifact',secondary:'Operating Kitを見る','/cross-agent-operating-kit.html'}
+      arts:[['ECONOMICS','成功1件あたりコスト。'],['AUTHORITY MAP','権限とHuman Checkpoint。'],['HANDOFF RULES','PolicyとStateの引き継ぎ。']],out:'Agent Operating Artifact',secondary:['Operating Kitを見る','/cross-agent-operating-kit.html']}
   ],
   outputs:'届くもの',open:'このルートを開く',compare:'商品ページを見る',method:'EVIDENCE FIRST',m1:'不要なBundleなし',m2:'架空ROIなし',m3:'支援範囲を固定',swipe:'左右スワイプでも切替できます'
 },
@@ -39,13 +39,13 @@ es:{
   routes:[
     {k:'01 · GASTO & ROI',title:'Controla el gasto AI antes de renovar.',desc:'Encuentra solapamiento y bajo uso antes de renovar o ampliar.',facts:[['ENTRADA','GRATIS'],['AUTOSERVICIO','$39'],['AUDITORÍA','$499']],start:'Abrir Waste Calculator',
       steps:[['SEÑAL GRATIS','Waste Calculator','GRATIS','/ai-saas-waste-calculator.html'],['AUTOSERVICIO','Spend Decision Kit','$39','https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06'],['AUDITORÍA','AI / SaaS Spend Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['SPEND MAP','Contratos y renovaciones en una vista.'],['DECISION MATRIX','Keep / downgrade / merge / stop.'],['30-DAY PATH','Qué revisar primero.']],out:'Artefacto de gasto',secondary:'Ver auditoría','/ai-saas-spend-waste-audit.html'},
+      arts:[['SPEND MAP','Contratos y renovaciones en una vista.'],['DECISION MATRIX','Keep / downgrade / merge / stop.'],['30-DAY PATH','Qué revisar primero.']],out:'Artefacto de gasto',secondary:['Ver auditoría','/ai-saas-spend-waste-audit.html']},
     {k:'02 · WORKFLOW',title:'Decide qué automatizar antes de construir.',desc:'Separa oportunidad real de automatización del ruido de proceso.',facts:[['ENTRADA','GRATIS'],['DIAGNÓSTICO','SELF-SERVE'],['AUDITORÍA','$499']],start:'Abrir diagnóstico',
       steps:[['SEÑAL GRATIS','Workflow Diagnostic','GRATIS','/b2b/'],['MUESTRA','Audit Sample','SAMPLE','/sample-workflow-audit.html'],['AUDITORÍA','Workflow Opportunity Audit','$499','https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02']],
-      arts:[['WORKFLOW MAP','Trigger, responsables, sistemas y handoffs.'],['RANKED OPTIONS','Impacto, esfuerzo y riesgo.'],['HUMAN GATES','Dónde debe parar la automatización.']],out:'Artefacto de workflow',secondary:'Ver auditoría','/workflow-audit.html'},
+      arts:[['WORKFLOW MAP','Trigger, responsables, sistemas y handoffs.'],['RANKED OPTIONS','Impacto, esfuerzo y riesgo.'],['HUMAN GATES','Dónde debe parar la automatización.']],out:'Artefacto de workflow',secondary:['Ver auditoría','/workflow-audit.html']},
     {k:'03 · AGENT OPS',title:'Conoce economía y autoridad antes de escalar.',desc:'Haz visibles coste por resultado, permisos y handoff antes de aumentar autonomía.',facts:[['ENTRADA','GRATIS'],['KIT','$69+'],['RESULTADO','CONTROL']],start:'Abrir economía de agentes',
       steps:[['SEÑAL GRATIS','Agent Economics Calculator','GRATIS','/ai-agent-economics-calculator.html'],['CONTROL','Agent Control Auditor','FREE / PRO','/agent-control-auditor.html'],['OPERATING KIT','Cross-Agent Operating Kit','$69–299','/cross-agent-operating-kit.html']],
-      arts:[['ECONOMICS','Coste por resultado exitoso.'],['AUTHORITY MAP','Permisos y checkpoints humanos.'],['HANDOFF RULES','Política y estado portables.']],out:'Artefacto de agente',secondary:'Ver operating kit','/cross-agent-operating-kit.html'}
+      arts:[['ECONOMICS','Coste por resultado exitoso.'],['AUTHORITY MAP','Permisos y checkpoints humanos.'],['HANDOFF RULES','Política y estado portables.']],out:'Artefacto de agente',secondary:['Ver operating kit','/cross-agent-operating-kit.html']}
   ],
   outputs:'QUÉ RECIBES',open:'Abrir ruta',compare:'Abrir producto',method:'EVIDENCE FIRST',m1:'Sin bundle forzado',m2:'Sin ROI inventado',m3:'Alcance fijo',swipe:'Desliza para cambiar de ruta'
 }
