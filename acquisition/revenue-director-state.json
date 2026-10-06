@@ -1,9 +1,10 @@
 {
   "version": 1,
-  "last_run_at": "2026-10-05T13:40:38.773Z",
-  "last_source_at": "2026-10-05T13:40:38.775Z",
+  "last_run_at": "2026-10-06T16:50:05.983Z",
+  "last_source_at": "2026-10-06T16:50:05.985Z",
   "created_source_ids": [
-    "revenue-director-workflow-before-tool"
+    "revenue-director-workflow-before-tool",
+    "revenue-director-cost-per-success"
   ],
   "last_outcome": "SOURCE_CREATED",
   "last_funnel": {
@@ -14,5 +15,5 @@
     "audit_click": 0
   },
   "runtime": "SUPABASE_DIRECT",
-  "last_source_id": "revenue-director-workflow-before-tool"
+  "last_source_id": "revenue-director-cost-per-success"
 }
