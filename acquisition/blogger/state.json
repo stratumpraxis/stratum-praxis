@@ -34,9 +34,17 @@
       "lens_id": "practical_operator",
       "ghost_label": "Practical Operator",
       "provider": "local-evidence-fallback"
+    },
+    "revenue-director-cost-per-success": {
+      "output_id": "2026-10-06-revenue-director-cost-per-success-14dddb6c",
+      "at": "2026-10-06T16:50:28.209Z",
+      "status": "READY",
+      "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
+      "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-05T14:09:28.839Z",
+  "last_run_at": "2026-10-06T16:50:28.209Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -82,15 +90,23 @@
         "title_verified": true,
         "canonical_url": "https://stratumpraxis.com/signal/auto/before-buying-another-ai-tool-diagnose-one-recurring-workflow-first-fe7fbf5d.html"
       }
+    },
+    "2026-10-06-revenue-director-cost-per-success-14dddb6c": {
+      "output_id": "2026-10-06-revenue-director-cost-per-success-14dddb6c",
+      "title": "AI cost per successful outcome is more useful than cost per model call",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/ai-cost-per-successful-outcome-is-more-useful-than-cost-per-model-call-14dddb6c.html",
+      "state": "PUBLISH_REQUESTED",
+      "requested_at": "2026-10-06T16:50:28.272Z"
     }
   },
-  "last_publish_pass_at": "2026-10-05T14:09:28.944Z",
+  "last_publish_pass_at": "2026-10-06T16:50:28.429Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
     "agent-company-control-owner-package": 1,
     "recurring-digital-spend-owner-package-2026-09-08": 1,
-    "revenue-director-workflow-before-tool": 1
+    "revenue-director-workflow-before-tool": 1,
+    "revenue-director-cost-per-success": 1
   },
   "company_start_event": {
     "at": "2026-10-05T11:40:00Z",

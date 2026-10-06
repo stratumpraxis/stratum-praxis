@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "output_id": "2026-10-06-revenue-director-cost-per-success-14dddb6c",
+  "generated_at": "2026-10-06T16:50:28.209Z",
+  "provider": "local-evidence-fallback",
+  "model": "none",
+  "billing_policy": "FREE_ONLY_NO_PAID_FALLBACK",
+  "source_id": "revenue-director-cost-per-success",
+  "source_candidate_id": null,
+  "identity_id": "stratum-praxis",
+  "desk_id": "en_desk",
+  "lens_id": "practical_operator",
+  "ghost_label": "Practical Operator",
+  "title_options": [
+    "AI cost per successful outcome is more useful than cost per model call"
+  ],
+  "title": "AI cost per successful outcome is more useful than cost per model call",
+  "dek": "AI economics should include retries, failures, supporting software and human review rather than counting only the nominal model-call cost. A cheap attempt can still produce an expensive workflow when the success rate is ",
+  "body": "AI economics should include retries, failures, supporting software and human review rather than counting only the nominal model-call cost. A cheap attempt can still produce an expensive workflow when the success rate is low or review work is high.\n\n## What is actually changing\n\nAI economics should include retries, failures, supporting software and human review rather than counting only the nominal model-call cost.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 2\n\nA cheap attempt can still produce an expensive workflow when the success rate is low or review work is high.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 3\n\nA useful operating metric connects total workflow cost to a verified successful outcome that the business can recognize.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 4\n\nThe right denominator depends on the workflow: completed cases, accepted deliverables, resolved tickets or another observable outcome can be more meaningful than raw calls.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 5\n\nPublic attention to AI cost does not prove buyer demand; buyer and payment evidence must be measured separately.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## The operating implication\n\nThe existing Stratum decision and audit routes can be used to review software spend without changing price, checkout or product scope first.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## A practical way to use the idea\n\nStart with the smallest decision the evidence can support. Separate what is known from what is inferred. Decide which action is reversible, which action needs review, and what signal would justify changing course. If the evidence is weak, keep the action small. If the evidence becomes stronger, expand deliberately.\n\nThis approach is slower than making a sweeping claim, but it produces a more durable operating system. The goal of this publication lane is not maximum content volume. It is to turn recorded source material into a useful decision surface while keeping attribution, uncertainty and commercial routing visible.\n\n## Where the boundary sits\n\nThe source package is intentionally narrower than a complete market study. It does not establish customer outcomes, guaranteed ROI or universal best practice unless those claims are explicitly present in the approved evidence. That boundary matters. A useful article can explain a mechanism and still leave room for uncertainty.\n\nThe result is a better handoff between publishing and operations: the article explains the decision, the evidence record explains why the claim is allowed, and any product link is included only when it directly fits the problem being discussed.",
+  "evidence_notes": [
+    "acquisition/media-engine/runtime-sources/revenue-director-cost-per-success.md",
+    "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "https://stratumpraxis.com/b2b/",
+    "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+    "https://stratumpraxis.com/workflow-audit.html"
+  ],
+  "allowed_claim_report": [
+    "AI economics should include retries, failures, supporting software and human review rather than counting only the nominal model-call cost.",
+    "A cheap attempt can still produce an expensive workflow when the success rate is low or review work is high.",
+    "A useful operating metric connects total workflow cost to a verified successful outcome that the business can recognize.",
+    "The right denominator depends on the workflow: completed cases, accepted deliverables, resolved tickets or another observable outcome can be more meaningful than raw calls.",
+    "Public attention to AI cost does not prove buyer demand; buyer and payment evidence must be measured separately.",
+    "The existing Stratum decision and audit routes can be used to review software spend without changing price, checkout or product scope first."
+  ],
+  "restricted_claim_report": [
+    {
+      "phrase": "guaranteed ROI",
+      "safe_rewrite": "No guaranteed financial outcome is supported."
+    },
+    {
+      "phrase": "our customers saved",
+      "safe_rewrite": "No customer savings claim is supported by this source."
+    },
+    {
+      "phrase": "the market has validated",
+      "safe_rewrite": "Traffic, buyer and payment evidence must be measured separately."
+    },
+    {
+      "phrase": "we always reduce costs",
+      "safe_rewrite": "The route supports a decision; it does not promise a reduction."
+    }
+  ],
+  "editorial_notes": [
+    "Deterministic evidence-grounded fallback used; prose is constrained to approved source claims."
+  ],
+  "quality": {
+    "score": 84,
+    "words": 683,
+    "generic_hits": [],
+    "restricted_hits": [],
+    "first_person_risk": false,
+    "threshold": 82
+  },
+  "status": "READY",
+  "publication_lane": "OWNED_SITE",
+  "publication_proof": null,
+  "cta": {
+    "asset_id": "stratum-b2b-intro",
+    "label": "Run the free workflow diagnostic",
+    "destination_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "tracked_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708&utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=revenue-director-cost-per-success%3Alocal_fallback"
+  },
+  "attribution": {
+    "source_id": "revenue-director-cost-per-success",
+    "source_candidate_id": null,
+    "identity_id": "stratum-praxis",
+    "desk_id": "en_desk",
+    "lens_id": "practical_operator",
+    "ghost_label": "Practical Operator",
+    "channel_id": "owned_signal",
+    "campaign": "autonomous_revenue_publisher"
+  },
+  "stages": {
+    "final_sha256": "14dddb6c927d81b6821224bd22d4bc74bdfa00a3c66119dbd4d3d9332783b478",
+    "fallback_reason": "workers_ai_unavailable"
+  },
+  "publication_state": "PUBLISH_REQUESTED",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/ai-cost-per-successful-outcome-is-more-useful-than-cost-per-model-call-14dddb6c.html"
+}
