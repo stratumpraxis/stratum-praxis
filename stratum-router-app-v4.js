@@ -65,6 +65,7 @@ function render(){
  $('#start-copy').textContent=r.start;$('#start-link').href=r.steps[0][3];
  $('#stage-output').textContent=T().outputs;$('#stage-badge').textContent=r.out;
  $('#ladder').innerHTML=r.steps.map((s,i)=>'<a class="step" href="'+s[3]+'"><span class="step-num">0'+(i+1)+'</span><span><small>'+s[0]+'</small><b>'+s[1]+'</b></span><strong class="step-price">'+s[2]+'</strong></a>').join('');
+ $('#ladder').querySelectorAll('a.step').forEach((a,i)=>{const sku=idx===0&&i===1?'ai_saas_spend_decision_kit':idx===0&&i===2?'ai_saas_spend_waste_audit':idx===1&&i===2?'workflow_audit':'';if(sku)a.dataset.product=sku;a.dataset.analyticsId='route_'+idx+'_step_'+i;});
  $('#output-grid').innerHTML=r.arts.map((a,i)=>'<div class="artifact"><small>0'+(i+1)+'</small><b>'+a[0]+'</b><p>'+a[1]+'</p></div>').join('');
  $('#primary').href=r.steps[0][3];$('#primary').textContent=T().open+' →';$('#secondary').href=r.secondary[1];$('#secondary').textContent=T().compare+' ↗';
  $('#method').textContent=T().method;$('#m1').textContent=T().m1;$('#m2').textContent=T().m2;$('#m3').textContent=T().m3;$('#swipe').textContent=T().swipe;
