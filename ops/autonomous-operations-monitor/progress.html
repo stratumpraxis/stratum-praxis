@@ -96,13 +96,21 @@ td strong{font-size:10px}.dot{display:inline-block;width:7px;height:7px;border-r
 .dot.run{background:var(--blue)}.dot.wait{background:var(--amber)}.dot.ok{background:var(--green)}
 .funnelMini{display:flex;gap:3px}.funnelMini i{width:18px;height:6px;border-radius:3px;background:#1b2c3a}.funnelMini i.on{background:var(--green)}
 
+.execBanner{border:1px solid var(--line);border-radius:14px;padding:13px;background:#0d1822;font-size:13px;font-weight:900;margin-bottom:10px}
+.execBanner.good{border-color:#2f6a4e;color:var(--green);background:#0d251d}
+.execBanner.warn{border-color:#7a5e2e;color:var(--amber);background:#261d10}
+.execBanner.bad{border-color:#6d3942;color:var(--red);background:#251116}
+.execProjects{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.execCard{border:1px solid var(--line);border-radius:12px;padding:11px;background:#0d1822}
+.execCard strong{font-size:12px}.execCard small{display:block;color:var(--muted);font-size:9px;line-height:1.55;margin-top:5px}
+.execNums{display:flex;gap:10px;margin-top:8px}.execNums span{font-size:9px;color:var(--muted)}.execNums b{color:var(--text);font-size:13px}
 .truth{margin-top:14px;border:1px dashed #30485b;border-radius:14px;padding:11px;color:var(--muted);font-size:9px;line-height:1.6}
 
-@media(max-width:1060px){.bigKpis{grid-template-columns:repeat(3,1fr)}.projects{grid-template-columns:repeat(2,1fr)}.ladder{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:1060px){.bigKpis{grid-template-columns:repeat(3,1fr)}.projects{grid-template-columns:repeat(2,1fr)}.ladder{grid-template-columns:repeat(3,1fr)}.execProjects{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){
   main{padding:16px 12px 70px}.auth{width:100%}.auth input{flex:1;min-width:0}
   .bigKpis{grid-template-columns:repeat(2,1fr)}.projects{grid-template-columns:1fr}.ladder{grid-template-columns:repeat(2,1fr)}
-  .twocol{grid-template-columns:1fr}.section{padding:13px}.hero{padding:15px}.pname{font-size:16px}
+  .twocol{grid-template-columns:1fr}.section{padding:13px}.hero{padding:15px}.pname{font-size:16px}.execProjects{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -141,6 +149,16 @@ td strong{font-size:10px}.dot{display:inline-block;width:7px;height:7px;border-r
     <div class="statusLine">15秒自動更新<br><span id="generatedAt">—</span></div>
   </div>
   <div id="kpis" class="bigKpis"></div>
+</section>
+
+<section class="section" id="executionReality">
+  <div class="sectionHead">
+    <div><h2>Automation Reality</h2><div class="hint">監視Sensorと収益Actionを分離。VERIFYだけ回っていても「自動収益運転」とは表示しません。</div></div>
+    <div id="executionUpdated" class="hint">実行Realityを取得中</div>
+  </div>
+  <div id="executionBanner" class="execBanner">実行Realityを取得中…</div>
+  <div id="executionKpis" class="bigKpis"></div>
+  <div id="executionProjects" class="execProjects" style="margin-top:10px"></div>
 </section>
 
 <section class="section">
@@ -205,6 +223,8 @@ const time=t=>t?new Date(t).toLocaleString('ja-JP',{timeZone:'Asia/Tokyo',month:
 const ago=t=>{if(!t)return '—';const s=Math.max(0,(Date.now()-new Date(t).getTime())/1000);if(s<60)return Math.floor(s)+'秒前';if(s<3600)return Math.floor(s/60)+'分前';if(s<86400)return Math.floor(s/3600)+'時間前';return Math.floor(s/86400)+'日前'};
 let currentFilter='all';
 let lastData=null;
+let executionCache={at:0,data:null};
+const EXECUTION_PROJECTS=['vector','stratum','gwr','forwelle','sovlta','codeops'];
 
 function safeGetKey(){try{return localStorage.getItem('monitor_key')||sessionStorage.getItem('monitor_key')||''}catch(_e){return ''}}
 function safeSetKey(v){try{localStorage.setItem('monitor_key',v)}catch(_e){} try{sessionStorage.setItem('monitor_key',v)}catch(_e){}}
@@ -237,6 +257,92 @@ function stageLabel(p){
   return p.blocker||p.first_broken_stage||p.state||'UNKNOWN';
 }
 
+function taskClass(t){
+  const title=String(t.title||'');
+  const type=String(t.task_type||'');
+  const outcome=String(t.result?.outcome||'');
+  const ev=JSON.stringify(t.evidence||[]);
+  const capability=/ASTRA|Training|Quality Ladder|実践Cycle/i.test(title);
+  const sensor=type==='VERIFY' && !/Outbound|Publish|Claim|Submit|Buyer|Checkout|Payment|Payout|Revenue/i.test(title);
+  const revenueAction=!capability && (
+    !sensor ||
+    /OUTBOUND|PUBLISH|CLAIM|SUBMIT|BUYER|CHECKOUT|PAYMENT|PAYOUT|REVENUE/i.test(title+' '+outcome)
+  );
+  const externalWrite=
+    t.result?.mutation_performed===true ||
+    t.result?.external_write===true ||
+    /PUBLISHED|SENT|SUBMITTED|CLAIMED|EXTERNAL_WRITE/i.test(outcome+' '+ev);
+  return {capability,sensor,revenueAction,externalWrite};
+}
+
+async function loadExecutionReality(key,force=false){
+  if(!force && executionCache.data && Date.now()-executionCache.at<60000){
+    renderExecutionReality(executionCache.data);
+    return;
+  }
+  const cutoff=Date.now()-24*60*60*1000;
+  const rows=await Promise.all(EXECUTION_PROJECTS.map(async id=>{
+    try{
+      const r=await fetch(BASE+'/api/project?id='+encodeURIComponent(id),{headers:{Authorization:'Bearer '+key}});
+      const d=await r.json();
+      if(!r.ok)throw new Error(d.error||'read failed');
+      const tasks=(d.tasks||[]).filter(t=>new Date(t.created_at||t.updated_at||0).getTime()>=cutoff);
+      let sensors=0,actions=0,writes=0,running=0,ready=0;
+      for(const t of tasks){
+        const k=taskClass(t);
+        if(k.sensor)sensors++;
+        if(k.revenueAction)actions++;
+        if(k.externalWrite)writes++;
+        if(t.status==='RUNNING')running++;
+        if(t.status==='READY')ready++;
+      }
+      return {id,name:d.unit?.name||id,state:d.unit?.state||'UNKNOWN',blocker:d.unit?.blocker||'',sensors,actions,writes,running,ready};
+    }catch(e){
+      return {id,name:id,state:'READ_ERROR',blocker:String(e.message||e),sensors:0,actions:0,writes:0,running:0,ready:0,error:true};
+    }
+  }));
+  const data={
+    rows,
+    sensors:rows.reduce((n,x)=>n+x.sensors,0),
+    actions:rows.reduce((n,x)=>n+x.actions,0),
+    writes:rows.reduce((n,x)=>n+x.writes,0),
+    running:rows.reduce((n,x)=>n+x.running,0),
+    ready:rows.reduce((n,x)=>n+x.ready,0),
+    at:new Date().toISOString()
+  };
+  executionCache={at:Date.now(),data};
+  renderExecutionReality(data);
+}
+
+function renderExecutionReality(x){
+  $('executionUpdated').textContent='24h集計 · '+time(x.at);
+  const banner=$('executionBanner');
+  let label='',klass='';
+  if(x.writes>0){label='外部Revenue Action稼働中';klass='good'}
+  else if(x.actions>0){label='内部Revenue Actionは実行中・外部Writeは0';klass='warn'}
+  else {label='監視のみ・収益Action停止';klass='bad'}
+  banner.className='execBanner '+klass;
+  banner.textContent=label;
+  $('executionKpis').innerHTML=[
+    ['Sensor Readback 24h',x.sensors],
+    ['Revenue Action 24h',x.actions],
+    ['External Write 24h',x.writes],
+    ['RUNNING now',x.running],
+    ['READY stuck候補',x.ready]
+  ].map(v=>'<div class="kpi"><div class="n">'+esc(v[1])+'</div><div class="l">'+esc(v[0])+'</div></div>').join('');
+  $('executionProjects').innerHTML=x.rows.map(p=>{
+    const state=p.writes>0?'外部Write':p.actions>0?'Revenue Action':p.sensors>0?'監視のみ':'停止/待ち';
+    return '<div class="execCard"><strong>'+esc(p.name)+'</strong><small>'+esc(state)+' · '+esc(p.state)+(p.blocker?'<br>Blocker: '+esc(p.blocker):'')+'</small><div class="execNums"><span>Sensor <b>'+p.sensors+'</b></span><span>Action <b>'+p.actions+'</b></span><span>Write <b>'+p.writes+'</b></span><span>READY <b>'+p.ready+'</b></span></div></div>';
+  }).join('');
+  if(lastData){
+    const h=lastData.health||{};
+    if(!h.clock_healthy)$('companyStatus').textContent='Clock異常・要確認';
+    else if(x.writes>0)$('companyStatus').textContent='監視＋外部Revenue Action稼働';
+    else if(x.actions>0)$('companyStatus').textContent='監視稼働・外部Revenue Writeなし';
+    else $('companyStatus').textContent='監視のみ・収益Action停止';
+  }
+}
+
 function render(d){
   lastData=d;
   const h=d.health||{}, c=h.counts||{}, actions=d.action_items||[], projects=d.projects||[], rev=d.revenue||{}, stages=rev.stages||{};
@@ -244,7 +350,7 @@ function render(d){
   const human=actions.filter(a=>a.requires_user_now);
   const failed=Number(h.cron_stats?.failed_30m||0);
   $('clock').textContent=h.clock_healthy?'Global Clock / Event Runtime 正常':'Clock要確認';
-  $('companyStatus').textContent=!h.clock_healthy||failed>0?'要確認':running>0?'正常・作業中':'正常・Event待ち';
+  $('companyStatus').textContent=!h.clock_healthy||failed>0?'要確認':'実行Reality確認中';
   $('lastMove').textContent='最後の動作 '+ago(h.last_movement)+' · '+time(h.last_movement);
   $('generatedAt').textContent='Snapshot '+time(d.generated_at);
 
@@ -345,6 +451,10 @@ async function load(){
     const d=await r.json();
     if(!r.ok)throw new Error(d.error||'読込失敗');
     render(d);
+    loadExecutionReality(key).catch(e=>{
+      $('executionBanner').className='execBanner bad';
+      $('executionBanner').textContent='実行Reality取得失敗: '+e.message;
+    });
   }catch(e){$('msg').textContent='接続できません: '+e.message}
 }
 
