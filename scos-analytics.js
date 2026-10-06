@@ -122,8 +122,7 @@
   function productForLink(link) {
     const canonical = canonicalProductId();
     const explicit = clean(link && link.dataset && link.dataset.product, 100);
-    if (canonical === 'cross_agent_operating_kit' && explicit) return explicit;
-    return clean(canonical || explicit || (document.body && document.body.dataset.product) || funnelId(), 100);
+    return clean(explicit || canonical || (document.body && document.body.dataset.product) || funnelId(), 100);
   }
 
   function newAnonymousId() {
@@ -144,9 +143,16 @@
 
   const attribution = readAttribution();
 
-  function checkoutReference() {
-    const raw = attribution.route_id || [
-      funnelId(), attribution.utm_source, attribution.utm_campaign, attribution.utm_content
+  function checkoutReference(link) {
+    // Preserve acquisition attribution and append the explicit offer identity.
+    // Shared fixed-scope Stripe links must never collapse different audits into one anonymous route.
+    const offer = productForLink(link);
+    const raw = [
+      offer,
+      attribution.route_id || funnelId(),
+      attribution.utm_source,
+      attribution.utm_campaign,
+      attribution.utm_content
     ].filter(Boolean).join('_');
     return clean(raw, 200).replace(/[^a-zA-Z0-9_-]/g, '_').replace(/_+/g, '_').replace(/^_+|_+$/g, '');
   }
@@ -155,7 +161,7 @@
     let url;
     try { url = new URL(link.href, location.href); } catch (_) { return; }
     if (!CHECKOUT_HOSTS.has(url.hostname) || url.hostname !== 'buy.stripe.com') return;
-    const reference = checkoutReference();
+    const reference = checkoutReference(link);
     if (reference) url.searchParams.set('client_reference_id', reference);
     ['utm_source','utm_medium','utm_campaign','utm_content'].forEach(function (key) {
       if (attribution[key]) url.searchParams.set(key, attribution[key]);
