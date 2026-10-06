@@ -293,8 +293,8 @@ async function loadExecutionReality(key,force=false){
         if(k.sensor)sensors++;
         if(k.revenueAction)actions++;
         if(k.externalWrite)writes++;
-        if(t.status==='RUNNING')running++;
-        if(t.status==='READY')ready++;
+        if(t.status==='RUNNING' && !k.capability)running++;
+        if(t.status==='READY' && !k.capability)ready++;
       }
       return {id,name:d.unit?.name||id,state:d.unit?.state||'UNKNOWN',blocker:d.unit?.blocker||'',sensors,actions,writes,running,ready};
     }catch(e){
