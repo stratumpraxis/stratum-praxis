@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-06",
+  "updated_at": "2026-10-07",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -459,6 +459,90 @@
         }
       ],
       "excerpt": "AI economics should include retries, failures, supporting software and human review rather than counting only the nominal model-call cost. A cheap attempt can still produce an expensive workflow when the success rate is low or review work is high.",
+      "notes": "Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim."
+    },
+    {
+      "source_id": "revenue-director-renewal-decision",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Every recurring AI and SaaS renewal should end in keep, reduce, replace or stop",
+      "language": "en",
+      "content_hash": "sha256:9b10c71d6e64a347c73d5cca5626bb3f5cdfd51092d6f5fdd25d569782dadf95",
+      "source_file": "acquisition/media-engine/runtime-sources/revenue-director-renewal-decision.md",
+      "source_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+      "created_at": "2026-10-07T21:58:28.863Z",
+      "completed_at": "2026-10-07T21:58:28.863Z",
+      "status": "COMPLETE",
+      "audience_keys": [
+        "finance",
+        "ops_lead",
+        "smb_owner",
+        "ai_buyer"
+      ],
+      "evidence_families": [
+        "owned_behavior",
+        "editorial_source"
+      ],
+      "allowed_claims": [
+        "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation.",
+        "Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.",
+        "Low utilization alone does not prove a tool should be cancelled when the tool protects a high-value outcome or costly switching risk.",
+        "High usage alone does not prove value when multiple tools duplicate the same job or the workflow still fails frequently.",
+        "The useful output is a bounded decision with evidence, not a generic promise that software spend can always be reduced.",
+        "Stratum already has a self-service decision route and a fixed-scope audit route, so distribution should send qualified humans there before any new offer is created."
+      ],
+      "restricted_claims": [
+        {
+          "phrase": "guaranteed ROI",
+          "safe_rewrite": "No guaranteed financial outcome is supported."
+        },
+        {
+          "phrase": "our customers saved",
+          "safe_rewrite": "No customer savings claim is supported by this source."
+        },
+        {
+          "phrase": "the market has validated",
+          "safe_rewrite": "Traffic, buyer and payment evidence must be measured separately."
+        },
+        {
+          "phrase": "we always reduce costs",
+          "safe_rewrite": "The route supports a decision; it does not promise a reduction."
+        }
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "acquisition/media-engine/runtime-sources/revenue-director-renewal-decision.md",
+        "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+        "https://stratumpraxis.com/b2b/",
+        "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+        "https://stratumpraxis.com/workflow-audit.html"
+      ],
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "stratum-b2b-intro",
+          "url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+          "cta": "Run the free workflow diagnostic"
+        },
+        {
+          "role": "DIAGNOSTIC",
+          "asset_id": "stratum-workflow-diagnostic",
+          "url": "https://stratumpraxis.com/b2b/",
+          "cta": "Diagnose one recurring workflow"
+        },
+        {
+          "role": "SELF_SERVICE",
+          "asset_id": "ai-saas-spend-decision-kit",
+          "url": "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+          "cta": "Use the $39 decision kit"
+        },
+        {
+          "role": "HIGH_TOUCH",
+          "asset_id": "workflow-audit",
+          "url": "https://stratumpraxis.com/workflow-audit.html",
+          "cta": "Review the fixed-scope $499 audit"
+        }
+      ],
+      "excerpt": "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation. Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.",
       "notes": "Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim."
     }
   ]
