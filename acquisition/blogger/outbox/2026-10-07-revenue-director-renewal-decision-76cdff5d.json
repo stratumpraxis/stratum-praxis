@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "output_id": "2026-10-07-revenue-director-renewal-decision-76cdff5d",
+  "generated_at": "2026-10-07T21:58:45.988Z",
+  "provider": "local-evidence-fallback",
+  "model": "none",
+  "billing_policy": "FREE_ONLY_NO_PAID_FALLBACK",
+  "source_id": "revenue-director-renewal-decision",
+  "source_candidate_id": null,
+  "identity_id": "stratum-praxis",
+  "desk_id": "en_desk",
+  "lens_id": "practical_operator",
+  "ghost_label": "Practical Operator",
+  "title_options": [
+    "Every recurring AI and SaaS renewal should end in keep, reduce, replace or stop"
+  ],
+  "title": "Every recurring AI and SaaS renewal should end in keep, reduce, replace or stop",
+  "dek": "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation. Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are p",
+  "body": "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation. Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.\n\n## What is actually changing\n\nRecurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 2\n\nOwnership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 3\n\nLow utilization alone does not prove a tool should be cancelled when the tool protects a high-value outcome or costly switching risk.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 4\n\nHigh usage alone does not prove value when multiple tools duplicate the same job or the workflow still fails frequently.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 5\n\nThe useful output is a bounded decision with evidence, not a generic promise that software spend can always be reduced.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## The operating implication\n\nStratum already has a self-service decision route and a fixed-scope audit route, so distribution should send qualified humans there before any new offer is created.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## A practical way to use the idea\n\nStart with the smallest decision the evidence can support. Separate what is known from what is inferred. Decide which action is reversible, which action needs review, and what signal would justify changing course. If the evidence is weak, keep the action small. If the evidence becomes stronger, expand deliberately.\n\nThis approach is slower than making a sweeping claim, but it produces a more durable operating system. The goal of this publication lane is not maximum content volume. It is to turn recorded source material into a useful decision surface while keeping attribution, uncertainty and commercial routing visible.\n\n## Where the boundary sits\n\nThe source package is intentionally narrower than a complete market study. It does not establish customer outcomes, guaranteed ROI or universal best practice unless those claims are explicitly present in the approved evidence. That boundary matters. A useful article can explain a mechanism and still leave room for uncertainty.\n\nThe result is a better handoff between publishing and operations: the article explains the decision, the evidence record explains why the claim is allowed, and any product link is included only when it directly fits the problem being discussed.",
+  "evidence_notes": [
+    "acquisition/media-engine/runtime-sources/revenue-director-renewal-decision.md",
+    "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "https://stratumpraxis.com/b2b/",
+    "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+    "https://stratumpraxis.com/workflow-audit.html"
+  ],
+  "allowed_claim_report": [
+    "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation.",
+    "Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.",
+    "Low utilization alone does not prove a tool should be cancelled when the tool protects a high-value outcome or costly switching risk.",
+    "High usage alone does not prove value when multiple tools duplicate the same job or the workflow still fails frequently.",
+    "The useful output is a bounded decision with evidence, not a generic promise that software spend can always be reduced.",
+    "Stratum already has a self-service decision route and a fixed-scope audit route, so distribution should send qualified humans there before any new offer is created."
+  ],
+  "restricted_claim_report": [
+    {
+      "phrase": "guaranteed ROI",
+      "safe_rewrite": "No guaranteed financial outcome is supported."
+    },
+    {
+      "phrase": "our customers saved",
+      "safe_rewrite": "No customer savings claim is supported by this source."
+    },
+    {
+      "phrase": "the market has validated",
+      "safe_rewrite": "Traffic, buyer and payment evidence must be measured separately."
+    },
+    {
+      "phrase": "we always reduce costs",
+      "safe_rewrite": "The route supports a decision; it does not promise a reduction."
+    }
+  ],
+  "editorial_notes": [
+    "Deterministic evidence-grounded fallback used; prose is constrained to approved source claims."
+  ],
+  "quality": {
+    "score": 84,
+    "words": 686,
+    "generic_hits": [],
+    "restricted_hits": [],
+    "first_person_risk": false,
+    "threshold": 82
+  },
+  "status": "READY",
+  "publication_lane": "OWNED_SITE",
+  "publication_proof": null,
+  "cta": {
+    "asset_id": "stratum-b2b-intro",
+    "label": "Run the free workflow diagnostic",
+    "destination_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+    "tracked_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708&utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=revenue-director-renewal-decision%3Alocal_fallback"
+  },
+  "attribution": {
+    "source_id": "revenue-director-renewal-decision",
+    "source_candidate_id": null,
+    "identity_id": "stratum-praxis",
+    "desk_id": "en_desk",
+    "lens_id": "practical_operator",
+    "ghost_label": "Practical Operator",
+    "channel_id": "owned_signal",
+    "campaign": "autonomous_revenue_publisher"
+  },
+  "stages": {
+    "final_sha256": "76cdff5d66ea1906aa7049e761cc38bfeb6169e1375d2864b996fa815122c429",
+    "fallback_reason": "workers_ai_unavailable"
+  },
+  "publication_state": "PUBLISH_REQUESTED",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/every-recurring-ai-and-saas-renewal-should-end-in-keep-reduce-replace-or-stop-76cdff5d.html"
+}
