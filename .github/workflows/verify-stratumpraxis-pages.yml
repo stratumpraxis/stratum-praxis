@@ -119,7 +119,9 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/b2b-intro/' \
             'content="index,follow,max-image-preview:large"' \
             'href="/b2b/"' \
-            '問い合わせは、まだ不要です。'
+            '繰り返す業務の問題を、購入前に具体化。' \
+            'data-analytics-id="business_intro_direct_paid_audit"' \
+            'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
