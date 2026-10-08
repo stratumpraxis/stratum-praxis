@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxfhnvs2cq2i",
+  "cid": "bafyreielmfhzdslklzprp2qkksj7rzwu7exls5tjvjyydlqqvilg6sob3a",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxfhnvs2cq2i",
+  "destination": "https://stratumpraxis.com/signal/auto/scale-ai-agents-only-after-permissions-routing-and-evidence-are-explicit-296cccfa.html?utm_source=bsky&utm_campaign=owned_auto",
+  "content_id": "stratum-bluesky-owned-10-08-revenue-director-agent-governance-296cccfa",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-08T22:03:43.968Z"
+}
