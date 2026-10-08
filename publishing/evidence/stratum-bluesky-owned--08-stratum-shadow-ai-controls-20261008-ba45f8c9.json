@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxe5446xuq2t",
+  "cid": "bafyreibflj7dodtquwaynvxk4eqxcjsmyuegp3rdcnyjtqwjvs4otgk2za",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxe5446xuq2t",
+  "destination": "https://stratumpraxis.com/signal/auto/shadow-ai-map-the-real-workflow-before-adding-or-banning-ai-tools-ba45f8c9.html?utm_source=bsky&utm_campaign=owned_auto",
+  "content_id": "stratum-bluesky-owned--08-stratum-shadow-ai-controls-20261008-ba45f8c9",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-08T09:22:09.576Z"
+}
