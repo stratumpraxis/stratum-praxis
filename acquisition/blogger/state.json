@@ -127,8 +127,20 @@
       "output_id": "2026-10-08-stratum-shadow-ai-controls-20261008-ba45f8c9",
       "title": "Shadow AI: map the real workflow before adding or banning AI tools",
       "canonical_url": "https://stratumpraxis.com/signal/auto/shadow-ai-map-the-real-workflow-before-adding-or-banning-ai-tools-ba45f8c9.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-10-08T09:21:54.900Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-10-08T09:21:54.900Z",
+      "verified_at": "2026-10-08T09:27:42.184Z",
+      "verification": {
+        "http_status": 200,
+        "title_verified": true,
+        "canonical_url": "https://stratumpraxis.com/signal/auto/shadow-ai-map-the-real-workflow-before-adding-or-banning-ai-tools-ba45f8c9.html",
+        "body_contains": "Six checks you can run in a short review",
+        "cta_verified": true,
+        "cta_destination": "https://stratumpraxis.com/agent-control-auditor.html",
+        "cta_analytics_id": "auto_revenue_article_cta",
+        "verified_by": "Live external raw HTML readback",
+        "revenue_claim": false
+      }
     }
   },
   "last_publish_pass_at": "2026-10-08T09:21:54.922Z",
