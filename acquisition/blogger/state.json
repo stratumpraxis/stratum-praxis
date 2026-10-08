@@ -50,9 +50,17 @@
       "lens_id": "practical_operator",
       "ghost_label": "Practical Operator",
       "provider": "local-evidence-fallback"
+    },
+    "stratum-shadow-ai-controls-20261008": {
+      "output_id": "2026-10-08-stratum-shadow-ai-controls-20261008-ba45f8c9",
+      "at": "2026-10-08T09:21:54.678Z",
+      "status": "READY",
+      "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
+      "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-07T21:58:45.988Z",
+  "last_run_at": "2026-10-08T09:21:54.678Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -111,11 +119,19 @@
       "output_id": "2026-10-07-revenue-director-renewal-decision-76cdff5d",
       "title": "Every recurring AI and SaaS renewal should end in keep, reduce, replace or stop",
       "canonical_url": "https://stratumpraxis.com/signal/auto/every-recurring-ai-and-saas-renewal-should-end-in-keep-reduce-replace-or-stop-76cdff5d.html",
+      "state": "VERIFIED",
+      "requested_at": "2026-10-07T21:58:46.044Z",
+      "verified_at": "2026-10-08T09:21:54.887Z"
+    },
+    "2026-10-08-stratum-shadow-ai-controls-20261008-ba45f8c9": {
+      "output_id": "2026-10-08-stratum-shadow-ai-controls-20261008-ba45f8c9",
+      "title": "Shadow AI: map the real workflow before adding or banning AI tools",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/shadow-ai-map-the-real-workflow-before-adding-or-banning-ai-tools-ba45f8c9.html",
       "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-10-07T21:58:46.044Z"
+      "requested_at": "2026-10-08T09:21:54.900Z"
     }
   },
-  "last_publish_pass_at": "2026-10-07T21:58:46.117Z",
+  "last_publish_pass_at": "2026-10-08T09:21:54.922Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
@@ -123,7 +139,8 @@
     "recurring-digital-spend-owner-package-2026-09-08": 1,
     "revenue-director-workflow-before-tool": 1,
     "revenue-director-cost-per-success": 1,
-    "revenue-director-renewal-decision": 1
+    "revenue-director-renewal-decision": 1,
+    "stratum-shadow-ai-controls-20261008": 1
   },
   "company_start_event": {
     "at": "2026-10-05T11:40:00Z",

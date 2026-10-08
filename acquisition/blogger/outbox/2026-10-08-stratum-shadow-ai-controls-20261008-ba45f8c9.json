@@ -1,0 +1,87 @@
+{
+  "version": 2,
+  "output_id": "2026-10-08-stratum-shadow-ai-controls-20261008-ba45f8c9",
+  "generated_at": "2026-10-08T09:21:54.678Z",
+  "provider": "local-evidence-fallback",
+  "model": "none",
+  "billing_policy": "FREE_ONLY_NO_PAID_FALLBACK",
+  "source_id": "stratum-shadow-ai-controls-20261008",
+  "source_candidate_id": null,
+  "identity_id": "stratum-praxis",
+  "desk_id": "en_desk",
+  "lens_id": "practical_operator",
+  "ghost_label": "Practical Operator",
+  "title_options": [
+    "Shadow AI: map the real workflow before adding or banning AI tools"
+  ],
+  "title": "Shadow AI: map the real workflow before adding or banning AI tools",
+  "dek": "Unapproved AI use at work creates an operational inventory problem: identify tasks, data access, owners, human review and exception handling before changing tools.",
+  "body": "Unapproved AI use at work creates an operational inventory problem: identify tasks, data access, owners, human review and exception handling before changing tools.\n\n## What is actually changing\n\nUnapproved employee AI usage can be a governance challenge even when an employer has an official AI procurement process.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 2\n\nUse-case inventories should identify the workflow owner, data category, permission path, review responsibilities and exception handling.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 3\n\nHigh-impact decisions may require explicit human oversight and appropriate risk-based controls.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## Decision point 4\n\nPublic industry discussion supports researching this problem, but it does not establish Stratum buyer interest, savings, revenue or compliance outcomes.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## The operating implication\n\nThe existing free Agent Control Auditor can be used to structure a first review without changing price or checkout.\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.\n\n## A practical way to use the idea\n\nStart with the smallest decision the evidence can support. Separate what is known from what is inferred. Decide which action is reversible, which action needs review, and what signal would justify changing course. If the evidence is weak, keep the action small. If the evidence becomes stronger, expand deliberately.\n\nThis approach is slower than making a sweeping claim, but it produces a more durable operating system. The goal of this publication lane is not maximum content volume. It is to turn recorded source material into a useful decision surface while keeping attribution, uncertainty and commercial routing visible.\n\n## Where the boundary sits\n\nThe source package is intentionally narrower than a complete market study. It does not establish customer outcomes, guaranteed ROI or universal best practice unless those claims are explicitly present in the approved evidence. That boundary matters. A useful article can explain a mechanism and still leave room for uncertainty.\n\nThe result is a better handoff between publishing and operations: the article explains the decision, the evidence record explains why the claim is allowed, and any product link is included only when it directly fits the problem being discussed.",
+  "evidence_notes": [
+    "acquisition/media-engine/runtime-sources/stratum-shadow-ai-controls-20261008.md",
+    "https://www.reuters.com/legal/legalindustry/framework-governing-employees-existing-use-generative-ai--pracin-2026-10-07/",
+    "https://www.expresscomputer.in/news/infor-industry-ai-agentic-enterprise/139577/",
+    "https://stratumpraxis.com/agent-control-auditor.html"
+  ],
+  "allowed_claim_report": [
+    "Unapproved employee AI usage can be a governance challenge even when an employer has an official AI procurement process.",
+    "Use-case inventories should identify the workflow owner, data category, permission path, review responsibilities and exception handling.",
+    "High-impact decisions may require explicit human oversight and appropriate risk-based controls.",
+    "Public industry discussion supports researching this problem, but it does not establish Stratum buyer interest, savings, revenue or compliance outcomes.",
+    "The existing free Agent Control Auditor can be used to structure a first review without changing price or checkout."
+  ],
+  "restricted_claim_report": [
+    {
+      "phrase": "Stratum customers achieved compliance",
+      "safe_rewrite": "No client compliance result is evidenced."
+    },
+    {
+      "phrase": "Guaranteed legal compliance",
+      "safe_rewrite": "This educational checklist is not legal advice or certification."
+    },
+    {
+      "phrase": "Confirmed buyer demand",
+      "safe_rewrite": "Public research is a signal to test, not an observed Stratum buyer."
+    },
+    {
+      "phrase": "Guaranteed savings",
+      "safe_rewrite": "No outcome or savings guarantee is supported."
+    }
+  ],
+  "editorial_notes": [
+    "Deterministic evidence-grounded fallback used; prose is constrained to approved source claims."
+  ],
+  "quality": {
+    "score": 84,
+    "words": 577,
+    "generic_hits": [],
+    "restricted_hits": [],
+    "first_person_risk": false,
+    "threshold": 82
+  },
+  "status": "READY",
+  "publication_lane": "OWNED_SITE",
+  "publication_proof": null,
+  "cta": {
+    "asset_id": "agent-control-auditor",
+    "label": "Run a free Agent Control Auditor check",
+    "destination_url": "https://stratumpraxis.com/agent-control-auditor.html",
+    "tracked_url": "https://stratumpraxis.com/agent-control-auditor.html?utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=stratum-shadow-ai-controls-20261008%3Alocal_fallback"
+  },
+  "attribution": {
+    "source_id": "stratum-shadow-ai-controls-20261008",
+    "source_candidate_id": null,
+    "identity_id": "stratum-praxis",
+    "desk_id": "en_desk",
+    "lens_id": "practical_operator",
+    "ghost_label": "Practical Operator",
+    "channel_id": "owned_signal",
+    "campaign": "autonomous_revenue_publisher"
+  },
+  "stages": {
+    "final_sha256": "ba45f8c9552d3aedc57d23f1595bfe3b7bb7a52abff5286e26d755a62a7e7d17",
+    "fallback_reason": "workers_ai_unavailable"
+  },
+  "publication_state": "PUBLISH_REQUESTED",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/shadow-ai-map-the-real-workflow-before-adding-or-banning-ai-tools-ba45f8c9.html"
+}
