@@ -58,9 +58,17 @@
       "lens_id": "practical_operator",
       "ghost_label": "Practical Operator",
       "provider": "local-evidence-fallback"
+    },
+    "revenue-director-agent-governance": {
+      "output_id": "2026-10-08-revenue-director-agent-governance-296cccfa",
+      "at": "2026-10-08T22:03:24.084Z",
+      "status": "READY",
+      "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
+      "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-08T11:05:42.102Z",
+  "last_run_at": "2026-10-08T22:03:24.084Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -141,9 +149,16 @@
         "verified_by": "Live external raw HTML readback",
         "revenue_claim": false
       }
+    },
+    "2026-10-08-revenue-director-agent-governance-296cccfa": {
+      "output_id": "2026-10-08-revenue-director-agent-governance-296cccfa",
+      "title": "Scale AI agents only after permissions, routing and evidence are explicit",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/scale-ai-agents-only-after-permissions-routing-and-evidence-are-explicit-296cccfa.html",
+      "state": "PUBLISH_REQUESTED",
+      "requested_at": "2026-10-08T22:03:24.140Z"
     }
   },
-  "last_publish_pass_at": "2026-10-08T11:05:42.214Z",
+  "last_publish_pass_at": "2026-10-08T22:03:24.271Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
@@ -152,7 +167,8 @@
     "revenue-director-workflow-before-tool": 1,
     "revenue-director-cost-per-success": 1,
     "revenue-director-renewal-decision": 1,
-    "stratum-shadow-ai-controls-20261008": 1
+    "stratum-shadow-ai-controls-20261008": 1,
+    "revenue-director-agent-governance": 1
   },
   "company_start_event": {
     "at": "2026-10-05T11:40:00Z",

@@ -1,0 +1,18 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-devto-owned-10-08-revenue-director-agent-governance-296cccfa",
+  "platform": "devto",
+  "title": "Scale AI agents only after permissions, routing and evidence are explicit",
+  "source_path": "content/dev/auto/stratum-devto-owned-10-08-revenue-director-agent-governance-296cccfa.md",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/scale-ai-agents-only-after-permissions-routing-and-evidence-are-explicit-296cccfa.html",
+  "description": "Adding agents increases decisions, permissions, handoffs, context boundaries and potential failure paths as well as capacity. An agent contract can define purpose, permitted tools, allowed decisions a",
+  "tags": [
+    "ai",
+    "business",
+    "automation",
+    "productivity"
+  ],
+  "published": true,
+  "status": "QUEUED",
+  "publish_trigger": "2026-10-08T22:03:24.145Z"
+}
