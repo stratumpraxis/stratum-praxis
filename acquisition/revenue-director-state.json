@@ -1,11 +1,12 @@
 {
   "version": 1,
-  "last_run_at": "2026-10-07T21:58:28.861Z",
-  "last_source_at": "2026-10-07T21:58:28.864Z",
+  "last_run_at": "2026-10-08T22:03:05.995Z",
+  "last_source_at": "2026-10-08T22:03:05.998Z",
   "created_source_ids": [
     "revenue-director-workflow-before-tool",
     "revenue-director-cost-per-success",
-    "revenue-director-renewal-decision"
+    "revenue-director-renewal-decision",
+    "revenue-director-agent-governance"
   ],
   "last_outcome": "SOURCE_CREATED",
   "last_funnel": {
@@ -16,5 +17,5 @@
     "audit_click": 0
   },
   "runtime": "SUPABASE_DIRECT",
-  "last_source_id": "revenue-director-renewal-decision"
+  "last_source_id": "revenue-director-agent-governance"
 }
