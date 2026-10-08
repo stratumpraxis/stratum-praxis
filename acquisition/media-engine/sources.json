@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-07",
+  "updated_at": "2026-10-08",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -544,6 +544,70 @@
       ],
       "excerpt": "Recurring software spend is easier to govern when each renewal is treated as a decision rather than an automatic continuation. Ownership, usage, overlap, switching cost, renewal timing and measurable workflow value are practical inputs to a renewal decision.",
       "notes": "Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim."
+    },
+    {
+      "source_id": "stratum-shadow-ai-controls-20261008",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Shadow AI: map the real workflow before adding or banning AI tools",
+      "language": "en",
+      "content_hash": "sha256:a40d59e43dc6eecdee258304e61b0e0cac649a94f2f2366b240632ce7fecbecf",
+      "source_file": "acquisition/media-engine/runtime-sources/stratum-shadow-ai-controls-20261008.md",
+      "source_url": "https://www.reuters.com/legal/legalindustry/framework-governing-employees-existing-use-generative-ai--pracin-2026-10-07/",
+      "created_at": "2026-10-08T09:00:00Z",
+      "completed_at": "2026-10-08T09:00:00Z",
+      "status": "COMPLETE",
+      "audience_keys": [
+        "ops_lead",
+        "engineering_lead",
+        "ai_buyer",
+        "smb_owner"
+      ],
+      "evidence_families": [
+        "industry_change",
+        "editorial_source"
+      ],
+      "allowed_claims": [
+        "Unapproved employee AI usage can be a governance challenge even when an employer has an official AI procurement process.",
+        "Use-case inventories should identify the workflow owner, data category, permission path, review responsibilities and exception handling.",
+        "High-impact decisions may require explicit human oversight and appropriate risk-based controls.",
+        "Public industry discussion supports researching this problem, but it does not establish Stratum buyer interest, savings, revenue or compliance outcomes.",
+        "The existing free Agent Control Auditor can be used to structure a first review without changing price or checkout."
+      ],
+      "restricted_claims": [
+        {
+          "phrase": "Stratum customers achieved compliance",
+          "safe_rewrite": "No client compliance result is evidenced."
+        },
+        {
+          "phrase": "Guaranteed legal compliance",
+          "safe_rewrite": "This educational checklist is not legal advice or certification."
+        },
+        {
+          "phrase": "Confirmed buyer demand",
+          "safe_rewrite": "Public research is a signal to test, not an observed Stratum buyer."
+        },
+        {
+          "phrase": "Guaranteed savings",
+          "safe_rewrite": "No outcome or savings guarantee is supported."
+        }
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "acquisition/media-engine/runtime-sources/stratum-shadow-ai-controls-20261008.md",
+        "https://www.reuters.com/legal/legalindustry/framework-governing-employees-existing-use-generative-ai--pracin-2026-10-07/",
+        "https://www.expresscomputer.in/news/infor-industry-ai-agentic-enterprise/139577/",
+        "https://stratumpraxis.com/agent-control-auditor.html"
+      ],
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "agent-control-auditor",
+          "url": "https://stratumpraxis.com/agent-control-auditor.html",
+          "cta": "Run a free Agent Control Auditor check"
+        }
+      ],
+      "excerpt": "Unapproved AI use at work creates an operational inventory problem: identify tasks, data access, owners, human review and exception handling before changing tools.",
+      "notes": "Stratum-owned existing-asset editorial source. One-time market research pilot; no new SKU, no made-up customer or payment evidence, no external outbound. Publish only through the existing authorized Stratum publisher and verify actual destination. Paid checkout remains accessible downstream from the same existing owned product page; no unregistered SKU is introduced."
     }
   ]
 }
