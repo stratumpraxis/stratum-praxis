@@ -609,5 +609,12 @@
       "excerpt": "Unapproved AI use at work creates an operational inventory problem: identify tasks, data access, owners, human review and exception handling before changing tools.",
       "notes": "Stratum-owned existing-asset editorial source. One-time market research pilot; no new SKU, no made-up customer or payment evidence, no external outbound. Publish only through the existing authorized Stratum publisher and verify actual destination. Paid checkout remains accessible downstream from the same existing owned product page; no unregistered SKU is introduced."
     }
-  ]
+  ],
+  "last_market_intake": {
+    "source_id": "stratum-shadow-ai-controls-20261008",
+    "observed_research_at": "2026-10-08",
+    "stage": "SOURCE_REGISTERED_NOT_PAYMENT",
+    "route": "https://stratumpraxis.com/agent-control-auditor.html",
+    "note": "2026-10-08 demand-triggered source intake. Public editorial research is not buyer evidence; existing autonomous publisher must produce and read back the owned article before publication can be reported."
+  }
 }
