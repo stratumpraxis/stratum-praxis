@@ -1,0 +1,14 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-workflow-failure-buyer-20261008",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Webhook再送で二重処理、納品の停止、AI判断の無検証実行。自動化が『動く』ことと、業務で使えることは別です。まず①イベントID②再試行③決済状態④人の承認⑤失敗時の復旧を確認。Stratumは1つの業務について改善判断書を提供（実装代行ではありません）。",
+  "cta": "無料診断・$499監査",
+  "destination": "https://stratumpraxis.com/b2b-intro/?utm_source=bsky&utm_medium=social&utm_campaign=workflow_failure_buyer_20261008",
+  "status": "QUEUED",
+  "approval": "OWNER_AUTONOMY_APPROVED",
+  "approval_scope": "stratum_existing_owned_bluesky_content_no_dm_no_email",
+  "source": "2026 Upwork automation buyer signals; existing Stratum workflow audit",
+  "publish_trigger": "2026-10-08T11:43:00Z"
+}
