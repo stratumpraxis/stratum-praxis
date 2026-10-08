@@ -92,15 +92,54 @@ That number is harder to put in a headline. It is also far more useful.`,
 }
 
 function genericArticle(source) {
-  const claims = (source.allowed_claims || []).filter(Boolean);
-  const intro = source.excerpt || `The source package focuses on ${source.title}.`;
-  const sections = claims.map((claim, i) => `## ${i === 0 ? 'What is actually changing' : i === claims.length - 1 ? 'The operating implication' : `Decision point ${i + 1}`}\n\n${claim}\n\nThe useful move is to treat this as an operating constraint rather than a slogan. Make the boundary explicit, decide what evidence would confirm the decision, and avoid extending the claim beyond what the source supports. That keeps the system useful without turning a narrow observation into an unsupported promise.`).join('\n\n');
-  const filler = `\n\n## A practical way to use the idea\n\nStart with the smallest decision the evidence can support. Separate what is known from what is inferred. Decide which action is reversible, which action needs review, and what signal would justify changing course. If the evidence is weak, keep the action small. If the evidence becomes stronger, expand deliberately.\n\nThis approach is slower than making a sweeping claim, but it produces a more durable operating system. The goal of this publication lane is not maximum content volume. It is to turn recorded source material into a useful decision surface while keeping attribution, uncertainty and commercial routing visible.\n\n## Where the boundary sits\n\nThe source package is intentionally narrower than a complete market study. It does not establish customer outcomes, guaranteed ROI or universal best practice unless those claims are explicitly present in the approved evidence. That boundary matters. A useful article can explain a mechanism and still leave room for uncertainty.\n\nThe result is a better handoff between publishing and operations: the article explains the decision, the evidence record explains why the claim is allowed, and any product link is included only when it directly fits the problem being discussed.`;
+  const claims = [...new Set((source.allowed_claims || []).filter((x) => typeof x === 'string' && x.trim()).map((x) => x.trim()))];
+  const intro = source.excerpt || ('The issue: ' + source.title + '.');
+  const steps = [
+    'Choose one real recurring workflow. Record its trigger, current steps, owner and the outcome that would count as success.',
+    'Record actual inputs and permission boundaries. Identify which data or approval must not be transferred to an automated service.',
+    'Record the current cost, time, error or rework burden using measurements you already have. Write UNKNOWN where evidence is unavailable.',
+    'Decide which one change is small and reversible. Do not reprice or rebuild a working commercial system to solve a traffic problem.',
+    'Test that change with a real user or an observable work event; distinguish their action from a click, checkout, purchase and payment.',
+    'If evidence is not yet available, keep the current route healthy and note the precise event that would justify another change.'
+  ];
+  const references = (source.evidence_refs || []).filter((x) => /^https:\/\/[^ ]+$/.test(x)).slice(0, 3);
+  const body = [
+    intro,
+    '## What the current source actually supports',
+    claims.length ? claims.map((c) => '- ' + c).join('\n') : 'This source has no approved claims yet. Further research is needed.',
+    '## A six-point review you can use',
+    'Use the recorded problem to examine one existing process before buying or building a replacement. This is a decision aid, not a promise of savings or compliance.',
+    steps.map((s, i) => '- **' + (i + 1) + '.** ' + s).join('\n'),
+    '## Make one bounded decision',
+    'Continue if the existing workflow is adequately controlled. Improve one measurable step if a real failure is observed. Escalate when permissions, sensitive data or material external effects require a specialist or owner. Avoid expanding a project simply because another tool or model is available.',
+    '## What this evidence does not prove',
+    'Public research and editorial material are not proof that Stratum has interested buyers. A visitor is not automatically a qualified lead. A paid-product link is not a checkout session. Only direct provider evidence can establish a payment. Confirm current product terms independently.',
+    references.length ? '## Source references\n' + references.map((url) => '- ' + url).join('\n') : '',
+    '## Existing next step',
+    'Use the linked existing diagnostic only if this is the problem you are currently trying to resolve. Record an actual outcome before making another change.'
+  ].filter(Boolean).join('\n\n');
   return {
     title: source.title,
     dek: intro.slice(0, 220),
-    body: `${intro}\n\n${sections}${filler}`,
-    notes: ['Deterministic evidence-grounded fallback used; prose is constrained to approved source claims.']
+    body,
+    notes: ['Deterministic fallback; source-approved claims, actionable review and separate revenue evidence. Quality threshold is a heuristic, not editorial certification.']
+  };
+}
+
+function localQuality(article, source) {
+  const words = article.body.split(/\s+/).filter(Boolean).length;
+  const normalized = article.body.split(/\n\s*\n/).map((x) => x.replace(/\s+/g, ' ').trim().toLowerCase()).filter((x) => x.length >= 80);
+  const repeated = normalized.filter((p, i) => normalized.indexOf(p) !== i);
+  const issues = [];
+  if ((source.allowed_claims || []).filter(Boolean).length < 3) issues.push('INSUFFICIENT_APPROVED_CLAIMS');
+  if (words < 280) issues.push('INSUFFICIENT_ACTIONABLE_CONTENT');
+  if (repeated.length) issues.push('REPEATED_PARAGRAPHS');
+  if (article.body.includes('The useful move is to treat this as an operating constraint rather than a slogan.')) issues.push('BANNED_GENERIC_BOILERPLATE');
+  const passed = issues.length === 0;
+  return {
+    score: passed ? 86 : 60, threshold: 82, passed, words,
+    generic_hits: issues, restricted_hits: [], first_person_risk: false,
+    method: 'DETERMINISTIC_MINIMUM_GATE_NOT_EDITORIAL_CERTIFICATION'
   };
 }
 
@@ -112,14 +151,15 @@ async function main() {
   ]);
   state.processed ||= {};
   state.attempts ||= {};
-  const source = sourcesDoc.sources.find((s) => s.status === 'COMPLETE' && !state.processed[s.source_id]);
+  const source = sourcesDoc.sources.find((s) => s.status === 'COMPLETE' && !state.processed[s.source_id] && Number(state.attempts[s.source_id] || 0) < 2);
   if (!source) { state.last_run_at = new Date().toISOString(); await writeJson(STATE_FILE, state); console.log('LOCAL_FALLBACK_IDLE'); return; }
 
   const article = source.source_id === 'agent-company-control-owner-package' ? agentCompanyArticle() : genericArticle(source);
   const route = source.existing_product_routes?.find((r) => r.role === 'PRIMARY') || source.existing_product_routes?.[0] || null;
   const generatedAt = new Date().toISOString();
   const id = `${generatedAt.slice(0, 10)}-${slug(source.source_id)}-${sha(article.body).slice(0, 8)}`;
-  const words = article.body.split(/\s+/).filter(Boolean).length;
+  const quality = localQuality(article, source);
+  const words = quality.words;
   const record = {
     version: 2,
     output_id: id,
@@ -141,8 +181,8 @@ async function main() {
     allowed_claim_report: source.allowed_claims || [],
     restricted_claim_report: source.restricted_claims || [],
     editorial_notes: article.notes,
-    quality: { score: words >= 700 ? 90 : 84, words, generic_hits: [], restricted_hits: [], first_person_risk: false, threshold: 82 },
-    status: 'READY',
+    quality,
+    status: quality.passed ? 'READY' : 'DRAFT',
     publication_lane: 'OWNED_SITE',
     publication_proof: null,
     cta: route ? { asset_id: route.asset_id, label: route.cta || 'Continue', destination_url: route.url, tracked_url: trackedUrl(route, source) } : null,
@@ -152,11 +192,11 @@ async function main() {
 
   await writeJson(path.join(OUTBOX, `${id}.json`), record);
   await fs.writeFile(path.join(OUTBOX, `${id}.md`), `# ${record.title}\n\n${record.dek}\n\n${record.body}${record.cta?.tracked_url ? `\n\n---\n\n${record.cta.label}: ${record.cta.tracked_url}\n` : ''}`);
-  state.processed[source.source_id] = { output_id: id, at: generatedAt, status: 'READY', lens_id: record.lens_id, ghost_label: record.ghost_label, provider: record.provider };
-  state.attempts[source.source_id] = Math.max(1, state.attempts[source.source_id] || 0);
+  if (quality.passed) state.processed[source.source_id] = { output_id: id, at: generatedAt, status: 'READY', lens_id: record.lens_id, ghost_label: record.ghost_label, provider: record.provider };
+  state.attempts[source.source_id] = Number(state.attempts[source.source_id] || 0) + 1;
   state.last_run_at = generatedAt;
   await writeJson(STATE_FILE, state);
-  console.log(`LOCAL_FALLBACK_READY ${id} words=${words}`);
+  console.log((quality.passed ? 'LOCAL_FALLBACK_READY ' : 'LOCAL_FALLBACK_HELD ') + id + ' words=' + words + ' issues=' + quality.generic_hits.join(','));
 }
 
 main().catch((error) => { console.error(`LOCAL_FALLBACK_STOP ${error.message}`); process.exitCode = 1; });
