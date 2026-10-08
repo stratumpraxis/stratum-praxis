@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxeezpoyf62p",
+  "cid": "bafyreial3u7snk4vt7isngev3psotmtpf3zaoqzc3pdzg3xr7h773efpxm",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxeezpoyf62p",
+  "destination": "https://stratumpraxis.com/b2b-intro/?utm_source=bsky&utm_medium=social&utm_campaign=workflow_failure_buyer_20261008",
+  "content_id": "stratum-bluesky-workflow-failure-buyer-20261008",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-08T11:43:59.290Z"
+}
