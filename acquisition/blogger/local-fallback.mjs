@@ -127,8 +127,7 @@ function genericArticle(source) {
 }
 
 function localQuality(article, source) {
-  const quality = localQuality(article, source);
-  const words = quality.words;
+  const words = article.body.split(/\s+/).filter(Boolean).length;
   const normalized = article.body.split(/\n\s*\n/).map((x) => x.replace(/\s+/g, ' ').trim().toLowerCase()).filter((x) => x.length >= 80);
   const repeated = normalized.filter((p, i) => normalized.indexOf(p) !== i);
   const issues = [];
@@ -159,7 +158,8 @@ async function main() {
   const route = source.existing_product_routes?.find((r) => r.role === 'PRIMARY') || source.existing_product_routes?.[0] || null;
   const generatedAt = new Date().toISOString();
   const id = `${generatedAt.slice(0, 10)}-${slug(source.source_id)}-${sha(article.body).slice(0, 8)}`;
-  const words = article.body.split(/\s+/).filter(Boolean).length;
+  const quality = localQuality(article, source);
+  const words = quality.words;
   const record = {
     version: 2,
     output_id: id,
