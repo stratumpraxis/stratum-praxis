@@ -604,16 +604,10 @@
           "asset_id": "agent-control-auditor",
           "url": "https://stratumpraxis.com/agent-control-auditor.html",
           "cta": "Run a free Agent Control Auditor check"
-        },
-        {
-          "role": "OPTIONAL_PAID",
-          "asset_id": "agent-control-auditor-pro",
-          "url": "https://stratumpraxis.com/agent-control-auditor.html",
-          "cta": "See the existing Pro route only if further review is required"
         }
       ],
       "excerpt": "Unapproved AI use at work creates an operational inventory problem: identify tasks, data access, owners, human review and exception handling before changing tools.",
-      "notes": "Stratum-owned existing-asset editorial source. One-time market research pilot; no new SKU, no made-up customer or payment evidence, no external outbound. Publish only through the existing authorized Stratum publisher and verify actual destination."
+      "notes": "Stratum-owned existing-asset editorial source. One-time market research pilot; no new SKU, no made-up customer or payment evidence, no external outbound. Publish only through the existing authorized Stratum publisher and verify actual destination. Paid checkout remains accessible downstream from the same existing owned product page; no unregistered SKU is introduced."
     }
   ]
 }
