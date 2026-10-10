@@ -50,10 +50,10 @@
     },utm(),extra||{});
     const body=JSON.stringify(payload);
     try{
-      if(navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'application/json'}))) return;
+      if(navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'text/plain;charset=UTF-8'}))) return;
     }catch(_){}
     try{
-      fetch(ENDPOINT,{method:'POST',headers:{'content-type':'application/json'},body,keepalive:true,mode:'cors'});
+      fetch(ENDPOINT,{method:'POST',headers:{'content-type':'text/plain;charset=UTF-8'},body,keepalive:true,mode:'cors'});
     }catch(_){}
   }
 
