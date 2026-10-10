@@ -66,9 +66,17 @@
       "lens_id": "practical_operator",
       "ghost_label": "Practical Operator",
       "provider": "local-evidence-fallback"
+    },
+    "revenue-director-process-vs-automation": {
+      "output_id": "2026-10-10-revenue-director-process-vs-automation-f1cca5c6",
+      "at": "2026-10-10T00:47:56.507Z",
+      "status": "READY",
+      "lens_id": "practical_operator",
+      "ghost_label": "Practical Operator",
+      "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-09T16:09:47.173Z",
+  "last_run_at": "2026-10-10T00:47:56.507Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -157,9 +165,16 @@
       "state": "VERIFIED",
       "requested_at": "2026-10-08T22:03:24.140Z",
       "verified_at": "2026-10-09T16:09:47.564Z"
+    },
+    "2026-10-10-revenue-director-process-vs-automation-f1cca5c6": {
+      "output_id": "2026-10-10-revenue-director-process-vs-automation-f1cca5c6",
+      "title": "Not every automation problem is an automation problem",
+      "canonical_url": "https://stratumpraxis.com/signal/auto/not-every-automation-problem-is-an-automation-problem-f1cca5c6.html",
+      "state": "PUBLISH_REQUESTED",
+      "requested_at": "2026-10-10T00:47:56.559Z"
     }
   },
-  "last_publish_pass_at": "2026-10-09T16:09:47.613Z",
+  "last_publish_pass_at": "2026-10-10T00:47:56.575Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
@@ -169,7 +184,8 @@
     "revenue-director-cost-per-success": 1,
     "revenue-director-renewal-decision": 1,
     "stratum-shadow-ai-controls-20261008": 1,
-    "revenue-director-agent-governance": 1
+    "revenue-director-agent-governance": 1,
+    "revenue-director-process-vs-automation": 1
   },
   "company_start_event": {
     "at": "2026-10-05T11:40:00Z",
