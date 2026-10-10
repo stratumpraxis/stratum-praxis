@@ -49,12 +49,18 @@
       qa:new URLSearchParams(location.search).get('qa')==='1'
     },utm(),extra||{});
     const body=JSON.stringify(payload);
+    // Prefer an acknowledged delivery. sendBeacon only confirms queueing, not receipt.
+    let queued=false;
+    const beacon=()=>{
+      if(queued)return;
+      queued=true;
+      try{navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'text/plain;charset=UTF-8'}))}catch(_){}
+    };
     try{
-      if(navigator.sendBeacon(ENDPOINT,new Blob([body],{type:'text/plain;charset=UTF-8'}))) return;
-    }catch(_){}
-    try{
-      fetch(ENDPOINT,{method:'POST',headers:{'content-type':'text/plain;charset=UTF-8'},body,keepalive:true,mode:'cors'});
-    }catch(_){}
+      fetch(ENDPOINT,{method:'POST',headers:{'content-type':'text/plain;charset=UTF-8'},body,keepalive:true,mode:'cors',credentials:'omit'})
+        .then(r=>{if(!r.ok)beacon()})
+        .catch(beacon);
+    }catch(_){beacon()}
   }
 
   ['pointerdown','click','input','change','keydown'].forEach(name=>{
