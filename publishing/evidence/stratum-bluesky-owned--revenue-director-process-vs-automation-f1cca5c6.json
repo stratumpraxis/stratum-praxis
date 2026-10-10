@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxibcvoqns2y",
+  "cid": "bafyreifzxifk4rlth52lyyn5tqy4kevhs2vwheig3aaruoqah3l5sebr3q",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxibcvoqns2y",
+  "destination": "https://stratumpraxis.com/signal/auto/not-every-automation-problem-is-an-automation-problem-f1cca5c6.html?utm_source=bsky&utm_campaign=owned_auto",
+  "content_id": "stratum-bluesky-owned--revenue-director-process-vs-automation-f1cca5c6",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-10T00:48:11.518Z"
+}
