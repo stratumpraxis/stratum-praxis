@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated_at": "2026-10-10",
+  "updated_at": "2026-10-11",
   "purpose": "Issue #52 source register. Only two kinds of record may appear: a COMPLETE owner-approved source package, and a source backed by a promoted SOURCE_CANDIDATE from Issue #53. Original sources are immutable for provenance: content_hash is recomputed from the file on every load and a mismatch is refused rather than re-derived.",
   "sources": [
     {
@@ -775,6 +775,90 @@
         }
       ],
       "excerpt": "A recurring workflow can be slow because the process itself is unclear, because the handoff is broken, or because a repeated step is suitable for automation. Automating an unstable process can preserve the wrong sequence faster instead of improving the result.",
+      "notes": "Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim."
+    },
+    {
+      "source_id": "revenue-director-retry-review-cost",
+      "source_type": "OWNER_APPROVED_SOURCE",
+      "title": "Retries and human review belong in the AI budget",
+      "language": "en",
+      "content_hash": "sha256:c4061b6122d42d45a1985f0334c459f47929c3c3066b1a017534131059375c5e",
+      "source_file": "acquisition/media-engine/runtime-sources/revenue-director-retry-review-cost.md",
+      "source_url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+      "created_at": "2026-10-11T05:53:48.257Z",
+      "completed_at": "2026-10-11T05:53:48.257Z",
+      "status": "COMPLETE",
+      "audience_keys": [
+        "finance",
+        "ops_lead",
+        "smb_owner",
+        "ai_buyer"
+      ],
+      "evidence_families": [
+        "owned_behavior",
+        "editorial_source"
+      ],
+      "allowed_claims": [
+        "The visible API or subscription price can understate workflow cost when failed runs, retries and review time are frequent.",
+        "Human review is not automatically waste; it can be a necessary control, but its time should still be visible in the economics.",
+        "A workflow with a high nominal model cost can be economical if it succeeds reliably on valuable outcomes, while a cheap workflow can be uneconomical when it fails often.",
+        "Cost analysis should preserve uncertainty instead of converting a few examples into a universal savings claim.",
+        "The first commercial question is whether a real buyer has a material decision to make, not whether an article or automation ran successfully.",
+        "Existing Stratum spend-decision and audit assets should be used before creating a new pricing route."
+      ],
+      "restricted_claims": [
+        {
+          "phrase": "guaranteed ROI",
+          "safe_rewrite": "No guaranteed financial outcome is supported."
+        },
+        {
+          "phrase": "our customers saved",
+          "safe_rewrite": "No customer savings claim is supported by this source."
+        },
+        {
+          "phrase": "the market has validated",
+          "safe_rewrite": "Traffic, buyer and payment evidence must be measured separately."
+        },
+        {
+          "phrase": "we always reduce costs",
+          "safe_rewrite": "The route supports a decision; it does not promise a reduction."
+        }
+      ],
+      "personal_experience_claims": [],
+      "evidence_refs": [
+        "acquisition/media-engine/runtime-sources/revenue-director-retry-review-cost.md",
+        "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+        "https://stratumpraxis.com/b2b/",
+        "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+        "https://stratumpraxis.com/workflow-audit.html"
+      ],
+      "existing_product_routes": [
+        {
+          "role": "PRIMARY",
+          "asset_id": "stratum-b2b-intro",
+          "url": "https://stratumpraxis.com/b2b-intro/?v=7d8708",
+          "cta": "Run the free workflow diagnostic"
+        },
+        {
+          "role": "DIAGNOSTIC",
+          "asset_id": "stratum-workflow-diagnostic",
+          "url": "https://stratumpraxis.com/b2b/",
+          "cta": "Diagnose one recurring workflow"
+        },
+        {
+          "role": "SELF_SERVICE",
+          "asset_id": "ai-saas-spend-decision-kit",
+          "url": "https://stratumpraxis.com/ai-saas-spend-decision-kit.html",
+          "cta": "Use the $39 decision kit"
+        },
+        {
+          "role": "HIGH_TOUCH",
+          "asset_id": "workflow-audit",
+          "url": "https://stratumpraxis.com/workflow-audit.html",
+          "cta": "Review the fixed-scope $499 audit"
+        }
+      ],
+      "excerpt": "The visible API or subscription price can understate workflow cost when failed runs, retries and review time are frequent. Human review is not automatically waste; it can be a necessary control, but its time should still be visible in the economics.",
       "notes": "Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim."
     }
   ],
