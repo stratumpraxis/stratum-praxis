@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-10T01:46:22.143Z",
+  "generated_at": "2026-10-11T01:01:58.675Z",
   "article_count": 8,
   "articles": [
     {
@@ -32,7 +32,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-10-10T01:46:04.269Z"
+      "checked_at": "2026-10-11T01:01:38.910Z"
     },
     {
       "source": "ai-agents-as-organization-ja.md",
@@ -64,7 +64,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
       },
-      "checked_at": "2026-10-10T01:46:04.536Z"
+      "checked_at": "2026-10-11T01:01:42.570Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -96,7 +96,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-10-10T01:46:08.265Z"
+      "checked_at": "2026-10-11T01:01:46.272Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -128,7 +128,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-10-10T01:46:09.886Z"
+      "checked_at": "2026-10-11T01:01:50.070Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -160,7 +160,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-10-10T01:46:10.464Z"
+      "checked_at": "2026-10-11T01:01:50.855Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -192,7 +192,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-10-10T01:46:14.477Z"
+      "checked_at": "2026-10-11T01:01:54.559Z"
     },
     {
       "source": "choosing-ai-app-builder-iphone.md",
@@ -224,7 +224,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/choosing-ai-app-builder-iphone.json"
       },
-      "checked_at": "2026-10-10T01:46:18.398Z"
+      "checked_at": "2026-10-11T01:01:58.168Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -256,7 +256,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-10-10T01:46:22.142Z"
+      "checked_at": "2026-10-11T01:01:58.675Z"
     }
   ]
 }
