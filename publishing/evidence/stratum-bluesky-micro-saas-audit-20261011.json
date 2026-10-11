@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxlzuo667n2t",
+  "cid": "bafyreiah5zqmh6p74y7y5t64qhjhxrclfxgrcswi3cwf27dkt4ry5c5d74",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxlzuo667n2t",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/11/micro-saas-subscription-cost-audit-30-minutes-2026/?utm_source=bsky&utm_campaign=micro_saas_audit_20261011",
+  "content_id": "stratum-bluesky-micro-saas-audit-20261011",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-11T12:45:36.653Z"
+}
