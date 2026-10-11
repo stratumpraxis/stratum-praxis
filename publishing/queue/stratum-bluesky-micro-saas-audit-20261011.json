@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-micro-saas-audit-20261011",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "More SaaS subscriptions than customers? Audit renewal dates, owners and actual use before cancelling anything.",
+  "hook": "A free pre-renewal decision check, not a savings guarantee.",
+  "cta": "Free 30-min guide",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/11/micro-saas-subscription-cost-audit-30-minutes-2026/?utm_source=bsky&utm_campaign=micro_saas_audit_20261011",
+  "status": "QUEUED",
+  "source_verified": "WORDPRESS_PUBLISHED_POST_27",
+  "owner": "STRATUM_ONLY",
+  "dedupe_scope": "ONE_NEW_PUBLISH_PACKAGE",
+  "publish_trigger": "OWNER_REQUEST_NEXT_20261011"
+}
