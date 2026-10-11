@@ -10,6 +10,8 @@ Stratum Praxis is the B2B asset base inside the broader Digital Index Base struc
 
 **Start free:** [Run the 12-point AI & SaaS renewal check](https://stratumpraxis.com/ai-saas-spend-audit-checklist.html?utm_source=github&utm_medium=referral&utm_campaign=readme_free_entry&utm_content=top_start) — decide whether each recurring tool should be **KEEP / REDUCE / CONSOLIDATE / REVIEW / CANCEL** before the next renewal.
 
+**New 30-minute free SaaS spend audit:** [Review subscriptions, renewal exposure and potential overlaps before buying another tool](https://stratumpraxis.wordpress.com/2026/10/11/micro-saas-subscription-cost-audit-30-minutes-2026/?utm_source=github&utm_medium=owned_referral&utm_campaign=micro_saas_spend_audit_20261011&utm_content=readme_free_audit) — practical checklist first; the existing $39 Spend Decision Kit is optional when a repeatable decision register is worth paying for.
+
 **Current cost-economics field note:** [How to Measure AI Cost per Successful Outcome](https://linkly.link/2uDCW) — use retries, failures, tool calls and human review to judge the real cost of a useful AI outcome before another spend decision.
 
 Its role is practical B2B decision support: workflow audits, ROI/economics tools, AI/SaaS spend and renewal decisions, governance, implementation planning, and fixed-scope paid support for businesses and professional-service firms.
