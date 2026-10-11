@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxlcvccswj2w",
+  "cid": "bafyreih6xxbq4v7p7dlkgq7z3oxtxoczrxf2ngadghvcceqe5kf4klavqy",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxlcvccswj2w",
+  "destination": "https://stratumpraxis.com/signal/auto/retries-and-human-review-belong-in-the-ai-budget-ad289642.html?utm_source=bsky&utm_campaign=owned_auto",
+  "content_id": "stratum-bluesky-owned-0-11-revenue-director-retry-review-cost-ad289642",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-11T05:54:21.695Z"
+}
