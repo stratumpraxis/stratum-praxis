@@ -84,7 +84,7 @@
       "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-11T05:54:07.192Z",
+  "last_run_at": "2026-10-11T15:37:30.421Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -186,11 +186,12 @@
       "output_id": "2026-10-11-revenue-director-retry-review-cost-ad289642",
       "title": "Retries and human review belong in the AI budget",
       "canonical_url": "https://stratumpraxis.com/signal/auto/retries-and-human-review-belong-in-the-ai-budget-ad289642.html",
-      "state": "PUBLISH_REQUESTED",
-      "requested_at": "2026-10-11T05:54:07.260Z"
+      "state": "VERIFIED",
+      "requested_at": "2026-10-11T05:54:07.260Z",
+      "verified_at": "2026-10-11T15:37:30.741Z"
     }
   },
-  "last_publish_pass_at": "2026-10-11T05:54:07.284Z",
+  "last_publish_pass_at": "2026-10-11T15:37:30.790Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
