@@ -10,6 +10,8 @@ on:
       - 'index.html'
       - 'systems/**'
       - 'worker/**'
+      - 'scos-analytics.js'
+      - 'acquisition/test/scos-session-attribution.test.mjs'
       - 'agent-control-auditor*'
   schedule:
     # One daily health check; pull requests and relevant pushes still validate
@@ -73,6 +75,12 @@ jobs:
         run: |
           set -euo pipefail
           node --test worker/prompt-store-worker.test.mjs
+
+      - name: Run attribution session regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test acquisition/test/scos-session-attribution.test.mjs
 
       - name: Check revenue path with bounded retries
         id: health
