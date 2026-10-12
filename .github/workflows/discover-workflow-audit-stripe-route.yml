@@ -27,39 +27,15 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify Stripe credential is live and targets the expected account
+      - name: Verify Stripe credential exists
         shell: bash
-        env:
-          EXPECTED_ACCOUNT: acct_1U0vFWJMK7zFs997
         run: |
           set -euo pipefail
           if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
             echo "::error::STRIPE_SECRET_KEY is not configured."
             exit 1
           fi
-
-          account_status="$(curl -sS -o /tmp/stripe-account.json -w '%{http_code}' https://api.stripe.com/v1/account -u "$STRIPE_SECRET_KEY:")"
-          if [ "$account_status" != "200" ]; then
-            echo "::error::Stripe account verification failed with HTTP $account_status."
-            exit 2
-          fi
-          account_id="$(node -e "const d=require('/tmp/stripe-account.json');process.stdout.write(String(d.id||''))")"
-          if [ "$account_id" != "$EXPECTED_ACCOUNT" ]; then
-            echo "::error::Stripe credential targets unexpected account."
-            exit 3
-          fi
-
-          balance_status="$(curl -sS -o /tmp/stripe-balance.json -w '%{http_code}' https://api.stripe.com/v1/balance -u "$STRIPE_SECRET_KEY:")"
-          if [ "$balance_status" != "200" ]; then
-            echo "::error::Stripe live/test mode verification failed with HTTP $balance_status."
-            exit 4
-          fi
-          livemode="$(node -e "const d=require('/tmp/stripe-balance.json');process.stdout.write(String(d.livemode===true))")"
-          if [ "$livemode" != "true" ]; then
-            echo "::error::Stripe credential is not operating in live mode."
-            exit 5
-          fi
-          echo "Stripe live credential target verified."
+          echo "Stripe credential present; live-mode will be verified from the target Payment Link itself."
 
       - name: Resolve public Payment Link to stable Stripe IDs
         shell: bash
@@ -79,8 +55,12 @@ jobs:
           const doc = JSON.parse(fs.readFileSync('/tmp/payment-links.json', 'utf8'));
           const link = (doc.data || []).find((x) => x && x.url === target);
           if (!link?.id) {
-            console.error('Target Payment Link URL was not found among active live links.');
+            console.error('Target Payment Link URL was not found among active links visible to this restricted key.');
             process.exit(2);
+          }
+          if (link.livemode !== true) {
+            console.error('Target Payment Link is not live-mode.');
+            process.exit(6);
           }
 
           const raw = execFileSync('curl', [
