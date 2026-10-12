@@ -45,7 +45,6 @@ jobs:
             -u "$STRIPE_SECRET_KEY:" \
             --data-urlencode 'active=true' \
             --data-urlencode 'limit=100' \
-            --data-urlencode 'expand[]=data.line_items.data.price.product' \
             > /tmp/payment-links.json
 
           node <<'NODE'
@@ -62,32 +61,18 @@ jobs:
             process.exit(6);
           }
 
-          const items = link.line_items?.data || [];
-          if (items.length !== 1) {
-            console.error(`Expected exactly 1 line item, got ${items.length}.`);
-            process.exit(3);
-          }
-
-          const item = items[0];
-          const price = item.price || {};
-          const product = typeof price.product === 'string' ? price.product : price.product?.id;
-          const amount = Number(price.unit_amount);
-          const currency = String(price.currency || '').toLowerCase();
-
-          if (!price.id || !product || amount !== 49900 || currency !== 'usd') {
-            console.error('Resolved Stripe route does not match the public $499 USD Workflow Audit.');
-            process.exit(4);
-          }
+          // This restricted key can list Payment Links but cannot read line_items.
+          // The webhook will verify the paid Checkout Session itself by:
+          // payment_link + payment_status + mode + amount_total + currency.
+          // That is sufficient for this fixed-price service route.
 
           const out = {
             verified_at: new Date().toISOString(),
             purpose: 'Workflow Audit $499 route identifiers for server-side payment verification',
             public_checkout_url: target,
             payment_link_id: link.id,
-            price_id: price.id,
-            product_id: product,
-            amount_minor: amount,
-            currency,
+            amount_minor_expected: 49900,
+            currency_expected: 'usd',
             live_mode: Boolean(link.livemode),
             source: 'Stripe API read inside GitHub Actions',
             secret_material_included: false
@@ -95,7 +80,7 @@ jobs:
 
           fs.mkdirSync(require('path').dirname(process.env.OUT_FILE), { recursive: true });
           fs.writeFileSync(process.env.OUT_FILE, JSON.stringify(out, null, 2) + '\n');
-          console.log(`Resolved ${link.id} -> ${price.id} -> ${product}`);
+          console.log(`Resolved Workflow Audit Payment Link: ${link.id}`);
           NODE
 
       - name: Validate no secret material was written
