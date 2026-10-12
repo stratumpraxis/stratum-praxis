@@ -68,6 +68,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Run Stripe revenue matcher tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          node --test worker/prompt-store-worker.test.mjs
+
       - name: Check revenue path with bounded retries
         id: health
         shell: bash
