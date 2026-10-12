@@ -27,21 +27,39 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Verify live Stripe credential exists
+      - name: Verify Stripe credential is live and targets the expected account
         shell: bash
+        env:
+          EXPECTED_ACCOUNT: acct_1U0vFWJMK7zFs997
         run: |
           set -euo pipefail
           if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
             echo "::error::STRIPE_SECRET_KEY is not configured."
             exit 1
           fi
-          case "$STRIPE_SECRET_KEY" in
-            sk_live_*) ;;
-            *)
-              echo "::error::Expected live-mode Stripe secret."
-              exit 1
-              ;;
-          esac
+
+          account_status="$(curl -sS -o /tmp/stripe-account.json -w '%{http_code}' https://api.stripe.com/v1/account -u "$STRIPE_SECRET_KEY:")"
+          if [ "$account_status" != "200" ]; then
+            echo "::error::Stripe account verification failed with HTTP $account_status."
+            exit 2
+          fi
+          account_id="$(node -e "const d=require('/tmp/stripe-account.json');process.stdout.write(String(d.id||''))")"
+          if [ "$account_id" != "$EXPECTED_ACCOUNT" ]; then
+            echo "::error::Stripe credential targets unexpected account."
+            exit 3
+          fi
+
+          balance_status="$(curl -sS -o /tmp/stripe-balance.json -w '%{http_code}' https://api.stripe.com/v1/balance -u "$STRIPE_SECRET_KEY:")"
+          if [ "$balance_status" != "200" ]; then
+            echo "::error::Stripe live/test mode verification failed with HTTP $balance_status."
+            exit 4
+          fi
+          livemode="$(node -e "const d=require('/tmp/stripe-balance.json');process.stdout.write(String(d.livemode===true))")"
+          if [ "$livemode" != "true" ]; then
+            echo "::error::Stripe credential is not operating in live mode."
+            exit 5
+          fi
+          echo "Stripe live credential target verified."
 
       - name: Resolve public Payment Link to stable Stripe IDs
         shell: bash
