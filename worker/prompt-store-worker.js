@@ -143,6 +143,9 @@ async function stripePost(env, path, fields) {
   if (!r.ok) throw Error("Stripe record update failed");
   return x;
 }
+async function sessionBase(env, sid) {
+  return stripe(env, `checkout/sessions/${encodeURIComponent(sid)}`);
+}
 async function session(env, sid) {
   return stripe(
     env,
@@ -168,6 +171,23 @@ function offerFor(s) {
 function routeId(s) {
   const value = String(s.client_reference_id || "");
   return /^[a-zA-Z0-9_-]{1,200}$/.test(value) ? value : "unattributed";
+}
+
+function isWorkflowAuditPaid(s) {
+  const ref = routeId(s);
+  const routeMatches =
+    ref.startsWith("workflow_audit_") ||
+    ref.startsWith("outbound_b2b_intro_");
+  return Boolean(
+    s &&
+    s.livemode === true &&
+    s.payment_status === "paid" &&
+    s.mode === "payment" &&
+    s.payment_link &&
+    Number(s.amount_total) === 49900 &&
+    String(s.currency || "").toLowerCase() === "usd" &&
+    routeMatches
+  );
 }
 async function recordSession(env, s, fields) {
   const metadata = {
@@ -240,6 +260,23 @@ async function webhook(req, env) {
   const incoming = event.data?.object;
   if (!incoming?.id?.startsWith("cs_"))
     return j({ error: "Checkout Session is missing" }, 400);
+
+  // Workflow Audit is a fixed-scope service, not a downloadable product.
+  // Verify it from the signed Stripe event + live Checkout Session without
+  // requiring Product/Price API permissions on the restricted Stripe key.
+  const baseSession = await sessionBase(env, incoming.id);
+  if (isWorkflowAuditPaid(baseSession)) {
+    await recordSession(env, baseSession, {
+      webhook_event_id: event.id,
+      revenue_recorded_at: new Date(event.created * 1000).toISOString(),
+      revenue_product: "workflow_audit",
+      revenue_amount: baseSession.amount_total,
+      revenue_currency: baseSession.currency,
+      delivery_state: "PAID_AWAITING_INTAKE",
+    });
+    return j({ received: true, workflow_audit: true });
+  }
+
   const s = await session(env, incoming.id);
   const match = offerFor(s);
   if (!match) return j({ received: true, ignored: true });
@@ -382,7 +419,7 @@ async function workspace(env, u) {
     },
   });
 }
-export { verifyWebhook };
+export { verifyWebhook, isWorkflowAuditPaid };
 export default {
   async fetch(req, env, ctx) {
     const u = new URL(req.url),
