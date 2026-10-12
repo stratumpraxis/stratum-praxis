@@ -78,10 +78,13 @@
 
   function readAttribution() {
     const current = currentTouch();
+    const query = new URLSearchParams(location.search);
+    const hasExplicitSignal = ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','asset_id','route_id']
+      .some(function (key) { return Boolean(query.get(key)); });
     let session;
     try {
       session = JSON.parse(sessionStorage.getItem(SESSION_ATTRIBUTION_KEY) || 'null');
-      if (!session || typeof session !== 'object') {
+      if (!session || typeof session !== 'object' || hasExplicitSignal) {
         session = current;
         sessionStorage.setItem(SESSION_ATTRIBUTION_KEY, JSON.stringify(session));
       }
@@ -89,7 +92,7 @@
 
     const first = storageGet(FIRST_TOUCH_KEY);
     if (!first) storageSet(FIRST_TOUCH_KEY, current);
-    const hasFreshSignal = current.utm_source !== 'direct' || current.utm_campaign || current.referrer;
+    const hasFreshSignal = hasExplicitSignal || current.utm_source !== 'direct' || current.utm_campaign || current.referrer;
     if (hasFreshSignal || !storageGet(LAST_TOUCH_KEY)) storageSet(LAST_TOUCH_KEY, current);
 
     const firstTouch = storageGet(FIRST_TOUCH_KEY) || current;
