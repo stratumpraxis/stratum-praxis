@@ -37,50 +37,68 @@ jobs:
           fi
           echo "Stripe credential present; live-mode will be verified from the target Payment Link itself."
 
-      - name: Resolve public Payment Link to stable Stripe IDs
+      - name: Resolve public checkout through a live Checkout Session
         shell: bash
         run: |
           set -euo pipefail
-          curl -fsS -G https://api.stripe.com/v1/payment_links \
+
+          redirect_url="$(curl -sS -o /dev/null -w '%{redirect_url}' "$TARGET_URL")"
+          if [ -z "$redirect_url" ]; then
+            echo "::error::Public Payment Link did not return a checkout redirect."
+            exit 2
+          fi
+
+          session_id="$(printf '%s' "$redirect_url" | grep -oE 'cs_(live|test)_[A-Za-z0-9]+' | head -n1 || true)"
+          if [ -z "$session_id" ]; then
+            echo "::error::Could not extract Checkout Session ID from public redirect."
+            exit 3
+          fi
+          echo "::add-mask::$session_id"
+
+          curl -fsS -G "https://api.stripe.com/v1/checkout/sessions/$session_id" \
             -u "$STRIPE_SECRET_KEY:" \
-            --data-urlencode 'active=true' \
-            --data-urlencode 'limit=100' \
-            > /tmp/payment-links.json
+            --data-urlencode 'expand[]=line_items.data.price.product' \
+            > /tmp/workflow-audit-session.json
 
           node <<'NODE'
           const fs = require('fs');
-                    const target = process.env.TARGET_URL;
-          const doc = JSON.parse(fs.readFileSync('/tmp/payment-links.json', 'utf8'));
-          const link = (doc.data || []).find((x) => x && x.url === target);
-          if (!link?.id) {
-            console.error('Target Payment Link URL was not found among active links visible to this restricted key.');
-            process.exit(2);
+          const s = JSON.parse(fs.readFileSync('/tmp/workflow-audit-session.json', 'utf8'));
+          const items = s.line_items?.data || [];
+          if (s.livemode !== true || !String(s.id || '').startsWith('cs_live_')) {
+            console.error('Resolved Checkout Session is not live-mode.');
+            process.exit(4);
           }
-          if (link.livemode !== true) {
-            console.error('Target Payment Link is not live-mode.');
+          if (items.length !== 1) {
+            console.error(`Expected exactly 1 line item, got ${items.length}.`);
+            process.exit(5);
+          }
+          const item = items[0];
+          const price = item.price || {};
+          const product = typeof price.product === 'string' ? price.product : price.product?.id;
+          const amount = Number(s.amount_total);
+          const currency = String(s.currency || '').toLowerCase();
+          if (!s.payment_link || !price.id || !product || amount !== 49900 || currency !== 'usd') {
+            console.error('Resolved Checkout Session does not match the public $499 USD Workflow Audit.');
             process.exit(6);
           }
-
-          // This restricted key can list Payment Links but cannot read line_items.
-          // The webhook will verify the paid Checkout Session itself by:
-          // payment_link + payment_status + mode + amount_total + currency.
-          // That is sufficient for this fixed-price service route.
 
           const out = {
             verified_at: new Date().toISOString(),
             purpose: 'Workflow Audit $499 route identifiers for server-side payment verification',
-            public_checkout_url: target,
-            payment_link_id: link.id,
-            amount_minor_expected: 49900,
-            currency_expected: 'usd',
-            live_mode: Boolean(link.livemode),
-            source: 'Stripe API read inside GitHub Actions',
+            public_checkout_url: process.env.TARGET_URL,
+            payment_link_id: s.payment_link,
+            price_id: price.id,
+            product_id: product,
+            amount_minor: amount,
+            currency,
+            live_mode: true,
+            payment_status_at_discovery: String(s.payment_status || ''),
+            source: 'Public Payment Link redirect + Stripe Checkout Session API read inside GitHub Actions',
             secret_material_included: false
           };
-
           fs.mkdirSync(require('path').dirname(process.env.OUT_FILE), { recursive: true });
           fs.writeFileSync(process.env.OUT_FILE, JSON.stringify(out, null, 2) + '\n');
-          console.log(`Resolved Workflow Audit Payment Link: ${link.id}`);
+          console.log(`Resolved Workflow Audit route ${s.payment_link} -> ${price.id} -> ${product}`);
           NODE
 
       - name: Validate no secret material was written
