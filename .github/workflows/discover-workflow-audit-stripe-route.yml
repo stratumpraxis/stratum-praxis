@@ -1,0 +1,134 @@
+name: Discover Workflow Audit Stripe Route
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/discover-workflow-audit-stripe-route.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: discover-workflow-audit-stripe-route
+  cancel-in-progress: true
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      TARGET_URL: https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      OUT_FILE: ops/b2b-revenue/workflow-audit-stripe-route.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify live Stripe credential exists
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
+            echo "::error::STRIPE_SECRET_KEY is not configured."
+            exit 1
+          fi
+          case "$STRIPE_SECRET_KEY" in
+            sk_live_*) ;;
+            *)
+              echo "::error::Expected live-mode Stripe secret."
+              exit 1
+              ;;
+          esac
+
+      - name: Resolve public Payment Link to stable Stripe IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsS -G https://api.stripe.com/v1/payment_links \
+            -u "$STRIPE_SECRET_KEY:" \
+            --data-urlencode 'active=true' \
+            --data-urlencode 'limit=100' \
+            > /tmp/payment-links.json
+
+          node <<'NODE'
+          const fs = require('fs');
+          const { execFileSync } = require('child_process');
+
+          const target = process.env.TARGET_URL;
+          const doc = JSON.parse(fs.readFileSync('/tmp/payment-links.json', 'utf8'));
+          const link = (doc.data || []).find((x) => x && x.url === target);
+          if (!link?.id) {
+            console.error('Target Payment Link URL was not found among active live links.');
+            process.exit(2);
+          }
+
+          const raw = execFileSync('curl', [
+            '-fsS', '-G',
+            `https://api.stripe.com/v1/payment_links/${link.id}/line_items`,
+            '-u', `${process.env.STRIPE_SECRET_KEY}:`,
+            '--data-urlencode', 'limit=10',
+            '--data-urlencode', 'expand[]=data.price.product'
+          ], { encoding: 'utf8' });
+          const items = JSON.parse(raw).data || [];
+          if (items.length !== 1) {
+            console.error(`Expected exactly 1 line item, got ${items.length}.`);
+            process.exit(3);
+          }
+
+          const item = items[0];
+          const price = item.price || {};
+          const product = typeof price.product === 'string' ? price.product : price.product?.id;
+          const amount = Number(price.unit_amount);
+          const currency = String(price.currency || '').toLowerCase();
+
+          if (!price.id || !product || amount !== 49900 || currency !== 'usd') {
+            console.error('Resolved Stripe route does not match the public $499 USD Workflow Audit.');
+            process.exit(4);
+          }
+
+          const out = {
+            verified_at: new Date().toISOString(),
+            purpose: 'Workflow Audit $499 route identifiers for server-side payment verification',
+            public_checkout_url: target,
+            payment_link_id: link.id,
+            price_id: price.id,
+            product_id: product,
+            amount_minor: amount,
+            currency,
+            live_mode: Boolean(link.livemode),
+            source: 'Stripe API read inside GitHub Actions',
+            secret_material_included: false
+          };
+
+          fs.mkdirSync(require('path').dirname(process.env.OUT_FILE), { recursive: true });
+          fs.writeFileSync(process.env.OUT_FILE, JSON.stringify(out, null, 2) + '\n');
+          console.log(`Resolved ${link.id} -> ${price.id} -> ${product}`);
+          NODE
+
+      - name: Validate no secret material was written
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m json.tool "$OUT_FILE" >/dev/null
+          if grep -qE 'sk_(live|test)_' "$OUT_FILE"; then
+            echo "::error::Secret-looking material detected in output."
+            exit 5
+          fi
+
+      - name: Commit resolved non-secret route IDs
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git diff --quiet -- "$OUT_FILE" && git ls-files --error-unmatch "$OUT_FILE" >/dev/null 2>&1; then
+            echo 'Workflow Audit Stripe route IDs are already current.'
+            exit 0
+          fi
+          git config user.name 'stratum-revenue-automation'
+          git config user.email 'actions@users.noreply.github.com'
+          git add "$OUT_FILE"
+          git commit -m 'chore(revenue): resolve Workflow Audit Stripe route IDs'
+          git pull --rebase origin main
+          git push origin HEAD:main
