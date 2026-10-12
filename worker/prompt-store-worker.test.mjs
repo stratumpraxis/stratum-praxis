@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import worker, { verifyWebhook } from './prompt-store-worker.js';
+import worker, { verifyWebhook, isWorkflowAuditPaid } from './prompt-store-worker.js';
 
 function toHex(bytes) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
@@ -31,4 +31,42 @@ test('webhook route fails closed when its signing secret is absent', async () =>
   );
   assert.equal(response.status, 503);
   assert.deepEqual(await response.json(), { error: 'Webhook is not configured' });
+});
+
+test('Workflow Audit payment requires live paid $499 USD and an approved route family', () => {
+  const base = {
+    livemode: true,
+    payment_status: 'paid',
+    mode: 'payment',
+    payment_link: 'plink_redacted_route_identity',
+    amount_total: 49900,
+    currency: 'usd',
+  };
+
+  assert.equal(isWorkflowAuditPaid({
+    ...base,
+    client_reference_id: 'workflow_audit_workflow-audit_gmail_campaign_buyer',
+  }), true);
+
+  assert.equal(isWorkflowAuditPaid({
+    ...base,
+    client_reference_id: 'outbound_b2b_intro_outbound_b2b_intro_gmail_workflow_b2b_202610_wheeler_tim',
+  }), true);
+
+  assert.equal(isWorkflowAuditPaid({
+    ...base,
+    amount_total: 49800,
+    client_reference_id: 'workflow_audit_direct',
+  }), false);
+
+  assert.equal(isWorkflowAuditPaid({
+    ...base,
+    livemode: false,
+    client_reference_id: 'workflow_audit_direct',
+  }), false);
+
+  assert.equal(isWorkflowAuditPaid({
+    ...base,
+    client_reference_id: 'cross_agent_operating_kit_direct',
+  }), false);
 });
