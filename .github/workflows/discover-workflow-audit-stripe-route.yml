@@ -55,8 +55,19 @@ jobs:
           const sessions = unique(/cs_live_[A-Za-z0-9]+/g);
 
           console.log(`public checkout bytes=${html.length} plink=${plinks.length} price=${prices.length} product=${products.length} session=${sessions.length}`);
+          console.log('public price ids='+JSON.stringify(prices));
+          for (const id of prices) {
+            const at = html.indexOf(id);
+            const context = html.slice(Math.max(0, at-260), Math.min(html.length, at+520)).replace(/\s+/g,' ');
+            console.log('PRICE_CONTEXT '+id+' '+context);
+          }
+          let pos=0, shown=0;
+          while ((pos=html.indexOf('49900',pos)) >= 0 && shown < 8) {
+            console.log('AMOUNT_49900_CONTEXT '+html.slice(Math.max(0,pos-320),Math.min(html.length,pos+520)).replace(/\s+/g,' '));
+            pos += 5; shown++;
+          }
           if (plinks.length !== 1) {
-            console.error(`Expected one public Payment Link ID in checkout HTML, got ${plinks.length}.`);
+            console.error(`Payment Link ID is not directly embedded; inspecting public Price IDs instead.`);
             process.exit(2);
           }
 
