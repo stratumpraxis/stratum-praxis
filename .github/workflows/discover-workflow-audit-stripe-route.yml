@@ -45,13 +45,12 @@ jobs:
             -u "$STRIPE_SECRET_KEY:" \
             --data-urlencode 'active=true' \
             --data-urlencode 'limit=100' \
+            --data-urlencode 'expand[]=data.line_items.data.price.product' \
             > /tmp/payment-links.json
 
           node <<'NODE'
           const fs = require('fs');
-          const { execFileSync } = require('child_process');
-
-          const target = process.env.TARGET_URL;
+                    const target = process.env.TARGET_URL;
           const doc = JSON.parse(fs.readFileSync('/tmp/payment-links.json', 'utf8'));
           const link = (doc.data || []).find((x) => x && x.url === target);
           if (!link?.id) {
@@ -63,14 +62,7 @@ jobs:
             process.exit(6);
           }
 
-          const raw = execFileSync('curl', [
-            '-fsS', '-G',
-            `https://api.stripe.com/v1/payment_links/${link.id}/line_items`,
-            '-u', `${process.env.STRIPE_SECRET_KEY}:`,
-            '--data-urlencode', 'limit=10',
-            '--data-urlencode', 'expand[]=data.price.product'
-          ], { encoding: 'utf8' });
-          const items = JSON.parse(raw).data || [];
+          const items = link.line_items?.data || [];
           if (items.length !== 1) {
             console.error(`Expected exactly 1 line item, got ${items.length}.`);
             process.exit(3);
