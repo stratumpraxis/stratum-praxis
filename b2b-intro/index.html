@@ -319,12 +319,15 @@
     try{localStorage.setItem('sp-business-lang',lang)}catch(e){}
   }
   buttons.forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.setLang)));
-  let saved='ja';
-  try{saved=localStorage.getItem('sp-business-lang')||'ja'}catch(e){}
-  setLang(saved==='en'?'en':'ja');
 
   const p=new URLSearchParams(location.search);
-  const allowed=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+  const requestedLang=p.get('lang');
+  let saved='ja';
+  try{saved=localStorage.getItem('sp-business-lang')||'ja'}catch(e){}
+  const initialLang=(requestedLang==='en'||requestedLang==='ja')?requestedLang:(saved==='en'?'en':'ja');
+  setLang(initialLang);
+
+  const allowed=['lang','utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
   const carry={};
   allowed.forEach(k=>{if(p.get(k))carry[k]=p.get(k)});
   if(Object.keys(carry).length){
