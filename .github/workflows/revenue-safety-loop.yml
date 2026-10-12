@@ -138,20 +138,24 @@ jobs:
 
           check_stripe_link() {
             local url="$1"
-            local code
-            code="$(curl --connect-timeout 8 --max-time 12 -sS -o /tmp/stripe-body.txt -w '%{http_code}' \
-              -A 'Mozilla/5.0 (compatible; StratumRevenueSafetyLoop/1.0)' -L "$url" || printf '000')"
-            if [[ "$code" =~ ^(2|3)[0-9][0-9]$ ]]; then
-              if grep -qiE 'no longer (active|accepting payments)|link has expired|page not found' /tmp/stripe-body.txt 2>/dev/null; then
-                log "FAIL | Stripe link inactive | $url | HTTP $code | page reports inactive/expired"
-                failures=$((failures + 1))
-              else
-                log "PASS | Stripe link reachable | $url | HTTP $code"
+            local code='000'
+            for attempt in 1 2; do
+              code="$(curl --connect-timeout 8 --max-time 12 -sS -o /tmp/stripe-body.txt -w '%{http_code}' \
+                -A 'Mozilla/5.0 (compatible; StratumRevenueSafetyLoop/1.0)' -L "$url" || printf '000')"
+              if [[ "$code" =~ ^(2|3)[0-9][0-9]$ ]]; then
+                if grep -qiE 'no longer (active|accepting payments)|link has expired|page not found' /tmp/stripe-body.txt 2>/dev/null; then
+                  log "FAIL | Stripe link inactive | $url | HTTP $code | page reports inactive/expired"
+                  failures=$((failures + 1))
+                  return 0
+                fi
+                log "PASS | Stripe link reachable | $url | HTTP $code | attempt $attempt"
+                return 0
               fi
-            else
-              log "FAIL | Stripe link unreachable | $url | HTTP $code"
-              failures=$((failures + 1))
-            fi
+              log "RETRY | Stripe link unreachable | $url | HTTP $code | attempt $attempt/2"
+              [ "$attempt" -eq 1 ] && sleep 3
+            done
+            log "FAIL | Stripe link unreachable | $url | final HTTP $code"
+            failures=$((failures + 1))
           }
 
           log "Revenue Safety Loop | $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
