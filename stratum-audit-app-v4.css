@@ -27,3 +27,12 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:24px 0 36px;color:#718
 .inquiry-actions .btn{width:100%}
 .final-actions{display:flex;flex-direction:column;gap:8px;min-width:230px}
 @media(max-width:780px){.inquiry-card{grid-template-columns:1fr;padding:18px}.inquiry-actions,.final-actions{min-width:0;width:100%}.inquiry-card h2{font-size:30px}}
+
+/* Enterprise trust / operating standard */
+.enterprise-trust{padding-top:30px}
+.enterprise-trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.enterprise-trust-card{min-height:190px;padding:18px;border:1px solid var(--line);border-radius:17px;background:#0a1922}
+.enterprise-trust-card small{display:block;color:var(--mint);font-size:8px;font-weight:900;letter-spacing:.11em;text-transform:uppercase}
+.enterprise-trust-card h3{margin:26px 0 0;font-size:18px;line-height:1.08;letter-spacing:-.025em}
+.enterprise-trust-card p{margin:9px 0 0;color:#8397a1;font-size:10px;line-height:1.65}
+@media(max-width:780px){.enterprise-trust-grid{grid-template-columns:1fr}.enterprise-trust-card{min-height:0}}
