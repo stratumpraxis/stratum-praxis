@@ -14,6 +14,8 @@ on:
       - 'monthly-money-leak-audit/index.html'
       - 'revenue-router.html'
       - 'workflow-audit.html'
+      - 'stratum-audit-app-v4.js'
+      - 'stratum-audit-app-v4.css'
       - 'prompt-systems.html'
       - 'workflow-operator.html'
       - 'trend-to-video-revenue-suite.html'
@@ -126,8 +128,19 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/workflow-audit.html' \
             'data-product="workflow_audit"' \
             'data-analytics-id="workflow_audit_checkout"' \
+            'data-analytics-id="workflow_audit_inquiry_hero"' \
+            'data-analytics-id="workflow_audit_inquiry_section"' \
+            'data-analytics-id="workflow_audit_inquiry_final"' \
+            'data-inquiry-link' \
             '<div class="price">$499</div>' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
+
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013b' \
+            -o /tmp/stratum-audit-app-v4.js
+          node --check /tmp/stratum-audit-app-v4.js
+          grep -F "inquirySubject" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "data-inquiry-link" /tmp/stratum-audit-app-v4.js >/dev/null
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
