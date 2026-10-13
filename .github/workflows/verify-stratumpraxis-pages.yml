@@ -120,7 +120,11 @@ jobs:
             'content="index,follow,max-image-preview:large"' \
             'href="/b2b/"' \
             '繰り返す業務の問題を、購入前に具体化。' \
-            'data-analytics-id="business_intro_direct_paid_audit"' \
+            'data-analytics-id="business_intro_audit_page_hero"' \
+            'href="/workflow-audit.html"'
+
+          wait_for_contains 'https://stratumpraxis.com/workflow-audit.html' \
+            'Buy Workflow Audit — $499' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
