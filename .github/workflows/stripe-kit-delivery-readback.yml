@@ -1,0 +1,45 @@
+name: Stripe Kit Delivery Readback
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stripe-kit-delivery-readback.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  readback:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read $39 Payment Link delivery settings
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
+            echo "::error::STRIPE_SECRET_KEY missing"
+            exit 1
+          fi
+          code="$(curl -sS -o /tmp/link.json -w '%{http_code}' \
+            https://api.stripe.com/v1/payment_links/plink_1U784fJMK7zFs997T0pbVHyb \
+            -u "$STRIPE_SECRET_KEY:")"
+          echo "HTTP_STATUS=$code"
+          if [ "$code" != "200" ]; then
+            node -e "const d=require('/tmp/link.json'); console.log(JSON.stringify({error_type:d?.error?.type||null,error_code:d?.error?.code||null}))"
+            exit 1
+          fi
+          node <<'NODE'
+          const d=require('/tmp/link.json');
+          console.log(JSON.stringify({
+            id:d.id,
+            active:d.active,
+            livemode:d.livemode,
+            after_completion_type:d.after_completion?.type||null,
+            redirect_url:d.after_completion?.redirect?.url||null,
+            custom_text_submit_message:d.custom_text?.submit?.message||null
+          }));
+          NODE
