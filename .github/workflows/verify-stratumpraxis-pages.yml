@@ -136,11 +136,12 @@ jobs:
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013b' \
+            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013c' \
             -o /tmp/stratum-audit-app-v4.js
           node --check /tmp/stratum-audit-app-v4.js
           grep -F "inquirySubject" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "data-inquiry-link" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "\$\$('[data-lang]').forEach" /tmp/stratum-audit-app-v4.js >/dev/null
 
           curl --fail --silent --show-error --location --max-time 20 \
             'https://stratumpraxis.com/stratum-audit-app-v4.css?v=20261013b' \
