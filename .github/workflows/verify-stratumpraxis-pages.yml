@@ -124,7 +124,9 @@ jobs:
             'href="/workflow-audit.html"'
 
           wait_for_contains 'https://stratumpraxis.com/workflow-audit.html' \
-            'Buy Workflow Audit — $499' \
+            'data-product="workflow_audit"' \
+            'data-analytics-id="workflow_audit_checkout"' \
+            '<div class="price">$499</div>' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
