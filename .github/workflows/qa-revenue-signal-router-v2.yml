@@ -25,3 +25,5 @@ jobs:
           echo
           echo "HTTP_STATUS=$code"
           test "$code" = "202"
+
+# retry after DB constraint update
