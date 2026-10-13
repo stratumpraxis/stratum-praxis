@@ -142,6 +142,12 @@ jobs:
           grep -F "inquirySubject" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "data-inquiry-link" /tmp/stratum-audit-app-v4.js >/dev/null
 
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/stratum-audit-app-v4.css?v=20261013b' \
+            -o /tmp/stratum-audit-app-v4.css
+          grep -F ".inquiry-card{" /tmp/stratum-audit-app-v4.css >/dev/null
+          grep -F ".trust-links{" /tmp/stratum-audit-app-v4.css >/dev/null
+
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
             'https://stratumpraxis.com/workflow-operator.html' \
