@@ -132,22 +132,32 @@ jobs:
             'data-analytics-id="workflow_audit_inquiry_section"' \
             'data-analytics-id="workflow_audit_inquiry_final"' \
             'data-inquiry-link' \
+            'data-enterprise-trust' \
+            'data-t="operatorT"' \
+            'data-t="methodT"' \
+            'data-t="afterT"' \
             '<div class="price">$499</div>' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013c' \
+            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013d' \
             -o /tmp/stratum-audit-app-v4.js
           node --check /tmp/stratum-audit-app-v4.js
           grep -F "inquirySubject" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "data-inquiry-link" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "trustT:'" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "operatorT:'" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "methodT:'" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "afterT:'" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "\$\$('[data-lang]').forEach" /tmp/stratum-audit-app-v4.js >/dev/null
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-audit-app-v4.css?v=20261013b' \
+            'https://stratumpraxis.com/stratum-audit-app-v4.css?v=20261013d' \
             -o /tmp/stratum-audit-app-v4.css
           grep -F ".inquiry-card{" /tmp/stratum-audit-app-v4.css >/dev/null
           grep -F ".trust-links{" /tmp/stratum-audit-app-v4.css >/dev/null
+          grep -F ".enterprise-trust-grid{" /tmp/stratum-audit-app-v4.css >/dev/null
+          grep -F ".enterprise-trust-card{" /tmp/stratum-audit-app-v4.css >/dev/null
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
