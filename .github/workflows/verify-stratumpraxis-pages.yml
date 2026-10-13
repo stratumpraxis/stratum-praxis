@@ -14,6 +14,7 @@ on:
       - 'monthly-money-leak-audit/index.html'
       - 'revenue-router.html'
       - 'workflow-audit.html'
+      - 'cross-agent-operating-kit.html'
       - 'stratum-audit-app-v4.js'
       - 'stratum-audit-app-v4.css'
       - 'prompt-systems.html'
@@ -96,6 +97,7 @@ jobs:
             'https://stratumpraxis.com/monthly-money-leak-audit/'
             'https://stratumpraxis.com/revenue-router.html'
             'https://stratumpraxis.com/workflow-audit.html'
+            'https://stratumpraxis.com/cross-agent-operating-kit.html'
             'https://stratumpraxis.com/gpt-5-6-sol-api-cost-calculator.html'
             'https://stratumpraxis.com/agentic-ai-governance-permission-kit.html'
             'https://stratumpraxis.com/ai-agent-vendor-due-diligence-pack.html'
@@ -138,6 +140,12 @@ jobs:
             'data-t="afterT"' \
             '<div class="price">$499</div>' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
+
+          wait_for_contains 'https://stratumpraxis.com/cross-agent-operating-kit.html' \
+            'data-analytics-id="cross_agent_to_workflow_audit"' \
+            'data-product="workflow_audit"' \
+            '/workflow-audit.html?utm_source=cross_agent_operating_kit' \
+            'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T'
 
           curl --fail --silent --show-error --location --max-time 20 \
             'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261013d' \
