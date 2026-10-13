@@ -30,6 +30,8 @@
   };
   const CHECKOUT_MARKER_KEY = 'sp_checkout_clicked_v1';
   const VERIFIED_MARKER_KEY = 'sp_verified_access_v1';
+  const FIRST_PARTY_REVENUE_ENDPOINT = 'https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-b2b-funnel-sensor';
+  const FIRST_PARTY_REVENUE_SESSION_KEY = 'sp_revenue_firstparty_session_v1';
 
   function clean(value, limit) {
     return String(value || '').replace(/[\r\n\t]/g, ' ').trim().slice(0, limit || 160);
@@ -143,6 +145,55 @@
       return created;
     } catch (_) { return newAnonymousId(); }
   })();
+
+  function firstPartyRevenueSessionKey() {
+    try {
+      let value = sessionStorage.getItem(FIRST_PARTY_REVENUE_SESSION_KEY);
+      if (!value) {
+        value = newAnonymousId();
+        sessionStorage.setItem(FIRST_PARTY_REVENUE_SESSION_KEY, value);
+      }
+      return value;
+    } catch (_) { return newAnonymousId(); }
+  }
+
+  function sendFirstPartyCheckoutEvent(product, trusted) {
+    const safeProduct = clean(product || 'unknown', 60).toLowerCase().replace(/[^a-z0-9_]+/g, '_').replace(/^_+|_+$/g, '') || 'unknown';
+    const payload = {
+      event_id: newAnonymousId(),
+      route_id: ('checkout_' + safeProduct).slice(0, 80),
+      event_type: 'CHECKOUT_CLICK',
+      path: location.pathname,
+      utm_source: clean(attribution.utm_source, 100),
+      utm_medium: clean(attribution.utm_medium, 100),
+      utm_campaign: clean(attribution.utm_campaign, 160),
+      utm_content: clean(attribution.utm_content, 160),
+      referrer_host: referrerHost(document.referrer),
+      session_key: firstPartyRevenueSessionKey(),
+      input_trusted: Boolean(trusted),
+      webdriver: Boolean(navigator.webdriver),
+      qa: new URLSearchParams(location.search).get('qa') === '1'
+    };
+    const body = JSON.stringify(payload);
+    let queued = false;
+    const beacon = function () {
+      if (queued) return;
+      queued = true;
+      try { navigator.sendBeacon(FIRST_PARTY_REVENUE_ENDPOINT, new Blob([body], { type: 'text/plain;charset=UTF-8' })); } catch (_) {}
+    };
+    try {
+      fetch(FIRST_PARTY_REVENUE_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: body,
+        keepalive: true,
+        mode: 'cors',
+        credentials: 'omit'
+      }).then(function (response) {
+        if (!response.ok) beacon();
+      }).catch(beacon);
+    } catch (_) { beacon(); }
+  }
 
   const attribution = readAttribution();
 
@@ -457,6 +508,7 @@
     if (CHECKOUT_HOSTS.has(destination.hostname)) {
       storageSet(CHECKOUT_MARKER_KEY, { at: new Date().toISOString(), product: properties.product, destination_host: destination.hostname });
       captureBeforeNavigation('checkout_click', properties);
+      if (destination.hostname === 'buy.stripe.com') sendFirstPartyCheckoutEvent(properties.product, event.isTrusted);
     }
     if (destination.origin !== location.origin && !CHECKOUT_HOSTS.has(destination.hostname)) {
       captureBeforeNavigation('external_route_click', Object.assign({}, properties, { external_category: externalCategory(destination.hostname) }));
