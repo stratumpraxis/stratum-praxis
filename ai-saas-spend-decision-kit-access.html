@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow,noarchive">
+  <title>Spend Decision Kit | Buyer Access</title>
+  <meta name="description" content="Verify a paid AI & SaaS Spend Decision Kit purchase before opening the private workspace.">
+  <link rel="stylesheet" href="/styles.css">
+  <style>
+    body{background:#09110f;color:#edf5f1}
+    .shell{width:min(760px,calc(100% - 32px));margin:auto;padding:56px 0 80px}
+    .ey{font-size:11px;letter-spacing:.14em;color:#9bb5aa;font-weight:800}
+    .card{margin-top:24px;padding:22px;border:1px solid #294038;border-radius:18px;background:#0d1714}
+    label{display:block;margin:14px 0 6px;font-size:12px;font-weight:800;color:#cbd8d2}
+    input{width:100%;min-height:48px;padding:10px 12px;border:1px solid #365248;border-radius:10px;background:#08100e;color:#fff}
+    button{width:100%;min-height:48px;margin-top:18px;border:0;border-radius:10px;background:#e7f7ef;color:#07110d;font-weight:900;cursor:pointer}
+    button:disabled{opacity:.55;cursor:wait}
+    .msg{min-height:24px;margin-top:12px;color:#aabbb4;font-size:12px}
+    .fine{color:#82948c;font-size:11px;line-height:1.65}
+    a{color:#ccefe0}
+  </style>
+</head>
+<body data-product="ai_saas_spend_decision_kit" data-funnel="buyer_access">
+<main class="shell">
+  <p class="ey">STRATUM PRAXIS · VERIFIED BUYER ACCESS</p>
+  <h1>Open your Spend Decision Kit.</h1>
+  <p>Payment is checked server-side before the private workspace opens. Use the same email entered at Stripe Checkout.</p>
+  <section class="card">
+    <label for="sid">Checkout Session ID</label>
+    <input id="sid" autocomplete="off" spellcheck="false" placeholder="cs_...">
+    <label for="email">Checkout email</label>
+    <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+    <button id="verify" type="button">Verify purchase →</button>
+    <p id="msg" class="msg" role="status" aria-live="polite"></p>
+    <p class="fine">Access is granted only when Stripe confirms a paid $39 Spend Decision Kit purchase and the email matches the Checkout Session.</p>
+  </section>
+  <p class="fine"><a href="/ai-saas-spend-decision-kit.html">← Back to product page</a></p>
+</main>
+<script>
+(() => {
+  const q=new URLSearchParams(location.search);
+  const sid=document.getElementById('sid');
+  const email=document.getElementById('email');
+  const btn=document.getElementById('verify');
+  const msg=document.getElementById('msg');
+  sid.value=q.get('session_id')||'';
+  async function run(){
+    const session_id=sid.value.trim(), address=email.value.trim();
+    if(!session_id||!address){msg.textContent='Checkout Session ID and checkout email are required.';return;}
+    btn.disabled=true; msg.textContent='Verifying purchase…';
+    try{
+      const r=await fetch('https://ai-consultant-verify.practicalaireport.workers.dev/spend-decision-kit/login',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({session_id,email:address,offer:'spend_kit'})
+      });
+      const x=await r.json();
+      if(!r.ok||!x.authorized||!x.workspace_url) throw new Error(x.error||'Verification failed');
+      msg.textContent='Verified. Opening workspace…';
+      location.href=x.workspace_url;
+    }catch(e){
+      msg.textContent=String(e.message||'Verification failed');
+      btn.disabled=false;
+    }
+  }
+  btn.addEventListener('click',run);
+  email.addEventListener('keydown',e=>{if(e.key==='Enter')run();});
+})();
+</script>
+</body>
+</html>
