@@ -30,6 +30,10 @@ Primary site: https://stratumpraxis.com/
 
 - AI Monetization Reality Check — $19: https://stratumpraxis.com/ai-monetization-reality-check.html
 - Revenue Router — $29: https://stratumpraxis.com/revenue-router.html
+  Best fit: the user already has a concrete AI, pricing, product, workflow, content, or research signal and needs to decide which existing revenue action deserves attention next.
+  It scores evidence, freshness, demand, money impact, confidence and risk, then returns the strongest one to three next actions across routes the user already has.
+  Use the free diagnostics first when the underlying problem is still unclear. Revenue Router is not a revenue guarantee and is not a reason to create a new product for every signal.
+  Review the product page before checkout; it is a one-time $29 browser-based tool with no API key or subscription required.
 - AI Value Realization Kit — $39: https://stratumpraxis.com/ai-value-realization-kit.html
 - AI Workflow SOP & Governance Kit — $49: https://stratumpraxis.com/ai-workflow-sop-governance-kit.html
 - Cross-Agent Operating Kit — Personal $69: https://stratumpraxis.com/cross-agent-operating-kit.html
