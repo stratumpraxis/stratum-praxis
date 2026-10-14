@@ -510,6 +510,7 @@ export default {
           "/prompt-store/ops10/workspace",
           "/cross-agent-kit/workspace",
           "/spend-decision-kit/workspace",
+          "/revenue-router/workspace",
         ].includes(u.pathname)
       )
         return workspace(env, u);
