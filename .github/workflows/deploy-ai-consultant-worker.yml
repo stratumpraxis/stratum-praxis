@@ -95,7 +95,7 @@ jobs:
         run: |
           set -euo pipefail
           BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
-          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace /cross-agent-kit/workspace /spend-decision-kit/workspace /paid-insights/workspace /agent-lab/workspace; do
+          for path in /slide-factory/workspace /smartphone-income/workspace /council/workspace /council-ja/workspace /prompt-store/workspace /cross-agent-kit/workspace /spend-decision-kit/workspace /revenue-router/workspace /paid-insights/workspace /agent-lab/workspace; do
             code="$(curl -sS -o /tmp/worker-response.txt -w '%{http_code}' "$BASE$path")"
             if [ "$code" != '401' ]; then
               echo "Expected 401 for unauthenticated $path, got $code"
@@ -136,6 +136,15 @@ jobs:
             exit 1
           fi
           echo "Spend Decision Kit invalid-login guard OK: 400"
+
+
+          code="$(curl -sS -o /tmp/revenue-router-login.txt -w '%{http_code}' -X POST "$BASE/revenue-router/login" -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com","offer":"revenue_router"}')"
+          if [ "$code" != '400' ]; then
+            echo "Expected 400 for invalid Revenue Router login, got $code"
+            cat /tmp/revenue-router-login.txt
+            exit 1
+          fi
+          echo "Revenue Router invalid-login guard OK: 400"
 
           code="$(curl -sS -o /tmp/paid-insights-login.txt -w '%{http_code}' -X POST "$BASE/paid-insights/login" -H 'Content-Type: application/json' --data '{"session_id":"invalid","email":"qa@example.com"}')"
           if [ "$code" != '400' ]; then
