@@ -40,16 +40,25 @@ jobs:
           else
             path="$(git diff-tree --no-commit-id --name-only -r HEAD -- 'publishing/queue/stratum-wordpress-*.json' | head -n 1)"
           fi
-          if [ -z "$WPCOM_ACCESS_TOKEN" ]; then
-            echo 'WORDPRESS_AUTH_GATE: WPCOM_ACCESS_TOKEN missing'
-            echo 'ready=false' >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
           if [ -z "$path" ] || [ ! -f "$path" ]; then
             echo 'WORDPRESS_IDLE: no publish package in this event'
+            echo '### WordPress: IDLE (no publish package)' >> "$GITHUB_STEP_SUMMARY"
             echo 'ready=false' >> "$GITHUB_OUTPUT"
             exit 0
           fi
+          approval="$(node -e 'const fs=require("node:fs"); const p=JSON.parse(fs.readFileSync(process.argv[1],"utf8")); console.log(p.status||"UNKNOWN")' "$path")"
+          if [ "$approval" != "APPROVED" ]; then
+            echo "WORDPRESS_WAIT_APPROVAL: $path (status=$approval)"
+            echo "### WordPress: WAIT_APPROVAL ($approval)" >> "$GITHUB_STEP_SUMMARY"
+            echo 'ready=false' >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          if [ -z "$WPCOM_ACCESS_TOKEN" ]; then
+            echo '::error::WORDPRESS_AUTH_GATE: approved publication blocked (WPCOM_ACCESS_TOKEN missing)'
+            echo '### WordPress: BLOCKED_AUTH (approved article; token missing)' >> "$GITHUB_STEP_SUMMARY"
+            exit 1
+          fi
+          echo '### WordPress: APPROVED (publishing)' >> "$GITHUB_STEP_SUMMARY"
           echo 'ready=true' >> "$GITHUB_OUTPUT"
           echo "path=$path" >> "$GITHUB_OUTPUT"
       - name: Publish to verified Stratum WordPress site
