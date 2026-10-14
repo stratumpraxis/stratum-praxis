@@ -26,6 +26,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Run worker unit tests
+        run: node --test worker/prompt-store-worker.test.mjs
+
       - name: Verify Stripe live credential capability
         shell: bash
         env:
