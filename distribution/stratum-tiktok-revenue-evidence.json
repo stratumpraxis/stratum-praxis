@@ -5,9 +5,10 @@
   "bufferPostId": "6acf18eeb610c3011fa1f472",
   "destination": "https://stratumpraxis.com/revenue-router.html?utm_source=tiktok&utm_medium=organic&utm_campaign=revenue_router_buyer_action&utm_content=social_card_20261014",
   "submittedAt": "2026-10-14T05:54:00.656Z",
-  "state": "BUFFER_SUBMITTED_UNVERIFIED",
-  "sentAt": null,
-  "publicUrl": null,
-  "bufferStatus": "sending",
-  "error": null
+  "state": "PUBLISHED",
+  "sentAt": "2026-10-14T05:55:33.233Z",
+  "publicUrl": "https://tiktok.com/@stratumpraxis/video/7696397636697427206",
+  "bufferStatus": "sent",
+  "error": null,
+  "verifiedAt": "2026-10-14T05:55:45.462Z"
 }
