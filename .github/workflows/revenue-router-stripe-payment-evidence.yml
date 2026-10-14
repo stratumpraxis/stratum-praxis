@@ -1,4 +1,5 @@
 name: Revenue Router Stripe Payment Evidence
+# readback_after_owned_distribution: 2026-10-14T06:50:00Z
 
 on:
   push:
