@@ -195,3 +195,35 @@ Do not replace the existing $29 price or Payment Link merely to solve this. Conf
 - Verified customer review / customer outcome: none yet
 
 Do not fabricate social proof. Collect it only after a verified buyer receives and uses the product.
+
+
+## Stripe Redirect Execution Attempt — Safe Hold
+
+User explicitly authorized execution of the Revenue Router Payment Link post-purchase redirect.
+
+A one-shot event workflow attempted to:
+
+1. identify exactly one live Payment Link whose public URL equals the canonical Revenue Router checkout URL;
+2. update only `after_completion` to the verified Buyer Access redirect;
+3. read the Payment Link back and confirm the redirect.
+
+Result:
+
+- No Stripe mutation occurred.
+- The live restricted key rejected `GET /v1/payment_links` with `more_permissions_required`.
+- Missing permission: `payment_links_read`.
+- Because the workflow could not identify the target Payment Link exactly, it stopped before write.
+- This was fail-closed behavior and the existing checkout remained unchanged.
+
+The ChatGPT Stripe connector currently exposes only a different test-mode account, so it cannot perform the live Payment Link update either.
+
+### Remaining Human Gate
+
+Authorize/connect the actual Stratum live Stripe account to the Stripe connector, or grant the existing live restricted key Payment Links read/write capability.
+
+After live account access exists, execute only this change on the exact existing Revenue Router Payment Link:
+
+- `after_completion.type = redirect`
+- `after_completion.redirect.url = https://stratumpraxis.com/revenue-router-access.html?session_id={CHECKOUT_SESSION_ID}`
+
+Then read back the Payment Link and verify the redirect before treating buyer delivery as closed.
