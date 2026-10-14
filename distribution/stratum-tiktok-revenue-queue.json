@@ -2,12 +2,25 @@
   {
     "id": "stratum-saas-renewal-tiktok-20260913-01",
     "active": false,
-    "services": ["tiktok"],
+    "services": [
+      "tiktok"
+    ],
     "title": "SaaS Renewal Decision Check",
     "text": "Before a SaaS renewal or AI upgrade, compare annual spend, usage, overlap, and timing before the contract rolls forward.",
     "url": "https://stratumpraxis.com/saas-renewal-decision.html?utm_source=tiktok&utm_medium=organic&utm_campaign=saas_renewal_decision_20260913&utm_content=stratum_tiktok_revenue_01",
     "imageUrl": "https://f21d76a2.stratum-praxis-site.pages.dev/media/stratum-roi-social.png",
     "holdReason": "Recent verified Stratum TikTok publication already sent; hold to prevent rapid-repeat posting.",
     "holdEvidence": "publishing/evidence/stratum-tiktok-signal-path-002.json"
+  },
+  {
+    "id": "stratum-revenue-router-tiktok-20261014-01",
+    "active": true,
+    "services": [
+      "tiktok"
+    ],
+    "title": "Revenue Router — AI signal to next action",
+    "text": "AI signal ≠ action. Check evidence, freshness, demand, money impact, confidence and risk before deciding the next move. Revenue Router returns the strongest 1–3 actions.",
+    "url": "https://stratumpraxis.com/revenue-router.html?utm_source=tiktok&utm_medium=organic&utm_campaign=revenue_router_buyer_action&utm_content=social_card_20261014",
+    "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/revenue-router-social-20261014.png"
   }
 ]
