@@ -42,6 +42,7 @@ on:
       - 'ops/autonomous-operations-monitor/24h-control-plane.html'
       - 'sitemap.xml'
       - 'llms.txt'
+      - 'guides/workflow-automation-roi.html'
       - 'scos-analytics.js'
   workflow_dispatch:
 
@@ -191,6 +192,13 @@ jobs:
           grep -F ".trust-links{" /tmp/stratum-audit-app-v4.css >/dev/null
           grep -F ".enterprise-trust-grid{" /tmp/stratum-audit-app-v4.css >/dev/null
           grep -F ".enterprise-trust-card{" /tmp/stratum-audit-app-v4.css >/dev/null
+
+          wait_for_contains 'https://stratumpraxis.com/guides/workflow-automation-roi.html' \
+            'AI Workflow Automation ROI: How to Calculate It Before You Build' \
+            'data-quick-answer' \
+            'guide_roi_to_diagnostic' \
+            'guide_roi_to_workflow_audit' \
+            'workflow_audit_qualified_traffic'
 
           wait_for_contains 'https://stratumpraxis.com/llms.txt' \
             'AI Workflow Audit / Automation Opportunity Audit — $499' \
