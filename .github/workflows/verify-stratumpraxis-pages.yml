@@ -124,13 +124,15 @@ jobs:
           wait_for_contains 'https://stratumpraxis.com/' \
             'id="signal-action"' \
             'data-analytics-id="home_signal_to_free_tools"' \
-            '/stratum-home-app-v4.js?v=20261014a'
+            '/stratum-home-app-v4.js?v=20261014b'
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-home-app-v4.js?v=20261014a' \
+            'https://stratumpraxis.com/stratum-home-app-v4.js?v=20261014b' \
             -o /tmp/stratum-home-app-v4.js
           node --check /tmp/stratum-home-app-v4.js
           grep -F "home_signal_to_workflow_audit" /tmp/stratum-home-app-v4.js >/dev/null
+          grep -F "home_signal_started" /tmp/stratum-home-app-v4.js >/dev/null
+          grep -F "home_hero_start_signal" <(curl --fail --silent --show-error --location --max-time 20 https://stratumpraxis.com/) >/dev/null
           grep -F "home_signal_to_spend_audit" /tmp/stratum-home-app-v4.js >/dev/null
           grep -F "workflow_audit_qualified_traffic" /tmp/stratum-home-app-v4.js >/dev/null
           grep -F "spend_audit_qualified_traffic" /tmp/stratum-home-app-v4.js >/dev/null
