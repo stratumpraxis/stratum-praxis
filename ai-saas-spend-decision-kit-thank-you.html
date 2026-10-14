@@ -1,9 +1,51 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>AI & SaaS Spend Decision Kit | Workspace</title><link rel="stylesheet" href="styles.css"><style>textarea,input,select{width:100%;padding:10px;margin:5px 0 12px;background:#0e1420;color:#f4f4f5;border:1px solid #303744;border-radius:7px}table{width:100%;border-collapse:collapse;margin:20px 0}th,td{border-bottom:1px solid #303744;padding:9px;text-align:left}.workspace{overflow-x:auto}.mini{font-size:13px;color:#a1a1aa}</style><!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY"></script>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#09110f">
+<title>Spend Decision Kit | Secure Buyer Verification | Stratum Praxis</title>
+<meta name="description" content="Continue to the verified buyer access route for the Stratum AI & SaaS Spend Decision Kit.">
+<link rel="stylesheet" href="/styles.css">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#09110f;color:#edf5f1;font:16px/1.6 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+main{width:min(680px,calc(100% - 36px));margin:0 auto;padding:clamp(50px,12vh,112px) 0 80px}
+.eyebrow{margin:0 0 18px;color:#94b6a6;font-size:11px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+h1{margin:0 0 16px;font-size:clamp(33px,6vw,55px);line-height:1.12;letter-spacing:-.045em}
+p{color:#b4c4bd}.panel{border:1px solid #2a4036;border-radius:18px;background:#0e1b16;padding:clamp(18px,4vw,28px);margin:24px 0}
+a{color:#d2f8e6}.primary{display:block;padding:15px 18px;text-align:center;border-radius:12px;background:#dcf6e8;color:#0c1a13;font-weight:800;text-decoration:none}
+.secondary{display:inline-block;margin-top:12px;font-weight:700}.fine{font-size:13px;color:#95aaa0}
+footer{font-size:12px;color:#91a59a;margin-top:28px}
+</style>
+</head>
+<body>
+<main>
+<p class="eyebrow">STRATUM PRAXIS · $39 SPEND DECISION KIT</p>
+<h1>Verify your purchase to open the workspace.</h1>
+<p>The Decision Kit now opens through a purchase-verified access route. This legacy link no longer provides an unrestricted copy of the paid workspace.</p>
+<section class="panel" aria-labelledby="verification">
+<h2 id="verification">Continue securely</h2>
+<p>Use the same email address that you entered at Stripe Checkout. If your Checkout Session ID was included in the return link, it will be carried into the verification page automatically.</p>
+<a id="verified-access" class="primary" href="/ai-saas-spend-decision-kit-access.html">Verify purchase and open Decision Kit →</a>
+<p class="fine">The access page requires a paid Checkout Session ID and matching checkout email. If the payment return link did not supply a Session ID, contact Stratum for purchase assistance; do not send passwords, payment-card details, or private tokens by email.</p>
+<a class="secondary" href="mailto:stratumpraxis@gmail.com?subject=Spend%20Decision%20Kit%20purchase%20access">Contact purchase support ↗</a>
+</section>
+<p><a href="/ai-saas-spend-decision-kit.html">← Product and purchase details</a></p>
+<footer>Independent Stratum Praxis product · Checkout handled by Stripe · No account credentials requested on this page</footer>
+</main>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-QXTYRB4TWY');
+(() => {
+  const query = new URLSearchParams(location.search);
+  const id = query.get('session_id') || query.get('checkout_session_id') || '';
+  const target = '/ai-saas-spend-decision-kit-access.html';
+  if (/^cs_(live|test)_[A-Za-z0-9]+$/.test(id)) {
+    const next = target + '?session_id=' + encodeURIComponent(id);
+    document.getElementById('verified-access').setAttribute('href', next);
+    location.replace(next);
+  }
+})();
 </script>
-</head><body><main><section class="hero"><div class="container"><p class="eyebrow">// Purchased workspace · v1.0</p><h1>AI & SaaS Spend Decision Kit</h1><p class="hero-text">Build your decision register below. Data stays in this browser session unless you export it. Do not enter passwords, API keys, payment-card data, customer PII or regulated information.</p></div></section><section class="section"><div class="container"><h2>1. Add a tool</h2><div class="card-grid"><div><label>Tool</label><input id="tool"></div><div><label>Owner</label><input id="owner" placeholder="Team or accountable owner"></div><div><label>Monthly cost USD</label><input id="cost" type="number" min="0"></div><div><label>Seats</label><input id="seats" type="number" min="0" placeholder="Paid seats"></div><div><label>Workflow supported</label><input id="workflow" placeholder="What job does this tool support?"></div><div><label>Renewal date</label><input id="renewalDate" type="date"></div><div><label>Usage (1–5)</label><input id="usage" type="number" min="1" max="5" value="3"></div><div><label>Workflow importance (1–5)</label><input id="importance" type="number" min="1" max="5" value="3"></div><div><label>Overlap risk (1–5)</label><input id="overlap" type="number" min="1" max="5" value="1"></div><div><label>Renewal urgency (1–5)</label><input id="renewal" type="number" min="1" max="5" value="1"></div></div><button class="button button-primary" onclick="addTool()">Add to decision register</button><div class="workspace"><table><thead><tr><th>Tool</th><th>Owner</th><th>Seats</th><th>Workflow</th><th>Renewal</th><th>Monthly</th><th>Annual</th><th>Score</th><th>Action</th></tr></thead><tbody id="rows"></tbody></table></div><p id="summary" class="hero-text">Annual stack: $0 · Review exposure: $0</p><button class="button button-secondary" onclick="exportCSV()">Export CSV</button></div></section><section class="section section-accent"><div class="container"><h2>2. Decision logic</h2><ul class="check-list"><li><strong>KEEP:</strong> strong usage + important workflow + low overlap.</li><li><strong>REDUCE:</strong> useful tool, but current tier/seats appear larger than needed.</li><li><strong>CONSOLIDATE:</strong> useful capability with meaningful overlap elsewhere.</li><li><strong>REVIEW:</strong> evidence is weak, renewal is close, or the workflow case is unclear.</li><li><strong>CANCEL:</strong> weak usage and weak workflow importance; verify dependencies before acting.</li></ul><p class="fine">The score is a prioritization aid, not an instruction to cancel software. Validate contracts, dependencies, security, data retention and operational consequences before changing subscriptions.</p></div></section><section class="section"><div class="container"><h2>3. 30-day action plan</h2><ol><li>Export the decision register and sort REVIEW / CONSOLIDATE / REDUCE candidates by annual cost.</li><li>Verify actual usage, owners, dependencies and renewal dates for the top five.</li><li>Take one reversible action first: remove unused seats, downgrade a tier, pause an add-on or consolidate a duplicate capability where safe.</li><li>Record the baseline cost before the change.</li><li>Re-measure after 30 days and only count savings that actually occurred.</li></ol><div class="button-row"><a class="button button-secondary" href="ai-saas-spend-waste-audit.html">Need independent review? View the $499 Spend Audit</a><a class="button button-secondary" href="ai-saas-spend-monitoring.html">Need recurring control? View Monitoring</a></div></div></section></main><script>const data=[];function money(n){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n)}function decision(u,i,o,r){const value=u+i;const risk=o+r;if(u<=2&&i<=2)return 'CANCEL';if(o>=4&&value>=5)return 'CONSOLIDATE';if(u<=3&&i>=3)return 'REDUCE';if(r>=4||risk>=6)return 'REVIEW';return 'KEEP'}function addTool(){const x={tool:document.getElementById('tool').value.trim()||'Unnamed tool',owner:document.getElementById('owner').value.trim(),seats:+document.getElementById('seats').value||0,workflow:document.getElementById('workflow').value.trim(),renewalDate:document.getElementById('renewalDate').value,cost:+document.getElementById('cost').value||0,u:+document.getElementById('usage').value||1,i:+document.getElementById('importance').value||1,o:+document.getElementById('overlap').value||1,r:+document.getElementById('renewal').value||1};x.score=(x.u+x.i)-(x.o+x.r);x.action=decision(x.u,x.i,x.o,x.r);data.push(x);render();document.getElementById('tool').value='';document.getElementById('cost').value=''}function render(){const rows=document.getElementById('rows');rows.innerHTML=data.map(x=>`<tr><td>${esc(x.tool)}</td><td>${esc(x.owner||'—')}</td><td>${x.seats||'—'}</td><td>${esc(x.workflow||'—')}</td><td>${esc(x.renewalDate||'—')}</td><td>${money(x.cost)}</td><td>${money(x.cost*12)}</td><td>${x.score}</td><td><strong>${x.action}</strong></td></tr>`).join('');const annual=data.reduce((a,x)=>a+x.cost*12,0);const review=data.filter(x=>x.action!=='KEEP').reduce((a,x)=>a+x.cost*12,0);document.getElementById('summary').textContent=`Annual stack: ${money(annual)} · Review exposure: ${money(review)}`}function esc(s){return s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}function exportCSV(){const h=['Tool','Owner','Seats','Workflow supported','Renewal date','Monthly cost','Annual cost','Usage','Importance','Overlap risk','Renewal urgency','Score','Action'];const lines=[h,...data.map(x=>[x.tool,x.owner,x.seats,x.workflow,x.renewalDate,x.cost,x.cost*12,x.u,x.i,x.o,x.r,x.score,x.action])].map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(','));const b=new Blob([lines.join('\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ai-saas-spend-decision-register.csv';a.click();URL.revokeObjectURL(a.href)}</script></body></html>
+</body>
+</html>
