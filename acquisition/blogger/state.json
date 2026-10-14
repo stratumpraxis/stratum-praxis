@@ -84,7 +84,7 @@
       "provider": "local-evidence-fallback"
     }
   },
-  "last_run_at": "2026-10-13T21:13:14.045Z",
+  "last_run_at": "2026-10-14T06:07:07.544Z",
   "owned_publications": {
     "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d": {
       "output_id": "2026-08-29-shadow-ai-spend-accountability-candidate-e59af22d",
@@ -191,7 +191,7 @@
       "verified_at": "2026-10-11T15:37:30.741Z"
     }
   },
-  "last_publish_pass_at": "2026-10-13T21:13:14.159Z",
+  "last_publish_pass_at": "2026-10-14T06:07:07.634Z",
   "attempts": {
     "shadow-ai-spend-accountability-candidate": 1,
     "repeat-visit-sites-win-owner-package": 1,
