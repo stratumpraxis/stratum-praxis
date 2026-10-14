@@ -124,6 +124,15 @@ jobs:
 
           # Only routes intentionally present in the canonical sitemap are asserted here.
           # Other owned pages above are still verified for live HTTPS reachability.
+          wait_for_contains 'https://stratumpraxis.com/signal/auto/ai-saved-time-but-workflow-is-still-slow-20261014.html' \
+            'AIで時短したのに忙しい？' \
+            'signal_ai_time_trap_to_revenue_router' \
+            'revenue_router_buyer_action'
+
+          wait_for_contains 'https://stratumpraxis.com/signal/' \
+            'ai-saved-time-but-workflow-is-still-slow-20261014.html' \
+            'AI TIME ≠ ROI'
+
           wait_for_contains 'https://stratumpraxis.com/revenue-router.html' \
             'vp_stratum_revenue_router_v1' \
             'revenue_router_checkout_3'
