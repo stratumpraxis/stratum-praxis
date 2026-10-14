@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'revenue-os/revenue-router-stripe-payment-evidence.trigger'
+      - '.github/workflows/revenue-router-stripe-payment-evidence.yml'
   workflow_dispatch:
 
 permissions:
