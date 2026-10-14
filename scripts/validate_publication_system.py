@@ -65,12 +65,22 @@ def main() -> None:
     if policy.get("scheduled_is_published") is not False:
         fail("CHANNEL_CHECK failed: SCHEDULED must not equal PUBLISHED")
 
-    for key in ("ghost", "devto"):
-        account = platforms.get(key) or {}
-        if account.get("automation_allowed") is not True:
-            fail(f"CHANNEL_CHECK failed: verified publication lane disabled: {key}")
-        if account.get("credential_state") not in {"PRESENT_IN_ACTIONS_SECRETS", "VERIFIED"}:
-            fail(f"CHANNEL_CHECK failed: verified publication credential state lost: {key}")
+    devto = platforms.get("devto") or {}
+    if devto.get("automation_allowed") is not True:
+        fail("CHANNEL_CHECK failed: DEV.to verified publication lane disabled")
+    if devto.get("credential_state") not in {"PRESENT_IN_ACTIONS_SECRETS", "VERIFIED"}:
+        fail("CHANNEL_CHECK failed: DEV.to publication credential state lost")
+
+    ghost = platforms.get("ghost") or {}
+    if ghost.get("automation_allowed") is True:
+        if ghost.get("credential_state") not in {"PRESENT_IN_ACTIONS_SECRETS", "VERIFIED"}:
+            fail("CHANNEL_CHECK failed: Ghost publication credential state lost")
+    else:
+        if ghost.get("credential_state") != "EXTERNAL_SITE_UNAVAILABLE_402":
+            fail("CHANNEL_CHECK failed: Ghost disabled without a recognized external hold state")
+        if not str(ghost.get("note") or "").strip():
+            fail("CHANNEL_CHECK failed: Ghost external hold requires an explanatory note")
+        print("GHOST_LANE=SAFE_HOLD_EXTERNAL_402")
 
     x = platforms.get("x") or {}
     if x.get("automation_allowed") is not False or x.get("primary_publisher") != "MANUAL_ONLY":
