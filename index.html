@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://stratumpraxis.com/media/og/stratum-praxis-og-default.png">
 <link rel="stylesheet" href="/stratum-home-app-v4.css?v=20261005a">
 <script src="/scos-analytics.js" defer></script>
-<script src="/stratum-home-app-v4.js?v=20261005a" defer></script>
+<script src="/stratum-home-app-v4.js?v=20261014a" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Stratum Praxis","url":"https://stratumpraxis.com/","description":"B2B AI spend, workflow and agent decision intelligence."}</script>
 </head>
 <body data-page="stratum-home-app-v4">
@@ -60,7 +60,7 @@
       <div class="field"><label data-t="idle">Low-use or duplicate tools</label><input id="idle" type="number" min="0" step="1" value="2" inputmode="numeric"></div>
       <div class="field"><label data-t="hours">Manual hours left / month</label><input id="hours" type="number" min="0" step="1" value="20" inputmode="numeric"></div>
     </div><button class="btn primary" id="calc" type="button"><span data-t="calc">Calculate signal</span><b>→</b></button></article>
-    <article class="result"><div class="result-top"><small data-t="resultLabel">YOUR SIGNAL</small><span>Directional</span></div><div class="result-main"><div class="ring"><b id="signal">—</b><small>/100</small></div><div class="result-copy"><h3 id="signal-title">Monitor first</h3><p id="signal-text">No paid step is necessary yet.</p></div></div><div class="result-actions"><a class="btn primary" href="/live-lab.html"><span data-t="openFree">Open free tool</span><b>→</b></a><a class="btn" href="/product-router.html">See route map ↗</a></div></article>
+    <article class="result"><div class="result-top"><small data-t="resultLabel">YOUR SIGNAL</small><span>Directional</span></div><div class="result-main"><div class="ring"><b id="signal">—</b><small>/100</small></div><div class="result-copy"><h3 id="signal-title">Monitor first</h3><p id="signal-text">No paid step is necessary yet.</p></div></div><div class="result-actions"><a class="btn primary" id="signal-action" href="/live-lab.html" data-analytics-id="home_signal_to_free_tools"><span data-t="openFree">Open free tool</span><b>→</b></a><a class="btn" href="/product-router.html" data-analytics-id="home_signal_route_map">See route map ↗</a></div></article>
   </div>
 </div></section>
 
