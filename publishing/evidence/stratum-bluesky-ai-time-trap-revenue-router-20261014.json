@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxshjmw6si2i",
+  "cid": "bafyreiheznuibiph2akf4fwuriwzcbampxcbsw2udequdjblz27wt53y5m",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxshjmw6si2i",
+  "destination": "https://stratumpraxis.com/revenue-router.html?utm_source=bluesky&utm_medium=owned&utm_campaign=rr_ai_time",
+  "content_id": "stratum-bluesky-ai-time-trap-revenue-router-20261014",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-14T02:05:57.071Z"
+}
