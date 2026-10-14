@@ -140,15 +140,15 @@ async function verify(secret, t) {
     return null;
   }
 }
-async function stripe(env, path) {
+async function stripe(env, path, secret = env.STRIPE_SECRET_KEY) {
   const r = await fetch("https://api.stripe.com/v1/" + path, {
-    headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` },
+    headers: { Authorization: `Bearer ${secret}` },
   });
   const x = await r.json();
   if (!r.ok) throw Error("Stripe verification failed");
   return x;
 }
-async function stripePost(env, path, fields) {
+async function stripePost(env, path, fields, secret = env.STRIPE_SECRET_KEY) {
   const body = new URLSearchParams();
   for (const [key, value] of Object.entries(fields)) {
     if (value !== undefined && value !== null && value !== "")
@@ -157,7 +157,7 @@ async function stripePost(env, path, fields) {
   const r = await fetch("https://api.stripe.com/v1/" + path, {
     method: "POST",
     headers: {
-      Authorization: `Bearer ${env.STRIPE_SECRET_KEY}`,
+      Authorization: `Bearer ${secret}`,
       "Content-Type": "application/x-www-form-urlencoded",
     },
     body,
@@ -166,13 +166,19 @@ async function stripePost(env, path, fields) {
   if (!r.ok) throw Error("Stripe record update failed");
   return x;
 }
-async function sessionBase(env, sid) {
-  return stripe(env, `checkout/sessions/${encodeURIComponent(sid)}`);
+function stripeSecretForOffer(env, offerKey) {
+  if (offerKey === "revenue_router")
+    return env.STRIPE_REVENUE_ROUTER_KEY || env.STRIPE_SECRET_KEY;
+  return env.STRIPE_SECRET_KEY;
 }
-async function session(env, sid) {
+async function sessionBase(env, sid, secret = env.STRIPE_SECRET_KEY) {
+  return stripe(env, `checkout/sessions/${encodeURIComponent(sid)}`, secret);
+}
+async function session(env, sid, secret = env.STRIPE_SECRET_KEY) {
   return stripe(
     env,
     `checkout/sessions/${encodeURIComponent(sid)}?expand[]=line_items.data.price`,
+    secret,
   );
 }
 function paid(s, o) {
@@ -232,7 +238,7 @@ function isWorkflowAuditPaid(s) {
     routeMatches
   );
 }
-async function recordSession(env, s, fields) {
+async function recordSession(env, s, fields, secret = env.STRIPE_SECRET_KEY) {
   const metadata = {
     "metadata[attribution_route_id]": routeId(s),
     "metadata[attribution_state]":
@@ -246,6 +252,7 @@ async function recordSession(env, s, fields) {
     env,
     `checkout/sessions/${encodeURIComponent(s.id)}`,
     metadata,
+    secret,
   );
 }
 function sameBytes(a, b) {
@@ -410,27 +417,38 @@ async function login(req, env, u, cors) {
       400,
       cors,
     );
-  const s = await session(env, sid);
-  let key =
+  const requestedKey =
     requested && OFFERS[requested]
       ? requested
-      : Object.keys(OFFERS).find((k) => paid(s, OFFERS[k]));
+      : u.pathname.startsWith("/revenue-router/")
+        ? "revenue_router"
+        : "";
+  let stripeSecret = stripeSecretForOffer(env, requestedKey);
+  const s = await session(env, sid, stripeSecret);
+  let key =
+    requestedKey ||
+    Object.keys(OFFERS).find((k) => paid(s, OFFERS[k]));
   if (!key || !paid(s, OFFERS[key]))
     return j({ error: "Paid purchase could not be verified" }, 402, cors);
+  stripeSecret = stripeSecretForOffer(env, key);
   const pe = String(s.customer_details?.email || s.customer_email || "")
     .trim()
     .toLowerCase();
   if (!pe || pe !== email)
     return j({ error: "Email does not match checkout email" }, 403, cors);
   const o = OFFERS[key];
-  await recordSession(env, s, {
-    revenue_verified_at: new Date().toISOString(),
-    revenue_product: key,
-    revenue_amount: s.amount_total,
-    revenue_currency: s.currency,
-    buyer_record_state: "VERIFIED",
-    delivery_state: "AUTHORIZED",
-  });
+  try {
+    await recordSession(env, s, {
+      revenue_verified_at: new Date().toISOString(),
+      revenue_product: key,
+      revenue_amount: s.amount_total,
+      revenue_currency: s.currency,
+      buyer_record_state: "VERIFIED",
+      delivery_state: "AUTHORIZED",
+    }, stripeSecret);
+  } catch (error) {
+    if (key !== "revenue_router") throw error;
+  }
   return j(
     {
       authorized: true,
@@ -445,14 +463,20 @@ async function workspace(env, u) {
   if (!p)
     return new Response("Access token is invalid or expired.", { status: 401 });
   const o = OFFERS[p.offer],
-    s = await session(env, p.sid);
+    stripeSecret = stripeSecretForOffer(env, p.offer),
+    s = await session(env, p.sid, stripeSecret);
   if (!paid(s, o))
     return new Response("Purchase could not be verified.", { status: 402 });
-  if (!s.metadata?.delivery_activated_at)
-    await recordSession(env, s, {
-      delivery_activated_at: new Date().toISOString(),
-      delivery_state: "ACTIVATED",
-    });
+  if (!s.metadata?.delivery_activated_at) {
+    try {
+      await recordSession(env, s, {
+        delivery_activated_at: new Date().toISOString(),
+        delivery_state: "ACTIVATED",
+      }, stripeSecret);
+    } catch (error) {
+      if (p.offer !== "revenue_router") throw error;
+    }
+  }
   return new Response(await page(env, o, p.offer), {
     headers: {
       "Content-Type": "text/html; charset=utf-8",
