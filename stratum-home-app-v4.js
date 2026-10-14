@@ -122,7 +122,13 @@ function renderPreview(){
  const pp=p+'P';$('#preview-title').textContent=t(p);$('#preview-copy').textContent=t(pp);
 }
 function boot(){
- $$('.segment button').forEach((b,i)=>b.addEventListener('click',()=>{mode=i;renderConsole()}));
+ let signalStarted=false;
+ const markSignalStarted=()=>{
+  if(signalStarted)return;signalStarted=true;
+  try{window.scosCapture?.('home_signal_started',{source:'home_scan',fields:3})}catch{}
+ };
+ ['#spend','#idle','#hours'].forEach(sel=>{$(sel)?.addEventListener('focus',markSignalStarted,{once:true});$(sel)?.addEventListener('input',markSignalStarted,{once:true})});
+ $('.segment button').forEach((b,i)=>b.addEventListener('click',()=>{mode=i;renderConsole()}));
  $$('[data-lang]').forEach(b=>b.addEventListener('click',()=>{lang=b.dataset.lang;setText()}));
  $('#calc').addEventListener('click',calc);
  $$('.preview-tabs button').forEach(b=>b.addEventListener('click',()=>{$$('.preview-tabs button').forEach(x=>x.setAttribute('aria-selected','false'));b.setAttribute('aria-selected','true');renderPreview()}));
