@@ -1,0 +1,116 @@
+name: Revenue Router Stripe After Completion
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/revenue-router-stripe-after-completion.trigger'
+      - '.github/workflows/revenue-router-stripe-after-completion.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: revenue-router-stripe-after-completion
+  cancel-in-progress: false
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      TARGET_PAYMENT_LINK_URL: https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08
+      TARGET_REDIRECT_URL: https://stratumpraxis.com/revenue-router-access.html?session_id={CHECKOUT_SESSION_ID}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure exact Revenue Router Payment Link
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
+            echo "::error::STRIPE_SECRET_KEY is not configured."
+            exit 1
+          fi
+
+          node <<'NODE'
+          const key = process.env.STRIPE_SECRET_KEY;
+          const targetUrl = process.env.TARGET_PAYMENT_LINK_URL;
+          const redirectUrl = process.env.TARGET_REDIRECT_URL;
+          const headers = { Authorization: `Bearer ${key}` };
+
+          async function stripeGet(path) {
+            const r = await fetch(`https://api.stripe.com/v1/${path}`, { headers });
+            const text = await r.text();
+            if (!r.ok) throw new Error(`Stripe GET ${path} failed: HTTP ${r.status} ${text.slice(0,500)}`);
+            return JSON.parse(text);
+          }
+
+          async function stripePost(path, params) {
+            const body = new URLSearchParams(params);
+            const r = await fetch(`https://api.stripe.com/v1/${path}`, {
+              method: 'POST',
+              headers: { ...headers, 'Content-Type': 'application/x-www-form-urlencoded' },
+              body,
+            });
+            const text = await r.text();
+            if (!r.ok) throw new Error(`Stripe POST ${path} failed: HTTP ${r.status} ${text.slice(0,500)}`);
+            return JSON.parse(text);
+          }
+
+          let startingAfter = '';
+          const matches = [];
+          for (let page = 0; page < 20; page++) {
+            const qs = new URLSearchParams({ limit: '100' });
+            if (startingAfter) qs.set('starting_after', startingAfter);
+            const data = await stripeGet(`payment_links?${qs.toString()}`);
+            for (const item of data.data || []) if (item.url === targetUrl) matches.push(item);
+            if (!data.has_more || !(data.data || []).length) break;
+            startingAfter = data.data[data.data.length - 1].id;
+          }
+
+          if (matches.length !== 1) {
+            throw new Error(`Expected exactly one live Payment Link matching ${targetUrl}; found ${matches.length}. No mutation performed.`);
+          }
+
+          const link = matches[0];
+          if (link.livemode !== true) throw new Error('Matched Payment Link is not live. No mutation performed.');
+
+          console.log(`MATCHED_PAYMENT_LINK_ID=${link.id}`);
+          console.log(`CURRENT_AFTER_COMPLETION=${JSON.stringify(link.after_completion || {})}`);
+
+          const updated = await stripePost(`payment_links/${encodeURIComponent(link.id)}`, {
+            'after_completion[type]': 'redirect',
+            'after_completion[redirect][url]': redirectUrl,
+          });
+
+          if (
+            updated.after_completion?.type !== 'redirect' ||
+            updated.after_completion?.redirect?.url !== redirectUrl
+          ) {
+            throw new Error(`Stripe update response did not confirm expected redirect: ${JSON.stringify(updated.after_completion || {})}`);
+          }
+
+          const readback = await stripeGet(`payment_links/${encodeURIComponent(link.id)}`);
+          if (
+            readback.after_completion?.type !== 'redirect' ||
+            readback.after_completion?.redirect?.url !== redirectUrl
+          ) {
+            throw new Error(`Stripe readback mismatch: ${JSON.stringify(readback.after_completion || {})}`);
+          }
+
+          console.log('REVENUE_ROUTER_AFTER_COMPLETION=VERIFIED');
+          console.log(`REDIRECT_URL=${redirectUrl}`);
+          NODE
+
+      - name: Verify Buyer Access page is live
+        shell: bash
+        run: |
+          set -euo pipefail
+          body="$(curl -fsSL --retry 4 --retry-delay 2 'https://stratumpraxis.com/revenue-router-access.html')"
+          grep -F 'VERIFIED BUYER DELIVERY' <<<"$body" >/dev/null
+          grep -F '/revenue-router/login' <<<"$body" >/dev/null
+          echo 'BUYER_ACCESS_PAGE=VERIFIED'
