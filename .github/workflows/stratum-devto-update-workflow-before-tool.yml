@@ -1,0 +1,93 @@
+name: Update Stratum DEV Workflow-Before-Tool Article
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content/dev/auto/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.md'
+      - '.github/workflows/stratum-devto-update-workflow-before-tool.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Update existing DEV article
+        env:
+          DEVTO_API_KEY: ${{ secrets.DEVTO_API_KEY }}
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const fs = require('fs');
+          const sourcePath = 'content/dev/auto/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.md';
+          const queuePath = 'publishing/queue/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.json';
+          const evidencePath = 'publishing/evidence/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.json';
+          const key = String(process.env.DEVTO_API_KEY || '').trim();
+          if (!key) throw new Error('DEVTO_API_KEY missing');
+
+          const body = fs.readFileSync(sourcePath, 'utf8').trim();
+          const pkg = JSON.parse(fs.readFileSync(queuePath, 'utf8'));
+          const evidence = JSON.parse(fs.readFileSync(evidencePath, 'utf8'));
+          if (pkg.brand !== 'Stratum' || pkg.platform !== 'devto') throw new Error('Brand/channel guard failed');
+          if (!evidence.article_id) throw new Error('Existing DEV article id missing');
+
+          const payload = {
+            article: {
+              title: pkg.title,
+              body_markdown: body,
+              published: true,
+              canonical_url: pkg.canonical_url,
+              description: pkg.description || '',
+              tags: Array.isArray(pkg.tags) ? pkg.tags.join(',') : ''
+            }
+          };
+
+          const resp = await fetch('https://dev.to/api/articles/' + evidence.article_id, {
+            method: 'PUT',
+            headers: {
+              'content-type': 'application/json',
+              'api-key': key,
+              'user-agent': 'Stratum-Praxis-Publisher/1.0'
+            },
+            body: JSON.stringify(payload)
+          });
+          const raw = await resp.text();
+          let out = {};
+          try { out = JSON.parse(raw); } catch {}
+          if (!resp.ok) throw new Error('DEV update failed ' + resp.status + ': ' + raw.slice(0, 500));
+          if (Number(out.id) !== Number(evidence.article_id) || !out.url) throw new Error('DEV update readback mismatch');
+
+          evidence.public_url = out.url;
+          evidence.canonical_url = pkg.canonical_url;
+          evidence.updated_at = new Date().toISOString();
+          evidence.update_verified = true;
+          fs.writeFileSync(evidencePath, JSON.stringify(evidence, null, 2) + '\n');
+          console.log('DEV_ARTICLE_UPDATE=VERIFIED');
+          console.log('PUBLIC_URL=' + out.url);
+          NODE
+
+      - name: Persist DEV update evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add publishing/evidence/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.json
+          if git diff --cached --quiet; then
+            echo 'No evidence changes'
+            exit 0
+          fi
+          git commit -m 'evidence: verify DEV article update [skip social]'
+          git pull --rebase origin main
+          git push origin main
