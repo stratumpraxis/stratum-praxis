@@ -1,3 +1,5 @@
-requested_at=2026-10-14T06:49:00Z
+requested_at=2026-10-14T07:21:00Z
+target_payment_link=plink_1U7AvVJMK7zFs997FZnUvfi8
+route=vp_stratum_revenue_router_v1
 since=2026-10-14T05:55:33Z
-reason=post_tiktok_publication_readback
+reason=post_tiktok_payment_readback
