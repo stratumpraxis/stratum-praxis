@@ -75,6 +75,37 @@ jobs:
               ;;
           esac
 
+      - name: Verify Revenue Router Stripe credential
+        shell: bash
+        env:
+          STRIPE_REVENUE_ROUTER_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_REVENUE_ROUTER_KEY:-}" ]; then
+            echo "::error::Repository secret STRIPE_PAYMENT_LINK_ADMIN_KEY is not configured."
+            exit 1
+          fi
+
+          status="$(curl -sS -o /tmp/revenue-router-link.json -w '%{http_code}' https://api.stripe.com/v1/payment_links/plink_1U7AvVJMK7zFs997FZnUvfi8 -u "$STRIPE_REVENUE_ROUTER_KEY:")"
+          if [ "$status" != '200' ]; then
+            echo "::error::Revenue Router Stripe key cannot read canonical Payment Link (HTTP $status)."
+            exit 1
+          fi
+          node - <<'NODE'
+          const d=require('/tmp/revenue-router-link.json');
+          if (d.id !== 'plink_1U7AvVJMK7zFs997FZnUvfi8') throw new Error('Unexpected Revenue Router Payment Link');
+          if (d.livemode !== true) throw new Error('Revenue Router Payment Link is not live');
+          if (d.url !== 'https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08') throw new Error('Unexpected Revenue Router Payment Link URL');
+          console.log('Revenue Router Stripe account target OK.');
+          NODE
+
+          status="$(curl -sS -G -o /tmp/revenue-router-sessions.json -w '%{http_code}' https://api.stripe.com/v1/checkout/sessions -u "$STRIPE_REVENUE_ROUTER_KEY:" --data-urlencode 'limit=1')"
+          if [ "$status" != '200' ]; then
+            echo "::error::Revenue Router Stripe key cannot read Checkout Sessions (HTTP $status)."
+            exit 1
+          fi
+          echo "Revenue Router Stripe key has required read capability."
+
       - name: Deploy Worker
         working-directory: worker
         env:
@@ -92,6 +123,17 @@ jobs:
         run: |
           set -euo pipefail
           printf '%s' "$STRIPE_SECRET_KEY" | npx --yes wrangler@latest secret put STRIPE_SECRET_KEY
+
+      - name: Sync Revenue Router Stripe secret to live Worker
+        working-directory: worker
+        shell: bash
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          STRIPE_REVENUE_ROUTER_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$STRIPE_REVENUE_ROUTER_KEY" | npx --yes wrangler@latest secret put STRIPE_REVENUE_ROUTER_KEY
 
       - name: Smoke-test protected routes
         shell: bash
