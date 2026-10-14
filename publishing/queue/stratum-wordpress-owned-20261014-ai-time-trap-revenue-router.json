@@ -1,0 +1,18 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-wordpress-owned-20261014-ai-time-trap-revenue-router",
+  "platform": "wordpress",
+  "site": "stratumpraxis.wordpress.com",
+  "title": "AIで時短したのに忙しい？「生成時間」ではなく総所要時間で測る",
+  "excerpt": "AIが3分で下書きを作っても、確認8分・修正5分・引き継ぎ2分なら、本当の短縮は17分ではありません。生成・確認・修正・再実行・引き継ぎまで足して、AI導入が業務全体を速くしたかを判定する実務フレームです。",
+  "canonical_url": "https://stratumpraxis.com/signal/auto/ai-saved-time-but-workflow-is-still-slow-20261014.html",
+  "source_id": "signal-owned-20261014-ai-time-trap",
+  "tags": [
+    "AI",
+    "automation",
+    "ROI",
+    "Stratum Praxis"
+  ],
+  "status": "APPROVED",
+  "publish_trigger": "2026-10-14T02:00:00Z"
+}
