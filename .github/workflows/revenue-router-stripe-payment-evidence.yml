@@ -7,6 +7,7 @@ on:
       - 'revenue-os/revenue-router-stripe-payment-evidence.trigger'
       - '.github/workflows/revenue-router-stripe-payment-evidence.yml'
   workflow_dispatch:
+# rerun 2026-10-14 post-conversion-copy
 
 permissions:
   contents: read
@@ -19,7 +20,7 @@ jobs:
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
       TARGET_PAYMENT_LINK_ID: plink_1U7AvVJMK7zFs997FZnUvfi8
       TARGET_ROUTE: vp_stratum_revenue_router_v1
-      SINCE_UNIX: "1791849600"
+      SINCE_UNIX: "1791948000"
     steps:
       - name: Inspect Revenue Router checkout sessions
         shell: bash
