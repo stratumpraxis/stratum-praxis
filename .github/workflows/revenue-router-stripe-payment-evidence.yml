@@ -20,7 +20,7 @@ jobs:
       STRIPE_SECRET_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
       TARGET_PAYMENT_LINK_ID: plink_1U7AvVJMK7zFs997FZnUvfi8
       TARGET_ROUTE: vp_stratum_revenue_router_v1
-      SINCE_UNIX: "1791956580"
+      SINCE_UNIX: "1791956806"
     steps:
       - name: Inspect Revenue Router checkout sessions
         shell: bash
