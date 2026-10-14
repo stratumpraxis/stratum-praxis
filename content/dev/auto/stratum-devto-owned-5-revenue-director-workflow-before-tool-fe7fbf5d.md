@@ -52,6 +52,8 @@ The result is a better handoff between publishing and operations: the article ex
 
 **Next:** [Run the free workflow diagnostic](https://stratumpraxis.com/b2b-intro/?v=7d8708&utm_source=owned_media&utm_medium=blog&utm_campaign=autonomous_revenue_publisher&utm_content=revenue-director-workflow-before-tool%3Alocal_fallback)
 
+If you already have the signal and need to decide the strongest next revenue action, use [Revenue Router — $29](https://stratumpraxis.com/revenue-router.html?utm_source=devto&utm_medium=owned_article&utm_campaign=revenue_router_buyer_action&utm_content=workflow_before_tool).
+
 ---
 
 _AI-assisted editorial production. Claims are constrained by recorded source evidence; product and platform details can change._
