@@ -1,0 +1,13 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-workflow-audit-checklist-20261014",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Considering AI workflow automation? Map triggers, owners, handoffs, rework and human approvals before buying more software. This free checklist explains what to examine first.",
+  "hook": "Audit one workflow before buying more AI.",
+  "cta": "Stratum audit checklist",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/10/workflow-handoff-audit-checklist-ai-2026/",
+  "status": "QUEUED",
+  "approval": "OWNER_AUTONOMY_APPROVED",
+  "approval_scope": "stratum_owned_bluesky_product_article_no_dm"
+}
