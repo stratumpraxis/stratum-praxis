@@ -124,6 +124,10 @@ jobs:
 
           # Only routes intentionally present in the canonical sitemap are asserted here.
           # Other owned pages above are still verified for live HTTPS reachability.
+          wait_for_contains 'https://stratumpraxis.com/revenue-router.html' \
+            'vp_stratum_revenue_router_v1' \
+            'revenue_router_checkout_3'
+
           wait_for_contains 'https://stratumpraxis.com/' \
             'id="signal-action"' \
             'data-analytics-id="home_signal_to_free_tools"' \
