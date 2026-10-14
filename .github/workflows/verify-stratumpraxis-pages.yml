@@ -133,6 +133,15 @@ jobs:
             'ai-saved-time-but-workflow-is-still-slow-20261014.html' \
             'AI TIME ≠ ROI'
 
+          wait_for_contains 'https://stratumpraxis.com/revenue-router-access.html' \
+            'VERIFIED BUYER DELIVERY' \
+            '/revenue-router/login' \
+            'Checkout Session ID is missing'
+
+          wait_for_contains 'https://stratumpraxis.com/delivery/K47NC47j6g8Ct-82MMyNG-O20M3VXp3s/' \
+            'Buyer verification required' \
+            '/revenue-router-access.html'
+
           wait_for_contains 'https://stratumpraxis.com/revenue-router.html' \
             'vp_stratum_revenue_router_v1' \
             'revenue_router_checkout_3'
