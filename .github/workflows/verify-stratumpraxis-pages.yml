@@ -8,6 +8,7 @@ on:
       - 'return-gate/index.html'
       - 'passage-hub/index.html'
       - 'index.html'
+      - 'stratum-home-app-v4.js'
       - 'b2b-intro/index.html'
       - 'signal/index.html'
       - 'stack-pulse/index.html'
@@ -120,6 +121,20 @@ jobs:
 
           # Only routes intentionally present in the canonical sitemap are asserted here.
           # Other owned pages above are still verified for live HTTPS reachability.
+          wait_for_contains 'https://stratumpraxis.com/' \
+            'id="signal-action"' \
+            'data-analytics-id="home_signal_to_free_tools"' \
+            '/stratum-home-app-v4.js?v=20261014a'
+
+          curl --fail --silent --show-error --location --max-time 20 \
+            'https://stratumpraxis.com/stratum-home-app-v4.js?v=20261014a' \
+            -o /tmp/stratum-home-app-v4.js
+          node --check /tmp/stratum-home-app-v4.js
+          grep -F "home_signal_to_workflow_audit" /tmp/stratum-home-app-v4.js >/dev/null
+          grep -F "home_signal_to_spend_audit" /tmp/stratum-home-app-v4.js >/dev/null
+          grep -F "workflow_audit_qualified_traffic" /tmp/stratum-home-app-v4.js >/dev/null
+          grep -F "spend_audit_qualified_traffic" /tmp/stratum-home-app-v4.js >/dev/null
+
           wait_for_contains 'https://stratumpraxis.com/b2b-intro/' \
             'content="index,follow,max-image-preview:large"' \
             'href="/b2b/"' \
