@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 8
     env:
-      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
       TARGET_PAYMENT_LINK_URL: https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08
       TARGET_REDIRECT_URL: https://stratumpraxis.com/revenue-router-access.html?session_id={CHECKOUT_SESSION_ID}
     steps:
