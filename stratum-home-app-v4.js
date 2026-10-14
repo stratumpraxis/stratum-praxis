@@ -12,7 +12,7 @@ const C={
   tryK:'TRY IT NOW',tryTitle:'Get an evidence signal in under a minute.',tryNote:'Use your own numbers. The result is directional, not a guaranteed saving or ROI.',
   spend:'Monthly AI / SaaS spend',idle:'Low-use or duplicate tools',hours:'Manual hours left / month',calc:'Calculate signal',
   resultLabel:'YOUR SIGNAL',resultLow:'Monitor first',resultMid:'Review now',resultHigh:'Audit priority',resultText:['No paid step is necessary yet. Keep the review cadence.','There is enough friction to inspect the top contracts or workflow.','The signal is strong enough to justify a structured review.'],
-  openFree:'Open free tool',previewK:'OUTPUT PREVIEW',previewTitle:'See the artifact before you pay.',previewNote:'A paid layer should buy a concrete decision artifact, not more browsing.',
+  openFree:'Open free tool',actionWorkflowAudit:'Review Workflow Audit · $499',actionSpendAudit:'Review Spend Audit · $499',actionRouteMap:'Review the route map',previewK:'OUTPUT PREVIEW',previewTitle:'See the artifact before you pay.',previewNote:'A paid layer should buy a concrete decision artifact, not more browsing.',
   previewTabs:['Summary','Decision map','30-day actions'],
   pathK:'ONLY THREE STEPS',pathTitle:'Free → $39 → $499.',pathNote:'Start free. Buy self-service depth when useful. Use specialist review only when the decision is material.',
   tier1:'Free evidence',tier1p:'Calculators and diagnostics that can legitimately end with no purchase.',tier2:'Decision Kit',tier2p:'A reusable system for teams that can make the decision internally.',tier3:'Specialist Audit',tier3p:'A fixed-scope written decision for a material spend or workflow question.',
@@ -33,7 +33,7 @@ const C={
   tryK:'今ここで試す',tryTitle:'1分以内でEvidence Signalを出す。',tryNote:'自分の数字だけを使います。削減額やROIを保証する診断ではありません。',
   spend:'月間AI / SaaS支出',idle:'低利用・重複ツール数',hours:'残っている手作業時間 / 月',calc:'Signalを計算',
   resultLabel:'YOUR SIGNAL',resultLow:'まず監視',resultMid:'見直し推奨',resultHigh:'監査優先',resultText:['今すぐ有料へ進む必要はありません。定期見直しを続けてください。','上位契約またはWorkflowを確認する価値があります。','構造化した監査を行う根拠が十分あります。'],
-  openFree:'無料ツールを開く',previewK:'成果物プレビュー',previewTitle:'払う前に、届くものを見る。',previewNote:'Paid Layerで買うのは「説明」ではなく、具体的なDecision Artifactです。',
+  openFree:'無料ツールを開く',actionWorkflowAudit:'Workflow Audit $499を確認',actionSpendAudit:'Spend Audit $499を確認',actionRouteMap:'最適ルートを確認',previewK:'成果物プレビュー',previewTitle:'払う前に、届くものを見る。',previewNote:'Paid Layerで買うのは「説明」ではなく、具体的なDecision Artifactです。',
   previewTabs:['要約','判断マップ','30日アクション'],
   pathK:'3段だけ',pathTitle:'無料 → $39 → $499。',pathNote:'最初は無料。自力で判断できるなら$39。重要な判断だけ$499の固定範囲監査へ。',
   tier1:'無料Evidence',tier1p:'Calculatorと診断。購入せず終了しても正解です。',tier2:'Decision Kit',tier2p:'社内で判断できるチーム向けの再利用可能な仕組み。',tier3:'専門監査',tier3p:'重要な支出・Workflowを固定範囲で書面判断。',
@@ -54,7 +54,7 @@ const C={
   tryK:'PRUÉBALO',tryTitle:'Obtén una señal en menos de un minuto.',tryNote:'Usa tus propios números. No es una garantía de ahorro o ROI.',
   spend:'Gasto AI / SaaS mensual',idle:'Herramientas duplicadas o poco usadas',hours:'Horas manuales / mes',calc:'Calcular señal',
   resultLabel:'TU SEÑAL',resultLow:'Primero monitoriza',resultMid:'Revisar ahora',resultHigh:'Prioridad de auditoría',resultText:['No hace falta pagar todavía. Mantén la revisión.','Hay suficiente fricción para revisar contratos o workflow.','La señal justifica una revisión estructurada.'],
-  openFree:'Abrir herramienta gratis',previewK:'VISTA DEL RESULTADO',previewTitle:'Mira el artefacto antes de pagar.',previewNote:'La capa pagada compra una decisión concreta, no más navegación.',
+  openFree:'Abrir herramienta gratis',actionWorkflowAudit:'Ver Workflow Audit · $499',actionSpendAudit:'Ver Spend Audit · $499',actionRouteMap:'Revisar rutas',previewK:'VISTA DEL RESULTADO',previewTitle:'Mira el artefacto antes de pagar.',previewNote:'La capa pagada compra una decisión concreta, no más navegación.',
   previewTabs:['Resumen','Mapa','30 días'],
   pathK:'SOLO TRES PASOS',pathTitle:'Gratis → $39 → $499.',pathNote:'Empieza gratis. Usa autoservicio si basta. Auditoría solo cuando la decisión es material.',
   tier1:'Evidencia gratis',tier1p:'Calculadoras y diagnósticos que pueden terminar sin compra.',tier2:'Decision Kit',tier2p:'Sistema reutilizable para equipos que deciden internamente.',tier3:'Auditoría especialista',tier3p:'Decisión escrita y de alcance fijo para una cuestión material.',
@@ -86,14 +86,37 @@ function renderConsole(){
  $('.segment button').forEach((b,i)=>{b.textContent=t('tabs')[i];b.setAttribute('aria-selected',String(i===mode))});
  const pt=t('previewTabs')||[]; $('.preview-tabs button').forEach((b,i)=>{if(pt[i])b.textContent=pt[i]});
 }
+function setSignalAction({score=0,spend=0,idle=0,hours=0}={}){
+ const a=$('#signal-action'); if(!a)return;
+ const label=a.querySelector('span');
+ const spendScore=spend>=300000?28:spend>=100000?20:spend>=30000?10:4;
+ const idleScore=Math.min(34,idle*8),hoursScore=Math.min(38,hours*1.2);
+ delete a.dataset.product;
+ if(score>=65){
+  if(hoursScore>=Math.max(spendScore,idleScore)){
+   a.href='/workflow-audit.html?utm_source=home_signal&utm_medium=owned_route&utm_campaign=workflow_audit_qualified_traffic&utm_content=high_manual_load';
+   a.dataset.analyticsId='home_signal_to_workflow_audit';a.dataset.product='workflow_audit';if(label)label.textContent=t('actionWorkflowAudit');
+  }else{
+   a.href='/ai-saas-spend-waste-audit.html?utm_source=home_signal&utm_medium=owned_route&utm_campaign=spend_audit_qualified_traffic&utm_content=high_spend_overlap';
+   a.dataset.analyticsId='home_signal_to_spend_audit';a.dataset.product='ai_saas_spend_waste_audit';if(label)label.textContent=t('actionSpendAudit');
+  }
+ }else if(score>=32){
+  a.href='/product-router.html?utm_source=home_signal&utm_medium=owned_route&utm_campaign=qualified_route&utm_content=mid_signal';
+  a.dataset.analyticsId='home_signal_to_router';if(label)label.textContent=t('actionRouteMap');
+ }else{
+  a.href='/live-lab.html';a.dataset.analyticsId='home_signal_to_free_tools';if(label)label.textContent=t('openFree');
+ }
+}
 function calc(){
  const spend=Math.max(0,Number($('#spend').value)||0),idle=Math.max(0,Number($('#idle').value)||0),hours=Math.max(0,Number($('#hours').value)||0);
- let score=Math.min(100,Math.round((spend>=300000?28:spend>=100000?20:spend>=30000?10:4)+Math.min(34,idle*8)+Math.min(38,hours*1.2)));
+ const spendScore=spend>=300000?28:spend>=100000?20:spend>=30000?10:4,idleScore=Math.min(34,idle*8),hoursScore=Math.min(38,hours*1.2);
+ let score=Math.min(100,Math.round(spendScore+idleScore+hoursScore));
  $('#signal').textContent=score;$('.ring').style.setProperty('--p',score);
  const band=score>=65?2:score>=32?1:0;$('#signal-title').textContent=[t('resultLow'),t('resultMid'),t('resultHigh')][band];$('#signal-text').textContent=t('resultText')[band];
- try{window.scosCapture?.('home_signal_calculated',{score,spend,idle,hours})}catch{}
+ setSignalAction({score,spend,idle,hours});
+ try{window.scosCapture?.('home_signal_calculated',{score,spend,idle,hours,route:$('#signal-action')?.dataset.analyticsId||''})}catch{}
 }
-function renderResult(initial=false){if(initial){$('#signal').textContent='—';$('.ring').style.setProperty('--p',0);$('#signal-title').textContent=t('resultLow');$('#signal-text').textContent=t('resultText')[0]}}
+function renderResult(initial=false){if(initial){$('#signal').textContent='—';$('.ring').style.setProperty('--p',0);$('#signal-title').textContent=t('resultLow');$('#signal-text').textContent=t('resultText')[0];setSignalAction()}}
 function renderPreview(){
  const p=['previewSummary','previewMap','previewAction'][Number($('.preview-tabs button[aria-selected="true"]')?.dataset.pane||0)];
  const pp=p+'P';$('#preview-title').textContent=t(p);$('#preview-copy').textContent=t(pp);
