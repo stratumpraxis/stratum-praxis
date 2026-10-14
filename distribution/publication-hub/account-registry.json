@@ -27,12 +27,16 @@
       "oauth_connection": "GHOST_ADMIN_API",
       "primary_publisher": "Ghost Admin API",
       "fallback_publisher": "MANUAL_GATE",
-      "credential_state": "PRESENT_IN_ACTIONS_SECRETS",
+      "credential_state": "EXTERNAL_SITE_UNAVAILABLE_402",
       "quota_limit": "PLATFORM_DEFAULT",
-      "last_verified": "2026-09-13",
+      "last_verified": "2026-10-14",
       "revenue_destination": "https://stratumpraxis.com/",
-      "automation_allowed": true,
-      "evidence_required": ["platform_accepted", "public_url"]
+      "automation_allowed": false,
+      "evidence_required": [
+        "platform_accepted",
+        "public_url"
+      ],
+      "note": "Ghost Admin credentials are present, but the configured Ghost site returned HTTP 402 Site unavailable on 2026-10-14. Do not retry automatically until the external site is restored."
     },
     "devto": {
       "platform": "DEV.to",
@@ -47,7 +51,10 @@
       "revenue_destination": "https://stratumpraxis.com/",
       "automation_allowed": true,
       "identity_map": "distribution/publication-hub/devto-map.json",
-      "evidence_required": ["article_id", "public_url"]
+      "evidence_required": [
+        "article_id",
+        "public_url"
+      ]
     },
     "tips": {
       "platform": "Tips",
@@ -114,7 +121,10 @@
       "last_verified": "2026-09-12",
       "revenue_destination": "https://stratumpraxis.com/",
       "automation_allowed": false,
-      "missing_scopes": ["boards:write", "pins:write"]
+      "missing_scopes": [
+        "boards:write",
+        "pins:write"
+      ]
     },
     "tiktok": {
       "platform": "TikTok",
@@ -180,7 +190,15 @@
       "last_verified": "2026-09-13",
       "revenue_destination": "https://stratumpraxis.com/",
       "automation_allowed": false,
-      "manual_only_actions": ["post", "schedule", "reply", "dm", "follow", "like", "repost"]
+      "manual_only_actions": [
+        "post",
+        "schedule",
+        "reply",
+        "dm",
+        "follow",
+        "like",
+        "repost"
+      ]
     }
   }
 }
