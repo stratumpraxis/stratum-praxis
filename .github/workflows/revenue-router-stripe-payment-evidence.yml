@@ -76,5 +76,5 @@ jobs:
           const paid = matched.filter(s => s.livemode === true && s.payment_status === "paid" && s.status === "complete");
           console.log(`REVENUE_ROUTER_MATCHED_SESSIONS=${matched.length}`);
           console.log(`REVENUE_ROUTER_PAID_SESSIONS=${paid.length}`);
-          for (const s of matched) console.log("SESSION="+JSON.stringify(s));
+          // Report aggregate payment evidence only; do not expose Checkout Session IDs in CI logs.\n          const unpaid = matched.length - paid.length;\n          console.log(`REVENUE_ROUTER_UNPAID_OR_UNCONFIRMED_SESSIONS=${unpaid}`);\n          console.log(`REVENUE_ROUTER_PAID_AMOUNT_MINOR=${paid.reduce((sum, s) => sum + (s.amount_total || 0), 0)}`);\n          console.log(`REVENUE_ROUTER_EVIDENCE_STATUS=${paid.length > 0 ? "PAID_FOUND" : "NO_PAID_SESSION_FOUND"}`);
           NODE
