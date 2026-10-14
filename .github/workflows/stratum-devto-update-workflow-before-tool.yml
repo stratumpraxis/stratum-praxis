@@ -29,6 +29,7 @@ jobs:
         run: |
           set -euo pipefail
           node <<'NODE'
+          (async () => {
           const fs = require('fs');
           const sourcePath = 'content/dev/auto/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.md';
           const queuePath = 'publishing/queue/stratum-devto-owned-5-revenue-director-workflow-before-tool-fe7fbf5d.json';
@@ -75,6 +76,10 @@ jobs:
           fs.writeFileSync(evidencePath, JSON.stringify(evidence, null, 2) + '\n');
           console.log('DEV_ARTICLE_UPDATE=VERIFIED');
           console.log('PUBLIC_URL=' + out.url);
+          })().catch((error) => {
+            console.error(error);
+            process.exit(1);
+          });
           NODE
 
       - name: Persist DEV update evidence
