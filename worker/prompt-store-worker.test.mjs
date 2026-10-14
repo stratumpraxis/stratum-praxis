@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
-import worker, { verifyWebhook, isWorkflowAuditPaid } from './prompt-store-worker.js';
+import worker, { verifyWebhook, isWorkflowAuditPaid, isRevenueRouterPaid } from './prompt-store-worker.js';
 
 function toHex(bytes) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, '0')).join('');
@@ -69,4 +69,21 @@ test('Workflow Audit payment requires live paid $499 USD and an approved route f
     ...base,
     client_reference_id: 'cross_agent_operating_kit_direct',
   }), false);
+});
+
+
+test('Revenue Router payment requires live paid $29 USD and exact route attribution', () => {
+  const base = {
+    livemode: true,
+    payment_status: 'paid',
+    mode: 'payment',
+    amount_total: 2900,
+    currency: 'usd',
+    client_reference_id: 'vp_stratum_revenue_router_v1',
+  };
+
+  assert.equal(isRevenueRouterPaid(base), true);
+  assert.equal(isRevenueRouterPaid({ ...base, amount_total: 2800 }), false);
+  assert.equal(isRevenueRouterPaid({ ...base, livemode: false }), false);
+  assert.equal(isRevenueRouterPaid({ ...base, client_reference_id: 'vp_other_route' }), false);
 });
