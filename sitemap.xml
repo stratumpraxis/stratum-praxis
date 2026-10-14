@@ -12,6 +12,9 @@
   <url><loc>https://stratumpraxis.com/prompt-systems.html</loc><changefreq>weekly</changefreq><priority>0.93</priority></url>
   <url><loc>https://stratumpraxis.com/systems/</loc><changefreq>monthly</changefreq><priority>0.82</priority></url>
 
+  <url><loc>https://stratumpraxis.com/signal/</loc><changefreq>daily</changefreq><priority>0.91</priority></url>
+  <url><loc>https://stratumpraxis.com/signal/auto/ai-saved-time-but-workflow-is-still-slow-20261014.html</loc><changefreq>monthly</changefreq><priority>0.90</priority></url>
+
   <url><loc>https://stratumpraxis.com/guides/</loc><changefreq>weekly</changefreq><priority>0.93</priority></url>
   <url><loc>https://stratumpraxis.com/guides/what-is-stratum-praxis.html</loc><changefreq>monthly</changefreq><priority>0.92</priority></url>
   <url><loc>https://stratumpraxis.com/guides/ai-saas-spend-audit.html</loc><changefreq>monthly</changefreq><priority>0.93</priority></url>
