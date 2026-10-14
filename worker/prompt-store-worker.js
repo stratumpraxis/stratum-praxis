@@ -188,6 +188,8 @@ function paid(s, o) {
     );
   }
   const baseMatch =
+    s &&
+    s.livemode === true &&
     s.payment_status === "paid" &&
     s.mode === "payment" &&
     Number(s.amount_total) === o.amount &&
