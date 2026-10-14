@@ -155,6 +155,9 @@ jobs:
             'data-t="operatorT"' \
             'data-t="methodT"' \
             'data-t="afterT"' \
+            'data-search-faq' \
+            '"@type":"FAQPage"' \
+            'AI Workflow Audit | Automation Opportunity Audit | Stratum Praxis' \
             '<div class="price">$499</div>' \
             'https://buy.stripe.com/14A00kgfqavh4Wkgoj6Zy02'
 
@@ -165,7 +168,7 @@ jobs:
             'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T'
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261014b' \
+            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261014c' \
             -o /tmp/stratum-audit-app-v4.js
           node --check /tmp/stratum-audit-app-v4.js
           node -e "const fs=require('fs');const s=fs.readFileSync('/tmp/stratum-audit-app-v4.js','utf8');const bad=/(?<!\\$)\\$\\('\\[data-(lang|t|inquiry-link)\\]'\\)\\.forEach/g;if(bad.test(s)){console.error('querySelector forEach regression');process.exit(1)}"
@@ -175,6 +178,8 @@ jobs:
           grep -F "operatorT:'" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "methodT:'" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "afterT:'" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "faqQ1:'" /tmp/stratum-audit-app-v4.js >/dev/null
+          grep -F "faqA4:'" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "\$\$('[data-lang]').forEach" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "\$\$('[data-t]').forEach" /tmp/stratum-audit-app-v4.js >/dev/null
 
