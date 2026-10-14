@@ -67,3 +67,57 @@ After that, rerun Common Revenue Core read-only ingestion and verify:
 3. attributed route / payment evidence metadata
 4. Revenue Router purchase count
 5. only then amplify the winning YouTube acquisition pattern
+
+
+## Owned Replication — 2026-10-14
+
+The proven acquisition theme was replicated to Stratum-owned surfaces without changing the Revenue Router product, price, or base Stripe Payment Link.
+
+### Stratum-owned Signal article
+
+- URL: https://stratumpraxis.com/signal/auto/ai-saved-time-but-workflow-is-still-slow-20261014.html
+- Theme: measure total workflow time, not model generation time
+- CTA: Revenue Router
+- Signal Hub feature: added
+- Sitemap: added
+- Production Verify: PASS
+- IndexNow workflow: SUCCESS
+
+### DEV.to
+
+- Account: `@stratumpraxis`
+- Article ID: `4847321`
+- URL: https://dev.to/stratumpraxis/ai-generated-it-in-3-minutes-the-workflow-still-took-18-45b1
+- Status: PUBLISHED
+- CTA attribution source: `devto`
+
+### Bluesky
+
+- Account: `@stratumpraxis.bsky.social`
+- Public URL: https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxshjmw6si2i
+- Status: PUBLISHED / account verified
+- Destination: Revenue Router
+- Attribution source: `bluesky`
+
+### Immediate measurement baseline
+
+Immediately after publication, PostHog showed:
+
+- Bluesky attributed sessions: 0
+- DEV.to attributed sessions: 0
+- Bluesky checkout clicks: 0
+- DEV.to checkout clicks: 0
+
+This is a publication-time baseline only; it is not a performance conclusion.
+
+### Held lanes
+
+- WordPress: GitHub Actions `WPCOM_ACCESS_TOKEN` missing and current WordPress MCP connection exposes Vector sites only. Human Gate.
+- Ghost: configured site returned HTTP 402 `Site unavailable`. Lane placed into fail-closed external hold and automatic retry disabled.
+- Publication Hub daily cron removed; publication now remains event/push driven.
+
+### Next Decision
+
+Do not create more distribution variants until external behavior appears. Preserve the observed Revenue Router buyer path and compare new `bluesky` / `devto` traffic against the already-proven YouTube checkout evidence.
+
+Payment remains the highest-priority unresolved evidence stage because the actual Stratum live Stripe account is not yet connected to the current read surface.
