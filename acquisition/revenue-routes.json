@@ -133,6 +133,54 @@
         "scale_only_after_repeatable_external_evidence"
       ],
       "activated_at": "2026-10-05"
+    },
+    {
+      "route_id": "vp_stratum_revenue_router_v1",
+      "state": "OBSERVED_WIN_HOLD_PROJECT_BOUNDARY",
+      "source": "youtube",
+      "medium": "shorts",
+      "campaign": "verified_forwelle_20261013",
+      "content": "revenue_router",
+      "source_url": "https://www.youtube.com/@forwelle",
+      "landing_url": "https://stratumpraxis.com/revenue-router.html",
+      "checkout_url": "https://buy.stripe.com/cNifZifbm7j574s1tp6Zy08?client_reference_id=vp_stratum_revenue_router_v1",
+      "offer": "revenue_router",
+      "price_usd": 29,
+      "historical_claim": false,
+      "stage": "CHECKOUT_WITHOUT_PAYMENT_EVIDENCE",
+      "evidence": {
+        "observed_date": "2026-10-13",
+        "attributed_sessions": 6,
+        "primary_cta_clicks": 3,
+        "checkout_clicks": 3,
+        "checkout_click_rate_from_sessions": 0.5,
+        "campaign_breakdown": {
+          "forwelle_useful_20261013": {
+            "sessions": 4,
+            "checkout_clicks": 2
+          },
+          "forwelle_revenue_router_v1": {
+            "sessions": 2,
+            "checkout_clicks": 1
+          }
+        },
+        "checkout_return_events": 0,
+        "payment_state": "UNKNOWN",
+        "stripe_readback_note": "GitHub read-only Stripe provider was LIVE but returned 0 source rows in its configured account; this does not prove non-payment for the observed checkout clicks."
+      },
+      "next_bottleneck": "stratum_live_stripe_account_identity_and_payment_evidence",
+      "boundary_note": "Forwelle produced the observed acquisition evidence, but Stratum's current operating override prohibits substituting other-project accounts as ongoing Stratum growth surfaces. Preserve the evidence and port the winning message pattern to verified Stratum-owned inbound surfaces instead of auto-scaling Forwelle.",
+      "pre_sale_rule": "Do not change Revenue Router price, product, or Stripe base payment link. Preserve the observed CTA. Attribution query parameters may be maintained for payment evidence.",
+      "success_condition": "verified_paid_checkout_sessions >= 1",
+      "on_success": [
+        "verify_payment",
+        "verify_fulfillment_or_access",
+        "identify_attributed_source_route",
+        "preserve_winning_message_pattern",
+        "port_pattern_to_stratum_owned_inbound",
+        "scale_only_after_repeatable_external_evidence"
+      ],
+      "observed_at": "2026-10-14"
     }
   ]
 }
