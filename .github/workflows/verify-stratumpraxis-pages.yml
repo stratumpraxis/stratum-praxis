@@ -41,6 +41,7 @@ on:
       - 'agent-control-auditor.mjs'
       - 'ops/autonomous-operations-monitor/24h-control-plane.html'
       - 'sitemap.xml'
+      - 'llms.txt'
       - 'scos-analytics.js'
   workflow_dispatch:
 
@@ -190,6 +191,13 @@ jobs:
           grep -F ".trust-links{" /tmp/stratum-audit-app-v4.css >/dev/null
           grep -F ".enterprise-trust-grid{" /tmp/stratum-audit-app-v4.css >/dev/null
           grep -F ".enterprise-trust-card{" /tmp/stratum-audit-app-v4.css >/dev/null
+
+          wait_for_contains 'https://stratumpraxis.com/llms.txt' \
+            'AI Workflow Audit / Automation Opportunity Audit — $499' \
+            'https://stratumpraxis.com/workflow-audit.html' \
+            'https://stratumpraxis.com/sample-workflow-audit.html' \
+            'Pre-purchase questions: stratumpraxis@gmail.com' \
+            'llms_explicit_purchase'
 
           wait_for_contains 'https://stratumpraxis.com/sitemap.xml' \
             'https://stratumpraxis.com/prompt-systems.html' \
