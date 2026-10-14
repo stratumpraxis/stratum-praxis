@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-revenue-router-worked-example-20261014",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "AI pricing changed. Before making another post, check whether it changes spend. Revenue Router shows ACT / VERIFY, why, and the top 1–3 next actions.",
+  "hook": "Show the decision before the content",
+  "cta": "See the worked example",
+  "destination": "https://stratumpraxis.com/revenue-router.html?utm_source=bluesky&utm_medium=owned&utm_campaign=rr_worked_example",
+  "status": "APPROVED"
+}
