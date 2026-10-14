@@ -58,3 +58,29 @@ Stripe readback after the verified TikTok publication:
 - Verified paid Revenue Router Sessions: **0**
 
 Current first broken stage remains **External Buyer Payment**. Technical checkout, buyer verification, protected delivery, and multiple owned/public acquisition entries are verified. Do not modify price or checkout based on an immediate zero-result window.
+
+
+## Owned funnel and search completion — 2026-10-14
+
+Additional verified buyer entries:
+- Product Router now exposes Revenue Router as a cross-route decision tool without changing the three core B2B routes.
+  - HTML: `6e2ff068852c7e9b03d297754a00770be60d10d6`
+  - localized routing logic: `50a4955b2f60ae7a7e39d8b83f81bfd408a33469`
+  - styling: `94c3c2b87cb12938da6be9583395809600c1dcfa`
+- AI Workflow Consultant now shows Revenue Router only for the high-fit `signal_gap` result.
+  - commit: `340834688dd373e61fc4c440587f8af4edd832be`
+- Revenue Router search metadata now targets AI opportunity prioritization intent.
+  - commit: `a4b85495def8a02f6f79d70a66440fe9eeafd30d`
+- Revenue Router buyer FAQ + FAQPage structured data added using existing product facts only.
+  - commit: `68739a8ab10e3052f30f77ac8df308da45957a77`
+
+Verification:
+- Revenue Router HTTP verification: SUCCESS
+- GitHub Pages production deployment: SUCCESS
+- IndexNow notification: SUCCESS
+- Search Console MCP was not used because the connected GSC Wizard account is behind a paid subscription gate; no paid tool was added.
+
+Revenue interpretation:
+- No new verified payment evidence was observed in the latest Stripe readback.
+- Do not change the $29 price, canonical Payment Link, or buyer-delivery route based on this short observation window.
+- First broken stage remains: **External Buyer Payment**.
