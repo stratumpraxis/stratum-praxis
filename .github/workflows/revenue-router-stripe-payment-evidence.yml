@@ -1,0 +1,78 @@
+name: Revenue Router Stripe Payment Evidence
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'revenue-os/revenue-router-stripe-payment-evidence.trigger'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    env:
+      STRIPE_SECRET_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
+      TARGET_PAYMENT_LINK_ID: plink_1U7AvVJMK7zFs997FZnUvfi8
+      TARGET_ROUTE: vp_stratum_revenue_router_v1
+      SINCE_UNIX: "1791849600"
+    steps:
+      - name: Inspect Revenue Router checkout sessions
+        shell: bash
+        run: |
+          set -euo pipefail
+          if [ -z "${STRIPE_SECRET_KEY:-}" ]; then
+            echo "::error::STRIPE_PAYMENT_LINK_ADMIN_KEY is not configured."
+            exit 1
+          fi
+          node <<'NODE'
+          const key = process.env.STRIPE_SECRET_KEY;
+          const targetPaymentLink = process.env.TARGET_PAYMENT_LINK_ID;
+          const targetRoute = process.env.TARGET_ROUTE;
+          const since = Number(process.env.SINCE_UNIX);
+          const headers = { Authorization: `Bearer ${key}` };
+
+          async function get(path) {
+            const r = await fetch(`https://api.stripe.com/v1/${path}`, { headers });
+            const t = await r.text();
+            if (!r.ok) throw new Error(`Stripe GET failed HTTP ${r.status}: ${t.slice(0,500)}`);
+            return JSON.parse(t);
+          }
+
+          let startingAfter = "";
+          const matched = [];
+          for (let page = 0; page < 20; page++) {
+            const qs = new URLSearchParams({ limit: "100" });
+            if (startingAfter) qs.set("starting_after", startingAfter);
+            const data = await get(`checkout/sessions?${qs.toString()}`);
+            for (const s of data.data || []) {
+              if ((s.created || 0) < since) continue;
+              if (s.payment_link === targetPaymentLink || s.client_reference_id === targetRoute) {
+                matched.push({
+                  id: s.id,
+                  created: s.created,
+                  livemode: s.livemode,
+                  mode: s.mode,
+                  status: s.status,
+                  payment_status: s.payment_status,
+                  amount_total: s.amount_total,
+                  currency: s.currency,
+                  payment_link: s.payment_link,
+                  client_reference_id: s.client_reference_id
+                });
+              }
+            }
+            const rows = data.data || [];
+            if (!data.has_more || rows.length === 0) break;
+            if ((rows[rows.length - 1].created || 0) < since) break;
+            startingAfter = rows[rows.length - 1].id;
+          }
+
+          const paid = matched.filter(s => s.livemode === true && s.payment_status === "paid" && s.status === "complete");
+          console.log(`REVENUE_ROUTER_MATCHED_SESSIONS=${matched.length}`);
+          console.log(`REVENUE_ROUTER_PAID_SESSIONS=${paid.length}`);
+          for (const s of matched) console.log("SESSION="+JSON.stringify(s));
+          NODE
