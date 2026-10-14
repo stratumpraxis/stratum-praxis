@@ -4,6 +4,8 @@ Stratum Praxis is the B2B asset base inside the broader Digital Index Base struc
 
 **Public domain:** https://stratumpraxis.com/
 
+**1-minute decision signal:** [Check AI/SaaS spend, tool overlap and remaining manual work](https://stratumpraxis.com/?utm_source=github&utm_medium=referral&utm_campaign=home_signal_acquisition&utm_content=readme_top_scan&route_id=github_readme_home_signal_20261014#scan) — enter three numbers. Low signal stays free; stronger signals route to the relevant decision path instead of forcing a purchase.
+
 **Free AI Agent Cost & ROI Calculator:** [Model payback before approving an agent](https://stratumpraxis.com/ai-agent-cost-roi-calculator.html?utm_source=github&utm_medium=referral&utm_campaign=cost_roi_acquisition_20260928&utm_content=readme_cost_economics&route_id=stratum_github_cost_roi_20260928) — use real task volume, human review, retry cost and implementation cost; the existing $39 decision route remains downstream when the economics justify it.
 
 **For AI agent teams:** [See the Cross-Agent Operating Kit](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=github&utm_medium=referral&utm_campaign=github_cross_agent_winner&utm_content=readme_top&route_id=github_readme_top_cross_agent_20260913) — keep one operating policy, human gates, cost guards and state handoff across Claude Code, Codex and Cursor. **Personal · $69 one-time.** [Watch the existing 34-second product demo before buying](https://stratumpraxis.com/cross-agent-operating-kit.html?utm_source=github&utm_medium=referral&utm_campaign=github_cross_agent_demo&utm_content=readme_top_demo&route_id=github_readme_top_cross_agent_demo_20260915#product-demo-title).
