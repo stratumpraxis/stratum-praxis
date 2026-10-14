@@ -72,18 +72,20 @@ test('Workflow Audit payment requires live paid $499 USD and an approved route f
 });
 
 
-test('Revenue Router payment requires live paid $29 USD and exact route attribution', () => {
+test('Revenue Router payment requires live paid $29 USD on the canonical Payment Link', () => {
   const base = {
     livemode: true,
     payment_status: 'paid',
     mode: 'payment',
     amount_total: 2900,
     currency: 'usd',
-    client_reference_id: 'vp_stratum_revenue_router_v1',
+    client_reference_id: 'revenue-router_revenue-router_youtube_forwelle_useful_20261013_ai_signal_to_buyer',
+    payment_link: 'plink_1U7AvVJMK7zFs997FZnUvfi8',
   };
 
   assert.equal(isRevenueRouterPaid(base), true);
   assert.equal(isRevenueRouterPaid({ ...base, amount_total: 2800 }), false);
   assert.equal(isRevenueRouterPaid({ ...base, livemode: false }), false);
-  assert.equal(isRevenueRouterPaid({ ...base, client_reference_id: 'vp_other_route' }), false);
+  assert.equal(isRevenueRouterPaid({ ...base, client_reference_id: 'vp_other_route' }), true);
+  assert.equal(isRevenueRouterPaid({ ...base, payment_link: 'plink_wrong' }), false);
 });
