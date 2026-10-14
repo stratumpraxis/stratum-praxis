@@ -84,3 +84,40 @@ Revenue interpretation:
 - No new verified payment evidence was observed in the latest Stripe readback.
 - Do not change the $29 price, canonical Payment Link, or buyer-delivery route based on this short observation window.
 - First broken stage remains: **External Buyer Payment**.
+
+
+## Autonomous distribution closeout — 2026-10-14
+
+### Verified external distribution
+
+- Stratum Bluesky: published and public URL verified.
+- DEV.to: existing canonical article updated successfully with Revenue Router route.
+- GitHub README: Revenue Router added to buyer entry points.
+- Stratum TikTok: published successfully through the verified `stratumpraxis` Buffer channel.
+  - Public URL: `https://tiktok.com/@stratumpraxis/video/7696397636697427206`
+  - Buffer state: `sent`
+  - Duplicate-stop state persisted.
+
+### Human gates — do not auto-retry
+
+- Instagram `praxisstratum`: `BLOCKED_RECONNECT`.
+  - Buffer returned `Invalid Credentials` / lost authorization.
+  - Existing attempted post is inactive and must not be resubmitted until the channel is reconnected.
+- Stratum WordPress: `BLOCKED_AUTH`.
+  - GitHub Actions secret `WPCOM_ACCESS_TOKEN` is missing.
+  - Do not mix the connected Vector WordPress account into Stratum.
+
+### Final payment readback
+
+Stripe readback after the verified TikTok publication:
+
+- Matched new Revenue Router Checkout Sessions: **0**
+- Verified paid sessions: **0**
+- Verified paid amount: **0**
+- Evidence status: `NO_PAID_SESSION_FOUND`
+
+### First broken stage
+
+`External buyer -> Checkout -> Payment`
+
+The production sales, Stripe verification, buyer-access, protected-delivery and owned-distribution paths are operational. No additional product/page changes should be made solely because payment has not yet occurred. Preserve the current conversion baseline and only act on new buyer/payment evidence or a verified external distribution opportunity.
