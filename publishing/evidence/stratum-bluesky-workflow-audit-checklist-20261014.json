@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxshbh2rm52t",
+  "cid": "bafyreida7i3fl5jr7haay3bfaapu7rz7yfuhvz2kpw2fjkpopkucczwcxa",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxshbh2rm52t",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/10/workflow-handoff-audit-checklist-ai-2026/",
+  "content_id": "stratum-bluesky-workflow-audit-checklist-20261014",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-14T02:01:22.463Z"
+}
