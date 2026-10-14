@@ -121,3 +121,77 @@ This is a publication-time baseline only; it is not a performance conclusion.
 Do not create more distribution variants until external behavior appears. Preserve the observed Revenue Router buyer path and compare new `bluesky` / `devto` traffic against the already-proven YouTube checkout evidence.
 
 Payment remains the highest-priority unresolved evidence stage because the actual Stratum live Stripe account is not yet connected to the current read surface.
+
+
+## Research + Repair — Buyer Delivery Gap
+
+External research on 2026-10-14 reinforced two requirements:
+
+- B2B buyers increasingly prefer digital/self-service buying, but need confidence and validation at critical decision points.
+- Stripe Payment Links support `client_reference_id` for reconciliation and support a post-purchase `after_completion` redirect. A redirect can carry `{CHECKOUT_SESSION_ID}` to a first-party confirmation/access page.
+
+### Missing implementation found
+
+Revenue Router had:
+
+- a live sales page
+- observed checkout clicks
+- an existing paid workspace at a legacy static delivery path
+- a Stripe verification Worker
+
+But it did **not** have an end-to-end Revenue Router buyer-delivery registration in the verification Worker.
+
+The legacy paid workspace was also directly present as static HTML behind an obscure noindex URL, which was insufficient purchase protection.
+
+### Repair completed
+
+- Added `revenue_router` to the Worker offer registry.
+- Verification now requires:
+  - `livemode === true`
+  - `payment_status === paid`
+  - `mode === payment`
+  - `amount_total === 2900`
+  - `currency === usd`
+  - exact `client_reference_id === vp_stratum_revenue_router_v1`
+  - checkout email match during buyer login
+- Moved the full Revenue Router paid workspace into the verification Worker bundle.
+- Added protected Worker route:
+  - `/revenue-router/workspace`
+- Added buyer login route:
+  - `/revenue-router/login`
+- Added public noindex access shell:
+  - https://stratumpraxis.com/revenue-router-access.html
+- Replaced the old public paid delivery file with a buyer-verification-required stub.
+- Added Worker unit test for Revenue Router paid validation.
+- Added deployment smoke tests:
+  - unauthenticated workspace = 401
+  - invalid buyer login = 400
+- Added production static verification for access shell + legacy stub.
+- Final Worker deployment:
+  - unit tests PASS (4/4)
+  - Stripe live credential preflight PASS
+  - Cloudflare deploy PASS
+  - Revenue Router workspace protection PASS
+  - Revenue Router invalid-login guard PASS
+  - unsigned Stripe webhook rejected with 400, confirming webhook signing secret is configured
+  - overall deploy smoke PASS after isolating unrelated degraded Music Stock Pack checkout
+
+### Remaining Human Gate — Stripe post-purchase configuration
+
+The one remaining buyer-delivery step that cannot be safely changed without explicit Stripe checkout authorization is the Revenue Router Payment Link `after_completion` setting.
+
+Required redirect:
+
+`https://stratumpraxis.com/revenue-router-access.html?session_id={CHECKOUT_SESSION_ID}`
+
+Also verify that the Payment Link belongs to the same live Stripe account readable by the deployed Worker.
+
+Do not replace the existing $29 price or Payment Link merely to solve this. Configure the existing Payment Link if account identity is confirmed.
+
+### Evidence still missing
+
+- Verified Revenue Router payment: UNKNOWN
+- Verified first buyer delivery activation: UNKNOWN
+- Verified customer review / customer outcome: none yet
+
+Do not fabricate social proof. Collect it only after a verified buyer receives and uses the product.
