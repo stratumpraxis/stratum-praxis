@@ -165,9 +165,10 @@ jobs:
             'https://buy.stripe.com/4gM9AU3sE1YLcoM4FB6Zy0T'
 
           curl --fail --silent --show-error --location --max-time 20 \
-            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261014a' \
+            'https://stratumpraxis.com/stratum-audit-app-v4.js?v=20261014b' \
             -o /tmp/stratum-audit-app-v4.js
           node --check /tmp/stratum-audit-app-v4.js
+          node -e "const fs=require('fs');const s=fs.readFileSync('/tmp/stratum-audit-app-v4.js','utf8');const bad=/(?<!\\$)\\$\\('\\[data-(lang|t|inquiry-link)\\]'\\)\\.forEach/g;if(bad.test(s)){console.error('querySelector forEach regression');process.exit(1)}"
           grep -F "inquirySubject" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "data-inquiry-link" /tmp/stratum-audit-app-v4.js >/dev/null
           grep -F "trustT:'" /tmp/stratum-audit-app-v4.js >/dev/null
