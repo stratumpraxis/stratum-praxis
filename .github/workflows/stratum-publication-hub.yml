@@ -12,8 +12,6 @@ on:
       - 'distribution/publication-hub/publishing-policy.json'
       - '.github/workflows/stratum-publication-hub.yml'
   workflow_dispatch:
-  schedule:
-    - cron: '17 22 * * *'
 
 permissions:
   contents: write
@@ -45,8 +43,20 @@ jobs:
       - name: Install markdown renderer
         run: npm install --no-save marked
 
+      - name: Resolve Ghost lane
+        id: ghost_gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          ready="$(node -e 'const fs=require("node:fs");const r=JSON.parse(fs.readFileSync("distribution/publication-hub/account-registry.json","utf8"));process.stdout.write(r?.platforms?.ghost?.automation_allowed===true?"true":"false")')"
+          echo "ready=$ready" >> "$GITHUB_OUTPUT"
+          if [ "$ready" != "true" ]; then
+            echo "Ghost lane held by account registry; continuing with DEV.to and publication packets."
+          fi
+
       - name: Publish all Stratum articles to Ghost
         id: ghost
+        if: steps.ghost_gate.outputs.ready == 'true'
         continue-on-error: true
         env:
           GHOST_ADMIN_API_URL: ${{ secrets.GHOST_ADMIN_API_URL }}
@@ -85,6 +95,8 @@ jobs:
         if: always()
         run: |
           echo "GHOST_LANE_OUTCOME=${{ steps.ghost.outcome }}"
-          if [ "${{ steps.ghost.outcome }}" != "success" ]; then
-            echo "::warning::Ghost publication lane failed or is externally blocked. DEV.to and publication-packet lanes were allowed to continue."
+          if [ "${{ steps.ghost_gate.outputs.ready }}" = "true" ] && [ "${{ steps.ghost.outcome }}" != "success" ]; then
+            echo "::warning::Ghost publication lane failed. DEV.to and publication-packet lanes were allowed to continue."
+          elif [ "${{ steps.ghost_gate.outputs.ready }}" != "true" ]; then
+            echo "Ghost lane intentionally held by account registry."
           fi
