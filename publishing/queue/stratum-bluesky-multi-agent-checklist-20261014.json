@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-multi-agent-checklist-20261014",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Using Codex, Claude Code and Cursor? Don't lose your approval rules when switching agents. A free 7-point checklist for permissions, cost caps and handoffs.",
+  "hook": "Make multi-agent work reviewable",
+  "cta": "Read the Stratum checklist",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/14/multi-agent-permission-checklist-codex-claude-cursor-2026/",
+  "status": "QUEUED"
+}
