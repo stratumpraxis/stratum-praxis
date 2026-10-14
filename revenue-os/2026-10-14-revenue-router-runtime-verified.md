@@ -37,3 +37,24 @@ Owned traffic -> Revenue Router sales page -> live Stripe Payment Link -> paid-s
 External buyer payment.
 
 The technical checkout, verification, and delivery path is now verified. Do not infer revenue from Checkout creation alone.
+
+
+## Distribution and payment readback — 2026-10-14 15:49 JST
+
+Verified distribution:
+- Bluesky: published from the verified Stratum account.
+- DEV.to: existing canonical article updated with the Revenue Router route.
+- TikTok: PUBLISHED on `@stratumpraxis`.
+  - Public URL: https://tiktok.com/@stratumpraxis/video/7696397636697427206
+  - Buffer post: `6acf18eeb610c3011fa1f472`
+  - Duplicate-stop state persisted.
+
+Blocked distribution:
+- Instagram `praxisstratum`: BLOCKED_RECONNECT. Buffer returned `Invalid Credentials`; the item is inactive and must not be retried until the channel is reconnected.
+- Stratum WordPress: BLOCKED_AUTH because `WPCOM_ACCESS_TOKEN` is not configured. No WordPress publication was performed.
+
+Stripe readback after the verified TikTok publication:
+- Matched new Revenue Router live Checkout Sessions: **0**
+- Verified paid Revenue Router Sessions: **0**
+
+Current first broken stage remains **External Buyer Payment**. Technical checkout, buyer verification, protected delivery, and multiple owned/public acquisition entries are verified. Do not modify price or checkout based on an immediate zero-result window.
