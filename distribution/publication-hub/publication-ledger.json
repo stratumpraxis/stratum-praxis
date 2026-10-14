@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-14T02:05:33.423Z",
+  "generated_at": "2026-10-14T02:08:28.089Z",
   "article_count": 9,
   "articles": [
     {
@@ -32,7 +32,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agent-operating-constitution-ja.json"
       },
-      "checked_at": "2026-10-14T02:05:10.876Z"
+      "checked_at": "2026-10-14T02:08:14.284Z"
     },
     {
       "source": "ai-agents-as-organization-ja.md",
@@ -64,7 +64,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-agents-as-organization-ja.json"
       },
-      "checked_at": "2026-10-14T02:05:14.546Z"
+      "checked_at": "2026-10-14T02:08:14.824Z"
     },
     {
       "source": "ai-handoff-system-ja.md",
@@ -96,7 +96,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-handoff-system-ja.json"
       },
-      "checked_at": "2026-10-14T02:05:18.407Z"
+      "checked_at": "2026-10-14T02:08:15.957Z"
     },
     {
       "source": "ai-is-not-your-bottleneck.md",
@@ -107,8 +107,18 @@
       },
       "devto": {
         "platform": "devto",
-        "status": "error",
-        "error": "DEV publish failed 500: {\"status\":500,\"error\":\"Internal Server Error\"}"
+        "status": "published",
+        "mode": "updated",
+        "identity_source": "map_id",
+        "id": 4641098,
+        "url": "https://dev.to/stratumpraxis/ai-is-not-your-bottleneck-your-organization-is-53kh",
+        "canonical_url": "https://dev.to/stratumpraxis/ai-is-not-your-bottleneck-your-organization-is-53kh",
+        "stats": {
+          "page_views_count": null,
+          "public_reactions_count": 1,
+          "comments_count": 3,
+          "evidence_boundary": "PLATFORM_REPORTED_REACH_AND_REACTION_ONLY_NOT_BUYER_SIGNAL"
+        }
       },
       "tips": {
         "status": "ready_for_mcp",
@@ -118,7 +128,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-is-not-your-bottleneck.json"
       },
-      "checked_at": "2026-10-14T02:05:21.728Z"
+      "checked_at": "2026-10-14T02:08:16.565Z"
     },
     {
       "source": "ai-revenue-pipeline-diagnosis-ja.md",
@@ -150,7 +160,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-revenue-pipeline-diagnosis-ja.json"
       },
-      "checked_at": "2026-10-14T02:05:22.048Z"
+      "checked_at": "2026-10-14T02:08:20.156Z"
     },
     {
       "source": "ai-saas-renewal-check.md",
@@ -182,7 +192,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-saas-renewal-check.json"
       },
-      "checked_at": "2026-10-14T02:05:22.561Z"
+      "checked_at": "2026-10-14T02:08:20.693Z"
     },
     {
       "source": "ai-workflow-total-time-roi.md",
@@ -194,8 +204,8 @@
       "devto": {
         "platform": "devto",
         "status": "published",
-        "mode": "created",
-        "identity_source": "new_article",
+        "mode": "updated",
+        "identity_source": "map_id",
         "id": 4847321,
         "url": "https://dev.to/stratumpraxis/ai-generated-it-in-3-minutes-the-workflow-still-took-18-45b1",
         "canonical_url": "https://dev.to/stratumpraxis/ai-generated-it-in-3-minutes-the-workflow-still-took-18-45b1",
@@ -214,7 +224,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/ai-workflow-total-time-roi.json"
       },
-      "checked_at": "2026-10-14T02:05:26.342Z"
+      "checked_at": "2026-10-14T02:08:24.189Z"
     },
     {
       "source": "choosing-ai-app-builder-iphone.md",
@@ -246,7 +256,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/choosing-ai-app-builder-iphone.json"
       },
-      "checked_at": "2026-10-14T02:05:29.763Z"
+      "checked_at": "2026-10-14T02:08:24.493Z"
     },
     {
       "source": "codex-revenue-company-ja.md",
@@ -278,7 +288,7 @@
         "status": "ready",
         "file": "distribution/publication-hub/social-ready/codex-revenue-company-ja.json"
       },
-      "checked_at": "2026-10-14T02:05:33.422Z"
+      "checked_at": "2026-10-14T02:08:28.089Z"
     }
   ]
 }
