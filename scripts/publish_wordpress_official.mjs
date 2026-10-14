@@ -12,6 +12,12 @@ if (pkg.brand !== 'Stratum') fail('BRAND_CHECK failed');
 if ((pkg.platform||'').toLowerCase() !== 'wordpress') fail('CHANNEL_CHECK failed');
 if (!pkg.site || !pkg.title || !pkg.canonical_url || !pkg.content_id) fail('required fields missing');
 
+// QUEUED packages must not become public merely because credentials are restored.
+if (pkg.status !== 'APPROVED') {
+  console.log('WORDPRESS_WAIT_APPROVAL '+pkg.content_id);
+  process.exit(0);
+}
+
 const token=(process.env.WPCOM_ACCESS_TOKEN||'').trim();
 const expectedSite=(process.env.WPCOM_SITE||'stratumpraxis.wordpress.com').trim();
 if (!token) fail('WordPress access token missing');
