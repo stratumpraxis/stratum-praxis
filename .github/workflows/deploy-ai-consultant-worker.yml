@@ -135,6 +135,28 @@ jobs:
           set -euo pipefail
           printf '%s' "$STRIPE_REVENUE_ROUTER_KEY" | npx --yes wrangler@latest secret put STRIPE_REVENUE_ROUTER_KEY
 
+      - name: Smoke-test Revenue Router live Stripe read path
+        shell: bash
+        env:
+          STRIPE_REVENUE_ROUTER_KEY: ${{ secrets.STRIPE_PAYMENT_LINK_ADMIN_KEY }}
+        run: |
+          set -euo pipefail
+          BASE='https://ai-consultant-verify.practicalaireport.workers.dev'
+          curl -fsS -G https://api.stripe.com/v1/checkout/sessions             -u "$STRIPE_REVENUE_ROUTER_KEY:"             --data-urlencode 'limit=100' > /tmp/revenue-router-live-sessions.json
+          sid="$(node -e "const d=require('/tmp/revenue-router-live-sessions.json');const x=(d.data||[]).find(s=>s.payment_link==='plink_1U7AvVJMK7zFs997FZnUvfi8');process.stdout.write(x?.id||'')")"
+          if [ -z "$sid" ]; then
+            echo "::error::No live Revenue Router Checkout Session was available for read-path verification."
+            exit 1
+          fi
+          payload="$(node -e "process.stdout.write(JSON.stringify({session_id:process.argv[1],email:'qa@example.invalid',offer:'revenue_router'}))" "$sid")"
+          code="$(curl -sS -o /tmp/revenue-router-live-read.txt -w '%{http_code}' -X POST "$BASE/revenue-router/login" -H 'Content-Type: application/json' --data "$payload")"
+          if [ "$code" != '402' ] && [ "$code" != '403' ]; then
+            echo "::error::Revenue Router live Stripe read path did not reach purchase/email verification; got HTTP $code."
+            cat /tmp/revenue-router-live-read.txt
+            exit 1
+          fi
+          echo "Revenue Router live Stripe read path OK: verification reached HTTP $code."
+
       - name: Smoke-test protected routes
         shell: bash
         run: |
