@@ -1,3 +1,4 @@
+import REVENUE_ROUTER_WORKSPACE_HTML from "./revenue-router-workspace.js";
 import baseWorker from "./slide-factory-worker.js";
 const te = new TextEncoder(),
   td = new TextDecoder();
@@ -56,6 +57,17 @@ const OFFERS = {
     title: "AI & SaaS Spend Decision Kit",
     path: "/spend-decision-kit/workspace",
     verify: "payment_link_amount",
+  },
+  revenue_router: {
+    product: null,
+    price: null,
+    link: null,
+    amount: 2900,
+    currency: "usd",
+    title: "Revenue Router v1.0",
+    path: "/revenue-router/workspace",
+    route: "vp_stratum_revenue_router_v1",
+    verify: "route_amount",
   },
 };
 const SPEND_KIT_WORKSPACE_HTML = "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"><meta name=\"robots\" content=\"noindex,nofollow\"><title>AI & SaaS Spend Decision Kit | Workspace</title><link rel=\"stylesheet\" href=\"styles.css\"><style>textarea,input,select{width:100%;padding:10px;margin:5px 0 12px;background:#0e1420;color:#f4f4f5;border:1px solid #303744;border-radius:7px}table{width:100%;border-collapse:collapse;margin:20px 0}th,td{border-bottom:1px solid #303744;padding:9px;text-align:left}.workspace{overflow-x:auto}.mini{font-size:13px;color:#a1a1aa}</style><!-- Google tag (gtag.js) -->\n<script async src=\"https://www.googletagmanager.com/gtag/js?id=G-QXTYRB4TWY\"></script>\n<script>\n  window.dataLayer = window.dataLayer || [];\n  function gtag(){dataLayer.push(arguments);}\n  gtag('js', new Date());\n  gtag('config', 'G-QXTYRB4TWY');\n</script>\n</head><body><main><section class=\"hero\"><div class=\"container\"><p class=\"eyebrow\">// Purchased workspace · v1.0</p><h1>AI & SaaS Spend Decision Kit</h1><p class=\"hero-text\">Build your decision register below. Data stays in this browser session unless you export it. Do not enter passwords, API keys, payment-card data, customer PII or regulated information.</p></div></section><section class=\"section\"><div class=\"container\"><h2>1. Add a tool</h2><div class=\"card-grid\"><div><label>Tool</label><input id=\"tool\"></div><div><label>Owner</label><input id=\"owner\" placeholder=\"Team or accountable owner\"></div><div><label>Monthly cost USD</label><input id=\"cost\" type=\"number\" min=\"0\"></div><div><label>Seats</label><input id=\"seats\" type=\"number\" min=\"0\" placeholder=\"Paid seats\"></div><div><label>Workflow supported</label><input id=\"workflow\" placeholder=\"What job does this tool support?\"></div><div><label>Renewal date</label><input id=\"renewalDate\" type=\"date\"></div><div><label>Usage (1–5)</label><input id=\"usage\" type=\"number\" min=\"1\" max=\"5\" value=\"3\"></div><div><label>Workflow importance (1–5)</label><input id=\"importance\" type=\"number\" min=\"1\" max=\"5\" value=\"3\"></div><div><label>Overlap risk (1–5)</label><input id=\"overlap\" type=\"number\" min=\"1\" max=\"5\" value=\"1\"></div><div><label>Renewal urgency (1–5)</label><input id=\"renewal\" type=\"number\" min=\"1\" max=\"5\" value=\"1\"></div></div><button class=\"button button-primary\" onclick=\"addTool()\">Add to decision register</button><div class=\"workspace\"><table><thead><tr><th>Tool</th><th>Owner</th><th>Seats</th><th>Workflow</th><th>Renewal</th><th>Monthly</th><th>Annual</th><th>Score</th><th>Action</th></tr></thead><tbody id=\"rows\"></tbody></table></div><p id=\"summary\" class=\"hero-text\">Annual stack: $0 · Review exposure: $0</p><button class=\"button button-secondary\" onclick=\"exportCSV()\">Export CSV</button></div></section><section class=\"section section-accent\"><div class=\"container\"><h2>2. Decision logic</h2><ul class=\"check-list\"><li><strong>KEEP:</strong> strong usage + important workflow + low overlap.</li><li><strong>REDUCE:</strong> useful tool, but current tier/seats appear larger than needed.</li><li><strong>CONSOLIDATE:</strong> useful capability with meaningful overlap elsewhere.</li><li><strong>REVIEW:</strong> evidence is weak, renewal is close, or the workflow case is unclear.</li><li><strong>CANCEL:</strong> weak usage and weak workflow importance; verify dependencies before acting.</li></ul><p class=\"fine\">The score is a prioritization aid, not an instruction to cancel software. Validate contracts, dependencies, security, data retention and operational consequences before changing subscriptions.</p></div></section><section class=\"section\"><div class=\"container\"><h2>3. 30-day action plan</h2><ol><li>Export the decision register and sort REVIEW / CONSOLIDATE / REDUCE candidates by annual cost.</li><li>Verify actual usage, owners, dependencies and renewal dates for the top five.</li><li>Take one reversible action first: remove unused seats, downgrade a tier, pause an add-on or consolidate a duplicate capability where safe.</li><li>Record the baseline cost before the change.</li><li>Re-measure after 30 days and only count savings that actually occurred.</li></ol><div class=\"button-row\"><a class=\"button button-secondary\" href=\"ai-saas-spend-waste-audit.html\">Need independent review? View the $499 Spend Audit</a><a class=\"button button-secondary\" href=\"ai-saas-spend-monitoring.html\">Need recurring control? View Monitoring</a></div></div></section></main><script>const data=[];function money(n){return new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0}).format(n)}function decision(u,i,o,r){const value=u+i;const risk=o+r;if(u<=2&&i<=2)return 'CANCEL';if(o>=4&&value>=5)return 'CONSOLIDATE';if(u<=3&&i>=3)return 'REDUCE';if(r>=4||risk>=6)return 'REVIEW';return 'KEEP'}function addTool(){const x={tool:document.getElementById('tool').value.trim()||'Unnamed tool',owner:document.getElementById('owner').value.trim(),seats:+document.getElementById('seats').value||0,workflow:document.getElementById('workflow').value.trim(),renewalDate:document.getElementById('renewalDate').value,cost:+document.getElementById('cost').value||0,u:+document.getElementById('usage').value||1,i:+document.getElementById('importance').value||1,o:+document.getElementById('overlap').value||1,r:+document.getElementById('renewal').value||1};x.score=(x.u+x.i)-(x.o+x.r);x.action=decision(x.u,x.i,x.o,x.r);data.push(x);render();document.getElementById('tool').value='';document.getElementById('cost').value=''}function render(){const rows=document.getElementById('rows');rows.innerHTML=data.map(x=>`<tr><td>${esc(x.tool)}</td><td>${esc(x.owner||'—')}</td><td>${x.seats||'—'}</td><td>${esc(x.workflow||'—')}</td><td>${esc(x.renewalDate||'—')}</td><td>${money(x.cost)}</td><td>${money(x.cost*12)}</td><td>${x.score}</td><td><strong>${x.action}</strong></td></tr>`).join('');const annual=data.reduce((a,x)=>a+x.cost*12,0);const review=data.filter(x=>x.action!=='KEEP').reduce((a,x)=>a+x.cost*12,0);document.getElementById('summary').textContent=`Annual stack: ${money(annual)} · Review exposure: ${money(review)}`}function esc(s){return s.replace(/[&<>\"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',\"'\":'&#39;'}[c]))}function exportCSV(){const h=['Tool','Owner','Seats','Workflow supported','Renewal date','Monthly cost','Annual cost','Usage','Importance','Overlap risk','Renewal urgency','Score','Action'];const lines=[h,...data.map(x=>[x.tool,x.owner,x.seats,x.workflow,x.renewalDate,x.cost,x.cost*12,x.u,x.i,x.o,x.r,x.score,x.action])].map(r=>r.map(v=>'\"'+String(v).replace(/\"/g,'\"\"')+'\"').join(','));const b=new Blob([lines.join('\\n')],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='ai-saas-spend-decision-register.csv';a.click();URL.revokeObjectURL(a.href)}</script></body></html>";
@@ -164,6 +176,17 @@ async function session(env, sid) {
   );
 }
 function paid(s, o) {
+  if (o.verify === "route_amount") {
+    return Boolean(
+      s &&
+      s.livemode === true &&
+      s.payment_status === "paid" &&
+      s.mode === "payment" &&
+      Number(s.amount_total) === o.amount &&
+      String(s.currency || "").toLowerCase() === o.currency &&
+      routeId(s) === o.route
+    );
+  }
   const baseMatch =
     s.payment_status === "paid" &&
     s.mode === "payment" &&
@@ -185,6 +208,10 @@ function offerFor(s) {
 function routeId(s) {
   const value = String(s.client_reference_id || "");
   return /^[a-zA-Z0-9_-]{1,200}$/.test(value) ? value : "unattributed";
+}
+
+function isRevenueRouterPaid(s) {
+  return paid(s, OFFERS.revenue_router);
 }
 
 function isWorkflowAuditPaid(s) {
@@ -355,6 +382,7 @@ function split(body, key) {
     }));
 }
 async function page(env, o, key) {
+  if (key === "revenue_router") return REVENUE_ROUTER_WORKSPACE_HTML;
   if (key === "spend_kit") return SPEND_KIT_WORKSPACE_HTML;
   const body = await content(env, o),
     parts = split(body, key),
@@ -434,7 +462,7 @@ async function workspace(env, u) {
     },
   });
 }
-export { verifyWebhook, isWorkflowAuditPaid };
+export { verifyWebhook, isWorkflowAuditPaid, isRevenueRouterPaid };
 export default {
   async fetch(req, env, ctx) {
     const u = new URL(req.url),
@@ -442,6 +470,7 @@ export default {
         u.pathname.startsWith("/prompt-store/") ||
         u.pathname.startsWith("/cross-agent-kit/") ||
         u.pathname.startsWith("/spend-decision-kit/") ||
+        u.pathname.startsWith("/revenue-router/") ||
         u.pathname === "/stripe/webhook";
     if (!ours) return baseWorker.fetch(req, env, ctx);
     const origin = req.headers.get("Origin") || "",
@@ -470,6 +499,7 @@ export default {
           "/prompt-store/ops10/login",
           "/cross-agent-kit/login",
           "/spend-decision-kit/login",
+          "/revenue-router/login",
         ].includes(u.pathname)
       )
         return login(req, env, u, cors);
