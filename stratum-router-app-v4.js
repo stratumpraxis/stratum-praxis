@@ -2,7 +2,7 @@
 const SUP=['en','ja','es'],KEY='sp-office-lang';
 const COPY={
 en:{
-  brand:'Revenue Routes',heroK:'BUY BY DECISION, NOT BY CATALOG',heroT:'Pick the problem. See the route.',heroP:'Three routes only: AI spend, workflow automation, and agent operations. Start free; pay only when the decision needs more depth.',
+  brand:'Revenue Routes',heroK:'BUY BY DECISION, NOT BY CATALOG',heroT:'Pick the problem. See the route.',heroP:'Three core routes: AI spend, workflow automation, and agent operations. Start free; pay only when the decision needs more depth.',rrK:'CROSS-ROUTE DECISION TOOL',rrT:'Already have a signal? Prioritize the next revenue action.',rrP:'Use Revenue Router when the signal is already known but the strongest next move is not. Score evidence, demand, money impact, confidence and risk, then return the top 1–3 actions.',rrCta:'Revenue Router — $29',
   tabs:['Spend','Workflow','Agents'],stat1:'ROUTES',stat2:'ENTRY',stat3:'SPECIALIST',
   routes:[
     {k:'01 · SPEND & ROI',title:'Control AI spend before renewal.',desc:'Find overlap, low-use tools and weak utilization before renewing or expanding software spend.',facts:[['ENTRY','FREE'],['SELF-SERVE','$39'],['SPECIALIST','$499']],start:'Run Waste Calculator',
@@ -18,7 +18,7 @@ en:{
   outputs:'WHAT YOU GET',open:'Open route',compare:'Open product page',method:'EVIDENCE FIRST',m1:'No forced bundle',m2:'No invented ROI',m3:'Fixed-scope escalation',swipe:'Swipe left / right to change route'
 },
 ja:{
-  brand:'収益ルート',heroK:'商品ではなく、判断から選ぶ',heroT:'課題を選ぶ。最短ルートを見る。',heroP:'AI支出・Workflow・Agent運用の3ルートだけ。最初は無料、深さが必要な時だけ有料へ。',
+  brand:'収益ルート',heroK:'商品ではなく、判断から選ぶ',heroT:'課題を選ぶ。最短ルートを見る。',heroP:'AI支出・Workflow・Agent運用の3つの中核ルート。最初は無料、深さが必要な時だけ有料へ。',rrK:'横断Decision Tool',rrT:'シグナルはある。次の収益行動だけ決めたい。',rrP:'Revenue Routerは、根拠・需要・金銭インパクト・確度・リスクを見て、既存資産の中から次の1〜3アクションを優先順位化します。',rrCta:'Revenue Router — $29',
   tabs:['支出','Workflow','Agent'],stat1:'ルート',stat2:'入口',stat3:'専門監査',
   routes:[
     {k:'01 · AI / SAAS支出',title:'更新前に、AI支出を制御する。',desc:'重複・低利用・弱い活用を見つけ、更新や追加投資の前に判断できる状態へ。',facts:[['入口','無料'],['SELF-SERVE','$39'],['専門監査','$499']],start:'Waste Calculatorを使う',
@@ -34,7 +34,7 @@ ja:{
   outputs:'届くもの',open:'このルートを開く',compare:'商品ページを見る',method:'EVIDENCE FIRST',m1:'不要なBundleなし',m2:'架空ROIなし',m3:'支援範囲を固定',swipe:'左右スワイプでも切替できます'
 },
 es:{
-  brand:'Rutas de ingresos',heroK:'COMPRA POR DECISIÓN, NO POR CATÁLOGO',heroT:'Elige el problema. Mira la ruta.',heroP:'Solo tres rutas: gasto AI, workflow y operaciones de agentes. Empieza gratis y paga solo si hace falta profundidad.',
+  brand:'Rutas de ingresos',heroK:'COMPRA POR DECISIÓN, NO POR CATÁLOGO',heroT:'Elige el problema. Mira la ruta.',heroP:'Tres rutas principales: gasto AI, workflow y operaciones de agentes. Empieza gratis y paga solo si hace falta profundidad.',rrK:'HERRAMIENTA TRANSVERSAL',rrT:'¿Ya tienes una señal? Prioriza la siguiente acción de ingresos.',rrP:'Revenue Router evalúa evidencia, demanda, impacto económico, confianza y riesgo, y devuelve las 1–3 acciones más fuertes entre tus activos existentes.',rrCta:'Revenue Router — $29',
   tabs:['Gasto','Workflow','Agentes'],stat1:'RUTAS',stat2:'ENTRADA',stat3:'ESPECIALISTA',
   routes:[
     {k:'01 · GASTO & ROI',title:'Controla el gasto AI antes de renovar.',desc:'Encuentra solapamiento y bajo uso antes de renovar o ampliar.',facts:[['ENTRADA','GRATIS'],['AUTOSERVICIO','$39'],['AUDITORÍA','$499']],start:'Abrir Waste Calculator',
@@ -57,7 +57,7 @@ function route(){return T().routes[idx]}
 function render(){
  document.documentElement.lang=lang;try{localStorage.setItem(KEY,lang)}catch{}
  $$('[data-lang]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.lang===lang)));
- $('#brand-sub').textContent=T().brand;$('#hero-k').textContent=T().heroK;$('#hero-t').textContent=T().heroT;$('#hero-p').textContent=T().heroP;
+ $('#brand-sub').textContent=T().brand;$('#hero-k').textContent=T().heroK;$('#hero-t').textContent=T().heroT;$('#hero-p').textContent=T().heroP;$('#rr-k').textContent=T().rrK;$('#rr-t').textContent=T().rrT;$('#rr-p').textContent=T().rrP;$('#rr-cta').textContent=T().rrCta;
  $('#stat1').textContent=T().stat1;$('#stat2').textContent=T().stat2;$('#stat3').textContent=T().stat3;
  $$('.tabs button').forEach((b,i)=>{b.textContent=T().tabs[i];b.setAttribute('aria-selected',String(i===idx))});
  const r=route();$('#route-k').textContent=r.k;$('#route-title').textContent=r.title;$('#route-desc').textContent=r.desc;
