@@ -25,10 +25,38 @@ async function gql(query) {
   return json.data;
 }
 
+async function verifyExistingBufferPost(postId, attempts = 12) {
+  let lastStatus = null;
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    if (attempt > 1) await sleep(5000);
+    const statusData = await gql(`query { post(input:{id:${q(postId)}}){ id channelId channelService status sentAt externalLink error { message rawError supportUrl } } }`);
+    lastStatus = statusData.post || null;
+    console.log(`PENDING_VERIFY_ATTEMPT_${attempt}=` + JSON.stringify(lastStatus));
+    if (lastStatus?.status === 'sent' && lastStatus?.externalLink) return { verified: lastStatus, lastStatus };
+    if (lastStatus?.error?.message) return { verified: null, lastStatus };
+  }
+  return { verified: null, lastStatus };
+}
+
 const queue = JSON.parse(await readFile(QUEUE_FILE, 'utf8'));
 if (!Array.isArray(queue)) throw new Error('TikTok revenue queue must be an array');
 const candidates = queue.filter(item => item.active !== false && Array.isArray(item.services) && item.services.includes('tiktok'));
 if (candidates.length === 0) {
+  let evidence = null;
+  try { evidence = JSON.parse(await readFile(EVIDENCE_FILE, 'utf8')); } catch {}
+  if (evidence?.state === 'BUFFER_SUBMITTED_UNVERIFIED' && evidence?.bufferPostId) {
+    const { verified, lastStatus } = await verifyExistingBufferPost(evidence.bufferPostId);
+    evidence.state = verified ? 'PUBLISHED' : 'BUFFER_SUBMITTED_UNVERIFIED';
+    evidence.sentAt = verified?.sentAt || lastStatus?.sentAt || evidence.sentAt || null;
+    evidence.publicUrl = verified?.externalLink || lastStatus?.externalLink || evidence.publicUrl || null;
+    evidence.bufferStatus = verified?.status || lastStatus?.status || evidence.bufferStatus || null;
+    evidence.error = lastStatus?.error || null;
+    evidence.verifiedAt = new Date().toISOString();
+    await writeFile(EVIDENCE_FILE, `${JSON.stringify(evidence, null, 2)}\n`);
+    console.log('STRATUM_TIKTOK_PENDING_EVIDENCE=' + JSON.stringify(evidence));
+    if (verified) process.exit(0);
+    throw new Error(`TikTok pending publication is still unverified: ${JSON.stringify(evidence)}`);
+  }
   console.log('No active Stratum TikTok revenue item. Safe no-op.');
   process.exit(0);
 }
