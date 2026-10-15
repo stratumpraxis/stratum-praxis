@@ -1,0 +1,35 @@
+name: Stratum Instagram Buffer Post Verify
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stratum-instagram-buffer-post-verify.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read existing Buffer post
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          (async () => {
+            const key = String(process.env.BUFFER_API_KEY || '').trim();
+            if (!key) throw new Error('BUFFER_API_KEY missing');
+            const id='6acf2579848c31c8096261c5';
+            const query='query { post(input:{id:"'+id+'"}){ id channelId channelService status sentAt externalLink error { message rawError supportUrl } } }';
+            const r=await fetch('https://api.buffer.com',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},body:JSON.stringify({query})});
+            const j=await r.json();
+            if(!r.ok||j.errors) throw new Error(JSON.stringify(j.errors||j));
+            console.log('STRATUM_INSTAGRAM_EXISTING_POST='+JSON.stringify(j.data?.post||null));
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
