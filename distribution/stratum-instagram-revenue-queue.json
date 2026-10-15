@@ -1,12 +1,14 @@
 [
   {
     "id": "stratum-revenue-router-instagram-20261014-01",
-    "active": true,
+    "active": false,
     "services": [
       "instagram"
     ],
     "text": "AIの価格変更・新製品・業務上の詰まり・調査メモを、そのまま投稿に変える前に判断する。Revenue Routerは、根拠・需要・金銭インパクト・確度・リスクを見て、次の1〜3アクションへルーティングします。買い切り $29。",
     "url": "https://stratumpraxis.com/revenue-router.html?utm_source=instagram&utm_medium=organic&utm_campaign=revenue_router_buyer_action&utm_content=social_card_20261014",
-    "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/revenue-router-social-20261014.png"
+    "imageUrl": "https://raw.githubusercontent.com/stratumpraxis/stratum-praxis/main/distribution/revenue-router-social-20261014.png",
+    "bufferPostId": "6ad032c45f62d3c5af1590ff",
+    "bufferSubmittedAt": "2026-10-15T01:56:21.930Z"
   }
 ]
