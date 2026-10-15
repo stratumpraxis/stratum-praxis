@@ -1,0 +1,50 @@
+name: Stratum Instagram Buffer Audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/stratum-instagram-buffer-audit.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read Buffer Instagram channel state
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          (async () => {
+            const key = String(process.env.BUFFER_API_KEY || '').trim();
+            if (!key) throw new Error('BUFFER_API_KEY missing');
+            const api = 'https://api.buffer.com';
+            const gql = async (query) => {
+              const r = await fetch(api, {
+                method:'POST',
+                headers:{'Content-Type':'application/json','Authorization':'Bearer '+key},
+                body:JSON.stringify({query})
+              });
+              const j = await r.json();
+              if (!r.ok || j.errors) throw new Error(JSON.stringify(j.errors || j));
+              return j.data;
+            };
+            const acct = await gql('query { account { organizations { id name } } }');
+            const org = acct.account?.organizations?.[0];
+            if (!org) throw new Error('No Buffer organization');
+            const data = await gql('query { channels(input:{organizationId:"'+org.id+'",filter:{isLocked:false}}){id name displayName service isQueuePaused} }');
+            const rows=(data.channels||[]).map(c=>({
+              service:c.service,name:c.name,displayName:c.displayName,paused:c.isQueuePaused
+            }));
+            console.log('BUFFER_CHANNELS='+JSON.stringify(rows));
+            const ig=(data.channels||[]).filter(c=>String(c.service||'').toLowerCase()==='instagram' && !c.isQueuePaused && (String(c.displayName||'')+' '+String(c.name||'')).toLowerCase().includes('praxisstratum'));
+            console.log('STRATUM_INSTAGRAM_ELIGIBLE_COUNT='+ig.length);
+          })().catch(e=>{console.error(e);process.exit(1)});
+          NODE
