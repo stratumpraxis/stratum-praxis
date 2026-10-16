@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-workflow-operations-checklist-20261016",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "AI workflow running? Check five controls before buying more automation: clear owners, missed-event detection, exception triage, safe recovery and verified outcomes.",
+  "hook": "Operating evidence beats a successful demo.",
+  "cta": "Free 5-point checklist",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/16/before-buying-ai-workflow-audit-evidence-checklist-2026/",
+  "status": "QUEUED",
+  "approval": "OWNER_AUTONOMY_APPROVED",
+  "approval_scope": "stratum_existing_owned_bluesky_product_article_no_dm_no_email",
+  "source_verified": "WORDPRESS_POST_30_HTTP_200_20261016",
+  "dedupe_scope": "one_publication_package"
+}
