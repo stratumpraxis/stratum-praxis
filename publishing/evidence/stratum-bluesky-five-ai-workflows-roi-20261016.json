@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mxy3d5j7zb2p",
+  "cid": "bafyreidgpqgljzjdyvbirdjwdkat4ni4wehjuoky6wh55k2qktsmmc4dje",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mxy3d5j7zb2p",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/12/ai-automation-pilot-kpi-scorecard-30-days-2026/",
+  "content_id": "stratum-bluesky-five-ai-workflows-roi-20261016",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-16T07:43:33.087Z"
+}
