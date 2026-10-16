@@ -74,7 +74,22 @@ jobs:
             startingAfter = rows[rows.length - 1].id;
           }
 
-          const paid = matched.filter(s => s.livemode === true && s.payment_status === "paid" && s.status === "complete");
+          // Safe, aggregate-only evidence. Separate test sessions from live buyer activity.
+          // Never emit Checkout Session IDs, customer details, email, or API keys.
+          const liveSessions = matched.filter(s => s.livemode === true);
+          const testSessions = matched.filter(s => s.livemode !== true);
+          const livePaid = liveSessions.filter(s => s.payment_status === "paid" && s.status === "complete");
+          const liveNotPaid = liveSessions.filter(s => s.payment_status !== "paid" || s.status !== "complete");
+          const exactLinkLive = liveSessions.filter(s => s.payment_link === targetPaymentLink);
+          const clientReferenceLive = liveSessions.filter(s => s.client_reference_id === targetRoute);
+          console.log(`REVENUE_ROUTER_LIVE_SESSIONS=${liveSessions.length}`);
+          console.log(`REVENUE_ROUTER_TEST_SESSIONS=${testSessions.length}`);
+          console.log(`REVENUE_ROUTER_LIVE_COMPLETE_PAID=${livePaid.length}`);
+          console.log(`REVENUE_ROUTER_LIVE_UNPAID_OR_INCOMPLETE=${liveNotPaid.length}`);
+          console.log(`REVENUE_ROUTER_LIVE_EXACT_PAYMENT_LINK_MATCHES=${exactLinkLive.length}`);
+          console.log(`REVENUE_ROUTER_LIVE_CLIENT_REFERENCE_MATCHES=${clientReferenceLive.length}`);
+          console.log(`REVENUE_ROUTER_DATA_WINDOW_SINCE_UNIX=${since}`);
+          const paid = livePaid;
           console.log(`REVENUE_ROUTER_MATCHED_SESSIONS=${matched.length}`);
           console.log(`REVENUE_ROUTER_PAID_SESSIONS=${paid.length}`);
           // Report aggregate payment evidence only; do not expose Checkout Session IDs in CI logs.
