@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-five-ai-workflows-roi-20261016",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Which AI workflow deserves a pilot? Compare RAG support, PDF intake, analytics, video ads and internal apps using cost per accepted outcome and 30-day evidence.",
+  "hook": "5 AI use cases, one measured decision.",
+  "cta": "Free KPI scorecard",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/12/ai-automation-pilot-kpi-scorecard-30-days-2026/",
+  "status": "QUEUED",
+  "approval": "OWNER_AUTONOMY_APPROVED",
+  "approval_scope": "stratum_existing_owned_bluesky_wordpress_pilot_post_no_dm_no_email",
+  "source_verified": "WORDPRESS_POST_28_UPDATED_READBACK_HTTP_200_20261016",
+  "dedupe_scope": "one_publication_package"
+}
