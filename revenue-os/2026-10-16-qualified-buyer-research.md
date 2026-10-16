@@ -23,3 +23,9 @@ Redwood sent one tailored $499 audit message, no automatic follow-up.
 
 ## Next revenue action
 Find an authorized procurement/relevant buyer contact AND explicit buyer action (inbound inquiry, proposal request, or current sourcing notice). Then use existing $499 page; no new product or funnel. Do not treat vacancies, impressions, or drafted email as payment.
+
+## Procurement-gate verification — 2026-10-16
+- Singtel official tender route is AcuBuy: https://www.singtel.com/about-us/sustainability/singtel-group-supplier-portal/business-opportunities-tenders
+- Singtel sourcing-event access is invitation-based: https://www.singtel.com/about-us/sustainability/singtel-group-supplier-portal/im-already-a-supplier/sourcing . Supplier Enablement address is for portal help, not a verified cold-sales inbox. HOLD outbound proposal until a relevant sourcing event or buyer invitation is observed.
+- New American Funding official contact page https://www.newamericanfunding.com/about-us/contact-us/ lists customer service, servicing and media contacts, and the media route explicitly says no sales. NO VERIFIED PROCUREMENT CHANNEL. HOLD outreach.
+- Outcome: neither prospect is currently a qualified buyer-action opportunity. No new outreach, checkout redirect, sales claim, or schedule. Continue prioritizing explicit requests for proposals/quotes, inbound contact, and live paid Checkout evidence.
