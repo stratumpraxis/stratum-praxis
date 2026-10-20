@@ -97,3 +97,31 @@ footer{border-top:1px solid rgba(255,255,255,.06);padding:26px 0 38px;color:#718
   .report-grid{grid-template-columns:1fr}.path{gap:8px}.tier{padding:16px}.tier p{min-height:0}.final{padding:26px 0 70px}.final-card{padding:18px;border-radius:19px}.final-card .btn{width:100%}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}*{animation:none!important;transition:none!important}}
+
+/* Revenue UI refinement 2026-10-21: legibility, mobile wayfinding, keyboard access.
+   No changes to products, checkout links, routing, or analytics. */
+.mini-nav a{min-height:40px;font-size:12px}
+.lang button{min-width:35px;height:34px;font-size:11px}
+.btn{font-size:13px}
+.hero-facts span{font-size:12px}
+.segment button,.preview-tabs button{font-size:12px}
+.console-head small,.live,.console-label,.metric small,.console-next small,.trustbar small,
+.result-top small,.result-top span,.report-head small,.report-box small,.tier small,.status,.tag,.row.head{font-size:11px}
+.console-score span,.scan p{font-size:12px}
+.metric b,.trustbar b{font-size:14px}
+.field label,.result-copy p,.section-head p,.report-box p,.tier p,.tier li,
+.final-card p{font-size:13px}
+.row,footer{font-size:12px}
+:where(a,button,input):focus-visible{outline:2px solid var(--mint);outline-offset:3px}
+@media(max-width:620px){
+  .site-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 10px}
+  .head-right{display:contents}
+  .lang{grid-column:2;grid-row:1}
+  .mini-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-column:1/-1;grid-row:2;gap:6px;width:100%}
+  .mini-nav a{min-height:40px;padding:0 8px;font-size:12px;text-align:center;
+    background:rgba(17,36,46,.72);border:1px solid var(--line)}
+  .hero-facts span{font-size:11px}
+  .section-head p{font-size:13px}
+  .tier p{min-height:0}
+}
