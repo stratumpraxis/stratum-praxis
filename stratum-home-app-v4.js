@@ -114,6 +114,20 @@ function calc(){
  $('#signal').textContent=score;$('.ring').style.setProperty('--p',score);
  const band=score>=65?2:score>=32?1:0;$('#signal-title').textContent=[t('resultLow'),t('resultMid'),t('resultHigh')][band];$('#signal-text').textContent=t('resultText')[band];
  setSignalAction({score,spend,idle,hours});
+ // One-variable self-serve checkout experiment: keep the existing diagnostic and audit route intact.
+ const actions=$('.result-actions');
+ let buy=$('#signal-self-serve-buy');
+ if(actions&&!buy){
+  buy=document.createElement('a');
+  buy.id='signal-self-serve-buy';buy.className='btn';
+  buy.href='https://buy.stripe.com/cNi00kgfq7j5ewUfkf6Zy06';
+  buy.target='_blank';buy.rel='noopener noreferrer';
+  buy.dataset.product='ai_saas_spend_decision_kit';
+  buy.dataset.analyticsId='home_signal_self_serve_checkout_39';
+  buy.addEventListener('click',()=>{try{window.scosCapture?.('home_signal_self_serve_checkout_clicked',{route:'spend_decision_kit_39',signal_band:'review_now'})}catch{}});
+  actions.appendChild(buy);
+ }
+ if(buy){buy.hidden=!(score>=32&&score<65&&spend>0&&idle>0);buy.style.display=buy.hidden?'none':'';buy.textContent=lang==='ja'?'支出判断キットを$39で購入 ↗':lang==='es'?'Comprar kit de decisión · $39 ↗':'Buy Spend Decision Kit · $39 ↗';}
  try{window.scosCapture?.('home_signal_calculated',{score,spend,idle,hours,route:$('#signal-action')?.dataset.analyticsId||''})}catch{}
 }
 function renderResult(initial=false){if(initial){$('#signal').textContent='—';$('.ring').style.setProperty('--p',0);$('#signal-title').textContent=t('resultLow');$('#signal-text').textContent=t('resultText')[0];setSignalAction()}}
