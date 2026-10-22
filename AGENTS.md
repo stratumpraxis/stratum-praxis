@@ -1,5 +1,18 @@
 # Stratum Praxis Project Context
 
+## Current owner override — upstream media monetization
+
+This section supersedes older primary-route priorities following the owner's explicit direction in the monetization harness conversation. Preserve historical instructions below.
+
+- Primary operating goal: B2B media revenue without Stratum sales conversations, proposals, customer payment collection, or manual fulfillment.
+- Prioritize an authorized display-impression or genuine paid-click route. Evaluate approved qualified-lead/trial affiliates next; paid-subscription affiliates are secondary because they still depend on the vendor's conversion.
+- Never label an affiliate click as earned revenue unless the current contract explicitly pays for a qualifying click and the provider confirms it. Local click telemetry is intent only. Record estimated earnings, approved rewards and paid payouts separately.
+- Keep existing Kits, audits, checkouts and delivery operational as secondary assets. Do not automatically return to optimizing the $69 or $499 offer when the media route is blocked.
+- A provider settlement wait must not pause authorized content improvement and traffic learning. Enrollment or approval waits do not authorize placing unapproved ad code or inventing referral IDs.
+- First unresolved dependency: verify Stratum's current publisher/program approval and reward terms. The A8 link in revenue-link-ledger.md is historical link evidence, not current approval evidence. AdSense approval remains UNKNOWN; no publisher ID was found in the inspected root HTML files. A targeted Gmail check failed with RATE_LIMIT_EXCEEDED.
+- Next wake evidence: authorized access to the existing publisher dashboard, an approval/terms notice, or provider-reported earnings. This instruction does not itself install a scheduler or event subscription.
+- New contracts, tax/KYC and payout details remain owner gates. No automated ad clicks, synthetic monetizable impressions, invalid traffic or incentivized clicks.
+
 ## Current operating override — 2026-09-13
 
 This block is the authoritative current operating state when older notes below conflict with it. Preserve older sections as history; do not execute superseded channel or funnel instructions.
