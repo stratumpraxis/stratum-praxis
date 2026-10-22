@@ -1,3 +1,5 @@
+> OWNER CORRECTION — 2026-10-23: A8 belongs to VECTOR, not STRATUM. Historical A8 entries below are excluded from Stratum routing, implementation, applications and revenue attribution. Do not use their links or accounts. Overseas program approval remains UNKNOWN until Stratum-specific evidence is verified.
+
 # Revenue Link Ledger
 
 Last updated: 2026-08-26
