@@ -185,6 +185,12 @@ async function main(){
   const ready=await listReady();
   let created=0,rerendered=0;
   for(const {name,record} of ready){
+    // Owner-confirmed boundary: A8 belongs to Vector, never Stratum.
+    // Keep the item for review; do not publish or distribute another brand's route.
+    if (/https?:\/\/(?:[a-z0-9-]+\.)*a8\.net(?:[/:?#]|$)/i.test(JSON.stringify(record))) {
+      console.log(`OWNED_BLOCKED_FOREIGN_ASSET ${name} provider=A8 owner=VECTOR`);
+      continue;
+    }
     const published=state.owned_publications[record.output_id];
     if(published){
       // A record whose CTA was decided after it went out is re-rendered in place:
