@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3myidaeejqf25",
+  "cid": "bafyreidalazbi5tcbnuy4axmckj7b7epkcp6rvcrudrhzitx4cuniffldu",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3myidaeejqf25",
+  "destination": "https://note.com/stratum/n/nf6838b6c4d11?utm_source=bluesky&utm_medium=video&utm_campaign=ai_revenue_os_20261023",
+  "content_id": "stratum-bluesky-ai-revenue-note-video-20261023",
+  "media_type": "video",
+  "video_bytes": 4384543,
+  "published_at": "2026-10-22T18:47:45.241Z"
+}
