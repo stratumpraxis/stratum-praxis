@@ -1,0 +1,19 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-ai-revenue-note-video-20261023",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "AIを導入しても売上が増えない理由。作業効率化と収益化は別物です。集客→営業→決済をつなぐB2B向け実務設計を解説しました。",
+  "hook": "AIの稼働数ではなく、実際の顧客価値と収益を測る。",
+  "cta": "記事はこちら",
+  "destination": "https://note.com/stratum/n/nf6838b6c4d11?utm_source=bluesky&utm_medium=video&utm_campaign=ai_revenue_os_20261023",
+  "video_url": "https://remotionlambda-useast1-2ei5ch6f3q.s3.us-east-1.amazonaws.com/renders/nthf79tqf0/out.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=ASIAQLTYEZQZ4WHUEAVG%2F20261022%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20261022T180951Z&X-Amz-Expires=43200&X-Amz-Security-Token=IQoJb3JpZ2luX2VjELP%2F%2F%2F%2F%2F%2F%2F%2F%2F%2FwEaCXVzLWVhc3QtMSJIMEYCIQDijRNQZL1dpYazbYG3cV0edWtSoN80sTuLNuH8Yy5Y0gIhAIiftqJUP8k5I2h5J1hTVcdLNzckdXl9qUGy00OXeT9rKoAFCHsQABoMMDI0OTQ4MDM0NjExIgw7S77ewwz3sZ98XEAq3QTOjJhnPXcPC3mWEHnEOO9RdYfdiDRWpHiME0Fv4CtAt5ugV6JpmbWNzZWlKa19%2Fn%2B3K%2FR4kMr%2FJ2E35fsPLucfCbaL0m3mYVjJMEm6acF5eZj%2FmIlyaWLktcsKq0rpgYiPjmNF7bkgmOJ6f%2B2z0k%2FTKxcrOCWHNkRrkZoqwK%2FqUE9f4Q8hdEKIZygjuqEcNYapH%2B7gsn%2FPEFzqdsSGB1ekb3T9nE7Tk2WcoYxS13KDxTm4FiHd562NX7ocNrCIS8SuONOck84SzqqRdrtu8xxTEzmE3Xrh6Im%2F81ztufkonXPtrsbSZEC4TYQQVR8sStgjhaYwiJfgLKpEaylB3R9QGpC%2Fm8vLSZLklCXR0bsBMOhgr5tsc%2B3hPM9UdbiLffuH3oeUp7eZGi%2FS2qlxiJDUceCp7rOTSzK%2BSb70jZTQOBdk6aDmyU2L6mL1qQz2Eimns4Ru4dt9rQkWvM%2F5Zoj6zpUfRSl8Xt5XGcDHGOwGZEecpuPbzPmf5AyDeOwERqJ6hWSuqgsjqhfZwXoDvaCysud%2F6wmfWLTzhdFFGACIPOfNeRKEgYZ3RpCzMaAF61zN16v%2B%2BdbWfN7TnNNYqW69Wvqclj5Nk3rfCFFeXgNJ3ElpJgmAprjUl%2FoNCQW%2BaQYNvviDVxl7LE2GFxoodNoxOnjmgIyRlOu%2FO5vizx702Vqz75bXA%2BEqMh1RECICh2ULmGnCSxxnmg%2BTHvJoAQmuP5k3NNyoj%2BuSYA3iOtRISEkasTYpBzT4UCBbSfl%2FV%2FM407ClYQHl8IJ4GMCus8pWj2OEvt%2FlFHKQTJvefTDvounWBjqXAT%2B6N04RmBqtGwPG6h30VOPFlJNtbO0SsnRyOVSkAC%2FvViYSW8zL1iyUKwzcLLUfcP9DJ6Qb8Afa%2BXj9Bgtu%2BJ0QW8WvNZTT%2BK14wZ0BrT1exMkC3WYPhwXOUsb7b3UTPGXrOZr1ibXdkAXodYP1LXJZ4xvGoG5IH2U9rC1cU5WIzGyoBQ4R%2F%2Fv4eYXAgURMTRfRs%2B7eNXM%3D&X-Amz-Signature=dd83a8ed95a55c63d56d7c632ed028b73b51d1f6886026874c294e23df5aba73&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject",
+  "video_width": 1080,
+  "video_height": 1920,
+  "video_alt": "Stratum PraxisのB2B記事紹介。AIを導入しても売上が増えない理由と、集客・営業・決済をつなぐ自律型収益設計の動画。",
+  "status": "QUEUED",
+  "source_verified": "OWNER_PROVIDED_NOTE_URL_AND_GENERATED_VIDEO",
+  "owner": "STRATUM_ONLY",
+  "dedupe_scope": "ONE_VIDEO_POST_20261023",
+  "publish_trigger": "OWNER_AUTHORIZED_20261022"
+}
