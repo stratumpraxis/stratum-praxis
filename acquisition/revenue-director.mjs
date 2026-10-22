@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import crypto from 'node:crypto';
+import { mediaAcquisitionGate } from './lib/media-acquisition-gate.mjs';
 
 const ROOT=process.cwd();
 const STATUS_URL='https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-24h-status';
@@ -91,7 +92,7 @@ async function readJson(file,fallback){try{return JSON.parse(await fs.readFile(f
 async function writeJson(file,v){await fs.mkdir(path.dirname(file),{recursive:true});await fs.writeFile(file,JSON.stringify(v,null,2)+'\n');}
 function hash(text){return 'sha256:'+crypto.createHash('sha256').update(String(text).replace(/\r\n/g,'\n').trim()).digest('hex');}
 function hoursSince(x){return x?(Date.now()-new Date(x).getTime())/3600000:Infinity;}
-function allZero(counts){return ['intro_engaged','intro_cta','diagnostic_start','diagnostic_complete','audit_click'].every(k=>Number(counts?.[k]||0)===0);}
+
 
 async function main(){
   const [resp,doc,state]=await Promise.all([
@@ -106,13 +107,10 @@ async function main(){
   state.last_funnel=counts;
   state.runtime=status?.runtime?.runtime||'UNKNOWN';
 
-  if(status?.runtime?.company_active!==true || status?.runtime?.runtime!=='SUPABASE_DIRECT'){
-    state.last_outcome='HOLD_RUNTIME_NOT_DIRECT_ACTIVE'; await writeJson(STATE,state);
-    console.log('DIRECTOR_HOLD runtime not direct+active'); return;
-  }
-  if(status?.runtime?.first_broken_stage!=='HUMAN_ACQUISITION' || !allZero(counts)){
-    state.last_outcome='HOLD_REVENUE_STAGE_ADVANCED'; await writeJson(STATE,state);
-    console.log('DIRECTOR_HOLD revenue stage advanced beyond zero-human acquisition'); return;
+  const gate = mediaAcquisitionGate(status);
+  if(gate !== 'ACQUISITION_ELIGIBLE'){
+    state.last_outcome=gate; await writeJson(STATE,state);
+    console.log('DIRECTOR_HOLD '+gate); return;
   }
   if(hoursSince(state.last_source_at)<24){
     state.last_outcome='HOLD_24H_CAP'; await writeJson(STATE,state);
@@ -140,8 +138,7 @@ async function main(){
     '## Revenue route',
     '- Official entry: '+ENTRY,
     '- Diagnostic: '+DIAG,
-    '- Self-service: '+KIT,
-    '- Fixed-scope audit: '+AUDIT,
+    '- Media policy: free utility first; approved monetization must be separately verified.',
     '',
     '## Evidence boundary',
     'Publication and reach are not revenue. Human, Qualified Action, Buyer Signal, Checkout and Payment are separate evidence stages.'
@@ -174,9 +171,7 @@ async function main(){
     evidence_refs:[sourceFile,ENTRY,DIAG,KIT,AUDIT],
     existing_product_routes:[
       {role:'PRIMARY',asset_id:'stratum-b2b-intro',url:ENTRY,cta:'Run the free workflow diagnostic'},
-      {role:'DIAGNOSTIC',asset_id:'stratum-workflow-diagnostic',url:DIAG,cta:'Diagnose one recurring workflow'},
-      {role:'SELF_SERVICE',asset_id:'ai-saas-spend-decision-kit',url:KIT,cta:'Use the $39 decision kit'},
-      {role:'HIGH_TOUCH',asset_id:'workflow-audit',url:AUDIT,cta:'Review the fixed-scope $499 audit'}
+      {role:'DIAGNOSTIC',asset_id:'stratum-workflow-diagnostic',url:DIAG,cta:'Diagnose one recurring workflow'}
     ],
     excerpt:topic.claims.slice(0,2).join(' '),
     notes:'Created by Stratum Revenue Director under explicit owner authorization for autonomous B2B distribution on 2026-10-05. Existing assets only. No customer outcome, market-validation or guaranteed-ROI claim.'
