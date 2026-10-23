@@ -307,7 +307,7 @@ jobs:
   revenue-director:
     name: Stratum Revenue Director
     needs: contracts
-    if: (github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && needs.contracts.result == 'success'
+    if: (github.event_name == 'repository_dispatch' || github.event_name == 'schedule' || github.event_name == 'push' || github.event_name == 'workflow_dispatch') && needs.contracts.result == 'success'
     permissions:
       contents: write
       actions: write

@@ -68,6 +68,7 @@ export const ANALYTICS_EVENTS = Object.freeze([
   'hub_legacy_product_label_corrected',
   'hub_surface_handoff',
   'image_commerce_interest',
+  'income_claim_check_completed',
   'input_complete',
   'lab_explicit_intent_continued',
   'lab_search',

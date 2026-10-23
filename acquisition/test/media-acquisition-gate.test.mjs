@@ -1,0 +1,10 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { mediaAcquisitionGate } from '../lib/media-acquisition-gate.mjs';
+const now = Date.parse('2026-10-23T00:00:00Z');
+const fixture = () => ({ project:'stratum', observed_at:new Date(now).toISOString(), runtime:{company_active:true,runtime:'SUPABASE_DIRECT',first_broken_stage:'OUTBOUND_WAIT_REPLY'}, acquisition:{counts_24h:{intro_engaged:0,intro_cta:0,diagnostic_start:0,diagnostic_complete:0,audit_click:0}} });
+test('reply waits do not block independent upstream acquisition',()=>assert.equal(mediaAcquisitionGate(fixture(),now),'ACQUISITION_ELIGIBLE'));
+test('missing/null/string counts are unknown, not zero',()=>{for(const v of [undefined,null,'0',NaN,-1]){const s=fixture();s.acquisition.counts_24h.intro_cta=v;assert.equal(mediaAcquisitionGate(s,now),'HOLD_TELEMETRY_UNKNOWN');}});
+test('observed action requires review rather than more content',()=>{const s=fixture();s.acquisition.counts_24h.audit_click=1;assert.equal(mediaAcquisitionGate(s,now),'HOLD_REVIEW_OBSERVED_SIGNAL');});
+test('stale and future telemetry cannot trigger work',()=>{for(const offset of [-3600001,60001]){const s=fixture();s.observed_at=new Date(now+offset).toISOString();assert.equal(mediaAcquisitionGate(s,now),'HOLD_TELEMETRY_STALE');}});
+test('inactive or wrong-project runtime cannot trigger work',()=>{const s=fixture();s.project='vector';assert.equal(mediaAcquisitionGate(s,now),'HOLD_RUNTIME_NOT_DIRECT_ACTIVE');});
