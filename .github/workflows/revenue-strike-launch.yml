@@ -57,11 +57,17 @@ jobs:
           DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || '0' }}
         run: node distribution/buffer-publisher.mjs
 
-      - name: Enforce external delivery evidence
+      - name: Record submission state without claiming publication
         if: always()
         run: |
           echo "TIKTOK_OUTCOME=${{ steps.tiktok.outcome }}"
           if [ "${{ steps.tiktok.outcome }}" != "success" ]; then
-            echo "::error::Revenue Strike TikTok canary did not reach the verified Stratum Buffer lane. Do not count this as external delivery."
+            echo "::error::Revenue Strike submission failed. No external delivery verified."
             exit 1
           fi
+          case "${{ steps.tiktok.outputs.delivery_status }}" in
+            QUEUED) echo "QUEUED: ${{ steps.tiktok.outputs.post_ids }}; public destination readback still required." ;;
+            DRY_RUN) echo 'DRY_RUN: no post submitted.' ;;
+            WAIT_CONTENT) echo 'WAIT_CONTENT: no approved candidate available.' ;;
+            *) echo '::error::Missing or unexpected submission evidence.'; exit 1 ;;
+          esac

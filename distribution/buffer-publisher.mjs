@@ -1,3 +1,5 @@
+import { readFile, appendFile } from 'node:fs/promises';
+
 const API = 'https://api.buffer.com';
 const key = process.env.BUFFER_API_KEY;
 const dryRun = process.env.DRY_RUN === '1';
@@ -11,6 +13,23 @@ const postMode = process.env.BUFFER_POST_MODE || 'addToQueue';
 const allowedPostModes = new Set(['addToQueue', 'shareNow']);
 
 if (!allowedPostModes.has(postMode)) throw new Error(`Unsupported BUFFER_POST_MODE: ${postMode}`);
+async function report(status, posts = []) {
+  console.log('BUFFER_DELIVERY=' + JSON.stringify({ status, posts, published_verified: false }));
+  if (process.env.GITHUB_OUTPUT) await appendFile(process.env.GITHUB_OUTPUT, `delivery_status=${status}\npost_ids=${posts.map(p => p.id).join(',')}\n`);
+}
+const queue = JSON.parse(await readFile(new URL(`./${queueFile}`, import.meta.url), 'utf8'));
+if (!Array.isArray(queue)) throw new Error('Queue must be an array');
+const active = queue.filter(x => x?.active !== false && Array.isArray(x?.services));
+if (!active.length) {
+  await report('WAIT_CONTENT');
+  process.exit(0);
+}
+const matching = active.filter(x => x.services.some(s => targetServices.includes(s)));
+if (!matching.length) throw new Error(`WAIT_PLATFORM_FIT: queue has no items for ${targetServices.join(',')}`);
+for (const item of matching) {
+  if (item.services.includes('tiktok') && targetServices.includes('tiktok') && !item.videoUrl && !item.imageUrl)
+    throw new Error(`WAIT_PLATFORM_FIT: TikTok item ${item.id} requires approved media`);
+}
 if (!key) {
   const message = 'BUFFER_API_KEY is not configured';
   if (requireEligibleChannels) throw new Error(message);
@@ -44,13 +63,17 @@ async function gql(query) {
 
       const payload = JSON.stringify(j.errors || j);
       const retryable = !isMutation && (r.status === 429 || r.status >= 500);
-      if (!retryable || attempt === maxAttempts) throw new Error(payload);
+      if (!retryable || attempt === maxAttempts) {
+        const error = new Error(payload);
+        error.noRetry = true;
+        throw error;
+      }
 
       console.warn(`BUFFER_READ_RETRY attempt=${attempt}/${maxAttempts} status=${r.status} error=${payload}`);
       await sleep(500 * attempt);
     } catch (error) {
       lastError = error;
-      if (isMutation || attempt === maxAttempts) throw error;
+      if (error.noRetry || isMutation || attempt === maxAttempts) throw error;
       console.warn(`BUFFER_READ_RETRY attempt=${attempt}/${maxAttempts} network_error=${error?.message || error}`);
       await sleep(500 * attempt);
     }
@@ -81,8 +104,6 @@ if (requireChannelNameContains) {
   if (rejected.length) console.log('Rejected non-Stratum channels:', rejected.map(c=>`${c.service}:${c.displayName||c.name}`).join(', '));
   channels = channels.filter(c => `${c.displayName || ''} ${c.name || ''}`.toLowerCase().includes(requireChannelNameContains));
 }
-const queue = JSON.parse(await (await import('node:fs/promises')).readFile(new URL(`./${queueFile}`, import.meta.url), 'utf8'));
-const active = queue.filter(x => x.active !== false && Array.isArray(x.services));
 console.log('Queue file:', queueFile, 'select mode:', selectMode, 'item index:', itemIndexRaw ?? 'auto', 'post mode:', postMode);
 console.log('Eligible channels:', channels.map(c=>`${c.service}:${c.displayName||c.name}`).join(', ') || 'none');
 if (!channels.length) {
@@ -91,8 +112,7 @@ if (!channels.length) {
   console.log(`${message}. Safe no-op.`);
   process.exit(0);
 }
-if (!active.length) { console.log('No active queue items. Safe no-op.'); process.exit(0); }
-
+const submitted = [];
 for (const channel of channels) {
   const service = String(channel.service).toLowerCase();
   const candidates = active.filter(x => x.services.includes(service));
@@ -132,5 +152,9 @@ for (const channel of channels) {
   console.log(JSON.stringify({channel:service,account:channel.displayName||channel.name,item:item.id,postMode,result},null,2));
   if (result?.message) throw new Error(`Buffer rejected ${service} post: ${result.message}`);
   if (!result?.post?.id) throw new Error(`Buffer did not return a post id for ${service}`);
+  submitted.push({ id: result.post.id, service, item: item.id, status: result.post.status });
   await sleep(1500);
 }
+if (dryRun) await report('DRY_RUN');
+else if (!submitted.length) throw new Error('WAIT_PLATFORM_FIT: no queue item matched an eligible channel');
+else await report(postMode === 'addToQueue' ? 'QUEUED' : 'ATTEMPTED', submitted);
