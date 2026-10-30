@@ -5,11 +5,13 @@
   "platform_accepted": true,
   "account_verified": true,
   "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mz3etolysn26",
-  "cid": "bafyreiff5ge263oi2xtmvusinxq7xq5bu7azlzammtrlkhefr4pxw2wete",
+  "cid": "bafyreiftb5hdvgxyjl4f4k3rxiftc7n3qlqihpcggxnpkwxmqnwlb5kfs4",
   "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mz3etolysn26",
   "destination": "https://note.com/stratum/n/ne1836c3321b8?utm_source=bluesky&utm_medium=social&utm_campaign=payment_gap_1030",
   "content_id": "stratum-bluesky-payment-gap-note-20261030",
   "media_type": "text",
   "video_bytes": null,
-  "published_at": "2026-10-30T08:37:02.430Z"
+  "published_at": "2026-10-30T08:37:02.430Z",
+  "link_facets_verified": true,
+  "link_repaired_at": "2026-10-30T08:40:11.541Z"
 }
