@@ -6,5 +6,6 @@
   "text": "AIで制作・投稿・納品まで自動化したのに、購入が増えない。\n次に直すのは集客、提案、購入導線のどこか。\nStratumの実務記事では、12項目の監査と14日間の改善実験を扱います。\n無料部分で対象を確認できます。有料編4,980円。売上を保証するものではありません。",
   "cta": "記事",
   "destination": "https://note.com/stratum/n/ne1836c3321b8?utm_source=bluesky&utm_medium=social&utm_campaign=payment_gap_1030",
-  "repair_link_facets": true
+  "repair_link_facets": true,
+  "repair_verification": "semantic_utf8_range"
 }

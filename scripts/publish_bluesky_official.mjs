@@ -46,7 +46,8 @@ if (pkg.repair_link_facets === true) {
   if (existing.value.text !== expectedText) fail('repair text mismatch');
   const start = Buffer.byteLength(expectedText.slice(0, expectedText.lastIndexOf(pkg.destination)));
   const facets = [{index:{byteStart:start,byteEnd:start+Buffer.byteLength(pkg.destination)},features:[{$type:'app.bsky.richtext.facet#link',uri:pkg.destination}]}];
-  if (JSON.stringify(existing.value.facets) !== JSON.stringify(facets)) {
+  const matches = (value) => value.facets?.some(f => f.index?.byteStart === start && f.index?.byteEnd === start + Buffer.byteLength(pkg.destination) && f.features?.some(x => x.$type === 'app.bsky.richtext.facet#link' && x.uri === pkg.destination));
+  if (!matches(existing.value)) {
     const update = await fetch('https://bsky.social/xrpc/com.atproto.repo.putRecord', {
       method:'POST', headers:{'content-type':'application/json','authorization':`Bearer ${session.accessJwt}`},
       body:JSON.stringify({repo:session.did,collection:'app.bsky.feed.post',rkey,swapRecord:existing.cid,record:{...existing.value,facets}})
@@ -56,7 +57,7 @@ if (pkg.repair_link_facets === true) {
   const checkedResponse = await fetch('https://bsky.social/xrpc/com.atproto.repo.getRecord?' + query);
   if (!checkedResponse.ok) fail('repair verification failed');
   const checked = await checkedResponse.json();
-  if (checked.value.text !== expectedText || JSON.stringify(checked.value.facets) !== JSON.stringify(facets)) fail('repair not confirmed');
+  if (checked.value.text !== expectedText || !matches(checked.value)) fail('repair not confirmed');
   fs.writeFileSync(evidencePath, JSON.stringify({...evidence,cid:checked.cid,link_facets_verified:true,link_repaired_at:new Date().toISOString()},null,2)+'\n');
   console.log(JSON.stringify({public_url:evidence.public_url,link_facets_verified:true,duplicate_created:false}));
   process.exit(0);
