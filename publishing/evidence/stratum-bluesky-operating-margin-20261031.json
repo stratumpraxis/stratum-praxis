@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mz5fag3mpe26",
+  "cid": "bafyreify7weww63qmejeehccp5doqwqgm7woqvn2r2ynodsbxdhdkpzawm",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mz5fag3mpe26",
+  "destination": "https://stratumpraxis.wordpress.com/2026/10/31/ai-agents-busy-operating-margin-workflow-audit/",
+  "content_id": "stratum-bluesky-operating-margin-20261031",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-10-31T03:49:28.993Z"
+}
