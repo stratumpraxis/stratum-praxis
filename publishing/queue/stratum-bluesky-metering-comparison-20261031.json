@@ -3,8 +3,8 @@
   "content_id": "stratum-bluesky-metering-comparison-20261031",
   "platform": "bluesky",
   "account_handle": "stratumpraxis.bsky.social",
-  "text": "Zapier counts tasks. Make counts credits. n8n counts executions. Same workflow, three different bills — compare cost per successful run before you renew.",
+  "text": "Zapier counts tasks. Make counts credits. n8n counts executions. Same workflow, three different bills.",
   "cta": "Read the comparison",
-  "destination": "https://stratumpraxis.com/workflow-automation-comparison.html?utm_source=bluesky&utm_medium=owned&utm_campaign=comparison_20261031",
+  "destination": "https://stratumpraxis.com/workflow-automation-comparison.html",
   "status": "QUEUED"
 }
