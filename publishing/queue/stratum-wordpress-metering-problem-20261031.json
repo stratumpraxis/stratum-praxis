@@ -1,0 +1,13 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-wordpress-metering-problem-20261031",
+  "platform": "wordpress",
+  "site": "stratumpraxis.wordpress.com",
+  "title": "Workflow Automation Pricing Is a Metering Problem, Not a Features Problem",
+  "excerpt": "Zapier counts tasks, Make counts credits, n8n counts executions — so the same workflow produces three different bills. Compare platforms by cost per successful run before you renew or migrate.",
+  "canonical_url": "https://stratumpraxis.com/workflow-automation-pricing-metering.html",
+  "source_id": "2026-10-31-metering-problem",
+  "tags": ["AI", "business", "Stratum Praxis"],
+  "status": "APPROVED",
+  "publish_trigger": "2026-10-31T09:31:00.000Z"
+}
