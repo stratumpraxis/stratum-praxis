@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mzavseg3cz2m",
+  "cid": "bafyreicurjwn23eswrr3js2b3vh4im52pheuo4k2vn5uobx5bh4gsej5xe",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mzavseg3cz2m",
+  "destination": "https://stratumpraxis.com/zapier-renewal-decision.html",
+  "content_id": "stratum-bluesky-zapier-renewal-20261101",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-11-01T13:23:50.467Z"
+}
