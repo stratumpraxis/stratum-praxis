@@ -1,12 +1,154 @@
 {
   "status": "explore",
-  "updated_at": "2026-08-30T03:25:00Z",
-  "reason": "No revenue_strike PostHog events observed yet; do not invent a winner.",
+  "updated_at": "2026-11-02T07:17:19.166Z",
+  "reason": "No variant has enough measured evidence yet (unknowns are not counted); staying in explore. No winner is fabricated.",
+  "window_days": 30,
   "weights": {
     "pageview": 1,
     "primary_cta_click": 4,
     "checkout_click": 10,
     "paid_purchase": 50
   },
-  "variants": {}
+  "variants": {
+    "revstrike-aca-01": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-aca-02": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-aca-03": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-saas-01": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-saas-02": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-saas-03": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [
+        "paid_purchases"
+      ],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks"
+      ]
+    },
+    "revstrike-cross-01": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-cross-02": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-cross-03": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    },
+    "revstrike-cross-tiktok-01": {
+      "pageviews": 0,
+      "primary_cta_clicks": 0,
+      "checkout_clicks": 0,
+      "paid_purchases": 0,
+      "measured": [],
+      "unknown": [
+        "pageviews",
+        "primary_cta_clicks",
+        "checkout_clicks",
+        "paid_purchases"
+      ]
+    }
+  },
+  "sources": {
+    "paid_purchases": "Stripe Checkout Sessions (payment_status=paid, trailing 30d), attributed by metadata.offer; paid total in window: 0",
+    "pageviews": "UNKNOWN in v1 (no repo-side read surface; PostHog excluded by decision)",
+    "primary_cta_clicks": "UNKNOWN in v1 (no repo-side read surface; PostHog excluded by decision)",
+    "checkout_clicks": "UNKNOWN in v1 (first-party sensor stores events; no aggregate read surface exposed to the repo yet)",
+    "cross_check_status_api": "stratum-24h-status observed_at=2026-11-02T07:17:19.144Z verified_payment_events_total=0",
+    "writer": "distribution/revenue-performance-writer.mjs v1",
+    "mode": "live"
+  }
 }
