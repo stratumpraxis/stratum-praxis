@@ -1,0 +1,1 @@
+{"mode":"dry","note":"Revenue performance writer mode. 'dry' computes and logs only; 'live' writes distribution/revenue-performance.json and the workflow persists it. Flip to 'live' only after a verified dry run. A repo variable REVENUE_PERF_MODE, when set, takes precedence over this file."}

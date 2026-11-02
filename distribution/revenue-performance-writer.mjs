@@ -31,7 +31,20 @@ const QUEUE_FILE = new URL('./revenue-strike-queue.json', import.meta.url);
 const PERFORMANCE_FILE = new URL('./revenue-performance.json', import.meta.url);
 const STATUS_URL = 'https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/stratum-24h-status';
 const WINDOW_DAYS = 30;
-const MODE = (process.env.REVENUE_PERF_MODE || 'dry').toLowerCase();
+// Mode resolution: REVENUE_PERF_MODE env (repo variable, owner-controlled)
+// > distribution/revenue-performance-writer.config.json ("mode") > "dry".
+// Anything other than the exact string "live" resolves to dry, so the safe
+// mode is the default in every failure path.
+async function resolveMode() {
+  const envMode = (process.env.REVENUE_PERF_MODE || '').trim().toLowerCase();
+  if (envMode === 'live' || envMode === 'dry') return envMode;
+  try {
+    const cfg = JSON.parse(await readFile(new URL('./revenue-performance-writer.config.json', import.meta.url), 'utf8'));
+    if ((cfg.mode || '').trim().toLowerCase() === 'live') return 'live';
+  } catch { /* no config file: stay dry */ }
+  return 'dry';
+}
+const MODE = await resolveMode();
 
 // Destination product path -> Stripe Checkout Session metadata.offer values
 // observed in the live account. Attribution is only counted when the mapping
