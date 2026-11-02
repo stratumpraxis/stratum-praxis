@@ -19,7 +19,7 @@ on:
         default: '0'
 
 permissions:
-  contents: read
+  contents: write
 
 concurrency:
   group: revenue-strike-launch
@@ -31,6 +31,36 @@ jobs:
     timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
+
+      - name: Aggregate measured evidence into revenue performance
+        id: perfwriter
+        continue-on-error: true
+        env:
+          STRIPE_SECRET_KEY: ${{ secrets.STRIPE_SECRET_KEY }}
+          REVENUE_PERF_MODE: ${{ vars.REVENUE_PERF_MODE }}
+        run: node distribution/revenue-performance-writer.mjs
+
+      - name: Persist revenue performance evidence
+        if: always()
+        continue-on-error: true
+        run: |
+          git config user.name 'stratum-publishing-bot'
+          git config user.email 'actions@users.noreply.github.com'
+          git add distribution/revenue-performance.json
+          if git diff --cached --quiet; then
+            echo "revenue-performance.json unchanged; nothing to persist."
+            exit 0
+          fi
+          git commit -m 'evidence: persist revenue performance [skip social]'
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin main; then
+              echo "Revenue performance evidence persisted."
+              exit 0
+            fi
+            echo "Push attempt $attempt failed; retrying after rebase."
+          done
+          echo "::warning::Could not persist revenue-performance.json after 3 attempts. Measurement evidence for this run remains in the workflow log only."
 
       - name: Select revenue canary with evidence-aware fallback
         run: node distribution/revenue-winner-selector.mjs
