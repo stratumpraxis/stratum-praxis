@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mzdmvehrep2n",
+  "cid": "bafyreicyutmnerwxxcezq4bjmv56ehhfuu2mde3upenluaniidvnzxmore",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mzdmvehrep2n",
+  "destination": "https://stratumpraxis.com/ai-saas-spend-waste-audit.html",
+  "content_id": "stratum-bluesky-spend-audit-nextsteps-20261103",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-11-02T15:22:26.739Z"
+}
