@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-metering-dev-20261103",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "Same 5-step workflow, 1,000 runs a month: 5,000 Zapier tasks, 5,000 Make credits, 1,000 n8n executions. The meter is the price.",
+  "hook": "The meter is the price.",
+  "cta": "Read the full breakdown",
+  "destination": "https://dev.to/stratumpraxis/make-vs-zapier-vs-n8n-the-price-is-not-the-price-the-meter-is-different-1je3?utm_source=bluesky&utm_medium=social&utm_campaign=metering&utm_content=bsky_dev",
+  "status": "QUEUED"
+}
