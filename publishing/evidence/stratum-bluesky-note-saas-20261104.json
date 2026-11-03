@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mzgg6re5c72f",
+  "cid": "bafyreih7o2wwr53lmbtgych2txdbuf7ncv3z2aiz24cdekspmslmx7sr7y",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mzgg6re5c72f",
+  "destination": "https://note.com/stratum/n/nb756ce299656?utm_source=bluesky&utm_medium=social&utm_campaign=note_saas_inventory",
+  "content_id": "stratum-bluesky-note-saas-20261104",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-11-03T18:00:25.248Z"
+}
