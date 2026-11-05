@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mzkf5klxw32q",
+  "cid": "bafyreiclrx3sdqm2qvxz4kn7jhht4qy6dxojbvfrervl5vhgofsurkhcpm",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mzkf5klxw32q",
+  "destination": "https://stratumpraxis.com/workflow-automation-comparison.html",
+  "content_id": "stratum-bluesky-comparison-renewal-20261103",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-11-05T07:52:29.821Z"
+}
