@@ -1,6 +1,6 @@
 {
   "status": "explore",
-  "updated_at": "2026-11-04T07:58:38.893Z",
+  "updated_at": "2026-11-05T08:28:40.337Z",
   "reason": "No variant has enough measured evidence yet (unknowns are not counted); staying in explore. No winner is fabricated.",
   "window_days": 30,
   "weights": {
@@ -147,7 +147,7 @@
     "pageviews": "UNKNOWN in v1 (no repo-side read surface; PostHog excluded by decision)",
     "primary_cta_clicks": "UNKNOWN in v1 (no repo-side read surface; PostHog excluded by decision)",
     "checkout_clicks": "UNKNOWN in v1 (first-party sensor stores events; no aggregate read surface exposed to the repo yet)",
-    "cross_check_status_api": "stratum-24h-status observed_at=2026-11-04T07:58:38.871Z verified_payment_events_total=0",
+    "cross_check_status_api": "stratum-24h-status observed_at=2026-11-05T08:28:40.324Z verified_payment_events_total=0",
     "writer": "distribution/revenue-performance-writer.mjs v1",
     "mode": "live"
   }
