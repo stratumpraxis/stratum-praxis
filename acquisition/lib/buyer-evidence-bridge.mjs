@@ -5,10 +5,10 @@
 // Direct personal identity is never used as a buyer key.
 
 import { appendBuyerReaction, makeBuyerReaction } from './buyer-reaction.mjs';
+import { parseCheckoutReference } from './checkout-reference.mjs';
 import { purchaseFromCheckoutSession } from './stripe-route.mjs';
 
 const OPAQUE_KEY = /^[a-zA-Z0-9:_-]{3,200}$/;
-const ROUTE_ID = /^[a-zA-Z0-9_-]{1,200}$/;
 
 function clean(value) {
   if (value === undefined || value === null) return null;
@@ -19,11 +19,6 @@ function clean(value) {
 function safeOpaqueKey(value) {
   const key = clean(value);
   return key && OPAQUE_KEY.test(key) ? key : null;
-}
-
-function safeRouteId(value) {
-  const route = clean(value);
-  return route && ROUTE_ID.test(route) ? route : null;
 }
 
 function stripeCustomerId(session) {
@@ -41,12 +36,16 @@ function sessionOccurredAt(session) {
 function resolveBuyerKey(session) {
   const declared = safeOpaqueKey(session?.metadata?.buyer_key);
   if (declared) return declared;
+  const correlated = parseCheckoutReference(session?.client_reference_id).buyer_key;
+  if (correlated) return correlated;
   const customerId = stripeCustomerId(session);
   return customerId ? `stripe-customer:${customerId}` : null;
 }
 
 function resolveRouteId(session) {
-  return safeRouteId(session?.metadata?.attribution_route_id || session?.client_reference_id);
+  const declared = parseCheckoutReference(session?.metadata?.attribution_route_id).route_id;
+  if (declared) return declared;
+  return parseCheckoutReference(session?.client_reference_id).route_id;
 }
 
 /**
