@@ -1,0 +1,140 @@
+name: MARKET execute one approved action
+
+on:
+  workflow_dispatch:
+    inputs:
+      signal_id:
+        description: 'Signal whose selected action should be executed'
+        required: true
+        type: string
+      decision:
+        description: 'Human decision. Use execute for a low-risk action that needs no approval.'
+        required: true
+        type: choice
+        options: [approve, deny, execute]
+        default: approve
+      note:
+        description: 'Optional approval / denial note'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+  id-token: write
+
+concurrency:
+  group: market-execution-${{ inputs.signal_id }}
+  cancel-in-progress: false
+
+jobs:
+  execute-one:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      MARKET_STATE_URL: https://fzqgpaxqolrjjhmxdcrf.supabase.co/functions/v1/market-state-github
+      MARKET_EXECUTION_ENDPOINT: ${{ secrets.MARKET_EXECUTION_ENDPOINT }}
+      MARKET_EXECUTION_SECRET: ${{ secrets.MARKET_EXECUTION_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: MARKET execution contract tests
+        run: node --test market/test/execution.test.mjs
+
+      - name: Get short-lived MARKET state credential
+        shell: bash
+        run: |
+          set -euo pipefail
+          response=$(curl -fsSL \
+            -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+            "${ACTIONS_ID_TOKEN_REQUEST_URL}&audience=stratum-market-state")
+          token=$(printf '%s' "$response" | node -e '
+            let s="";
+            process.stdin.on("data",d=>s+=d).on("end",()=>{
+              const v=JSON.parse(s).value;
+              if(!v) process.exit(1);
+              process.stdout.write(v);
+            });
+          ')
+          echo "::add-mask::$token"
+          echo "MARKET_OIDC_TOKEN=$token" >> "$GITHUB_ENV"
+
+      - name: Hydrate selected signal
+        shell: bash
+        env:
+          SIGNAL_ID: ${{ inputs.signal_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p market/state
+          curl -fsS -X POST "$MARKET_STATE_URL" \
+            -H "Authorization: Bearer $MARKET_OIDC_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data '{"op":"list"}' > /tmp/market-state.json
+          SIGNAL_ID="$SIGNAL_ID" node - <<'NODE'
+          const fs = require('fs');
+          const remote = JSON.parse(fs.readFileSync('/tmp/market-state.json','utf8'));
+          if (!Array.isArray(remote.signals)) throw new Error('durable MARKET state did not return signals[]');
+          const signal = remote.signals.find((item) => item.signal_id === process.env.SIGNAL_ID);
+          if (!signal) throw new Error(`signal not found: ${process.env.SIGNAL_ID}`);
+          fs.writeFileSync('market/state/signals.local.json', JSON.stringify({
+            store_kind: 'LOCAL_FILE',
+            warning: 'Ephemeral execution copy hydrated from durable MARKET state.',
+            updated_at: new Date().toISOString(),
+            signals: [signal]
+          }, null, 2) + '\n');
+          console.log(`hydrated ${process.env.SIGNAL_ID}`);
+          NODE
+
+      - name: Execute human decision
+        shell: bash
+        env:
+          SIGNAL_ID: ${{ inputs.signal_id }}
+          DECISION: ${{ inputs.decision }}
+          NOTE: ${{ inputs.note }}
+          ACTOR: ${{ github.actor }}
+        run: |
+          set -euo pipefail
+          args=(--local --signal-id "$SIGNAL_ID")
+          if [ "$DECISION" = 'approve' ]; then
+            args+=(--approve yes --actor "$ACTOR")
+          elif [ "$DECISION" = 'deny' ]; then
+            args+=(--approve no --actor "$ACTOR")
+          fi
+          if [ -n "$NOTE" ]; then args+=(--note "$NOTE"); fi
+          node market/cli/execute-action.mjs "${args[@]}" | tee /tmp/market-execution.json
+
+      - name: Sync selected signal back to durable MARKET state
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -f market/state/signals.local.json || exit 0
+          node - <<'NODE' > /tmp/market-sync.json
+          const fs = require('fs');
+          const doc = JSON.parse(fs.readFileSync('market/state/signals.local.json','utf8'));
+          const signals = (doc.signals ?? []).map((signal) => {
+            const copy = {...signal};
+            delete copy.store_kind;
+            return copy;
+          });
+          process.stdout.write(JSON.stringify({op:'put_many', signals}));
+          NODE
+          curl -fsS -X POST "$MARKET_STATE_URL" \
+            -H "Authorization: Bearer $MARKET_OIDC_TOKEN" \
+            -H 'Content-Type: application/json' \
+            --data-binary @/tmp/market-sync.json > /tmp/market-sync-result.json
+          node -e "const r=require('/tmp/market-sync-result.json'); if(!r.ok) process.exit(1); console.log('durable MARKET sync count='+r.count)"
+
+      - name: Upload execution trace
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: market-execution-${{ github.run_id }}
+          path: |
+            /tmp/market-execution.json
+            /tmp/market-sync-result.json
+          if-no-files-found: ignore
+          retention-days: 30
