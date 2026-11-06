@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owned Revenue Loop Control | Stratum Praxis</title>
+<style>
+:root{--bg:#0b0f16;--panel:#121926;--text:#f4f4f5;--muted:#a1a1aa;--line:#303744;--accent:#e5e7eb;--good:#b7f7c0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}main{max-width:1180px;margin:auto;padding:42px 20px 80px}h1{font-size:clamp(32px,5vw,56px);line-height:1.05;margin:8px 0 14px}.eyebrow{color:var(--muted);letter-spacing:.12em;text-transform:uppercase;font-size:12px}.lead{font-size:18px;color:var(--accent);max-width:850px}.summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin:28px 0}.stat,.loop{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}.stat b{font-size:28px;display:block}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}.loop h2{font-size:20px;margin:0 0 8px}.problem{color:var(--muted);min-height:72px}.route{margin:16px 0;padding:12px;border-left:2px solid var(--accent);background:#0e141f}.route div{margin:7px 0}.label{display:inline-block;min-width:96px;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.08em}.pill{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 8px;margin:2px 4px 2px 0;font-size:12px}.ok{color:var(--good)}code{color:var(--accent);word-break:break-word}footer{margin-top:36px;color:var(--muted);font-size:13px}.error{background:#2a1116;border:1px solid #66313c;padding:16px;border-radius:12px}
+</style>
+</head>
+<body>
+<main>
+<p class="eyebrow">Stratum Praxis · Internal operating view</p>
+<h1>Owned Revenue Loop Control</h1>
+<p class="lead">A read-only view of the internal production → value → offer → checkout boundary → return → measurement loops. The goal is to make owned assets consume and strengthen other owned assets before relying on external platforms.</p>
+<div id="app">Loading ledger…</div>
+<footer>This page does not publish, charge, message, scrape, retry, or change external accounts. It only renders the repository ledger.</footer>
+</main>
+<script>
+(async function(){
+  const app=document.getElementById('app');
+  try{
+    const response=await fetch('./ledger.json',{cache:'no-store'});
+    if(!response.ok) throw new Error('ledger.json returned '+response.status);
+    const data=await response.json();
+    const loops=data.loops||[];
+    const live=(data.owned_surfaces||[]).filter(x=>x.status==='live').length;
+    const active=loops.filter(x=>x.status==='active').length;
+    const ownedSteps=loops.reduce((n,x)=>n+['capture','free_value','offer_page','return_route'].filter(k=>String(x[k]||'').startsWith('/')).length,0);
+    const totalSteps=Math.max(1,loops.length*4);
+    const ratio=Math.round((ownedSteps/totalSteps)*100);
+
+    const summaries=`<div class="summary">
+      <div class="stat"><span>Active loops</span><b>${active}</b><small>existing revenue routes</small></div>
+      <div class="stat"><span>Owned surfaces</span><b>${live}</b><small>live reusable assets</small></div>
+      <div class="stat"><span>Owned route ratio</span><b>${ratio}%</b><small>before commerce boundary</small></div>
+      <div class="stat"><span>Ledger version</span><b style="font-size:18px">${escapeHtml(data.version||'unknown')}</b><small>durable checkpoint</small></div>
+    </div>`;
+
+    const cards=loops.map(loop=>{
+      const supporting=(loop.supporting_metrics||[]).map(x=>`<span class="pill">${escapeHtml(x)}</span>`).join('');
+      return `<article class="loop">
+        <p class="eyebrow">${escapeHtml(loop.id)}</p>
+        <h2>${escapeHtml(loop.problem)}</h2>
+        <p class="problem">Evidence: <span class="ok">${escapeHtml(loop.current_evidence_state)}</span> · Status: ${escapeHtml(loop.status)}</p>
+        <div class="route">
+          ${row('capture',loop.capture)}
+          ${row('free value',loop.free_value)}
+          ${row('offer page',loop.offer_page)}
+          ${loop.escalation_offer_page?row('escalation',loop.escalation_offer_page):''}
+          ${row('return',loop.return_route)}
+        </div>
+        <div><span class="label">Primary</span><span class="pill">${escapeHtml(loop.primary_metric)}</span></div>
+        <div><span class="label">Support</span>${supporting}</div>
+      </article>`;
+    }).join('');
+
+    app.innerHTML=summaries+`<div class="grid">${cards}</div>`;
+  }catch(error){
+    app.innerHTML=`<div class="error"><strong>Ledger unavailable.</strong><br>${escapeHtml(error.message)}</div>`;
+  }
+
+  function row(label,value){return `<div><span class="label">${escapeHtml(label)}</span><code>${escapeHtml(value||'—')}</code></div>`}
+  function escapeHtml(value){return String(value??'').replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}
+})();
+</script>
+</body>
+</html>
