@@ -1,0 +1,11 @@
+{
+  "brand": "Stratum",
+  "content_id": "stratum-bluesky-membership-20261106",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "text": "メンバーシップを開設しました。AI支出の月次点検と、料金変更への判断メモを月2本の限定記事でお届けします。",
+  "hook": "月2本のメンバー限定記事。",
+  "cta": "Stratum Praxis 実務メンバーシップ（月額¥1,500）",
+  "destination": "https://note.com/stratum/membership",
+  "status": "QUEUED"
+}
