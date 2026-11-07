@@ -1,0 +1,15 @@
+{
+  "brand": "Stratum",
+  "platform": "bluesky",
+  "account_handle": "stratumpraxis.bsky.social",
+  "platform_accepted": true,
+  "account_verified": true,
+  "post_id": "at://did:plc:helrocueswayw2lqbo5zqm4p/app.bsky.feed.post/3mzqixazfp52y",
+  "cid": "bafyreicydgsa7gvyrr5v7c4k3ersyi6ryowocqskf6tf53walyxlxwod4q",
+  "public_url": "https://bsky.app/profile/stratumpraxis.bsky.social/post/3mzqixazfp52y",
+  "destination": "https://note.com/stratum/n/n18a7bf423e3c",
+  "content_id": "stratum-bluesky-catalog-20261108",
+  "media_type": "text",
+  "video_bytes": null,
+  "published_at": "2026-11-07T18:16:31.867Z"
+}
