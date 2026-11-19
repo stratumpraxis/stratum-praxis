@@ -28,6 +28,25 @@ test('paid Checkout Session becomes evidence without inventing funnel counts', (
   });
 });
 
+test('compound buyer-route reference restores the stable route for winner evidence', () => {
+  const correlated = {
+    ...paid,
+    client_reference_id: 'spb_123e4567-e89b-12d3-a456-426614174000__spr_workflow_audit'
+  };
+  const purchase = purchaseFromCheckoutSession(correlated);
+  assert.equal(purchase.route_id, 'workflow_audit');
+  assert.equal(purchase.purchase_evidence, 'stripe:pi_live_evidence');
+});
+
+test('explicit Stripe route metadata overrides a client reference route', () => {
+  const purchase = purchaseFromCheckoutSession({
+    ...paid,
+    client_reference_id: 'spb_123e4567-e89b-12d3-a456-426614174000__spr_old_route',
+    metadata: { attribution_route_id: 'canonical_route', delivery_state: 'ACTIVATED' }
+  });
+  assert.equal(purchase.route_id, 'canonical_route');
+});
+
 test('unpaid or unattributed sessions are rejected', () => {
   assert.equal(purchaseFromCheckoutSession({ ...paid, payment_status: 'unpaid' }), null);
   assert.equal(purchaseFromCheckoutSession({ ...paid, client_reference_id: null }), null);
