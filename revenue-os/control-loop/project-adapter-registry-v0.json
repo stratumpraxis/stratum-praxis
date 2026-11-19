@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "name": "autonomous-control-loop-project-adapter-registry",
+  "role_boundary": {
+    "allocation_decision_owner": "Common Revenue Core / upstream",
+    "router_owner": "Autonomous Control Loop Integrator",
+    "router_must_not": [
+      "compute allocation priority",
+      "change project-specific business logic",
+      "promote state without direct evidence",
+      "treat workflow success as revenue evidence"
+    ],
+    "trigger_mode": "event_state_evidence"
+  },
+  "projects": {
+    "stratum": {
+      "repository": "stratumpraxis/stratum-praxis",
+      "default_ref": "main",
+      "routes": {
+        "collect_evidence": {
+          "workflow": "project-heartbeat.yml",
+          "permission_levels": ["AUTO"],
+          "runtime_owner": "Stratum",
+          "evidence_probe": {
+            "type": "github_issue",
+            "repository": "stratumpraxis/stratum-praxis",
+            "issue_number": 175,
+            "evidence_class": "CURRENT_STATE_READBACK"
+          }
+        }
+      }
+    },
+    "vector": {
+      "repository": "stratumpraxis/vector-praxis-japan",
+      "default_ref": "main",
+      "routes": {
+        "collect_evidence": {
+          "workflow": "vector-public-route-proof.yml",
+          "permission_levels": ["AUTO"],
+          "runtime_owner": "Vector",
+          "evidence_probe": {
+            "type": "repository_file",
+            "repository": "stratumpraxis/vector-praxis-japan",
+            "path": "distribution/vector-public-route-proof.json",
+            "evidence_class": "PUBLIC_ROUTE_DIRECT_READBACK"
+          }
+        }
+      }
+    }
+  }
+}

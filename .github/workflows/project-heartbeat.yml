@@ -1,9 +1,20 @@
 name: Stratum Project Heartbeat
+run-name: >-
+  Stratum Project Heartbeat${{ inputs.control_loop_decision_id != '' && format(' | CL:{0}', inputs.control_loop_decision_id) || '' }}
 
 on:
   schedule:
     - cron: '13 * * * *'
   workflow_dispatch:
+    inputs:
+      control_loop_decision_id:
+        description: 'Optional upstream Control Loop decision correlation ID'
+        required: false
+        type: string
+      control_loop_action_id:
+        description: 'Optional upstream Control Loop action correlation ID'
+        required: false
+        type: string
   push:
     branches: [main]
     paths:
@@ -11,7 +22,7 @@ on:
       - '.github/workflows/project-heartbeat.yml'
 
 permissions:
-  contents: read
+  contents: write
   actions: write
   issues: write
 
@@ -41,3 +52,55 @@ jobs:
           path: ops/project-heartbeat/runtime-state.json
           if-no-files-found: warn
           retention-days: 14
+
+      - name: Return correlated Direct Evidence to Control Loop
+        if: ${{ success() && inputs.control_loop_decision_id != '' && inputs.control_loop_action_id != '' }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTROL_LOOP_DECISION_ID: ${{ inputs.control_loop_decision_id }}
+          CONTROL_LOOP_ACTION_ID: ${{ inputs.control_loop_action_id }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { readFile } from 'node:fs/promises';
+
+          const state = JSON.parse(await readFile('ops/project-heartbeat/runtime-state.json', 'utf8'));
+          const repo = process.env.GITHUB_REPOSITORY;
+          const payload = {
+            event_type: 'project-runtime-evidence-return',
+            client_payload: {
+              decision_id: process.env.CONTROL_LOOP_DECISION_ID,
+              action_id: process.env.CONTROL_LOOP_ACTION_ID,
+              business_unit: 'stratum',
+              project_runtime: 'project-heartbeat.yml',
+              runtime_status: 'success',
+              observed_at: state.generated_at || new Date().toISOString(),
+              direct_evidence: true,
+              evidence_class: 'CURRENT_STATE_READBACK',
+              evidence_ref: [
+                `https://github.com/${repo}/issues/175`,
+                `https://github.com/${repo}/actions/runs/${process.env.GITHUB_RUN_ID}`
+              ],
+              reality_change: 'CURRENT_STATE_OBSERVED',
+              state_before: null,
+              state_after: state.overall_state || 'UNKNOWN',
+              notes: 'Workflow success is not treated as revenue evidence; runtime-state and current readbacks are returned as Direct Evidence.'
+            }
+          };
+
+          const response = await fetch(`https://api.github.com/repos/${repo}/dispatches`, {
+            method: 'POST',
+            headers: {
+              accept: 'application/vnd.github+json',
+              authorization: `Bearer ${process.env.GH_TOKEN}`,
+              'content-type': 'application/json',
+              'x-github-api-version': '2022-11-28'
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (response.status !== 204) {
+            throw new Error(`Control Loop evidence return failed: HTTP ${response.status} ${await response.text()}`);
+          }
+          console.log('CONTROL_LOOP_EVIDENCE_RETURNED');
+          NODE

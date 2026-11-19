@@ -1,0 +1,160 @@
+name: Autonomous Control Loop v0
+
+on:
+  pull_request:
+    paths:
+      - 'revenue-os/control-loop/**'
+      - '.github/workflows/autonomous-control-loop-v0.yml'
+  workflow_dispatch:
+    inputs:
+      decision_json:
+        description: 'Already-decided upstream decision envelope JSON. Leave empty to run contract tests only.'
+        required: false
+        type: string
+      dry_run:
+        description: 'Resolve routing without dispatching a Project Runtime.'
+        required: false
+        type: boolean
+        default: true
+  repository_dispatch:
+    types:
+      - common-revenue-decision-ready
+      - project-runtime-evidence-return
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: autonomous-control-loop-v0-${{ github.event_name }}-${{ github.event.client_payload.decision.decision_id || github.event.client_payload.decision_id || github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax
+        run: |
+          node --check revenue-os/control-loop/project-adapter-router-v0.mjs
+          node --check revenue-os/control-loop/dispatch-cli-v0.mjs
+          node --check revenue-os/control-loop/evidence-return-cli-v0.mjs
+      - name: Contract tests
+        run: node --test revenue-os/control-loop/project-adapter-router-v0.test.mjs
+
+  route-decision:
+    if: >
+      github.event_name == 'repository_dispatch' &&
+      github.event.action == 'common-revenue-decision-ready' ||
+      github.event_name == 'workflow_dispatch' &&
+      inputs.decision_json != ''
+    needs: contract-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Materialize decision event
+        if: github.event_name == 'repository_dispatch'
+        env:
+          DECISION_JSON: ${{ toJson(github.event.client_payload.decision) }}
+        run: printf '%s\n' "$DECISION_JSON" > /tmp/control-loop-decision.json
+
+      - name: Materialize manual decision
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          DECISION_JSON: ${{ inputs.decision_json }}
+        run: printf '%s\n' "$DECISION_JSON" > /tmp/control-loop-decision.json
+
+      - name: Route decision to Project Adapter
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CONTROL_LOOP_GITHUB_TOKEN: ${{ secrets.CONTROL_LOOP_GITHUB_TOKEN }}
+          CONTROL_LOOP_DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
+          CONTROL_LOOP_DISPATCH_RECEIPT: revenue-os/control-loop/dispatch-receipt.runtime.json
+        run: node revenue-os/control-loop/dispatch-cli-v0.mjs /tmp/control-loop-decision.json
+
+      - name: Upload routing proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: control-loop-dispatch-${{ github.run_id }}
+          path: revenue-os/control-loop/dispatch-receipt.runtime.json
+          if-no-files-found: warn
+          retention-days: 14
+
+  normalize-evidence-return:
+    if: >
+      github.event_name == 'repository_dispatch' &&
+      github.event.action == 'project-runtime-evidence-return'
+    needs: contract-tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Materialize Project evidence event
+        env:
+          EVIDENCE_JSON: ${{ toJson(github.event.client_payload) }}
+        run: printf '%s\n' "$EVIDENCE_JSON" > /tmp/control-loop-evidence.json
+
+      - name: Normalize Direct Evidence and build next-decision trigger
+        env:
+          CONTROL_LOOP_EVIDENCE_OUT: revenue-os/control-loop/evidence-return.runtime.json
+          CONTROL_LOOP_NEXT_TRIGGER_OUT: revenue-os/control-loop/next-decision-trigger.runtime.json
+        run: node revenue-os/control-loop/evidence-return-cli-v0.mjs /tmp/control-loop-evidence.json
+
+      - name: Return New State to upstream decision layer
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, urllib.request
+          from pathlib import Path
+
+          payload = json.loads(Path('revenue-os/control-loop/next-decision-trigger.runtime.json').read_text())
+          if payload.get('status') != 'READY':
+              raise SystemExit('next-decision trigger is not READY')
+
+          repo = os.environ['GITHUB_REPOSITORY']
+          req = urllib.request.Request(
+              f'https://api.github.com/repos/{repo}/dispatches',
+              data=json.dumps({
+                  'event_type': payload['event_type'],
+                  'client_payload': payload['client_payload'],
+              }).encode(),
+              method='POST',
+              headers={
+                  'Authorization': f"Bearer {os.environ['GH_TOKEN']}",
+                  'Accept': 'application/vnd.github+json',
+                  'Content-Type': 'application/json',
+                  'X-GitHub-Api-Version': '2022-11-28',
+              },
+          )
+          with urllib.request.urlopen(req) as response:
+              if response.status != 204:
+                  raise SystemExit(f'unexpected repository_dispatch status {response.status}')
+          print('NEW_STATE_RETURNED_TO_UPSTREAM_EVENT')
+          PY
+
+      - name: Upload Unified Evidence proof
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: control-loop-evidence-return-${{ github.run_id }}
+          path: |
+            revenue-os/control-loop/evidence-return.runtime.json
+            revenue-os/control-loop/next-decision-trigger.runtime.json
+          if-no-files-found: warn
+          retention-days: 14
