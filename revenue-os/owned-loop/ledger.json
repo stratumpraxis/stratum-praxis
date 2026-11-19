@@ -1,0 +1,74 @@
+{
+  "version": "2026-09-03",
+  "owner": "Stratum Praxis",
+  "purpose": "Route internally produced demand and value through owned assets before external commerce, then return measurement and learning to owned infrastructure.",
+  "allowed_evidence_states": ["SIGNAL", "TRAFFIC", "INTENT", "PURCHASE", "DELIVERED", "ATTRIBUTED", "REPEATABLE"],
+  "guardrails": {
+    "direct_third_party_checkout_in_ledger": false,
+    "requires_owned_offer_page_before_checkout": true,
+    "requires_return_route": true,
+    "requires_measurement": true,
+    "new_offer_creation_default": "reject_if_existing_asset_can_absorb_demand"
+  },
+  "owned_surfaces": [
+    {"id":"home","path":"/","role":"capture","status":"live"},
+    {"id":"live_lab","path":"/live-lab.html","role":"routing","status":"live"},
+    {"id":"ai_consultant","path":"/ai-consultant.html","role":"diagnostic","status":"live"},
+    {"id":"systems_library","path":"/systems/","role":"durable_content","status":"live"},
+    {"id":"field_guides","path":"/guides/","role":"durable_content","status":"live"},
+    {"id":"return_gate","path":"/return-gate/en/","role":"return","status":"live"},
+    {"id":"passage_hub","path":"/passage-hub/","role":"routing","status":"live"}
+  ],
+  "loops": [
+    {
+      "id": "ai_automation_value",
+      "problem": "A small business does not know what AI workflow is worth automating or whether it will pay back.",
+      "capture": "/ai-consultant.html",
+      "free_value": "/live-lab.html",
+      "offer_page": "/workflow-audit.html",
+      "return_route": "/return-gate/en/",
+      "primary_metric": "checkout_click",
+      "supporting_metrics": ["funnel_view", "primary_cta_click", "network_route_click"],
+      "current_evidence_state": "SIGNAL",
+      "status": "active"
+    },
+    {
+      "id": "ai_saas_spend_control",
+      "problem": "A team has unclear AI/SaaS ownership, overlap, renewal risk, oversized plans or uncertain ROI.",
+      "capture": "/ai-saas-spend-audit-checklist.html",
+      "free_value": "/ai-saas-waste-calculator.html",
+      "offer_page": "/ai-saas-spend-decision-kit.html",
+      "escalation_offer_page": "/ai-saas-spend-waste-audit.html",
+      "return_route": "/return-gate/en/",
+      "primary_metric": "checkout_click",
+      "supporting_metrics": ["funnel_view", "primary_cta_click", "network_route_click"],
+      "current_evidence_state": "SIGNAL",
+      "status": "active"
+    },
+    {
+      "id": "agent_control",
+      "problem": "An AI agent has unclear authority, missing human gates, retry risk or weak evidence controls.",
+      "capture": "/agent-control-auditor.html",
+      "free_value": "/agent-control-auditor.html",
+      "offer_page": "/cross-agent-operating-kit.html",
+      "return_route": "/return-gate/en/",
+      "primary_metric": "checkout_click",
+      "supporting_metrics": ["funnel_view", "primary_cta_click", "network_route_click"],
+      "current_evidence_state": "SIGNAL",
+      "status": "active"
+    },
+    {
+      "id": "research_to_revenue",
+      "problem": "Research and trend signals accumulate without a prioritized revenue action.",
+      "capture": "/guides/",
+      "free_value": "/systems/",
+      "offer_page": "/revenue-router.html",
+      "return_route": "/return-gate/en/",
+      "primary_metric": "checkout_click",
+      "supporting_metrics": ["funnel_view", "primary_cta_click", "network_route_click"],
+      "current_evidence_state": "SIGNAL",
+      "status": "active"
+    }
+  ],
+  "daily_close_states": ["DONE", "WAITING", "NEXT", "MERGE", "DROP"]
+}
